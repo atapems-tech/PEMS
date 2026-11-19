@@ -39,6 +39,24 @@ public sealed class DefinitionStore : IDefinitionStore
         return row;
     }
 
+    /// <summary>All published definitions of a kind, cached by the same per-kind stamp as a single read (the route table and the entity registry read whole kinds).</summary>
+    public async Task<IReadOnlyList<PublishedDefinition>> ListPublishedAsync(string kind, string appKey = "core", CancellationToken ct = default)
+    {
+        var stamp = await StampAsync(kind, ct);
+        var cacheKey = $"deflist:{appKey}:{kind}";
+        if (_cache.TryGetValue(cacheKey, out ListEntry? hit) && hit!.Stamp == stamp) return hit.Value;
+
+        var rows = await _db.Definitions.AsNoTracking()
+            .Where(d => d.AppKey == appKey && d.Kind == kind && d.PublishedVersionId != null)
+            .OrderBy(d => d.Key)
+            .Select(d => new PublishedDefinition(d.Kind, d.Key, d.AppKey, d.PublishedVersion!.VersionNumber, d.PublishedVersion.PayloadJson, d.PublishedVersion.ContentHash, d.TitleJson))
+            .ToListAsync(ct);
+        _cache.Set(cacheKey, new ListEntry(stamp, rows), TimeSpan.FromHours(1));
+        return rows;
+    }
+
+    private sealed record ListEntry(long Stamp, IReadOnlyList<PublishedDefinition> Value);
+
     private async Task<long> StampAsync(string kind, CancellationToken ct)
     {
         var stampKey = "defstamp:" + kind;

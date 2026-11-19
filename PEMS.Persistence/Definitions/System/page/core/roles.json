@@ -14,213 +14,122 @@
   "payload": {
     "layout": "list-page",
     "route": "roles",
-    "regions": {
-      "content": [
+    "template": "entity-list",
+    "args": {
+      "id": "roles",
+      "url": "/d/roles-grid",
+      "idField": "id",
+      "columns": [
         {
-          "id": "grid",
-          "component": "data-grid",
-          "options": {
-            "id": "roles",
-            "url": "/d/roles-grid",
-            "idField": "id",
-            "selectable": false,
-            "columns": [
-              {
-                "key": "name",
-                "header": {
-                  "en": "Name",
-                  "fa": "نام"
-                },
-                "width": 180
-              },
-              {
-                "key": "displayName",
-                "header": {
-                  "en": "Display name",
-                  "fa": "نام نمایشی"
-                },
-                "width": 200
-              },
-              {
-                "key": "description",
-                "header": {
-                  "en": "Description",
-                  "fa": "توضیحات"
-                },
-                "width": 280
-              },
-              {
-                "key": "category",
-                "header": {
-                  "en": "Category",
-                  "fa": "دسته"
-                },
-                "width": 120
-              },
-              {
-                "key": "domain",
-                "header": {
-                  "en": "Domain",
-                  "fa": "حوزه"
-                },
-                "width": 120
-              },
-              {
-                "key": "isSystemRole",
-                "header": {
-                  "en": "System role",
-                  "fa": "نقش سیستمی"
-                },
-                "width": 110,
-                "type": "bool"
-              },
-              {
-                "key": "users",
-                "header": {
-                  "en": "Users",
-                  "fa": "کاربران"
-                },
-                "width": 100,
-                "type": "number"
-              },
-              {
-                "key": "permissions",
-                "header": {
-                  "en": "Permissions",
-                  "fa": "مجوزها"
-                },
-                "width": 110,
-                "type": "number"
-              },
-              {
-                "key": "sortOrder",
-                "header": {
-                  "en": "Order",
-                  "fa": "ترتیب"
-                },
-                "width": 90,
-                "type": "number"
-              },
-              {
-                "key": "_actions",
-                "header": {
-                  "en": "Actions",
-                  "fa": "عملیات"
-                },
-                "type": "actions",
-                "width": 280,
-                "sortable": false,
-                "filterable": false,
-                "actions": [
-                  {
-                    "key": "delete",
-                    "label": {
-                      "en": "Delete",
-                      "fa": "حذف"
-                    },
-                    "url": "/a/roles-delete",
-                    "method": "post",
-                    "tone": "danger",
-                    "confirm": {
-                      "en": "Delete this record?",
-                      "fa": "این رکورد حذف شود؟"
-                    },
-                    "showWhen": "row.isSystemRole == false"
-                  }
-                ]
-              }
-            ],
-            "texts": {
-              "search": {
-                "en": "Search",
-                "fa": "جستجو"
-              },
-              "columns": {
-                "en": "Columns",
-                "fa": "ستون‌ها"
-              },
-              "density": {
-                "en": "Density",
-                "fa": "تراکم"
-              },
-              "compact": {
-                "en": "Compact",
-                "fa": "فشرده"
-              },
-              "comfortable": {
-                "en": "Comfortable",
-                "fa": "راحت"
-              },
-              "export": {
-                "en": "Export",
-                "fa": "خروجی"
-              },
-              "views": {
-                "en": "Views",
-                "fa": "نماها"
-              },
-              "saveView": {
-                "en": "Save view",
-                "fa": "ذخیره نما"
-              },
-              "viewName": {
-                "en": "View name",
-                "fa": "نام نما"
-              },
-              "loading": {
-                "en": "Loading",
-                "fa": "در حال بارگذاری"
-              },
-              "empty": {
-                "en": "No rows",
-                "fa": "ردیفی نیست"
-              },
-              "error": {
-                "en": "Could not load",
-                "fa": "بارگذاری نشد"
-              },
-              "rows": {
-                "en": "{0} rows",
-                "fa": "{0} ردیف"
-              },
-              "selected": {
-                "en": "{0} selected",
-                "fa": "{0} انتخاب شد"
-              },
-              "selectAllMatching": {
-                "en": "Select all {0}",
-                "fa": "انتخاب همه {0}"
-              },
-              "clearSelection": {
-                "en": "Clear",
-                "fa": "پاک کردن"
-              },
-              "filter": {
-                "en": "Filter",
-                "fa": "فیلتر"
-              },
-              "delete": {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 180
+        },
+        {
+          "key": "displayName",
+          "header": {
+            "en": "Display name",
+            "fa": "نام نمایشی"
+          },
+          "width": 200
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 280
+        },
+        {
+          "key": "category",
+          "header": {
+            "en": "Category",
+            "fa": "دسته"
+          },
+          "width": 120
+        },
+        {
+          "key": "domain",
+          "header": {
+            "en": "Domain",
+            "fa": "حوزه"
+          },
+          "width": 120
+        },
+        {
+          "key": "isSystemRole",
+          "header": {
+            "en": "System role",
+            "fa": "نقش سیستمی"
+          },
+          "width": 110,
+          "type": "bool"
+        },
+        {
+          "key": "users",
+          "header": {
+            "en": "Users",
+            "fa": "کاربران"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "permissions",
+          "header": {
+            "en": "Permissions",
+            "fa": "مجوزها"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "sortOrder",
+          "header": {
+            "en": "Order",
+            "fa": "ترتیب"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "delete",
+              "label": {
                 "en": "Delete",
                 "fa": "حذف"
-              }
+              },
+              "url": "/a/roles-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Delete this record?",
+                "fa": "این رکورد حذف شود؟"
+              },
+              "showWhen": "row.isSystemRole == false"
             }
-          }
+          ]
         }
       ],
-      "toolbar": [
-        {
-          "id": "new",
-          "component": "button",
-          "options": {
-            "label": {
-              "en": "New role",
-              "fa": "نقش جدید"
-            },
-            "tone": "primary",
-            "href": "/f/roles-create"
-          }
-        }
-      ]
+      "newUrl": "/f/roles-create",
+      "newLabel": {
+        "en": "New role",
+        "fa": "نقش جدید"
+      }
     }
   }
 }

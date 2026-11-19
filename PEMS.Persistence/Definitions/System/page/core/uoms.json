@@ -14,186 +14,95 @@
   "payload": {
     "layout": "list-page",
     "route": "uoms",
-    "regions": {
-      "content": [
+    "template": "entity-list",
+    "args": {
+      "id": "uoms",
+      "url": "/d/uoms-grid",
+      "idField": "materialUOMId",
+      "columns": [
         {
-          "id": "grid",
-          "component": "data-grid",
-          "options": {
-            "id": "uoms",
-            "url": "/d/uoms-grid",
-            "idField": "materialUOMId",
-            "selectable": false,
-            "columns": [
-              {
-                "key": "code",
-                "header": {
-                  "en": "Code",
-                  "fa": "کد"
-                },
-                "width": 140
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 140
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 240
+        },
+        {
+          "key": "description",
+          "header": {
+            "en": "Description",
+            "fa": "توضیحات"
+          },
+          "width": 300
+        },
+        {
+          "key": "conversionFactor",
+          "header": {
+            "en": "Conversion factor",
+            "fa": "ضریب تبدیل"
+          },
+          "width": 140,
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 100,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
               },
-              {
-                "key": "name",
-                "header": {
-                  "en": "Name",
-                  "fa": "نام"
-                },
-                "width": 240
+              "url": "/f/uoms-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "toggle",
+              "label": {
+                "en": "Activate / deactivate",
+                "fa": "فعال / غیرفعال"
               },
-              {
-                "key": "description",
-                "header": {
-                  "en": "Description",
-                  "fa": "توضیحات"
-                },
-                "width": 300
-              },
-              {
-                "key": "conversionFactor",
-                "header": {
-                  "en": "Conversion factor",
-                  "fa": "ضریب تبدیل"
-                },
-                "width": 140,
-                "type": "number"
-              },
-              {
-                "key": "isActive",
-                "header": {
-                  "en": "Active",
-                  "fa": "فعال"
-                },
-                "width": 100,
-                "type": "bool"
-              },
-              {
-                "key": "_actions",
-                "header": {
-                  "en": "Actions",
-                  "fa": "عملیات"
-                },
-                "type": "actions",
-                "width": 280,
-                "sortable": false,
-                "filterable": false,
-                "actions": [
-                  {
-                    "key": "edit",
-                    "label": {
-                      "en": "Edit",
-                      "fa": "ویرایش"
-                    },
-                    "url": "/f/uoms-edit/{id}",
-                    "method": "get"
-                  },
-                  {
-                    "key": "toggle",
-                    "label": {
-                      "en": "Activate / deactivate",
-                      "fa": "فعال / غیرفعال"
-                    },
-                    "url": "/a/uoms-toggle",
-                    "method": "post",
-                    "confirm": {
-                      "en": "Change the status?",
-                      "fa": "وضعیت تغییر کند؟"
-                    }
-                  }
-                ]
-              }
-            ],
-            "texts": {
-              "search": {
-                "en": "Search",
-                "fa": "جستجو"
-              },
-              "columns": {
-                "en": "Columns",
-                "fa": "ستون‌ها"
-              },
-              "density": {
-                "en": "Density",
-                "fa": "تراکم"
-              },
-              "compact": {
-                "en": "Compact",
-                "fa": "فشرده"
-              },
-              "comfortable": {
-                "en": "Comfortable",
-                "fa": "راحت"
-              },
-              "export": {
-                "en": "Export",
-                "fa": "خروجی"
-              },
-              "views": {
-                "en": "Views",
-                "fa": "نماها"
-              },
-              "saveView": {
-                "en": "Save view",
-                "fa": "ذخیره نما"
-              },
-              "viewName": {
-                "en": "View name",
-                "fa": "نام نما"
-              },
-              "loading": {
-                "en": "Loading",
-                "fa": "در حال بارگذاری"
-              },
-              "empty": {
-                "en": "No rows",
-                "fa": "ردیفی نیست"
-              },
-              "error": {
-                "en": "Could not load",
-                "fa": "بارگذاری نشد"
-              },
-              "rows": {
-                "en": "{0} rows",
-                "fa": "{0} ردیف"
-              },
-              "selected": {
-                "en": "{0} selected",
-                "fa": "{0} انتخاب شد"
-              },
-              "selectAllMatching": {
-                "en": "Select all {0}",
-                "fa": "انتخاب همه {0}"
-              },
-              "clearSelection": {
-                "en": "Clear",
-                "fa": "پاک کردن"
-              },
-              "filter": {
-                "en": "Filter",
-                "fa": "فیلتر"
-              },
-              "delete": {
-                "en": "Delete",
-                "fa": "حذف"
+              "url": "/a/uoms-toggle",
+              "method": "post",
+              "confirm": {
+                "en": "Change the status?",
+                "fa": "وضعیت تغییر کند؟"
               }
             }
-          }
+          ]
         }
       ],
-      "toolbar": [
-        {
-          "id": "new",
-          "component": "button",
-          "options": {
-            "label": {
-              "en": "New unit of measure",
-              "fa": "واحد اندازه‌گیری جدید"
-            },
-            "tone": "primary",
-            "href": "/f/uoms-create"
-          }
-        }
-      ]
+      "newUrl": "/f/uoms-create",
+      "newLabel": {
+        "en": "New unit of measure",
+        "fa": "واحد اندازه‌گیری جدید"
+      }
     }
   }
 }

@@ -13,7 +13,7 @@ internal static class ShippedKinds
         var cat = entities ?? EntityCatalog.Default();
         return
         [
-            new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(),
+            new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new RouteDefinitionKind(), new ComponentDefinitionKind(registry),
             new DataSourceDefinitionKind([new EntityOptionsProvider(null!, cat)], [new EntityGridProvider(null!, cat)]),
             new ActionDefinitionKind([new EntityCreateAction(null!, cat), new EntityUpdateAction(null!, cat), new EntityDeleteAction(null!, cat), new EntityToggleAction(null!, cat), new WorkflowExecuteAction(null!), new OperationInvokeAction(null!, OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly))])
         ];

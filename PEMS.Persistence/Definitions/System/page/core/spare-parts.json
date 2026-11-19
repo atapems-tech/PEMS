@@ -14,220 +14,129 @@
   "payload": {
     "layout": "list-page",
     "route": "spare-parts",
-    "regions": {
-      "content": [
+    "template": "entity-list",
+    "args": {
+      "id": "spare-parts",
+      "url": "/d/spare-parts-grid",
+      "idField": "sparePartId",
+      "columns": [
         {
-          "id": "grid",
-          "component": "data-grid",
-          "options": {
-            "id": "spare-parts",
-            "url": "/d/spare-parts-grid",
-            "idField": "sparePartId",
-            "selectable": false,
-            "columns": [
-              {
-                "key": "partNumber",
-                "header": {
-                  "en": "Part number",
-                  "fa": "شماره‌ی قطعه"
-                },
-                "width": 160
+          "key": "partNumber",
+          "header": {
+            "en": "Part number",
+            "fa": "شماره‌ی قطعه"
+          },
+          "width": 160
+        },
+        {
+          "key": "partName",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 240
+        },
+        {
+          "key": "manufacturer",
+          "header": {
+            "en": "Manufacturer",
+            "fa": "سازنده"
+          },
+          "width": 160
+        },
+        {
+          "key": "model",
+          "header": {
+            "en": "Model",
+            "fa": "مدل"
+          },
+          "width": 140
+        },
+        {
+          "key": "unit",
+          "header": {
+            "en": "Unit",
+            "fa": "واحد"
+          },
+          "width": 90
+        },
+        {
+          "key": "quantityOnHand",
+          "header": {
+            "en": "On hand",
+            "fa": "موجودی"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "minStockLevel",
+          "header": {
+            "en": "Minimum",
+            "fa": "حداقل"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "reorderPoint",
+          "header": {
+            "en": "Reorder point",
+            "fa": "نقطه‌ی سفارش"
+          },
+          "width": 120,
+          "type": "number"
+        },
+        {
+          "key": "storageLocation",
+          "header": {
+            "en": "Location",
+            "fa": "محل نگهداری"
+          },
+          "width": 160
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 280,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
               },
-              {
-                "key": "partName",
-                "header": {
-                  "en": "Name",
-                  "fa": "نام"
-                },
-                "width": 240
+              "url": "/f/spare-parts-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "delete",
+              "label": {
+                "en": "Deactivate",
+                "fa": "غیرفعال کردن"
               },
-              {
-                "key": "manufacturer",
-                "header": {
-                  "en": "Manufacturer",
-                  "fa": "سازنده"
-                },
-                "width": 160
-              },
-              {
-                "key": "model",
-                "header": {
-                  "en": "Model",
-                  "fa": "مدل"
-                },
-                "width": 140
-              },
-              {
-                "key": "unit",
-                "header": {
-                  "en": "Unit",
-                  "fa": "واحد"
-                },
-                "width": 90
-              },
-              {
-                "key": "quantityOnHand",
-                "header": {
-                  "en": "On hand",
-                  "fa": "موجودی"
-                },
-                "width": 110,
-                "type": "number"
-              },
-              {
-                "key": "minStockLevel",
-                "header": {
-                  "en": "Minimum",
-                  "fa": "حداقل"
-                },
-                "width": 100,
-                "type": "number"
-              },
-              {
-                "key": "reorderPoint",
-                "header": {
-                  "en": "Reorder point",
-                  "fa": "نقطه‌ی سفارش"
-                },
-                "width": 120,
-                "type": "number"
-              },
-              {
-                "key": "storageLocation",
-                "header": {
-                  "en": "Location",
-                  "fa": "محل نگهداری"
-                },
-                "width": 160
-              },
-              {
-                "key": "_actions",
-                "header": {
-                  "en": "Actions",
-                  "fa": "عملیات"
-                },
-                "type": "actions",
-                "width": 280,
-                "sortable": false,
-                "filterable": false,
-                "actions": [
-                  {
-                    "key": "edit",
-                    "label": {
-                      "en": "Edit",
-                      "fa": "ویرایش"
-                    },
-                    "url": "/f/spare-parts-edit/{id}",
-                    "method": "get"
-                  },
-                  {
-                    "key": "delete",
-                    "label": {
-                      "en": "Deactivate",
-                      "fa": "غیرفعال کردن"
-                    },
-                    "url": "/a/spare-parts-delete",
-                    "method": "post",
-                    "tone": "danger",
-                    "confirm": {
-                      "en": "Deactivate this record?",
-                      "fa": "این رکورد غیرفعال کردن شود؟"
-                    }
-                  }
-                ]
-              }
-            ],
-            "texts": {
-              "search": {
-                "en": "Search",
-                "fa": "جستجو"
-              },
-              "columns": {
-                "en": "Columns",
-                "fa": "ستون‌ها"
-              },
-              "density": {
-                "en": "Density",
-                "fa": "تراکم"
-              },
-              "compact": {
-                "en": "Compact",
-                "fa": "فشرده"
-              },
-              "comfortable": {
-                "en": "Comfortable",
-                "fa": "راحت"
-              },
-              "export": {
-                "en": "Export",
-                "fa": "خروجی"
-              },
-              "views": {
-                "en": "Views",
-                "fa": "نماها"
-              },
-              "saveView": {
-                "en": "Save view",
-                "fa": "ذخیره نما"
-              },
-              "viewName": {
-                "en": "View name",
-                "fa": "نام نما"
-              },
-              "loading": {
-                "en": "Loading",
-                "fa": "در حال بارگذاری"
-              },
-              "empty": {
-                "en": "No rows",
-                "fa": "ردیفی نیست"
-              },
-              "error": {
-                "en": "Could not load",
-                "fa": "بارگذاری نشد"
-              },
-              "rows": {
-                "en": "{0} rows",
-                "fa": "{0} ردیف"
-              },
-              "selected": {
-                "en": "{0} selected",
-                "fa": "{0} انتخاب شد"
-              },
-              "selectAllMatching": {
-                "en": "Select all {0}",
-                "fa": "انتخاب همه {0}"
-              },
-              "clearSelection": {
-                "en": "Clear",
-                "fa": "پاک کردن"
-              },
-              "filter": {
-                "en": "Filter",
-                "fa": "فیلتر"
-              },
-              "delete": {
-                "en": "Delete",
-                "fa": "حذف"
+              "url": "/a/spare-parts-delete",
+              "method": "post",
+              "tone": "danger",
+              "confirm": {
+                "en": "Deactivate this record?",
+                "fa": "این رکورد غیرفعال کردن شود؟"
               }
             }
-          }
+          ]
         }
       ],
-      "toolbar": [
-        {
-          "id": "new",
-          "component": "button",
-          "options": {
-            "label": {
-              "en": "New spare part",
-              "fa": "قطعه‌ی یدکی جدید"
-            },
-            "tone": "primary",
-            "href": "/f/spare-parts-create"
-          }
-        }
-      ]
+      "newUrl": "/f/spare-parts-create",
+      "newLabel": {
+        "en": "New spare part",
+        "fa": "قطعه‌ی یدکی جدید"
+      }
     }
   }
 }

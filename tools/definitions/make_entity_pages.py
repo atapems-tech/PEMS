@@ -16,7 +16,6 @@ import json, os, re
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OUT = os.path.join(ROOT, "PEMS.Persistence", "Definitions", "System")
-GRID_TEXTS_FILE = os.path.join(os.path.dirname(__file__), "grid-texts.json")
 
 
 def t(en, fa):
@@ -84,7 +83,7 @@ def make(spec):
     write("data-source", key + "-grid", envelope("data-source", key + "-grid", t(spec["title"][0] + " rows", "ردیف‌های " + spec["title"][1]), t("The rows of the " + spec["title"][0].lower() + " grid", "ردیف‌های جدول " + spec["title"][1]),
           {"kind": "grid", "provider": "entity", "parameters": params}))
 
-    grid = {"id": key, "url": "/d/" + key + "-grid", "idField": camel(spec["id"]), "selectable": False, "columns": [], "texts": json.load(open(GRID_TEXTS_FILE, encoding="utf-8"))}
+    grid = {"id": key, "url": "/d/" + key + "-grid", "idField": camel(spec["id"]), "columns": []}   # the args of the entity-list component (SCRUM-589)
     for prop, en, fa, typ, width, *_ in cols:
         c = {"key": camel(prop), "header": t(en, fa), "width": width}
         if typ == "computed": c["type"] = "number"
@@ -94,7 +93,8 @@ def make(spec):
 
     row_actions, toolbar = [], []
     if spec.get("create", True):
-        toolbar.append({"id": "new", "component": "button", "options": {"label": t("New " + spec["singular"][0].lower(), spec["singular"][1] + " جدید"), "tone": "primary", "href": "/f/" + key + "-create"}})
+        grid["newUrl"] = "/f/" + key + "-create"
+        grid["newLabel"] = t("New " + spec["singular"][0].lower(), spec["singular"][1] + " جدید")
         ff, map_, required = form_fields(spec, key)
         create_params = {"entity": entity, "map": map_, "required": required, "defaults": spec.get("defaults", {}), "unique": spec.get("unique", [])}
         if spec.get("create_redirect"): create_params["redirect"] = spec["create_redirect"]
@@ -131,9 +131,7 @@ def make(spec):
     if row_actions:
         grid["columns"].append({"key": "_actions", "header": t("Actions", "عملیات"), "type": "actions", "width": 280, "sortable": False, "filterable": False, "actions": row_actions})
 
-    regions = {"content": [{"id": "grid", "component": "data-grid", "options": grid}]}
-    if toolbar: regions["toolbar"] = toolbar
-    write("page", key, envelope("page", key, t(*spec["title"]), t(spec["title"][0] + " list (page definition)", "فهرست " + spec["title"][1] + " (تعریف صفحه)"), {"layout": "list-page", "route": key, "regions": regions}))
+    write("page", key, envelope("page", key, t(*spec["title"]), t(spec["title"][0] + " list (page definition)", "فهرست " + spec["title"][1] + " (تعریف صفحه)"), {"layout": "list-page", "route": key, "template": "entity-list", "args": grid}))
 
 
 def variant_page(spec, key, title, apply):
@@ -147,8 +145,8 @@ def variant_page(spec, key, title, apply):
     page["key"] = key
     page["title"] = t(*title)
     page["payload"]["route"] = key
-    page["payload"]["regions"]["content"][0]["options"]["id"] = key
-    page["payload"]["regions"]["content"][0]["options"]["url"] = "/d/" + key + "-grid"
+    page["payload"]["args"]["id"] = key
+    page["payload"]["args"]["url"] = "/d/" + key + "-grid"
     write("page", key, page)
 
 

@@ -1267,6 +1267,7 @@ app.UseRateLimiter();
 app.UseAuthentication();
 
 app.UseAuthorization();
+PEMS.Web.Definitions.RouteTableExtensions.UseRouteTable(app);   // SCRUM-768: URLs of deleted controllers resolve through the route definitions
 
 // Licence gate (verification point V2): added only when Licensing:Enforce=true.
 app.UsePemsLicensing();

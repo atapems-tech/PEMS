@@ -93,6 +93,10 @@ public sealed record PublishedDefinition(string Kind, string Key, string AppKey,
 public interface IDefinitionStore
 {
     Task<PublishedDefinition?> GetPublishedAsync(string kind, string key, string appKey = "core", CancellationToken ct = default);
+
+    /// <summary>Every published definition of a kind (the route table and the entity registry read whole kinds); stores that cannot list answer nothing.</summary>
+    Task<IReadOnlyList<PublishedDefinition>> ListPublishedAsync(string kind, string appKey = "core", CancellationToken ct = default)
+        => Task.FromResult<IReadOnlyList<PublishedDefinition>>([]);
 }
 
 /// <summary>Where the definition files live and how they are read (SCRUM-572; settings Definitions:Files:* in env/*.env).</summary>
