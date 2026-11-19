@@ -21,3 +21,5 @@ Run every test that fits; leave the very large suites to the end-of-sprint QA. E
 6. Do not wait for what you cannot run: merge, then In Review (skill `pems-jira-handover`).
 
 Recording flags: `PEMS_RATCHET_RECORD=1 dotnet test PEMS.UI.Tests --filter AdoptionRatchet` rewrites the baseline (re-record after merging main). Build once, then `--no-build`.
+
+**Builds of the test projects and test runs happen after the end of the batch with the owner's input**, never on the agent's own initiative (guideline 05, owner decision 2026-11-19).

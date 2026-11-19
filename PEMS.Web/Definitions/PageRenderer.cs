@@ -139,6 +139,10 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
                 if (spec is null) return;   // not allowed or invalid: the part is hidden
                 options["spec"] = spec;
             }
+            if (instance["bindings"] is JsonObject matrixBindings && matrixBindings["matrix"] is JsonObject matrix)
+            {
+                if (!await ApplyMatrixAsync(matrix, options, request, appKey, id, problems, ct)) return;   // not allowed or invalid: the part is hidden
+            }
             var parameters = catalog.ToParameters(component, options.ToJsonString());
             html.Append(await renderer.RenderAsync(component, parameters, culture));
         }
@@ -193,6 +197,45 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         };
         if (kind == "donut" && outSeries.Count > 0) spec["centerLabel"] = (string?)outSeries[0]!["name"];
         return spec;
+    }
+
+    /// <summary>
+    /// The cells of a matrix from the rows of a grid data source (SCRUM-627): <c>{ "source": "/d/key", "rowField": "assetId", "columnField": "criterion", "valueField": "score", "rowLabelField": "assetName",
+    /// "columnLabelField": "criterion", "idField": "scoreId", "sort": "assetName" }</c>; at most 500 rows are read through the same resolve and authorize steps as the grid. The matrix options get rows, columns and cells.
+    /// </summary>
+    private async Task<bool> ApplyMatrixAsync(JsonObject matrix, JsonObject options, PipelineRequest request, string appKey, string id, List<string> problems, CancellationToken ct)
+    {
+        if (data is null) { problems.Add($"Instance \"{id}\": the matrix cannot be read here."); return false; }
+        var source = (string?)matrix["source"];
+        var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
+        string? F(string n) => matrix[n] is JsonValue v && v.GetValueKind() == JsonValueKind.String ? (string?)v : null;
+        var rowField = F("rowField"); var colField = F("columnField"); var valueField = F("valueField");
+        if (key is null || string.IsNullOrWhiteSpace(rowField) || string.IsNullOrWhiteSpace(colField) || string.IsNullOrWhiteSpace(valueField))
+        { problems.Add($"Instance \"{id}\": the matrix binding needs a /d/ source, rowField, columnField and valueField."); return false; }
+        var query = new List<KeyValuePair<string, string?>> { new("page", "1"), new("pageSize", "500") };
+        if (F("sort") is { } sort) query.Add(new("sort", sort));
+        var result = await data.QueryAsync(key, query, request.Culture, request.Roles, request.UserName, appKey, ct);
+        switch (result.Status)
+        {
+            case DataStatus.Forbidden: problems.Add($"Instance \"{id}\": the matrix data is not allowed for this user."); return false;
+            case DataStatus.NotFound: problems.Add($"Instance \"{id}\": the matrix source \"{key}\" does not exist."); return false;
+            case DataStatus.Invalid: problems.Add($"Instance \"{id}\": the matrix request is invalid: {result.Error}"); return false;
+        }
+        string Cell(JsonObject row, string? field) => field is not null && row[field] is JsonValue v ? (v.GetValueKind() == JsonValueKind.String ? (string?)v ?? "" : v.ToJsonString().Trim('"')) : "";
+        var rows = new JsonArray(); var cols = new JsonArray(); var cells = new JsonObject();
+        var seenRows = new HashSet<string>(StringComparer.Ordinal); var seenCols = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var item in (result.Items ?? []).Select(i => JsonSerializer.SerializeToNode(i) as JsonObject).Where(r => r is not null).Cast<JsonObject>())
+        {
+            var rk = Cell(item, rowField); var ck = Cell(item, colField);
+            if (rk.Length == 0 || ck.Length == 0) continue;
+            if (seenRows.Add(rk)) rows.Add(new JsonObject { ["key"] = rk, ["label"] = Cell(item, F("rowLabelField") ?? rowField) });
+            if (seenCols.Add(ck)) cols.Add(new JsonObject { ["key"] = ck, ["label"] = Cell(item, F("columnLabelField") ?? colField) });
+            var cell = new JsonObject { ["value"] = Cell(item, valueField) };
+            if (F("idField") is { } idField) cell["id"] = Cell(item, idField);
+            cells[rk + "|" + ck] = cell;
+        }
+        options["rows"] = rows; options["columns"] = cols; options["cells"] = cells;
+        return true;
     }
 
     /// <summary>A text of a definition for the request's language: a plain string, or an object with fa and en.</summary>

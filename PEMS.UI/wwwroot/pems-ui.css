@@ -352,3 +352,8 @@
 /* SCRUM-625: the print-page layout (labels, forms, reports that are printed): narrow, centred, no screen chrome when printed */
 .pems-print-page { max-inline-size: 210mm; margin-inline: auto; padding: 16px; }
 @media print { .pems-print-page { max-inline-size: none; padding: 0; } .pems-print-page .btn, .pems-print-page nav { display: none !important; } }
+
+/* SCRUM-627: the editable matrix (rows by columns of cells) */
+.pems-matrix__scroll { overflow-x: auto; }
+.pems-matrix__table th[scope="row"] { white-space: nowrap; position: sticky; inset-inline-start: 0; background: var(--pems-surface, #fff); }
+.pems-matrix__table input, .pems-matrix__table select { min-inline-size: 7rem; }
