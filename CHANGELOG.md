@@ -4,6 +4,15 @@ All notable changes to PEMS. No system version is defined yet (plan row F_CI), s
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
 
+
+## 2026-11-19 - Action steps, result binding and step-up as settings of an action (SCRUM-593, 594, 595)
+
+### Added
+- Handler `action.steps` (SCRUM-593): several handlers as ordered steps of one action definition, run in one database transaction; the first refusal or exception rolls everything back and stops the later steps. Definitions are checked when loaded (unknown handler, nesting, forward reference, duplicate name, at most 20 steps).
+- Result binding (SCRUM-594): `ActionOutcome.Returned` carries values a handler produced; later steps read them with `step:as.key`, and `{as.key}` or `{Name}` in the redirect of an action definition is replaced by them (the entity create action returns the row it wrote).
+- Step-up (SCRUM-595): an action definition may declare `stepUp: { resource, action }`; the host gives the WebAuthn challenge (`ActionStatus.StepUpRequired`, HTTP 428 for a fetch), verifies the answer, audits a denial and only then runs the operation; without a verifier it never runs.
+- `ActionScope`: handlers open their scope through it so they share the transaction of `action.steps`.
+
 ## 2026-11-19 - Definitions: upstream diff and reset, classification table, one field validator (SCRUM-448, 628, 372, 373, 380)
 
 ### Added
