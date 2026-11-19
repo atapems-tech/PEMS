@@ -87,8 +87,10 @@ public class ProcurementDecisionPagesTests
         Assert.Contains("Localizer[\"Po_RouteInvalid\"]", block);
         Assert.Contains("asp-action=\"RouteAgain\"", block[..block.IndexOf("@if (isDraft", StringComparison.Ordinal)]);
 
-        var controller = Read("PEMS.Web", "Areas", "Admin", "Controllers", "PurchaseOrderAuthorityController.cs");
-        Assert.Contains("ViewBag.Roles = await _service.GetApproverRolesAsync()", controller);
+        // SCRUM-643: the authority page is a definition page; its approver choices are the service operation (only roles with PurchaseOrder Approve)
+        var options = Read("PEMS.Persistence", "Definitions", "System", "data-source", "core", "po-authority-approver-role-options.json");
+        Assert.Contains("\"model\": \"PoAuthority\"", options);
+        Assert.Contains("\"action\": \"ApproverRoles\"", options);
     }
 
     // ------------------------------------------------------------ SCRUM-547

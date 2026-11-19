@@ -169,7 +169,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,PermissionMatrix,PurchaseOrderAuthority,Department,Employee,Authorization,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,PermissionMatrix,Department,Employee,Authorization,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
@@ -199,7 +199,8 @@ public static class NavigationMenuDefaults
         // SCRUM-632: a definition page (/p/...), not a controller
         new("admin.contractauthority", "admin.sub.ai", L, 70, "Contract Approval Authority", "bi-shield-check", "Module:Administration", ExternalPath: "/p/contract-approval-authority"),
         // SCRUM-470: the PO authority table
-        Link("admin.poauthority", "admin.sub.ai", 75, "Po_AuthorityTitle", "bi-receipt-cutoff", "PurchaseOrderAuthority", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-643: a definition page (/p/...), not a controller
+        new("admin.poauthority", "admin.sub.ai", L, 75, "Po_AuthorityTitle", "bi-receipt-cutoff", "Module:Administration", ExternalPath: "/p/po-authority"),
         Sub("admin.sub.monitoring", "sec.admin", 50, "System Monitoring"),
         // SCRUM-629, 630: the audit pages are definition pages (/p/...), not controllers
         new("admin.auditlog", "admin.sub.monitoring", L, 10, "AuditLog", "bi-clock-history", "Module:Administration", ExternalPath: "/p/audit-log"),

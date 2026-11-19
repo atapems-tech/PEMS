@@ -79,6 +79,10 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent", "userId", "disciplineId" };
 
     /// <summary>A plain options object (settable simple properties, no constructor arguments), such as a completion-data record: its properties are bound from the form values of the same name (first letter lower-case), or from the sources the definition lists for them.</summary>
+    /// <summary>A record whose constructor takes only simple values (a positional "input" record): built from the sources the definition lists for each constructor parameter (default: the form field of the same name).</summary>
+    private static bool IsInput(Type t) => t.IsClass && t != typeof(string) && !IsTextList(t) && t.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault() is { } c
+        && c.GetParameters().Length > 0 && c.GetParameters().All(cp => IsSimple(cp.ParameterType)) && !c.GetParameters().All(cp => ContextNames.Contains(cp.Name!));
+
     private static bool IsBag(Type t) => t.IsClass && t != typeof(string) && t.GetConstructor(Type.EmptyTypes) is not null
         && t.GetProperties().Any(pr => pr.CanWrite && IsSimple(pr.PropertyType));
 
@@ -121,6 +125,13 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             var s = EntityJson.Str(source) ?? "";
             if (!names.Contains(name)) errors.Add(new("/args/" + name, "unknown-parameter", "Def_Err_UnknownField", $"'{name}' is not a parameter of {op.Name}."));
+            else if (source is JsonObject inputMap && IsInput(op.Method.GetParameters().First(pp => pp.Name == name).ParameterType))
+            {
+                var ctor = op.Method.GetParameters().First(pp => pp.Name == name).ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).First();
+                foreach (var (property, propertySource) in inputMap)
+                    if (ctor.GetParameters().All(cp => !string.Equals(cp.Name, property, StringComparison.OrdinalIgnoreCase))) errors.Add(new($"/args/{name}/{property}", "unknown-parameter", "Def_Err_UnknownField", $"'{property}' is not a value of {name}."));
+                    else if (!IsSource(EntityJson.Str(propertySource) ?? "")) errors.Add(new($"/args/{name}/{property}", "wrong-source", "Def_Err_Type", "A source is field:name, literal:text or context:employeeId|roles|userName|culture."));
+            }
             else if (source is JsonObject bag)
             {
                 var type = op.Method.GetParameters().First(pp => pp.Name == name).ParameterType;
@@ -144,7 +155,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (EntityJson.Str(args[p.Name!]) is not "context:roles") errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list parameter '{p.Name}' of {op.Name} is the roles of the user: set it to context:roles."));
                 continue;
             }
-            if (IsBag(p.ParameterType)) continue;
+            if (IsBag(p.ParameterType) || IsInput(p.ParameterType)) continue;
             var ctor = p.ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
             if (ctor is null || ctor.GetParameters().Any(cp => !ContextNames.Contains(cp.Name!)))
                 errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Name} is neither a simple value nor an object built from the context (employeeId, roles, userName, culture)."));
@@ -191,6 +202,28 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         }
         if (strict && !(decision.Allowed && decision.Reason == PEMS.Application.DTOs.AccessDecisionReason.Allow)) return ActionOutcome.Refused(refused);
         return null;
+    }
+
+    /// <summary>A result object of the shape { Success, Error, Args } (the Po result of procurement and its kind): the refusal text is the Error, a resource key when the shared resources know it (filled with Args), in both languages.</summary>
+    private static (bool Success, string? Error, object?[] Args)? ResultOf(object answer)
+    {
+        var t = answer.GetType();
+        if (t.GetProperty("Success")?.GetValue(answer) is not bool ok) return null;
+        var args = t.GetProperty("Args")?.GetValue(answer) as object?[] ?? [];
+        return (ok, t.GetProperty("Error")?.GetValue(answer) as string, args);
+    }
+
+    private static TranslatableText ResultMessage(IServiceProvider services, (bool Success, string? Error, object?[] Args) result)
+    {
+        var key = result.Error ?? "The operation was refused.";
+        var localizer = services.GetService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>();
+        string In(string culture)
+        {
+            var previous = CultureInfo.CurrentUICulture;
+            try { CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(culture); var s = localizer?[key, result.Args!]; return s is { ResourceNotFound: false } ? s.Value : key; }
+            finally { CultureInfo.CurrentUICulture = previous; }
+        }
+        return TranslatableText.Of(("en", In("en")), ("fa", In("fa")));
     }
 
     public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
@@ -246,6 +279,23 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                     return ActionOutcome.Refused(TranslatableText.Of(("en", $"'{p.Name}' is required."), ("fa", $"«{p.Name}» الزامی است.")));
                 values.Add(converted);
             }
+            else if (IsInput(p.ParameterType))
+            {
+                var ctor = p.ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).First();
+                var map = args[p.Name!] as JsonObject ?? [];
+                var built = new List<object?>();
+                foreach (var cp in ctor.GetParameters())
+                {
+                    var source = EntityJson.Str(map.FirstOrDefault(kv => string.Equals(kv.Key, cp.Name, StringComparison.OrdinalIgnoreCase)).Value) ?? "field:" + CamelCase(cp.Name!);
+                    var text = source.StartsWith("literal:") ? source[8..] : source.StartsWith("context:") ? EntityJson.Show(context[source[8..]]) : invocation.Values.GetValueOrDefault(source[6..]);
+                    var converted = EntityJson.Convert(cp.ParameterType, text);
+                    if (converted is EntityJson.NotConvertible) return ActionOutcome.Refused(TranslatableText.Of(("en", $"The value of '{cp.Name}' is not valid."), ("fa", $"مقدار «{cp.Name}» معتبر نیست.")));
+                    var plainValue = cp.ParameterType.IsValueType && Nullable.GetUnderlyingType(cp.ParameterType) is null && cp.ParameterType != typeof(bool);
+                    if (plainValue && string.IsNullOrWhiteSpace(text)) return ActionOutcome.Refused(TranslatableText.Of(("en", $"'{cp.Name}' is required."), ("fa", $"«{cp.Name}» الزامی است.")));
+                    built.Add(converted);
+                }
+                values.Add(ctor.Invoke(built.ToArray()));
+            }
             else if (IsBag(p.ParameterType))
             {
                 // only built when the definition names it: an optional options object stays null otherwise
@@ -287,6 +337,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             bool ok => ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد."))),
             ITuple t when t.Length >= 2 && t[0] is bool success => success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused.")),
+            _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done() : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
             _ => ActionOutcome.Done()
         };
         if (outcome.Ok && sectionPlan is not null)

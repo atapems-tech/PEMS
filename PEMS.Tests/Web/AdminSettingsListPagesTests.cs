@@ -18,7 +18,7 @@ namespace PEMS.Tests.Web;
 public class AdminSettingsListPagesTests
 {
     private static readonly string[] Pages =
-        { "StorageProviders", "WorkflowManagement", "Help", "PurchaseOrderAuthority" };
+        { "StorageProviders", "WorkflowManagement", "Help" };
 
     private static Task<string> Render<TController>(string view, object? model, Action<ViewDataDictionary>? data = null) where TController : Controller
     {
@@ -53,21 +53,6 @@ public class AdminSettingsListPagesTests
         Assert.Contains("vs-pill vs-pill--danger", html);                                // authentication failed
         Assert.Single(Regex.Matches(html, "bi-trash"));                                  // only the unused, non-default one
         Assert.Single(Regex.Matches(html, "bi-star\""));                                 // set default only for the other one
-    }
-
-    [Fact]
-    public async Task PoAuthority_TheRuleFormOpensFromTheToolbar_AndRulesToggleInTheRow()
-    {
-        var html = await Render<PurchaseOrderAuthorityController>("/Areas/Admin/Views/PurchaseOrderAuthority/Index.cshtml",
-            new List<PoAuthorityRuleView> { new(1, 1, 0, 1000, "IRR", "PRC.Manager", "up to 1000", true) },
-            v => v["Roles"] = new[] { "PRC.Manager", "SystemAdmin" });
-
-        AssertBuiltFromTheComponent(html, 1);
-        Assert.Contains("id=\"poRuleNewBtn\"", html);
-        var panel = html[html.IndexOf("id=\"poRuleNew\"", StringComparison.Ordinal)..];
-        Assert.Contains("name=\"approverRole\"", panel);
-        Assert.Contains("name=\"minAmount\"", panel);
-        Assert.Contains("bi-toggle-on", html);
     }
 
     [Fact]

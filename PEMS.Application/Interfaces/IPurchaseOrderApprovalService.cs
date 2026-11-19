@@ -73,6 +73,7 @@ public interface IPurchaseOrderApprovalService
     Task<PoResult> RouteAsync(int poId, PoActor actor);
 
     /// <summary>SCRUM-546: the roles that may be chosen as PO approver (those with PurchaseOrder Approve).</summary>
+    [PEMS.Application.Common.PemsOperation("PoAuthority", "ApproverRoles", Roles = "SystemAdmin")]
     Task<IReadOnlyList<string>> GetApproverRolesAsync();
 
     /// <summary>Approval by a holder of the routed role who neither created nor submitted the PO.</summary>
@@ -81,7 +82,9 @@ public interface IPurchaseOrderApprovalService
     /// <summary>Back to Draft with a reason.</summary>
     Task<PoResult> RejectAsync(int poId, string reason, PoActor actor);
 
+    [PEMS.Application.Common.PemsOperation("PoAuthority", "Rules", Roles = "SystemAdmin")]
     Task<IReadOnlyList<PoAuthorityRuleView>> GetRulesAsync();
 
+    [PEMS.Application.Common.PemsOperation("PoAuthority", "Save", Roles = "SystemAdmin")]
     Task<PoResult> SaveRuleAsync(PoAuthorityRuleInput input, PoActor actor);
 }

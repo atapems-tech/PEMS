@@ -56,6 +56,11 @@ def form_fields(spec, key):
             d["required"] = True
             d.setdefault("messages", {})["required"] = t(en + " is required.", fa + " الزامی است.")
             required.append(prop)
+        if "options_op" in f:
+            # choices from a read operation of a service (SCRUM-775): the same generic provider for every page
+            opt_key = key + "-" + kebab(name) + "-options"
+            write("data-source", opt_key, envelope("data-source", opt_key, t(en + " options", "گزینه‌های " + fa), t("Choices for " + en.lower(), "گزینه‌ها برای " + fa), {"kind": "provider", "provider": "operation-options", "parameters": f["options_op"]}))
+            d["optionsFrom"] = opt_key
         if "options" in f:
             opt_key = key + "-" + kebab(name) + "-options"
             write("data-source", opt_key, envelope("data-source", opt_key, t(en + " options", "گزینه‌های " + fa), t("Choices for " + en.lower(), "گزینه‌ها برای " + fa), {"kind": "provider", "provider": "entity-options", "parameters": f["options"]}))
@@ -247,6 +252,12 @@ def select(prop, en, fa, entity, value, label, required=False, active="IsActive"
     return d
 
 
+def select_op(prop, en, fa, model, action, required=False):
+    d = {"prop": prop, "kind": "select", "en": en, "fa": fa, "options_op": {"model": model, "action": action}}
+    if required: d["required"] = True
+    return d
+
+
 DISCIPLINE = {"name": "discipline", "entity": "Discipline", "foreignKey": "DisciplineId", "label": "Name"}
 SPECS += [
     # ---- W2 maintenance master data (MaintenanceMasterData permissions)
@@ -328,6 +339,21 @@ SPECS += [
          create_op={"model": "StorageRoute", "action": "Create", "args": {"request": {"Module": "field:module", "DocumentType": "field:documentType", "StorageProviderId": "field:storageProviderId", "RelativeRootPath": "field:relativeRootPath", "IsEnabled": "field:isEnabled", "IsDefault": "field:isDefault", "Priority": "field:priority"}, "createdBy": "context:userName"}},
          edit_op={"model": "StorageRoute", "action": "Update", "args": {"id": "field:id", "request": {"Module": "field:module", "DocumentType": "field:documentType", "StorageProviderId": "field:storageProviderId", "RelativeRootPath": "field:relativeRootPath", "IsEnabled": "field:isEnabled", "IsDefault": "field:isDefault", "Priority": "field:priority"}, "modifiedBy": "context:userName"}},
          delete_op={"model": "StorageRoute", "action": "Delete", "args": {"id": "field:id"}}),
+    # ---- W1 administration: PO authority levels (SCRUM-643): the service keeps its rules (overlap, ranges, audit); a record argument and a result object are mapped by the generic handler (SCRUM-775)
+    dict(simple("po-authority", "PurchaseOrderAuthorityRule", "PurchaseOrderAuthorityRuleId", ("PO authority levels", "سطوح اختیار سفارش خرید"), ("Authority level", "سطح اختیار"),
+                [("Level", "Level", "سطح", "number", 80), ("Currency", "Currency", "ارز", "text", 100), ("MinAmount", "From", "از مبلغ", "number", 140), ("MaxAmount", "To", "تا مبلغ", "number", 140),
+                 ("ApproverRole", "Approver role", "نقش تأییدکننده", "text", 180, True), ("Description", "Description", "توضیحات", "text", 300, True), ("IsActive", "Active", "فعال", "bool", 100)],
+                [{"prop": "Level", "kind": "number", "en": "Level", "fa": "سطح", "min": 1, "required": True},
+                 {"prop": "Currency", "en": "Currency", "fa": "ارز", "maxLength": 10, "required": True},
+                 {"prop": "MinAmount", "kind": "number", "en": "From", "fa": "از مبلغ", "min": 0, "required": True},
+                 {"prop": "MaxAmount", "kind": "number", "en": "To (blank = no limit)", "fa": "تا مبلغ (خالی = بدون سقف)", "min": 0},
+                 select_op("ApproverRole", "Approver role", "نقش تأییدکننده", "PoAuthority", "ApproverRoles", True),
+                 {"prop": "Description", "en": "Description", "fa": "توضیحات", "maxLength": 500},
+                 {"prop": "IsActive", "kind": "switch", "en": "Active", "fa": "فعال"}],
+                [], toggle=None),
+         defaults={"IsActive": True, "Currency": "IRR", "Level": 1, "MinAmount": 0}, sort=["Level", "Currency"],
+         create_op={"model": "PoAuthority", "action": "Save", "args": {"input": {"id": "literal:", "level": "field:level", "minAmount": "field:minAmount", "maxAmount": "field:maxAmount", "currency": "field:currency", "approverRole": "field:approverRole", "description": "field:description", "isActive": "field:isActive"}}},
+         edit_op={"model": "PoAuthority", "action": "Save", "args": {"input": {"id": "field:id", "level": "field:level", "minAmount": "field:minAmount", "maxAmount": "field:maxAmount", "currency": "field:currency", "approverRole": "field:approverRole", "description": "field:description", "isActive": "field:isActive"}}}),
     # ---- W4 storage locations (InventoryMasterData permissions)
     simple("storage-locations", "StorageLocation", "StorageLocationId", ("Storage locations", "محل‌های نگهداری"), ("Storage location", "محل نگهداری"),
            [("Code", "Code", "کد", "text", 140, True), ("Name", "Name", "نام", "text", 240, True), ("Warehouse", "Warehouse", "انبار", "lookup", 180), ("Parent", "Parent location", "محل والد", "lookup", 180), ("IsActive", "Active", "فعال", "bool", 100)],
