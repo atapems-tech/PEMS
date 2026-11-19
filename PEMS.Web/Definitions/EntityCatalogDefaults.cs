@@ -32,6 +32,8 @@ internal static class EntityCatalogDefaults
         .Add<ContractApprovalAuthorityRule>("ContractApprovalAuthorityRuleId", e => e.Roles(AdminRoles, AdminRoles)
             .Readable("MinValue", "MaxValue", "CriticalityClass", "RequiredApproverRole", "Description", "Priority", "IsActive")
             .Writable("MinValue", "MaxValue", "CriticalityClass", "RequiredApproverRole", "Description", "Priority", "IsActive"))
+        .Add<RoutingRule>("RoutingRuleId", e => e.Roles(AdminRoles, null).Readable("DocumentCategory", "TargetModule", "AllowAutoRouting", "Description", "IsActive"))
+        .Add<AIConfidenceSettings>("AIConfidenceSettingsId", e => e.Roles(AdminRoles, null).Readable("HighThreshold", "MediumThreshold", "ModifiedDate"))
         // read-only registrations used for related counts and labels
         .Add<ApplicationUser>("Id", e => e.Roles(AdminRoles, null).Readable("UserName"))
         .Add<Permission>("PermissionId", e => e.Roles(AdminRoles, null).Readable("Name", "IsActive"))

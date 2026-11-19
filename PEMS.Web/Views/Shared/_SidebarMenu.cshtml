@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "RoutingRules", "PurchaseOrderAuthority", "Department", "Employee", "Authorization", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "PurchaseOrderAuthority", "Department", "Employee", "Authorization", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -798,9 +798,12 @@
                     <pems-icon name="bi-diagram-3" /> @Localizer["RelationshipExplorer"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("RoutingRules"))"
-                   asp-area="Admin" asp-controller="RoutingRules" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/routing-rules" active="@Context.Request.Path.StartsWithSegments("/p/routing-rules")">
                     <pems-icon name="bi-signpost-split" /> @Localizer["AI Routing Rules"]
+                </pems-nav-link>
+
+                <pems-nav-link item="false" sub="true" href="/p/routing-confidence" active="@Context.Request.Path.StartsWithSegments("/p/routing-confidence")">
+                    <pems-icon name="bi-speedometer2" /> @Localizer["Confidence Gates"]
                 </pems-nav-link>
 
                 <pems-nav-link item="false" sub="true" href="/p/contract-approval-authority" active="@Context.Request.Path.StartsWithSegments("/p/contract-approval-authority")">
