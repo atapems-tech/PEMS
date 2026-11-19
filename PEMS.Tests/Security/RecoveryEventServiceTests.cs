@@ -313,36 +313,6 @@ public class RecoveryEventServiceTests
         Assert.Empty(e.Notes.Sent);
     }
 
-    // ------------------------------------------------------------------ صفحه‌ی فهرست
-
-    [Fact]
-    public async Task SecurityEventsController_IsSystemAdminOnly_ReadOnly_AndIgnoresUnknownFilters()
-    {
-        var attr = typeof(SecurityEventsController).GetCustomAttributes(typeof(AuthorizeAttribute), true).Cast<AuthorizeAttribute>().Single();
-        Assert.Equal(SystemRoles.SystemAdmin, attr.Roles);
-        var actions = typeof(SecurityEventsController).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly);
-        Assert.All(actions, m => Assert.DoesNotContain(m.GetCustomAttributes(true), a => a is HttpPostAttribute or HttpPutAttribute or HttpDeleteAttribute));
-
-        var e = NewEnv();
-        var target = await AddUser(e, "admin2", true);
-        await e.Service.CompleteSuccessAsync(new RecoveryAttempt(RecoveryMethods.RecoveryCode, target.Id, target.UserName));
-        var res = await new SecurityEventsController(e.Service).Index("'; DROP TABLE x;--", "Maybe");
-
-        var view = Assert.IsType<ViewResult>(res);
-        var model = Assert.IsType<PagedResult<SecurityEventDto>>(view.Model);
-        Assert.Single(model.Items);                                                                  // فیلتر نامعتبر نادیده گرفته شد
-    }
-
-    [Fact]
-    public void SecurityEventsView_Exists_AndIsWiredToTheSharedPagination()
-    {
-        var root = Environment.GetEnvironmentVariable("PEMS_REPO_ROOT") ?? FindRepoRoot();
-        var html = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Areas", "Admin", "Views", "SecurityEvents", "Index.cshtml"));
-        Assert.Contains("PagedResult<PEMS.Application.DTOs.SecurityEventDto>", html);
-        Assert.Contains("_Pagination", html);
-        Assert.DoesNotContain("<form method=\"post\"", html);                                        // فقط‌خواندنی
-    }
-
     private static string FindRepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);

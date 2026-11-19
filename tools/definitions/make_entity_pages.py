@@ -132,6 +132,21 @@ def make(spec):
         grid["columns"].append({"key": "_actions", "header": t("Actions", "عملیات"), "type": "actions", "width": 280, "sortable": False, "filterable": False, "actions": row_actions})
 
     write("page", key, envelope("page", key, t(*spec["title"]), t(spec["title"][0] + " list (page definition)", "فهرست " + spec["title"][1] + " (تعریف صفحه)"), {"layout": "list-page", "route": key, "template": "entity-list", "args": grid}))
+    # the details page of a record: the entity-details component over the same rows (SCRUM-600); the id comes from the request (/p/{key}-details?id=7)
+    if spec.get("details", True) and cols:
+        dfields = []
+        for prop, en, fa, typ, width, *_ in cols:
+            f = {"key": camel(prop), "label": t(en, fa)}
+            if typ in ("bool", "date", "datetime", "number"): f["type"] = typ
+            elif typ == "computed": f["type"] = "number"
+            if prop.endswith("Description"): f["wide"] = True
+            dfields.append(f)
+        dargs = {"id": key + "-record", "url": "/d/" + key + "-grid", "idField": camel(spec["id"]), "fields": dfields, "backUrl": "/p/" + key, "backLabel": t("Back to the list", "بازگشت به فهرست")}
+        if spec.get("edit", False):
+            dargs["editUrl"] = "/f/" + key + "-edit"
+            dargs["editLabel"] = t("Edit", "ویرایش")
+        write("page", key + "-details", envelope("page", key + "-details", t(spec["title"][0] + " details", "جزئیات " + spec["title"][1]), t("Details of one record (page definition)", "جزئیات یک رکورد (تعریف صفحه)"),
+                                                  {"layout": "detail-page", "template": "entity-details", "args": dargs}))
 
 
 def variant_page(spec, key, title, apply):

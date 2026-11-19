@@ -169,7 +169,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,Roles,PermissionMatrix,AuditLog,RoutingRules,ContractApprovalAuthority,PurchaseOrderAuthority,Department,Employee,Authorization,SoDPolicy,AuthorizationAudit,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,Roles,PermissionMatrix,RoutingRules,ContractApprovalAuthority,PurchaseOrderAuthority,Department,Employee,Authorization,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
@@ -197,8 +197,9 @@ public static class NavigationMenuDefaults
         // SCRUM-470: the PO authority table
         Link("admin.poauthority", "admin.sub.ai", 75, "Po_AuthorityTitle", "bi-receipt-cutoff", "PurchaseOrderAuthority", area: "Admin", rule: "Module:Administration"),
         Sub("admin.sub.monitoring", "sec.admin", 50, "System Monitoring"),
-        Link("admin.auditlog", "admin.sub.monitoring", 10, "AuditLog", "bi-clock-history", "AuditLog", area: "Admin", rule: "Module:Administration"),
-        Link("admin.authaudit", "admin.sub.monitoring", 20, "Authorization Audit", "bi-journal-check", "AuthorizationAudit", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-629, 630: the audit pages are definition pages (/p/...), not controllers
+        new("admin.auditlog", "admin.sub.monitoring", L, 10, "AuditLog", "bi-clock-history", "Module:Administration", ExternalPath: "/p/audit-log"),
+        new("admin.authaudit", "admin.sub.monitoring", L, 20, "Authorization Audit", "bi-journal-check", "Module:Administration", ExternalPath: "/p/authorization-audit"),
         Link("admin.dbupdate", "admin.sub.monitoring", 25, "Database Update", "bi-database-up", "DatabaseUpdate", area: "Admin", rule: "Module:Administration"),
         Link("admin.license", "admin.sub.monitoring", 26, "Licence", "bi-key", "License", area: "Admin", rule: "Module:Administration"),
         Link("admin.performance", "admin.sub.monitoring", 30, "Performance Testing", "bi-speedometer2", "Performance", rule: "Module:Administration"),

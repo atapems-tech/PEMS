@@ -23,7 +23,6 @@ public class AdminBaseDataListPagesTests
     private static readonly string[] Pages =
     {
         "Areas/Admin/Views/Users", "Areas/Admin/Views/Roles", "Views/Department", "Views/Discipline", "Views/Employee",
-        "Areas/Admin/Views/AuditLog", "Areas/Admin/Views/SecurityEvents", "Areas/Admin/Views/AuthorizationAudit",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
@@ -100,36 +99,6 @@ public class AdminBaseDataListPagesTests
         AssertBuiltFromTheComponent(disc, "Discipline", 1);
         Assert.Contains("bi-sliders", disc);                                              // manage disciplines tool
         Assert.Contains("vs-pill vs-pill--danger", disc);
-    }
-
-    [Fact]
-    public async Task Logs_FilterRowsMoveIntoTheDropdown_AndEachActiveFilterIsAChip()
-    {
-        var audit = await Render<AuditLogController>("/Areas/Admin/Views/AuditLog/Index.cshtml",
-            Page(new AuditLog { Timestamp = new DateTime(2026, 10, 31), UserName = "ali", EntityName = "Vendor", Action = "Delete" }),
-            v => { v["EntityNames"] = new List<string> { "Vendor" }; v["SelectedEntityName"] = "Vendor"; v["SelectedUserName"] = "ali"; });
-        AssertBuiltFromTheComponent(audit, "AuditLogs", 1);
-        Assert.Equal(2, Regex.Matches(Chips(audit), "class=\"pems-filter-chip\"").Count);
-        Assert.Contains("vs-pill--danger", audit);
-
-        var security = await Render<SecurityEventsController>("/Areas/Admin/Views/SecurityEvents/Index.cshtml",
-            Page(new SecurityEventDto { Method = RecoveryMethods.RecoveryCode, Result = RecoveryResults.Failure, FailureReason = "expired", OccurredAtUtc = new DateTime(2026, 10, 31) }),
-            v => { v["Method"] = null; v["Result"] = RecoveryResults.Failure; });
-        AssertBuiltFromTheComponent(security, "SecurityEvents", 1);
-        Assert.Single(Regex.Matches(Chips(security), "class=\"pems-filter-chip\""));
-        Assert.Contains("expired", security);
-
-        var authz = await Render<AuthorizationAuditController>("/Areas/Admin/Views/AuthorizationAudit/Index.cshtml",
-            Page(new AuthorizationAuditLog { Timestamp = new DateTime(2026, 10, 31), UserId = 5, ResourceName = "Vendor", ActionName = "View", Decision = "Deny" }),
-            v =>
-            {
-                v["ResourceNames"] = new List<string> { "Vendor" }; v["Decisions"] = new List<string> { "Allow", "Deny" };
-                v["UserNames"] = new Dictionary<int, string> { [5] = "ali" };
-                v["SelectedUserId"] = 5; v["SelectedResourceName"] = "Vendor"; v["SelectedDecision"] = "Deny"; v["SelectedFromDate"] = "2026-10-01";
-            });
-        AssertBuiltFromTheComponent(authz, "AuthorizationAudit", 1);
-        Assert.Matches("<span class=\"lp-badge\">4<", authz);
-        Assert.Contains("ali", Chips(authz));                                             // the user opened from another page is a chip
     }
 
     private static string RepoWeb()
