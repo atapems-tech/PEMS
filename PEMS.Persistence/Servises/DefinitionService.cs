@@ -231,6 +231,71 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
         return await SaveDetailAsync(def, ct, evictKind: def.Kind);
     }
 
+    public async Task<DefinitionOutcome<DefinitionUpstream>> GetUpstreamAsync(int id, CancellationToken ct = default)
+    {
+        var def = await LoadAsync(id, tracking: false, ct);
+        if (def == null) return DefinitionOutcome<DefinitionUpstream>.NotFound();
+        var shipped = def.Versions.FirstOrDefault(v => v.DefinitionVersionId == def.ShippedVersionId);
+        var published = def.Versions.FirstOrDefault(v => v.DefinitionVersionId == def.PublishedVersionId);
+        if (def.Origin != DefinitionOrigin.System || shipped == null || published == null) return DefinitionOutcome<DefinitionUpstream>.NotFound();
+
+        // the shipped version the customer's published version descends from: follow ClonedFromVersionId back to a version made by shipping
+        var basedOn = BasedOnShipped(def, published);
+        var upstreamChanged = def.IsCustomized && basedOn != null && basedOn != shipped.VersionNumber;
+        var diff = new List<DefinitionDiffEntry>();
+        var truncated = false;
+        if (def.IsCustomized)
+        {
+            DiffNode("", JsonNode.Parse(published.PayloadJson), JsonNode.Parse(shipped.PayloadJson), diff, MaxDiffEntries);
+            truncated = diff.Count >= MaxDiffEntries;
+        }
+        return DefinitionOutcome<DefinitionUpstream>.Ok(new DefinitionUpstream(def.IsCustomized, upstreamChanged, shipped.VersionNumber, basedOn, published.VersionNumber, diff, truncated));
+    }
+
+    public async Task<DefinitionOutcome<DefinitionDetail>> ResetToShippedAsync(int id, long expectedEnvelopeRevision, string actor, CancellationToken ct = default)
+    {
+        var def = await LoadAsync(id, tracking: true, ct);
+        if (def == null) return DefinitionOutcome<DefinitionDetail>.NotFound();
+        var shipped = def.Versions.FirstOrDefault(v => v.DefinitionVersionId == def.ShippedVersionId);
+        if (def.Origin != DefinitionOrigin.System || shipped == null) return DefinitionOutcome<DefinitionDetail>.Fail(DefinitionFailure.Conflict, "not-shipped");
+        if (def.Revision != expectedEnvelopeRevision) return DefinitionOutcome<DefinitionDetail>.Stale();
+        if (shipped.DefinitionVersionId == def.PublishedVersionId || !def.IsCustomized) return DefinitionOutcome<DefinitionDetail>.Fail(DefinitionFailure.Conflict, "already-published");   // the published payload already is the shipped one
+        return await RollbackAsync(id, shipped.VersionNumber, expectedEnvelopeRevision, actor, ct);
+    }
+
+    private const int MaxDiffEntries = 200;
+    private const string ShippedSummary = "Shipped with the product";
+
+    private static int? BasedOnShipped(Definition def, DefinitionVersion from)
+    {
+        var seen = new HashSet<int>();
+        for (var v = from; v != null && seen.Add(v.DefinitionVersionId); v = v.ClonedFromVersionId is { } id ? def.Versions.FirstOrDefault(x => x.DefinitionVersionId == id) : null)
+            if (v.ChangeSummary?.StartsWith(ShippedSummary, StringComparison.Ordinal) == true) return v.VersionNumber;
+        return null;
+    }
+
+    /// <summary>Leaf-level structural difference between two JSON values: objects by property, arrays by index.</summary>
+    internal static void DiffNode(string pointer, JsonNode? published, JsonNode? shipped, List<DefinitionDiffEntry> into, int cap)
+    {
+        if (into.Count >= cap) return;
+        if (published is JsonObject po && shipped is JsonObject so)
+        {
+            foreach (var key in po.Select(p => p.Key).Union(so.Select(p => p.Key)).OrderBy(k => k, StringComparer.Ordinal))
+                DiffNode(pointer + "/" + key.Replace("~", "~0").Replace("/", "~1"), po[key], so[key], into, cap);
+            return;
+        }
+        if (published is JsonArray pa && shipped is JsonArray sa)
+        {
+            for (var i = 0; i < Math.Max(pa.Count, sa.Count); i++)
+                DiffNode(pointer + "/" + i, i < pa.Count ? pa[i] : null, i < sa.Count ? sa[i] : null, into, cap);
+            return;
+        }
+        var a = published?.ToJsonString();
+        var b = shipped?.ToJsonString();
+        if (a == b) return;
+        into.Add(new DefinitionDiffEntry(pointer.Length == 0 ? "/" : pointer, published is null ? "added-upstream" : shipped is null ? "removed-upstream" : "changed", a, b));
+    }
+
     public async Task<DefinitionOutcome<DefinitionDetail>> DiscardDraftAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default)
     {
         var (def, draft, miss) = await LoadDraftAsync<DefinitionDetail>(id, ct);

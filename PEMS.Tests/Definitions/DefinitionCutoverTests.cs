@@ -175,6 +175,95 @@ public sealed class DefinitionCutoverTests
         Assert.Contains("lp-page--v2", shipped.PayloadJson);
     }
 
+    // SCRUM-448: what a product update did to a definition the customer changed, and the way back
+    private static async Task<(Fixture F, List<ShippedDefinition> Items, int Id)> CustomisedLayoutAsync(bool shipUpgrade)
+    {
+        var f = new Fixture();
+        var items = f.PackageItems().ToList();
+        var (service, _, db) = f.NewService();
+        await service.ShipAsync(items, "system");
+        var def = await db.Definitions.AsNoTracking().SingleAsync(d => d.Kind == "layout" && d.Key == "list-page");
+        var draft = (await service.CreateDraftAsync(def.DefinitionId, null, def.Revision, "customer")).Value!;
+        var custom = JsonNode.Parse(draft.PayloadJson)!.AsObject();
+        custom["root"]!["css"] = "customer-page";
+        var saved = (await service.SaveDraftAsync(def.DefinitionId, custom.ToJsonString(), "mine", draft.Info.Revision, "customer")).Value!;
+        var validated = await service.ValidateAsync(def.DefinitionId, saved.Info.Revision, "customer");
+        Assert.True((await service.PublishAsync(def.DefinitionId, validated.Value!.Info.Revision, "customer")).Success);
+        if (shipUpgrade)
+        {
+            var i = items.FindIndex(x => x.Kind == "layout" && x.Key == "list-page");
+            var next = JsonNode.Parse(items[i].PayloadJson)!.AsObject();
+            next["root"]!["css"] = "lp-page lp-page--v2";
+            items[i] = items[i] with { PayloadJson = next.ToJsonString() };
+            await f.NewService().Service.ShipAsync(items, "system");
+        }
+        return (f, items, def.DefinitionId);
+    }
+
+    [Fact]
+    public async Task An_upstream_change_to_a_customised_definition_is_flagged_with_a_diff_of_what_differs()
+    {
+        var (f, _, id) = await CustomisedLayoutAsync(shipUpgrade: true);
+        var upstream = (await f.NewService().Service.GetUpstreamAsync(id)).Value!;
+        Assert.True(upstream.Customized);
+        Assert.True(upstream.UpstreamChanged);
+        Assert.Equal(1, upstream.BasedOnShippedVersion);
+        Assert.Equal(3, upstream.ShippedVersion);                      // v1 shipped, v2 the customer's, v3 shipped again
+        var d = Assert.Single(upstream.Diff);
+        Assert.Equal(("/root/css", "changed"), (d.Pointer, d.Change));
+        Assert.Contains("customer-page", d.Published);
+        Assert.Contains("lp-page--v2", d.Shipped);
+    }
+
+    [Fact]
+    public async Task A_customised_definition_with_no_new_shipped_version_shows_its_diff_but_no_upstream_change()
+    {
+        var (f, _, id) = await CustomisedLayoutAsync(shipUpgrade: false);
+        var upstream = (await f.NewService().Service.GetUpstreamAsync(id)).Value!;
+        Assert.True(upstream.Customized);
+        Assert.False(upstream.UpstreamChanged);
+        Assert.Single(upstream.Diff);
+    }
+
+    [Fact]
+    public async Task A_definition_nobody_changed_has_no_diff_and_a_customer_definition_has_no_upstream()
+    {
+        var f = new Fixture();
+        var (service, _, db) = f.NewService();
+        await service.ShipAsync(f.PackageItems(), "system");
+        var id = (await db.Definitions.AsNoTracking().FirstAsync(d => d.Kind == "layout")).DefinitionId;
+        var upstream = (await service.GetUpstreamAsync(id)).Value!;
+        Assert.False(upstream.Customized);
+        Assert.Empty(upstream.Diff);
+        Assert.Equal(DefinitionFailure.NotFound, (await service.GetUpstreamAsync(987654)).Failure);
+    }
+
+    [Fact]
+    public async Task Reset_to_shipped_republishes_the_shipped_payload_as_a_new_version_and_keeps_the_customers_in_the_history()
+    {
+        var (f, _, id) = await CustomisedLayoutAsync(shipUpgrade: true);
+        var (service, store, db) = f.NewService();
+        var revision = (await db.Definitions.AsNoTracking().SingleAsync(d => d.DefinitionId == id)).Revision;
+        var reset = await service.ResetToShippedAsync(id, revision, "admin");
+        Assert.True(reset.Success, reset.Code);
+        Assert.False(reset.Value!.Summary.IsCustomized);
+        Assert.Contains("lp-page--v2", (await store.GetPublishedAsync("layout", "list-page"))!.PayloadJson);
+        Assert.Equal(4, reset.Value.Versions.Count);                    // the customer's version 2 is still there to roll back to
+        Assert.False((await service.GetUpstreamAsync(id)).Value!.Customized);
+        Assert.Equal("already-published", (await service.ResetToShippedAsync(id, reset.Value.Summary.Revision, "admin")).Code);
+    }
+
+    [Fact]
+    public async Task Reset_to_shipped_refuses_a_stale_revision_and_a_definition_that_was_never_shipped()
+    {
+        var (f, _, id) = await CustomisedLayoutAsync(shipUpgrade: false);
+        var (service, _, _) = f.NewService();
+        Assert.Equal(DefinitionFailure.Concurrency, (await service.ResetToShippedAsync(id, 1, "admin")).Failure);
+        var created = await service.CreateAsync(new CreateDefinition("data-source", "mine.list", "core", """{"en":"x","fa":"x"}""", null, """{"kind":"static","items":[{"value":"1","label":{"en":"a","fa":"a"}}]}""", null), "customer");
+        Assert.True(created.Success);
+        Assert.Equal("not-shipped", (await service.ResetToShippedAsync(created.Value!.Summary.Id, created.Value.Summary.Revision, "admin")).Code);
+    }
+
     [Fact]
     public async Task A_key_a_customer_created_themselves_is_not_touched()
     {

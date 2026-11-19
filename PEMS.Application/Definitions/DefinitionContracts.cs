@@ -63,6 +63,15 @@ public sealed record DefinitionPackage(string Format, DateTime ExportedAtUtc, IR
 
 public sealed record DefinitionImportResult(int Created, int Updated, IReadOnlyList<int> DefinitionIds);
 
+/// <summary>One difference between the customer's published payload and the shipped one (SCRUM-448): a JSON Pointer, what happened to it, and both values (null where absent).</summary>
+public sealed record DefinitionDiffEntry(string Pointer, string Change, string? Published, string? Shipped);
+
+/// <summary>
+/// What a product update did to a definition the customer changed (SCRUM-448): <see cref="UpstreamChanged"/> is true when the shipped version is newer than the one the customer's published version
+/// was made from; <see cref="Diff"/> lists the differences between the published payload and the current shipped payload (capped; <see cref="Truncated"/> says so).
+/// </summary>
+public sealed record DefinitionUpstream(bool Customized, bool UpstreamChanged, int? ShippedVersion, int? BasedOnShippedVersion, int? PublishedVersion, IReadOnlyList<DefinitionDiffEntry> Diff, bool Truncated);
+
 /// <summary>Write side (designers and integrations through the REST API). Every method that changes data takes the signed-in user's name.</summary>
 public interface IDefinitionService
 {
@@ -80,6 +89,11 @@ public interface IDefinitionService
     Task<DefinitionOutcome<DefinitionDetail>> PublishAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
     Task<DefinitionOutcome<DefinitionDetail>> RollbackAsync(int id, int toVersion, long expectedEnvelopeRevision, string actor, CancellationToken ct = default);
     Task<DefinitionOutcome<DefinitionDetail>> DiscardDraftAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
+
+    /// <summary>SCRUM-448: the difference between a customised System definition and what the product ships now; NotFound for a definition that is not shipped.</summary>
+    Task<DefinitionOutcome<DefinitionUpstream>> GetUpstreamAsync(int id, CancellationToken ct = default);
+    /// <summary>SCRUM-448: republishes the shipped payload as a new version (the customer's version stays in the history and can be rolled back to). Conflict "not-shipped" for a definition without a shipped version.</summary>
+    Task<DefinitionOutcome<DefinitionDetail>> ResetToShippedAsync(int id, long expectedEnvelopeRevision, string actor, CancellationToken ct = default);
 
     /// <summary>Exports the published version, or <paramref name="version"/> when given.</summary>
     Task<DefinitionOutcome<DefinitionPackage>> ExportAsync(int id, int? version, CancellationToken ct = default);
