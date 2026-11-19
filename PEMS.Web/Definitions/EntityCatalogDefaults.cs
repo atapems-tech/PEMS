@@ -27,6 +27,8 @@ internal static class EntityCatalogDefaults
             .Readable("EntityName", "EntityKeyValue", "Action", "ChangedFieldsSummary", "UserId", "UserName", "Timestamp", "IsAIAssisted"))
         .Add<AuthorizationAuditLog>("AuthorizationAuditLogId", e => e.Roles(AdminRoles, null)
             .Readable("UserId", "ResourceName", "ActionName", "ResourceId", "ScopeType", "ScopeValue", "Decision", "Reason", "Timestamp", "IpAddress"))
+        .Add<DefinitionGrant>("DefinitionGrantId", e => e.Roles(AdminRoles, AdminRoles)   // SCRUM-591: an administrator opens or closes a definition for a role without a deploy
+            .Readable("Kind", "DefinitionKey", "RoleName", "Effect", "Reason", "CreatedBy", "CreatedDate").Writable("Kind", "DefinitionKey", "RoleName", "Effect", "Reason"))
         .Add<SoDPolicy>("SoDPolicyId", e => e.Roles(AdminRoles, AdminRoles)
             .Readable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate").Writable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate"))
         .Add<ContractApprovalAuthorityRule>("ContractApprovalAuthorityRuleId", e => e.Roles(AdminRoles, AdminRoles)

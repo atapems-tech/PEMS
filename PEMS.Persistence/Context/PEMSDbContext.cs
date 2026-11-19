@@ -61,6 +61,7 @@ public class PEMSDbContext
     // طبق سند «PEMS Phase 6 — User Module & Navigation Visibility Architecture»: تنها Entity
     // تازه‌ی این فاز - استثنای دستیِ Visibility، عمداً جدا از مدل داده‌ی Authorization بالا
     public DbSet<NavigationVisibilityOverride> NavigationVisibilityOverrides { get; set; }
+    public DbSet<DefinitionGrant> DefinitionGrants { get; set; }   // SCRUM-591
 
     // سایدبار داده‌محور (مدیریت توسط SystemAdmin؛ قاعده‌ی نمایش آیتم‌های سیستمی از کد)
     public DbSet<NavigationMenuItem> NavigationMenuItems { get; set; }
