@@ -25,9 +25,19 @@ Measured by `PEMS.Tests/Api/ApiPipelineBaselineTests.cs` in a cloud container: t
 | `GET /api/v1/definitions?pageSize=25&sort=key` | 1.21 ms | 1.63 ms | 0 / 200 |
 | `GET /api/v1/openapi.json` | 35.7 ms | 58.4 ms | 0 / 200 |
 
-## 3. k6 baseline against a real server (to be stored)
+## 3. k6 baseline against a real server (SCRUM-535)
 
-Not measured yet: it needs SQL Server and the load-test accounts, which the cloud session that built this does not have. It is a QA line of SCRUM-436; the step-by-step procedure is manual check **M-27** in the [README](../../README.md) (accounts, permissions, command, what to store and what to do when a budget is missed).
+Measured on 2026-11-19 against isolated local SQL Server Express QA525 on an Intel Core Ultra 7 155H (16 cores, 22 logical processors), with five dedicated read-only accounts for 60 seconds. The run completed 263 iterations and 1,325 HTTP requests with zero failures. All five endpoints, including both detail endpoints, passed their budgets.
+
+| Endpoint | p95 | Budget |
+| --- | ---: | ---: |
+| Disciplines list | 70.77 ms | 300 ms |
+| Discipline details | 44.31 ms | 200 ms |
+| Definitions list | 40.56 ms | 300 ms |
+| Definition details | 41.37 ms | 200 ms |
+| OpenAPI JSON | 55.07 ms | 500 ms |
+
+The one-login-per-VU session persisted throughout the run. The full report is in [api_baseline_summary.json](../../tools/loadtest/results/api_baseline_summary.json). See manual check **M-27** in the [README](../../README.md) for the procedure.
 
 ```
 k6 run -e BASE_URL=http://localhost:5089 -e PEMS_LOADTEST_PASSWORD=... -e VUS=5 -e DURATION=60s \
