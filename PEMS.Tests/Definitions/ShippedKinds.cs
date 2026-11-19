@@ -14,7 +14,7 @@ internal static class ShippedKinds
         return
         [
             new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new RouteDefinitionKind(), new ComponentDefinitionKind(registry),
-            new DataSourceDefinitionKind([new EntityOptionsProvider(null!, cat)], [new EntityGridProvider(null!, cat), new ComponentCatalogGridProvider(null!)]),
+            new DataSourceDefinitionKind([new EntityOptionsProvider(null!, cat)], [new EntityGridProvider(null!, cat), new ComponentCatalogGridProvider(null!), new DefinitionsGridProvider(null!), new DefinitionKindsGridProvider(null!, [], new DefinitionOwnership(null)), new DefinitionUsagesGridProvider(null!)]),
             new ActionDefinitionKind([new EntityCreateAction(null!, cat), new EntityUpdateAction(null!, cat), new EntityDeleteAction(null!, cat), new EntityToggleAction(null!, cat), new WorkflowExecuteAction(null!), new OperationInvokeAction(null!, OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly))])
         ];
     }
