@@ -39,7 +39,8 @@
             "en": "Module (for example EngineeringDocuments, VDR, Contracts) is required.",
             "fa": "ماژول (مثلاً EngineeringDocuments، VDR، Contracts) الزامی است."
           }
-        }
+        },
+        "owner": "platform"
       },
       {
         "name": "documentType",
@@ -64,7 +65,8 @@
             "fa": "ارائه‌دهنده‌ی ذخیره‌سازی الزامی است."
           }
         },
-        "optionsFrom": "storage-routing-storage-provider-id-options"
+        "optionsFrom": "storage-routing-storage-provider-id-options",
+        "owner": "platform"
       },
       {
         "name": "relativeRootPath",
@@ -81,7 +83,8 @@
           "en": "Enabled",
           "fa": "فعال"
         },
-        "kind": "switch"
+        "kind": "switch",
+        "owner": "platform"
       },
       {
         "name": "isDefault",
@@ -89,7 +92,8 @@
           "en": "Default route of the module",
           "fa": "پیش‌فرض ماژول"
         },
-        "kind": "switch"
+        "kind": "switch",
+        "owner": "platform"
       },
       {
         "name": "priority",

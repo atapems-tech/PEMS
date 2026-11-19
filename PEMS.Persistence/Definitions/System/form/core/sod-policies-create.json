@@ -39,7 +39,8 @@
             "fa": "مجوز اول الزامی است."
           }
         },
-        "optionsFrom": "sod-policies-permission-aid-options"
+        "optionsFrom": "sod-policies-permission-aid-options",
+        "owner": "platform"
       },
       {
         "name": "permissionBId",
@@ -55,7 +56,8 @@
             "fa": "مجوز دوم الزامی است."
           }
         },
-        "optionsFrom": "sod-policies-permission-bid-options"
+        "optionsFrom": "sod-policies-permission-bid-options",
+        "owner": "platform"
       },
       {
         "name": "description",
