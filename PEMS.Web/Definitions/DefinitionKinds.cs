@@ -23,6 +23,8 @@ public static class DefinitionKindExtensions
         services.AddSingleton<IDefinitionKind, RouteDefinitionKind>();
         // SCRUM-589: components as definitions (a parameterized fragment of registered components; a page template or an inline component)
         services.AddSingleton<IDefinitionKind, ComponentDefinitionKind>();
+        // SCRUM-590: the menu as a definition (shipped by the migrator feed, synced into the sidebar table with its ownership rule)
+        services.AddSingleton<IDefinitionKind, PEMS.Web.Navigation.MenuDefinitionKind>();
         services.AddScoped<RouteTable>();
         // posted values of a stored form are cleaned before use: rich-text HTML sanitized, undeclared names dropped (SCRUM-59)
         services.AddScoped<FormValueSanitizer>();

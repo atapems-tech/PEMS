@@ -144,6 +144,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Def
 // the entity catalog: the master-data entities a definition may list and create, with the permissions that guard them (the code checks them; a definition cannot widen access)
 builder.Services.AddSingleton(PEMS.Web.Definitions.EntityCatalog.Default());
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.EntityGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.EntityAggregateProvider>();   // SCRUM-592: group by with count, sum, avg, min, max
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.ComponentCatalogGridProvider>();   // SCRUM-340: the component catalog as rows
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
@@ -1141,7 +1142,13 @@ using (var scope = app.Services.CreateScope())
 
     // سایدبار داده‌محور: همگام‌سازی افزایشی کاتالوگ کد (فقط وقتی پرچم فعال است؛ جدول تا اعمال Migration وجود ندارد)
     if (scope.ServiceProvider.GetRequiredService<PEMS.Web.Navigation.IDynamicSidebarAvailability>().IsEnabled)
-        await scope.ServiceProvider.GetRequiredService<INavigationMenuService>().SyncDefaultsAsync(PEMS.Web.Navigation.NavigationMenuDefaults.All, default, PEMS.Web.Navigation.NavigationMenuDefaults.RetiredKeys);
+    {
+        // SCRUM-590: the items shipped as menu definitions join the code defaults; one key is owned by one of them (the code default wins), the same ownership rule applies to both
+        var defaults = PEMS.Web.Navigation.NavigationMenuDefaults.All;
+        var fed = PEMS.Web.Navigation.MenuDefinitions.From(await scope.ServiceProvider.GetRequiredService<PEMS.Application.Definitions.IDefinitionStore>().ListPublishedAsync("menu"))
+            .Where(f => !defaults.Any(d => string.Equals(d.Key, f.Key, StringComparison.OrdinalIgnoreCase))).ToList();
+        await scope.ServiceProvider.GetRequiredService<INavigationMenuService>().SyncDefaultsAsync(defaults.Concat(fed).ToList(), default, PEMS.Web.Navigation.NavigationMenuDefaults.RetiredKeys);
+    }
 }
 
 

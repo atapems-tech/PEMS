@@ -7,6 +7,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - Aggregates, menu definitions and validator on entity writes (SCRUM-592, 590, 373)
+
+### Added
+- Data source provider `entity-aggregate` (SCRUM-592): group by a property with count, sum, avg, min and max over the rows of a registered entity, fixed filters, `maxRows`, the rights and paging of the entity grid.
+- Definition kind `menu` (SCRUM-590): a migrator feed puts a page, form or link into the sidebar with no code; checked when loaded (keys, kinds, targets, icons, the sidebar's visibility rule language), synced at start-up with the ownership rule of the sidebar; `NavigationMenuItemDefinition` carries optional shipped titles (set when an item is created, never overwritten).
+- `EntityConstraints` (SCRUM-373): `entity.create` and `entity.update` check a mapped value against the `[MaxLength]`, `[StringLength]` and `[Range]` of the entity with the one validator, in the catalog's texts.
+
 ## 2026-11-19 - Render plans, hydration cache and sidebar visibility cache (SCRUM-574, 575, 576)
 
 ### Added
