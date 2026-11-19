@@ -9,6 +9,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - Shipped workflow documents (SCRUM-517)
+
+### Added
+- `ShippedWorkflow` (document, parse and check, content hash) and `WorkflowShipper`: create-and-publish a missing workflow, never overwrite an existing one, store a changed shipped document as an upstream-changed Draft version with a diff; running instances and published versions are untouched.
+
 ## 2026-11-19 - Role grants for definitions (SCRUM-591)
 
 ### Added
