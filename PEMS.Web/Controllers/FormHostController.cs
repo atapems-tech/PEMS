@@ -116,7 +116,10 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
     public async Task<IActionResult> Run(string key, string? returnUrl, CancellationToken ct)
     {
         if (!KeyShape.IsMatch(key)) return NotFound();
-        var values = Request.Form.Where(p => p.Key != "__RequestVerificationToken" && p.Key != "returnUrl").ToDictionary(p => p.Key, p => (string?)p.Value.ToString(), StringComparer.Ordinal);
+        // the values of the action: form fields, or a JSON object (a kanban card move or a calendar drag posts { "id": ..., "to": ... }); only scalars, every value as text (SCRUM-620/772)
+        var values = Request.HasJsonContentType()
+            ? ActionValues.FromJson(await ReadJsonAsync(ct))
+            : Request.Form.Where(p => p.Key != "__RequestVerificationToken" && p.Key != "returnUrl").ToDictionary(p => p.Key, p => (string?)p.Value.ToString(), StringComparer.Ordinal);
         var roles = User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToList();
         var result = await actions.RunAsync(key, new ActionInvocation(values, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, roles, currentUser.UserName, null, HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers.UserAgent.ToString()), "core", ct);
         if (Request.Headers.Accept.ToString().Contains("application/json", StringComparison.OrdinalIgnoreCase))
@@ -144,5 +147,43 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
         }
         var target = result.Redirect ?? returnUrl;
         return !string.IsNullOrEmpty(target) && Url.IsLocalUrl(target) ? LocalRedirect(target) : Redirect("~/");
+    }
+
+    private async Task<System.Text.Json.JsonElement?> ReadJsonAsync(CancellationToken ct)
+    {
+        try
+        {
+            using var limited = new MemoryStream();
+            await Request.Body.CopyToAsync(limited, ct);
+            if (limited.Length is 0 or > 65536) return null;
+            limited.Position = 0;
+            return (await System.Text.Json.JsonDocument.ParseAsync(limited, cancellationToken: ct)).RootElement.Clone();
+        }
+        catch (System.Text.Json.JsonException) { return null; }
+    }
+}
+
+/// <summary>The values of an action posted as JSON: the scalars of the top-level object as text (objects and arrays are ignored, never flattened), at most 100 names.</summary>
+public static class ActionValues
+{
+    public static Dictionary<string, string?> FromJson(System.Text.Json.JsonElement? body)
+    {
+        var values = new Dictionary<string, string?>(StringComparer.Ordinal);
+        if (body is not { ValueKind: System.Text.Json.JsonValueKind.Object } obj) return values;
+        foreach (var p in obj.EnumerateObject().Take(100))
+        {
+            if (p.Name is "__RequestVerificationToken" or "returnUrl") continue;
+            values[p.Name] = p.Value.ValueKind switch
+            {
+                System.Text.Json.JsonValueKind.String => p.Value.GetString(),
+                System.Text.Json.JsonValueKind.Number => p.Value.GetRawText(),
+                System.Text.Json.JsonValueKind.True => "true",
+                System.Text.Json.JsonValueKind.False => "false",
+                System.Text.Json.JsonValueKind.Null => null,
+                _ => null
+            };
+            if (p.Value.ValueKind is System.Text.Json.JsonValueKind.Object or System.Text.Json.JsonValueKind.Array) values.Remove(p.Name);
+        }
+        return values;
     }
 }

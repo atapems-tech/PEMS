@@ -14,160 +14,78 @@
   "payload": {
     "layout": "list-page",
     "route": "audit-log",
-    "regions": {
-      "content": [
+    "template": "entity-list",
+    "args": {
+      "id": "audit-log",
+      "url": "/d/audit-log-grid",
+      "idField": "auditLogId",
+      "columns": [
         {
-          "id": "grid",
-          "component": "data-grid",
-          "options": {
-            "id": "audit-log",
-            "url": "/d/audit-log-grid",
-            "idField": "auditLogId",
-            "selectable": false,
-            "columns": [
-              {
-                "key": "auditLogId",
-                "header": {
-                  "en": "Id",
-                  "fa": "شناسه"
-                },
-                "width": 80,
-                "type": "number"
-              },
-              {
-                "key": "timestamp",
-                "header": {
-                  "en": "When",
-                  "fa": "زمان"
-                },
-                "width": 170,
-                "type": "datetime"
-              },
-              {
-                "key": "entityName",
-                "header": {
-                  "en": "Entity",
-                  "fa": "موجودیت"
-                },
-                "width": 170
-              },
-              {
-                "key": "entityKeyValue",
-                "header": {
-                  "en": "Key",
-                  "fa": "کلید"
-                },
-                "width": 120
-              },
-              {
-                "key": "action",
-                "header": {
-                  "en": "Action",
-                  "fa": "عملیات"
-                },
-                "width": 100
-              },
-              {
-                "key": "changedFieldsSummary",
-                "header": {
-                  "en": "Changed fields",
-                  "fa": "فیلدهای تغییریافته"
-                },
-                "width": 420
-              },
-              {
-                "key": "userName",
-                "header": {
-                  "en": "User",
-                  "fa": "کاربر"
-                },
-                "width": 150
-              },
-              {
-                "key": "isAIAssisted",
-                "header": {
-                  "en": "AI assisted",
-                  "fa": "با کمک هوش مصنوعی"
-                },
-                "width": 130,
-                "type": "bool"
-              }
-            ],
-            "texts": {
-              "search": {
-                "en": "Search",
-                "fa": "جستجو"
-              },
-              "columns": {
-                "en": "Columns",
-                "fa": "ستون‌ها"
-              },
-              "density": {
-                "en": "Density",
-                "fa": "تراکم"
-              },
-              "compact": {
-                "en": "Compact",
-                "fa": "فشرده"
-              },
-              "comfortable": {
-                "en": "Comfortable",
-                "fa": "راحت"
-              },
-              "export": {
-                "en": "Export",
-                "fa": "خروجی"
-              },
-              "views": {
-                "en": "Views",
-                "fa": "نماها"
-              },
-              "saveView": {
-                "en": "Save view",
-                "fa": "ذخیره نما"
-              },
-              "viewName": {
-                "en": "View name",
-                "fa": "نام نما"
-              },
-              "loading": {
-                "en": "Loading",
-                "fa": "در حال بارگذاری"
-              },
-              "empty": {
-                "en": "No rows",
-                "fa": "ردیفی نیست"
-              },
-              "error": {
-                "en": "Could not load",
-                "fa": "بارگذاری نشد"
-              },
-              "rows": {
-                "en": "{0} rows",
-                "fa": "{0} ردیف"
-              },
-              "selected": {
-                "en": "{0} selected",
-                "fa": "{0} انتخاب شد"
-              },
-              "selectAllMatching": {
-                "en": "Select all {0}",
-                "fa": "انتخاب همه {0}"
-              },
-              "clearSelection": {
-                "en": "Clear",
-                "fa": "پاک کردن"
-              },
-              "filter": {
-                "en": "Filter",
-                "fa": "فیلتر"
-              },
-              "delete": {
-                "en": "Delete",
-                "fa": "حذف"
-              }
-            }
-          }
+          "key": "auditLogId",
+          "header": {
+            "en": "Id",
+            "fa": "شناسه"
+          },
+          "width": 80,
+          "type": "number"
+        },
+        {
+          "key": "timestamp",
+          "header": {
+            "en": "When",
+            "fa": "زمان"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "entityName",
+          "header": {
+            "en": "Entity",
+            "fa": "موجودیت"
+          },
+          "width": 170
+        },
+        {
+          "key": "entityKeyValue",
+          "header": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "width": 120
+        },
+        {
+          "key": "action",
+          "header": {
+            "en": "Action",
+            "fa": "عملیات"
+          },
+          "width": 100
+        },
+        {
+          "key": "changedFieldsSummary",
+          "header": {
+            "en": "Changed fields",
+            "fa": "فیلدهای تغییریافته"
+          },
+          "width": 420
+        },
+        {
+          "key": "userName",
+          "header": {
+            "en": "User",
+            "fa": "کاربر"
+          },
+          "width": 150
+        },
+        {
+          "key": "isAIAssisted",
+          "header": {
+            "en": "AI assisted",
+            "fa": "با کمک هوش مصنوعی"
+          },
+          "width": 130,
+          "type": "bool"
         }
       ]
     }
