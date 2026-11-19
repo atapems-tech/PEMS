@@ -19,6 +19,7 @@
       "id": "qualifications",
       "url": "/d/qualifications-grid",
       "idField": "qualificationId",
+      "viewsKey": "qualifications",
       "columns": [
         {
           "key": "name",

@@ -19,6 +19,7 @@
       "id": "security-events",
       "url": "/d/security-events-grid",
       "idField": "securityEventId",
+      "viewsKey": "security-events",
       "columns": [
         {
           "key": "occurredAtUtc",

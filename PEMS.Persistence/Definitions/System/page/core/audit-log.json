@@ -19,6 +19,7 @@
       "id": "audit-log",
       "url": "/d/audit-log-grid",
       "idField": "auditLogId",
+      "viewsKey": "audit-log",
       "columns": [
         {
           "key": "auditLogId",

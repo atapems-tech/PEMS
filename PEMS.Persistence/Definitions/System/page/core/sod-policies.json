@@ -19,6 +19,7 @@
       "id": "sod-policies",
       "url": "/d/sod-policies-grid",
       "idField": "soDPolicyId",
+      "viewsKey": "sod-policies",
       "columns": [
         {
           "key": "permissionA",

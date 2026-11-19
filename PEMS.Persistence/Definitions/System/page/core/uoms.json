@@ -19,6 +19,7 @@
       "id": "uoms",
       "url": "/d/uoms-grid",
       "idField": "materialUOMId",
+      "viewsKey": "uoms",
       "columns": [
         {
           "key": "code",

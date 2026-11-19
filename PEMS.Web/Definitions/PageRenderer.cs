@@ -122,7 +122,16 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
             {
                 var values = await ReadRecordAsync(record, request, appKey, id, problems, ct);
                 if (values is null && problems.Any(p => p.StartsWith($"Instance \"{id}\": the record", StringComparison.Ordinal))) return;   // not allowed or invalid: the part is hidden
-                if (values is not null) options["values"] = values;
+                if (values is not null)
+                {
+                    // `map` feeds named options from row properties (a badge label, a number, a link); without it the whole row goes to `values` (the record view)
+                    if (record["map"] is JsonObject map)
+                    {
+                        foreach (var (option, property) in map)
+                            if (property is JsonValue pv && pv.GetValueKind() == JsonValueKind.String && values[(string)pv!] is { } cell) options[option] = cell.DeepClone();
+                    }
+                    else options["values"] = values;
+                }
             }
             var parameters = catalog.ToParameters(component, options.ToJsonString());
             html.Append(await renderer.RenderAsync(component, parameters, culture));
