@@ -5,6 +5,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+## 2026-11-19 - Ratchet gate and pipeline diagnostics (SCRUM-611, 577)
+
+### Added
+- `DefinitionRatchetTests` and `plan/sheets/definition-ratchet.json` (SCRUM-611): the gate fails with the file or controller when a new Razor view, controller or controller action is added where a definition can express it; host and static controllers of the classification table are exempt; `PEMS_WRITE_RATCHET=1` rewrites the baseline for a reviewed exception.
+- Pipeline diagnostics (SCRUM-577): `PipelineResult` carries counts next to the stage timings, the page and form hosts log one line with the trace id (resolve, authorize, hydrate, evaluate, render and the counts) and a warning when a stage is over its budget; settings `Definitions__Budgets__ResolveMs`, `AuthorizeMs`, `HydrateMs`, `EvaluateMs`, `RenderMs` in every `env/*.env`; regression guards for a list page with 1000 rows and a form with 80 fields (`PipelineDiagnosticsTests`).
 ## 2026-11-19 - Action steps, result binding and step-up as settings of an action (SCRUM-593, 594, 595)
 
 ### Added

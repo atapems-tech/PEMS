@@ -21,12 +21,6 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Areas.Admin.Controllers.ContractApprovalAuthorityController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Areas.Admin.Controllers.DatabaseUpdateController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
@@ -942,6 +936,12 @@
       "type": "PEMS.Web.Hubs.NotificationHub",
       "status": "host",
       "reason": "SignalR hub: real-time transport, code by decision"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Admin.Controllers.ContractApprovalAuthorityController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",

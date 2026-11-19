@@ -28,6 +28,8 @@ Whoever moves the issue to In Review - the first time **and every time after a f
 
 ## 1b. Nothing that was not run lives only in a message (owner decision 2026-10-27)
 
+Since 2026-11-19 the author hands an issue over with the minimum tests that are really needed (chapter 00 section 0.3, chapter 05): everything else, the heavy end-of-batch run, the tier 3 suites and every extra check, is a line of this checklist.
+
 Jira is the only place a tester, or an agent that has no access to the chat, can read. Therefore:
 
 - **Every test, check or step the author did not run is a line of the QA checklist** with the result `not done - <reason>` (never a sentence only in the move comment, the PR or the chat). The line names the exact command or the README check ID, so it can be run without asking.

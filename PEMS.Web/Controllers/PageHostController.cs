@@ -9,7 +9,7 @@ namespace PEMS.Web.Controllers;
 
 /// <summary>The one generic host of the page engine (SCRUM-438, ADR-0011 point 8, ADR-0014): <c>/p/{key}</c> runs the pipeline for a page definition (resolve, authorize, hydrate) and renders it. The reserved prefix never shadows a code route; the page is whatever its definition says.</summary>
 [Route("p/{key}")]
-public sealed class PageHostController(DefinitionPipeline pipeline, PageRenderer renderer, ICurrentUserService currentUser, ILogger<PageHostController> log) : Controller
+public sealed class PageHostController(DefinitionPipeline pipeline, PageRenderer renderer, ICurrentUserService currentUser, ILogger<PageHostController> log, PEMS.Application.Definitions.PipelineBudgets? budgets = null) : Controller
 {
     private static readonly Regex KeyShape = new("^[a-z0-9][a-z0-9._-]{0,80}$", RegexOptions.Compiled);
 
@@ -27,7 +27,8 @@ public sealed class PageHostController(DefinitionPipeline pipeline, PageRenderer
         if (result.Status == PipelineStatus.NotFound) return NotFound();
         if (result.Status == PipelineStatus.Forbidden) return Forbid();
 
-        var page = await renderer.RenderAsync(result.Resolved!, request, culture, ct);
+        var (page, renderTime) = await HostDiagnostics.TimeAsync(() => renderer.RenderAsync(result.Resolved!, request, culture, ct));
+        HostDiagnostics.Report(log, HttpContext.TraceIdentifier, "page", key, new Dictionary<string, TimeSpan>(result.Timings) { ["render"] = renderTime }, result.Counts, budgets);   // SCRUM-577
         foreach (var problem in page.Problems) log.LogWarning("Page definition {Key}: {Problem}", key, problem);
         ViewData["Title"] = page.Title ?? key;
         return View("Index", page);
