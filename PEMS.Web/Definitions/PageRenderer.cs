@@ -133,12 +133,76 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
                     else options["values"] = values;
                 }
             }
+            if (instance["bindings"] is JsonObject chartBindings && chartBindings["chart"] is JsonObject chart)
+            {
+                var spec = await BuildChartAsync(chart, request, culture, appKey, id, problems, ct);
+                if (spec is null) return;   // not allowed or invalid: the part is hidden
+                options["spec"] = spec;
+            }
             var parameters = catalog.ToParameters(component, options.ToJsonString());
             html.Append(await renderer.RenderAsync(component, parameters, culture));
         }
         catch (ExpressionException ex) { problems.Add($"Instance \"{id}\": {ex.Code}: {ex.Message}"); }
         catch (ComponentTemplateException ex) { problems.Add($"Instance \"{id}\": {ex.Message}"); }
         catch (ArgumentException ex) { problems.Add($"Instance \"{id}\": {ex.Message}"); }
+    }
+
+    /// <summary>
+    /// A chart from the rows of a grid data source (SCRUM-619): <c>{ "source": "/d/key", "labelField": "month", "series": [{ "field": "count", "name": {en,fa}, "color": "..." }], "kind": "bar", "stacked": false,
+    /// "top": 50, "sort": "-count", "ariaLabel": {en,fa}, "emptyText": {en,fa} }</c>. The rows are read through the same resolve and authorize steps as the grid, at most 200 of them.
+    /// </summary>
+    private async Task<JsonObject?> BuildChartAsync(JsonObject chart, PipelineRequest request, CultureInfo culture, string appKey, string id, List<string> problems, CancellationToken ct)
+    {
+        if (data is null) { problems.Add($"Instance \"{id}\": the chart cannot be read here."); return null; }
+        var source = (string?)chart["source"];
+        var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
+        var labelField = (string?)chart["labelField"];
+        if (key is null || string.IsNullOrWhiteSpace(labelField) || chart["series"] is not JsonArray series || series.Count == 0)
+        { problems.Add($"Instance \"{id}\": the chart binding needs a /d/ source, a labelField and series."); return null; }
+        var top = chart["top"] is JsonValue tv && tv.TryGetValue<int>(out var t) ? Math.Clamp(t, 1, 200) : 50;
+        var query = new List<KeyValuePair<string, string?>> { new("page", "1"), new("pageSize", top.ToString(CultureInfo.InvariantCulture)) };
+        if (chart["sort"] is JsonValue sv && sv.GetValueKind() == JsonValueKind.String) query.Add(new("sort", (string)sv!));
+        var result = await data.QueryAsync(key, query, request.Culture, request.Roles, request.UserName, appKey, ct);
+        switch (result.Status)
+        {
+            case DataStatus.Forbidden: problems.Add($"Instance \"{id}\": the chart data is not allowed for this user."); return null;
+            case DataStatus.NotFound: problems.Add($"Instance \"{id}\": the chart source \"{key}\" does not exist."); return null;
+            case DataStatus.Invalid: problems.Add($"Instance \"{id}\": the chart request is invalid: {result.Error}"); return null;
+        }
+        var rows = (result.Items ?? []).Select(i => JsonSerializer.SerializeToNode(i) as JsonObject).Where(r => r is not null).Cast<JsonObject>().ToList();
+        string Cell(JsonObject row, string field) => row[field] is JsonValue v ? (v.GetValueKind() == JsonValueKind.String ? (string?)v ?? "" : v.ToJsonString().Trim('"')) : "";
+        var labels = new JsonArray();
+        foreach (var r in rows) labels.Add(Cell(r, labelField));
+        var outSeries = new JsonArray();
+        foreach (var sd in series.OfType<JsonObject>())
+        {
+            var field = (string?)sd["field"];
+            if (string.IsNullOrWhiteSpace(field)) continue;
+            var values = new JsonArray();
+            foreach (var r in rows) values.Add(double.TryParse(Cell(r, field), NumberStyles.Float, CultureInfo.InvariantCulture, out var d) ? d : 0d);
+            var entry = new JsonObject { ["name"] = ChartText(sd["name"], culture) ?? field, ["values"] = values };
+            if (sd["color"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String) entry["color"] = (string)cv!;
+            outSeries.Add(entry);
+        }
+        var kind = chart["kind"] is JsonValue kv && kv.GetValueKind() == JsonValueKind.String ? (string)kv! : "bar";
+        var spec = new JsonObject
+        {
+            ["kind"] = kind, ["ariaLabel"] = ChartText(chart["ariaLabel"], culture) ?? "", ["emptyText"] = ChartText(chart["emptyText"], culture) ?? "-",
+            ["labels"] = labels, ["series"] = outSeries,
+            ["stacked"] = chart["stacked"] is JsonValue st && st.GetValueKind() == JsonValueKind.True
+        };
+        if (kind == "donut" && outSeries.Count > 0) spec["centerLabel"] = (string?)outSeries[0]!["name"];
+        return spec;
+    }
+
+    /// <summary>A text of a definition for the request's language: a plain string, or an object with fa and en.</summary>
+    private static string? ChartText(JsonNode? node, CultureInfo culture)
+    {
+        if (node is JsonValue v && v.GetValueKind() == JsonValueKind.String) return (string)v!;
+        if (node is not JsonObject o) return null;
+        foreach (var k in new[] { culture.TwoLetterISOLanguageName, "fa", "en" })
+            if (o[k] is JsonValue lv && lv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string)lv!)) return (string)lv!;
+        return null;
     }
 
     /// <summary>
