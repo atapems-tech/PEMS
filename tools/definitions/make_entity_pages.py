@@ -47,8 +47,10 @@ def form_fields(spec, key):
         prop, kind, en, fa = f["prop"], f.get("kind", "text"), f["en"], f["fa"]
         name = camel(prop)
         d = {"name": name, "label": t(en, fa), "kind": kind}
-        for k in ("maxLength", "minLength", "min", "max", "pattern", "span"):
+        for k in ("maxLength", "minLength", "min", "max", "pattern", "span", "readOnly"):
             if k in f: d[k] = f[k]
+        if "static" in f:
+            d["options"] = [{"value": v, "label": t(v, v)} for v in f["static"]]
         if "messages" in f: d["messages"] = dict(f["messages"])
         if f.get("required"):
             d["required"] = True
@@ -111,10 +113,17 @@ def make(spec):
         edit_map = {k: v for k, v in map_.items() if k not in ro}
         edit_required = [r for r in required if camel(r) not in ro]
         edit_params = {"entity": entity, "map": edit_map, "required": edit_required, "unique": spec.get("unique", [])}
+        edit_handler = "entity.update"
+        if spec.get("edit_op"):
+            # the service writes (it keeps its caches and rules); the entity only loads the current values into the form
+            edit_handler = "operation.invoke"
+            load = {"entity": entity, "map": edit_map}
+            if spec.get("load_defaults"): load["defaults"] = spec["load_defaults"]
+            edit_params = {"model": spec["edit_op"]["model"], "action": spec["edit_op"]["action"], "args": spec["edit_op"]["args"], "load": load}
         if spec.get("validate"): edit_params["validate"] = {"model": spec["validate"]["model"], "action": spec["validate"]["action"], "args": {**spec["validate"]["args"], "ruleId": "field:id"}}
         write("form", key + "-edit", envelope("form", key + "-edit", t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), {
             "id": key + "-edit", "title": t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), "submitLabel": t("Save", "ذخیره"), "actionKey": key + "-edit", "columns": 2, "warnOnLeave": True, "fields": ff}))
-        action(key + "-edit", t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), "entity.update", edit_params, "/p/" + key, t(spec["singular"][0] + " saved.", spec["singular"][1] + " ذخیره شد."))
+        action(key + "-edit", t("Edit " + spec["singular"][0].lower(), "ویرایش " + spec["singular"][1]), edit_handler, edit_params, "/p/" + key, t(spec["singular"][0] + " saved.", spec["singular"][1] + " ذخیره شد."))
         row_actions.append({"key": "edit", "label": t("Edit", "ویرایش"), "url": "/f/" + key + "-edit/{id}", "method": "get"})
     if spec.get("toggle"):
         action(key + "-toggle", t("Activate or deactivate", "فعال یا غیرفعال کردن"), "entity.toggle", {"entity": entity, "property": spec["toggle"]}, "/p/" + key, t("Status updated.", "وضعیت به‌روز شد."))
@@ -278,6 +287,24 @@ SPECS += [
                 []),
          defaults={"IsActive": True}, sort=["Priority", "-ContractApprovalAuthorityRuleId"],
          validate={"model": "ContractApprovalRule", "action": "Validate", "args": {"minValue": "field:minValue", "maxValue": "field:maxValue", "criticalityClass": "field:criticalityClass", "requiredApproverRole": "field:requiredApproverRole"}}),
+    # ---- W1 administration: AI routing rules and confidence thresholds (SCRUM-645): the service writes (cache invalidation), the entity loads the form
+    dict(simple("routing-rules", "RoutingRule", "RoutingRuleId", ("AI routing rules", "قواعد مسیریابی هوش مصنوعی"), ("Routing rule", "قاعده‌ی مسیریابی"),
+                [("DocumentCategory", "Category", "دسته", "text", 220, True), ("TargetModule", "Target module", "ماژول مقصد", "text", 160, True), ("AllowAutoRouting", "Auto route", "مسیریابی خودکار", "bool", 130), ("Description", "Description", "توضیحات", "text", 320, True)],
+                [{"prop": "DocumentCategory", "en": "Category", "fa": "دسته", "readOnly": True},
+                 {"prop": "TargetModule", "kind": "select", "en": "Target module", "fa": "ماژول مقصد", "required": True, "static": ["MDR", "VDR", "MR", "MRQ", "Contract", "CMMS", "Unrouted"]},
+                 {"prop": "AllowAutoRouting", "kind": "switch", "en": "Allow automatic routing", "fa": "مسیریابی خودکار مجاز باشد"},
+                 {"prop": "Description", "kind": "textArea", "en": "Description", "fa": "توضیحات", "maxLength": 500, "span": 2}],
+                [], toggle=None),
+         create=False, sort=["DocumentCategory"],
+         edit_op={"model": "RoutingRule", "action": "Set", "args": {"category": "field:documentCategory", "targetModule": "field:targetModule", "allowAutoRouting": "field:allowAutoRouting", "description": "field:description"}}),
+    dict(simple("routing-confidence", "AIConfidenceSettings", "AIConfidenceSettingsId", ("AI confidence thresholds", "آستانه‌های اطمینان هوش مصنوعی"), ("Confidence thresholds", "آستانه‌های اطمینان"),
+                [("HighThreshold", "High threshold", "آستانه‌ی بالا", "number", 160), ("MediumThreshold", "Medium threshold", "آستانه‌ی متوسط", "number", 160), ("ModifiedDate", "Modified", "آخرین تغییر", "datetime", 170)],
+                [{"prop": "HighThreshold", "kind": "number", "en": "High threshold", "fa": "آستانه‌ی بالا", "min": 0, "max": 1, "required": True},
+                 {"prop": "MediumThreshold", "kind": "number", "en": "Medium threshold", "fa": "آستانه‌ی متوسط", "min": 0, "max": 1, "required": True}],
+                [], toggle=None),
+         create=False,
+         load_defaults={"highThreshold": 0.85, "mediumThreshold": 0.5},
+         edit_op={"model": "RoutingRule", "action": "SetConfidence", "args": {"highThreshold": "field:highThreshold", "mediumThreshold": "field:mediumThreshold"}}),
     # ---- W4 storage locations (InventoryMasterData permissions)
     simple("storage-locations", "StorageLocation", "StorageLocationId", ("Storage locations", "محل‌های نگهداری"), ("Storage location", "محل نگهداری"),
            [("Code", "Code", "کد", "text", 140, True), ("Name", "Name", "نام", "text", 240, True), ("Warehouse", "Warehouse", "انبار", "lookup", 180), ("Parent", "Parent location", "محل والد", "lookup", 180), ("IsActive", "Active", "فعال", "bool", 100)],

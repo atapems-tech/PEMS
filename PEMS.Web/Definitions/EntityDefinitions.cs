@@ -414,13 +414,17 @@ public sealed class EntityRecordLoader(IServiceScopeFactory scopes, EntityCatalo
     /// <summary>Null when the row does not exist or the user may not read it.</summary>
     public async Task<IReadOnlyDictionary<string, string?>?> LoadAsync(JsonObject? actionParameters, string id, IReadOnlyCollection<string> roles, CancellationToken ct)
     {
-        var entity = catalog.Get(EntityJson.Str(actionParameters?["entity"]));
-        if (entity is null || actionParameters!["map"] is not JsonObject map) return null;
+        // an operation-backed action (operation.invoke) names its source in "load": { entity, map, defaults } (SCRUM-645); an entity action names it at the top
+        var source = actionParameters?["load"] as JsonObject ?? actionParameters;
+        var entity = catalog.Get(EntityJson.Str(source?["entity"]));
+        if (entity is null || source!["map"] is not JsonObject map) return null;
         using var scope = scopes.CreateScope();
         if (!await EntityAccess.CanReadAsync(scope.ServiceProvider, entity, roles, ct)) return null;
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
         var method = typeof(EntityRecordLoader).GetMethod(nameof(Find), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType);
         var row = await (Task<object?>)method.Invoke(null, [db, entity.KeyProperty, id, ct])!;
+        // a settings row that does not exist yet (created on first save) shows the defaults of the definition
+        if (row is null && source["defaults"] is JsonObject defaults) return map.ToDictionary(m => m.Key, m => defaults[m.Key] is { } d ? EntityJson.Show(EntityJson.Convert(typeof(string), d)) : null, StringComparer.Ordinal);
         if (row is null) return null;
         return map.ToDictionary(m => m.Key, m => (string?)EntityJson.Show(entity.ClrType.GetProperty(EntityJson.Str(m.Value)!)!.GetValue(row)), StringComparer.Ordinal);
     }
