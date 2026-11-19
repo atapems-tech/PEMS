@@ -19,6 +19,13 @@ public sealed class UploadPolicyAttribute : Attribute
 }
 
 /// <summary>
+/// SCRUM-596: on the generic hosts (<c>/f</c>, <c>/a</c>) the profile of an upload is not fixed in code: the action definition names it (<c>file.upload</c>, parameter <c>profile</c>) and the handler runs the same
+/// <see cref="IUploadGuard"/> before anything is stored. A file that no <c>file.upload</c> step reads is never saved, so the filter lets the request through.
+/// </summary>
+[AttributeUsage(AttributeTargets.Method)]
+public sealed class DefinitionUploadPolicyAttribute : Attribute;
+
+/// <summary>
 /// Global MVC filter (registered in Program.cs): every file of every multipart request goes through
 /// <see cref="IUploadGuard"/> before model binding, so no controller can skip the allowlist, size limit, content check
 /// and malware-scan hook. It runs after authentication and antiforgery (resource filters follow authorization filters).
@@ -38,6 +45,12 @@ public sealed class UploadGuardFilter : IAsyncResourceFilter
 
         var form = await request.ReadFormAsync(context.HttpContext.RequestAborted);
         if (form.Files.Count == 0)
+        {
+            await next();
+            return;
+        }
+
+        if (context.ActionDescriptor.EndpointMetadata.OfType<DefinitionUploadPolicyAttribute>().Any())
         {
             await next();
             return;
