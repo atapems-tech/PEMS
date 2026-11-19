@@ -137,7 +137,7 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
             return result.Status switch
             {
                 ActionStatus.Ok => Json(new { ok = true, message = text }),
-                ActionStatus.Refused => BadRequest(new { ok = false, error = text }),
+                ActionStatus.Refused => BadRequest(new { ok = false, error = text, errors = ErrorShape.FromOutcome(result.Outcome!, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName) }),   // SCRUM-380: the same field-error shape as the API (error stays for the scripts that read it)
                 ActionStatus.StepUpRequired => StatusCode(428, new { ok = false, stepUp = true, options = result.StepUpOptionsJson, error = text }),   // SCRUM-595: run the security-key ceremony with these options, then post again with the answer
                 ActionStatus.Forbidden => StatusCode(403, new { ok = false, error = (string?)null }),
                 _ => NotFound(new { ok = false, error = (string?)null })
