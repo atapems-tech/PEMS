@@ -29,9 +29,12 @@ public interface IStorageRouteService
 {
     Task<List<StorageRouteDto>> GetAllAsync();
 
+    [PEMS.Application.Common.PemsOperation("StorageRoute", "Create", Roles = "SystemAdmin")]
     Task<(bool Success, string? Error, int? Id)> CreateAsync(StorageRouteUpsertRequest request, string? createdBy);
 
+    [PEMS.Application.Common.PemsOperation("StorageRoute", "Update", Roles = "SystemAdmin")]
     Task<(bool Success, string? Error)> UpdateAsync(int id, StorageRouteUpsertRequest request, string? modifiedBy);
 
+    [PEMS.Application.Common.PemsOperation("StorageRoute", "Delete", Roles = "SystemAdmin")]
     Task<(bool Success, string? Error)> DeleteAsync(int id);
 }

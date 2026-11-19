@@ -104,7 +104,11 @@ def make(spec):
         if spec.get("validate"): create_params["validate"] = {"model": spec["validate"]["model"], "action": spec["validate"]["action"], "args": spec["validate"]["args"]}
         write("form", key + "-create", envelope("form", key + "-create", t("Create " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1]), t("Create a new " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1] + " جدید"), {
             "id": key + "-create", "title": t("New " + spec["singular"][0].lower(), spec["singular"][1] + " جدید"), "submitLabel": t("Create", "ایجاد"), "actionKey": key + "-create", "columns": 2, "warnOnLeave": True, "fields": ff}))
-        action(key + "-create", t("Create " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1]), "entity.create", create_params, "/p/" + key, t(spec["singular"][0] + " created.", spec["singular"][1] + " ایجاد شد."))
+        create_handler = "entity.create"
+        if spec.get("create_op"):
+            create_handler = "operation.invoke"
+            create_params = {"model": spec["create_op"]["model"], "action": spec["create_op"]["action"], "args": spec["create_op"]["args"]}
+        action(key + "-create", t("Create " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1]), create_handler, create_params, "/p/" + key, t(spec["singular"][0] + " created.", spec["singular"][1] + " ایجاد شد."))
     if spec.get("edit", False):
         ff, map_, required = form_fields(spec, key)
         ro = spec.get("readonly_on_edit", [])
@@ -135,7 +139,11 @@ def make(spec):
         dp = {"entity": entity, "deny": d.get("deny", [])}
         if d.get("deactivate"): dp["deactivate"] = d["deactivate"]
         verb = d.get("label", ("Delete", "حذف"))
-        action(key + "-delete", t(*verb), "entity.delete", dp, "/p/" + key, t(spec["singular"][0] + (" deactivated." if d.get("deactivate") else " deleted."), spec["singular"][1] + (" غیرفعال شد." if d.get("deactivate") else " حذف شد.")))
+        delete_handler = "entity.delete"
+        if spec.get("delete_op"):
+            delete_handler = "operation.invoke"
+            dp = {"model": spec["delete_op"]["model"], "action": spec["delete_op"]["action"], "args": spec["delete_op"]["args"]}
+        action(key + "-delete", t(*verb), delete_handler, dp, "/p/" + key, t(spec["singular"][0] + (" deactivated." if d.get("deactivate") else " deleted."), spec["singular"][1] + (" غیرفعال شد." if d.get("deactivate") else " حذف شد.")))
         ra = {"key": "delete", "label": t(*verb), "url": "/a/" + key + "-delete", "method": "post", "tone": "danger", "confirm": t(verb[0] + " this record?", "این رکورد " + verb[1] + " شود؟")}
         if d.get("showWhen"): ra["showWhen"] = d["showWhen"]
         row_actions.append(ra)
@@ -305,6 +313,21 @@ SPECS += [
          create=False,
          load_defaults={"highThreshold": 0.85, "mediumThreshold": 0.5},
          edit_op={"model": "RoutingRule", "action": "SetConfidence", "args": {"highThreshold": "field:highThreshold", "mediumThreshold": "field:mediumThreshold"}}),
+    # ---- W1 administration: storage routing (SCRUM-649): the service writes and validates, the entity loads the edit form and lists the rows
+    dict(simple("storage-routing", "StorageRoute", "StorageRouteId", ("Storage routing", "مسیریابی ذخیره‌سازی"), ("Storage route", "قانون مسیریابی ذخیره‌سازی"),
+                [("Module", "Module", "ماژول", "text", 180, True), ("DocumentType", "Document type", "نوع سند", "text", 160, True), ("Provider", "Storage provider", "ارائه‌دهنده‌ی ذخیره‌سازی", "lookup", 200), ("RelativeRootPath", "Relative root", "مسیر نسبی", "text", 200),
+                 ("IsEnabled", "Enabled", "فعال", "bool", 100), ("IsDefault", "Default", "پیش‌فرض", "bool", 100), ("Priority", "Priority", "اولویت", "number", 100)],
+                [{"prop": "Module", "en": "Module (for example EngineeringDocuments, VDR, Contracts)", "fa": "ماژول (مثلاً EngineeringDocuments، VDR، Contracts)", "required": True, "maxLength": 100},
+                 {"prop": "DocumentType", "en": "Document type (optional, blank = module-wide default)", "fa": "نوع سند (اختیاری؛ خالی = پیش‌فرض ماژول)", "maxLength": 100},
+                 select("StorageProviderId", "Storage provider", "ارائه‌دهنده‌ی ذخیره‌سازی", "StorageProvider", "StorageProviderId", "Name", True, active=None),
+                 {"prop": "RelativeRootPath", "en": "Relative root path (optional subfolder)", "fa": "مسیر نسبی (زیرپوشه‌ی اختیاری)", "maxLength": 300},
+                 {"prop": "IsEnabled", "kind": "switch", "en": "Enabled", "fa": "فعال"}, {"prop": "IsDefault", "kind": "switch", "en": "Default route of the module", "fa": "پیش‌فرض ماژول"},
+                 {"prop": "Priority", "kind": "number", "en": "Priority", "fa": "اولویت"}],
+                [], lookups=[{"name": "provider", "entity": "StorageProvider", "foreignKey": "StorageProviderId", "label": "Name"}], toggle=None),
+         sort=["Module", "Priority"], delete={"label": ("Remove", "حذف")},
+         create_op={"model": "StorageRoute", "action": "Create", "args": {"request": {"Module": "field:module", "DocumentType": "field:documentType", "StorageProviderId": "field:storageProviderId", "RelativeRootPath": "field:relativeRootPath", "IsEnabled": "field:isEnabled", "IsDefault": "field:isDefault", "Priority": "field:priority"}, "createdBy": "context:userName"}},
+         edit_op={"model": "StorageRoute", "action": "Update", "args": {"id": "field:id", "request": {"Module": "field:module", "DocumentType": "field:documentType", "StorageProviderId": "field:storageProviderId", "RelativeRootPath": "field:relativeRootPath", "IsEnabled": "field:isEnabled", "IsDefault": "field:isDefault", "Priority": "field:priority"}, "modifiedBy": "context:userName"}},
+         delete_op={"model": "StorageRoute", "action": "Delete", "args": {"id": "field:id"}}),
     # ---- W4 storage locations (InventoryMasterData permissions)
     simple("storage-locations", "StorageLocation", "StorageLocationId", ("Storage locations", "محل‌های نگهداری"), ("Storage location", "محل نگهداری"),
            [("Code", "Code", "کد", "text", 140, True), ("Name", "Name", "نام", "text", 240, True), ("Warehouse", "Warehouse", "انبار", "lookup", 180), ("Parent", "Parent location", "محل والد", "lookup", 180), ("IsActive", "Active", "فعال", "bool", 100)],

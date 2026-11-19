@@ -34,6 +34,8 @@ internal static class EntityCatalogDefaults
             .Writable("MinValue", "MaxValue", "CriticalityClass", "RequiredApproverRole", "Description", "Priority", "IsActive"))
         .Add<RoutingRule>("RoutingRuleId", e => e.Roles(AdminRoles, null).Readable("DocumentCategory", "TargetModule", "AllowAutoRouting", "Description", "IsActive"))
         .Add<AIConfidenceSettings>("AIConfidenceSettingsId", e => e.Roles(AdminRoles, null).Readable("HighThreshold", "MediumThreshold", "ModifiedDate"))
+        .Add<StorageRoute>("StorageRouteId", e => e.Roles(AdminRoles, null).Readable("Module", "DocumentType", "StorageProviderId", "RelativeRootPath", "IsEnabled", "IsDefault", "Priority"))
+        .Add<StorageProvider>("StorageProviderId", e => e.Roles(AdminRoles, null).Readable("Name", "ProviderType"))
         // read-only registrations used for related counts and labels
         .Add<ApplicationUser>("Id", e => e.Roles(AdminRoles, null).Readable("UserName"))
         .Add<Permission>("PermissionId", e => e.Roles(AdminRoles, null).Readable("Name", "IsActive"))

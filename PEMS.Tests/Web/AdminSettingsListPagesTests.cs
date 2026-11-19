@@ -18,7 +18,7 @@ namespace PEMS.Tests.Web;
 public class AdminSettingsListPagesTests
 {
     private static readonly string[] Pages =
-        { "StorageProviders", "StorageRouting", "WorkflowManagement", "Help", "PurchaseOrderAuthority" };
+        { "StorageProviders", "WorkflowManagement", "Help", "PurchaseOrderAuthority" };
 
     private static Task<string> Render<TController>(string view, object? model, Action<ViewDataDictionary>? data = null) where TController : Controller
     {
@@ -73,11 +73,6 @@ public class AdminSettingsListPagesTests
     [Fact]
     public async Task Routes_Workflows_AndHelp_UseTheListFrame()
     {
-        var routes = await Render<StorageRoutingController>("/Areas/Admin/Views/StorageRouting/Index.cshtml",
-            new List<StorageRouteDto> { new() { StorageRouteId = 1, Module = "VDR", StorageProviderName = "Main", IsEnabled = true } });
-        AssertBuiltFromTheComponent(routes, 1);
-        Assert.Contains("data-pems-confirm=\"Delete this storage route?\"", routes);
-
         var help = await Render<HelpController>("/Areas/Admin/Views/Help/Index.cshtml", null, v =>
         {
             v["Articles"] = new List<HelpArticleSummaryDto> { new() { HelpArticleId = 1, Code = "H-1", Title = "Start", IsPublished = false } };
