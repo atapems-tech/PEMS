@@ -2492,9 +2492,11 @@
   <data name="The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again." xml:space="preserve"><value>The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again.</value></data>
   <data name="The recovery window is closed. Place a new request file on the server." xml:space="preserve"><value>The recovery window is closed. Place a new request file on the server.</value></data>
   <data name="Use a recovery code" xml:space="preserve"><value>Use a recovery code</value></data>
-  <data name="Recovery Codes" xml:space="preserve"><value>Recovery Codes</value></data>
-  <data name="Administrator Recovery" xml:space="preserve"><value>Administrator Recovery</value></data>
-  <data name="Break-glass Recovery" xml:space="preserve"><value>Break-glass Recovery</value></data>
+  <data name="Role Name (English, no spaces)" xml:space="preserve"><value>Role Name (English, no spaces)</value></data>
+  <data name="Purpose" xml:space="preserve"><value>Purpose</value></data>
+  <data name="Your password is temporary. Set a new password before continuing." xml:space="preserve"><value>Your password is temporary. Set a new password before continuing.</value></data>
+  <data name="Password changed successfully." xml:space="preserve"><value>Password changed successfully.</value></data>
+  <data name="The new password and its confirmation do not match." xml:space="preserve"><value>The new password and its confirmation do not match.</value></data>
   <data name="Search roles..." xml:space="preserve"><value>Search roles...</value></data>
   <data name="No matching role" xml:space="preserve"><value>No matching role</value></data>
   <data name="Remove" xml:space="preserve"><value>Remove</value></data>
@@ -3877,9 +3879,6 @@
   </data>
   <data name="Administrator Account Reset" xml:space="preserve">
     <value>Administrator Account Reset</value>
-  </data>
-  <data name="Reset Administrator Account" xml:space="preserve">
-    <value>Reset Administrator Account</value>
   </data>
   <data name="Effective Navigation Visibility" xml:space="preserve">
     <value>Effective Navigation Visibility</value>
