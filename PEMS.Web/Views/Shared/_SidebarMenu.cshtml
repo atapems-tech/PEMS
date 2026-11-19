@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "AuditLog", "RoutingRules", "ContractApprovalAuthority", "PurchaseOrderAuthority", "Department", "Employee", "Authorization", "SoDPolicy", "AuthorizationAudit", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
+    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "RoutingRules", "ContractApprovalAuthority", "PurchaseOrderAuthority", "Department", "Employee", "Authorization", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -815,13 +815,11 @@
 
                 <div class="nav-subheading">@Localizer["System Monitoring"]</div>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("AuditLog"))"
-                   asp-area="Admin" asp-controller="AuditLog" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/audit-log" active="@Context.Request.Path.StartsWithSegments("/p/audit-log")">
                     <pems-icon name="bi-clock-history" /> @Localizer["AuditLog"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("AuthorizationAudit", "Admin"))"
-                   asp-area="Admin" asp-controller="AuthorizationAudit" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/authorization-audit" active="@Context.Request.Path.StartsWithSegments("/p/authorization-audit")">
                     <pems-icon name="bi-journal-check" /> @Localizer["Authorization Audit"]
                 </pems-nav-link>
 
