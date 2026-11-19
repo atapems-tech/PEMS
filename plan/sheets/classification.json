@@ -15,18 +15,6 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Areas.Admin.Controllers.AuditLogController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Admin.Controllers.AuthorizationAuditController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Areas.Admin.Controllers.AuthorizationController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
@@ -129,19 +117,7 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Areas.Admin.Controllers.SecurityEventsController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Areas.Admin.Controllers.SettingsController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Admin.Controllers.SoDPolicyController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -966,6 +942,30 @@
       "type": "PEMS.Web.Hubs.NotificationHub",
       "status": "host",
       "reason": "SignalR hub: real-time transport, code by decision"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Admin.Controllers.AuditLogController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Admin.Controllers.AuthorizationAuditController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Admin.Controllers.SecurityEventsController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Admin.Controllers.SoDPolicyController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     }
   ]
 }

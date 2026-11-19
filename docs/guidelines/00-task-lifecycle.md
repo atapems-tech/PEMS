@@ -46,6 +46,8 @@ Read every open issue of the project, not one area label: `project = SCRUM AND s
 | cancel | already done, superseded or no longer wanted | comment the reason and the evidence; move to **Cancelled** only with the owner's yes |
 | blocked | a dependency is not Done and is not in your block | name the blocker; if the blocker is itself a To Do issue, pull it into the block instead of waiting (step 0.3) |
 
+**Partial work** (owner decision 2026-11-19, checked the same day): the issue's Jira status wins. A Jira issue that is still open (To Do, On Hold or In Progress) with part of its work already on `main` is moved to In Progress and finished, in the batch that fits it; it never waits in To Do or Hold while its remaining part is known. A plan row with the status *Partial* whose Jira issue is Done or In Review is **not reopened**: the row records a remainder (checked on 2026-11-19: all 54 Partial rows were of that kind, none was open work); the remainder is placed in the batch that covers it or raised as its own issue (`plan/sheets/sprint-batches.md`, section on Partial rows). What cannot be finished (needs an owner decision, SQL Server, a browser) is split into a named unchecked QA line or its own issue, and the rest of the issue goes on to In Review.
+
 A thorough audit of hundreds of issues is not required at full depth every time: read all titles and labels, read in full the ones that touch the area of the go-ahead or share a dependency chain with it, and say which you only skimmed. Never skip the step.
 
 ### 0.3 Group the survivors into related batches and do each batch together

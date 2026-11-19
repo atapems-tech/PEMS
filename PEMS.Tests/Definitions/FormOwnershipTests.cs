@@ -15,7 +15,7 @@ public sealed class FormOwnershipTests
         => $$"""{"name":"{{name}}","label":{"en":"{{label ?? name}}","fa":"{{label ?? name}}"},"kind":"{{kind}}"{{(platform ? ",\"owner\":\"platform\"" : "")}}}""";
 
     private static string Form(params string[] fields)
-        => $$"""{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","fields":[{{string.Join(",", fields)}}]}""";
+        => $$"""{"id":"item","title":{"en":"Item","fa":"مورد"},"action":"/items","submitLabel":{"en":"Save","fa":"ذخیره"},"fields":[{{string.Join(",", fields)}}]}""";
 
     private static string[] Names(string payload) => ((JsonArray)JsonNode.Parse(payload)!["fields"]!).Select(f => (string)f!["name"]!).ToArray();
 
@@ -78,7 +78,8 @@ public sealed class FormOwnershipTests
     {
         var w = new DefinitionTestWorld();
         var (service, _, db) = w.NewService();
-        Assert.True((await service.ShipAsync([Ship(shipped)], "system")).Ok);
+        var shippedResult = await service.ShipAsync([Ship(shipped)], "system");
+        Assert.True(shippedResult.Ok, string.Join("; ", shippedResult.Problems));
         var def = await db.Definitions.AsNoTracking().SingleAsync();
         var draft = (await service.CreateDraftAsync(def.DefinitionId, null, def.Revision, "customer")).Value!;
         var saved = await service.SaveDraftAsync(def.DefinitionId, customerPayload, "mine", draft.Info.Revision, "customer");
@@ -110,7 +111,7 @@ public sealed class FormOwnershipTests
         var custom = Form(Field("code", platform: true), Field("note", label: "My note"), Field("extra"));
         var (w, id) = await CustomisedAsync(v1, custom);
 
-        var v2 = Form(Field("code", platform: true), Field("status", "select", platform: true), Field("note"));
+        var v2 = Form(Field("code", platform: true), Field("status", "number", platform: true), Field("note"));
         var result = await w.NewService().Service.ShipAsync([Ship(v2)], "system");
         Assert.True(result.Ok, string.Join(";", result.Problems));
         Assert.Equal((1, 1), (result.KeptCustomized, result.PlatformFieldsMerged));
@@ -132,7 +133,7 @@ public sealed class FormOwnershipTests
         var (w, id) = await CustomisedAsync(v1, custom);
         var before = await w.NewContext().DefinitionVersions.CountAsync();
 
-        var v2 = Form(Field("code", platform: true), Field("status", "select", platform: true));
+        var v2 = Form(Field("code", platform: true), Field("status", "number", platform: true));
         var other = new ShippedDefinition("data-source", "units", "core", """{"en":"U","fa":"U"}""", null, """{"kind":"static","items":[{"value":"1","label":{"en":"a","fa":"a"}}]}""");
         var (service, _, _) = w.NewService();
         var result = await service.ShipAsync([Ship(v2), other], "system");

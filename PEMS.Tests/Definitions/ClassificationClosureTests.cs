@@ -95,7 +95,14 @@ public sealed class ClassificationClosureTests
         var byType = old.ToDictionary(e => (string)e["type"]!, StringComparer.Ordinal);
         var entries = new JsonArray();
         foreach (var f in found) entries.Add(byType.TryGetValue(f.Type, out var kept) ? JsonNode.Parse(kept.ToJsonString()) : Defaults(f));
-        foreach (var e in old.Where(e => (string?)e["status"] == "converted")) entries.Add(JsonNode.Parse(e.ToJsonString()));   // receipts stay
+        var existing = found.Select(f => f.Type).ToHashSet(StringComparer.Ordinal);
+        foreach (var e in old.Where(e => !existing.Contains((string)e["type"]!)))
+        {
+            // a type that is gone is a receipt: converted (kept as the proof that it was handled)
+            var receipt = (JsonObject)JsonNode.Parse(e.ToJsonString())!;
+            if ((string?)receipt["status"] != "converted") { receipt["status"] = "converted"; receipt["reason"] = "the type was deleted: converted to definitions"; }
+            entries.Add(receipt);
+        }
         var root = new JsonObject
         {
             ["note"] = "Checked by PEMS.Tests/Definitions/ClassificationClosureTests (SCRUM-628). status: pending (to convert), host or static (code by decision, reason required), converted (receipt, the type is gone).",
