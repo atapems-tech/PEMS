@@ -73,6 +73,8 @@ The first message of the block lists: the batches and their issues in order, wha
 
 **Heavy tests wait for the end of the batch or of the sprint** (owner decision 2026-11-19): during the block only the light tests run per issue (build and the exact classes touched, no broad namespaces); the heavy families run once at the end, and only after the owner has been asked when the whole batch is In Review ([chapter 5, Test budget](05-environment-and-commands.md)).
 
+**No build and no test run without the owner's input, and no new batch unless the owner says so** (owner decision 2026-11-19): an agent never starts a `dotnet build`, `dotnet test`, `gates.py --run` or a browser run on its own, not even "just the changed project"; it asks first, naming what it would run and why. A go-ahead on a batch is not an answer to this. When the owner stops a batch, every issue the agent claimed and did not finish goes back to To Do (status only; the work already merged stays), and the agent reports the finished batch and waits.
+
 Every issue of the block ends in In Review (conditional done, `qa-pending`, QA checklist with the unrun checks) or with a one-line reason why not (blocked, needs a decision, only part done and still In Progress). The last message says, per issue: merged PRs, tests run and not run, and what is next. Update the guideline if the block taught something durable (chapter 6).
 
 ### Anti-patterns (each one happened)
