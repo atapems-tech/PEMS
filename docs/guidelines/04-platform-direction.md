@@ -49,3 +49,13 @@ Sales material, website and demo claim only Done capabilities with acceptance te
 - Allowlist of always-free surfaces: `PEMS.Web/Licensing/LicenceFreeSurfaces.cs`, the only place; a new always-free route needs the owner's agreement.
 - New licensing behaviour goes through `LicenseManager`; no check outside it. Licence/request/seal formats change only with a version bump and test vectors (design 5.4).
 - The signing private key and the reset key never exist in the repository or on CI; tests generate throw-away keys in temp folders. The product contains no signing code.
+
+## 7. Definition-only model (owner decision 2026-11-19, sprint 2 goal)
+
+**The goal:** adding, removing or editing any form, page, menu, action, data source or permission needs **no code change, no build and no deploy**: only database rows, applied by the migrator (install, update, feed, refeed packages; SCRUM-581 to 585, designers SCRUM-603 to 610).
+
+- **Everything is generic and reusable.** One host per kind (`/p` page, `/f` form, `/a` action, `/d` data, file result) plus one route table in the database (SCRUM-768). A module differs from another only by **inputs**: slug, fields, components, authorizations, workflow, data sources. A new per-entity controller, view, handler or inline script is a defect (the ratchet gate SCRUM-611 fails it).
+- **Domain logic stays in services**, exposed as `[PemsOperation(Model, Action, Permission?)]` and run by the one handler `operation.invoke` (settings: args sources, `guard`, `sectionGuard`, options objects). A controller that talks to `PEMSDbContext` directly needs its service extracted first (91 of 140 controllers today).
+- **Inventory before backlog (learning 2026-11-19).** Before creating issues for a migration, run `python tools/definition-audit/audit.py --write`; the table `plan/sheets/definition-inventory.md` is the checklist, every controller is one issue ("Convert XController to definitions") or marked host/static (SCRUM-628). A backlog written from memory missed 150+ tasks. The remaining gap classes the audit found and the engine issues that close them: file results (SCRUM-615), inline scripts (616), shared layout/partials (617), TempData messages (618), specialised components (619-627), routes (768).
+- **No slice left behind.** An issue is converted completely (all actions, views, scripts, roles, rules, feed) or split into separate issues before it starts; "remaining: ..." in a Jira comment is a defect of planning, not a follow-up. Each conversion lists its browser QA lines.
+- **Change manifest.** Every change declares migration, feed data, definitions or none (SCRUM-585); definitions ship as migrator feed, not as code.
