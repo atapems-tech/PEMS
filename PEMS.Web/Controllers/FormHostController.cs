@@ -47,6 +47,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         if (loaded.Early is not null) return loaded.Early;
         var form = loaded.Form!;
         var posted = form.Fields.ToDictionary(f => f.Name, f => (string?)(Request.Form.TryGetValue(f.Name, out var v) ? v.ToString() : null), StringComparer.Ordinal);   // only the declared names are read
+        foreach (var f in form.Fields.Where(f => f.Mask is not null)) posted[f.Name] = FieldMask.Canonical(posted[f.Name]);   // a masked value is stored without separators (SCRUM-386)
         // the choices a Select accepts are the ones the data source gave this user, so the post is checked against the form as it was shown
         var shown = FormEngine.Effective(form, FormEngine.Evaluate(form, posted, loaded.Context), loaded.Options);
         var validation = FormEngine.Validate(shown, posted, loaded.Context);

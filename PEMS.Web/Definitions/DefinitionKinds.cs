@@ -158,7 +158,16 @@ public sealed class PageDefinitionKind : IDefinitionKind
                     else
                         foreach (var (bname, bnode) in bo)
                         {
-                            if (bname != "record") { errors.Add(new(at + "/bindings/" + bname, "unknown-property", "Def_Err_UnknownProperty", $"'{bname}' is not a binding (record)." )); continue; }
+                            if (bname == "chart")
+                            {
+                                if (bnode is not JsonObject ch) { errors.Add(new(at + "/bindings/chart", "wrong-type", "Def_Err_Type", "chart is an object (source, labelField, series).")); continue; }
+                                var csrc = ch["source"] is JsonValue cs && cs.GetValueKind() == JsonValueKind.String ? (string?)cs : null;
+                                if (csrc is null || !System.Text.RegularExpressions.Regex.IsMatch(csrc, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/chart/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                                if (!(ch["labelField"] is JsonValue lf && lf.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)lf))) errors.Add(new(at + "/bindings/chart/labelField", "required", "Def_Err_Required", "labelField names the row property of the labels."));
+                                if (ch["series"] is not JsonArray sa || sa.Count == 0 || sa.Any(x => !(x is JsonObject xo && xo["field"] is JsonValue xf && xf.GetValueKind() == JsonValueKind.String))) errors.Add(new(at + "/bindings/chart/series", "required", "Def_Err_Required", "series is a list of { field, name, color }."));
+                                continue;
+                            }
+                            if (bname != "record") { errors.Add(new(at + "/bindings/" + bname, "unknown-property", "Def_Err_UnknownProperty", $"'{bname}' is not a binding (record, chart)." )); continue; }
                             if (bnode is not JsonObject rec) { errors.Add(new(at + "/bindings/record", "wrong-type", "Def_Err_Type", "record is an object (source, idField, id).")); continue; }
                             var src = rec["source"] is JsonValue sv && sv.GetValueKind() == JsonValueKind.String ? (string?)sv : null;
                             if (src is null || !System.Text.RegularExpressions.Regex.IsMatch(src, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/record/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
@@ -203,6 +212,8 @@ public sealed class PageDefinitionKind : IDefinitionKind
                         if (inst["component"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String)
                             refs.Add(ComponentTemplate.IsDefinitionRef((string)cv!) ? new DefinitionRef("component-definition", ComponentTemplate.KeyOf((string)cv!), "renders") : new DefinitionRef("component", (string)cv!, "renders"));
                         // SCRUM-437: the bindings of a component to stored definitions: an url "/d/{key}" reads a data source, an action-button runs an action
+                        if (inst["bindings"] is JsonObject cbnd && cbnd["chart"] is JsonObject cbrec && cbrec["source"] is JsonValue cbsv && cbsv.GetValueKind() == JsonValueKind.String
+                            && System.Text.RegularExpressions.Regex.Match((string)cbsv!, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } cbm) refs.Add(new DefinitionRef("data-source", cbm.Groups[1].Value, "binds"));
                         if (inst["bindings"] is JsonObject bnd && bnd["record"] is JsonObject brec && brec["source"] is JsonValue bsv && bsv.GetValueKind() == JsonValueKind.String
                             && System.Text.RegularExpressions.Regex.Match((string)bsv!, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } bm) refs.Add(new DefinitionRef("data-source", bm.Groups[1].Value, "binds"));
                         if (inst["options"] is JsonObject options)

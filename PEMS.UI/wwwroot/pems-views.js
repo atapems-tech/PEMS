@@ -258,6 +258,38 @@
             col.addEventListener('drop', function (e) { e.preventDefault(); col.classList.remove('is-over'); if (root.__dragging) moveCard(root.__dragging, col); });
         }
 
+        // ---- calendar: moving an item to another day posts { id, date } (JSON) to cfg.moveUrl, an /a/{action} of a stored definition (SCRUM-772); Alt+arrow keys move it by a day or a week
+        function moveChip(chip, cell) {
+            var from = chip.parentNode, target = slot(cell, 'items');
+            if (!target || from === target) return;
+            target.appendChild(chip);
+            fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify({ id: chip.getAttribute('data-id'), date: cell.getAttribute('data-date') }) })
+                .then(function (r) { if (!r.ok) throw new Error(String(r.status)); })
+                .catch(function () { from.appendChild(chip); say(T.error); });
+        }
+        function wireChip(chip, item) {
+            chip.setAttribute('data-id', String(item[F.id] == null ? '' : item[F.id]));
+            chip.setAttribute('draggable', 'true');
+            chip.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', chip.getAttribute('data-id')); root.__dragging = chip; });
+            chip.addEventListener('dragend', function () { root.__dragging = null; });
+            chip.addEventListener('keydown', function (e) {
+                var steps = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+                if (!e.altKey || !(e.key in steps)) return;
+                e.preventDefault();
+                var rtl = getComputedStyle(root).direction === 'rtl';
+                var n = steps[e.key]; if (rtl && Math.abs(n) === 1) n = -n;
+                var cell = chip.closest('[data-date]'); if (!cell) return;
+                var parts = cell.getAttribute('data-date').split('-');
+                var next = root.querySelector('[data-date="' + iso(addDays(utc(+parts[0], +parts[1] - 1, +parts[2]), n)) + '"]');
+                if (next) { moveChip(chip, next); chip.focus(); }
+            });
+        }
+        function wireDay(cell) {
+            cell.addEventListener('dragover', function (e) { if (root.__dragging) { e.preventDefault(); cell.classList.add('is-over'); } });
+            cell.addEventListener('dragleave', function () { cell.classList.remove('is-over'); });
+            cell.addEventListener('drop', function (e) { e.preventDefault(); cell.classList.remove('is-over'); if (root.__dragging) moveChip(root.__dragging, cell); });
+        }
+
         // ---- calendar
         function monthGrid() {
             var start, first, inMonth, label;
@@ -301,6 +333,7 @@
                     if (!g.within(day)) cell.classList.add('is-other');
                     if (key === todayKey) cell.classList.add('is-today');
                     cell.setAttribute('data-date', key);
+                    if (cfg.moveUrl && F.date) wireDay(cell);
                     var list = slot(cell, 'items');
                     items.slice(0, MAX_PER_DAY).forEach(function (it) { list.appendChild(chipFor(it)); });
                     if (items.length > MAX_PER_DAY) {
@@ -318,6 +351,7 @@
         }
         function chipFor(item) {
             var c = tpl('dv-chip', { chip: String(item[F.title] == null ? '' : item[F.title]) });
+            if (cfg.moveUrl && F.date) wireChip(c, item);
             var h = href(item);
             if (h) c.setAttribute('href', h); else c.removeAttribute('href');
             c.setAttribute('title', c.textContent);

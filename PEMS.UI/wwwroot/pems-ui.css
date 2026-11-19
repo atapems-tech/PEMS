@@ -348,3 +348,7 @@
 .admin-kpi-value { font-size: 1.65rem; font-weight: 700; margin-block-start: .35rem; }
 @media (max-width: 992px) { .admin-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 576px) { .admin-kpi-grid { grid-template-columns: 1fr; } }
+
+/* SCRUM-625: the print-page layout (labels, forms, reports that are printed): narrow, centred, no screen chrome when printed */
+.pems-print-page { max-inline-size: 210mm; margin-inline: auto; padding: 16px; }
+@media print { .pems-print-page { max-inline-size: none; padding: 0; } .pems-print-page .btn, .pems-print-page nav { display: none !important; } }

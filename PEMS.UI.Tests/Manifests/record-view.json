@@ -39,6 +39,12 @@
             },
             "mono": {
               "type": "boolean"
+            },
+            "template": {
+              "type": [
+                "string",
+                "null"
+              ]
             }
           },
           "required": [
