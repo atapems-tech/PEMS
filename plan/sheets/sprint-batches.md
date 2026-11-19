@@ -16,6 +16,20 @@ Order is by dependency: a later batch only uses what an earlier one shipped.
 | 9 | Conversion: Documents, VDR and letters | 679, 683 to 686, 689 to 690, 714 to 719, 732, 753, 760 to 762 | 18 | no compiled document or letter screen |
 | 10 | **Cutover and rehearsal** | 766 final cutover, 767 release rehearsal, 614 docs | 3 | the application serves only definitions; the rehearsal runs on demo with no build |
 
+## The generic engines and their inputs (owner decision 2026-11-19)
+
+One generic engine per kind; every page, form, action or menu entry is an input to it, never a new engine. A conversion that needs something new adds an **input** to the generic engine (its own issue, in the batch that needs it), never a provider, handler or controller for one page.
+
+| Engine | Generic inputs it already takes |
+|---|---|
+| Page (`/p/{key}`) | layout, regions, components with options, data-source keys, row actions, route definitions |
+| Form (`/f/{key}`) | fields (kind, rules, messages, optionsFrom, readOnly, static options), action key |
+| Action (`/a/{key}`) | handlers `entity.create/update/delete/toggle`, `operation.invoke` (args from field, literal, context; record and options arguments; guard, sectionGuard; `load`), `workflow.execute`; rules `required`, `unique`, `validate`, `deny`, `defaults`, `redirect` |
+| Data source (`/d/{key}`, options) | providers `entity`, `entity-options`, `entity-aggregate`, `operation`, `operation-options`, `components` |
+| Menu and routes | menu catalog rows, `route` definitions |
+
+Inputs still missing (each is an issue in batch 4; a conversion waits on it; SCRUM-780 result and status display, 781 action preconditions, 782 matrix editor, 783 hierarchy editor, plus 595, 596, 615 for files and step-up): result and status display of an operation (test connection, update status), action preconditions (confirm fields, entitlement), matrix editors (permission, navigation visibility), hierarchy editors (menu, organization) on the tree component, file and JSON endpoints (595, 596, 615).
+
 Rules for every batch
 - The engines of batch 1 to 3 are written once and generic; conversions (4 to 9) add only definitions, services and feed (skill `pems-definition-engineer`), never handlers or controllers.
 - A conversion issue is closed only when its controller, views and inline scripts are deleted and its routes ship as `route` definitions.
