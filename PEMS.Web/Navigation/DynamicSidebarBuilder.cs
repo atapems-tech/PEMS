@@ -41,10 +41,15 @@ public class DynamicSidebarBuilder
     private readonly IPermissionService _permissions;
     private readonly IRoleModuleActionService _roleActions;
     private readonly IReplenishmentAvailability _replenishment;
+    private readonly PEMS.Application.Definitions.HydrationCache? _cache;
+
+    /// <summary>SCRUM-575: how long the visible items of a permission set are shared; a change of the menu clears them at once, a change of a role or an administrator override shows within this delay.</summary>
+    public const int MenuCacheSeconds = 60;
 
     public DynamicSidebarBuilder(INavigationMenuService menu, NavigationVisibilityResolver visibility, IPermissionService permissions,
-        IRoleModuleActionService roleActions, IReplenishmentAvailability replenishment)
+        IRoleModuleActionService roleActions, IReplenishmentAvailability replenishment, PEMS.Application.Definitions.HydrationCache? cache = null)
     {
+        _cache = cache;
         _menu = menu;
         _visibility = visibility;
         _permissions = permissions;
@@ -55,8 +60,11 @@ public class DynamicSidebarBuilder
     public async Task<List<SidebarNode>> BuildAsync(ClaimsPrincipal user, IReadOnlyList<string> roles, SidebarRouteContext route,
         Func<NavigationMenuItemDto, string?> href, Func<string, string> localize)
     {
-        var evaluator = await CreateEvaluatorAsync(user, roles);
         var items = await _menu.GetMenuAsync();
+        // SCRUM-575: the rules of every item are evaluated once per permission set (roles) and shared; the structure, the titles, the links and the active item are still made for this request
+        var visible = _cache is null
+            ? await VisibleKeysAsync(user, roles, items)
+            : await _cache.GetOrAddAsync(PEMS.Application.Definitions.HydrationCache.Key("menu", roles, "-", "sidebar:" + items.Count), TimeSpan.FromSeconds(MenuCacheSeconds), () => VisibleKeysAsync(user, roles, items));
         var byParent = items.ToLookup(i => i.ParentKey ?? "");
         var isFa = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
 
@@ -66,7 +74,7 @@ public class DynamicSidebarBuilder
             if (depth > 3) return nodes;   // دفاع در برابر داده‌ی نادرست (چرخه)
             foreach (var item in byParent[parentKey])
             {
-                if (!await evaluator.EvaluateAsync(item.VisibilityRule)) continue;
+                if (!visible.Contains(item.Key)) continue;
 
                 var badge = NavigationBadges.Find(item.BadgeKey);
                 var node = new SidebarNode
@@ -95,6 +103,16 @@ public class DynamicSidebarBuilder
         var roots = await BuildLevel("", 0);
         MarkActive(roots, items, route);
         return roots;
+    }
+
+    /// <summary>The keys of the items whose visibility rule passes for these roles (SCRUM-575).</summary>
+    private async Task<HashSet<string>> VisibleKeysAsync(ClaimsPrincipal user, IReadOnlyList<string> roles, IReadOnlyList<NavigationMenuItemDto> items)
+    {
+        var evaluator = await CreateEvaluatorAsync(user, roles);
+        var keys = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var item in items)
+            if (await evaluator.EvaluateAsync(item.VisibilityRule)) keys.Add(item.Key);
+        return keys;
     }
 
     /// <summary>عنوان: جایگزین مدیر به زبان جاری، وگرنه کلید بومی‌سازی پیش‌فرض.</summary>

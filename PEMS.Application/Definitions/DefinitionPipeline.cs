@@ -107,7 +107,7 @@ public interface IDefinitionHydrator
 /// Resolve, authorize, hydrate (evaluate and render follow with the expression engine and the page host). The published definition comes from its single owner
 /// through <see cref="IDefinitionStore"/>; the time of every stage is returned so the engine can be measured (SCRUM-577).
 /// </summary>
-public sealed class DefinitionPipeline(IDefinitionStore store, IDefinitionAccess access, IEnumerable<IDefinitionHydrator> hydrators)
+public sealed class DefinitionPipeline(IDefinitionStore store, IDefinitionAccess access, IEnumerable<IDefinitionHydrator> hydrators, RenderPlanCache? plans = null)
 {
     private readonly IReadOnlyList<IDefinitionHydrator> _hydrators = hydrators.OrderBy(h => h.Order).ToList();
 
@@ -120,7 +120,7 @@ public sealed class DefinitionPipeline(IDefinitionStore store, IDefinitionAccess
         timings["resolve"] = clock.Elapsed;
         if (published is null) return new PipelineResult(PipelineStatus.NotFound, null, timings, new Dictionary<string, int> { ["definitions"] = 0 });
 
-        var payload = JsonNode.Parse(published.PayloadJson)!;   // a private copy for this request
+        var payload = plans?.Get(published)?.Instantiate() ?? JsonNode.Parse(published.PayloadJson)!;   // a private copy for this request (SCRUM-576: from the compiled plan, parsed once per content hash)
         clock.Restart();
         var permission = payload is JsonObject o && o["permission"] is JsonValue pv && pv.TryGetValue<string>(out var p) ? p : null;
         var allowed = await access.CanOpenAsync(permission, request.Roles, ct);
@@ -132,6 +132,7 @@ public sealed class DefinitionPipeline(IDefinitionStore store, IDefinitionAccess
         foreach (var hydrator in _hydrators) await hydrator.HydrateAsync(resolved, request, ct);
         timings["hydrate"] = clock.Elapsed;
         var counts = new Dictionary<string, int>(resolved.Counts, StringComparer.Ordinal) { ["definitions"] = 1, ["hydrators"] = _hydrators.Count, ["payloadBytes"] = published.PayloadJson.Length };
+        if (plans is not null) counts["planCompiles"] = (int)plans.Compiles;
         return new PipelineResult(PipelineStatus.Ok, resolved, timings, counts);
     }
 }

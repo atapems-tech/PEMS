@@ -21,6 +21,8 @@ public interface IDataSourceProvider
     Task<IReadOnlyList<FieldOption>> LoadAsync(DataSourceRequest request, CancellationToken ct);
     /// <summary>Checks the <c>parameters</c> of a data source definition that names this provider; refused at load.</summary>
     IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters) => [];
+    /// <summary>SCRUM-574: seconds the options may be shared by the users of one permission set (the roles); 0 = never cached. Opt in only when the options do not depend on the user beyond the roles (no row-level rule, no "my items").</summary>
+    int CacheSeconds => 0;
 }
 
 /// <summary>The values an action works on and who runs it.</summary>
@@ -237,7 +239,7 @@ public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess acc
 /// The hydrate stage for forms: a field with <c>optionsFrom</c> gets its options from the data source definition of that key, read with the rights of the user. A source the user may not read, or that
 /// does not exist, gives no options and a problem the host logs; the form is never filled with data the user may not see.
 /// </summary>
-public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAccess access, IEnumerable<IDataSourceProvider> providers) : IDefinitionHydrator
+public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAccess access, IEnumerable<IDataSourceProvider> providers, HydrationCache? cache = null) : IDefinitionHydrator
 {
     public const string OptionsKey = "options";
     public const string ProblemsKey = "problems";
@@ -262,6 +264,7 @@ public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAcces
         definition.Hydrated[ProblemsKey] = problems;
         definition.Counts["optionLists"] = options.Count;
         definition.Counts["options"] = options.Values.Sum(o => o.Count);
+        if (cache is not null) { definition.Counts["cacheHits"] = (int)cache.Hits; definition.Counts["cacheMisses"] = (int)cache.Misses; }   // running totals, SCRUM-574
     }
 
     private async Task<IReadOnlyList<FieldOption>> LoadAsync(string key, PipelineRequest request, List<string> problems, CancellationToken ct)
@@ -280,7 +283,11 @@ public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAcces
         if (providerKey is null || !_providers.TryGetValue(providerKey, out var provider)) { problems.Add($"The provider of \"{key}\" is not registered."); return []; }
         if (provider.AllowedRoles is not null && !provider.AllowedRoles.Any(r => request.Roles.Contains(r, StringComparer.OrdinalIgnoreCase))) { problems.Add($"The user may not read the provider \"{providerKey}\"."); return []; }
         var parameters = (root["parameters"] as JsonObject)?.ToDictionary(p => p.Key, p => (string?)DataSourceDefinitionKind.Str(p.Value) ?? p.Value?.ToJsonString(), StringComparer.Ordinal) ?? new Dictionary<string, string?>();
-        return await provider.LoadAsync(new DataSourceRequest(request.Culture, request.Roles, request.UserName, parameters), ct);
+        var dataRequest = new DataSourceRequest(request.Culture, request.Roles, request.UserName, parameters);
+        if (cache is null || provider.CacheSeconds <= 0) return await provider.LoadAsync(dataRequest, ct);
+        // SCRUM-574: shared by the users of one permission set; the key holds the definition hash, the sorted roles, the culture and the parameters
+        var cacheKey = HydrationCache.Key(published.ContentHash, request.Roles, request.Culture, "options:" + key + ":" + string.Join(';', parameters.OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => p.Key + "=" + p.Value)));
+        return await cache.GetOrAddAsync(cacheKey, TimeSpan.FromSeconds(provider.CacheSeconds), () => provider.LoadAsync(dataRequest, ct));
     }
 }
 
