@@ -24,11 +24,13 @@ public class NavigationMenuService : INavigationMenuService
 
     private readonly PEMSDbContext _ctx;
     private readonly IMemoryCache _cache;
+    private readonly PEMS.Application.Definitions.HydrationCache? _hydration;
 
-    public NavigationMenuService(PEMSDbContext ctx, IMemoryCache cache)
+    public NavigationMenuService(PEMSDbContext ctx, IMemoryCache cache, PEMS.Application.Definitions.HydrationCache? hydration = null)
     {
         _ctx = ctx;
         _cache = cache;
+        _hydration = hydration;   // SCRUM-575: the visible-menu results of every permission set are dropped when the menu changes
     }
 
     public static bool IsValidIcon(string? icon) => string.IsNullOrEmpty(icon) || IconPattern.IsMatch(icon);
@@ -103,6 +105,7 @@ public class NavigationMenuService : INavigationMenuService
         {
             await _ctx.SaveChangesAsync(ct);
             _cache.Remove(CacheKey);
+        _hydration?.Clear();
         }
         return changed;
     }
@@ -257,6 +260,7 @@ public class NavigationMenuService : INavigationMenuService
             return NavigationMenuResult.Fail("Nav_Err_Concurrency");
         }
         _cache.Remove(CacheKey);
+        _hydration?.Clear();
         return NavigationMenuResult.Ok();
     }
 

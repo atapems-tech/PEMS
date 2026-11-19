@@ -6,6 +6,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - Render plans, hydration cache and sidebar visibility cache (SCRUM-574, 575, 576)
+
+### Added
+- `RenderPlanCache` (SCRUM-576): definitions are parsed once per content hash into an immutable plan, requests work on copies, a new version swaps in atomically, an edit that does not compile keeps the last good plan; the pipeline reports `planCompiles`.
+- `HydrationCache` (SCRUM-574): hydrated results shared by the users of one permission set (key: definition hash, sorted roles, culture, scope), with a time to live, hit and miss counts in the log line; data source providers opt in with `CacheSeconds` (none does yet).
+- Sidebar (SCRUM-575): the visibility rules of the menu items are evaluated once per permission set for 60 seconds and cleared when the menu changes; the tree, titles, links and the active item are still made per request.
+
 ## 2026-11-19 - File upload and file export as settings of an action (SCRUM-596, 615)
 
 ### Added
