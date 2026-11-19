@@ -82,6 +82,7 @@ Every issue of the block ends in In Review (conditional done, `qa-pending`, QA c
 - Stopping at a blocker that is a To Do issue of the same area instead of doing it first.
 - Treating "continue" as a reason to skip the audit because the last block did one.
 - Starting a batch's code while its issues were still To Do, so another agent could take one (2026-11-19: claim the batch first).
+- Leaving an issue of a started batch in To Do (owner decision 2026-11-19): while a batch is started, **every issue of it that is To Do, existing or created later for it (an engine input, a gap), goes to In Progress at once**, assigned, in the sprint; In Review only after the merge. An issue that is not part of the started batch stays To Do.
 
 ## 1. Before you start (the "Step 0" checklist)
 
