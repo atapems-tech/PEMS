@@ -503,7 +503,7 @@ public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatal
     protected async Task<ActionOutcome?> ValidateWithOperationAsync(JsonObject p, ActionInvocation invocation, CancellationToken ct)
     {
         if (p["validate"] is not JsonObject validate) return null;
-        using var scope = scopes.CreateScope();
+        using var scope = ActionScope.Open(scopes);
         var operations = scope.ServiceProvider.GetService<OperationCatalog>();
         if (operations is null || operations.Get(EntityJson.Str(validate["model"]), EntityJson.Str(validate["action"])) is null) return ActionOutcome.Refused(Msg("The action is not set up.", "کنش درست تنظیم نشده است."));
         var outcome = await new OperationInvokeAction(scopes, operations).ExecuteAsync(invocation with { Parameters = validate }, ct);
@@ -515,7 +515,7 @@ public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatal
         var p = invocation.Parameters;
         var entity = catalog.Get(EntityJson.Str(p?["entity"]));
         if (entity is null) return ActionOutcome.Refused(Msg("The action is not set up.", "کنش درست تنظیم نشده است."));
-        using var scope = scopes.CreateScope();
+        using var scope = ActionScope.Open(scopes);
         if (!await EntityAccess.CanWriteAsync(scope.ServiceProvider, entity, PermissionOf(entity), invocation.Roles, ct)) return ActionOutcome.Refused(Msg("You may not do this.", "اجازه‌ی انجام این کار را ندارید."));
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
         return await RunAsync(db, entity, p!, invocation, ct);
@@ -643,7 +643,9 @@ public sealed class EntityCreateAction(IServiceScopeFactory scopes, EntityCatalo
         if (redirect is not null)
             foreach (var name in entity.Readable)
                 redirect = redirect.Replace("{" + name + "}", Uri.EscapeDataString(EntityJson.Show(entity.ClrType.GetProperty(name)!.GetValue(row))), StringComparison.Ordinal);
-        return ActionOutcome.Done(null, redirect);
+        // SCRUM-594: what the row has now (the new key included) is returned, so a following step or the redirect of the action can use it as {Id}
+        var returned = entity.Readable.ToDictionary(name => name, name => (string?)EntityJson.Show(entity.ClrType.GetProperty(name)!.GetValue(row)), StringComparer.Ordinal);
+        return ActionOutcome.Done(null, redirect, returned);
     }
 }
 
