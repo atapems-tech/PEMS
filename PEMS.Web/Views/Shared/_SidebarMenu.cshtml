@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "PermissionMatrix", "Department", "Employee", "Authorization", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
+    var adminControllers = new[] { "Settings", "Users", "PermissionMatrix", "Department", "Employee", "Authorization", "NavigationVisibility", "Organization", "OrganizationImport", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -823,8 +823,7 @@
                     <pems-icon name="bi-journal-check" /> @Localizer["Authorization Audit"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("DatabaseUpdate"))"
-                   asp-area="Admin" asp-controller="DatabaseUpdate" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/database-update" active="@Context.Request.Path.StartsWithSegments("/p/database-update")">
                     <pems-icon name="bi-database-up" /> @Localizer["Database Update"]
                 </pems-nav-link>
 
