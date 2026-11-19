@@ -151,7 +151,7 @@ public sealed class EntityDefinitionsTests
         var create = new EntityCreateAction(null!, Catalog);
         JsonObject P(string json) => JsonNode.Parse(json)!.AsObject();
         Assert.Empty(create.ValidateParameters(P(UomParameters)));
-        Assert.Contains("unknown-entity", create.ValidateParameters(P("""{"entity":"ApplicationUser","map":{"a":"B"}}""")).Select(e => e.Code));
+        Assert.Contains("unknown-entity", create.ValidateParameters(P("""{"entity":"UserLogin","map":{"a":"B"}}""")).Select(e => e.Code));
         Assert.Contains("required", create.ValidateParameters(P("""{"entity":"MaterialUOM"}""")).Select(e => e.Code));
         Assert.Contains("not-writable", create.ValidateParameters(P("""{"entity":"MaterialUOM","map":{"id":"MaterialUOMId"}}""")).Select(e => e.Code));   // the key is not writable
         Assert.Contains("not-writable", create.ValidateParameters(P("""{"entity":"MaterialUOM","map":{"code":"Code"},"required":["TenantId"]}""")).Select(e => e.Code));

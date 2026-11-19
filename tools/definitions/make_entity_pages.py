@@ -98,6 +98,7 @@ def make(spec):
         ff, map_, required = form_fields(spec, key)
         create_params = {"entity": entity, "map": map_, "required": required, "defaults": spec.get("defaults", {}), "unique": spec.get("unique", [])}
         if spec.get("create_redirect"): create_params["redirect"] = spec["create_redirect"]
+        if spec.get("create_deny"): create_params["deny"] = spec["create_deny"]
         write("form", key + "-create", envelope("form", key + "-create", t("Create " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1]), t("Create a new " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1] + " جدید"), {
             "id": key + "-create", "title": t("New " + spec["singular"][0].lower(), spec["singular"][1] + " جدید"), "submitLabel": t("Create", "ایجاد"), "actionKey": key + "-create", "columns": 2, "warnOnLeave": True, "fields": ff}))
         action(key + "-create", t("Create " + spec["singular"][0].lower(), "ایجاد " + spec["singular"][1]), "entity.create", create_params, "/p/" + key, t(spec["singular"][0] + " created.", spec["singular"][1] + " ایجاد شد."))
@@ -233,6 +234,23 @@ SPECS += [
            [{"prop": "Name", "en": "Name", "fa": "نام", "required": True, "maxLength": 100}, select("DisciplineId", "Discipline", "دیسیپلین", "Discipline", "DisciplineId", "Name"),
             {"prop": "Description", "kind": "textArea", "en": "Description", "fa": "توضیحات", "maxLength": 500, "span": 2}],
            [unique(["Name"], "A qualification with this name already exists.", "صلاحیتی با همین نام از قبل وجود دارد.")], lookups=[DISCIPLINE]),
+    # ---- W1 administration: audit trails (read only) and separation of duties (SCRUM-629, 630, 647)
+    {"key": "audit-log", "entity": "AuditLog", "id": "AuditLogId", "title": ("Audit log", "گزارش ممیزی"), "singular": ("Audit entry", "رکورد ممیزی"), "create": False,
+     "columns": [("AuditLogId", "Id", "شناسه", "number", 80), ("Timestamp", "When", "زمان", "datetime", 170), ("EntityName", "Entity", "موجودیت", "text", 170, True), ("EntityKeyValue", "Key", "کلید", "text", 120, True), ("Action", "Action", "عملیات", "text", 100),
+                 ("ChangedFieldsSummary", "Changed fields", "فیلدهای تغییریافته", "text", 420), ("UserName", "User", "کاربر", "text", 150, True), ("IsAIAssisted", "AI assisted", "با کمک هوش مصنوعی", "bool", 130)],
+     "sort": ["-Timestamp", "-AuditLogId"], "form": []},
+    {"key": "authorization-audit", "entity": "AuthorizationAuditLog", "id": "AuthorizationAuditLogId", "title": ("Authorization audit", "ممیزی دسترسی"), "singular": ("Authorization decision", "تصمیم دسترسی"), "create": False,
+     "columns": [("AuthorizationAuditLogId", "Id", "شناسه", "number", 80), ("Timestamp", "When", "زمان", "datetime", 170), ("User", "User", "کاربر", "lookup", 150), ("ResourceName", "Resource", "منبع", "text", 170, True), ("ActionName", "Action", "عملیات", "text", 120, True), ("ResourceId", "Resource id", "شناسه‌ی منبع", "text", 120, True),
+                 ("Decision", "Decision", "تصمیم", "text", 100), ("Reason", "Reason", "دلیل", "text", 320), ("IpAddress", "IP address", "نشانی IP", "text", 130)],
+     "lookups": [{"name": "user", "entity": "ApplicationUser", "foreignKey": "UserId", "label": "UserName"}],
+     "sort": ["-Timestamp", "-AuthorizationAuditLogId"], "form": []},
+    dict(simple("sod-policies", "SoDPolicy", "SoDPolicyId", ("Separation of duties", "تفکیک وظایف"), ("Separation policy", "سیاست تفکیک وظایف"),
+                [("PermissionA", "Permission A", "مجوز اول", "lookup", 260), ("PermissionB", "Permission B", "مجوز دوم", "lookup", 260), ("Description", "Description", "توضیحات", "text", 320), ("IsActive", "Active", "فعال", "bool", 100)],
+                [select("PermissionAId", "Permission A", "مجوز اول", "Permission", "PermissionId", "Name", True), select("PermissionBId", "Permission B", "مجوز دوم", "Permission", "PermissionId", "Name", True),
+                 {"prop": "Description", "kind": "textArea", "en": "Description", "fa": "توضیحات", "maxLength": 500, "span": 2}],
+                [{"fields": ["PermissionAId", "PermissionBId"], "symmetric": True, "where": {"IsActive": True}, "message": t("An active policy for this permission pair already exists.", "برای این جفت مجوز از قبل سیاست فعالی وجود دارد.")}],
+                lookups=[{"name": "permissionA", "entity": "Permission", "foreignKey": "PermissionAId", "label": "Name"}, {"name": "permissionB", "entity": "Permission", "foreignKey": "PermissionBId", "label": "Name"}], edit=False),
+         create_deny=[{"when": "values.permissionAId == values.permissionBId", "message": t("A permission cannot conflict with itself.", "یک مجوز نمی‌تواند با خودش تعارض داشته باشد.")}]),
     # ---- W4 storage locations (InventoryMasterData permissions)
     simple("storage-locations", "StorageLocation", "StorageLocationId", ("Storage locations", "محل‌های نگهداری"), ("Storage location", "محل نگهداری"),
            [("Code", "Code", "کد", "text", 140, True), ("Name", "Name", "نام", "text", 240, True), ("Warehouse", "Warehouse", "انبار", "lookup", 180), ("Parent", "Parent location", "محل والد", "lookup", 180), ("IsActive", "Active", "فعال", "bool", 100)],

@@ -434,8 +434,8 @@ public sealed class EntityRecordLoader(IServiceScopeFactory scopes, EntityCatalo
 
 /// <summary>
 /// The write handlers of the entity layer: <c>entity.create</c>, <c>entity.update</c>, <c>entity.delete</c> and <c>entity.toggle</c> share one parameter vocabulary:
-/// <c>entity</c>; <c>map</c> (form field to property, create and update); <c>required</c>; <c>defaults</c> (create; a literal, <c>"$now"</c> or <c>"$utcnow"</c>); <c>unique</c> (<c>{ fields, message, ignoreEmpty }</c>: no other row
-/// may have the same values, text compared without case, an empty value skipped when <c>ignoreEmpty</c>); <c>deny</c> (<c>{ when, message }</c>: an expression over <c>row</c> (the current row), <c>values</c> and
+/// <c>entity</c>; <c>map</c> (form field to property, create and update); <c>required</c>; <c>defaults</c> (create; a literal, <c>"$now"</c> or <c>"$utcnow"</c>); <c>unique</c> (<c>{ fields, message, ignoreEmpty, symmetric, where }</c>: no other row
+/// may have the same values, text compared without case, an empty value skipped when <c>ignoreEmpty</c>; <c>symmetric</c> with two fields makes (A, B) and (B, A) the same pair; <c>where</c> limits the rows compared, e.g. only active ones); <c>deny</c> (<c>{ when, message }</c>: an expression over <c>row</c> (the current row), <c>values</c> and
 /// <c>user</c>; the first that holds refuses); <c>property</c> (toggle: the bool property); <c>deactivate</c> (delete: a bool property set to false instead of removing the row); <c>redirect</c> (create: a path with
 /// <c>{Property}</c> placeholders of the new row). The values of the form carry <c>id</c> for update, delete and toggle.
 /// </summary>
@@ -479,6 +479,14 @@ public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatal
             {
                 if (unique[i] is not JsonObject u) { errors.Add(new($"/unique/{i}", "wrong-type", "Def_Err_Type", "A unique rule is an object.")); continue; }
                 foreach (var f in EntityJson.Names(u["fields"])) if (entity.ClrType.GetProperty(f) is null) errors.Add(new($"/unique/{i}/fields", "unknown-field", "Def_Err_UnknownField", $"'{f}' is not a property of {entity.Name}."));
+                if (u["symmetric"] is not null && EntityJson.Names(u["fields"]).Count != 2) errors.Add(new($"/unique/{i}/symmetric", "wrong-fields", "Def_Err_Type", "symmetric needs exactly two fields."));
+                if (u["where"] is JsonObject uw)
+                    foreach (var (wn, wv) in uw)
+                    {
+                        var wp = entity.ClrType.GetProperty(wn);
+                        if (wp is null || !EntityJson.Supported(wp.PropertyType) || EntityJson.Convert(wp.PropertyType, wv is JsonValue wj && wj.TryGetValue<string>(out var wt) ? wt : wv!.ToJsonString()) is EntityJson.NotConvertible)
+                            errors.Add(new($"/unique/{i}/where/{wn}", "wrong-type", "Def_Err_Type", $"The value of '{wn}' does not fit its type."));
+                    }
                 DataSourceDefinitionKind.CheckLabel(u["message"], $"/unique/{i}/message", errors);
             }
         errors.AddRange(EntityJson.CheckDeny(parameters["deny"], entity));
@@ -529,7 +537,9 @@ public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatal
             var fields = EntityJson.Names(u["fields"]);
             if (u["ignoreEmpty"] is JsonValue ie && ie.TryGetValue<bool>(out var skip) && skip
                 && fields.Any(f => entity.ClrType.GetProperty(f)!.GetValue(row) is null or "")) continue;
-            var exists = await (Task<bool>)typeof(EntityWriteAction).GetMethod(nameof(Exists), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType).Invoke(null, [db, row, fields, entity.KeyProperty, ct])!;
+            var symmetric = u["symmetric"] is JsonValue sy && sy.TryGetValue<bool>(out var pair) && pair && fields.Count == 2;
+            var scope = (u["where"] as JsonObject)?.Select(w => (w.Key, entity.ClrType.GetProperty(w.Key)!.PropertyType, w.Value is JsonValue jv && jv.TryGetValue<string>(out var text) ? text : w.Value!.ToJsonString())).ToList() ?? [];
+            var exists = await (Task<bool>)typeof(EntityWriteAction).GetMethod(nameof(Exists), BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(entity.ClrType).Invoke(null, [db, row, fields, entity.KeyProperty, symmetric, scope, ct])!;
             if (!exists) continue;
             var message = u["message"]?.Deserialize<TranslatableText>(PemsJson.Options) ?? Msg("This already exists.", "این مورد از قبل وجود دارد.");
             var field = map.FirstOrDefault(m => fields.Contains(EntityJson.Str(m.Value) ?? "")).Key;
@@ -538,21 +548,33 @@ public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatal
         return null;
     }
 
-    private static async Task<bool> Exists<T>(PEMSDbContext db, object row, IReadOnlyList<string> fields, string keyProperty, CancellationToken ct) where T : class
+    private static async Task<bool> Exists<T>(PEMSDbContext db, object row, IReadOnlyList<string> fields, string keyProperty, bool symmetric, List<(string Name, Type Type, string Raw)> scope, CancellationToken ct) where T : class
     {
         var x = Expression.Parameter(typeof(T), "x");
+        Expression Same(string column, string valueOf)
+        {
+            var pi = typeof(T).GetProperty(column)!;
+            var left = Expression.Property(x, pi);
+            var value = typeof(T).GetProperty(valueOf)!.GetValue(row);
+            return pi.PropertyType == typeof(string)
+                ? Expression.Equal(Expression.Call(Expression.Coalesce(left, Expression.Constant("")), typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!), Expression.Constant((value as string ?? "").Trim().ToLowerInvariant()))
+                : Expression.Equal(left, Expression.Constant(value, pi.PropertyType));
+        }
         Expression? all = null;
         foreach (var name in fields)
         {
-            var pi = typeof(T).GetProperty(name)!;
-            var left = Expression.Property(x, pi);
-            var value = pi.GetValue(row);
-            Expression eq = pi.PropertyType == typeof(string)
-                ? Expression.Equal(Expression.Call(Expression.Coalesce(left, Expression.Constant("")), typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes)!), Expression.Constant((value as string ?? "").Trim().ToLowerInvariant()))
-                : Expression.Equal(left, Expression.Constant(value, pi.PropertyType));
+            var eq = Same(name, name);
             all = all is null ? eq : Expression.AndAlso(all, eq);
         }
         if (all is null) return false;
+        // a pair is the same pair in either order: (A, B) and (B, A)
+        if (symmetric) all = Expression.OrElse(all, Expression.AndAlso(Same(fields[0], fields[1]), Same(fields[1], fields[0])));
+        // only the rows the rule names (for example the active ones) are compared
+        foreach (var (name, type, raw) in scope)
+        {
+            var pi = typeof(T).GetProperty(name)!;
+            all = Expression.AndAlso(all, Expression.Equal(Expression.Property(x, pi), Expression.Constant(EntityJson.Convert(type, raw), pi.PropertyType)));
+        }
         // an edit must not collide with itself
         var key = typeof(T).GetProperty(keyProperty)!;
         var self = key.GetValue(row);
