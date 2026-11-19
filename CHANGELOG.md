@@ -12,6 +12,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - Stored file download by definition (SCRUM-615)
+
+### Added
+- Action handler `file.download`: a stored file by key, served only inside the folder the definition names, with the action's permission and roles; returned through `ActionOutcome.Download`.
+
 ## 2026-11-19 - One field-error shape (SCRUM-380)
 
 ### Added
