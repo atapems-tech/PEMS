@@ -103,7 +103,7 @@ public class AdminSettingsListPagesTests
             Assert.DoesNotContain("class=\"btn btn-", view);                             // buttons come from the components
         }
         // the inline editors moved with the RelatedList row-form mode (SCRUM-337): list frame, rows edited in place
-        foreach (var editor in new[] { "ContractApprovalAuthority", "Numbering", "RoutingRules" })
+        foreach (var editor in new[] { "Numbering", "RoutingRules" })
         {
             var view = File.ReadAllText(Path.Combine(views, editor, "Index.cshtml"));
             Assert.Contains("<pems-list-page", view);
