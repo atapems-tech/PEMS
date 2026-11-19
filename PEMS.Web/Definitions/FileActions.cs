@@ -221,3 +221,60 @@ public sealed class FileExportAction(IServiceScopeFactory scopes) : IActionHandl
 
     private static string GridRequestPageSize() => PEMS.Application.Grids.GridRequest.MaxPageSize.ToString(CultureInfo.InvariantCulture);
 }
+
+/// <summary>
+/// <c>file.download</c>: a stored file for the user to download, by the key the upload gave (SCRUM-615). Parameters: <c>field</c> (the posted value that holds the key, default <c>key</c>), <c>prefix</c> (the logical folder the key must
+/// be in, for example <c>vdr/comments</c>: a key outside it is refused, so a definition can only serve the files of the folder it names), <c>fileName</c> (optional name shown to the user; default the stored name), <c>maxMb</c> (default 50).
+/// The action's own permission and roles decide who may run it; a record-level rule (who may read this file of this record) is a data source or a <c>deny</c> rule in the definition that names the record.
+/// </summary>
+public sealed class FileDownloadAction(IServiceScopeFactory scopes) : IActionHandler
+{
+    public const string HandlerKey = "file.download";
+    public const int DefaultMaxMb = 50;
+    private static readonly Regex Prefix = new("^[a-z0-9][a-z0-9/_-]{0,60}$", RegexOptions.Compiled);
+    private static readonly Regex FieldName = new("^[A-Za-z][A-Za-z0-9_.-]{0,60}$", RegexOptions.Compiled);
+    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "field", "prefix", "fileName", "maxMb" };
+
+    public string Key => HandlerKey;
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    /// <summary>A key is served only inside the folder the definition names: it starts with <c>prefix/</c> and has no way out of it.</summary>
+    public static bool KeyAllowed(string prefix, string? key)
+        => !string.IsNullOrWhiteSpace(key) && key.StartsWith(prefix + "/", StringComparison.Ordinal) && !key.Contains("..", StringComparison.Ordinal)
+           && !key.Contains('\\') && !key.Contains(':') && !key.StartsWith('/');
+
+    public IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
+    {
+        var errors = new List<DefinitionFieldError>();
+        foreach (var p in parameters ?? []) if (!Allowed.Contains(p.Key)) errors.Add(new("/" + p.Key, "unknown-property", "Def_Err_UnknownProperty", $"'{p.Key}' is not a setting of file.download."));
+        if (parameters?["field"] is { } f && !(EntityJson.Str(f) is { } fs && FieldName.IsMatch(fs))) errors.Add(new("/field", "invalid-field", "Def_Err_Type", "field is the name of the posted value that holds the file key."));
+        if (EntityJson.Str(parameters?["prefix"]) is not { } prefix || !Prefix.IsMatch(prefix) || prefix.Contains("//", StringComparison.Ordinal)) errors.Add(new("/prefix", "required", "Def_Err_Required", "prefix is the logical folder the files are in (lower-case letters, digits, / _ -)."));
+        if (parameters?["fileName"] is { } n && !(EntityJson.Str(n) is { } ns && ns.Length is >= 1 and <= 120)) errors.Add(new("/fileName", "invalid-name", "Def_Err_Type", "fileName is a name of 1 to 120 characters."));
+        if (parameters?["maxMb"] is { } max && !(max is JsonValue v && v.TryGetValue<int>(out var mb) && mb is >= 1 and <= 500)) errors.Add(new("/maxMb", "range", "Def_Err_Range", "maxMb is a whole number from 1 to 500."));
+        return errors;
+    }
+
+    public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
+    {
+        var p = invocation.Parameters;
+        if (EntityJson.Str(p?["prefix"]) is not { } prefix) return ActionOutcome.Refused(Text("The action is not set up.", "کنش درست تنظیم نشده است."));
+        var field = EntityJson.Str(p?["field"]) ?? "key";
+        var key = invocation.Values.GetValueOrDefault(field);
+        if (!KeyAllowed(prefix, key)) return ActionOutcome.Refused(field, Text("This file cannot be downloaded here.", "این فایل از اینجا قابل دریافت نیست."));
+
+        using var scope = ActionScope.Open(scopes);
+        var storage = scope.ServiceProvider.GetRequiredService<IFileStorageService>();
+        if (!await storage.ExistsAsync(key!)) return ActionOutcome.Refused(field, Text("The file was not found.", "فایل پیدا نشد."));
+
+        var limit = (p?["maxMb"] is JsonValue mv && mv.TryGetValue<int>(out var mb) ? mb : DefaultMaxMb) * 1024L * 1024L;
+        await using var stream = await storage.OpenReadAsync(key!);
+        using var buffer = new MemoryStream();
+        await stream.CopyToAsync(buffer, ct);
+        if (buffer.Length > limit) return ActionOutcome.Refused(field, Text("The file is too large to download here.", "حجم فایل برای دریافت از اینجا بیش از حد است."));
+
+        var name = UploadPolicy.SafeFileName(EntityJson.Str(p?["fileName"]) ?? invocation.Values.GetValueOrDefault("fileName") ?? Path.GetFileName(key!));
+        return ActionOutcome.Download(new FileResult(buffer.ToArray(), name, UploadPolicy.ContentTypeFor(name)));
+    }
+
+    private static TranslatableText Text(string en, string fa) => TranslatableText.Of(("en", en), ("fa", fa));
+}
