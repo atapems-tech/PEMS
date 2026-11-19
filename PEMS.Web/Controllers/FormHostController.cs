@@ -17,7 +17,7 @@ namespace PEMS.Web.Controllers;
 /// in code: a changed definition is a changed form.
 /// </summary>
 [Route("f/{key}")]
-public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log, EntityRecordLoader? records = null) : Controller
+public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log, EntityRecordLoader? records = null, PEMS.Application.Definitions.PipelineBudgets? budgets = null) : Controller
 {
     private static readonly Regex KeyShape = new("^[a-z0-9][a-z0-9._-]{0,80}$", RegexOptions.Compiled);
     private static readonly JsonSerializerOptions Strict = new(PemsJson.Options);
@@ -79,6 +79,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         if (result.Status == PipelineStatus.NotFound) return new Loaded(NotFound(), null, context, new Dictionary<string, IReadOnlyList<FieldOption>>(), null);
         if (result.Status == PipelineStatus.Forbidden) return new Loaded(Forbid(), null, context, new Dictionary<string, IReadOnlyList<FieldOption>>(), null);
 
+        HostDiagnostics.Report(log, HttpContext.TraceIdentifier, "form", key, result.Timings, result.Counts, budgets);   // SCRUM-577
         var form = result.Resolved!.Payload.Deserialize<FormDefinition>(Strict)!;
         var options = result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.OptionsKey, out var o) && o is IReadOnlyDictionary<string, IReadOnlyList<FieldOption>> map ? map : new Dictionary<string, IReadOnlyList<FieldOption>>();
         if (result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.ProblemsKey, out var p) && p is IEnumerable<string> problems)

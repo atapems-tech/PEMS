@@ -223,6 +223,8 @@ public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAcces
         }
         definition.Hydrated[OptionsKey] = options;
         definition.Hydrated[ProblemsKey] = problems;
+        definition.Counts["optionLists"] = options.Count;
+        definition.Counts["options"] = options.Values.Sum(o => o.Count);
     }
 
     private async Task<IReadOnlyList<FieldOption>> LoadAsync(string key, PipelineRequest request, List<string> problems, CancellationToken ct)
