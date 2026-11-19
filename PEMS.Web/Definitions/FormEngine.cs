@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using PEMS.Application.Definitions;
 using PEMS.Application.Expressions;
+using PEMS.Application.Validation;
 using PEMS.UI.Abstractions;
 
 namespace PEMS.Web.Definitions;
@@ -32,25 +33,9 @@ public static class FormEngine
     // ---- values as the expression language sees them -------------------------------------------------------------------------------------------------------------------------------
 
     /// <summary>Persian and Arabic-Indic digits become ASCII digits, so a number typed in either way is the same number.</summary>
-    public static string NormalizeDigits(string s)
-    {
-        var chars = s.ToCharArray();
-        for (var i = 0; i < chars.Length; i++)
-        {
-            var c = chars[i];
-            if (c is >= '۰' and <= '۹') chars[i] = (char)('0' + (c - '۰'));
-            else if (c is >= '٠' and <= '٩') chars[i] = (char)('0' + (c - '٠'));
-            else if (c == '٫') chars[i] = '.';
-        }
-        return new string(chars);
-    }
+    public static string NormalizeDigits(string s) => FieldValidator.NormalizeDigits(s);
 
-    public static bool TryNumber(string? raw, out decimal number)
-    {
-        number = 0;
-        if (string.IsNullOrWhiteSpace(raw)) return false;
-        return decimal.TryParse(NormalizeDigits(raw.Trim()).Replace(",", ""), NumberStyles.Number, CultureInfo.InvariantCulture, out number);
-    }
+    public static bool TryNumber(string? raw, out decimal number) => FieldValidator.TryNumber(raw, out number);
 
     private static object? Typed(FieldDescriptor f, string? raw)
     {
@@ -141,7 +126,7 @@ public static class FormEngine
             TranslatableText? error = null;
             if (empty)
             {
-                if (c.Required) error = Pick(m?.Required, Msg("This field is required.", "این فیلد الزامی است."));
+                if (c.Required) error = Pick(m?.Required, ValidationMessages.Text(ConstraintCodes.Required));
             }
             else error = CheckValue(f, value!, m);
 
@@ -161,34 +146,38 @@ public static class FormEngine
         return new FormValidation(errors, formErrors, cleaned);
     }
 
+    // SCRUM-373: the built-in checks are the one validator of PEMS.Application (stable constraint codes); the form shows the first violation of the field, in the definition's own text when it has one.
     private static TranslatableText? CheckValue(FieldDescriptor f, string value, FieldMessages? m)
     {
-        if (f.MaxLength is { } max && value.Length > max) return Pick(m?.MaxLength, Msg("At most {0} characters.", "حداکثر {0} نویسه مجاز است.", max));
-        if (f.MinLength is { } min && value.Length < min) return Pick(m?.MinLength, Msg("At least {0} characters.", "حداقل {0} نویسه لازم است.", min));
-        switch (f.Kind)
+        var first = FieldValidator.CheckValue(ToConstraints(f), value).FirstOrDefault();
+        if (first is null) return null;
+        var custom = first.Code switch
         {
-            case FieldKind.Number or FieldKind.Money:
-                if (!TryNumber(value, out var n)) return Pick(m?.Invalid, Msg("Enter a number.", "یک عدد وارد کنید."));
-                if (f.Min is { } lo && n < lo) return Pick(m?.Min, Msg("The smallest allowed value is {0}.", "کمترین مقدار مجاز {0} است.", lo));
-                if (f.Max is { } hi && n > hi) return Pick(m?.Max, Msg("The largest allowed value is {0}.", "بیشترین مقدار مجاز {0} است.", hi));
-                break;
-            case FieldKind.Date:
-                if (!DateTime.TryParseExact(NormalizeDigits(value), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out _)) return Pick(m?.Invalid, Msg("Enter a valid date.", "یک تاریخ معتبر وارد کنید."));
-                break;
-            case FieldKind.Time:
-                if (!TimeSpan.TryParseExact(NormalizeDigits(value), ["hh\\:mm", "hh\\:mm\\:ss"], CultureInfo.InvariantCulture, out _)) return Pick(m?.Invalid, Msg("Enter a valid time.", "یک ساعت معتبر وارد کنید."));
-                break;
-            case FieldKind.Select or FieldKind.Radio:
-                if (f.Options is { Count: > 0 } opts && !opts.Any(o => o.Value == value)) return Pick(m?.NotAllowed, Msg("Choose one of the listed values.", "یکی از مقدارهای فهرست را انتخاب کنید."));
-                break;
-        }
-        if (!string.IsNullOrEmpty(f.Pattern))
-        {
-            try { if (!Regex.IsMatch(value, "^(?:" + f.Pattern + ")$", RegexOptions.CultureInvariant, PatternTimeout)) return Pick(m?.Pattern, Msg("The value is not in the expected format.", "قالب مقدار درست نیست.")); }
-            catch (RegexMatchTimeoutException) { return Pick(m?.Pattern, Msg("The value is not in the expected format.", "قالب مقدار درست نیست.")); }
-        }
-        return null;
+            ConstraintCodes.MaxLength => m?.MaxLength,
+            ConstraintCodes.MinLength => m?.MinLength,
+            ConstraintCodes.NotANumber or ConstraintCodes.NotADate or ConstraintCodes.NotATime => m?.Invalid,
+            ConstraintCodes.Min => m?.Min,
+            ConstraintCodes.Max => m?.Max,
+            ConstraintCodes.NotAllowed => m?.NotAllowed,
+            ConstraintCodes.Pattern => m?.Pattern,
+            _ => null,
+        };
+        return Pick(custom, ValidationMessages.Text(first.Code, first.Params));
     }
+
+    /// <summary>What a form field accepts, as the validator sees it (the same constraints an entity column or an import column is checked with).</summary>
+    public static FieldConstraints ToConstraints(FieldDescriptor f) => new()
+    {
+        Name = f.Name,
+        Type = f.Kind switch
+        {
+            FieldKind.TextArea => FieldType.TextArea, FieldKind.Number => FieldType.Number, FieldKind.Date => FieldType.Date, FieldKind.Select => FieldType.Select, FieldKind.Checkbox => FieldType.Checkbox,
+            FieldKind.File => FieldType.File, FieldKind.RichText => FieldType.RichText, FieldKind.Password => FieldType.Password, FieldKind.Money => FieldType.Money, FieldKind.Time => FieldType.Time,
+            FieldKind.Radio => FieldType.Radio, FieldKind.Switch => FieldType.Switch, FieldKind.Tags => FieldType.Tags, _ => FieldType.Text,
+        },
+        Required = f.Required, MinLength = f.MinLength, MaxLength = f.MaxLength, Min = f.Min, Max = f.Max, Pattern = f.Pattern,
+        Options = f.Options?.Select(o => o.Value).ToList(),
+    };
 
     // ---- checks at load -------------------------------------------------------------------------------------------------------------------------------------------------------------
 

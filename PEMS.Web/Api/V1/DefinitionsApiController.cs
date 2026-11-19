@@ -120,6 +120,18 @@ public sealed class DefinitionsApiController : ApiControllerBase
             DefinitionResource.Parse(i.PayloadJson)!.Value, i.ContentHash, i.VersionNumber)).ToList()));
     }
 
+    [HttpGet("{id:int}/upstream")]
+    [ApiPermission(Module, "View")]
+    [ProducesResponseType<DefinitionUpstreamResource>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Compare a customised shipped definition with the shipped one")]
+    [EndpointDescription("For a definition that ships with the product: whether the customer changed it, whether a newer shipped version exists, and the differences between the published payload and the shipped payload.")]
+    public async Task<IActionResult> GetUpstream(int id, CancellationToken ct)
+    {
+        var r = await _service.GetUpstreamAsync(id, ct);
+        return r.Success ? Ok(DefinitionUpstreamResource.From(r.Value!)) : Problem(r);
+    }
+
     // ------------------------------------------------------------------ writes
 
     [HttpPost]
@@ -238,6 +250,19 @@ public sealed class DefinitionsApiController : ApiControllerBase
         if (gate != null) return gate;
         if (input.ToVersion is null or < 1) return ApiProblem.Validation(new[] { new ApiFieldError("/toVersion", "required", "Def_Err_Required", "Say which version to publish again.") });
         return await DetailResultAsync(await _service.RollbackAsync(id, input.ToVersion.Value, revision, Actor, ct));
+    }
+
+    [HttpPost("{id:int}/actions/reset-to-shipped")]
+    [ApiPermission(Module, "Approve")]
+    [ProducesResponseType<DefinitionResource>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status409Conflict, ApiProblem.ContentType)]
+    [EndpointSummary("Reset a definition to the shipped version")]
+    [EndpointDescription("Publishes the shipped payload again as a new version; the customer's versions stay in the history. Needs permission Approve and If-Match with the envelope ETag.")]
+    public async Task<IActionResult> ResetToShipped(int id, CancellationToken ct)
+    {
+        var (gate, revision) = await EnvelopeGateAsync(id, ct);
+        if (gate != null) return gate;
+        return await DetailResultAsync(await _service.ResetToShippedAsync(id, revision, Actor, ct));
     }
 
     [HttpPost("import")]

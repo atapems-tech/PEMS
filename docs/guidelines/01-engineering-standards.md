@@ -75,6 +75,7 @@ Production has no internet: no CDN, no external call, no telemetry, no online li
 
 ## 6. Security
 
+- **One validator** (SCRUM-372, 373, 380): every write path (form, API, import) checks a field with `PEMS.Application.Validation.FieldValidator` and reports the stable constraint codes of [FIELD_VALIDATION_CATALOG.md](../architecture/FIELD_VALIDATION_CATALOG.md) in the one RFC 9457 error list; a new constraint is a new code, a new case and a catalog row (a test keeps them in step), never a hand-written check in a controller or service.
 - Validate on the server; encode output (Razor does by default - never `Html.Raw` on user data); antiforgery on every state-changing request (including `fetch`).
 - Authorization at the service/policy level, not only by hiding UI. Check RLS (section 1) on every new query.
 - No string-built SQL; use EF/parameters.

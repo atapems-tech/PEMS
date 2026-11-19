@@ -706,6 +706,72 @@
         }
       }
     },
+    "/api/v1/definitions/{id}/upstream": {
+      "get": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Compare a customised shipped definition with the shipped one",
+        "description": "For a definition that ships with the product: whether the customer changed it, whether a newer shipped version exists, and the differences between the published payload and the shipped payload.",
+        "operationId": "Definitions_GetUpstream",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionUpstreamResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionUpstreamResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionUpstreamResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
     "/api/v1/definitions/{id}/actions/create-draft": {
       "post": {
         "tags": [
@@ -1034,6 +1100,86 @@
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionResource"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/reset-to-shipped": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Reset a definition to the shipped version",
+        "description": "Publishes the shipped payload again as a new version; the customer\u0027s versions stay in the history. Needs permission Approve and If-Match with the envelope ETag.",
+        "operationId": "Definitions_ResetToShipped",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1879,6 +2025,35 @@
           }
         }
       },
+      "DefinitionDiffEntryResource": {
+        "required": [
+          "pointer",
+          "change",
+          "published",
+          "shipped"
+        ],
+        "type": "object",
+        "properties": {
+          "pointer": {
+            "type": "string"
+          },
+          "change": {
+            "type": "string"
+          },
+          "published": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "shipped": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
       "DefinitionDraftInput": {
         "required": [
           "payload",
@@ -2114,6 +2289,62 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "DefinitionUpstreamResource": {
+        "required": [
+          "customized",
+          "upstreamChanged",
+          "shippedVersion",
+          "basedOnShippedVersion",
+          "publishedVersion",
+          "diff",
+          "truncated"
+        ],
+        "type": "object",
+        "properties": {
+          "customized": {
+            "type": "boolean"
+          },
+          "upstreamChanged": {
+            "type": "boolean"
+          },
+          "shippedVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "basedOnShippedVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "publishedVersion": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "diff": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefinitionDiffEntryResource"
+            }
+          },
+          "truncated": {
+            "type": "boolean"
           }
         }
       },
