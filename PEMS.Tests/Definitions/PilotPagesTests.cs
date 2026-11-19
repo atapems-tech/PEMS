@@ -64,7 +64,7 @@ public sealed class PilotPagesTests
         var broken = new List<string>();
         foreach (var d in package)
             foreach (var r in kinds.First(k => k.Key == d.Kind).References(d.PayloadJson))
-                if (r.ToKind != "component" && !shipped.Contains((r.ToKind, r.ToKey))) broken.Add($"{d.Kind}/{d.Key} -> {r.ToKind}/{r.ToKey}");
+                if (r.ToKind != "component" && !shipped.Contains((r.ToKind == "component-definition" ? "component" : r.ToKind, r.ToKey))) broken.Add($"{d.Kind}/{d.Key} -> {r.ToKind}/{r.ToKey}");
         Assert.Empty(broken);
         // the pilot page really binds its grid to the data source and the form to its action and options
         Assert.Contains(kinds.First(k => k.Key == "page").References(package.First(d => d.Key == "departments" && d.Kind == "page").PayloadJson), r => r is { ToKind: "data-source", ToKey: "departments-grid" });

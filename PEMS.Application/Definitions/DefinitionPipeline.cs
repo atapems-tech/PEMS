@@ -34,7 +34,7 @@ public sealed class DefinitionOwnership
         // (Definitions:Ownership:{kind}=files, hot reload of a folder); one owner per kind, never both.
         ["layout"] = DefinitionOwner.Database, ["page"] = DefinitionOwner.Database, ["form"] = DefinitionOwner.Database, ["view"] = DefinitionOwner.Database,
         ["dashboard"] = DefinitionOwner.Database, ["action"] = DefinitionOwner.Database, ["data-source"] = DefinitionOwner.Database,
-        ["option-set"] = DefinitionOwner.Database, ["menu"] = DefinitionOwner.Database, ["route"] = DefinitionOwner.Database,
+        ["option-set"] = DefinitionOwner.Database, ["menu"] = DefinitionOwner.Database, ["route"] = DefinitionOwner.Database, ["component"] = DefinitionOwner.Database,
         ["entity"] = DefinitionOwner.Generated, ["workflow-ref"] = DefinitionOwner.Native
     };
 

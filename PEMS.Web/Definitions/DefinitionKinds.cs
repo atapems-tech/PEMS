@@ -21,6 +21,8 @@ public static class DefinitionKindExtensions
         services.AddSingleton<IDefinitionKind, ActionDefinitionKind>();
         // SCRUM-768: the route table (a URL pattern to a generic host), asked only when no controller answered
         services.AddSingleton<IDefinitionKind, RouteDefinitionKind>();
+        // SCRUM-589: components as definitions (a parameterized fragment of registered components; a page template or an inline component)
+        services.AddSingleton<IDefinitionKind, ComponentDefinitionKind>();
         services.AddScoped<RouteTable>();
         // posted values of a stored form are cleaned before use: rich-text HTML sanitized, undeclared names dropped (SCRUM-59)
         services.AddScoped<FormValueSanitizer>();
@@ -82,7 +84,7 @@ public sealed class FormDefinitionKind : IDefinitionKind
 /// </summary>
 public sealed class PageDefinitionKind : IDefinitionKind
 {
-    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "layout", "regions", "route", "permission" };
+    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "layout", "regions", "route", "permission", "template", "args" };
     /// <summary>The variables an expression of a page can read: the signed-in user, the request (culture, route values), the hydrated values of the page and the current item.</summary>
     internal static readonly string[] PageExpressionRoots = ["user", "request", "values", "item", "params"];
 
@@ -109,7 +111,13 @@ public sealed class PageDefinitionKind : IDefinitionKind
         if (root["route"] is { } route && !(route is JsonValue rv && rv.GetValueKind() == JsonValueKind.String)) errors.Add(new("/route", "wrong-type", "Def_Err_Type", "The route must be text."));
         if (root["permission"] is { } perm && !(perm is JsonValue pv && pv.GetValueKind() == JsonValueKind.String)) errors.Add(new("/permission", "wrong-type", "Def_Err_Type", "The permission must be text."));
 
-        if (root["regions"] is not JsonObject regions) { errors.Add(new("/regions", "required", "Def_Err_Required", "A page needs regions (an object of instance lists).")); return errors; }
+        // SCRUM-589: a page may be a template (a component definition that supplies the regions) with its arguments; its own regions are added after the template's
+        var template = root["template"] is JsonValue tv && tv.GetValueKind() == JsonValueKind.String ? (string?)tv : null;
+        if (root["template"] is not null && string.IsNullOrWhiteSpace(template)) errors.Add(new("/template", "wrong-type", "Def_Err_Type", "template is the key of a component definition."));
+        if (root["args"] is { } args && args is not JsonObject) errors.Add(new("/args", "wrong-type", "Def_Err_Type", "args is an object."));
+        if (root["args"] is not null && template is null) errors.Add(new("/args", "overlap", "Def_Err_Overlap", "args needs a template."));
+        if (root["regions"] is null && template is not null) return errors;
+        if (root["regions"] is not JsonObject regions) { errors.Add(new("/regions", "required", "Def_Err_Required", "A page needs regions (an object of instance lists) or a template.")); return errors; }
 
         var ids = new HashSet<string>(StringComparer.Ordinal);
         var count = 0;
@@ -129,6 +137,7 @@ public sealed class PageDefinitionKind : IDefinitionKind
 
                 var component = inst["component"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String ? (string?)cv : null;
                 if (string.IsNullOrWhiteSpace(component)) { errors.Add(new(at + "/component", "required", "Def_Err_Required", "An instance needs a component key.")); continue; }
+                if (ComponentTemplate.IsDefinitionRef(component)) continue;   // a component definition (SCRUM-589): its arguments are checked when it is expanded
                 if (!_registry.Keys.Contains(component, StringComparer.OrdinalIgnoreCase)) { errors.Add(new(at + "/component", "unknown-component", "Def_Err_UnknownComponent", $"'{component}' is not a registered component.")); continue; }
 
                 // visible is an expression (ADR-0015): it must parse and read only the variables a page offers; checked at load, not at run time
@@ -163,13 +172,18 @@ public sealed class PageDefinitionKind : IDefinitionKind
     {
         var refs = new List<DefinitionRef>();
         var root = (JsonObject)JsonNode.Parse(payloadJson)!;
+        if (root["template"] is JsonValue tpl && tpl.GetValueKind() == JsonValueKind.String) refs.Add(new DefinitionRef("component-definition", (string)tpl!, "templates"));
+        // the /d/{key} urls in the arguments of a template are bindings too (the template puts them into a grid)
+        if (root["args"] is JsonObject templateArgs)
+            foreach (var text in Strings(templateArgs))
+                if (System.Text.RegularExpressions.Regex.Match(text, "^/d/([a-z0-9][a-z0-9._-]*)(?:[?].*)?$") is { Success: true } am) refs.Add(new DefinitionRef("data-source", am.Groups[1].Value, "binds"));
         if (root["regions"] is JsonObject regions)
             foreach (var (_, list) in regions)
                 if (list is JsonArray items)
                     foreach (var inst in items.OfType<JsonObject>())
                     {
                         if (inst["component"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String)
-                            refs.Add(new DefinitionRef("component", (string)cv!, "renders"));
+                            refs.Add(ComponentTemplate.IsDefinitionRef((string)cv!) ? new DefinitionRef("component-definition", ComponentTemplate.KeyOf((string)cv!), "renders") : new DefinitionRef("component", (string)cv!, "renders"));
                         // SCRUM-437: the bindings of a component to stored definitions: an url "/d/{key}" reads a data source, an action-button runs an action
                         if (inst["options"] is JsonObject options)
                         {
