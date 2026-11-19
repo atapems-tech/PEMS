@@ -54,6 +54,9 @@ Owner decision 2026-10-26, until a CI gate exists (plan row #7): the local test 
 - **Done needs both**: line 1 green (only the known failures of README.md "Local tests" may stay red) and all other lines Pass. A red test is a defect like any other: `qa-failed`, back to To Do, fix by a new PR.
 - When CI runs the tests on every merge, line 1 becomes "CI run on the merge commit is green" and this section is removed.
 
+## 2a. Batch handover: minimum tests, the rest on the checklist (owner decision 2026-11-19)
+An issue of a batch of 10 to 30 issues is handed to In Review with the minimum tests that are really needed (one per rule or branch that could silently break). Every other check goes onto the QA checklist as an unchecked line: "Local: the exact classes of the batch run (deferred to the batch or sprint end)", the second-language and edge cases, the broad suites, and the browser checks. The nearly repeated tests of the batch are merged into theories and shared fixtures at the end of the batch (guideline 05 test budget).
+
 ## 2b. Time-boxed tests in a session (owner decision 2026-11-03)
 
 An author runs what is quick and meaningful and does not wait for what is slow or impossible; the rest goes to the checklist (section 1b), never silently dropped.
