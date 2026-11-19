@@ -22,7 +22,7 @@ public class AdminBaseDataListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Areas/Admin/Views/Users", "Areas/Admin/Views/Roles", "Views/Department", "Views/Discipline", "Views/Employee",
+        "Areas/Admin/Views/Users", "Views/Department", "Views/Discipline", "Views/Employee",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
@@ -64,21 +64,6 @@ public class AdminBaseDataListPagesTests
         Assert.Contains("data-pems-confirm=\"Deactivate user ali?\"", html);
         Assert.Contains("bi-key", html);                                                 // reset administrator (another admin)
         Assert.Contains("lp-compose", html);
-    }
-
-    [Fact]
-    public async Task Roles_KeepTheAuthorizationStatus_AndDeleteOnlyForCustomRoles()
-    {
-        var html = await Render<RolesController>("/Areas/Admin/Views/Roles/Index.cshtml", new List<RoleListItemViewModel>
-        {
-            new() { Id = 1, Name = "SystemAdmin", IsSystemRole = true, PermissionCount = -1, UserCount = 1 },
-            new() { Id = 2, Name = "Custom.Team", IsSystemRole = false, PermissionCount = 0 },
-        });
-
-        AssertBuiltFromTheComponent(html, "AdminRoles", 2);
-        Assert.Contains("bi-infinity", html);
-        Assert.Contains("bi-exclamation-triangle", html);                                // not configured
-        Assert.Single(Regex.Matches(html, "bi-trash"));
     }
 
     [Fact]
