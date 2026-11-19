@@ -117,6 +117,10 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (EntityJson.Str(g["mode"]) is { } mode && mode is not ("sod" or "strict")) errors.Add(new("/guard/mode", "wrong-guard", "Def_Err_Type", "mode is sod (only a separation-of-duties refusal stops the action) or strict (anything but an explicit allow stops it)."));
             }
         }
+        // SCRUM-781: require = { field: message } must be true before the operation runs; precondition = another operation ({ model, action, args }) that must succeed first
+        if (parameters["require"] is not null and not JsonObject) errors.Add(new("/require", "wrong-require", "Def_Err_Type", "require is an object: { fieldName: { en, fa } }."));
+        if (parameters["precondition"] is JsonObject pre) errors.AddRange(ValidateParameters(pre).Select(e => e with { Pointer = "/precondition" + e.Pointer }));
+        else if (parameters["precondition"] is not null) errors.Add(new("/precondition", "wrong-precondition", "Def_Err_Type", "precondition is an operation: { model, action, args }."));
         errors.AddRange(OperationSectionGuard.Validate(parameters["sectionGuard"] as JsonObject, IsSource));
         if (parameters["sectionGuard"] is not null and not JsonObject) errors.Add(new("/sectionGuard", "wrong-guard", "Def_Err_Type", "sectionGuard is an object: { section, action, workOrderId, reason, recordRef, audit }."));
         var args = parameters["args"] as JsonObject ?? [];
@@ -208,7 +212,8 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     private static (bool Success, string? Error, object?[] Args)? ResultOf(object answer)
     {
         var t = answer.GetType();
-        if (t.GetProperty("Success")?.GetValue(answer) is not bool ok) return null;
+        if (t.GetProperty("Success")?.GetValue(answer) is not bool ok)
+            return t.GetProperty("Succeeded")?.GetValue(answer) is bool done ? (done, t.GetProperty("Message")?.GetValue(answer) as string, []) : null;
         var args = t.GetProperty("Args")?.GetValue(answer) as object?[] ?? [];
         return (ok, t.GetProperty("Error")?.GetValue(answer) as string, args);
     }
@@ -234,6 +239,19 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(op.Permission, invocation.Roles, ct)
             || op.Roles.Count > 0 && !invocation.Roles.Any(r => op.Roles.Contains(r, StringComparer.OrdinalIgnoreCase)))      // SCRUM-773: an operation may also name the roles that can run it
             return ActionOutcome.Refused(TranslatableText.Of(("en", "You may not do this."), ("fa", "اجازه‌ی انجام این کار را ندارید.")));
+
+        // SCRUM-781: fields that must be ticked (a confirmation), then a precondition operation of a service (entitlement, state) that must succeed
+        if (invocation.Parameters?["require"] is JsonObject required)
+            foreach (var (field, message) in required)
+                if (invocation.Values.GetValueOrDefault(field) is not ("true" or "on" or "1" or "True"))
+                    return ActionOutcome.Refused(message is JsonObject mo
+                        ? TranslatableText.Of(("en", EntityJson.Str(mo["en"]) ?? "Confirm first."), ("fa", EntityJson.Str(mo["fa"]) ?? "ابتدا تأیید کنید."))
+                        : TranslatableText.Literal(EntityJson.Str(message) ?? "Confirm first."));
+        if (invocation.Parameters?["precondition"] is JsonObject precondition)
+        {
+            var check = await ExecuteAsync(invocation with { Parameters = precondition }, ct);
+            if (!check.Ok) return check;
+        }
 
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
         var identity = invocation.UserName is null ? null : await db.Users.Where(u => u.UserName == invocation.UserName).Select(u => new { u.Id, u.EmployeeId }).FirstOrDefaultAsync(ct);
@@ -337,7 +355,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             bool ok => ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد."))),
             ITuple t when t.Length >= 2 && t[0] is bool success => success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused.")),
-            _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done() : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
+            _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done(result.Error is null ? null : ResultMessage(scope.ServiceProvider, result)) : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
             _ => ActionOutcome.Done()
         };
         if (outcome.Ok && sectionPlan is not null)
