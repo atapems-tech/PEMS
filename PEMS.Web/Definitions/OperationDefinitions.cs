@@ -18,11 +18,14 @@ namespace PEMS.Web.Definitions;
 /// <summary>An operation found on a service interface: its model and action, the permission the code requires, and the method to call.</summary>
 public sealed record OperationRegistration(string Model, string Action, string? Permission, Type ServiceType, MethodInfo Method)
 {
+    /// <summary>The roles that may run the operation (empty = any role that passes the permission check).</summary>
+    public IReadOnlyList<string> Roles { get; init; } = [];
+
     public string Name => Model + "." + Action;
 }
 
 /// <summary>What a designer sees of an operation: the pair, the permission and the arguments the method takes (the actor and the cancellation token are supplied by the engine).</summary>
-public sealed record OperationDescription(string Model, string Action, string? Permission, IReadOnlyList<string> Arguments);
+public sealed record OperationDescription(string Model, string Action, string? Permission, IReadOnlyList<string> Arguments, IReadOnlyList<string>? Roles = null);
 
 public sealed class OperationCatalog
 {
@@ -37,7 +40,10 @@ public sealed class OperationCatalog
                 if (method.GetCustomAttribute<PemsOperationAttribute>() is { } attr)
                 {
                     if (catalog._operations.ContainsKey((attr.Model, attr.Action))) throw new InvalidOperationException($"The operation '{attr.Model}.{attr.Action}' is declared twice.");
-                    catalog._operations[(attr.Model, attr.Action)] = new OperationRegistration(attr.Model, attr.Action, attr.Permission, type, method);
+                    catalog._operations[(attr.Model, attr.Action)] = new OperationRegistration(attr.Model, attr.Action, attr.Permission, type, method)
+                    {
+                        Roles = (attr.Roles ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    };
                 }
         return catalog;
     }
@@ -51,7 +57,7 @@ public sealed class OperationCatalog
     public IReadOnlyList<OperationDescription> Describe()
         => _operations.Values.OrderBy(o => o.Model, StringComparer.Ordinal).ThenBy(o => o.Action, StringComparer.Ordinal)
             .Select(o => new OperationDescription(o.Model, o.Action, o.Permission, o.Method.GetParameters().Where(p => p.ParameterType != typeof(CancellationToken) && (Nullable.GetUnderlyingType(p.ParameterType) ?? p.ParameterType) is { } t
-                && (t == typeof(string) || t.IsPrimitive || t == typeof(decimal) || t == typeof(DateTime) || t.IsEnum)).Select(p => p.Name!).ToList())).ToList();
+                && (t == typeof(string) || t.IsPrimitive || t == typeof(decimal) || t == typeof(DateTime) || t.IsEnum)).Select(p => p.Name!).ToList(), o.Roles)).ToList();
 }
 
 /// <summary>
@@ -192,7 +198,8 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         var op = catalog.Get(EntityJson.Str(invocation.Parameters?["model"]), EntityJson.Str(invocation.Parameters?["action"]));
         if (op is null) return ActionOutcome.Refused(TranslatableText.Of(("en", "The action is not set up."), ("fa", "کنش درست تنظیم نشده است.")));
         using var scope = scopes.CreateScope();
-        if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(op.Permission, invocation.Roles, ct))
+        if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(op.Permission, invocation.Roles, ct)
+            || op.Roles.Count > 0 && !invocation.Roles.Any(r => op.Roles.Contains(r, StringComparer.OrdinalIgnoreCase)))      // SCRUM-773: an operation may also name the roles that can run it
             return ActionOutcome.Refused(TranslatableText.Of(("en", "You may not do this."), ("fa", "اجازه‌ی انجام این کار را ندارید.")));
 
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();

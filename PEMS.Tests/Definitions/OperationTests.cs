@@ -84,7 +84,7 @@ public sealed class OperationTests
         var product = OperationCatalog.Scan(typeof(PemsOperationAttribute).Assembly);
         Assert.Contains("WorkRequest", product.Models);
         Assert.Equal(["Submit", "WorkflowAction"], product.Actions("WorkRequest"));
-        Assert.Equal(["Test"], Catalog.Models);
+        Assert.Equal(["RolesTest", "Test"], Catalog.Models);   // RolesTest: the operations of OperationRolesAndValidationTests (SCRUM-773, 774)
         Assert.Equal(["Bag", "Boom", "Flag", "Run", "Trace", "Void"], Catalog.Actions("Test"));
         Assert.Equal("Test.Run", Catalog.Get("Test", "Run")!.Permission);
         Assert.Null(Catalog.Get("Test", "Flag")!.Permission);

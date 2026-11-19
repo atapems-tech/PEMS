@@ -437,7 +437,8 @@ public sealed class EntityRecordLoader(IServiceScopeFactory scopes, EntityCatalo
 /// <c>entity</c>; <c>map</c> (form field to property, create and update); <c>required</c>; <c>defaults</c> (create; a literal, <c>"$now"</c> or <c>"$utcnow"</c>); <c>unique</c> (<c>{ fields, message, ignoreEmpty, symmetric, where }</c>: no other row
 /// may have the same values, text compared without case, an empty value skipped when <c>ignoreEmpty</c>; <c>symmetric</c> with two fields makes (A, B) and (B, A) the same pair; <c>where</c> limits the rows compared, e.g. only active ones); <c>deny</c> (<c>{ when, message }</c>: an expression over <c>row</c> (the current row), <c>values</c> and
 /// <c>user</c>; the first that holds refuses); <c>property</c> (toggle: the bool property); <c>deactivate</c> (delete: a bool property set to false instead of removing the row); <c>redirect</c> (create: a path with
-/// <c>{Property}</c> placeholders of the new row). The values of the form carry <c>id</c> for update, delete and toggle.
+/// <c>{Property}</c> placeholders of the new row); <c>validate</c> (create and update, SCRUM-774: <c>{ model, action, args }</c>, a <c>[PemsOperation]</c> that runs before the write with the form values, usually
+/// the validation of the service that owns the rule; a refusal shows the service message and nothing is written). The values of the form carry <c>id</c> for update, delete and toggle.
 /// </summary>
 public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatalog catalog, string key) : IActionHandler
 {
@@ -490,7 +491,23 @@ public abstract class EntityWriteAction(IServiceScopeFactory scopes, EntityCatal
                 DataSourceDefinitionKind.CheckLabel(u["message"], $"/unique/{i}/message", errors);
             }
         errors.AddRange(EntityJson.CheckDeny(parameters["deny"], entity));
+        if (parameters["validate"] is { } validate)
+        {
+            if (validate is not JsonObject v || string.IsNullOrWhiteSpace(EntityJson.Str(v["model"])) || string.IsNullOrWhiteSpace(EntityJson.Str(v["action"])))
+                errors.Add(new("/validate", "wrong-validate", "Def_Err_Type", "validate is an object { model, action, args }: a service operation that runs before the write."));
+        }
         return errors;
+    }
+
+    /// <summary>SCRUM-774: runs the named operation with the values of the form before the row is written; null = it passed (or none is named).</summary>
+    protected async Task<ActionOutcome?> ValidateWithOperationAsync(JsonObject p, ActionInvocation invocation, CancellationToken ct)
+    {
+        if (p["validate"] is not JsonObject validate) return null;
+        using var scope = scopes.CreateScope();
+        var operations = scope.ServiceProvider.GetService<OperationCatalog>();
+        if (operations is null || operations.Get(EntityJson.Str(validate["model"]), EntityJson.Str(validate["action"])) is null) return ActionOutcome.Refused(Msg("The action is not set up.", "کنش درست تنظیم نشده است."));
+        var outcome = await new OperationInvokeAction(scopes, operations).ExecuteAsync(invocation with { Parameters = validate }, ct);
+        return outcome.Ok ? null : outcome;
     }
 
     public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
@@ -617,6 +634,8 @@ public sealed class EntityCreateAction(IServiceScopeFactory scopes, EntityCatalo
         if (denied is not null) return ActionOutcome.Refused(denied);
         var unique = await CheckUniqueAsync(db, entity, p, row, ct);
         if (unique is not null) return unique;
+        var validated = await ValidateWithOperationAsync(p, invocation, ct);
+        if (validated is not null) return validated;
         entity.BeforeCreate?.Invoke(row);
         db.Add(row);
         await db.SaveChangesAsync(ct);
@@ -642,6 +661,8 @@ public sealed class EntityUpdateAction(IServiceScopeFactory scopes, EntityCatalo
         if (applied is not null) { db.Entry(row).State = EntityState.Unchanged; return applied; }
         var unique = await CheckUniqueAsync(db, entity, p, row, ct);
         if (unique is not null) { db.Entry(row).Reload(); return unique; }
+        var validated = await ValidateWithOperationAsync(p, invocation, ct);
+        if (validated is not null) { db.Entry(row).Reload(); return validated; }
         try { await db.SaveChangesAsync(ct); }
         catch (DbUpdateConcurrencyException) { return ActionOutcome.Refused(Msg("Someone else changed this record at the same time; reload and try again.", "رکورد هم‌زمان توسط کاربر دیگری تغییر کرد؛ دوباره بارگذاری کنید.")); }
         return ActionOutcome.Done();
