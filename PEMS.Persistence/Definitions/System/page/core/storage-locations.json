@@ -19,6 +19,7 @@
       "id": "storage-locations",
       "url": "/d/storage-locations-grid",
       "idField": "storageLocationId",
+      "viewsKey": "storage-locations",
       "columns": [
         {
           "key": "code",

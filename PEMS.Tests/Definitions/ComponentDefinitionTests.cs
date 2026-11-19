@@ -175,4 +175,18 @@ public sealed class ComponentDefinitionTests : IDisposable
         Assert.Empty(without.Problems);
         Assert.DoesNotContain("/f/things-create", without.Html);
     }
+
+    [Fact]
+    public async Task The_entity_list_passes_the_grid_settings_saved_views_density_page_size_bulk_actions_and_pinned_columns_through()
+    {
+        _components["entity-list"] = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "definitions-system", "component", "core", "entity-list.json")))!["payload"]!.ToJsonString();
+        var page = Page("{\"layout\":\"list-page\",\"template\":\"entity-list\",\"args\":{\"id\":\"things\",\"url\":\"/d/things-grid\",\"idField\":\"thingId\",\"viewsKey\":\"things-saved\",\"density\":\"compact\",\"pageSize\":250,\"selectable\":true," +
+                        "\"bulkActions\":[{\"key\":\"del\",\"label\":{\"en\":\"Remove\",\"fa\":\"حذف\"},\"url\":\"/a/things-delete\"}]," +
+                        "\"columns\":[{\"key\":\"code\",\"header\":{\"en\":\"Code\",\"fa\":\"کد\"},\"width\":120,\"pinned\":\"start\"}]}}");
+        var result = await _renderer.RenderAsync(page, Request(), En);
+        Assert.Empty(result.Problems);
+        Assert.Contains("things-saved", result.Html);
+        Assert.Contains("compact", result.Html);
+        Assert.Contains("/a/things-delete", result.Html);
+    }
 }

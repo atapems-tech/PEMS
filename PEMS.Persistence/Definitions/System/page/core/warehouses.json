@@ -19,6 +19,7 @@
       "id": "warehouses",
       "url": "/d/warehouses-grid",
       "idField": "warehouseId",
+      "viewsKey": "warehouses",
       "columns": [
         {
           "key": "code",

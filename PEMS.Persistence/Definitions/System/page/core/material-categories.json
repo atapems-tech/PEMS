@@ -19,6 +19,7 @@
       "id": "material-categories",
       "url": "/d/material-categories-grid",
       "idField": "materialCategoryId",
+      "viewsKey": "material-categories",
       "columns": [
         {
           "key": "code",

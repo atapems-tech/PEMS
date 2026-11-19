@@ -137,4 +137,16 @@ public sealed class RecordViewTests : IDisposable
         Assert.Empty(result.Problems);
         Assert.Contains("Item a b /  / a%20b", result.Html);
     }
+
+    [Fact]
+    public async Task A_binding_with_a_map_feeds_named_options_from_row_properties_so_any_component_can_show_a_value()
+    {
+        var page = Page("{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"b\",\"component\":\"badge\",\"options\":{\"label\":\"x\"}," +
+                        "\"bindings\":{\"record\":{\"source\":\"/d/things-grid\",\"idField\":\"thingId\",\"id\":\"{{params.id}}\",\"map\":{\"label\":\"code\"}}}}]}}");
+        var result = await _renderer.RenderAsync(page, Request("7"), En);
+        Assert.Empty(result.Problems);
+        Assert.Contains("T-7", result.Html);
+        Assert.Empty(_pageKind.Validate(page.Payload.ToJsonString(), new DefinitionLimits()));
+        Assert.Contains(_pageKind.Validate("{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"b\",\"component\":\"badge\",\"options\":{\"label\":\"x\"},\"bindings\":{\"record\":{\"source\":\"/d/a\",\"idField\":\"i\",\"id\":\"1\",\"map\":{\"label\":1},\"zzz\":1}}}]}}", new DefinitionLimits()), e => e.Pointer.EndsWith("/map"));
+    }
 }

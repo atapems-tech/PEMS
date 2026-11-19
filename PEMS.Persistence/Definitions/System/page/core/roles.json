@@ -19,6 +19,7 @@
       "id": "roles",
       "url": "/d/roles-grid",
       "idField": "id",
+      "viewsKey": "roles",
       "columns": [
         {
           "key": "name",

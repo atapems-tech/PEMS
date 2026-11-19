@@ -19,6 +19,7 @@
       "id": "departments",
       "url": "/d/departments-grid",
       "idField": "departmentId",
+      "viewsKey": "departments",
       "columns": [
         {
           "key": "code",

@@ -19,6 +19,7 @@
       "id": "skills",
       "url": "/d/skills-grid",
       "idField": "skillId",
+      "viewsKey": "skills",
       "columns": [
         {
           "key": "name",

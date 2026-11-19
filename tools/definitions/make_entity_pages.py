@@ -83,7 +83,7 @@ def make(spec):
     write("data-source", key + "-grid", envelope("data-source", key + "-grid", t(spec["title"][0] + " rows", "ردیف‌های " + spec["title"][1]), t("The rows of the " + spec["title"][0].lower() + " grid", "ردیف‌های جدول " + spec["title"][1]),
           {"kind": "grid", "provider": "entity", "parameters": params}))
 
-    grid = {"id": key, "url": "/d/" + key + "-grid", "idField": camel(spec["id"]), "columns": []}   # the args of the entity-list component (SCRUM-589)
+    grid = {"id": key, "url": "/d/" + key + "-grid", "idField": camel(spec["id"]), "viewsKey": key, "columns": []}   # the args of the entity-list component (SCRUM-589); saved views per grid (SCRUM-599)
     for prop, en, fa, typ, width, *_ in cols:
         c = {"key": camel(prop), "header": t(en, fa), "width": width}
         if typ == "computed": c["type"] = "number"

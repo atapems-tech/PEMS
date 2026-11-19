@@ -19,6 +19,7 @@
       "id": "authorization-audit",
       "url": "/d/authorization-audit-grid",
       "idField": "authorizationAuditLogId",
+      "viewsKey": "authorization-audit",
       "columns": [
         {
           "key": "authorizationAuditLogId",

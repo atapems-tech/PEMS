@@ -19,6 +19,7 @@
       "id": "maintenance-groups",
       "url": "/d/maintenance-groups-grid",
       "idField": "maintenanceGroupId",
+      "viewsKey": "maintenance-groups",
       "columns": [
         {
           "key": "code",

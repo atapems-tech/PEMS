@@ -122,6 +122,30 @@
           }
         },
         "description": "The texts of the grid (search, columns, density, export, views, empty, error ...)"
+      },
+      "viewsKey": {
+        "type": "string",
+        "description": "Saved views of this grid are kept under this key; none without it"
+      },
+      "exportUrl": {
+        "type": "string",
+        "description": "The export endpoint of the grid; no export without it"
+      },
+      "density": {
+        "type": "string",
+        "description": "compact or comfortable (the user can change it and the choice is remembered)"
+      },
+      "pageSize": {
+        "type": "number",
+        "description": "Rows per request (server paging); the grid shows only the rows in view"
+      },
+      "height": {
+        "type": "number",
+        "description": "Height of the scroll area in pixels"
+      },
+      "bulkActions": {
+        "type": "array",
+        "description": "Actions on the selected rows (key, label, url, confirm, tone); needs selectable"
       }
     },
     "regions": {
@@ -135,7 +159,13 @@
             "idField": "${idField}",
             "selectable": "${selectable}",
             "columns": "${columns}",
-            "texts": "${texts}"
+            "texts": "${texts}",
+            "viewsKey": "${viewsKey}",
+            "exportUrl": "${exportUrl}",
+            "density": "${density}",
+            "pageSize": "${pageSize}",
+            "height": "${height}",
+            "bulkActions": "${bulkActions}"
           }
         }
       ],

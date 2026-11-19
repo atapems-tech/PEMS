@@ -19,6 +19,7 @@
       "id": "spare-parts",
       "url": "/d/spare-parts-grid",
       "idField": "sparePartId",
+      "viewsKey": "spare-parts",
       "columns": [
         {
           "key": "partNumber",

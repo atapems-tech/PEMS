@@ -19,6 +19,7 @@
       "id": "spare-parts-low-stock",
       "url": "/d/spare-parts-low-stock-grid",
       "idField": "sparePartId",
+      "viewsKey": "spare-parts",
       "columns": [
         {
           "key": "partNumber",
