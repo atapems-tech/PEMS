@@ -133,7 +133,7 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
         {
             case JsonObject o:
                 // the arguments of an operation (name to source, for example { "id": "field:id" }) are not a translatable text even when a name looks like a language code
-                if (o.Count > 0 && !pointer.EndsWith("/args", StringComparison.Ordinal) && o.All(p => LanguageKey.IsMatch(p.Key) && p.Value is JsonValue))
+                if (o.Count > 0 && !pointer.EndsWith("/args", StringComparison.Ordinal) && !pointer.EndsWith("/options", StringComparison.Ordinal) && o.All(p => LanguageKey.IsMatch(p.Key) && p.Value is JsonValue))
                 {
                     foreach (var lang in Languages)
                         if (!(o[lang] is JsonValue v && v.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)v)))

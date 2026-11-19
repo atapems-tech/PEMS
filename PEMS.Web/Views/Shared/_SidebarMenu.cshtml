@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Roles", "PermissionMatrix", "PurchaseOrderAuthority", "Department", "Employee", "Authorization", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
+    var adminControllers = new[] { "Settings", "Users", "PermissionMatrix", "PurchaseOrderAuthority", "Department", "Employee", "Authorization", "NavigationVisibility", "Organization", "OrganizationImport", "DatabaseUpdate", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -725,8 +725,7 @@
                     <pems-icon name="bi-people" /> @Localizer["Users"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Roles", "Admin"))"
-                   asp-area="Admin" asp-controller="Roles" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/roles" active="@Context.Request.Path.StartsWithSegments("/p/roles")">
                     <pems-icon name="bi-shield-check" /> @Localizer["Roles"]
                 </pems-nav-link>
 
