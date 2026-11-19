@@ -1,0 +1,182 @@
+{
+  "kind": "page",
+  "key": "authorization-audit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Authorization audit",
+    "fa": "ممیزی دسترسی"
+  },
+  "description": {
+    "en": "Authorization audit list (page definition)",
+    "fa": "فهرست ممیزی دسترسی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "authorization-audit",
+    "regions": {
+      "content": [
+        {
+          "id": "grid",
+          "component": "data-grid",
+          "options": {
+            "id": "authorization-audit",
+            "url": "/d/authorization-audit-grid",
+            "idField": "authorizationAuditLogId",
+            "selectable": false,
+            "columns": [
+              {
+                "key": "authorizationAuditLogId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "timestamp",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                },
+                "width": 170,
+                "type": "datetime"
+              },
+              {
+                "key": "user",
+                "header": {
+                  "en": "User",
+                  "fa": "کاربر"
+                },
+                "width": 150
+              },
+              {
+                "key": "resourceName",
+                "header": {
+                  "en": "Resource",
+                  "fa": "منبع"
+                },
+                "width": 170
+              },
+              {
+                "key": "actionName",
+                "header": {
+                  "en": "Action",
+                  "fa": "عملیات"
+                },
+                "width": 120
+              },
+              {
+                "key": "resourceId",
+                "header": {
+                  "en": "Resource id",
+                  "fa": "شناسه‌ی منبع"
+                },
+                "width": 120
+              },
+              {
+                "key": "decision",
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                },
+                "width": 100
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 320
+              },
+              {
+                "key": "ipAddress",
+                "header": {
+                  "en": "IP address",
+                  "fa": "نشانی IP"
+                },
+                "width": 130
+              }
+            ],
+            "texts": {
+              "search": {
+                "en": "Search",
+                "fa": "جستجو"
+              },
+              "columns": {
+                "en": "Columns",
+                "fa": "ستون‌ها"
+              },
+              "density": {
+                "en": "Density",
+                "fa": "تراکم"
+              },
+              "compact": {
+                "en": "Compact",
+                "fa": "فشرده"
+              },
+              "comfortable": {
+                "en": "Comfortable",
+                "fa": "راحت"
+              },
+              "export": {
+                "en": "Export",
+                "fa": "خروجی"
+              },
+              "views": {
+                "en": "Views",
+                "fa": "نماها"
+              },
+              "saveView": {
+                "en": "Save view",
+                "fa": "ذخیره نما"
+              },
+              "viewName": {
+                "en": "View name",
+                "fa": "نام نما"
+              },
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "No rows",
+                "fa": "ردیفی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "rows": {
+                "en": "{0} rows",
+                "fa": "{0} ردیف"
+              },
+              "selected": {
+                "en": "{0} selected",
+                "fa": "{0} انتخاب شد"
+              },
+              "selectAllMatching": {
+                "en": "Select all {0}",
+                "fa": "انتخاب همه {0}"
+              },
+              "clearSelection": {
+                "en": "Clear",
+                "fa": "پاک کردن"
+              },
+              "filter": {
+                "en": "Filter",
+                "fa": "فیلتر"
+              },
+              "delete": {
+                "en": "Delete",
+                "fa": "حذف"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

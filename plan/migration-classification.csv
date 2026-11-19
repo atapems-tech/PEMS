@@ -1,7 +1,7 @@
 area,controller,module,wave,owner,decision,status,notes
-Admin,AuditLog,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+Admin,AuditLog,Administration,"W1 admin, account, shell",Hamid,page-definition,converted-partly,converted (generic entity layer): /p/audit-log (read only); the controller and view stay until the sidebar link is switched (SCRUM-629)
 Admin,Authorization,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-Admin,AuthorizationAudit,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+Admin,AuthorizationAudit,Administration,"W1 admin, account, shell",Hamid,page-definition,converted-partly,converted (generic entity layer): /p/authorization-audit (read only, user name lookup); the controller and view stay until the sidebar link is switched (SCRUM-630)
 Admin,ContractApprovalAuthority,Administration,"W1 admin, account, shell",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 Admin,DatabaseUpdate,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,Department,Administration,"W1 admin, account, shell",Hamid,code-only,converted-partly,"converted (generic entity layer): /p/departments with create, edit and activate/deactivate; Excel export and import stay code"
@@ -20,7 +20,7 @@ Admin,Roles,Administration,"W1 admin, account, shell",Hamid,form-definition,conv
 Admin,RoutingRules,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,SecurityEvents,Administration,"W1 admin, account, shell",Hamid,code-only,converted-partly,converted (generic entity layer): /p/security-events (read only)
 Admin,Settings,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-Admin,SoDPolicy,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
+Admin,SoDPolicy,Administration,"W1 admin, account, shell",Hamid,form-definition,converted-partly,converted (generic entity layer): /p/sod-policies with create (two-way pair rule) and toggle; the controller and views stay until the sidebar link is switched (SCRUM-647)
 Admin,StorageProviders,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,StorageRouting,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions

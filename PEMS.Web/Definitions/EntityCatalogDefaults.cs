@@ -23,7 +23,15 @@ internal static class EntityCatalogDefaults
             .BeforeCreate(r => { r.NormalizedName = r.Name?.ToUpperInvariant(); r.ConcurrencyStamp = Guid.NewGuid().ToString(); }))
         .Add<SecurityEvent>("SecurityEventId", e => e.Roles(AdminRoles, null)
             .Readable("EventType", "Method", "Result", "FailureReason", "ActorUserName", "TargetUserName", "IpAddress", "OccurredAtUtc"))
-        // read-only registrations used for related counts
+        .Add<AuditLog>("AuditLogId", e => e.Roles(AdminRoles, null)
+            .Readable("EntityName", "EntityKeyValue", "Action", "ChangedFieldsSummary", "UserId", "UserName", "Timestamp", "IsAIAssisted"))
+        .Add<AuthorizationAuditLog>("AuthorizationAuditLogId", e => e.Roles(AdminRoles, null)
+            .Readable("UserId", "ResourceName", "ActionName", "ResourceId", "ScopeType", "ScopeValue", "Decision", "Reason", "Timestamp", "IpAddress"))
+        .Add<SoDPolicy>("SoDPolicyId", e => e.Roles(AdminRoles, AdminRoles)
+            .Readable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate").Writable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate"))
+        // read-only registrations used for related counts and labels
+        .Add<ApplicationUser>("Id", e => e.Roles(AdminRoles, null).Readable("UserName"))
+        .Add<Permission>("PermissionId", e => e.Roles(AdminRoles, null).Readable("Name", "IsActive"))
         .Add<Employee>("EmployeeId", e => e.Roles(OrganizationRoles, null).Readable("DepartmentId", "IsActive"))
         .Add<IdentityUserRole<int>>("RoleId", e => e.Roles(AdminRoles, null).Readable("UserId", "RoleId"))
         .Add<RolePermissionGrant>("RolePermissionGrantId", e => e.Roles(AdminRoles, null).Readable("RoleId", "IsActive"))
