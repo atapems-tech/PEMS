@@ -141,6 +141,60 @@ public class PersianMessagesAndTitlesTests
     }
 
     [Fact]
+    public void RecoveryPageTitles_HaveOneCompiledResourceKeyPerLanguage()
+    {
+        foreach (var file in new[] { "SharedResource.resx", "SharedResource.fa.resx" })
+        {
+            var keys = Resx(file).Keys;
+            foreach (var title in new[] { "Recovery codes", "Administrator recovery", "Break-glass recovery", "Reset administrator account" })
+            {
+                Assert.Single(keys, key => string.Equals(key, title, StringComparison.OrdinalIgnoreCase));
+                Assert.Contains(title, keys);
+            }
+        }
+    }
+
+    [Fact]
+    public void RequiredRoleAndTransmittalFieldNames_HaveLocalizedDisplayKeys()
+    {
+        var action = typeof(PEMS.Web.Controllers.TransmittalController).GetMethods()
+            .Single(method => method.Name == "Create" && method.GetParameters().Length > 0);
+        var displayKeys = action.GetParameters()
+            .Select(parameter => parameter.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().SingleOrDefault()?.Name)
+            .OfType<string>();
+        Assert.Equal(new[] { "Transmittal code", "From", "To", "Purpose" }, displayKeys);
+        var en = Resx("SharedResource.resx");
+        var fa = Resx("SharedResource.fa.resx");
+        foreach (var key in displayKeys.Append("Role Name (English, no spaces)"))
+        {
+            Assert.True(en.ContainsKey(key), key);
+            Assert.True(fa.ContainsKey(key), key);
+            Assert.DoesNotMatch("[A-Za-z]", fa[key]);
+        }
+    }
+
+    [Fact]
+    public void ChangePasswordValidation_UsesBilingualFieldAndMessageKeys()
+    {
+        var en = Resx("SharedResource.resx");
+        var fa = Resx("SharedResource.fa.resx");
+        var fields = typeof(PEMS.Web.Models.Account.ChangePasswordViewModel).GetProperties();
+        foreach (var field in fields)
+        {
+            var display = field.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().Single();
+            Assert.True(en.ContainsKey(display.Name!), display.Name);
+            Assert.True(fa.ContainsKey(display.Name!), display.Name);
+            foreach (var validation in field.GetCustomAttributes(typeof(ValidationAttribute), false).Cast<ValidationAttribute>())
+            {
+                var key = validation.ErrorMessage ?? ValidationMessageKeys.KeyFor(validation);
+                if (key is null) continue;
+                Assert.True(en.ContainsKey(key), key);
+                Assert.True(fa.ContainsKey(key), key);
+            }
+        }
+    }
+
+    [Fact]
     public void LegacyHtmlSafetyNet_TranslatesOnlyKnownUiText_InTextAndAccessibleAttributes()
     {
         var localizer = new SelectiveLocalizer();

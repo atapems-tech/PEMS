@@ -3279,9 +3279,10 @@
   <data name="The password was changed but recording or session revocation failed. No temporary password is shown; place a new request file and run the reset again." xml:space="preserve"><value>رمز عوض شد اما ثبت رویداد یا بستن نشست‌ها ناموفق بود. رمز موقتی نمایش داده نمی‌شود؛ فایل درخواست جدید بگذارید و ریست را دوباره انجام دهید.</value></data>
   <data name="The recovery window is closed. Place a new request file on the server." xml:space="preserve"><value>پنجره‌ی بازیابی بسته است. فایل درخواست جدیدی روی سرور بگذارید.</value></data>
   <data name="Use a recovery code" xml:space="preserve"><value>استفاده از کد بازیابی</value></data>
-  <data name="Recovery Codes" xml:space="preserve"><value>کدهای بازیابی</value></data>
-  <data name="Administrator Recovery" xml:space="preserve"><value>بازیابی حساب مدیر</value></data>
-  <data name="Break-glass Recovery" xml:space="preserve"><value>بازیابی اضطراری (break-glass)</value></data>
+  <data name="Role Name (English, no spaces)" xml:space="preserve"><value>نام نقش (انگلیسی، بدون فاصله)</value></data>
+  <data name="Your password is temporary. Set a new password before continuing." xml:space="preserve"><value>رمز عبور شما موقت است. قبل از ادامه یک رمز جدید تنظیم کنید.</value></data>
+  <data name="Password changed successfully." xml:space="preserve"><value>رمز عبور با موفقیت تغییر کرد.</value></data>
+  <data name="The new password and its confirmation do not match." xml:space="preserve"><value>رمز جدید و تکرار آن یکسان نیستند.</value></data>
   <data name="Search roles..." xml:space="preserve"><value>جستجوی نقش...</value></data>
   <data name="No matching role" xml:space="preserve"><value>نقشی پیدا نشد</value></data>
   <data name="Remove" xml:space="preserve"><value>حذف</value></data>
@@ -4662,9 +4663,6 @@
     <value>برای ساخت کارمند، یک دیسیپلین معتبر و فعال لازم است.</value>
   </data>
   <data name="Administrator Account Reset" xml:space="preserve">
-    <value>بازنشانی حساب مدیر سیستم</value>
-  </data>
-  <data name="Reset Administrator Account" xml:space="preserve">
     <value>بازنشانی حساب مدیر سیستم</value>
   </data>
   <data name="Effective Navigation Visibility" xml:space="preserve">

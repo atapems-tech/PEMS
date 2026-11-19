@@ -590,7 +590,7 @@ public class UsersController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        ViewData["Title"] = "Reset Administrator Account";
+        ViewData["Title"] = "Reset administrator account";
         ViewData["Section"] = "Administration";
         return View(new AdminResetViewModel { Id = target.Id, UserName = target.UserName ?? "", FullName = target.FullName });
     }

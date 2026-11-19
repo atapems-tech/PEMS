@@ -207,7 +207,7 @@ public class AccountController : Controller
 
         await _signInManager.RefreshSignInAsync(user);
 
-        TempData["Message"] = "رمز عبور با موفقیت تغییر کرد.";
+        TempData["Message"] = _t["Password changed successfully."].Value;
         return RedirectToAction("Index", "Home");
     }
 
