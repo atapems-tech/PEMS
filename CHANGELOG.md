@@ -10,6 +10,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - Shipped reference data and its update rule (SCRUM-516)
+
+### Added
+- Definition kind `reference-data` (list, owner, rows with stable keys) and `ReferenceDataSync.Plan`: insert missing rows, update unedited platform rows, never overwrite customer-owned or edited rows (reported as upstream changes), retire rows no longer shipped, never delete.
+
 ## 2026-11-19 - Shipped workflow documents (SCRUM-517)
 
 ### Added
