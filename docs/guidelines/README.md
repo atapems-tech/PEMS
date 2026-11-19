@@ -25,7 +25,7 @@ Every task: chapters **0, 1 (section "Definition of done"), 6**. Then add by tas
 | [01 Engineering standards](01-engineering-standards.md) | **every task** - architecture, code, database, settings, security, tests, done |
 | [02 UI and components](02-ui-and-components.md) | any view, page, CSS, JS, form, table, modal, dashboard |
 | [03 Libraries, tools and research](03-libraries-tools-and-research.md) | adding/changing a package, tool, script; any new capability; design decisions |
-| [04 Platform direction](04-platform-direction.md) | anything near metadata, forms, workflow, licensing, deploy, demo, versions (the commercial/BPMS direction) |
+| [04 Platform direction](04-platform-direction.md) | anything near metadata, forms, workflow, licensing, deploy, demo, versions (the commercial/BPMS direction); **section 7: the definition-only model (no code, build or deploy to change a form or page)** |
 | [05 Environment and commands](05-environment-and-commands.md) | first time in the repo, build/test/migrate/run, CI, deploy |
 | [06 Knowledge and guideline maintenance](06-knowledge-and-guideline-maintenance.md) | **every task, at the end** - what to record where; how to change this guideline |
 | [07 QA check in the UI](07-qa-check-in-the-ui.md) | **when a task is merged and moves to In Review**, and whenever you QA a task - the independent check in the browser before Done; **section 7a: the sprint review procedure (first sprint: two identical QA tasks; later sprints: section 7b, Bugs in the active sprint, then Done and sprint complete)** |
