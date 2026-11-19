@@ -3,6 +3,17 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+
+## 2026-11-19 - Definitions: upstream diff and reset, classification table, one field validator (SCRUM-448, 628, 372, 373, 380)
+
+### Added
+- Shipped definitions (SCRUM-448): `GET /api/v1/definitions/{id}/upstream` (is the definition customised, did the product ship a newer version, the differences between the customer's published payload and the shipped one) and `POST /api/v1/definitions/{id}/actions/reset-to-shipped` (republishes the shipped payload as a new version; the customer's versions stay in the history).
+- Classification closure (SCRUM-628): `plan/sheets/classification.json` lists every controller, hosted service and SignalR hub as `pending`, `host` or `static` (with the reason) or `converted` (receipt); `ClassificationClosureTests` fails when a type is missing or an entry is false.
+- One field validator (SCRUM-372, 373, 380): `PEMS.Application/Validation/FieldValidator` with stable constraint codes, create and update modes, hard and advisory fields and a cap on the number of errors (`Validation__MaxErrors` in every `env/*.env`); `ValidationMessages` gives the texts in fa and en and maps violations to the RFC 9457 error list; the catalog is `docs/architecture/FIELD_VALIDATION_CATALOG.md`.
+
+### Changed
+- `FormEngine` runs the built-in checks of a field through the new validator; messages and behaviour are unchanged.
+
 ## 2026-11-10 - VDR details: no error on load, discipline summary works again (SCRUM-560)
 
 ### Fixed

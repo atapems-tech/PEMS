@@ -107,6 +107,7 @@ builder.Services.AddSingleton<PEMS.Web.Api.ApiIdempotencyStore>();
 
 // Definition store (SCRUM-434, ADR-0010/0011): write service, cached runtime read side, the registered kinds and the limits (Definitions:* settings).
 builder.Services.AddSingleton(builder.Configuration.GetSection("Definitions").Get<PEMS.Application.Definitions.DefinitionLimits>() ?? new PEMS.Application.Definitions.DefinitionLimits());
+builder.Services.AddSingleton(builder.Configuration.GetSection("Validation").Get<PEMS.Application.Validation.ValidationOptions>() ?? new PEMS.Application.Validation.ValidationOptions());
 PEMS.Web.Definitions.DefinitionKindExtensions.AddPemsDefinitionKinds(builder.Services);
 builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionStore>();
 // SCRUM-572 (ADR-0014, amended): the definitions the runtime reads are the JSON files of the data layer, hot-reloaded; nothing is read from the database until Sprint 3 moves them (no overlap)

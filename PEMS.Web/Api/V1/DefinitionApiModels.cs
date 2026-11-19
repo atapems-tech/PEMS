@@ -43,6 +43,16 @@ public sealed record DefinitionVersionPayloadResource(DefinitionVersionResource 
         new(DefinitionVersionResource.From(p.Info), JsonDocument.Parse(p.PayloadJson).RootElement.Clone());
 }
 
+/// <summary>One difference between the customer's published payload and the shipped one (JSON Pointer, what happened, both values as JSON text).</summary>
+public sealed record DefinitionDiffEntryResource(string Pointer, string Change, string? Published, string? Shipped);
+
+/// <summary>What a product update did to a customised definition (SCRUM-448).</summary>
+public sealed record DefinitionUpstreamResource(bool Customized, bool UpstreamChanged, int? ShippedVersion, int? BasedOnShippedVersion, int? PublishedVersion, IReadOnlyList<DefinitionDiffEntryResource> Diff, bool Truncated)
+{
+    public static DefinitionUpstreamResource From(DefinitionUpstream u) =>
+        new(u.Customized, u.UpstreamChanged, u.ShippedVersion, u.BasedOnShippedVersion, u.PublishedVersion, u.Diff.Select(d => new DefinitionDiffEntryResource(d.Pointer, d.Change, d.Published, d.Shipped)).ToList(), u.Truncated);
+}
+
 public sealed record DefinitionPackageResource(string Format, DateTime ExportedAt, IReadOnlyList<DefinitionPackageItemResource> Items);
 
 public sealed record DefinitionPackageItemResource(string Kind, string Key, string AppKey, JsonElement Title, JsonElement? Description, JsonElement Payload, string ContentHash, int VersionNumber);

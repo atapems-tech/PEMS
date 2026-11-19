@@ -21,3 +21,13 @@ Rules for every batch
 - A conversion issue is closed only when its controller, views and inline scripts are deleted and its routes ship as `route` definitions.
 - Every batch: tests per issue run through the real handler, definitions validated by the shipped kinds, plan rows updated, the Jira comment lists the browser checks.
 - If a batch finds a gap, the gap becomes a separate issue before the batch ends (guideline 04 section 7), never a tail.
+
+## Plan rows with status Partial (checked 2026-11-19)
+
+54 plan rows have the status Partial. **None is open work**: every one belongs to a Jira issue that is Done or In Review (checked by the `plan-<n>` label, none was To Do, In Progress or On Hold). A Partial row is a finished issue whose plan row names a remainder; reopening the issue would undo delivered work, so none was moved back to In Progress and none was added to a batch.
+Where the remainder is real, a batch of this sprint already covers it; where it is not, it is its own later issue:
+- covered by batch 1: the component library rows 31, 35, 37, 319 to 324, 327, 333, 386, 388, 424, 425, 433, 482, 483, 487, 499, 500, 502, 506, 507, 549, 551 (the specialised components 619 to 627, the page and form engines, the adoption ratchet) and 43 (global search, shell: batch 5);
+- covered by batch 2: 183 (upload pipeline: SCRUM-596), 553 and 554 (validation and error contract: SCRUM-373, 380), 16 (auto-numbering: its own later issue), 423 (sidebar: SCRUM-590);
+- covered by batch 3: 262 and 309 (migrator, SCRUM-581 to 585); batch 10: 295 and 340 (demo rehearsal, SCRUM-767); batch 9: 550 (letters conversion);
+- no batch of this sprint: 112 and 130 (licensing catalogue and price list), 287 (main host platform), 335, 336 and 337 (tracker and plan-sync set-up, owner tasks); 29, 30, 42, 391, 392, 408, 409, 426, 467, 476, 552 are small remainders to be raised as their own issues when their area is next worked.
+The plan status of a row is set from Jira by `plan_sync.py pull`; a row that is still Partial after its issue is Done is a statement about its remainder, not about the issue.
