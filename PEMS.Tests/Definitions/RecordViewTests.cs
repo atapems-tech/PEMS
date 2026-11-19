@@ -185,4 +185,23 @@ public sealed class RecordViewTests : IDisposable
         Assert.Contains("pems-view--kanban", kanban.Html);
         Assert.DoesNotContain("pems-view--cards", kanban.Html);
     }
+
+    [Fact]
+    public async Task The_entity_chart_draws_the_rows_of_a_data_source_and_hides_when_the_user_may_not_read_them()
+    {
+        Ship("entity-chart");
+        var page = Page("{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"c\",\"component\":\"def:entity-chart\",\"options\":{\"url\":\"/d/things-grid\",\"labelField\":\"code\"," +
+                        "\"series\":[{\"field\":\"thingId\",\"name\":{\"en\":\"Things\",\"fa\":\"چیزها\"}}],\"ariaLabel\":{\"en\":\"Things chart\",\"fa\":\"نمودار\"}}}]}}");
+        // the fake source answers only for thingId=7: ask for the row through a sort-less read; the chart reads page 1 and gets nothing, so it shows the empty chart without a problem
+        var open = await _renderer.RenderAsync(page, Request(null), En);
+        Assert.Empty(open.Problems);
+        Assert.Contains("data-bk-chart", open.Html);
+        Assert.Contains("Things chart", open.Html);
+
+        using var closed = new RecordViewTests(false);
+        closed.Ship("entity-chart");
+        var denied = await closed._renderer.RenderAsync(page, Request(null), En);
+        Assert.DoesNotContain("data-bk-chart", denied.Html);
+        Assert.Contains(denied.Problems, p => p.Contains("not allowed"));
+    }
 }

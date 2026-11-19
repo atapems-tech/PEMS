@@ -17,6 +17,8 @@ public sealed record RecordField
     public bool Wide { get; init; }
     /// <summary>Shown in a monospace, left-to-right face (codes, numbers).</summary>
     public bool Mono { get; init; }
+    /// <summary>A text with merge fields, <c>Dear {{name}}, your order {{code}} is ready</c>: each {{key}} is replaced by that property of the record (as text, never markup); the field's own key is ignored (SCRUM-624).</summary>
+    public string? Template { get; init; }
 }
 
 /// <summary>The texts of the record view: the yes and no of a bool, the text of an empty value and of a record that is not found.</summary>

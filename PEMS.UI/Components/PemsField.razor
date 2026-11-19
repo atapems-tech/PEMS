@@ -104,7 +104,7 @@
                 break;
             default:
                 <input type="@InputType" id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" value="@(Descriptor.Kind == FieldKind.Password ? null : Value)"
-                       inputmode="@(Descriptor.Kind == FieldKind.Money ? "decimal" : null)" dir="@(Descriptor.Kind == FieldKind.Money ? "ltr" : null)" autocomplete="@(Descriptor.Kind == FieldKind.Password ? "new-password" : null)" data-pems-tags="@(Descriptor.Kind == FieldKind.Tags ? "," : null)"
+                       inputmode="@(Descriptor.InputMode ?? (Descriptor.Kind == FieldKind.Money ? "decimal" : (Descriptor.Mask is not null && FieldMask.IsAllDigits(Descriptor.Mask) ? "numeric" : null)))" data-pems-mask="@Descriptor.Mask" dir="@(Descriptor.Kind == FieldKind.Money || Descriptor.Mask is not null ? "ltr" : null)" autocomplete="@(Descriptor.Kind == FieldKind.Password ? "new-password" : null)" data-pems-tags="@(Descriptor.Kind == FieldKind.Tags ? "," : null)"
                        maxlength="@Descriptor.MaxLength" placeholder="@placeholderAttr" required="@Descriptor.Required" readonly="@Descriptor.ReadOnly"
                        aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)" />
                 break;

@@ -20,7 +20,9 @@ public sealed record NavigationMenuItemDefinition(
     bool IsDefaultForController = false,
     string? ExtraActiveControllers = null,
     string? ActiveArea = null,
-    string? BadgeKey = null);
+    string? BadgeKey = null,
+    string? TitleEn = null,
+    string? TitleFa = null);
 
 /// <summary>یک آیتم ذخیره‌شده (برای ساخت سایدبار و صفحه‌ی مدیریت).</summary>
 public sealed class NavigationMenuItemDto

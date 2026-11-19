@@ -13,7 +13,7 @@ else
         {
             <div class="@(f.Wide ? "pems-info__item pems-info__item--wide" : "pems-info__item")">
                 <dt class="pems-info__label">@Locale.Text(f.Label)</dt>
-                <dd class="@(f.Mono ? "pems-info__value pems-info__value--mono" : "pems-info__value")">@Show(f, Options.Values.GetValueOrDefault(f.Key))</dd>
+                <dd class="@(f.Mono ? "pems-info__value pems-info__value--mono" : "pems-info__value")">@Show(f, f.Template is null ? Options.Values.GetValueOrDefault(f.Key) : Merge(f.Template))</dd>
             </div>
         }
     </dl>
@@ -22,6 +22,11 @@ else
     [Parameter, EditorRequired] public RecordViewOptions Options { get; set; } = default!;
 
     private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    private static readonly System.Text.RegularExpressions.Regex MergeToken = new(@"\{\{([A-Za-z0-9_]{1,64})\}\}", System.Text.RegularExpressions.RegexOptions.Compiled);
+
+    /// <summary>The template with every {{key}} replaced by the record's property (empty when the record has none).</summary>
+    private string Merge(string template) => MergeToken.Replace(template, m => Options.Values?.GetValueOrDefault(m.Groups[1].Value) ?? "");
 
     private RenderFragment Show(RecordField f, string? raw) => b =>
     {

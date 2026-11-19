@@ -83,6 +83,10 @@ public sealed record FieldDescriptor
     public string? OptionsFrom { get; init; }
     /// <summary>Columns this field takes in the form grid (1 to the form's <c>columns</c>).</summary>
     public int? Span { get; init; }
+    /// <summary>Shows the value grouped as the user types (SCRUM-386): <c>9</c> a digit, <c>A</c> a letter, <c>*</c> a letter or digit, any other character a separator ("9999-9999-9999-9999", "AA99 9999"). The value that is posted and stored has no separators (<see cref="PEMS.UI.Abstractions.FieldMask"/>).</summary>
+    public string? Mask { get; init; }
+    /// <summary>The on-screen keyboard hint (SCRUM-374): numeric, decimal, tel, email, url or text; money fields and all-digit masks get one by themselves.</summary>
+    public string? InputMode { get; init; }
 }
 
 /// <summary>A rule of a field or of the whole form: <see cref="Expression"/> must be true, otherwise <see cref="Message"/> is shown (on <see cref="Field"/> of a form rule, else on the form).</summary>
