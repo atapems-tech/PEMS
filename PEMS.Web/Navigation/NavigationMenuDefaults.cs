@@ -169,7 +169,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,Roles,PermissionMatrix,RoutingRules,PurchaseOrderAuthority,Department,Employee,Authorization,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,Roles,PermissionMatrix,PurchaseOrderAuthority,Department,Employee,Authorization,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,DatabaseUpdate,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
@@ -192,7 +192,9 @@ public static class NavigationMenuDefaults
         Link("admin.aiextraction", "admin.sub.ai", 30, "AI Extraction", "bi-cpu", "AIExtraction", rule: "Module:Administration&Perm:AIExtraction.View"),
         Link("admin.tables", "admin.sub.ai", 40, "Table Extraction", "bi-table", "TableExtraction", rule: "Module:Administration&Perm:TableExtraction.View"),
         Link("admin.relationship", "admin.sub.ai", 50, "RelationshipExplorer", "bi-diagram-3", "Relationship", rule: "Module:Administration&Perm:Relationship.View"),
-        Link("admin.routing", "admin.sub.ai", 60, "AI Routing Rules", "bi-signpost-split", "RoutingRules", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-645: a definition page (/p/...), not a controller
+        new("admin.routing", "admin.sub.ai", L, 60, "AI Routing Rules", "bi-signpost-split", "Module:Administration", ExternalPath: "/p/routing-rules"),
+        new("admin.routingconfidence", "admin.sub.ai", L, 61, "Confidence Gates", "bi-speedometer2", "Module:Administration", ExternalPath: "/p/routing-confidence"),
         // SCRUM-632: a definition page (/p/...), not a controller
         new("admin.contractauthority", "admin.sub.ai", L, 70, "Contract Approval Authority", "bi-shield-check", "Module:Administration", ExternalPath: "/p/contract-approval-authority"),
         // SCRUM-470: the PO authority table

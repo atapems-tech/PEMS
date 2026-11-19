@@ -135,20 +135,6 @@ public class RelatedListComponentTests
         Assert.Contains("value=\"3\">M-3 - Bearing</option>", html);
     }
 
-    [Fact]
-    public async Task RoutingRules_EditEachRowInPlace()
-    {
-        var html = await Render<RoutingRulesController>("/Areas/Admin/Views/RoutingRules/Index.cshtml",
-            new List<RoutingRuleDto> { new() { RoutingRuleId = 2, DocumentCategory = "Drawing", TargetModule = "VDR", AllowAutoRouting = true } },
-            v => { v["Confidence"] = new AIConfidenceSettingsDto { HighThreshold = .9, MediumThreshold = .6 }; v["Modules"] = new[] { "VDR", "Docs" }; });
-
-        Assert.Contains("class=\"lp-page\"", html);
-        Assert.Matches("<form [^>]*hidden=\"hidden\" id=\"rule_2\"", html);
-        Assert.Equal(4, Regex.Matches(html, "form=\"rule_2\"").Count);                     // module, auto route, description and the save button
-        Assert.Contains("id=\"rrConfidence\"", html);
-        Assert.DoesNotContain("admin-hero", html);
-    }
-
     // ---------- wave R2 ----------
 
     [Fact]
