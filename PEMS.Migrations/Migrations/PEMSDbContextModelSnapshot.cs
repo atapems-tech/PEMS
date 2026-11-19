@@ -2334,6 +2334,53 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("DatabaseUpdateRuns");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.DefinitionGrant", b =>
+                {
+                    b.Property<int>("DefinitionGrantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DefinitionGrantId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DefinitionKey")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<string>("Effect")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("DefinitionGrantId");
+
+                    b.HasIndex("Kind", "DefinitionKey", "RoleName")
+                        .IsUnique();
+
+                    b.ToTable("DefinitionGrants", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Definitions.Definition", b =>
                 {
                     b.Property<int>("DefinitionId")

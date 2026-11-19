@@ -8,6 +8,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - Role grants for definitions (SCRUM-591)
+
+### Added
+- Table `DefinitionGrants` (migration `Scrum591DefinitionGrants`) and `IDefinitionAccess.CanOpenAsync(kind, key, ...)`: an administrator opens or closes a page, form, action or data source for a role without a deploy (allow adds, deny wins, the code permission stays the floor); managed with the generic entity pages (entity `DefinitionGrant`), audited.
+
 ## 2026-11-19 - Aggregates, menu definitions and validator on entity writes (SCRUM-592, 590, 373)
 
 ### Added

@@ -204,7 +204,7 @@ public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess acc
         if (handlerKey is null || !_handlers.TryGetValue(handlerKey, out var handler)) return new ActionResult(ActionStatus.NotFound, null, null, null);
 
         var permission = DataSourceDefinitionKind.Str(root["permission"]);
-        var allowed = await access.CanOpenAsync(permission, invocation.Roles, ct)
+        var allowed = await access.CanOpenAsync("action", key, permission, invocation.Roles, ct)
             && (handler.AllowedRoles is null || handler.AllowedRoles.Any(r => invocation.Roles.Contains(r, StringComparer.OrdinalIgnoreCase)));
         if (!allowed) return new ActionResult(ActionStatus.Forbidden, null, null, null);
 
@@ -272,7 +272,7 @@ public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAcces
         var published = await store.GetPublishedAsync("data-source", key, request.AppKey, ct);
         if (published is null) { problems.Add($"The data source \"{key}\" does not exist."); return []; }
         var root = (JsonObject)JsonNode.Parse(published.PayloadJson)!;
-        if (!await access.CanOpenAsync(DataSourceDefinitionKind.Str(root["permission"]), request.Roles, ct)) { problems.Add($"The user may not read the data source \"{key}\"."); return []; }
+        if (!await access.CanOpenAsync("data-source", key, DataSourceDefinitionKind.Str(root["permission"]), request.Roles, ct)) { problems.Add($"The user may not read the data source \"{key}\"."); return []; }
 
         if (DataSourceDefinitionKind.Str(root["kind"]) == "grid") { problems.Add($"The data source \"{key}\" gives grid rows, not options."); return []; }
         if (DataSourceDefinitionKind.Str(root["kind"]) == "static")
@@ -308,7 +308,7 @@ public sealed class DataSourceExecutor(IDefinitionStore store, IDefinitionAccess
         if (DataSourceDefinitionKind.Str(root["kind"]) != "grid") return new DataResult(DataStatus.NotFound);   // a list of options is not served as rows
         var providerKey = DataSourceDefinitionKind.Str(root["provider"]);
         if (providerKey is null || !_providers.TryGetValue(providerKey, out var provider)) return new DataResult(DataStatus.NotFound);
-        if (!await access.CanOpenAsync(DataSourceDefinitionKind.Str(root["permission"]), roles, ct)
+        if (!await access.CanOpenAsync("data-source", key, DataSourceDefinitionKind.Str(root["permission"]), roles, ct)
             || (provider.AllowedRoles is not null && !provider.AllowedRoles.Any(r => roles.Contains(r, StringComparer.OrdinalIgnoreCase))))
             return new DataResult(DataStatus.Forbidden);
 
