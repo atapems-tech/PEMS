@@ -19,6 +19,9 @@ public static class DefinitionKindExtensions
         // SCRUM-437: data sources and actions as definitions; the providers and handlers are registered code, named by the definitions
         services.AddSingleton<IDefinitionKind, DataSourceDefinitionKind>();
         services.AddSingleton<IDefinitionKind, ActionDefinitionKind>();
+        // SCRUM-768: the route table (a URL pattern to a generic host), asked only when no controller answered
+        services.AddSingleton<IDefinitionKind, RouteDefinitionKind>();
+        services.AddScoped<RouteTable>();
         // posted values of a stored form are cleaned before use: rich-text HTML sanitized, undeclared names dropped (SCRUM-59)
         services.AddScoped<FormValueSanitizer>();
         return services;
@@ -81,7 +84,7 @@ public sealed class PageDefinitionKind : IDefinitionKind
 {
     private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "layout", "regions", "route", "permission" };
     /// <summary>The variables an expression of a page can read: the signed-in user, the request (culture, route values), the hydrated values of the page and the current item.</summary>
-    internal static readonly string[] PageExpressionRoots = ["user", "request", "values", "item"];
+    internal static readonly string[] PageExpressionRoots = ["user", "request", "values", "item", "params"];
 
     private static readonly HashSet<string> AllowedInstance = new(StringComparer.Ordinal) { "id", "component", "options", "visible", "bindings" };
 

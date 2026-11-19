@@ -92,6 +92,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         {
             ["user"] = new Dictionary<string, object?> { ["name"] = request.UserName, ["roles"] = request.Roles.ToList() },
             ["request"] = new Dictionary<string, object?> { ["culture"] = request.Culture, ["key"] = request.Key },
+            ["params"] = request.Parameters is null ? new Dictionary<string, object?>() : request.Parameters.ToDictionary(p => p.Key, p => (object?)p.Value),
             ["values"] = new Dictionary<string, object?>(page.Hydrated),
             ["item"] = null
         };

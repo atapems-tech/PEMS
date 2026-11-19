@@ -34,7 +34,7 @@ public sealed class DefinitionOwnership
         // (Definitions:Ownership:{kind}=files, hot reload of a folder); one owner per kind, never both.
         ["layout"] = DefinitionOwner.Database, ["page"] = DefinitionOwner.Database, ["form"] = DefinitionOwner.Database, ["view"] = DefinitionOwner.Database,
         ["dashboard"] = DefinitionOwner.Database, ["action"] = DefinitionOwner.Database, ["data-source"] = DefinitionOwner.Database,
-        ["option-set"] = DefinitionOwner.Database, ["menu"] = DefinitionOwner.Database,
+        ["option-set"] = DefinitionOwner.Database, ["menu"] = DefinitionOwner.Database, ["route"] = DefinitionOwner.Database,
         ["entity"] = DefinitionOwner.Generated, ["workflow-ref"] = DefinitionOwner.Native
     };
 
@@ -59,12 +59,15 @@ public sealed class RoutedDefinitionStore(DefinitionOwnership ownership, IReadOn
 {
     public Task<PublishedDefinition?> GetPublishedAsync(string kind, string key, string appKey = "core", CancellationToken ct = default)
         => providers.TryGetValue(ownership.OwnerOf(kind), out var provider) ? provider.GetPublishedAsync(kind, key, appKey, ct) : Task.FromResult<PublishedDefinition?>(null);
+
+    public Task<IReadOnlyList<PublishedDefinition>> ListPublishedAsync(string kind, string appKey = "core", CancellationToken ct = default)
+        => providers.TryGetValue(ownership.OwnerOf(kind), out var provider) ? provider.ListPublishedAsync(kind, appKey, ct) : Task.FromResult<IReadOnlyList<PublishedDefinition>>([]);
 }
 
 public enum PipelineStatus { Ok, NotFound, Forbidden }
 
 /// <summary>What one request asks of the pipeline: which definition, for whom, in which language.</summary>
-public sealed record PipelineRequest(string Kind, string Key, string AppKey, string Culture, IReadOnlyCollection<string> Roles, string? UserName = null);
+public sealed record PipelineRequest(string Kind, string Key, string AppKey, string Culture, IReadOnlyCollection<string> Roles, string? UserName = null, IReadOnlyDictionary<string, string>? Parameters = null);
 
 /// <summary>
 /// The definition for this request: a private copy of the published payload that the hydrators may fill (<see cref="Hydrated"/>); the cached published

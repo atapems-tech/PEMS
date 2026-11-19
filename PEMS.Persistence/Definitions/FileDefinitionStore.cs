@@ -53,6 +53,9 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
     public Task<PublishedDefinition?> GetPublishedAsync(string kind, string key, string appKey = "core", CancellationToken ct = default)
         => Task.FromResult(_snapshot.ByKey.TryGetValue(KeyOf(appKey, kind, key), out var d) ? d : null);
 
+    public Task<IReadOnlyList<PublishedDefinition>> ListPublishedAsync(string kind, string appKey = "core", CancellationToken ct = default)
+        => Task.FromResult<IReadOnlyList<PublishedDefinition>>(_snapshot.All.Where(d => d.Kind == kind && d.AppKey == appKey).ToList());
+
     private static string KeyOf(string appKey, string kind, string key) => appKey + "|" + kind + "|" + key;
 
     public void Reload()
