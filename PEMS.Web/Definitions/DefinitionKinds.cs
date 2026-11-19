@@ -25,6 +25,8 @@ public static class DefinitionKindExtensions
         services.AddSingleton<IDefinitionKind, ComponentDefinitionKind>();
         // SCRUM-590: the menu as a definition (shipped by the migrator feed, synced into the sidebar table with its ownership rule)
         services.AddSingleton<IDefinitionKind, PEMS.Web.Navigation.MenuDefinitionKind>();
+        // SCRUM-516: shipped reference data (lookups, templates, numbering) with an owner per list and per row
+        services.AddSingleton<IDefinitionKind, PEMS.Application.Definitions.ReferenceDataKind>();
         services.AddScoped<RouteTable>();
         // posted values of a stored form are cleaned before use: rich-text HTML sanitized, undeclared names dropped (SCRUM-59)
         services.AddScoped<FormValueSanitizer>();
