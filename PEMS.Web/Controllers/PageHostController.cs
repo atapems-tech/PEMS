@@ -19,7 +19,9 @@ public sealed class PageHostController(DefinitionPipeline pipeline, PageRenderer
         if (!KeyShape.IsMatch(key)) return NotFound();
         var culture = CultureInfo.CurrentUICulture;
         var roles = User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToList();
-        var request = new PipelineRequest("page", key, "core", culture.TwoLetterISOLanguageName, roles, currentUser.UserName);
+        // the values a route or the query string gives the page (an id, a filter); a page reads them as params.id in its expressions (SCRUM-768)
+        var parameters = Request.Query.Where(q => q.Key.Length <= 64).ToDictionary(q => q.Key, q => q.Value.ToString(), StringComparer.Ordinal);
+        var request = new PipelineRequest("page", key, "core", culture.TwoLetterISOLanguageName, roles, currentUser.UserName, parameters);
 
         var result = await pipeline.RunAsync(request, ct);
         if (result.Status == PipelineStatus.NotFound) return NotFound();

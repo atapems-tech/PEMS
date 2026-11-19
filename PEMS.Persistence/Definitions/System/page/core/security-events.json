@@ -14,158 +14,76 @@
   "payload": {
     "layout": "list-page",
     "route": "security-events",
-    "regions": {
-      "content": [
+    "template": "entity-list",
+    "args": {
+      "id": "security-events",
+      "url": "/d/security-events-grid",
+      "idField": "securityEventId",
+      "columns": [
         {
-          "id": "grid",
-          "component": "data-grid",
-          "options": {
-            "id": "security-events",
-            "url": "/d/security-events-grid",
-            "idField": "securityEventId",
-            "selectable": false,
-            "columns": [
-              {
-                "key": "occurredAtUtc",
-                "header": {
-                  "en": "When (UTC)",
-                  "fa": "زمان (UTC)"
-                },
-                "width": 170,
-                "type": "datetime"
-              },
-              {
-                "key": "eventType",
-                "header": {
-                  "en": "Event",
-                  "fa": "رویداد"
-                },
-                "width": 170
-              },
-              {
-                "key": "method",
-                "header": {
-                  "en": "Method",
-                  "fa": "روش"
-                },
-                "width": 150
-              },
-              {
-                "key": "result",
-                "header": {
-                  "en": "Result",
-                  "fa": "نتیجه"
-                },
-                "width": 100
-              },
-              {
-                "key": "failureReason",
-                "header": {
-                  "en": "Failure reason",
-                  "fa": "دلیل شکست"
-                },
-                "width": 180
-              },
-              {
-                "key": "actorUserName",
-                "header": {
-                  "en": "Actor",
-                  "fa": "انجام‌دهنده"
-                },
-                "width": 150
-              },
-              {
-                "key": "targetUserName",
-                "header": {
-                  "en": "Target account",
-                  "fa": "حساب هدف"
-                },
-                "width": 150
-              },
-              {
-                "key": "ipAddress",
-                "header": {
-                  "en": "IP address",
-                  "fa": "نشانی IP"
-                },
-                "width": 130
-              }
-            ],
-            "texts": {
-              "search": {
-                "en": "Search",
-                "fa": "جستجو"
-              },
-              "columns": {
-                "en": "Columns",
-                "fa": "ستون‌ها"
-              },
-              "density": {
-                "en": "Density",
-                "fa": "تراکم"
-              },
-              "compact": {
-                "en": "Compact",
-                "fa": "فشرده"
-              },
-              "comfortable": {
-                "en": "Comfortable",
-                "fa": "راحت"
-              },
-              "export": {
-                "en": "Export",
-                "fa": "خروجی"
-              },
-              "views": {
-                "en": "Views",
-                "fa": "نماها"
-              },
-              "saveView": {
-                "en": "Save view",
-                "fa": "ذخیره نما"
-              },
-              "viewName": {
-                "en": "View name",
-                "fa": "نام نما"
-              },
-              "loading": {
-                "en": "Loading",
-                "fa": "در حال بارگذاری"
-              },
-              "empty": {
-                "en": "No rows",
-                "fa": "ردیفی نیست"
-              },
-              "error": {
-                "en": "Could not load",
-                "fa": "بارگذاری نشد"
-              },
-              "rows": {
-                "en": "{0} rows",
-                "fa": "{0} ردیف"
-              },
-              "selected": {
-                "en": "{0} selected",
-                "fa": "{0} انتخاب شد"
-              },
-              "selectAllMatching": {
-                "en": "Select all {0}",
-                "fa": "انتخاب همه {0}"
-              },
-              "clearSelection": {
-                "en": "Clear",
-                "fa": "پاک کردن"
-              },
-              "filter": {
-                "en": "Filter",
-                "fa": "فیلتر"
-              },
-              "delete": {
-                "en": "Delete",
-                "fa": "حذف"
-              }
-            }
-          }
+          "key": "occurredAtUtc",
+          "header": {
+            "en": "When (UTC)",
+            "fa": "زمان (UTC)"
+          },
+          "width": 170,
+          "type": "datetime"
+        },
+        {
+          "key": "eventType",
+          "header": {
+            "en": "Event",
+            "fa": "رویداد"
+          },
+          "width": 170
+        },
+        {
+          "key": "method",
+          "header": {
+            "en": "Method",
+            "fa": "روش"
+          },
+          "width": 150
+        },
+        {
+          "key": "result",
+          "header": {
+            "en": "Result",
+            "fa": "نتیجه"
+          },
+          "width": 100
+        },
+        {
+          "key": "failureReason",
+          "header": {
+            "en": "Failure reason",
+            "fa": "دلیل شکست"
+          },
+          "width": 180
+        },
+        {
+          "key": "actorUserName",
+          "header": {
+            "en": "Actor",
+            "fa": "انجام‌دهنده"
+          },
+          "width": 150
+        },
+        {
+          "key": "targetUserName",
+          "header": {
+            "en": "Target account",
+            "fa": "حساب هدف"
+          },
+          "width": 150
+        },
+        {
+          "key": "ipAddress",
+          "header": {
+            "en": "IP address",
+            "fa": "نشانی IP"
+          },
+          "width": 130
         }
       ]
     }

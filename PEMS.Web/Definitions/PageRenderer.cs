@@ -32,13 +32,13 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         var layoutRoot = (JsonObject)JsonNode.Parse(layout.PayloadJson)!["root"]!;
         var known = new HashSet<string>(StringComparer.Ordinal);
         CollectRegions(layoutRoot, known);
-        var regions = root["regions"] as JsonObject ?? new JsonObject();
+        var regions = await ResolveRegionsAsync(root, page.Source.AppKey, problems, ct);
         foreach (var name in regions.Select(r => r.Key).Where(n => !known.Contains(n)))
             problems.Add($"The page fills the region \"{name}\", which the layout \"{layoutKey}\" does not have.");
 
         var expressions = BuildContext(page, request);
         var html = new StringBuilder();
-        await WriteNodeAsync(layoutRoot, regions, expressions, culture, html, problems, ct);
+        await WriteNodeAsync(layoutRoot, regions, expressions, culture, html, problems, page.Source.AppKey, ct);
         return new RenderedPage(html.ToString(), TitleOf(page.Source.TitleJson, culture), problems);
     }
 
@@ -48,12 +48,12 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         if (node["children"] is JsonArray c) foreach (var child in c.OfType<JsonObject>()) CollectRegions(child, into);
     }
 
-    private async Task WriteNodeAsync(JsonObject node, JsonObject regions, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems, CancellationToken ct)
+    private async Task WriteNodeAsync(JsonObject node, JsonObject regions, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems, string appKey, CancellationToken ct)
     {
         if (node["region"] is JsonValue regionName)
         {
             if (regions[(string)regionName!] is JsonArray instances)
-                foreach (var instance in instances.OfType<JsonObject>()) await WriteInstanceAsync(instance, ctx, culture, html, problems);
+                foreach (var instance in instances.OfType<JsonObject>()) await WriteInstanceAsync(instance, ctx, culture, html, problems, appKey, 0, ct);
             else if (node["required"] is JsonValue req && req.GetValueKind() == JsonValueKind.True)
                 problems.Add($"The required region \"{(string)regionName!}\" is empty.");
             return;
@@ -66,11 +66,39 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
             foreach (var a in attrs) html.Append(' ').Append(a.Key).Append("=\"").Append(WebUtility.HtmlEncode((string?)a.Value ?? "")).Append('"');
         html.Append('>');
         if (node["children"] is JsonArray children)
-            foreach (var child in children.OfType<JsonObject>()) await WriteNodeAsync(child, regions, ctx, culture, html, problems, ct);
+            foreach (var child in children.OfType<JsonObject>()) await WriteNodeAsync(child, regions, ctx, culture, html, problems, appKey, ct);
         html.Append("</").Append(tag).Append('>');
     }
 
-    private async Task WriteInstanceAsync(JsonObject instance, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems)
+    private const int MaxDepth = 4;
+
+    /// <summary>The regions of the page: those of its template (a component definition, SCRUM-589) with the template's arguments, then the page's own regions added after them.</summary>
+    private async Task<JsonObject> ResolveRegionsAsync(JsonObject root, string appKey, List<string> problems, CancellationToken ct)
+    {
+        var regions = new JsonObject();
+        if (root["template"] is JsonValue tv && tv.GetValueKind() == JsonValueKind.String)
+        {
+            var key = (string)tv!;
+            var definition = await store.GetPublishedAsync("component", key, appKey, ct);
+            if (definition is null) problems.Add($"The template \"{key}\" does not exist.");
+            else
+                try
+                {
+                    foreach (var (name, list) in ComponentTemplate.ExpandRegions((JsonObject)JsonNode.Parse(definition.PayloadJson)!, root["args"] as JsonObject))
+                        regions[name] = list?.DeepClone();
+                }
+                catch (ComponentTemplateException ex) { problems.Add($"The template \"{key}\": {ex.Message}"); }
+        }
+        if (root["regions"] is JsonObject own)
+            foreach (var (name, list) in own)
+            {
+                if (regions[name] is JsonArray existing && list is JsonArray more) foreach (var item in more) existing.Add(item?.DeepClone());
+                else regions[name] = list?.DeepClone();
+            }
+        return regions;
+    }
+
+    private async Task WriteInstanceAsync(JsonObject instance, ExpressionContext ctx, CultureInfo culture, StringBuilder html, List<string> problems, string appKey, int depth, CancellationToken ct)
     {
         var id = (string?)instance["id"] ?? "?";
         try
@@ -79,10 +107,21 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
                 && !ExpressionCompiler.Compile((string)v!, PageDefinitionKind.PageExpressionRoots).EvaluateCondition(ctx))
                 return;
             var component = (string)instance["component"]!;
+            if (ComponentTemplate.IsDefinitionRef(component))
+            {
+                if (depth >= MaxDepth) { problems.Add($"Instance \"{id}\": component definitions are nested too deep."); return; }
+                var key = ComponentTemplate.KeyOf(component);
+                var definition = await store.GetPublishedAsync("component", key, appKey, ct);
+                if (definition is null) { problems.Add($"Instance \"{id}\": the component definition \"{key}\" does not exist."); return; }
+                var children = ComponentTemplate.ExpandInstances((JsonObject)JsonNode.Parse(definition.PayloadJson)!, instance["options"] as JsonObject, id);
+                foreach (var child in children.OfType<JsonObject>()) await WriteInstanceAsync(child, ctx, culture, html, problems, appKey, depth + 1, ct);
+                return;
+            }
             var parameters = catalog.ToParameters(component, (instance["options"] ?? new JsonObject()).ToJsonString());
             html.Append(await renderer.RenderAsync(component, parameters, culture));
         }
         catch (ExpressionException ex) { problems.Add($"Instance \"{id}\": {ex.Code}: {ex.Message}"); }
+        catch (ComponentTemplateException ex) { problems.Add($"Instance \"{id}\": {ex.Message}"); }
         catch (ArgumentException ex) { problems.Add($"Instance \"{id}\": {ex.Message}"); }
     }
 
@@ -92,6 +131,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         {
             ["user"] = new Dictionary<string, object?> { ["name"] = request.UserName, ["roles"] = request.Roles.ToList() },
             ["request"] = new Dictionary<string, object?> { ["culture"] = request.Culture, ["key"] = request.Key },
+            ["params"] = request.Parameters is null ? new Dictionary<string, object?>() : request.Parameters.ToDictionary(p => p.Key, p => (object?)p.Value),
             ["values"] = new Dictionary<string, object?>(page.Hydrated),
             ["item"] = null
         };
