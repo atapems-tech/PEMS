@@ -27,7 +27,7 @@ public sealed class RecordViewTests : IDisposable
         {
             Requests.Add(request);
             var wanted = request.Grid.Filters.FirstOrDefault(f => f.Field == "thingId")?.Value;
-            IReadOnlyList<object> items = wanted == "7" ? [new Dictionary<string, object?> { ["thingId"] = 7, ["code"] = "T-7", ["name"] = "<b>Pump</b>", ["isActive"] = true, ["created"] = new DateTime(2026, 11, 10) }] : [];
+            IReadOnlyList<object> items = wanted is null or "7" ? [new Dictionary<string, object?> { ["thingId"] = 7, ["code"] = "T-7", ["name"] = "<b>Pump</b>", ["isActive"] = true, ["created"] = new DateTime(2026, 11, 10) }] : [];
             return Task.FromResult((items, items.Count));
         }
     }
@@ -202,6 +202,28 @@ public sealed class RecordViewTests : IDisposable
         closed.Ship("entity-chart");
         var denied = await closed._renderer.RenderAsync(page, Request(null), En);
         Assert.DoesNotContain("data-bk-chart", denied.Html);
+        Assert.Contains(denied.Problems, p => p.Contains("not allowed"));
+    }
+
+    [Fact]
+    public async Task The_entity_matrix_builds_cells_from_the_source_posts_edits_only_with_an_action_and_hides_when_the_user_may_not_read()
+    {
+        Ship("entity-matrix");
+        string Matrix(string extra) => "{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"m\",\"component\":\"def:entity-matrix\",\"options\":{\"id\":\"fmea\",\"url\":\"/d/things-grid\",\"rowField\":\"code\",\"columnField\":\"name\",\"valueField\":\"thingId\",\"idField\":\"thingId\"" + extra + "}}]}}";
+        var editable = await _renderer.RenderAsync(Page(Matrix(",\"actionUrl\":\"/a/fmea-cell\",\"cellType\":\"number\"")), Request(null), En);
+        Assert.Empty(editable.Problems);
+        Assert.Contains("data-pems-matrix=\"/a/fmea-cell\"", editable.Html);
+        Assert.Contains("T-7", editable.Html);
+        Assert.Contains("data-row=\"T-7\"", editable.Html);
+
+        var readOnly = await _renderer.RenderAsync(Page(Matrix("")), Request(null), En);
+        Assert.Empty(readOnly.Problems);
+        Assert.DoesNotContain("data-row=", readOnly.Html);
+
+        using var closed = new RecordViewTests(false);
+        closed.Ship("entity-matrix");
+        var denied = await closed._renderer.RenderAsync(Page(Matrix("")), Request(null), En);
+        Assert.DoesNotContain("T-7", denied.Html);
         Assert.Contains(denied.Problems, p => p.Contains("not allowed"));
     }
 }
