@@ -15,6 +15,6 @@ Run before the first edit of every go-ahead, say in your first message that you 
 3. **Batch.** Group by area, files, pattern, dependency chain; order small issues first and the huge ones (effort L, schema, a whole engine) last, light tests per slice and the heavy suites once at the end of the batch (guideline 00 section 0.3, 05); a To Do blocker travels with the task it blocks and is done first. One branch per batch, one PR per safe slice, merge each at once. **A finished issue is never held unmerged** (owner decision 2026-11-19): when its tests pass, merge it with the issues it belongs with and move it to In Review; unfinished work stays In Progress.
 4. **State the plan** in one message: batches, what the audit changed or proposes to cancel (evidence in a phrase), what is blocked and by what. The go-ahead is the approval; a cancellation still needs the owner's yes.
 5. **Start in Jira before the first commit** (skill `pems-jira-handover`), then work. Test with `pems-test-gates`.
-6. **Close.** Every issue to In Review with a QA checklist, or one line why not. Update the guideline if a procedure was learned (chapter 06).
+6. **Close.** Merge nearly repeated tests of the batch first (guideline 00 section 0.5); Every issue to In Review with a QA checklist, or one line why not. Update the guideline if a procedure was learned (chapter 06).
 
 Never: start the named issue without its blockers and neighbours; merge under an issue that is not In Progress; plan from a stale checkout.

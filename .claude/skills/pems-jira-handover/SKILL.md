@@ -11,7 +11,7 @@ Every Jira write echoes the whole issue (about 3k tokens): one call per issue pe
 1. `editJiraIssue` once: `fields` = `{ "assignee": {"accountId": <atlassianUserInfo>}, "customfield_10020": <active sprint id> }` (Sprint 1 was id 5; read `customfield_10020.value[0].id` of a sprint issue when unsure). `labels` **replaces the whole list**: send all of them.
 2. `transitionJiraIssue` with `transitionName: "In Progress"` and `comment` = "Started" + plan in 3 to 5 lines (batch partners, what you reuse, what you will not do). Verify `sprint in openSprints()` when it matters.
 
-**In Review** (only after the PR is merged into main; the author never moves to Done):
+**In Review** (only after the PR is merged into main; the author never moves to Done). Hand over with the minimum tests that are really needed: every other check goes onto the QA checklist as an unchecked line with its command (guideline 00 section 0.3):
 1. `editJiraIssue` `labels` + `qa-pending` (full list).
 2. `transitionJiraIssue` `transitionName: "In Review"` with `comment` = PR links, "Tests: passed" with commands and counts, "Tests: not run - <why>", and the QA checklist: line 1 the local test run, one line per *Done when*, then every skipped check as `- [ ] n. <check> (not done - <reason>)`: SQL families, `PEMS.Tests.Web` render suite, the browser check (golden path, fa and en, 375 px), manual checks M-n. Name the exact command or page.
 3. Work that is only part done stays In Progress with the same checklist as a draft; say which lines belong to which step.
