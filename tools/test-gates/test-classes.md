@@ -107,7 +107,6 @@ Do not edit; run `python tools/test-gates/classify.py`. A class moves tier when 
 | in-memory | Authorization/AccessControlParityTests.cs | AccessControlParityTests | 5 |
 | in-memory | Authorization/AccessControlScopeAndSoDTests.cs | AccessControlScopeAndSoDTests | 12 |
 | in-memory | Authorization/AdminUsersGridPaginationTests.cs | AdminUsersGridPaginationTests | 6 |
-| in-memory | Authorization/AuditLogGridPaginationTests.cs | AuditLogGridPaginationTests | 3 |
 | in-memory | Authorization/AuthorizationArchitectureCompletionTests.cs | AuthorizationArchitectureCompletionTests | 4 |
 | in-memory | Authorization/BarcodeControllerAuthorizationTests.cs | BarcodeControllerAuthorizationTests | 16 |
 | in-memory | Authorization/CmmsOperationsNavigationExposureTests.cs | CmmsOperationsNavigationExposureTests | 3 |
@@ -153,7 +152,6 @@ Do not edit; run `python tools/test-gates/classify.py`. A class moves tier when 
 | in-memory | Authorization/RoleCatalogTests.cs | RoleCatalogTests | 18 |
 | in-memory | Authorization/RolePermissionAdminServiceTests.cs | RolePermissionAdminServiceTests | 12 |
 | in-memory | Authorization/ShiftHandoverNavigationExposureTests.cs | ShiftHandoverNavigationExposureTests | 5 |
-| in-memory | Authorization/SoDPolicyControllerTests.cs | SoDPolicyControllerTests | 4 |
 | in-memory | Authorization/TaskControllerAuthorizationTests.cs | TaskControllerAuthorizationTests | 9 |
 | in-memory | Authorization/TeamObjectScopeAuthorizationTests.cs | TeamObjectScopeAuthorizationTests | 19 |
 | in-memory | Authorization/TenderControllerAuthorizationTests.cs | TenderControllerAuthorizationTests | 4 |

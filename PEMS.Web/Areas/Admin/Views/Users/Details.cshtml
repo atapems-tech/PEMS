@@ -321,7 +321,7 @@
                             <pems-data-table data="@(DataRows.Of(Model.SoDExposure, c_ => c_.Add(((Localizer["Permission A"])?.ToString() ?? ""), s => (object?)(DataCell.Code(s.PermissionAName))).Add(((Localizer["Permission B"])?.ToString() ?? ""), s => (object?)(DataCell.Code(s.PermissionBName))).Add(((Localizer["Description"])?.ToString() ?? ""), s => (object?)((s.PolicyDescription ?? "")), css: "text-body-secondary small").Add(((Localizer["Status"])?.ToString() ?? ""), s => (object?)((s.UserHoldsBoth ? (object?)DataCell.Span("admin-status inactive", DataCell.Icon("bi-exclamation-triangle"), " ", Localizer["Potential exposure"]) : DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", Localizer["Not exposed"]))))))" />
                         </pems-table-scroll>
                     }
-                    <pems-text class="text-body-secondary small mt-3 mb-0"><pems-link asp-controller="SoDPolicy" asp-action="Index">@Localizer["Manage SoD policies"]</pems-link></pems-text>
+                    <pems-text class="text-body-secondary small mt-3 mb-0"><pems-link href="/p/sod-policies">@Localizer["Manage SoD policies"]</pems-link></pems-text>
                 </pems-content-card>
             </pems-tab-pane>
 
@@ -383,7 +383,7 @@
                     <pems-data-table data="@(DataRows.Of(Model.RecentAuditLogs, c_ => c_.Add(((Localizer["Timestamp"])?.ToString() ?? ""), log => (object?)((PemsDates.DateTimeSeconds(log.Timestamp))), css: "vs-num").Add(((Localizer["Permission"])?.ToString() ?? ""), log => (object?)(DataCell.Code(($"{log.ResourceName}.{log.ActionName}")))).Add(((Localizer["Resource ID"])?.ToString() ?? ""), log => (object?)((log.ResourceId ?? "")), css: "text-body-secondary small").Add(((Localizer["Decision"])?.ToString() ?? ""), log => (object?)((log.Decision == "Allow" ? (object?)DataCell.Span("admin-status active", DataCell.Icon("bi-check2-circle"), " ", log.Decision) : DataCell.Span("admin-status inactive", DataCell.Icon("bi-x-circle"), " ", log.Decision)))).Add(((Localizer["Reason"])?.ToString() ?? ""), log => (object?)((log.Reason ?? "")), css: "text-body-secondary small")))" />
                 </pems-table-scroll>
             }
-            <pems-text class="text-body-secondary small mt-3 mb-0"><pems-link asp-controller="AuthorizationAudit" asp-action="Index" asp-route-userId="@Model.UserId">@Localizer["Open full audit log for this user"]</pems-link></pems-text>
+            <pems-text class="text-body-secondary small mt-3 mb-0"><pems-link href="/p/authorization-audit">@Localizer["Open full audit log for this user"]</pems-link></pems-text>
         </pems-content-card>
     </pems-tab-pane>
 

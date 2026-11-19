@@ -1,5 +1,7 @@
 using System.Globalization;
 using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.Definitions;
@@ -133,5 +135,39 @@ public sealed class AdminAuditDefinitionsTests
         using (var db = PemsDbContextFactory.CreateInMemory(name)) { db.SoDPolicies.Add(new SoDPolicy { PermissionAId = 1, PermissionBId = 2, Description = "x" }); db.SaveChanges(); }
         var row = Rows(await new EntityGridProvider(scopes, Catalog).QueryAsync(Grid("sod-policies-grid"), CancellationToken.None)).Single();
         Assert.Equal(("WorkOrder.Create", "WorkOrder.Approve"), (row["permissionA"], row["permissionB"]));
+    }
+
+    [Fact]
+    public async Task Rows_with_the_same_time_stay_in_a_stable_order_so_no_page_of_the_audit_log_repeats_or_skips_a_row()
+    {
+        var (scopes, name) = Setup();
+        using (var db = PemsDbContextFactory.CreateInMemory(name))
+        {
+            var same = new DateTime(2026, 11, 1, 8, 0, 0);       // the case the old controller test guarded: many rows saved in the same instant
+            for (var i = 0; i < 5; i++) db.AuditLogs.Add(new AuditLog { EntityName = "Vendor", EntityKeyValue = i.ToString(), Action = "Update", UserName = "ali", Timestamp = same });
+            db.SaveChanges();
+        }
+        var grid = new EntityGridProvider(scopes, Catalog);
+        var seen = new List<int>();
+        for (var page = 1; page <= 3; page++)
+            seen.AddRange(Rows(await grid.QueryAsync(Grid("audit-log-grid", ("page", page.ToString()), ("pageSize", "2")), CancellationToken.None)).Select(r => Convert.ToInt32(r["auditLogId"])));
+        Assert.Equal(5, seen.Count);
+        Assert.Equal(5, seen.Distinct().Count());
+        Assert.Equal(seen.OrderByDescending(x => x), seen);     // newest id first within the same time
+    }
+
+    [Theory]
+    [InlineData("admin-audit-log", "Admin/AuditLog", "audit-log")]
+    [InlineData("admin-audit-log", "Admin/AuditLog/Index", "audit-log")]
+    [InlineData("admin-authorization-audit", "Admin/AuthorizationAudit/Index", "authorization-audit")]
+    [InlineData("admin-sod-policy", "Admin/SoDPolicy/Create", "sod-policies")]
+    [InlineData("admin-security-events", "Admin/SecurityEvents", "security-events")]
+    public void The_address_of_a_deleted_controller_still_reaches_its_definition_page(string route, string oldAddress, string page)
+    {
+        var payload = Shipped("route", route);
+        Assert.Empty(new RouteDefinitionKind().Validate(payload.ToJsonString(), new DefinitionLimits()));
+        Assert.True(new TemplateMatcher(TemplateParser.Parse((string)payload["pattern"]!), new RouteValueDictionary()).TryMatch("/" + oldAddress, new RouteValueDictionary()));
+        Assert.Equal("/p/" + page, (string)payload["target"]!);
+        Assert.True(File.Exists(Path.Combine(AppContext.BaseDirectory, SystemDefinitionSeeder.FolderName, "page", "core", page + ".json")));     // the page the old address leads to ships
     }
 }

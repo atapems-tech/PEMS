@@ -18,7 +18,7 @@ namespace PEMS.Tests.Web;
 public class AdminSettingsListPagesTests
 {
     private static readonly string[] Pages =
-        { "SoDPolicy", "StorageProviders", "StorageRouting", "WorkflowManagement", "Help", "PurchaseOrderAuthority" };
+        { "StorageProviders", "StorageRouting", "WorkflowManagement", "Help", "PurchaseOrderAuthority" };
 
     private static Task<string> Render<TController>(string view, object? model, Action<ViewDataDictionary>? data = null) where TController : Controller
     {
@@ -71,13 +71,8 @@ public class AdminSettingsListPagesTests
     }
 
     [Fact]
-    public async Task SoD_Routes_Workflows_AndHelp_UseTheListFrame()
+    public async Task Routes_Workflows_AndHelp_UseTheListFrame()
     {
-        var sod = await Render<SoDPolicyController>("/Areas/Admin/Views/SoDPolicy/Index.cshtml",
-            new List<SoDPolicyListItemVm> { new() { Id = 1, PermissionA = "PO.Create", PermissionB = "PO.Approve", IsActive = true } });
-        AssertBuiltFromTheComponent(sod, 1);
-        Assert.Contains("lp-compose", sod);
-
         var routes = await Render<StorageRoutingController>("/Areas/Admin/Views/StorageRouting/Index.cshtml",
             new List<StorageRouteDto> { new() { StorageRouteId = 1, Module = "VDR", StorageProviderName = "Main", IsEnabled = true } });
         AssertBuiltFromTheComponent(routes, 1);
