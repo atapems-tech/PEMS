@@ -164,8 +164,7 @@ public sealed class ComponentDefinitionTests : IDisposable
     [Fact]
     public async Task The_shipped_entity_list_component_renders_a_grid_over_the_data_source_and_a_new_button_only_with_a_url()
     {
-        _components["entity-list"] = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "definitions-system", "component", "core", "entity-list.json")) is var text
-            ? JsonNode.Parse(text)!["payload"]!.ToJsonString() : "";
+        _components["entity-list"] = ShippedComponents.Payload("entity-list");
         var with = await _renderer.RenderAsync(Page("{\"layout\":\"list-page\",\"template\":\"entity-list\",\"args\":{\"id\":\"things\",\"url\":\"/d/things-grid\",\"idField\":\"thingId\",\"newUrl\":\"/f/things-create\"," +
                                                    "\"newLabel\":{\"en\":\"New thing\",\"fa\":\"جدید\"},\"columns\":[{\"key\":\"name\",\"header\":{\"en\":\"Name\",\"fa\":\"نام\"},\"width\":200}]}}"), Request(), En);
         Assert.Empty(with.Problems);
@@ -179,7 +178,7 @@ public sealed class ComponentDefinitionTests : IDisposable
     [Fact]
     public async Task The_entity_list_passes_the_grid_settings_saved_views_density_page_size_bulk_actions_and_pinned_columns_through()
     {
-        _components["entity-list"] = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "definitions-system", "component", "core", "entity-list.json")))!["payload"]!.ToJsonString();
+        _components["entity-list"] = ShippedComponents.Payload("entity-list");
         var page = Page("{\"layout\":\"list-page\",\"template\":\"entity-list\",\"args\":{\"id\":\"things\",\"url\":\"/d/things-grid\",\"idField\":\"thingId\",\"viewsKey\":\"things-saved\",\"density\":\"compact\",\"pageSize\":250,\"selectable\":true," +
                         "\"bulkActions\":[{\"key\":\"del\",\"label\":{\"en\":\"Remove\",\"fa\":\"حذف\"},\"url\":\"/a/things-delete\"}]," +
                         "\"columns\":[{\"key\":\"code\",\"header\":{\"en\":\"Code\",\"fa\":\"کد\"},\"width\":120,\"pinned\":\"start\"}]}}");

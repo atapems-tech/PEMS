@@ -27,7 +27,7 @@ public sealed class RecordViewTests : IDisposable
         {
             Requests.Add(request);
             var wanted = request.Grid.Filters.FirstOrDefault(f => f.Field == "thingId")?.Value;
-            IReadOnlyList<object> items = wanted == "7" ? [new Dictionary<string, object?> { ["thingId"] = 7, ["code"] = "T-7", ["name"] = "<b>Pump</b>", ["isActive"] = true, ["created"] = new DateTime(2026, 11, 10) }] : [];
+            IReadOnlyList<object> items = wanted is null or "7" ? [new Dictionary<string, object?> { ["thingId"] = 7, ["code"] = "T-7", ["name"] = "<b>Pump</b>", ["isActive"] = true, ["created"] = new DateTime(2026, 11, 10) }] : [];
             return Task.FromResult((items, items.Count));
         }
     }
@@ -54,7 +54,7 @@ public sealed class RecordViewTests : IDisposable
         _pageKind = new PageDefinitionKind(registry, catalog);
         _files = new FileDefinitionStore(kinds, new DefinitionLimits(), new DefinitionFileOptions { Folder = Path.Combine(AppContext.BaseDirectory, "definitions-system"), Watch = false }, FilesOwnership.For(kinds));
         var overlay = new Overlay(_files, _store);
-        _store["component/entity-details"] = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "definitions-system", "component", "core", "entity-details.json")))!["payload"]!.ToJsonString();
+        _store["component/entity-details"] = ShippedComponents.Payload("entity-details");
         _store["data-source/things-grid"] = "{\"kind\":\"grid\",\"provider\":\"fake\",\"parameters\":{}}";
         _renderer = new PageRenderer(provider.GetRequiredService<IPemsComponentRenderer>(), catalog, overlay, new DataSourceExecutor(overlay, new Allow(open), [_rows]));
     }
@@ -96,12 +96,25 @@ public sealed class RecordViewTests : IDisposable
         Assert.Single(_rows.Requests);                                   // only the first request read; no id, no read
     }
 
-    [Fact]
-    public async Task A_user_who_may_not_read_the_data_source_gets_no_row_and_the_part_is_hidden_with_a_problem()
+    private const string ChartPage = "{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"c\",\"component\":\"def:entity-chart\",\"options\":{\"url\":\"/d/things-grid\",\"labelField\":\"code\"," +
+                                    "\"series\":[{\"field\":\"thingId\"}],\"ariaLabel\":\"Chart\"}}]}}";
+    private const string MatrixPage = "{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"m\",\"component\":\"def:entity-matrix\",\"options\":{\"id\":\"fmea\",\"url\":\"/d/things-grid\"," +
+                                      "\"rowField\":\"code\",\"columnField\":\"name\",\"valueField\":\"thingId\"}}]}}";
+
+    // one rule for every part that reads a data source (record view, chart, matrix): no permission, no row, the part is hidden and a problem says why
+    [Theory]
+    [InlineData("details")]
+    [InlineData("chart")]
+    [InlineData("matrix")]
+    public async Task A_user_who_may_not_read_the_data_source_gets_no_row_and_the_part_is_hidden_with_a_problem(string part)
     {
         using var closed = new RecordViewTests(false);
-        var result = await closed._renderer.RenderAsync(Page(), Request("7"), En);
+        closed.Ship("entity-chart"); closed.Ship("entity-matrix");
+        var page = Page(part switch { "chart" => ChartPage, "matrix" => MatrixPage, _ => Details });
+        var result = await closed._renderer.RenderAsync(page, Request("7"), En);
         Assert.DoesNotContain("T-7", result.Html);
+        Assert.DoesNotContain("data-bk-chart", result.Html);
+        Assert.DoesNotContain("pems-matrix", result.Html);
         Assert.Contains(result.Problems, p => p.Contains("not allowed"));
         Assert.Empty(closed._rows.Requests);
     }
@@ -150,7 +163,7 @@ public sealed class RecordViewTests : IDisposable
         Assert.Contains(_pageKind.Validate("{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"b\",\"component\":\"badge\",\"options\":{\"label\":\"x\"},\"bindings\":{\"record\":{\"source\":\"/d/a\",\"idField\":\"i\",\"id\":\"1\",\"map\":{\"label\":1},\"zzz\":1}}}]}}", new DefinitionLimits()), e => e.Pointer.EndsWith("/map"));
     }
 
-    private void Ship(string key) => _store["component/" + key] = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "definitions-system", "component", "core", key + ".json")))!["payload"]!.ToJsonString();
+    private void Ship(string key) => _store["component/" + key] = ShippedComponents.Payload(key);
 
     [Fact]
     public async Task The_entity_dashboard_repeats_a_tile_per_item_and_each_number_comes_from_the_row_the_user_may_read()
@@ -187,7 +200,7 @@ public sealed class RecordViewTests : IDisposable
     }
 
     [Fact]
-    public async Task The_entity_chart_draws_the_rows_of_a_data_source_and_hides_when_the_user_may_not_read_them()
+    public async Task The_entity_chart_draws_the_rows_of_a_data_source()
     {
         Ship("entity-chart");
         var page = Page("{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"c\",\"component\":\"def:entity-chart\",\"options\":{\"url\":\"/d/things-grid\",\"labelField\":\"code\"," +
@@ -198,10 +211,22 @@ public sealed class RecordViewTests : IDisposable
         Assert.Contains("data-bk-chart", open.Html);
         Assert.Contains("Things chart", open.Html);
 
-        using var closed = new RecordViewTests(false);
-        closed.Ship("entity-chart");
-        var denied = await closed._renderer.RenderAsync(page, Request(null), En);
-        Assert.DoesNotContain("data-bk-chart", denied.Html);
-        Assert.Contains(denied.Problems, p => p.Contains("not allowed"));
+    }
+
+    [Fact]
+    public async Task The_entity_matrix_builds_cells_from_the_source_and_posts_edits_only_with_an_action()
+    {
+        Ship("entity-matrix");
+        string Matrix(string extra) => "{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"m\",\"component\":\"def:entity-matrix\",\"options\":{\"id\":\"fmea\",\"url\":\"/d/things-grid\",\"rowField\":\"code\",\"columnField\":\"name\",\"valueField\":\"thingId\",\"idField\":\"thingId\"" + extra + "}}]}}";
+        var editable = await _renderer.RenderAsync(Page(Matrix(",\"actionUrl\":\"/a/fmea-cell\",\"cellType\":\"number\"")), Request(null), En);
+        Assert.Empty(editable.Problems);
+        Assert.Contains("data-pems-matrix=\"/a/fmea-cell\"", editable.Html);
+        Assert.Contains("T-7", editable.Html);
+        Assert.Contains("data-row=\"T-7\"", editable.Html);
+
+        var readOnly = await _renderer.RenderAsync(Page(Matrix("")), Request(null), En);
+        Assert.Empty(readOnly.Problems);
+        Assert.DoesNotContain("data-row=", readOnly.Html);
+
     }
 }

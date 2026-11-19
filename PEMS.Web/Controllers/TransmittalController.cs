@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -77,8 +78,9 @@ public class TransmittalController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(string transmittalNo, int projectId, string from, string to,
-        string purpose, string? description, List<int> documentIds,
+    public async Task<IActionResult> Create([Display(Name = "Transmittal code")] string transmittalNo,
+        int projectId, [Display(Name = "From")] string from, [Display(Name = "To")] string to,
+        [Display(Name = "Purpose")] string purpose, string? description, List<int> documentIds,
         bool responseRequired, List<string>? recipientName, List<string>? recipientType,
         List<string>? recipientOrganization, List<bool>? recipientResponseRequired)
     {

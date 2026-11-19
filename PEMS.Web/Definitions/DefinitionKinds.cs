@@ -25,6 +25,8 @@ public static class DefinitionKindExtensions
         services.AddSingleton<IDefinitionKind, ComponentDefinitionKind>();
         // SCRUM-590: the menu as a definition (shipped by the migrator feed, synced into the sidebar table with its ownership rule)
         services.AddSingleton<IDefinitionKind, PEMS.Web.Navigation.MenuDefinitionKind>();
+        // SCRUM-516: shipped reference data (lookups, templates, numbering) with an owner per list and per row
+        services.AddSingleton<IDefinitionKind, PEMS.Application.Definitions.ReferenceDataKind>();
         services.AddScoped<RouteTable>();
         // posted values of a stored form are cleaned before use: rich-text HTML sanitized, undeclared names dropped (SCRUM-59)
         services.AddScoped<FormValueSanitizer>();
@@ -160,6 +162,15 @@ public sealed class PageDefinitionKind : IDefinitionKind
                     else
                         foreach (var (bname, bnode) in bo)
                         {
+                            if (bname == "matrix")
+                            {
+                                if (bnode is not JsonObject mx) { errors.Add(new(at + "/bindings/matrix", "wrong-type", "Def_Err_Type", "matrix is an object (source, rowField, columnField, valueField).")); continue; }
+                                var msrc = mx["source"] is JsonValue ms && ms.GetValueKind() == JsonValueKind.String ? (string?)ms : null;
+                                if (msrc is null || !System.Text.RegularExpressions.Regex.IsMatch(msrc, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/matrix/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                                foreach (var need in new[] { "rowField", "columnField", "valueField" })
+                                    if (!(mx[need] is JsonValue nv && nv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)nv))) errors.Add(new(at + "/bindings/matrix/" + need, "required", "Def_Err_Required", need + " names a row property."));
+                                continue;
+                            }
                             if (bname == "chart")
                             {
                                 if (bnode is not JsonObject ch) { errors.Add(new(at + "/bindings/chart", "wrong-type", "Def_Err_Type", "chart is an object (source, labelField, series).")); continue; }
@@ -214,6 +225,8 @@ public sealed class PageDefinitionKind : IDefinitionKind
                         if (inst["component"] is JsonValue cv && cv.GetValueKind() == JsonValueKind.String)
                             refs.Add(ComponentTemplate.IsDefinitionRef((string)cv!) ? new DefinitionRef("component-definition", ComponentTemplate.KeyOf((string)cv!), "renders") : new DefinitionRef("component", (string)cv!, "renders"));
                         // SCRUM-437: the bindings of a component to stored definitions: an url "/d/{key}" reads a data source, an action-button runs an action
+                        if (inst["bindings"] is JsonObject mbnd && mbnd["matrix"] is JsonObject mbrec && mbrec["source"] is JsonValue mbsv && mbsv.GetValueKind() == JsonValueKind.String
+                            && System.Text.RegularExpressions.Regex.Match((string)mbsv!, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } mbm) refs.Add(new DefinitionRef("data-source", mbm.Groups[1].Value, "binds"));
                         if (inst["bindings"] is JsonObject cbnd && cbnd["chart"] is JsonObject cbrec && cbrec["source"] is JsonValue cbsv && cbsv.GetValueKind() == JsonValueKind.String
                             && System.Text.RegularExpressions.Regex.Match((string)cbsv!, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } cbm) refs.Add(new DefinitionRef("data-source", cbm.Groups[1].Value, "binds"));
                         if (inst["bindings"] is JsonObject bnd && bnd["record"] is JsonObject brec && brec["source"] is JsonValue bsv && bsv.GetValueKind() == JsonValueKind.String

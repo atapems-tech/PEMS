@@ -32,7 +32,7 @@ public class RecoveryCodesController : Controller
     public async Task<IActionResult> Index(CancellationToken ct)
     {
         if (!int.TryParse(_userManager.GetUserId(User), out var userId)) return Forbid();
-        ViewData["Title"] = "Recovery Codes";
+        ViewData["Title"] = "Recovery codes";
         return View(new RecoveryCodesViewModel { Remaining = await _codes.GetRemainingCountAsync(userId, ct) });
     }
 
@@ -42,7 +42,7 @@ public class RecoveryCodesController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
         if (user == null) return Forbid();
-        ViewData["Title"] = "Recovery Codes";
+        ViewData["Title"] = "Recovery codes";
 
         // تولید مجموعه‌ی جدید کدهای قبلی را باطل می‌کند؛ با نشست رهاشده نباید ممکن باشد
         if (!ModelState.IsValid || !await _userManager.CheckPasswordAsync(user, model.CurrentPassword))
