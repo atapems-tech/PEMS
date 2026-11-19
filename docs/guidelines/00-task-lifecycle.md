@@ -51,6 +51,8 @@ A thorough audit of hundreds of issues is not required at full depth every time:
 ### 0.3 Group the survivors into related batches and do each batch together
 - A batch is issues that share an area, files, a pattern or a dependency chain. **A blocker travels with the issue it blocks** and is done first (a To Do blocker is not a reason to stop: it is part of the batch, unless it needs the owner's decision or an unavailable tool).
 - One branch per batch, named after the primary issue; each safe slice is its own PR and is **merged at once** (section 4); every issue of the batch is started in Jira in one step (assignee, active sprint, In Progress, plan comment: section 1 step 5) **before** its first commit, never after.
+- **Claim the whole batch first (owner decision 2026-11-19).** The moment the batch is approved, before any code, move **every** issue of it to In Progress in one step (assignee set, in the sprint, a one-line comment naming the branch): other agents and people pick untouched To Do issues, and an issue that is only planned looks free. An issue the batch does not reach goes back to To Do with a comment saying why; an issue is never left In Progress without a branch or a person working on it. Check with `status = "In Progress" AND key in (...)` that the count equals the batch.
+- **Batches are big: 10 to 30 related issues** (owner decision 2026-11-19), ordered by dependency (`plan/sheets/sprint-batches.md`); the engines first, then the conversions that only add definitions. One branch, one PR per safe slice, one Jira comment with a QA checklist per issue.
 - Do not take one issue at a time when its neighbours share the work; do not widen a batch past what one person could review (a batch is related work, not "everything open").
 - Work that needs the owner's decision, SQL Server, a browser or a production host is split off and listed (unchecked QA lines or a named follow-up); it never holds a batch back.
 
@@ -66,6 +68,7 @@ Every issue of the block ends in In Review (conditional done, `qa-pending`, QA c
 - Planning from a stale checkout, or from an issue description that is weeks old (SCRUM-337 said "342 hand-written tables" when all of them were already components).
 - Stopping at a blocker that is a To Do issue of the same area instead of doing it first.
 - Treating "continue" as a reason to skip the audit because the last block did one.
+- Starting a batch's code while its issues were still To Do, so another agent could take one (2026-11-19: claim the batch first).
 
 ## 1. Before you start (the "Step 0" checklist)
 
