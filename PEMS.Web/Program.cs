@@ -138,6 +138,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Def
 // the entity catalog: the master-data entities a definition may list and create, with the permissions that guard them (the code checks them; a definition cannot widen access)
 builder.Services.AddSingleton(PEMS.Web.Definitions.EntityCatalog.Default());
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.EntityGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.ComponentCatalogGridProvider>();   // SCRUM-340: the component catalog as rows
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityUpdateAction>();

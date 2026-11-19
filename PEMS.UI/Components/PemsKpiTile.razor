@@ -39,7 +39,7 @@ else
         b.OpenElement(5, "div");
         b.OpenElement(6, "div");
         b.AddAttribute(7, "class", ValueCss);
-        if (Empty || ChildContent is null) b.AddContent(8, "-"); else b.AddContent(9, ChildContent);
+        if (Empty || ChildContent is null) b.AddContent(8, string.IsNullOrEmpty(Options.Value) ? "-" : Options.Value); else b.AddContent(9, ChildContent);
         b.CloseElement();
         b.OpenElement(10, "div");
         b.AddAttribute(11, "class", "kpi-label");

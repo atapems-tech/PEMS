@@ -149,4 +149,40 @@ public sealed class RecordViewTests : IDisposable
         Assert.Empty(_pageKind.Validate(page.Payload.ToJsonString(), new DefinitionLimits()));
         Assert.Contains(_pageKind.Validate("{\"layout\":\"list-page\",\"regions\":{\"content\":[{\"id\":\"b\",\"component\":\"badge\",\"options\":{\"label\":\"x\"},\"bindings\":{\"record\":{\"source\":\"/d/a\",\"idField\":\"i\",\"id\":\"1\",\"map\":{\"label\":1},\"zzz\":1}}}]}}", new DefinitionLimits()), e => e.Pointer.EndsWith("/map"));
     }
+
+    private void Ship(string key) => _store["component/" + key] = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "definitions-system", "component", "core", key + ".json")))!["payload"]!.ToJsonString();
+
+    [Fact]
+    public async Task The_entity_dashboard_repeats_a_tile_per_item_and_each_number_comes_from_the_row_the_user_may_read()
+    {
+        Ship("entity-dashboard");
+        var page = Page("{\"layout\":\"dashboard-page\",\"template\":\"entity-dashboard\",\"args\":{\"url\":\"/d/things-grid\",\"idField\":\"thingId\",\"rowId\":\"7\"," +
+                        "\"tiles\":[{\"key\":\"code\",\"label\":\"Code tile\",\"icon\":\"bi-tools\"},{\"key\":\"name\",\"label\":\"Name tile\"}]}}");
+        var result = await _renderer.RenderAsync(page, Request(null), En);
+        Assert.Empty(result.Problems);
+        Assert.Contains("Code tile", result.Html);
+        Assert.Contains("Name tile", result.Html);
+        Assert.Contains("T-7", result.Html);
+        Assert.Equal(2, _rows.Requests.Count);                              // one read per tile, each through the permission-checked source
+    }
+
+    private const string Views = "{\"layout\":\"list-page\",\"template\":\"entity-views\",\"args\":{\"id\":\"jobs\",\"url\":\"/d/things-grid\",\"fields\":{\"id\":\"thingId\",\"title\":\"name\",\"group\":\"code\",\"date\":\"created\"},\"kanban\":true,\"calendarView\":true}}";
+
+    [Fact]
+    public async Task The_entity_views_show_cards_by_default_and_the_view_of_the_request_otherwise_with_a_switcher_for_the_enabled_views_only()
+    {
+        Ship("entity-views");
+        var def = await _renderer.RenderAsync(Page(Views), Request(null), En);
+        Assert.Empty(def.Problems);
+        Assert.Contains("pems-view--cards", def.Html);
+        Assert.DoesNotContain("pems-view--kanban", def.Html);
+        Assert.Contains("?view=kanban", def.Html);
+        Assert.Contains("?view=calendar", def.Html);
+        Assert.DoesNotContain("?view=gantt", def.Html);                       // not enabled: no view, no button
+
+        var kanban = await _renderer.RenderAsync(Page(Views), new PipelineRequest("page", "x", "core", "en", [], "hamid", new Dictionary<string, string> { ["view"] = "kanban" }), En);
+        Assert.Empty(kanban.Problems);
+        Assert.Contains("pems-view--kanban", kanban.Html);
+        Assert.DoesNotContain("pems-view--cards", kanban.Html);
+    }
 }

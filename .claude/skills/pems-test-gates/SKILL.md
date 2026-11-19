@@ -5,6 +5,8 @@ description: Choose and run the tests for a PEMS change (tools/test-gates/gates.
 
 # PEMS test gates (guideline 05 "Test budget", 07 section 2b)
 
+**In a batch (10 to 30 issues): only light checks while building** (a compile of the changed project, the exact new test classes when the machine is quiet). **Heavy tests (full suites, SQL, render suites, browser) are deferred to the end of the batch or the sprint** and QA line 1 says "written, not run" until then (guideline 05, owner decision 2026-11-19).
+
 Run every test that fits; leave the very large suites to the end-of-sprint QA. Each task keeps its own QA line, nothing is combined or "covered by" another task.
 
 1. `python tools/test-gates/gates.py` prints, from your changed files: the build of the test project (`dotnet build PEMS.Tests`; the classes run with `--no-build`, so a stale test dll would hide a test that does not compile), `PEMS.UI.Tests`, the guard classes (Persian keys, themes, list pages, API, error handling) and the exact test classes that mention your files. `--run` executes them and stops at the first failure.

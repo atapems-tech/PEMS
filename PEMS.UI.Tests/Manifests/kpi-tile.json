@@ -45,6 +45,12 @@
               "null"
             ]
           },
+          "value": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "compact": {
             "type": "boolean"
           },
