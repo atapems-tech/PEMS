@@ -94,6 +94,9 @@ public interface IDefinitionAccess
 {
     /// <param name="permission">The definition's <c>permission</c> ("Module.Action"), null when the definition names none.</param>
     Task<bool> CanOpenAsync(string? permission, IReadOnlyCollection<string> roles, CancellationToken ct = default);
+
+    /// <summary>SCRUM-591: the same question for a known definition, so the grants kept in the database for its key and roles can add to or take from the permission's answer. The default ignores the grants.</summary>
+    Task<bool> CanOpenAsync(string kind, string key, string? permission, IReadOnlyCollection<string> roles, CancellationToken ct = default) => CanOpenAsync(permission, roles, ct);
 }
 
 /// <summary>Stage 3: resolves what the definition declares for this request (options, lookups, values, the parts the user may see). Runs in <see cref="Order"/>, never changes the cached definition.</summary>
@@ -123,7 +126,7 @@ public sealed class DefinitionPipeline(IDefinitionStore store, IDefinitionAccess
         var payload = plans?.Get(published)?.Instantiate() ?? JsonNode.Parse(published.PayloadJson)!;   // a private copy for this request (SCRUM-576: from the compiled plan, parsed once per content hash)
         clock.Restart();
         var permission = payload is JsonObject o && o["permission"] is JsonValue pv && pv.TryGetValue<string>(out var p) ? p : null;
-        var allowed = await access.CanOpenAsync(permission, request.Roles, ct);
+        var allowed = await access.CanOpenAsync(request.Kind, request.Key, permission, request.Roles, ct);
         timings["authorize"] = clock.Elapsed;
         if (!allowed) return new PipelineResult(PipelineStatus.Forbidden, null, timings, new Dictionary<string, int> { ["definitions"] = 1 });
 

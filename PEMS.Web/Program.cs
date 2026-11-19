@@ -127,6 +127,7 @@ builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionStore>(sp => 
         [PEMS.Application.Definitions.DefinitionOwner.Files] = sp.GetRequiredService<PEMS.Persistence.Definitions.FileDefinitionStore>(),
         [PEMS.Application.Definitions.DefinitionOwner.Database] = sp.GetRequiredService<PEMS.Persistence.Services.DefinitionStore>()
     }));
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionGrantStore, PEMS.Persistence.Definitions.EfDefinitionGrantStore>();   // SCRUM-591
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionAccess, PEMS.Persistence.Definitions.PermissionDefinitionAccess>();
 builder.Services.AddScoped<PEMS.Application.Definitions.DefinitionPipeline>();
 builder.Services.AddScoped<PEMS.Web.Definitions.PageRenderer>();
