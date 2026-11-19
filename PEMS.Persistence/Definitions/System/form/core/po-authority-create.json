@@ -113,7 +113,8 @@
           "en": "Active",
           "fa": "فعال"
         },
-        "kind": "switch"
+        "kind": "switch",
+        "owner": "platform"
       }
     ]
   }

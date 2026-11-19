@@ -13,6 +13,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-19 - Platform-owned system fields in shipped forms (SCRUM-515)
+
+### Changed
+- Six shipped forms (po-authority create/edit, routing-rules edit, sod-policies create, storage-routing create/edit) mark their system fields `owner: platform`; business fields stay the customer's.
+
 ## 2026-11-19 - Stored file download by definition (SCRUM-615)
 
 ### Added
