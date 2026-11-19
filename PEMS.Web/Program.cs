@@ -133,6 +133,9 @@ builder.Services.AddScoped<PEMS.Web.Definitions.ActionExecutor>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.WorkflowExecuteAction>();
 // SCRUM-593 to 595: ordered steps in one transaction, result binding and the security-key step-up as settings of an action definition
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.StepsAction>();
+// SCRUM-596 and 615: a file that comes in (file.upload) and a file that goes out (file.export) are settings of an action definition
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileUploadAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileExportAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionTransaction, PEMS.Web.Definitions.EfActionTransaction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Definitions.WebAuthnStepUpVerifier>();
 // the entity catalog: the master-data entities a definition may list and create, with the permissions that guard them (the code checks them; a definition cannot widen access)
