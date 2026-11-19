@@ -50,6 +50,8 @@ dotnet test PEMS.Tests --filter "FullyQualifiedName~CmmsListPagesTests"
 
 ### Test budget (owner decision 2026-11-04)
 
+**Batch rhythm** (owner decision 2026-11-19, SCRUM-592): in a batch the cost is the build and the start-up of each `dotnet test`, not the tests. Write the whole slice first, then run `python tools/test-gates/gates.py --slice --run`: one quiet build, one `dotnet test --no-build` that holds the API, guard and chosen classes together (each invocation costs 8 to 16 s of start-up), and only what changed since the last green run (`--run` records it in the git directory of the worktree). Never edit a compiled file while a build or test run is going (the build nodes crash and the run is lost): edit documents and plan files meanwhile, or wait. The first build of a new worktree is cold (about 10 minutes); keep one worktree per batch instead of making a new one per issue. The definition engines (`PEMS.Tests.Definitions`) and the validator (`PEMS.Tests.Validation`) are in memory and have a guard of their own (about a minute), without the classes that need SQL Server.
+
 A session runs **every test that fits** (the build, the UI tests, the guard classes and the exact classes of what it touched, each about two minutes at most) and leaves the **very large suites to the end-of-sprint QA**, where the tester runs them once for all the tasks In Review ([chapter 07](07-qa-check-in-the-ui.md) section 2b; each task still lists them as its own QA line, nothing is combined between tasks). `python tools/test-gates/gates.py` prints the commands for your changed files. Measured on 2026-11-04 (build done, `--no-build`):
 
 | Command | Tests | Time | Use |

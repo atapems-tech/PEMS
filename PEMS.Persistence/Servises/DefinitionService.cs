@@ -182,7 +182,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
         var (def, draft, miss) = await LoadDraftAsync<DefinitionVersionPayload>(id, ct);
         if (miss != null) return miss;
         if (draft!.Revision != expectedDraftRevision) return DefinitionOutcome<DefinitionVersionPayload>.Stale();
-        var errors = Check(def!.Kind, draft.PayloadJson);
+        var errors = Check(def!.Kind, draft.PayloadJson).Concat(OwnershipErrors(def, draft.PayloadJson)).ToList();
         if (errors.Count > 0) return DefinitionOutcome<DefinitionVersionPayload>.Invalid(errors);
 
         Touch(draft, expectedDraftRevision);
@@ -197,7 +197,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
         var (def, draft, miss) = await LoadDraftAsync<DefinitionDetail>(id, ct);
         if (miss != null) return miss;
         if (draft!.Revision != expectedDraftRevision) return DefinitionOutcome<DefinitionDetail>.Stale();
-        var errors = Check(def!.Kind, draft.PayloadJson);
+        var errors = Check(def!.Kind, draft.PayloadJson).Concat(OwnershipErrors(def, draft.PayloadJson)).ToList();
         if (errors.Count > 0) return DefinitionOutcome<DefinitionDetail>.Invalid(errors);
 
         Touch(draft, expectedDraftRevision);
@@ -261,6 +261,49 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
         if (def.Revision != expectedEnvelopeRevision) return DefinitionOutcome<DefinitionDetail>.Stale();
         if (shipped.DefinitionVersionId == def.PublishedVersionId || !def.IsCustomized) return DefinitionOutcome<DefinitionDetail>.Fail(DefinitionFailure.Conflict, "already-published");   // the published payload already is the shipped one
         return await RollbackAsync(id, shipped.VersionNumber, expectedEnvelopeRevision, actor, ct);
+    }
+
+    /// <summary>SCRUM-515: a customer's edit of a shipped form may not touch its platform fields (see <see cref="FormOwnership"/>).</summary>
+    private static IReadOnlyList<DefinitionFieldError> OwnershipErrors(Definition def, string payloadJson)
+    {
+        if (def.Kind != "form" || def.Origin != DefinitionOrigin.System) return [];
+        var shipped = def.Versions.FirstOrDefault(v => v.DefinitionVersionId == def.ShippedVersionId);
+        return shipped == null ? [] : FormOwnership.Protect(shipped.PayloadJson, payloadJson);
+    }
+
+    private async Task<IReadOnlyList<string>> OwnershipPreflightAsync(IReadOnlyList<ShippedDefinition> items, CancellationToken ct)
+    {
+        var problems = new List<string>();
+        foreach (var item in items.Where(i => i.Kind == "form"))
+        {
+            var def = await _db.Definitions.Include(d => d.Versions).AsNoTracking().FirstOrDefaultAsync(d => d.AppKey == item.AppKey && d.Kind == item.Kind && d.Key == item.Key, ct);
+            if (def is not { Origin: DefinitionOrigin.System, IsCustomized: true }) continue;
+            var published = def.Versions.FirstOrDefault(v => v.DefinitionVersionId == def.PublishedVersionId);
+            if (published == null) continue;
+            var canonical = Canonicalize(item.PayloadJson, out var perr);
+            if (perr != null) continue;                                  // reported by the normal path
+            foreach (var c in FormOwnership.Merge(published.PayloadJson, canonical!).Conflicts)
+                problems.Add($"{item.Kind}/{item.AppKey}/{item.Key}: field '{c.Field}' ({c.Code}) {c.Message}");
+        }
+        return problems;
+    }
+
+    /// <summary>Publishes the customer's form again with the new platform fields merged in (application fields stay as they are); false when nothing changed.</summary>
+    private async Task<bool> MergePlatformFieldsAsync(Definition def, DefinitionVersion current, string newShippedCanonical, string actor, DateTime now, CancellationToken ct)
+    {
+        var merge = FormOwnership.Merge(current.PayloadJson, newShippedCanonical);
+        if (!merge.Ok || merge.MergedJson is null) return false;
+        var canonical = Canonicalize(merge.MergedJson, out var error);
+        if (error != null || Check(def.Kind, canonical!).Count > 0 || Hash(canonical!) == current.ContentHash) return false;
+        var version = NewVersion(def.Versions.Max(v => v.VersionNumber) + 1, canonical!, "Product update: platform fields merged", now, actor, current.DefinitionVersionId);
+        version.Definition = def;
+        _db.DefinitionVersions.Add(version);
+        await _db.SaveChangesAsync(ct);
+        await ReplaceReferencesAsync(version, def.Kind, ct);
+        MarkValidated(version, actor);
+        await PublishVersionAsync(def, version, actor, ct);
+        await _db.SaveChangesAsync(ct);
+        return true;
     }
 
     private const int MaxDiffEntries = 200;
@@ -387,6 +430,12 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
         int created = 0, upgraded = 0, unchanged = 0, kept = 0, customerOwned = 0;
         var problems = new List<string>();
         var touchedKinds = new HashSet<string>(StringComparer.Ordinal);
+        var merged = 0;
+
+        // SCRUM-515 preflight: an update that cannot keep the customer's application fields and data stops before it changes anything, with every conflict listed at once
+        var conflicts = await OwnershipPreflightAsync(items, ct);
+        if (conflicts.Count > 0) return new DefinitionShipResult(0, 0, 0, 0, 0, conflicts);
+
         foreach (var item in items)
         {
             var at = $"{item.Kind}/{item.AppKey}/{item.Key}";
@@ -435,6 +484,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
                 def.ShippedVersionId = next.DefinitionVersionId;
                 Touch(def, def.Revision);
                 await _db.SaveChangesAsync(ct);
+                if (item.Kind == "form" && def.PublishedVersion is { } current && await MergePlatformFieldsAsync(def, current, canonical!, actor, now, ct)) { merged++; touchedKinds.Add(item.Kind); }
                 kept++;
                 continue;
             }
@@ -448,7 +498,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
             upgraded++;
         }
         foreach (var kind in touchedKinds) _store.Evict(kind);
-        return new DefinitionShipResult(created, upgraded, unchanged, kept, customerOwned, problems);
+        return new DefinitionShipResult(created, upgraded, unchanged, kept, customerOwned, problems, merged);
     }
 
     // ------------------------------------------------------------------ helpers

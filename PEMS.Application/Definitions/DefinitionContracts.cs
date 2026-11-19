@@ -130,7 +130,7 @@ public sealed record DefinitionFileProblem(string File, string Pointer, string M
 public sealed record ShippedDefinition(string Kind, string Key, string AppKey, string TitleJson, string? DescriptionJson, string PayloadJson);
 
 /// <summary>What shipping did: new definitions, upgraded ones, ones already current, ones a customer changed (kept as they are), keys a customer created themselves (never touched), and what could not be shipped.</summary>
-public sealed record DefinitionShipResult(int Created, int Upgraded, int Unchanged, int KeptCustomized, int CustomerOwned, IReadOnlyList<string> Problems)
+public sealed record DefinitionShipResult(int Created, int Upgraded, int Unchanged, int KeptCustomized, int CustomerOwned, IReadOnlyList<string> Problems, int PlatformFieldsMerged = 0)
 {
     public bool Ok => Problems.Count == 0;
 }

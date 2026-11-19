@@ -30,6 +30,12 @@ public enum FieldKind
     CheckboxMatrix
 }
 
+/// <summary>
+/// Who owns a field (SCRUM-515): <see cref="Platform"/> fields are delivered and changed only by product updates and are read-only for the customer; <see cref="Application"/> fields (the default) belong to the customer
+/// and are never touched by an update.
+/// </summary>
+public enum FieldOwner { Application, Platform }
+
 /// <summary>One choice of a <see cref="FieldKind.Select"/> field. <see cref="Value"/> is data and is never translated.</summary>
 public sealed record FieldOption
 {
@@ -48,6 +54,8 @@ public sealed record FieldDescriptor
     public FieldKind Kind { get; init; } = FieldKind.Text;
     public bool Required { get; init; }
     public bool ReadOnly { get; init; }
+    /// <summary>Platform (ours, read-only in the designer, changed by product updates) or application (the customer's, the default). See <c>FormOwnership</c>.</summary>
+    public FieldOwner Owner { get; init; } = FieldOwner.Application;
     public TranslatableText? HelpText { get; init; }
     public int? MaxLength { get; init; }
     public IReadOnlyList<FieldOption>? Options { get; init; }
