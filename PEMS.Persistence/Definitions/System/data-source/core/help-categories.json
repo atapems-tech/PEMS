@@ -5,20 +5,21 @@
   "version": 1,
   "title": {
     "en": "Help categories",
-    "fa": "Help categories"
+    "fa": "دسته‌های راهنما"
   },
   "description": {
     "en": "Help categories",
-    "fa": "Help categories"
+    "fa": "دسته‌های راهنما"
   },
   "payload": {
-    "kind": "provider",
-    "provider": "operation-options",
+    "kind": "grid",
+    "provider": "operation",
     "parameters": {
       "model": "Help",
-      "action": "CategoryOptions",
-      "value": "value",
-      "label": "label"
+      "action": "Categories",
+      "args": {
+        "culture": "context:culture"
+      }
     }
   }
 }
