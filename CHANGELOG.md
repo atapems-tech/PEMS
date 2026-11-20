@@ -41,6 +41,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Teams as definition pages (SCRUM-757)
+
+### Changed
+- /p/teams and /p/team-details (members, sub-teams and shifts, positions, assignment history, with their forms and row actions) over `ITeamOperations` replace the Index and TeamDetails pages and the 14 write actions of TeamController. The discipline scope rule is unchanged (SystemAdmin and EngineeringManager across disciplines, everybody else only their own discipline, fail closed); Team.View/Create/Edit are the permission floors. The organization chart page and its JSON reads stay in the controller.
+
 ## 2026-11-20 - Employees as definition pages (SCRUM-687)
 
 ### Changed

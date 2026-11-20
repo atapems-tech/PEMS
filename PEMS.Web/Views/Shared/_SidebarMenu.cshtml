@@ -520,7 +520,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Team"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Team"))" asp-controller="Team" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/teams" active="@(IsActive("Team") || Context.Request.Path.StartsWithSegments("/p/team"))">
                     <pems-icon name="bi-people" /> @Localizer["Teams"]
                 </pems-nav-link>
             }
