@@ -11,7 +11,6 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Areas.Admin.Controllers;
-using DisciplineController = PEMS.Web.Controllers.DisciplineController;
 using EmployeeController = PEMS.Web.Controllers.EmployeeController;
 
 namespace PEMS.Tests.Organization;
