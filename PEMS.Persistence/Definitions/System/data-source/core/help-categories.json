@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "help-categories",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help categories",
+    "fa": "Help categories"
+  },
+  "description": {
+    "en": "Help categories",
+    "fa": "Help categories"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Help",
+      "action": "CategoryOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

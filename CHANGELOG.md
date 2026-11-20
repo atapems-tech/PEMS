@@ -17,6 +17,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Knowledge base search as a definition, AI smoke test removed (SCRUM-712, 666)
+
+### Added
+- Operation grids take the quick-search text as `param:search`; the knowledge-base semantic search is the page `knowledge-base` over `KnowledgeBase.Search`.
+### Removed
+- `AIController` (`/AI/Test`, a developer smoke test of the language model service that nothing referenced) and `KnowledgeBaseController` with its view.
+
 ## 2026-11-20 - Projects as definitions (SCRUM-740)
 
 ### Changed

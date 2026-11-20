@@ -76,7 +76,7 @@ public static class NavigationMenuDefaults
         Section("sec.ai", 200, "AI & Knowledge", "bi-robot", "Module:AIIntelligence",
             "EngineeringDocumentIntelligence,KnowledgeBase,AISearch,ChatAssistant,AIInsights"),
         Link("ai.docintel", "sec.ai", 10, "DocumentIntelligence", "bi-diagram-3-fill", "EngineeringDocumentIntelligence", rule: "Perm:EngineeringDocuments.View"),
-        Link("ai.kb", "sec.ai", 20, "KnowledgeBaseSearch", "bi-stars", "KnowledgeBase"),
+        new("ai.kb", "sec.ai", L, 20, "KnowledgeBaseSearch", "bi-stars", Always, ExternalPath: "/p/knowledge-base"),   // SCRUM-712: a definition page (/p/...), not a controller
         Link("ai.search", "sec.ai", 30, "AI Search", "bi-search-heart", "AISearch"),
         Link("ai.chat", "sec.ai", 40, "Engineering Chat Assistant", "bi-chat-dots", "ChatAssistant"),
         Link("ai.copilot", "sec.ai", 50, "Engineering Copilot", "bi-stars", "AIInsights"),
@@ -182,7 +182,8 @@ public static class NavigationMenuDefaults
         // SCRUM-651: a definition page (/p/...), not a controller
         new("admin.workflow", "admin.sub.access", L, 30, "Workflow Management", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/workflow-management"),
         Link("admin.navmenu", "admin.sub.access", 35, "Nav_Admin_Title", "bi-menu-button-wide", "NavigationMenu", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
-        Link("admin.help", "admin.sub.access", 40, "Help Administration", "bi-life-preserver", "Help", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-634: a definition page (/p/...), not a controller
+        new("admin.help", "admin.sub.access", L, 40, "Help Administration", "bi-life-preserver", "Module:Administration", ExternalPath: "/p/help-admin"),
         Sub("admin.sub.org", "sec.admin", 30, "Organization"),
         Link("admin.departments", "admin.sub.org", 10, "Departments", "bi-building", "Department", rule: "Module:Administration"),
         Link("admin.employees", "admin.sub.org", 20, "Employees", "bi-people", "Employee", rule: "Module:Administration"),
