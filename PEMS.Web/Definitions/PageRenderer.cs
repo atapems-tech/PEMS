@@ -133,6 +133,10 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
                     else options["values"] = values;
                 }
             }
+            if (instance["bindings"] is JsonObject filterBindings && filterBindings["filterOptions"] is JsonArray filterOptions)
+            {
+                if (!await ApplyFilterOptionsAsync(filterOptions, options, request, appKey, id, problems, ct)) return;   // not allowed or invalid: the part is hidden
+            }
             if (instance["bindings"] is JsonObject chartBindings && chartBindings["chart"] is JsonObject chart)
             {
                 var spec = await BuildChartAsync(chart, request, culture, appKey, id, problems, ct);
@@ -252,6 +256,37 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
     /// The record a details part shows (SCRUM-600): <c>{ "source": "/d/key", "idField": "workOrderId", "id": "{{params.id}}" }</c> reads one row of a grid data source through the same
     /// resolve and authorize steps as the grid endpoint (so the user's permission and the row-level rules apply); null values mean the record was not found.
     /// </summary>
+    /// <summary>
+    /// The choices of the select filters of a <c>page-filters</c> bar (batch 5): <c>bindings.filterOptions</c> is a list of <c>{ field, source, valueField, labelField }</c>; the rows of the /d/ source (at most 200, read with the rights of the user)
+    /// become the <c>options</c> of the field with that name. A value that is not text is shown as it is.
+    /// </summary>
+    private async Task<bool> ApplyFilterOptionsAsync(JsonArray bindings, JsonObject options, PipelineRequest request, string appKey, string id, List<string> problems, CancellationToken ct)
+    {
+        if (data is null) { problems.Add($"Instance \"{id}\": the filter choices cannot be read here."); return false; }
+        if (options["fields"] is not JsonArray fields) return true;
+        foreach (var binding in bindings.OfType<JsonObject>())
+        {
+            var field = (string?)binding["field"];
+            var source = (string?)binding["source"];
+            var valueField = (string?)binding["valueField"];
+            var labelField = (string?)binding["labelField"] ?? valueField;
+            var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
+            if (key is null || field is null || valueField is null) { problems.Add($"Instance \"{id}\": a filter choice binding needs a /d/ source, a field and a valueField."); return false; }
+            var result = await data.QueryAsync(key, [new("page", "1"), new("pageSize", "200")], request.Culture, request.Roles, request.UserName, appKey, ct);
+            if (result.Status != DataStatus.Ok) { problems.Add($"Instance \"{id}\": the filter choices of \"{field}\" are not available ({result.Status})."); return false; }
+            var choices = new JsonArray();
+            foreach (var item in result.Items ?? [])
+            {
+                if (JsonSerializer.SerializeToNode(item) is not JsonObject row) continue;
+                string Text(string name) => row[name] is JsonValue v ? (v.GetValueKind() == JsonValueKind.String ? (string?)v : v.ToJsonString().Trim('"')) ?? "" : "";
+                var label = Text(labelField!);
+                choices.Add(new JsonObject { ["value"] = Text(valueField), ["label"] = new JsonObject { ["en"] = label, ["fa"] = label } });
+            }
+            if (fields.OfType<JsonObject>().FirstOrDefault(f => (string?)f["name"] == field) is { } target) target["options"] = choices;
+        }
+        return true;
+    }
+
     private async Task<JsonObject?> ReadRecordAsync(JsonObject record, PipelineRequest request, string appKey, string id, List<string> problems, CancellationToken ct)
     {
         if (data is null) { problems.Add($"Instance \"{id}\": the record cannot be read here."); return null; }

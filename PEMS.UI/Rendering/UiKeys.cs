@@ -92,6 +92,7 @@ public static class UiKeys
     public const string RecordView = "record-view";
     public const string Matrix = "matrix";
     public const string ContentBlocks = "content-blocks";
+    public const string PageFilters = "page-filters";
     public const string WorkflowHistory = "workflow-history";
     public const string Uploader = "uploader";
     public const string CommentsThread = "comments-thread";

@@ -171,6 +171,20 @@ public sealed class PageDefinitionKind : IDefinitionKind
                                     if (!(mx[need] is JsonValue nv && nv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)nv))) errors.Add(new(at + "/bindings/matrix/" + need, "required", "Def_Err_Required", need + " names a row property."));
                                 continue;
                             }
+                            if (bname == "filterOptions")
+                            {
+                                if (bnode is not JsonArray fltList || fltList.Count == 0 || fltList.Count > 10) { errors.Add(new(at + "/bindings/filterOptions", "wrong-type", "Def_Err_Type", "filterOptions is a list of 1 to 10 { field, source, valueField, labelField }.")); continue; }
+                                for (var fltIndex = 0; fltIndex < fltList.Count; fltIndex++)
+                                {
+                                    var fltAt = at + "/bindings/filterOptions/" + fltIndex;
+                                    if (fltList[fltIndex] is not JsonObject fltItem) { errors.Add(new(fltAt, "wrong-type", "Def_Err_Type", "A filter choice binding is an object.")); continue; }
+                                    var fltSrc = fltItem["source"] is JsonValue fltSv && fltSv.GetValueKind() == JsonValueKind.String ? (string?)fltSv : null;
+                                    if (fltSrc is null || !System.Text.RegularExpressions.Regex.IsMatch(fltSrc, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(fltAt + "/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                                    foreach (var fltNeed in new[] { "field", "valueField" })
+                                        if (!(fltItem[fltNeed] is JsonValue fltNv && fltNv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)fltNv))) errors.Add(new(fltAt + "/" + fltNeed, "required", "Def_Err_Required", fltNeed + " is required."));
+                                }
+                                continue;
+                            }
                             if (bname == "chart")
                             {
                                 if (bnode is not JsonObject ch) { errors.Add(new(at + "/bindings/chart", "wrong-type", "Def_Err_Type", "chart is an object (source, labelField, series).")); continue; }

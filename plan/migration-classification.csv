@@ -50,7 +50,6 @@ Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,prop
 ,VDRImport,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,StrategyImport,Maintenance and reliability,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,AIExtraction,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-,AISearch,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,Barcode,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,ImportCenter,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MDRImport,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"

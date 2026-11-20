@@ -72,7 +72,7 @@
     // (ImportCatalog). Import همچنان قابلیتِ متعلق به ماژول خودش است: Controller/Action/مسیر/مجوز/گردش‌کار
     // هیچ‌کدام تغییر نکرد - فقط ناوبری متمرکز شد. شرط دیدن هر Import همان شرط قبلی لینک پراکنده‌ی آن است.
     var engineeringControllers = new[] { "EngineeringDashboard", "Projects", "EngineeringDocuments", "DocumentRegister", "DocumentRevisions", "DocumentWorkflow", "VDR", "Transmittal", "MDB", "Discipline" };
-    var aiControllers = new[] { "EngineeringDocumentIntelligence", "AISearch", "ChatAssistant" };
+    var aiControllers = new[] { "EngineeringDocumentIntelligence", "ChatAssistant" };
     var correspondenceControllers = new[] { "Letter", "DCC", "TechnicalQuery" };
     var qualityControllers = new[] { "QC", "MOC" };
     // SCRUM-423: خرید (از مدیریت مهندسی)، قرارداد و فروشنده (از مدیریت قرارداد) و انبار در یک بخش «تدارکات و زنجیره‌ی تأمین»
@@ -193,7 +193,7 @@
                 <pems-icon name="bi-stars" /> @Localizer["KnowledgeBaseSearch"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("AISearch"))" asp-controller="AISearch" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/ai-search" active="@Context.Request.Path.StartsWithSegments("/p/ai-search")">
                 <pems-icon name="bi-search-heart" /> @Localizer["AI Search"]
             </pems-nav-link>
 
