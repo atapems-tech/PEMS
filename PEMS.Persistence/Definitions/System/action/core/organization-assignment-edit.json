@@ -16,9 +16,9 @@
     "handler": "operation.invoke",
     "parameters": {
       "model": "Organization",
-      "action": "UpdateAssignment",
+      "action": "UpdateAssignmentOfPosition",
       "args": {
-        "assignmentId": "field:id",
+        "positionId": "field:id",
         "isPrimary": "field:isPrimary",
         "startDate": "field:startDate",
         "endDate": "field:endDate"
@@ -28,7 +28,7 @@
           "model": "Organization",
           "action": "AssignmentOf",
           "args": {
-            "assignmentId": "param:id"
+            "positionId": "param:id"
           }
         }
       }
