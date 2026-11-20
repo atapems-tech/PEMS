@@ -31,6 +31,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Dashboard settings and chat assistant as definition pages (SCRUM-680, 672)
+
+### Changed
+- /p/dashboard-settings (grid, reset, form /f/dashboard-widget) and /p/chat-assistant (history grid, form /f/chat-ask, clear) replace their controllers and views; old addresses redirect. The chat has no in-page async send any more (the form reloads the page).
+
 ## 2026-11-20 - Import center as a definition page (SCRUM-706)
 
 ### Changed

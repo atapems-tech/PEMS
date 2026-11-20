@@ -189,7 +189,7 @@
 {
     <pems-flex justify="between" align="center" css="mt-4 mb-2">
         <pems-heading level="6" class="mb-0">@Localizer["My Dashboard"]</pems-heading>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
+        <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/dashboard-settings">
             <pems-icon name="bi-sliders" /> @Localizer["Customize"]
         </pems-button>
     </pems-flex>
@@ -222,7 +222,7 @@
 else
 {
     <div class="text-center mt-3">
-        <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
+        <pems-button tone="primary" size="small" outline="true" as="a" href="/p/dashboard-settings">
             <pems-icon name="bi-sliders" /> @Localizer["Dashboard_Customize"]
         </pems-button>
     </div>

@@ -5152,4 +5152,9 @@
   <data name="Open Batch" xml:space="preserve"><value>باز کردن دسته</value></data>
   <data name="Adjust" xml:space="preserve"><value>اصلاح</value></data>
   <data name="Transfer" xml:space="preserve"><value>انتقال</value></data>
+  <data name="Rpt_Yes" xml:space="preserve"><value>بله</value></data>
+  <data name="Rpt_No" xml:space="preserve"><value>خیر</value></data>
+  <data name="Dashboard_Err_UnknownWidget" xml:space="preserve"><value>ابزارک ناشناخته است.</value></data>
+  <data name="Dashboard_Err_NoUser" xml:space="preserve"><value>کاربر وارد نشده است.</value></data>
+  <data name="Chat_Err_Empty" xml:space="preserve"><value>یک پرسش بنویسید.</value></data>
 </root>

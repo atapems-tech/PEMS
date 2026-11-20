@@ -77,7 +77,7 @@ public static class NavigationMenuDefaults
         Link("ai.docintel", "sec.ai", 10, "DocumentIntelligence", "bi-diagram-3-fill", "EngineeringDocumentIntelligence", rule: "Perm:EngineeringDocuments.View"),
         new("ai.kb", "sec.ai", L, 20, "KnowledgeBaseSearch", "bi-stars", Always, ExternalPath: "/p/knowledge-base"),   // SCRUM-712: a definition page (/p/...), not a controller
         new("ai.search", "sec.ai", L, 30, "AI Search", "bi-search-heart", Always, ExternalPath: "/p/ai-search"),   // SCRUM-669: a definition page (/p/...)
-        Link("ai.chat", "sec.ai", 40, "Engineering Chat Assistant", "bi-chat-dots", "ChatAssistant"),
+        new("ai.chat", "sec.ai", L, 40, "Engineering Chat Assistant", "bi-chat-dots", Always, ExternalPath: "/p/chat-assistant"),   // SCRUM-672: a definition page (/p/...)
         new("ai.copilot", "sec.ai", L, 50, "Engineering Copilot", "bi-stars", Always, ExternalPath: "/p/ai-insights"),   // SCRUM-668: a definition page (/p/...)
 
         // ---- مکاتبات و کنترل مدارک

@@ -4415,4 +4415,9 @@
   <data name="Open Batch" xml:space="preserve"><value>Open Batch</value></data>
   <data name="Adjust" xml:space="preserve"><value>Adjust</value></data>
   <data name="Transfer" xml:space="preserve"><value>Transfer</value></data>
+  <data name="Rpt_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="Rpt_No" xml:space="preserve"><value>No</value></data>
+  <data name="Dashboard_Err_UnknownWidget" xml:space="preserve"><value>Unknown widget.</value></data>
+  <data name="Dashboard_Err_NoUser" xml:space="preserve"><value>No signed-in user.</value></data>
+  <data name="Chat_Err_Empty" xml:space="preserve"><value>Type a question.</value></data>
 </root>
