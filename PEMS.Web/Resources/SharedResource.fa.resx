@@ -4966,6 +4966,7 @@
   <data name="User updated, but the password was not changed: {0}" xml:space="preserve"><value>کاربر به‌روزرسانی شد، اما رمز عبور تغییر نکرد: {0}</value></data>
   <data name="There are more users than the safe export limit allows." xml:space="preserve"><value>تعداد کاربران از سقف امن خروجی بیشتر است. برای خروجی دسته‌ای با مدیر سیستم تماس بگیرید.</value></data>
   <data name="Temporary password" xml:space="preserve"><value>رمز موقت</value></data>
+  <data name="Org_Imp_RejectedDetail" xml:space="preserve"><value>فایل رد شد. چیزی ذخیره نشد. خطاها: {0}</value></data>
   <data name="Lock/Tag" xml:space="preserve"><value>قفل/برچسب</value></data>
   <data name="Isolated By" xml:space="preserve"><value>جداسازی توسط</value></data>
   <data name="Verified By" xml:space="preserve"><value>تأیید توسط</value></data>

@@ -4193,6 +4193,7 @@
   <data name="User updated, but the password was not changed: {0}" xml:space="preserve"><value>User updated, but the password was not changed: {0}</value></data>
   <data name="There are more users than the safe export limit allows." xml:space="preserve"><value>There are more users than the safe export limit allows. Ask the system administrator for a batch export.</value></data>
   <data name="Temporary password" xml:space="preserve"><value>Temporary password</value></data>
+  <data name="Org_Imp_RejectedDetail" xml:space="preserve"><value>The file was rejected. Nothing was saved. Errors: {0}</value></data>
   <data name="Lock/Tag" xml:space="preserve"><value>Lock/Tag</value></data>
   <data name="Isolated By" xml:space="preserve"><value>Isolated By</value></data>
   <data name="Verified By" xml:space="preserve"><value>Verified By</value></data>
