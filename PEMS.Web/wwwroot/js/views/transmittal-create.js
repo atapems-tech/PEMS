@@ -34,7 +34,10 @@
                     if (row.querySelector('.doc-picker-checkbox').checked) selectedCount++;
                 });
 
-                counter.textContent = visibleCount + ' shown, ' + selectedCount + ' selected';
+                var numberFormat = new Intl.NumberFormat(document.documentElement.lang || 'en');
+                counter.textContent = counter.dataset.format
+                    .replace('{0}', numberFormat.format(visibleCount))
+                    .replace('{1}', numberFormat.format(selectedCount));
             }
 
             projectSelect.addEventListener('change', applyFilter);

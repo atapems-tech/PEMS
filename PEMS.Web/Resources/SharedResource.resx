@@ -4111,4 +4111,67 @@
   <data name="Vdr_Err_Forbidden" xml:space="preserve">
     <value>You are not allowed to do this on VDR items.</value>
   </data>
+  <data name="Dashboard_SetupProgress" xml:space="preserve"><value>{0} of {1} setup areas ready</value></data>
+  <data name="Dashboard_AllCaughtUp" xml:space="preserve"><value>You're all caught up. No items currently require your attention.</value></data>
+  <data name="Dashboard_PermitApprovals" xml:space="preserve"><value>Permit approvals waiting for you</value></data>
+  <data name="Dashboard_AssignedWorkOrders" xml:space="preserve"><value>Work orders assigned to you</value></data>
+  <data name="Dashboard_Referrals" xml:space="preserve"><value>Referrals requiring your action</value></data>
+  <data name="Dashboard_DocumentReviews" xml:space="preserve"><value>Documents awaiting your review</value></data>
+  <data name="Dashboard_NothingToShow" xml:space="preserve"><value>Nothing to show</value></data>
+  <data name="Dashboard_Customize" xml:space="preserve"><value>Customize your dashboard</value></data>
+  <data name="Active Projects" xml:space="preserve"><value>Active Projects</value></data>
+  <data name="Engineering Documents" xml:space="preserve"><value>Engineering Documents</value></data>
+  <data name="Pending Approval" xml:space="preserve"><value>Pending Approval</value></data>
+  <data name="Rejected Documents" xml:space="preserve"><value>Rejected Documents</value></data>
+  <data name="Returned With Comments (CO/AC)" xml:space="preserve"><value>Returned With Comments (CO/AC)</value></data>
+  <data name="Open Revisions" xml:space="preserve"><value>Open Revisions</value></data>
+  <data name="Open MR / MRQ" xml:space="preserve"><value>Open MR / MRQ</value></data>
+  <data name="Active Contracts" xml:space="preserve"><value>Active Contracts</value></data>
+  <data name="Open Work Orders (CMMS)" xml:space="preserve"><value>Open Work Orders (CMMS)</value></data>
+  <data name="AI Alerts (Failed Analysis)" xml:space="preserve"><value>AI Alerts (Failed Analysis)</value></data>
+  <data name="Registered Equipment" xml:space="preserve"><value>Registered Equipment</value></data>
+  <data name="Transmittals" xml:space="preserve"><value>Transmittals</value></data>
+  <data name="Documents currently waiting for action in the internal workflow (status Submitted or Checked)." xml:space="preserve"><value>Documents currently waiting for action in the internal workflow (status Submitted or Checked).</value></data>
+  <data name="Truly rejected: status Rejected with client response RE (or an internal rejection). The linked list shows every Rejected-status document, including those returned with comments." xml:space="preserve"><value>Truly rejected: status Rejected with client response RE (or an internal rejection). The linked list shows every Rejected-status document, including those returned with comments.</value></data>
+  <data name="Client response CO (commented) or AC (approved with comments): the document must be revised and resubmitted, but it was not rejected." xml:space="preserve"><value>Client response CO (commented) or AC (approved with comments): the document must be revised and resubmitted, but it was not rejected.</value></data>
+  <data name="Contracts in execution: status Effective (or the legacy Active status)." xml:space="preserve"><value>Contracts in execution: status Effective (or the legacy Active status).</value></data>
+  <data name="Issued" xml:space="preserve"><value>Issued</value></data>
+  <data name="Archived" xml:space="preserve"><value>Archived</value></data>
+  <data name="Submitted" xml:space="preserve"><value>Submitted</value></data>
+  <data name="Draft" xml:space="preserve"><value>Draft</value></data>
+  <data name="Client Approved" xml:space="preserve"><value>Client Approved</value></data>
+  <data name="IDC Review" xml:space="preserve"><value>IDC Review</value></data>
+  <data name="Checked" xml:space="preserve"><value>Checked</value></data>
+  <data name="Unassigned" xml:space="preserve"><value>Unassigned</value></data>
+  <data name="Purchase Order" xml:space="preserve"><value>Purchase Order</value></data>
+  <data name="MDB_PlannedFinalIssueDate" xml:space="preserve"><value>Planned Final Issue Date</value></data>
+  <data name="MDB_IndexDueHint" xml:space="preserve"><value>(index due 4 weeks before)</value></data>
+  <data name="MDB_Create" xml:space="preserve"><value>Create MDB</value></data>
+  <data name="Transmittal_FinalCodeExample" xml:space="preserve"><value>e.g. TR-2026-001</value></data>
+  <data name="Transmittal_FromExample" xml:space="preserve"><value>e.g. Engineering Department</value></data>
+  <data name="Transmittal_ToHint" xml:space="preserve"><value>(free-text summary - optional if recipients added below)</value></data>
+  <data name="Transmittal_ToExample" xml:space="preserve"><value>e.g. Contractor XYZ</value></data>
+  <data name="IFI - Issue for Information" xml:space="preserve"><value>IFI - Issue for Information</value></data>
+  <data name="For Review (legacy)" xml:space="preserve"><value>For Review (legacy)</value></data>
+  <data name="Response Required" xml:space="preserve"><value>Response Required</value></data>
+  <data name="Recipients" xml:space="preserve"><value>Recipients</value></data>
+  <data name="Transmittal_RecipientsHint" xml:space="preserve"><value>(structured - required)</value></data>
+  <data name="Transmittal_AddRecipient" xml:space="preserve"><value>Add Recipient</value></data>
+  <data name="Transmittal_DocumentsToInclude" xml:space="preserve"><value>Documents to include</value></data>
+  <data name="Transmittal_DocumentCounter" xml:space="preserve"><value>{0} shown, {1} selected</value></data>
+  <data name="Transmittal_DocumentPickerHint" xml:space="preserve"><value>Only showing documents from the selected project. Documents on Hold cannot be transmitted. Type to search by number or title.</value></data>
+  <data name="Transmittal_DocumentSearch" xml:space="preserve"><value>Search by document number or title...</value></data>
+  <data name="Transmittal_NoDocuments" xml:space="preserve"><value>No documents available.</value></data>
+  <data name="Create Transmittal" xml:space="preserve"><value>Create Transmittal</value></data>
+  <data name="External" xml:space="preserve"><value>External</value></data>
+  <data name="Rev" xml:space="preserve"><value>Rev</value></data>
+  <data name="Dashboard_SchemaWarning" xml:space="preserve"><value>Some dashboard data could not be loaded. Ask an administrator to check these database tables: {0}.</value></data>
+  <data name="Pending Engineering Documents" xml:space="preserve"><value>Pending Engineering Documents</value></data>
+  <data name="My Correspondence Referrals" xml:space="preserve"><value>My Correspondence Referrals</value></data>
+  <data name="Overdue Correspondence" xml:space="preserve"><value>Overdue Correspondence</value></data>
+  <data name="Recently Created Documents" xml:space="preserve"><value>Recently Created Documents</value></data>
+  <data name="Vendor Document Register Summary" xml:space="preserve"><value>Vendor Document Register Summary</value></data>
+  <data name="AI Intake Queue Summary" xml:space="preserve"><value>AI Intake Queue Summary</value></data>
+  <data name="My Discipline Tasks" xml:space="preserve"><value>My Discipline Tasks</value></data>
+  <data name="Knowledge Base Quick Search" xml:space="preserve"><value>Knowledge Base Quick Search</value></data>
 </root>

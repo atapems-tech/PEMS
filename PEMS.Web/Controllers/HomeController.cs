@@ -101,12 +101,7 @@ namespace PEMS.Web.Controllers
 
             if (failedTables.Count > 0)
             {
-                ViewBag.DashboardWarning =
-                    "برخی از جداول جدید هنوز در دیتابیس ایجاد نشده‌اند (Migration اعمال نشده است): " +
-                    string.Join(", ", failedTables.Distinct()) +
-                    ". لطفاً این دستورات را اجرا کنید: " +
-                    "dotnet ef migrations add AddEngineeringAndAIModules --project PEMS.Persistence --startup-project PEMS.Web " +
-                    "سپس dotnet ef database update --project PEMS.Persistence --startup-project PEMS.Web";
+                ViewBag.DashboardWarning = string.Join(", ", failedTables.Distinct());
             }
 
 

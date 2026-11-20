@@ -4890,4 +4890,61 @@
   <data name="Vdr_Err_Forbidden" xml:space="preserve">
     <value>شما مجاز به این کار روی مدارک VDR نیستید.</value>
   </data>
+  <data name="Dashboard_SetupProgress" xml:space="preserve"><value>{0} از {1} بخش راه‌اندازی آماده است</value></data>
+  <data name="Dashboard_AllCaughtUp" xml:space="preserve"><value>تمام کارها انجام شده‌اند. در حال حاضر موردی نیازمند توجه شما نیست.</value></data>
+  <data name="Dashboard_PermitApprovals" xml:space="preserve"><value>مجوزهای کار در انتظار تأیید شما</value></data>
+  <data name="Dashboard_AssignedWorkOrders" xml:space="preserve"><value>دستورکارهای واگذارشده به شما</value></data>
+  <data name="Dashboard_Referrals" xml:space="preserve"><value>ارجاعات نیازمند اقدام شما</value></data>
+  <data name="Dashboard_DocumentReviews" xml:space="preserve"><value>مدارک در انتظار بازبینی شما</value></data>
+  <data name="Dashboard_NothingToShow" xml:space="preserve"><value>موردی برای نمایش وجود ندارد</value></data>
+  <data name="Dashboard_Customize" xml:space="preserve"><value>سفارشی‌سازی داشبورد</value></data>
+  <data name="Active Projects" xml:space="preserve"><value>پروژه‌های فعال</value></data>
+  <data name="Rejected Documents" xml:space="preserve"><value>مدارک ردشده</value></data>
+  <data name="Returned With Comments (CO/AC)" xml:space="preserve"><value>مدارک بازگشتی با نظر (CO/AC)</value></data>
+  <data name="Open Revisions" xml:space="preserve"><value>ویرایش‌های باز</value></data>
+  <data name="Open MR / MRQ" xml:space="preserve"><value>درخواست‌های خرید باز (MR / MRQ)</value></data>
+  <data name="Active Contracts" xml:space="preserve"><value>قراردادهای فعال</value></data>
+  <data name="Open Work Orders (CMMS)" xml:space="preserve"><value>دستورکارهای باز (CMMS)</value></data>
+  <data name="AI Alerts (Failed Analysis)" xml:space="preserve"><value>هشدارهای هوش مصنوعی (تحلیل ناموفق)</value></data>
+  <data name="Registered Equipment" xml:space="preserve"><value>تجهیزات ثبت‌شده</value></data>
+  <data name="Transmittals" xml:space="preserve"><value>ترنسمیتال‌ها</value></data>
+  <data name="Documents currently waiting for action in the internal workflow (status Submitted or Checked)." xml:space="preserve"><value>مدارک در انتظار اقدام در گردش‌کار داخلی (ارسال‌شده یا بررسی‌شده).</value></data>
+  <data name="Truly rejected: status Rejected with client response RE (or an internal rejection). The linked list shows every Rejected-status document, including those returned with comments." xml:space="preserve"><value>مدارک واقعاً ردشده: وضعیت ردشده با پاسخ RE کارفرما یا رد داخلی. فهرست پیوندشده همه مدارک با وضعیت ردشده، از جمله بازگشتی با نظر، را نشان می‌دهد.</value></data>
+  <data name="Client response CO (commented) or AC (approved with comments): the document must be revised and resubmitted, but it was not rejected." xml:space="preserve"><value>پاسخ CO (دارای نظر) یا AC (تأیید با نظر) کارفرما: مدرک باید اصلاح و دوباره ارسال شود، اما رد نشده است.</value></data>
+  <data name="Contracts in execution: status Effective (or the legacy Active status)." xml:space="preserve"><value>قراردادهای در حال اجرا: وضعیت مؤثر یا وضعیت فعال قدیمی.</value></data>
+  <data name="Issued" xml:space="preserve"><value>صادرشده</value></data>
+  <data name="Client Approved" xml:space="preserve"><value>تأیید کارفرما</value></data>
+  <data name="IDC Review" xml:space="preserve"><value>بازبینی بین دیسیپلینی (IDC)</value></data>
+  <data name="Checked" xml:space="preserve"><value>بررسی‌شده</value></data>
+  <data name="Unassigned" xml:space="preserve"><value>تخصیص‌نیافته</value></data>
+  <data name="Purchase Order" xml:space="preserve"><value>سفارش خرید</value></data>
+  <data name="MDB_PlannedFinalIssueDate" xml:space="preserve"><value>تاریخ برنامه‌ریزی‌شده صدور نهایی</value></data>
+  <data name="MDB_IndexDueHint" xml:space="preserve"><value>(سررسید فهرست، چهار هفته قبل)</value></data>
+  <data name="MDB_Create" xml:space="preserve"><value>ایجاد MDB</value></data>
+  <data name="Transmittal_FinalCodeExample" xml:space="preserve"><value>مثلاً TR-2026-001</value></data>
+  <data name="Transmittal_FromExample" xml:space="preserve"><value>مثلاً دپارتمان مهندسی</value></data>
+  <data name="Transmittal_ToHint" xml:space="preserve"><value>(خلاصه متنی؛ در صورت افزودن گیرندگان اختیاری است)</value></data>
+  <data name="Transmittal_ToExample" xml:space="preserve"><value>مثلاً پیمانکار نمونه</value></data>
+  <data name="IFI - Issue for Information" xml:space="preserve"><value>IFI - صدور برای اطلاع</value></data>
+  <data name="For Review (legacy)" xml:space="preserve"><value>برای بازبینی (قدیمی)</value></data>
+  <data name="Response Required" xml:space="preserve"><value>پاسخ الزامی است</value></data>
+  <data name="Recipients" xml:space="preserve"><value>گیرندگان</value></data>
+  <data name="Transmittal_RecipientsHint" xml:space="preserve"><value>(ساختاریافته، الزامی)</value></data>
+  <data name="Transmittal_AddRecipient" xml:space="preserve"><value>افزودن گیرنده</value></data>
+  <data name="Transmittal_DocumentsToInclude" xml:space="preserve"><value>مدارک قابل ارسال</value></data>
+  <data name="Transmittal_DocumentCounter" xml:space="preserve"><value>{0} نمایش داده شده، {1} انتخاب شده</value></data>
+  <data name="Transmittal_DocumentPickerHint" xml:space="preserve"><value>فقط مدارک پروژه انتخاب‌شده نمایش داده می‌شوند. مدارک معلق قابل ارسال نیستند. برای جستجو شماره یا عنوان مدرک را وارد کنید.</value></data>
+  <data name="Transmittal_DocumentSearch" xml:space="preserve"><value>جستجو بر اساس شماره یا عنوان مدرک...</value></data>
+  <data name="Transmittal_NoDocuments" xml:space="preserve"><value>مدرکی موجود نیست.</value></data>
+  <data name="Create Transmittal" xml:space="preserve"><value>ایجاد ترنسمیتال</value></data>
+  <data name="External" xml:space="preserve"><value>خارجی</value></data>
+  <data name="Dashboard_SchemaWarning" xml:space="preserve"><value>بارگذاری بخشی از داده‌های داشبورد ناموفق بود. از مدیر سیستم بخواهید این جدول‌های پایگاه داده را بررسی کند: {0}.</value></data>
+  <data name="Pending Engineering Documents" xml:space="preserve"><value>مدارک مهندسی در انتظار اقدام</value></data>
+  <data name="My Correspondence Referrals" xml:space="preserve"><value>ارجاعات مکاتبات من</value></data>
+  <data name="Overdue Correspondence" xml:space="preserve"><value>مکاتبات سررسیدگذشته</value></data>
+  <data name="Recently Created Documents" xml:space="preserve"><value>مدارک اخیراً ایجادشده</value></data>
+  <data name="Vendor Document Register Summary" xml:space="preserve"><value>خلاصه رجیستر مدارک فروشنده</value></data>
+  <data name="AI Intake Queue Summary" xml:space="preserve"><value>خلاصه صف دریافت هوش مصنوعی</value></data>
+  <data name="My Discipline Tasks" xml:space="preserve"><value>کارهای دیسیپلین من</value></data>
+  <data name="Knowledge Base Quick Search" xml:space="preserve"><value>جستجوی سریع پایگاه دانش</value></data>
 </root>

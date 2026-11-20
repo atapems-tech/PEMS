@@ -195,6 +195,50 @@ public class PersianMessagesAndTitlesTests
     }
 
     [Fact]
+    public void DashboardCardsAndDocumentStatuses_HavePersianResources()
+    {
+        var fa = Resx("SharedResource.fa.resx");
+        var home = Read("PEMS.Web", "Controllers", "HomeController.cs");
+        var keys = Regex.Matches(home, "(?:Title|Hint) = \\\"([^\\\"]+)\\\"")
+            .Select(match => match.Groups[1].Value)
+            .Concat(new[] { "Issued", "Approved", "Archived", "Submitted", "Draft", "Rejected", "Client Approved", "IDC Review", "Checked" });
+        foreach (var key in keys)
+        {
+            Assert.True(fa.ContainsKey(key), key);
+            Assert.NotEqual(key, fa[key]);
+        }
+        var view = Read("PEMS.Web", "Views", "Home", "Index.cshtml");
+        Assert.Contains("Localizer[kpi.Title]", view);
+        Assert.Contains("Localizer[kpi.Hint]", view);
+        Assert.Contains("Localizer[kv.Key]", view);
+        Assert.Contains("Localizer[w.DisplayName]", view);
+    }
+
+    [Fact]
+    public void DashboardMdbAndTransmittalExplicitKeys_HaveBilingualResources()
+    {
+        var en = Resx("SharedResource.resx");
+        var fa = Resx("SharedResource.fa.resx");
+        foreach (var view in new[] { "Home/Index.cshtml", "MDB/Create.cshtml", "Transmittal/Create.cshtml" })
+        {
+            var source = Read("PEMS.Web", "Views", view);
+            foreach (Match match in Regex.Matches(source, "Localizer\\[\\\"((?:Dashboard_|MDB_|Transmittal_)[^\\\"]+)\\\""))
+            {
+                var key = match.Groups[1].Value;
+                Assert.True(en.ContainsKey(key), key);
+                Assert.True(fa.ContainsKey(key), key);
+                Assert.NotEqual(en[key], fa[key]);
+            }
+        }
+        foreach (var resource in new[] { en, fa })
+        {
+            Assert.Contains("{0}", resource["Transmittal_DocumentCounter"]);
+            Assert.Contains("{1}", resource["Transmittal_DocumentCounter"]);
+        }
+        Assert.Contains("counter.dataset.format", Read("PEMS.Web", "wwwroot", "js", "views", "transmittal-create.js"));
+    }
+
+    [Fact]
     public void LegacyHtmlSafetyNet_TranslatesOnlyKnownUiText_InTextAndAccessibleAttributes()
     {
         var localizer = new SelectiveLocalizer();
