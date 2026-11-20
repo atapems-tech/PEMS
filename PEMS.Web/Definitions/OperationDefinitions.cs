@@ -5,6 +5,7 @@ using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.Definitions;
+using PEMS.Application.Uploads;
 using PEMS.Persistence.Context;
 using PEMS.UI.Abstractions;
 
@@ -76,6 +77,12 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime) || t.IsEnum;
     }
 
+    /// <summary>SCRUM-635: the upload profiles an operation file argument may name (the checks of the upload guard: allow-list, size, content, malware hook).</summary>
+    private static readonly IReadOnlyDictionary<string, UploadProfile> UploadProfiles = new Dictionary<string, UploadProfile>(StringComparer.Ordinal)
+    {
+        ["attachment"] = UploadProfile.Attachment, ["image"] = UploadProfile.Image, ["spreadsheet"] = UploadProfile.Spreadsheet, ["csv"] = UploadProfile.Csv, ["pdf"] = UploadProfile.Pdf, ["licenceFile"] = UploadProfile.LicenceFile
+    };
+
     private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent", "userId", "disciplineId" };
 
     /// <summary>A plain options object (settable simple properties, no constructor arguments), such as a completion-data record: its properties are bound from the form values of the same name (first letter lower-case), or from the sources the definition lists for them.</summary>
@@ -88,7 +95,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
 
     private static string CamelCase(string name) => char.ToLowerInvariant(name[0]) + name[1..];
 
-    private static bool IsSource(string s) => s.StartsWith("field:") && s.Length > 6 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]);
+    private static bool IsSource(string s) => s.StartsWith("field:") && s.Length > 6 || s.StartsWith("file:") && s.Length > 5 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]);
 
     private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
 
@@ -153,6 +160,13 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             if (p.ParameterType == typeof(CancellationToken)) continue;
             if (IsSimple(p.ParameterType)) continue;
+            if (p.ParameterType == typeof(byte[]))
+            {
+                // SCRUM-635: the bytes of an uploaded file: args names the form field as file:field and the action names the upload profile
+                if (!(EntityJson.Str(args[p.Name!]) ?? "").StartsWith("file:")) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The file parameter '{p.Name}' of {op.Name} takes file:field."));
+                if (parameters["upload"] is not JsonObject up || !UploadProfiles.ContainsKey(EntityJson.Str(up["profile"]) ?? "")) errors.Add(new("/upload", "required", "Def_Err_Required", $"upload: {{ profile, maxFileMb }} is required for a file parameter; profile is one of: {string.Join(", ", UploadProfiles.Keys)}."));
+                continue;
+            }
             if (IsTextList(p.ParameterType))
             {
                 if (!IsRoles(p)) { if (args.ContainsKey(p.Name!)) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list '{p.Name}' of {op.Name} cannot be set from a definition; leave it out.")); continue; }
@@ -209,6 +223,15 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     }
 
     /// <summary>A result object of the shape { Success, Error, Args } (the Po result of procurement and its kind): the refusal text is the Error, a resource key when the shared resources know it (filled with Args), in both languages.</summary>
+    /// <summary>A result object with Bytes (and FileName, ContentType) is a file for the user to download; a result with Success false is a refusal, not a file (SCRUM-635).</summary>
+    private static FileResult? FileOf(object answer)
+    {
+        var t = answer.GetType();
+        if (t.GetProperty("Bytes")?.GetValue(answer) is not byte[] bytes) return null;
+        if (t.GetProperty("Success")?.GetValue(answer) is false) return null;
+        return new FileResult(bytes, t.GetProperty("FileName")?.GetValue(answer) as string ?? "download", t.GetProperty("ContentType")?.GetValue(answer) as string ?? "application/octet-stream");
+    }
+
     private static (bool Success, string? Error, object?[] Args)? ResultOf(object answer)
     {
         var t = answer.GetType();
@@ -282,6 +305,26 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         foreach (var p in op.Method.GetParameters())
         {
             if (p.ParameterType == typeof(CancellationToken)) { values.Add(ct); continue; }
+            if (p.ParameterType == typeof(byte[]))
+            {
+                var source = EntityJson.Str(args[p.Name!]) ?? string.Empty;
+                var fileField = source.StartsWith("file:") ? source[5..] : p.Name!;
+                var file = invocation.Files?.FirstOrDefault(f => f.Field == fileField);
+                if (file is null) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", "Choose a file."), ("fa", "یک فایل انتخاب کنید.")));
+                var upload = invocation.Parameters?["upload"] as JsonObject;
+                var guard = scope.ServiceProvider.GetService<IUploadGuard>();
+                if (guard is null || upload is null || !UploadProfiles.TryGetValue(EntityJson.Str(upload["profile"]) ?? "", out var profile))
+                    return ActionOutcome.Refused(TranslatableText.Of(("en", "The action is not set up."), ("fa", "کنش درست تنظیم نشده است.")));
+                var limitMb = upload["maxFileMb"] is JsonValue lv && lv.TryGetValue<int>(out var mb) ? mb : 0;
+                if (limitMb > 0 && file.Length > limitMb * 1024L * 1024L) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} is larger than {limitMb} MB."), ("fa", $"حجم فایل {file.FileName} بیش از {limitMb} مگابایت است.")));
+                var check = await guard.CheckAsync(profile, file.FileName, file.ContentType, file.Length, file.Open, ct);
+                if (!check.Ok) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} was refused ({check.Error})."), ("fa", $"فایل {file.FileName} رد شد ({check.Error}).")));
+                await using var stream = file.Open();
+                using var buffer = new MemoryStream();
+                await stream.CopyToAsync(buffer, ct);
+                values.Add(buffer.ToArray());
+                continue;
+            }
             if (IsTextList(p.ParameterType))
             {
                 values.Add(IsRoles(p) ? invocation.Roles.ToList() : null);
@@ -356,6 +399,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             bool ok => ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد."))),
             ITuple t when t.Length >= 2 && t[0] is bool success => success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused.")),
+            _ when answer is not null && FileOf(answer) is { } produced => ActionOutcome.Download(produced),
             _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done(result.Error is null ? null : ResultMessage(scope.ServiceProvider, result)) : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
             _ => ActionOutcome.Done()
         };

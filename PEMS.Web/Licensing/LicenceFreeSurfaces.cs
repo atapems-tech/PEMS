@@ -10,7 +10,8 @@ public static class LicenceFreeSurfaces
     private static readonly string[] Prefixes =
     {
         "/Account",          // login, logout, passkeys: an administrator must always be able to sign in and fix the licence
-        "/Admin/License",    // the licence page itself
+        "/Admin/License",    // the licence page itself (old address, redirects to the definition page)
+        "/p/license", "/f/license-request", "/f/license-upload", "/a/license-request", "/a/license-upload", "/d/license-status",    // SCRUM-635: the licence page as definitions (page, two forms, their actions, the status rows)
         "/QuickSetup",       // first-run setup
         "/Culture",          // language switch
         "/Home/Error", "/Home/StatusPage",

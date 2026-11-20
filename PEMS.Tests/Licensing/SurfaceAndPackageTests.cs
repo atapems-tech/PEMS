@@ -7,7 +7,7 @@ namespace PEMS.Tests.Licensing;
 public class SurfaceAndPackageTests
 {
     [Theory]
-    [InlineData("/Account/Login", true)] [InlineData("/account/logout", true)] [InlineData("/Admin/License", true)] [InlineData("/Admin/License/Upload", true)]
+    [InlineData("/Account/Login", true)] [InlineData("/account/logout", true)] [InlineData("/Admin/License", true)] [InlineData("/Admin/License/Upload", true)] [InlineData("/p/license", true)] [InlineData("/f/license-upload", true)] [InlineData("/f/license-requests", false)]
     [InlineData("/QuickSetup", true)] [InlineData("/health/database", true)] [InlineData("/Culture/Set", true)]
     [InlineData("/", false)] [InlineData("/Equipment", false)] [InlineData("/Admin/Users", false)] [InlineData("/Admin/LicenseFake", false)]
     [InlineData("/Accounting", false)] [InlineData("/api/work-orders", false)] [InlineData(null, false)]
