@@ -287,6 +287,7 @@ public class PartCatalogueReportServiceTests
         var env = await SeedAsync();
         var report = await env.Svc.GetReportAsync(new PartCatalogueReportFilter { Period = PartCatalogueReportPeriods.All }, All(), Today);
         var t = new PartCatalogueReportTexts(new KeyLocalizer(), rightToLeft: false);
+        Assert.Equal("PcRpt_Period_All", t.PeriodDisplay(report));
         using var wb = new XLWorkbook(new MemoryStream(PartCatalogueReportExport.Build(report, t, null)));
         Assert.Equal("PcRpt_Period_All", wb.Worksheet("PcRpt_Sheet_Summary").Cell(2, 2).GetString());
     }

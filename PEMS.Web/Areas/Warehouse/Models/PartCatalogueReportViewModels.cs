@@ -53,4 +53,8 @@ public sealed class PartCatalogueReportTexts
         : $"{r.PeriodStart:yyyy-MM-dd} – {r.PeriodEnd?.AddDays(-1):yyyy-MM-dd}";
 
     public string PeriodName(string period) => _l["PcRpt_Period_" + period].Value;
+
+    public string PeriodDisplay(PartCatalogueReportDto r) => r.PeriodStart == null && r.PeriodEnd == null
+        ? PeriodName(r.Filter.Period)
+        : $"{PeriodName(r.Filter.Period)} ({Period(r)})";
 }

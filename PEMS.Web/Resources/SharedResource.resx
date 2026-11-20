@@ -4227,10 +4227,10 @@
   <data name="User updated successfully" xml:space="preserve"><value>User updated successfully</value></data>
   <data name="This IRN is not awaiting approval." xml:space="preserve"><value>This IRN is not awaiting approval.</value></data>
   <data name="Functional Location / Parent Equipment updated" xml:space="preserve"><value>Functional Location / Parent Equipment updated</value></data>
-  <data name="InProgress" xml:space="preserve"><value>InProgress</value></data>
-  <data name="EngineeringQuestion" xml:space="preserve"><value>EngineeringQuestion</value></data>
-  <data name="TechnicalClarification" xml:space="preserve"><value>TechnicalClarification</value></data>
-  <data name="VendorInquiry" xml:space="preserve"><value>VendorInquiry</value></data>
+  <data name="InProgress" xml:space="preserve"><value>In progress</value></data>
+  <data name="EngineeringQuestion" xml:space="preserve"><value>Engineering Question</value></data>
+  <data name="TechnicalClarification" xml:space="preserve"><value>Technical Clarification</value></data>
+  <data name="VendorInquiry" xml:space="preserve"><value>Vendor Inquiry</value></data>
   <data name="Technical Clarification" xml:space="preserve"><value>Technical Clarification</value></data>
   <data name="Engineering Question" xml:space="preserve"><value>Engineering Question</value></data>
   <data name="Vendor Inquiry" xml:space="preserve"><value>Vendor Inquiry</value></data>
@@ -4241,8 +4241,8 @@
   <data name="Reserved" xml:space="preserve"><value>Reserved</value></data>
   <data name="Receipt" xml:space="preserve"><value>Receipt</value></data>
   <data name="Issue" xml:space="preserve"><value>Issue</value></data>
-  <data name="AutoSkip" xml:space="preserve"><value>AutoSkip</value></data>
-  <data name="NotQualified" xml:space="preserve"><value>NotQualified</value></data>
+  <data name="AutoSkip" xml:space="preserve"><value>Auto skip</value></data>
+  <data name="NotQualified" xml:space="preserve"><value>Not qualified</value></data>
   <data name="Public" xml:space="preserve"><value>Public</value></data>
   <data name="Confidential" xml:space="preserve"><value>Confidential</value></data>
   <data name="Restricted" xml:space="preserve"><value>Restricted</value></data>
@@ -4394,4 +4394,25 @@
   <data name="Rpt_HigherIsBetter" xml:space="preserve"><value>Higher is better</value></data>
   <data name="Rpt_LowerIsBetter" xml:space="preserve"><value>Lower is better</value></data>
   <data name="Notif_Err_NotFound" xml:space="preserve"><value>Notification not found.</value></data>
+  <data name="Mat_ReceiveStock" xml:space="preserve"><value>Receive Stock</value></data>
+  <data name="Mat_Stock" xml:space="preserve"><value>Stock</value></data>
+  <data name="Mat_RecentTransactions" xml:space="preserve"><value>Recent Transactions</value></data>
+  <data name="Mat_SourceImports" xml:space="preserve"><value>Source Imports</value></data>
+  <data name="Mat_ConfirmToggleActive" xml:space="preserve"><value>Change the active status of this material?</value></data>
+  <data name="Mat_NoStock" xml:space="preserve"><value>No stock is recorded in any warehouse yet.</value></data>
+  <data name="Mat_SourceImportsHint" xml:space="preserve"><value>This material was created or updated from these Excel rows. Each import remains a separate source record.</value></data>
+  <data name="Mat_ScanWarehouse" xml:space="preserve"><value>Scan warehouse barcode...</value></data>
+  <data name="Mat_BarcodeResolveFailed" xml:space="preserve"><value>Could not resolve barcode.</value></data>
+  <data name="Mat_BarcodeWrongType" xml:space="preserve"><value>This barcode does not identify a warehouse.</value></data>
+  <data name="Mat_BarcodeWarehouseNotListed" xml:space="preserve"><value>The identified warehouse is not in this list.</value></data>
+  <data name="Mat_AdjustStock" xml:space="preserve"><value>Adjust stock</value></data>
+  <data name="Mat_TransferStock" xml:space="preserve"><value>Transfer between warehouses</value></data>
+  <data name="Mat_Maximum" xml:space="preserve"><value>maximum</value></data>
+  <data name="Mat_EditMaterial" xml:space="preserve"><value>Edit Material</value></data>
+  <data name="Source File" xml:space="preserve"><value>Source File</value></data>
+  <data name="Import Date" xml:space="preserve"><value>Import Date</value></data>
+  <data name="PO No" xml:space="preserve"><value>PO No</value></data>
+  <data name="Open Batch" xml:space="preserve"><value>Open Batch</value></data>
+  <data name="Adjust" xml:space="preserve"><value>Adjust</value></data>
+  <data name="Transfer" xml:space="preserve"><value>Transfer</value></data>
 </root>
