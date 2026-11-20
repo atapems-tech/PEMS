@@ -19,12 +19,16 @@ public sealed class DefinitionsApiController : ApiControllerBase
     private static readonly IReadOnlySet<string> FilterFields = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "kind", "appKey", "published" };
 
     private readonly IDefinitionService _service;
+    private readonly IDefinitionImpact _impact;
+    private readonly PEMS.Persistence.Services.DefinitionPublishGuard _guard;
     private readonly IAuthorizationService _authorization;
     private readonly ICurrentUserService _currentUser;
 
-    public DefinitionsApiController(IDefinitionService service, IAuthorizationService authorization, ICurrentUserService currentUser)
+    public DefinitionsApiController(IDefinitionService service, IDefinitionImpact impact, PEMS.Persistence.Services.DefinitionPublishGuard guard, IAuthorizationService authorization, ICurrentUserService currentUser)
     {
         _service = service;
+        _impact = impact;
+        _guard = guard;
         _authorization = authorization;
         _currentUser = currentUser;
     }
@@ -132,6 +136,60 @@ public sealed class DefinitionsApiController : ApiControllerBase
         return r.Success ? Ok(DefinitionUpstreamResource.From(r.Value!)) : Problem(r);
     }
 
+    [HttpGet("{id:int}/used-by")]
+    [ApiPermission(Module, "View")]
+    [ProducesResponseType<DefinitionUsedByResource>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Which published definitions use this one")]
+    [EndpointDescription("The published definitions whose published version points at this definition (a page that renders a component definition, a form that uses a data source, an action a form submits to). Read only.")]
+    public async Task<IActionResult> UsedBy(int id, CancellationToken ct)
+    {
+        var d = await _service.GetAsync(id, ct);
+        if (!d.Success) return Problem(d);
+        var users = await _impact.UsedByAsync(d.Value!.Summary.Kind, d.Value.Summary.Key, ct);
+        return Ok(new DefinitionUsedByResource(users.Select(u => new DefinitionUsageResource(u.Kind, u.Key, u.Role)).ToList()));
+    }
+
+    [HttpGet("{id:int}/references")]
+    [ApiPermission(Module, "View")]
+    [ProducesResponseType<DefinitionReferencesResource>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("What this definition points at")]
+    [EndpointDescription("The definitions the published version points at, each with whether it exists and is published. A target that does not exist stops a publish of a draft that points at it. Read only.")]
+    public async Task<IActionResult> References(int id, CancellationToken ct)
+    {
+        var d = await _service.GetAsync(id, ct);
+        if (!d.Success) return Problem(d);
+        var targets = await _impact.ReferencesAsync(id, ct);
+        return Ok(new DefinitionReferencesResource(targets.Select(t => new DefinitionTargetResource(t.Kind, t.Key, t.Role, t.Exists)).ToList()));
+    }
+
+    [HttpPost("{id:int}/actions/precheck-publish")]
+    [ApiPermission(Module, "View")]
+    [ProducesResponseType<ImpactReportResource>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("What publishing the draft would do")]
+    [EndpointDescription("The verdict (allowed, warnings or blocked) and the findings of publishing the open draft: missing or unpublished references and changes that would drop stored data. Changes nothing.")]
+    public async Task<IActionResult> PrecheckPublish(int id, CancellationToken ct)
+    {
+        var d = await _service.GetAsync(id, ct);
+        return d.Success ? Ok(ImpactReportResource.From(await _impact.PrecheckPublishAsync(id, ct))) : Problem(d);
+    }
+
+    [HttpPost("{id:int}/actions/precheck-rollback")]
+    [ApiPermission(Module, "View")]
+    [ProducesResponseType<ImpactReportResource>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status404NotFound, ApiProblem.ContentType)]
+    [EndpointSummary("Whether an older version can be published again")]
+    [EndpointDescription("The verdict and the findings of publishing the version toVersion again, against today's definitions: allowed, warnings or blocked with the reasons. Changes nothing.")]
+    public async Task<IActionResult> PrecheckRollback(int id, [FromBody] RollbackInput input, CancellationToken ct)
+    {
+        var d = await _service.GetAsync(id, ct);
+        if (!d.Success) return Problem(d);
+        if (input.ToVersion is null or < 1) return ApiProblem.Validation(new[] { new ApiFieldError("/toVersion", "required", "Def_Err_Required", "Say which version to check.") });
+        return Ok(ImpactReportResource.From(await _impact.PrecheckRollbackAsync(id, input.ToVersion.Value, ct)));
+    }
+
     // ------------------------------------------------------------------ writes
 
     [HttpPost]
@@ -230,12 +288,27 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [ProducesResponseType<DefinitionResource>(StatusCodes.Status200OK)]
     [ProducesResponseType<ApiProblemDetails>(StatusCodes.Status422UnprocessableEntity, ApiProblem.ContentType)]
     [EndpointSummary("Publish the draft")]
-    [EndpointDescription("Validates and publishes the draft as the current version; the previous version is retired. Needs permission Approve and If-Match with the draft ETag.")]
-    public async Task<IActionResult> Publish(int id, CancellationToken ct)
+    [EndpointDescription("Checks the references first (a missing or unpublished target answers 422 with the pointer), then validates and publishes the draft as the current version; the previous version is retired. A change that only warns (a field changes type, a field becomes required) needs ?acknowledge=true and answers 409 without it. After the publish a smoke check runs; when it fails the previous version is published again automatically (409 auto-rolled-back, change summary 'auto-rollback: reason'). Needs permission Approve and If-Match with the draft ETag.")]
+    public async Task<IActionResult> Publish(int id, [FromQuery] bool acknowledge, CancellationToken ct)
     {
         var (gate, revision) = await DraftGateAsync(id, ct);
         if (gate != null) return gate;
-        return await DetailResultAsync(await _service.PublishAsync(id, revision, Actor, ct));
+        var result = await _guard.PublishAsync(id, revision, Actor, acknowledge, ct);
+        switch (result.Stage)
+        {
+            case PEMS.Persistence.Services.PublishStages.Blocked:
+                return ApiProblem.Validation(result.Report.Items.Where(i => i.Severity == "blocked").Select(i => new ApiFieldError(i.Path, "impact-blocked", "Def_Err_Impact", i.Message)).ToList());
+            case PEMS.Persistence.Services.PublishStages.NeedsAcknowledgement:
+                return ApiProblem.Build(409, "breaking-changes-not-acknowledged", "The change has warnings.", detail: result.Reason + " Publish again with acknowledge=true to go on.");
+            case PEMS.Persistence.Services.PublishStages.Failed:
+                return Problem(result.Outcome!);
+            case PEMS.Persistence.Services.PublishStages.RolledBack:
+                return ApiProblem.Build(409, "auto-rolled-back", "The published version failed the smoke check and the previous version was published again.", detail: result.Reason);
+            case PEMS.Persistence.Services.PublishStages.RollbackStopped:
+                return ApiProblem.Build(409, "smoke-check-failed", "The published version failed the smoke check and could not be rolled back automatically.", detail: result.Reason);
+            default:
+                return await DetailResultAsync(result.Outcome!);
+        }
     }
 
     [HttpPost("{id:int}/actions/rollback")]

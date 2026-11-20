@@ -13,6 +13,25 @@ public sealed record CreateDraftInput(int? FromVersion);
 
 public sealed record RollbackInput(int? ToVersion);
 
+/// <summary>One finding of an impact check: severity safe, warning or blocked, the pointer (into the payload or the missing target) and the message.</summary>
+public sealed record ImpactItemResource(string Severity, string Path, string Message);
+
+/// <summary>The verdict of a precheck (SCRUM-785, 789): allowed, warnings or blocked, with the findings.</summary>
+public sealed record ImpactReportResource(string Verdict, IReadOnlyList<ImpactItemResource> Items)
+{
+    public static ImpactReportResource From(ImpactReport r) => new(r.Verdict, r.Items.Select(i => new ImpactItemResource(i.Severity, i.Path, i.Message)).ToList());
+}
+
+/// <summary>A published definition that points at this one.</summary>
+public sealed record DefinitionUsageResource(string Kind, string Key, string Role);
+
+/// <summary>What this definition points at and whether the target exists and is published.</summary>
+public sealed record DefinitionTargetResource(string Kind, string Key, string Role, bool Exists);
+
+public sealed record DefinitionUsedByResource(IReadOnlyList<DefinitionUsageResource> Items);
+
+public sealed record DefinitionReferencesResource(IReadOnlyList<DefinitionTargetResource> Items);
+
 public sealed record DefinitionVersionResource(int Number, string Status, string ContentHash, string? ChangeSummary, int? ClonedFromVersion, DateTime CreatedAt,
     DateTime? ValidatedAt, DateTime? PublishedAt, string? PublishedBy, DateTime? RetiredAt)
 {

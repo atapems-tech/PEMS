@@ -207,7 +207,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper, 
         return await SaveDetailAsync(def, ct, evictKind: def.Kind);
     }
 
-    public async Task<DefinitionOutcome<DefinitionDetail>> RollbackAsync(int id, int toVersion, long expectedEnvelopeRevision, string actor, CancellationToken ct = default)
+    public async Task<DefinitionOutcome<DefinitionDetail>> RollbackAsync(int id, int toVersion, long expectedEnvelopeRevision, string actor, CancellationToken ct = default, string? changeSummary = null)
     {
         var def = await LoadAsync(id, tracking: true, ct);
         if (def == null) return DefinitionOutcome<DefinitionDetail>.NotFound();
@@ -221,7 +221,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper, 
 
         Touch(def, expectedEnvelopeRevision);
         var now = DateTime.UtcNow;
-        var copy = NewVersion(def.Versions.Max(v => v.VersionNumber) + 1, target.PayloadJson, $"Rollback to version {target.VersionNumber}", now, actor, target.DefinitionVersionId);
+        var copy = NewVersion(def.Versions.Max(v => v.VersionNumber) + 1, target.PayloadJson, changeSummary ?? $"Rollback to version {target.VersionNumber}", now, actor, target.DefinitionVersionId);
         copy.Definition = def;
         copy.PayloadSchemaVersion = target.PayloadSchemaVersion;
         _db.DefinitionVersions.Add(copy);

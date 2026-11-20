@@ -162,6 +162,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.D
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionPayloadGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider>(sp => new PEMS.Web.Definitions.OperationCatalogGridProvider(sp.GetRequiredService<PEMS.Web.Definitions.OperationCatalog>()));   // SCRUM-606   // SCRUM-439, 604, 606, 607, 608   // SCRUM-419, 609
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionImpact, PEMS.Persistence.Services.DefinitionImpactService>();   // SCRUM-450, 457, 459
+builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionPublishGuard>();   // SCRUM-785, 788, 789: precheck, acknowledgement, smoke check and automatic rollback of the REST publish
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionWorkbench, PEMS.Persistence.Services.DefinitionWorkbench>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionDesigner, PEMS.Persistence.Services.DefinitionDesigner>();   // SCRUM-439, 604, 606, 607, 608
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMigratorCenter, PEMS.Web.Services.MigratorCenter>();   // SCRUM-582

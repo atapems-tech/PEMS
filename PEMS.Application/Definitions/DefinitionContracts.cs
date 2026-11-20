@@ -87,7 +87,8 @@ public interface IDefinitionService
     Task<DefinitionOutcome<DefinitionVersionPayload>> SaveDraftAsync(int id, string payloadJson, string? changeSummary, long expectedDraftRevision, string actor, CancellationToken ct = default);
     Task<DefinitionOutcome<DefinitionVersionPayload>> ValidateAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
     Task<DefinitionOutcome<DefinitionDetail>> PublishAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
-    Task<DefinitionOutcome<DefinitionDetail>> RollbackAsync(int id, int toVersion, long expectedEnvelopeRevision, string actor, CancellationToken ct = default);
+    /// <param name="changeSummary">The change summary of the new version; default "Rollback to version N" (the smoke check writes "auto-rollback: reason", SCRUM-788).</param>
+    Task<DefinitionOutcome<DefinitionDetail>> RollbackAsync(int id, int toVersion, long expectedEnvelopeRevision, string actor, CancellationToken ct = default, string? changeSummary = null);
     Task<DefinitionOutcome<DefinitionDetail>> DiscardDraftAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
 
     /// <summary>SCRUM-448: the difference between a customised System definition and what the product ships now; NotFound for a definition that is not shipped.</summary>
