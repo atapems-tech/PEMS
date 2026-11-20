@@ -257,11 +257,12 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         if (data is null) { problems.Add($"Instance \"{id}\": the record cannot be read here."); return null; }
         var source = (string?)record["source"];
         var idField = (string?)record["idField"];
+        var first = record["first"] is JsonValue fv && fv.GetValueKind() is JsonValueKind.True;   // batch 5: the first row of the source (a one-object read operation has no id)
         var recordId = RuntimeValues.Substitute(record["id"]?.DeepClone(), request) is JsonValue v && v.GetValueKind() == JsonValueKind.String ? (string?)v : null;
         var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
-        if (key is null || string.IsNullOrWhiteSpace(idField)) { problems.Add($"Instance \"{id}\": the record binding needs a /d/ source and an idField."); return null; }
-        if (string.IsNullOrWhiteSpace(recordId)) return null;   // no id on the request: the part shows "not found"
-        var result = await data.QueryAsync(key, [new("page", "1"), new("pageSize", "1"), new("f." + idField, "eq:" + recordId)], request.Culture, request.Roles, request.UserName, appKey, ct);
+        if (key is null || (!first && string.IsNullOrWhiteSpace(idField))) { problems.Add($"Instance \"{id}\": the record binding needs a /d/ source and an idField."); return null; }
+        if (!first && string.IsNullOrWhiteSpace(recordId)) return null;   // no id on the request: the part shows "not found"
+        var result = await data.QueryAsync(key, first ? [new("page", "1"), new("pageSize", "1")] : [new("page", "1"), new("pageSize", "1"), new("f." + idField, "eq:" + recordId)], request.Culture, request.Roles, request.UserName, appKey, ct);
         switch (result.Status)
         {
             case DataStatus.Forbidden: problems.Add($"Instance \"{id}\": the record is not allowed for this user."); return null;

@@ -184,10 +184,11 @@ public sealed class PageDefinitionKind : IDefinitionKind
                             if (bnode is not JsonObject rec) { errors.Add(new(at + "/bindings/record", "wrong-type", "Def_Err_Type", "record is an object (source, idField, id).")); continue; }
                             var src = rec["source"] is JsonValue sv && sv.GetValueKind() == JsonValueKind.String ? (string?)sv : null;
                             if (src is null || !System.Text.RegularExpressions.Regex.IsMatch(src, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/record/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
-                            if (!(rec["idField"] is JsonValue iv && iv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)iv))) errors.Add(new(at + "/bindings/record/idField", "required", "Def_Err_Required", "idField names the row property of the id."));
-                            if (!(rec["id"] is JsonValue idv2 && idv2.GetValueKind() == JsonValueKind.String)) errors.Add(new(at + "/bindings/record/id", "required", "Def_Err_Required", "id is text, usually {{params.id}}."));
+                            var firstRow = rec["first"] is JsonValue fv0 && fv0.GetValueKind() == JsonValueKind.True;   // batch 5: the first row of the source needs no id
+                            if (!firstRow && !(rec["idField"] is JsonValue iv && iv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)iv))) errors.Add(new(at + "/bindings/record/idField", "required", "Def_Err_Required", "idField names the row property of the id."));
+                            if (!firstRow && !(rec["id"] is JsonValue idv2 && idv2.GetValueKind() == JsonValueKind.String)) errors.Add(new(at + "/bindings/record/id", "required", "Def_Err_Required", "id is text, usually {{params.id}}."));
                             if (rec["map"] is { } map && !(map is JsonObject mo && mo.All(m => m.Value is JsonValue mv && mv.GetValueKind() == JsonValueKind.String))) errors.Add(new(at + "/bindings/record/map", "wrong-type", "Def_Err_Type", "map is an object: option name to row property."));
-                            foreach (var extra in rec.Select(x => x.Key).Where(k => k is not ("source" or "idField" or "id" or "map"))) errors.Add(new(at + "/bindings/record/" + extra, "unknown-property", "Def_Err_UnknownProperty", $"'{extra}' is not a property of a record binding."));
+                            foreach (var extra in rec.Select(x => x.Key).Where(k => k is not ("source" or "idField" or "id" or "map" or "first"))) errors.Add(new(at + "/bindings/record/" + extra, "unknown-property", "Def_Err_UnknownProperty", $"'{extra}' is not a property of a record binding."));
                         }
                 }
 

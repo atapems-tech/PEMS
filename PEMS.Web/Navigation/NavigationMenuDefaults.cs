@@ -79,7 +79,7 @@ public static class NavigationMenuDefaults
         new("ai.kb", "sec.ai", L, 20, "KnowledgeBaseSearch", "bi-stars", Always, ExternalPath: "/p/knowledge-base"),   // SCRUM-712: a definition page (/p/...), not a controller
         Link("ai.search", "sec.ai", 30, "AI Search", "bi-search-heart", "AISearch"),
         Link("ai.chat", "sec.ai", 40, "Engineering Chat Assistant", "bi-chat-dots", "ChatAssistant"),
-        Link("ai.copilot", "sec.ai", 50, "Engineering Copilot", "bi-stars", "AIInsights"),
+        new("ai.copilot", "sec.ai", L, 50, "Engineering Copilot", "bi-stars", Always, ExternalPath: "/p/ai-insights"),   // SCRUM-668: a definition page (/p/...)
 
         // ---- مکاتبات و کنترل مدارک
         Section("sec.correspondence", 300, "CorrespondenceDocControl", "bi-envelope-paper", "Module:CorrespondenceDocControl", "Letter,DCC,TechnicalQuery"),
