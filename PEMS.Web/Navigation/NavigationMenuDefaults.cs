@@ -208,7 +208,7 @@ public static class NavigationMenuDefaults
         // SCRUM-633: a definition page (/p/...), not a controller
         new("admin.dbupdate", "admin.sub.monitoring", L, 25, "Database Update", "bi-database-up", "Module:Administration", ExternalPath: "/p/database-update"),
         Link("admin.license", "admin.sub.monitoring", 26, "Licence", "bi-key", "License", area: "Admin", rule: "Module:Administration"),
-        Link("admin.performance", "admin.sub.monitoring", 30, "Performance Testing", "bi-speedometer2", "Performance", rule: "Module:Administration"),
+        new("admin.performance", "admin.sub.monitoring", L, 30, "Performance Testing", "bi-speedometer2", "Module:Administration", ExternalPath: "/p/performance"),   // SCRUM-733: a definition page (/p/...), not a controller
         new("admin.hangfire", "admin.sub.monitoring", L, 40, "Background Jobs Dashboard", "bi-hdd-stack", "Module:Administration",
             ExternalPath: "/hangfire", OpenInNewTab: true),
     };

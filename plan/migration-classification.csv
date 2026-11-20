@@ -118,7 +118,6 @@ Warehouse,WarehouseIntake,Procurement and warehouse,"W4 procurement, inventory, 
 ,MyProfile,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,NavigationBadge,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,PageHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
-,Performance,Platform and shell,"W5 operations, production, organization, other",Hamid,page-definition,proposed,view-only pages: page definitions
 ,Production,Platform and shell,"W5 operations, production, organization, other",Hamid,page-definition,proposed,view-only pages: page definitions
 ,ProductionOrder,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,ProductionRun,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions

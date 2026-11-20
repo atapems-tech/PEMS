@@ -827,8 +827,7 @@
                     <pems-icon name="bi-database-up" /> @Localizer["Database Update"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("Performance"))"
-                   asp-controller="Performance" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" href="/p/performance" active="@Context.Request.Path.StartsWithSegments("/p/performance")">
                    <pems-icon name="bi-speedometer2" /> @Localizer["Performance Testing"]
                 </pems-nav-link>
 
