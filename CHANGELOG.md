@@ -43,6 +43,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Components: signature pad and script island (SCRUM-729, SCRUM-697)
+
+### Added
+- `signature-pad` (a drawn signature posted to an action definition) and `script-island` (the host of a /dist front-end bundle with its boot data) in the component registry, with samples, render tests and rows in guideline 02. Their manifest snapshots are recorded with `PEMS_GOLDEN_RECORD=1`.
+
 ## 2026-11-20 - Definition kind harness and the layout reference of a page (SCRUM-451)
 
 ### Added
