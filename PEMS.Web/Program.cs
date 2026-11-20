@@ -169,6 +169,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.EntityRecordLoader>();
 builder.Services.AddSingleton(PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.OperationInvokeAction>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IBuildEntitlementService, PEMS.Web.Services.BuildEntitlementService>();   // SCRUM-633
+builder.Services.AddScoped<PEMS.Application.Interfaces.IHelpPageService, PEMS.Web.Services.HelpPageService>();   // SCRUM-634
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkflowManagementPageService, PEMS.Web.Services.WorkflowManagementPageService>();   // SCRUM-651
 builder.Services.AddScoped<PEMS.Application.Interfaces.INumberingPageService, PEMS.Web.Services.NumberingPageService>();   // SCRUM-638
 builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationPageService, PEMS.Web.Services.OrganizationPageService>();   // SCRUM-639
