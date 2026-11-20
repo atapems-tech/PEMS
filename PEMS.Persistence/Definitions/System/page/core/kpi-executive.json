@@ -132,6 +132,50 @@
           }
         },
         {
+          "id": "chart-equipment-by-status",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/kpi-chart-equipment-by-status?f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "Equipment by status",
+              "fa": "تجهیزات بر اساس وضعیت"
+            }
+          }
+        },
+        {
+          "id": "chart-top-equipment-by-cost",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/kpi-chart-top-equipment-by-cost?f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                }
+              }
+            ],
+            "kind": "hbar",
+            "ariaLabel": {
+              "en": "Top equipment by cost",
+              "fa": "پرهزینه‌ترین تجهیزات"
+            }
+          }
+        },
+        {
           "id": "kpi-breakdown",
           "component": "data-grid",
           "options": {

@@ -79,6 +79,50 @@
           }
         },
         {
+          "id": "chart-submissions-by-month",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-vdr-chart-submissions-by-month?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "line",
+            "ariaLabel": {
+              "en": "Submissions by month",
+              "fa": "ارسال‌ها به تفکیک ماه"
+            }
+          }
+        },
+        {
+          "id": "chart-by-workflow-status",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-vdr-chart-by-workflow-status?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "By workflow status",
+              "fa": "بر اساس وضعیت گردش"
+            }
+          }
+        },
+        {
           "id": "report-vdr-rows",
           "component": "data-grid",
           "options": {

@@ -27,9 +27,9 @@ public sealed class KpiOperations(IKpiService kpi, IReliabilityService reliabili
         rows.Add(new(T("Rpt_Reliability"), T("Rpt_EquipmentWithFailures"), fleet.Count.ToString(Inv)));
         rows.Add(new(T("Rpt_Reliability"), T("Rpt_TotalFailureCount"), fleet.Sum(x => x.FailureCount).ToString(Inv)));
         rows.Add(new(T("Rpt_Reliability"), T("Rpt_AverageAvailabilityPercent"), withAvailability.Count > 0 ? withAvailability.Average(x => x.AvailabilityPercent!.Value).ToString("N1", Inv) : ""));
-        rows.AddRange(cost.TopEquipmentByCost.Select(e => new ReportRow(T("Rpt_TopEquipmentByCost"), e.TagNumber, e.Cost.ToString("N0", Inv))));
-        rows.AddRange(cost.CostByFunctionalLocation.Select(e => new ReportRow(T("Rpt_CostByFunctionalLocation"), e.GroupName, e.Cost.ToString("N0", Inv))));
-        rows.AddRange(cost.CostByMaintenanceType.Select(e => new ReportRow(T("Rpt_CostByMaintenanceType"), e.GroupName, e.Cost.ToString("N0", Inv))));
+        rows.AddRange(cost.TopEquipmentByCost.Select(e => new ReportRow(T("Rpt_TopEquipmentByCost"), e.TagNumber, e.Cost.ToString("N0", Inv), "TopEquipmentByCost", (double)e.Cost)));
+        rows.AddRange(cost.CostByFunctionalLocation.Select(e => new ReportRow(T("Rpt_CostByFunctionalLocation"), e.GroupName, e.Cost.ToString("N0", Inv), "CostByFunctionalLocation", (double)e.Cost)));
+        rows.AddRange(cost.CostByMaintenanceType.Select(e => new ReportRow(T("Rpt_CostByMaintenanceType"), e.GroupName, e.Cost.ToString("N0", Inv), "CostByMaintenanceType", (double)e.Cost)));
         return rows;
     }
 
@@ -45,8 +45,8 @@ public sealed class KpiOperations(IKpiService kpi, IReliabilityService reliabili
     {
         var (from, to) = Period(fromDate, toDate);
         var d = await executive.GetAsync(from, to);
-        var rows = d.EquipmentByStatus.Select(s => new ReportRow(T("Rpt_EquipmentByStatus"), s.Name, s.Count.ToString("N0", Inv))).ToList();
-        rows.AddRange(d.TopEquipmentByCost.Select(e => new ReportRow(T("Rpt_TopEquipmentByCost"), e.TagNumber, e.Cost.ToString("N0", Inv))));
+        var rows = d.EquipmentByStatus.Select(s => new ReportRow(T("Rpt_EquipmentByStatus"), s.Name, s.Count.ToString("N0", Inv), "EquipmentByStatus", s.Count)).ToList();
+        rows.AddRange(d.TopEquipmentByCost.Select(e => new ReportRow(T("Rpt_TopEquipmentByCost"), e.TagNumber, e.Cost.ToString("N0", Inv), "TopEquipmentByCost", (double)e.Cost)));
         return rows;
     }
 
