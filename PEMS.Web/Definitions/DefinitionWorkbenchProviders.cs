@@ -187,3 +187,74 @@ public sealed class DefinitionTranslationsGridProvider(IServiceScopeFactory scop
         }
     }
 }
+
+/// <summary>
+/// The parts of one definition as rows for the designers (SCRUM-439, 604, 606, 607, 608): filter <c>ref</c> (appKey:kind:key) and <c>pointer</c> (a JSON Pointer to a list or an object, default /fields). The open draft is read when
+/// there is one, otherwise the published version. A list gives one row per item (<c>index</c>, <c>summary</c>, <c>json</c>), an object one row per property (<c>index</c> is the property name).
+/// </summary>
+public sealed class DefinitionPayloadGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    public string Key => "definition-payload";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        var reference = WorkbenchRows.FilterValue(request, "ref");
+        var pointer = WorkbenchRows.FilterValue(request, "pointer");
+        if (pointer.Length == 0) pointer = "/fields";
+        var parts = reference.Split(':', 3);
+        if (parts.Length != 3) return ([], 0);
+        using var scope = scopes.CreateScope();
+        var definitions = scope.ServiceProvider.GetRequiredService<IDefinitionService>();
+        var found = (await definitions.ListAsync(new DefinitionListQuery(parts[1], parts[0], parts[2], null, [], 1, 20), ct)).Items.FirstOrDefault(d => d.Kind == parts[1] && d.Key == parts[2] && d.AppKey == parts[0]);
+        if (found is null) return ([], 0);
+
+        string? payload = null;
+        var draft = await definitions.GetDraftAsync(found.Id, ct);
+        if (draft.Success) payload = draft.Value!.PayloadJson;
+        else if (found.PublishedVersion is { } v && (await definitions.GetVersionAsync(found.Id, v, ct)) is { Success: true } published) payload = published.Value!.PayloadJson;
+        if (payload is null) return ([], 0);
+
+        System.Text.Json.Nodes.JsonNode? node;
+        try { node = System.Text.Json.Nodes.JsonNode.Parse(payload); } catch (JsonException) { return ([], 0); }
+        foreach (var segment in pointer.TrimStart('/').Split('/', StringSplitOptions.RemoveEmptyEntries).Select(s => s.Replace("~1", "/").Replace("~0", "~")))
+            node = node switch
+            {
+                System.Text.Json.Nodes.JsonObject o => o[segment],
+                System.Text.Json.Nodes.JsonArray a when int.TryParse(segment, out var i) && i >= 0 && i < a.Count => a[i],
+                _ => null
+            };
+        var rows = new List<object>();
+        if (node is System.Text.Json.Nodes.JsonArray array)
+            for (var i = 0; i < array.Count; i++) rows.Add(Row(i.ToString(), array[i], reference, pointer));
+        else if (node is System.Text.Json.Nodes.JsonObject obj)
+            foreach (var p in obj) rows.Add(Row(p.Key, p.Value, reference, pointer));
+        var page = Math.Max(1, request.Grid.Page);
+        return (rows.Skip((page - 1) * request.Grid.PageSize).Take(request.Grid.PageSize).ToList(), rows.Count);
+    }
+
+    private static object Row(string index, System.Text.Json.Nodes.JsonNode? item, string reference, string pointer)
+    {
+        string summary = item is System.Text.Json.Nodes.JsonObject o
+            ? (o["name"] ?? o["key"] ?? o["id"] ?? o["component"] ?? o["title"])?.ToString() ?? ""
+            : item?.ToString() ?? "";
+        return new Dictionary<string, object?> { ["rowId"] = reference + "|" + pointer + "|" + index, ["index"] = index, ["summary"] = summary, ["json"] = item?.ToJsonString() ?? "null" };
+    }
+}
+
+/// <summary>The operations of the product as rows for the action designer picker (SCRUM-606): <c>ref</c> (Model.Action), <c>model</c>, <c>action</c>, <c>permission</c>, <c>arguments</c> (the names the operation takes).</summary>
+public sealed class OperationCatalogGridProvider(OperationCatalog catalog) : IGridDataProvider
+{
+    public string Key => "operation-catalog";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    public Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        var search = (request.Grid.Search ?? "").Trim();
+        var all = catalog.Describe().Where(o => search.Length == 0 || o.Model.Contains(search, StringComparison.OrdinalIgnoreCase) || o.Action.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+        var page = Math.Max(1, request.Grid.Page);
+        IReadOnlyList<object> rows = all.Skip((page - 1) * request.Grid.PageSize).Take(request.Grid.PageSize)
+            .Select(o => (object)new Dictionary<string, object?> { ["ref"] = o.Model + "." + o.Action, ["model"] = o.Model, ["action"] = o.Action, ["permission"] = o.Permission ?? "", ["arguments"] = string.Join(", ", o.Arguments) }).ToList();
+        return Task.FromResult((rows, all.Count));
+    }
+}

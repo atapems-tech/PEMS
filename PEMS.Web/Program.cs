@@ -152,9 +152,12 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.D
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionKindsGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionUsagesGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionLargestGridProvider>();   // SCRUM-455
-builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionTranslationsGridProvider>();   // SCRUM-419, 609
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionTranslationsGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionPayloadGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider>(sp => new PEMS.Web.Definitions.OperationCatalogGridProvider(sp.GetRequiredService<PEMS.Web.Definitions.OperationCatalog>()));   // SCRUM-606   // SCRUM-439, 604, 606, 607, 608   // SCRUM-419, 609
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionImpact, PEMS.Persistence.Services.DefinitionImpactService>();   // SCRUM-450, 457, 459
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionWorkbench, PEMS.Persistence.Services.DefinitionWorkbench>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionDesigner, PEMS.Persistence.Services.DefinitionDesigner>();   // SCRUM-439, 604, 606, 607, 608
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityUpdateAction>();
