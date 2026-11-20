@@ -8,6 +8,12 @@ namespace PEMS.Web.Services;
 /// <summary>SCRUM-743: what QuickSetupController showed, as rows: the same ISetupService status, the permission-dependent links; PermissionMatrix and AI routing stay SystemAdmin-only (no dead link for others).</summary>
 public sealed class QuickSetupOperations(ISetupService setup, LinkGenerator links) : IQuickSetupOperations
 {
+    /// <summary>The pages that were controllers and are definition pages now (the link generator knows no action for them any more).</summary>
+    private static string ConvertedPage(string? controller) => controller switch
+    {
+        "Employee" => "/p/employees", "Projects" => "/p/projects", "Discipline" => "/p/discipline-workspaces", "PermissionMatrix" => "/p/permission-matrix", _ => ""
+    };
+
     public async Task<List<QuickSetupRow>> StepsAsync(List<string> userRoles)
     {
         var status = await setup.GetStatusAsync();
@@ -21,7 +27,7 @@ public sealed class QuickSetupOperations(ISetupService setup, LinkGenerator link
         {
             var adminOnly = step.Key is "Permissions" or "AIConfiguration";
             var url = step.ActionController != null && step.ActionAction != null && (!adminOnly || isAdmin)
-                ? links.GetPathByAction(step.ActionAction, step.ActionController) ?? "" : "";
+                ? links.GetPathByAction(step.ActionAction, step.ActionController) ?? ConvertedPage(step.ActionController) : "";
             rows.Add(new QuickSetupRow(step.Key, step.Title, step.Description,
                 step.Status switch { SetupStepStatus.Complete => "Ready", SetupStepStatus.Blocked => "Blocked", _ => "Not started" },
                 string.Join("; ", step.MissingDependencies), adminOnly && !isAdmin ? "Requires SystemAdmin" : step.ActionLabel ?? "", url));

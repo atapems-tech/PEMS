@@ -631,7 +631,7 @@ else
     {
         <pems-alert tone="warning" css="small py-2">
             <pems-icon name="bi-cash-coin" /> @Localizer["This employee has no hourly rate defined."]
-            <pems-link asp-controller="Employee" asp-action="Details" asp-route-id="@rateEmployeeId" class="alert-link">@Localizer["Go to rate setup"]</pems-link>
+            <pems-link href="@("/p/employee-details?id=" + rateEmployeeId)" class="alert-link">@Localizer["Go to rate setup"]</pems-link>
         </pems-alert>
     }
     <pems-text class="text-muted small">

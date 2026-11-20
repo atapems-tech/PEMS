@@ -70,10 +70,5 @@ public class AdminBaseDataListPagesTests
             Assert.DoesNotContain("PemsDataGrid.initColumnResize", view);
             Assert.DoesNotMatch("class=\"btn btn-", view);
         }
-        // the employee page keeps its department / discipline filters and its create and edit modals
-        var employee = File.ReadAllText(Path.Combine(RepoWeb(), "Views", "Employee", "Index.cshtml"));
-        Assert.Contains("<pems-list-filter-select id=\"emFilterDepartment\"", employee);
-        Assert.Contains("<pems-list-new modal=\"createEmpModal\"", employee);
-        Assert.Contains("id=\"editEmpModal_@e.EmployeeId\"", employee);
     }
 }
