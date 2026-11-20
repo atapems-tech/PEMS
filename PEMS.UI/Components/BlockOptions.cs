@@ -95,7 +95,7 @@ public sealed record InfoItemOptions
 /// <summary>Inputs of <see cref="PemsKpiTile"/>: one number (child content, a dash when empty) with its label, an optional icon square, sub line, link and hint.</summary>
 public sealed record KpiTileOptions
 {
-    public required string Label { get; init; }
+    public required PEMS.UI.Abstractions.TranslatableText Label { get; init; }
     /// <summary>Bootstrap icon class, e.g. bi-tools; null shows no icon square.</summary>
     public string? Icon { get; init; }
     /// <summary>The icon square colour class, already resolved (bg-icon-green).</summary>

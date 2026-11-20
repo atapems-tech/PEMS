@@ -10,7 +10,18 @@
     "type": "object",
     "properties": {
       "label": {
-        "type": "string"
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
       },
       "icon": {
         "type": [
