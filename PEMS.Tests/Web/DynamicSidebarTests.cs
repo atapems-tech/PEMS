@@ -658,27 +658,28 @@ public class DynamicSidebarTests
     [Fact]
     public void AdminController_IsSystemAdminOnly()
     {
-        var attr = typeof(NavigationMenuController).GetCustomAttribute<AuthorizeAttribute>();
-        Assert.NotNull(attr);
-        Assert.Equal(SystemRoles.SystemAdmin, attr!.Roles);
+        // SCRUM-636: the menu editor is operations of the page service, every one for SystemAdmin only
+        var operations = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        foreach (var action in new[] { "Rows", "Save", "Move", "AddLink", "Delete", "ItemOf" })
+            Assert.Contains(SystemRoles.SystemAdmin, operations.Get("NavigationMenu", action)!.Roles);
     }
 
     [Fact]
     public async Task AdminController_ReturnsNotFound_WhenTheFeatureFlagIsOff()
     {
         var env = await EnvAsync(nameof(AdminController_ReturnsNotFound_WhenTheFeatureFlagIsOff));
-        var c = new NavigationMenuController(env.Menu, new Flag { IsEnabled = false }, new Descriptors(), new PassThroughLocalizer());
+        var c = new PEMS.Web.Services.NavigationMenuPageService(env.Menu, new Flag { IsEnabled = false }, new Descriptors(), new PassThroughLocalizer());
 
-        Assert.IsType<NotFoundResult>(await c.Index());
-        Assert.IsType<NotFoundResult>(await c.Edit("eng.vdr"));
-        Assert.IsType<NotFoundResult>(await c.Delete("eng.vdr"));
+        Assert.Empty(await c.RowsAsync("en"));
+        Assert.Empty(await c.ItemOfAsync("eng.vdr"));
+        Assert.False((await c.DeleteAsync("eng.vdr")).Success);
     }
 
     [Fact]
     public async Task AdminController_RouteCheck_AcceptsOnlyExistingGetActionsInTheRightArea()
     {
         var env = await EnvAsync(nameof(AdminController_RouteCheck_AcceptsOnlyExistingGetActionsInTheRightArea));
-        var c = new NavigationMenuController(env.Menu, new Flag { IsEnabled = true },
+        var c = new PEMS.Web.Services.NavigationMenuPageService(env.Menu, new Flag { IsEnabled = true },
             new Descriptors(Action("WorkOrder", "Index"), Action("WorkOrder", "Delete", httpMethod: "POST"), Action("MaterialItem", "Index", "Warehouse")),
             new PassThroughLocalizer());
 
@@ -696,7 +697,7 @@ public class DynamicSidebarTests
     [InlineData("CmmsItem:WorkOrder", true)]
     [InlineData("Flag:PartCatalogue", true)]
     public void NoPermissionSignal_MeansOnlySectionGateOrAlways(string rule, bool hasSignal)
-        => Assert.Equal(hasSignal, NavigationMenuController.HasPermissionSignal(rule));
+        => Assert.Equal(hasSignal, PEMS.Web.Services.NavigationMenuPageService.HasPermissionSignal(rule));
 
     private sealed class PassThroughLocalizer : Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>
     {

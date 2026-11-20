@@ -2,7 +2,6 @@ area,controller,module,wave,owner,decision,status,notes
 Admin,Department,Administration,"W1 admin, account, shell",Hamid,code-only,converted-partly,"converted (generic entity layer): /p/departments with create, edit and activate/deactivate; Excel export and import stay code"
 Admin,Employee,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,no page actions
 Admin,Help,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-Admin,NavigationMenu,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,Numbering,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,Organization,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Admin,OrganizationImport,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
