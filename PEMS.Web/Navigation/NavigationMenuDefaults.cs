@@ -55,8 +55,7 @@ public static class NavigationMenuDefaults
         Link("exec.dashboard", null, 15, "Exec_NavTitle", "bi-graph-up-arrow", "ExecutiveDashboard", rule: "Perm:EngineeringDocuments.View"),
         new("mywork", null, L, 20, "My Work", "bi-list-check", Always, BadgeKey: NavigationBadges.MyWorkPending, ExternalPath: "/p/my-work"),   // SCRUM-730: a definition page (/p/...)
         Link("quicksetup", null, 30, "Quick Setup", "bi-rocket-takeoff", "QuickSetup", rule: "Module:QuickSetup"),
-        Link("importcenter", null, 40, "IC_Title", "bi-cloud-arrow-up", "ImportCenter", rule: "Module:ImportCenter",
-            extraActive: string.Join(",", ImportCatalog.StandaloneImportControllers)),
+        new("importcenter", null, L, 40, "IC_Title", "bi-cloud-arrow-up", "Module:ImportCenter", ExternalPath: "/p/import-center"),   // SCRUM-706: a definition page (/p/...)
 
         // ---- مدیریت مهندسی
         Section("sec.eng", 100, "EngineeringManagement", "bi-building", "Module:EngineeringManagement",

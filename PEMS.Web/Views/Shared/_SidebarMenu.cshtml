@@ -115,7 +115,7 @@
 
     @if (canSeeImportCenter)
     {
-        <pems-nav-link item="false" active="@(ContainsActive(ImportCatalog.StandaloneImportControllers))" asp-controller="ImportCenter" asp-action="Index" asp-area="">
+        <pems-nav-link item="false" href="/p/import-center" active="@(ContainsActive(ImportCatalog.StandaloneImportControllers) || Context.Request.Path.StartsWithSegments("/p/import-center"))">
             <pems-icon name="bi-cloud-arrow-up" /> @Localizer["IC_Title"]
         </pems-nav-link>
     }

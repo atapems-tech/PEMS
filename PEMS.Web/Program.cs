@@ -171,7 +171,8 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IGlobalSearchOperations, 
 builder.Services.AddScoped<PEMS.Application.Interfaces.IAiSearchOperations, PEMS.Web.Services.AiSearchOperations>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IReportReads, PEMS.Web.Services.ReportReads>();   // SCRUM-747
 builder.Services.AddScoped<PEMS.Application.Interfaces.IKpiOperations, PEMS.Web.Services.KpiOperations>();   // SCRUM-713
-builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationOperations, PEMS.Web.Services.NotificationOperations>();   // SCRUM-731   // SCRUM-669   // SCRUM-703   // SCRUM-674   // SCRUM-673   // SCRUM-730: My Work as rows   // SCRUM-668: the copilot reads as operations   // batch 5: a spreadsheet of a registered entity is imported by a definition
+builder.Services.AddScoped<PEMS.Application.Interfaces.INotificationOperations, PEMS.Web.Services.NotificationOperations>();   // SCRUM-731
+builder.Services.AddScoped<PEMS.Application.Interfaces.IImportCenterOperations, PEMS.Web.Services.ImportCenterOperations>();   // SCRUM-706   // SCRUM-669   // SCRUM-703   // SCRUM-674   // SCRUM-673   // SCRUM-730: My Work as rows   // SCRUM-668: the copilot reads as operations   // batch 5: a spreadsheet of a registered entity is imported by a definition
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityUpdateAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityDeleteAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityToggleAction>();

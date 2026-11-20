@@ -30,6 +30,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Import center as a definition page (SCRUM-706)
+
+### Changed
+- /p/import-center (grid over `ImportCenter.Entries`) replaces ImportCenterController and its view; the employee and instrument spreadsheet imports are now forms (/f/employee-import, /f/instrument-import) over `IImportCenterOperations` and their controller actions are removed.
+
 ## 2026-11-20 - Notification inbox as a definition page (SCRUM-731)
 
 ### Changed

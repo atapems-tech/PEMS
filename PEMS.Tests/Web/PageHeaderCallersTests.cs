@@ -16,7 +16,7 @@ public class PageHeaderCallersTests
 {
     public static readonly string[] Callers =
     [
-        "ImportCenter/Index.cshtml", "ShiftHandover/Create.cshtml",
+        "ShiftHandover/Create.cshtml",
         "CriticalityAssessment/Create.cshtml", "Barcode/Verify.cshtml"
     ];
 
@@ -34,16 +34,4 @@ public class PageHeaderCallersTests
         }
     }
 
-    [Fact]
-    public async Task ImportCenterIndex_RendersTheTitleRowAboveItsContent()
-    {
-        var host = new PEMS.Tests.TestSupport.ViewRenderHost();
-        var model = Array.Empty<ImportCatalog.ImportEntry>().ToList().AsReadOnly();
-        var result = new ViewResult { ViewData = new ViewDataDictionary(host.ViewData) { Model = model } };
-        var html = await RazorViewRenderer.RenderAsync(host, result, "~/Views/ImportCenter/Index.cshtml");
-        var head = html.IndexOf("class=\"pems-page-head\"", StringComparison.Ordinal);
-        Assert.True(head >= 0, "title row missing");
-        Assert.Contains("<h1 class=\"pems-page-title\">", html, StringComparison.Ordinal);
-        Assert.True(head < html.IndexOf("text-muted small mb-3", StringComparison.Ordinal), "the title row must come before the subtitle");
-    }
 }

@@ -75,7 +75,7 @@ public static class ImportCatalog
         // Direct import (no staging): the existing POST Instrument/Import, launched from the Import Center dialog.
         // The controller has no module permission - it enforces the same role gate as this card (ImportCatalog.CanUse).
         new("Instrument", Category.Cmms, "Instrument", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
-            Sets(MenuAccess.CmmsIntegration), "bi-cpu"),
+            Sets(MenuAccess.CmmsIntegration), "bi-cpu", Url: "/f/instrument-import"),
 
         // ---- Inventory
         new("Mrs", Category.Inventory, "MrsImport", "Index", LaunchMode.Page, ".xlsx, .xlsm", null, true, Workflow.StagedReview, "MrsImport",
@@ -86,7 +86,7 @@ public static class ImportCatalog
         new("Department", Category.Organization, "Department", "Index", LaunchMode.Page, ".xlsx", ".xlsx", false, Workflow.Direct, null,
             Sets(MenuAccess.Administration), "bi-building", Url: "/f/departments-import"),   // SCRUM-681: the import is the definition departments-import
         new("Employee", Category.Organization, "Employee", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
-            Sets(MenuAccess.Administration), "bi-people"),
+            Sets(MenuAccess.Administration), "bi-people", Url: "/f/employee-import"),
         // Organization hierarchy (Positions / ParentPosition / holders / effective dates): validate-then-commit, all-or-nothing.
         // The controller is [Authorize(SystemAdmin)] and also enforces this card's role gate.
         new("OrganizationStructure", Category.Organization, "OrganizationImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, null,
@@ -113,8 +113,25 @@ public static class ImportCatalog
     /// <summary>برای Controllerهایی که مجوز ماژولی ندارند: همان گیت نقشیِ کارتِ مرکز Import را در Backend اعمال می‌کند.</summary>
     public static bool CanUse(string key, ClaimsPrincipal user) => IsVisibleByRole(Get(key), user);
 
+    /// <summary>The same gate for an operation, which has the roles of the user and no principal.</summary>
+    public static bool CanUse(string key, IEnumerable<string> roles) { var set = roles.ToHashSet(); return Get(key).RequiredRoleSets.All(s => s.Any(set.Contains)); }
+
     public static IReadOnlyList<ImportEntry> VisibleByRole(ClaimsPrincipal user) =>
         All.Where(e => IsVisibleByRole(e, user)).ToList();
+
+    /// <summary>Role sets plus the View permission of the module, for the roles of a user (the import center operation).</summary>
+    public static async Task<IReadOnlyList<ImportEntry>> VisibleForRolesAsync(IEnumerable<string> roles, IPermissionService permissions)
+    {
+        var roleList = roles.ToList();
+        var result = new List<ImportEntry>();
+        foreach (var e in All)
+        {
+            if (!e.RequiredRoleSets.All(s => s.Any(roleList.Contains))) continue;
+            if (e.PermissionModule != null && !await permissions.HasPermissionAsync(roleList, e.PermissionModule, "View")) continue;
+            result.Add(e);
+        }
+        return result;
+    }
 
     /// <summary>نقش + (برای Importهای دارای ماژول مجوز) مجوز View از Backend.</summary>
     public static async Task<IReadOnlyList<ImportEntry>> VisibleAsync(
