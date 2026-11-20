@@ -16,6 +16,9 @@ public static class DefinitionKindExtensions
         services.AddSingleton<IDefinitionKind, FormDefinitionKind>();
         services.AddSingleton<IDefinitionKind, PageDefinitionKind>();
         services.AddSingleton<IDefinitionKind, LayoutDefinitionKind>();
+        // SCRUM-451: the list view (columns, empty text) and the theme (design tokens) as definitions
+        services.AddSingleton<IDefinitionKind, ViewDefinitionKind>();
+        services.AddSingleton<IDefinitionKind, ThemeDefinitionKind>();
         // SCRUM-437: data sources and actions as definitions; the providers and handlers are registered code, named by the definitions
         services.AddSingleton<IDefinitionKind, DataSourceDefinitionKind>();
         services.AddSingleton<IDefinitionKind, ActionDefinitionKind>();

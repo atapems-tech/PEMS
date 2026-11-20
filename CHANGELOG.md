@@ -34,6 +34,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Definition kinds view and theme (SCRUM-451)
+
+### Added
+- `view` (columns, empty text) and `theme` (`--pems-*` design tokens, light or dark) can be stored, validated, published and rolled back like the other kinds; samples and refusal tests; guideline 04 section 7 has the how-to-add-a-kind checklist.
+
 ## 2026-11-20 - Charts on the report and KPI pages (batch 5 gap)
 
 ### Added

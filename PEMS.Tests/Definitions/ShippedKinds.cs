@@ -14,7 +14,7 @@ internal static class ShippedKinds
         var reader = new OperationReader(null!, OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
         return
         [
-            new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new RouteDefinitionKind(), new ComponentDefinitionKind(registry),
+            new FormDefinitionKind(), new PageDefinitionKind(registry, catalog), new LayoutDefinitionKind(), new ViewDefinitionKind(), new ThemeDefinitionKind(), new RouteDefinitionKind(), new ComponentDefinitionKind(registry),
             new DataSourceDefinitionKind([new EntityOptionsProvider(null!, cat), new OperationOptionsProvider(reader)], [new EntityGridProvider(null!, cat), new ComponentCatalogGridProvider(null!), new OperationGridProvider(reader), new DefinitionsGridProvider(null!), new DefinitionKindsGridProvider(null!, [], new DefinitionOwnership(null)), new DefinitionUsagesGridProvider(null!), new DefinitionLargestGridProvider(null!), new DefinitionTranslationsGridProvider(null!), new DefinitionPayloadGridProvider(null!), new OperationCatalogGridProvider(OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly))]),
             new ActionDefinitionKind([new EntityCreateAction(null!, cat), new EntityUpdateAction(null!, cat), new EntityDeleteAction(null!, cat), new EntityToggleAction(null!, cat), new WorkflowExecuteAction(null!), new OperationInvokeAction(null!, OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly))])
         ];
