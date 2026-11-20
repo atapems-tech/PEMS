@@ -16,6 +16,18 @@ Order is by dependency: a later batch only uses what an earlier one shipped.
 | 9 | Conversion: Documents, VDR and letters | 679, 683 to 686, 689 to 690, 714 to 719, 732, 753, 760 to 762 | 18 | no compiled document or letter screen |
 | 10 | **Cutover and rehearsal** | 766 final cutover, 767 release rehearsal, 614 docs | 3 | the application serves only definitions; the rehearsal runs on demo with no build |
 
+## Gap batches (owner decision 2026-11-20, guideline 07 section 1c)
+
+A gap found in a batch is an issue of the same sprint, listed here under the batch letter plus `b` (a second round of gaps of the same batch becomes `c`). They stay To Do in the sprint until someone claims the whole letter batch; a gap that belongs to no batch goes to the backlog instead.
+
+| Batch | Gap issues | Of |
+|---|---|---|
+| 1b | 792 live preview in the catalog, 793 saved views per role on the server, 794 filter bar part, 795 related-records part | 340, 599, 600 |
+| 2b | 796 platform field marks (owner decides), 797 ownership preflight report on Database Update and /health/database, 798 ADR for field ownership, 799 prove action.steps with a shipped definition, 800 generic PDF output, 801 download of a stored file by key | 515, 593, 615 |
+| 3b | 784 manager history, diff, export and import screens, 785 used-by and references REST and the check in REST publish, 786 storage growth, cache statistics, retain setting and size warning, 787 fallback and live fa/en RTL/LTR preview, 788 smoke test, post-publish check and auto-rollback, 789 precheck-rollback REST and verdict on the screen, 790 browser tests of the API client, 791 manifest coverage test | 449, 450, 455, 419, 609, 457, 459, 454, 585 |
+
+Batch 3 issues not started (439, 604, 606, 607, 608, 440, 581, 582, 583, 584, 612, 613, 503) stay To Do in batch 3 itself. The missing QA checklists of 372, 448, 516, 517, 574 to 577, 590 to 592, 594 to 596, 611 and 628 are not gaps: they belong to the owners of those batches (2 and 1).
+
 ## Combined heavy run (owner decision 2026-11-20)
 
 Batches 1, 2, 3, 4b (the Admin conversions not yet In Review) and 5 are tested **together, once**, after batches 3, 4b and 5 are all In Review. Until then no batch runs a heavy test, a solution or test-project build, `gates.py --run` or a browser run, and after that only with the owner's input (guideline 00 section 0.3). Batch 3 is worked in session B3 here; 4b and 5 are started by the owner in their own sessions. The order and the lines to run are in [batch-test-plan.md](batch-test-plan.md).
