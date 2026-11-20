@@ -27,17 +27,17 @@ document.getElementById('receiveWarehouseScanBtn')?.addEventListener('click', as
         var res = await fetch('/Barcode/ResolveJson?code=' + encodeURIComponent(code));
         var data = await res.json();
 
-        if (!data.success) { showLiveToast('Barcode not resolved: ' + (data.errorMessage || data.errorCode), true); return; }
-        if (data.targetType !== 'Warehouse') { showLiveToast('This barcode belongs to a ' + data.targetType + ', not a Warehouse.', true); return; }
+        if (!data.success) { showLiveToast(input.dataset.resolveFailed, true); return; }
+        if (data.targetType !== 'Warehouse') { showLiveToast(input.dataset.wrongTarget, true); return; }
 
         var matched = false;
         for (var i = 0; i < select.options.length; i++) {
             if (select.options[i].value == data.targetId) { select.value = select.options[i].value; matched = true; break; }
         }
-        if (!matched) { showLiveToast('Resolved to ' + (data.label || ('Warehouse #' + data.targetId)) + ', but it is not in this list.', true); return; }
+        if (!matched) { showLiveToast(input.dataset.notInList, true); return; }
 
         input.value = '';
     } catch (e) {
-        showLiveToast('Could not resolve barcode.', true);
+        showLiveToast(input.dataset.resolveFailed, true);
     }
 });

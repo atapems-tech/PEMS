@@ -272,6 +272,19 @@ public class PersianMessagesAndTitlesTests
     }
 
     [Fact]
+    public void MaterialItemDetails_HaveBilingualLabelsAndBarcodeMessages()
+    {
+        var en = Resx("SharedResource.resx");
+        var fa = Resx("SharedResource.fa.resx");
+        foreach (var key in new[] { "Mat_ReceiveStock", "Mat_Stock", "Mat_RecentTransactions", "Mat_SourceImports", "Mat_NoStock", "Mat_SourceImportsHint", "Mat_ScanWarehouse", "Mat_BarcodeResolveFailed", "Mat_BarcodeWrongType", "Mat_BarcodeWarehouseNotListed", "Mat_AdjustStock", "Mat_TransferStock" })
+        {
+            Assert.True(en.ContainsKey(key), key);
+            Assert.True(fa.ContainsKey(key), key);
+            Assert.NotEqual(en[key], fa[key]);
+        }
+    }
+
+    [Fact]
     public void SearchAndWarehousePurpose_TranslateOnlyControlledText()
     {
         var l = new KeyLocalizer();
