@@ -17,10 +17,10 @@ public interface IDefinitionWorkbench
     [PEMS.Application.Common.PemsOperation("Definition", "Validate", "Definitions.Edit")]
     Task<(bool Success, string? Error)> ValidateAsync(string reference, string actor);
 
-    [PEMS.Application.Common.PemsOperation("Definition", "Publish", "Definitions.Edit")]
+    [PEMS.Application.Common.PemsOperation("Definition", "Publish", "Definitions.Approve")]
     Task<(bool Success, string? Error)> PublishAsync(string reference, string actor);
 
-    [PEMS.Application.Common.PemsOperation("Definition", "Rollback", "Definitions.Edit")]
+    [PEMS.Application.Common.PemsOperation("Definition", "Rollback", "Definitions.Approve")]
     Task<(bool Success, string? Error)> RollbackAsync(string reference, int toVersion, string actor);
 
     [PEMS.Application.Common.PemsOperation("Definition", "DiscardDraft", "Definitions.Edit")]
