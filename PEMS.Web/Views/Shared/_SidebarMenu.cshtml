@@ -779,7 +779,7 @@
                     <pems-icon name="bi-badge-ad" /> @Localizer["OCR Processing"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("AIExtraction"))" asp-controller="AIExtraction" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" href="/p/ai-extraction" active="@(IsActive("AIExtraction") || Context.Request.Path.StartsWithSegments("/p/ai-extraction"))">
                     <pems-icon name="bi-cpu" /> @Localizer["AI Extraction"]
                 </pems-nav-link>
 

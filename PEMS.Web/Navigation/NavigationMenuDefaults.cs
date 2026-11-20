@@ -194,7 +194,7 @@ public static class NavigationMenuDefaults
         Sub("admin.sub.ai", "sec.admin", 40, "AI Administration"),
         Link("admin.intake", "admin.sub.ai", 10, "AIIntakeQueue", "bi-inboxes", "Intake", rule: "Module:Administration"),
         Link("admin.ocr", "admin.sub.ai", 20, "OCR Processing", "bi-badge-ad", "OCRProcessing", rule: "Module:Administration&Perm:OCRProcessing.View"),
-        Link("admin.aiextraction", "admin.sub.ai", 30, "AI Extraction", "bi-cpu", "AIExtraction", rule: "Module:Administration&Perm:AIExtraction.View"),
+        new("admin.aiextraction", "admin.sub.ai", L, 30, "AI Extraction", "bi-cpu", "Module:Administration&Perm:AIExtraction.View", ExternalPath: "/p/ai-extraction"),   // SCRUM-667: a definition page (/p/...)
         Link("admin.tables", "admin.sub.ai", 40, "Table Extraction", "bi-table", "TableExtraction", rule: "Module:Administration&Perm:TableExtraction.View"),
         Link("admin.relationship", "admin.sub.ai", 50, "RelationshipExplorer", "bi-diagram-3", "Relationship", rule: "Module:Administration&Perm:Relationship.View"),
         // SCRUM-645: a definition page (/p/...), not a controller
