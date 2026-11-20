@@ -24,6 +24,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Global search page as a definition (SCRUM-703)
+
+### Changed
+- /p/global-search (grid over `GlobalSearch.Search`) replaces GlobalSearchController and its view; the top-bar form and the command palette link open it; /GlobalSearch redirects.
+
 ## 2026-11-20 - CMMS readiness as definitions (SCRUM-674)
 
 ### Changed
