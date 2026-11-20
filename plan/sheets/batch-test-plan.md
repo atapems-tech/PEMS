@@ -1,6 +1,10 @@
-# Combined test run: batches 1 and 4 (owner decision 2026-11-19; batch 2 is in the same run)
+# Combined test run: batches 1, 2, 3, 4b and 5 (owner decision 2026-11-20; was 1, 2 and 4 on 2026-11-19)
 
-Written, merged and compiled; **not run**. One combined run covers the three batches (components and screen engines, data/action/security engines, Admin-area conversions). Run it once, when the machine is quiet, then fix and cite it on every issue's QA line 1.
+Written and merged; **not run**. One combined run covers the five batches (components and screen engines, data/action/security engines, designers/governance/migrator, the Admin-area conversions still open, shell/organization/AI/dashboards conversions). **Trigger: batches 3, 4b and 5 are all In Review; then ask the owner; nothing heavy and no build of a test project before that, and none without the owner's answer.** Run it once, when the machine is quiet, then fix and cite it on every issue's QA line 1.
+
+Gap batches 1b, 2b and 3b (sprint-batches.md) are done after the combined run is decided; they are separate issues, so they do not hold the run.
+
+Batch 3 adds (to expect): the definition workbench (grid providers `definitions`, `definition-kinds`, `definition-usages`; stored pages `definition-workbench`, `definition-details`, `definition-kinds`; forms and actions `definition-*`; operations model `Definition`), designer and migrator pieces as they land; its test classes are listed in the batch-3 Jira comments.
 
 ## Order
 
