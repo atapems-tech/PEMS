@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
+using PEMS.Domain.Entities;
 using PEMS.Web.Navigation;
 using PEMS.Web.Resources;
 using PEMS.Web.Security;

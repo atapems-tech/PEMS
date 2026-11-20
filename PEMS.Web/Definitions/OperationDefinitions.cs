@@ -315,12 +315,12 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 var file = invocation.Files?.FirstOrDefault(f => f.Field == fileField);
                 if (file is null) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", "Choose a file."), ("fa", "یک فایل انتخاب کنید.")));
                 var upload = invocation.Parameters?["upload"] as JsonObject;
-                var guard = scope.ServiceProvider.GetService<IUploadGuard>();
-                if (guard is null || upload is null || !UploadProfiles.TryGetValue(EntityJson.Str(upload["profile"]) ?? "", out var profile))
+                var uploadGuard = scope.ServiceProvider.GetService<IUploadGuard>();
+                if (uploadGuard is null || upload is null || !UploadProfiles.TryGetValue(EntityJson.Str(upload["profile"]) ?? "", out var profile))
                     return ActionOutcome.Refused(TranslatableText.Of(("en", "The action is not set up."), ("fa", "کنش درست تنظیم نشده است.")));
                 var limitMb = upload["maxFileMb"] is JsonValue lv && lv.TryGetValue<int>(out var mb) ? mb : 0;
                 if (limitMb > 0 && file.Length > limitMb * 1024L * 1024L) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} is larger than {limitMb} MB."), ("fa", $"حجم فایل {file.FileName} بیش از {limitMb} مگابایت است.")));
-                var check = await guard.CheckAsync(profile, file.FileName, file.ContentType, file.Length, file.Open, ct);
+                var check = await uploadGuard.CheckAsync(profile, file.FileName, file.ContentType, file.Length, file.Open, ct);
                 if (!check.Ok) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} was refused ({check.Error})."), ("fa", $"فایل {file.FileName} رد شد ({check.Error}).")));
                 await using var stream = file.Open();
                 using var buffer = new MemoryStream();
