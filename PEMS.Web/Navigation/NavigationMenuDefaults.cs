@@ -171,7 +171,7 @@ public static class NavigationMenuDefaults
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
             "Settings,Users,Department,Employee,OrganizationImport,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
-        Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
+        new("admin.settings", "sec.admin", L, 10, "Settings", "bi-gear", "Module:Administration", ExternalPath: "/p/settings"),   // SCRUM-748: a definition page (/p/...), not a controller
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
         // SCRUM-638: a definition page (/p/...), not a controller
         new("admin.numbering", "sec.admin", L, 15, "Num_Title", "bi-123", "Module:Administration&Role:SystemAdmin", ExternalPath: "/p/numbering"),
