@@ -48,6 +48,35 @@ else
                         <p class="mb-3"><a class="@Join("link-primary", block.Css)" href="@href">@Locale.Text(block.Text)</a></p>
                     }
                     break;
+                case "cards":
+                    <div class="@Join("row", "g-3", "mb-3", block.Css)">
+                        @foreach (var card in block.Cards)
+                        {
+                            <div class="@ColumnClass(block.Columns)">
+                                <div class="border rounded p-3 h-100">
+                                    @if (SafeIcon(card.Icon) is { } icon)
+                                    {
+                                        <i class="@Join("bi", icon, "fs-4", "text-muted")" aria-hidden="true"></i>
+                                    }
+                                    <h6 class="mt-2 mb-1">@Locale.Text(card.Title)</h6>
+                                    @if (card.Text is not null)
+                                    {
+                                        <p class="text-muted small">@Locale.Text(card.Text)</p>
+                                    }
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        @foreach (var link in card.Links)
+                                        {
+                                            @if (SafeHref(link.Href) is { } cardHref)
+                                            {
+                                                <a class="btn btn-sm btn-outline-primary" href="@cardHref">@Locale.Text(link.Label)</a>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    break;
                 case "divider":
                     <hr class="@Join("my-3", block.Css)" />
                     break;
@@ -65,6 +94,12 @@ else
     /// <summary>A link goes to a path of this site only: it starts with one "/" and has no scheme, no second "/" and no backslash.</summary>
     internal static string? SafeHref(string? href)
         => !string.IsNullOrWhiteSpace(href) && href.StartsWith('/') && !href.StartsWith("//", StringComparison.Ordinal) && !href.Contains('\\') ? href : null;
+
+    /// <summary>A Bootstrap icon name only (bi-...): anything else draws no icon.</summary>
+    internal static string? SafeIcon(string? icon)
+        => !string.IsNullOrWhiteSpace(icon) && System.Text.RegularExpressions.Regex.IsMatch(icon, "^bi-[a-z0-9-]{1,40}$") ? icon : null;
+
+    private static string ColumnClass(int columns) => columns switch { 1 => "col-12", 2 => "col-md-6", 4 => "col-md-3 col-sm-6", 6 => "col-md-2 col-sm-4", _ => "col-md-4" };
 
     private RenderFragment HeadingTag(ContentBlock block) => b =>
     {
