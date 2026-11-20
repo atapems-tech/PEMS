@@ -146,10 +146,28 @@
       "bulkActions": {
         "type": "array",
         "description": "Actions on the selected rows (key, label, url, confirm, tone); needs selectable"
+      },
+      "filters": {
+        "type": "array",
+        "description": "The filter bar above the grid (name, label, kind select, text or date, value {{params.name}}, options); the values come back as the query of the page and the url of the grid takes them (/d/key?f.name={{params.name|url}})"
+      },
+      "filtersResetUrl": {
+        "type": "string",
+        "description": "The page without a query, for the reset button of the filter bar"
       }
     },
     "regions": {
       "content": [
+        {
+          "id": "filters",
+          "if": "${filters}",
+          "component": "page-filters",
+          "options": {
+            "id": "${id}-filters",
+            "fields": "${filters}",
+            "resetUrl": "${filtersResetUrl}"
+          }
+        },
         {
           "id": "grid",
           "component": "data-grid",
