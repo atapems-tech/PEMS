@@ -33,7 +33,7 @@ public sealed class LicenceDefinitionsTests
         public byte[]? Applied;
         public Task<List<LicenceStatusRowDto>> StatusAsync(CancellationToken ct = default) => Task.FromResult(new List<LicenceStatusRowDto> { new() { State = "Active" } });
         public Task<LicenceFileResult> CreateRequestAsync(string requestType, string customerRef, string? orderRef, string? reason, CancellationToken ct = default)
-            => Task.FromResult(customerRef == "" ? new LicenceFileResult { Success = false, Error = "Lic_Err_RequestFields" } : new LicenceFileResult { Success = true, Bytes = [1, 2, 3], FileName = "r.pemsreq" });
+            => Task.FromResult(string.IsNullOrWhiteSpace(customerRef) ? new LicenceFileResult { Success = false, Error = "Lic_Err_RequestFields" } : new LicenceFileResult { Success = true, Bytes = [1, 2, 3], FileName = "r.pemsreq" });
         public Task<LicenceApplyResult> ApplyAsync(byte[] file, CancellationToken ct = default) { Applied = file; return Task.FromResult(new LicenceApplyResult(true, "Lic_Applied")); }
     }
 

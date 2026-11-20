@@ -23,18 +23,6 @@ public class VdrNumberingAndFilesTests
         Assert.Contains("asp-area=\"Admin\" asp-controller=\"Numbering\" asp-action=\"Index\" asp-route-vdrItemId=\"@Model.VDRItemId\"", view);
     }
 
-    [Fact]
-    public void AdminNumbering_HoldsBothForms_PostingToTheSameActions_AndComingBack()
-    {
-        var partial = Read("PEMS.Web", "Areas", "Admin", "Views", "Numbering", "_VdrNumbers.cshtml");
-        Assert.Contains("asp-controller=\"VDR\" asp-action=\"GenerateContractorNumber\" method=\"post\"", partial);
-        Assert.Contains("asp-controller=\"VDR\" asp-action=\"GenerateVendorNumber\" method=\"post\"", partial);
-        Assert.Equal(2, CountOf(partial, "<input type=\"hidden\" name=\"returnTo\" value=\"numbering\" />"));
-        foreach (var field in new[] { "vendorCode", "plantCode", "unitCode", "materialCode", "jobNumber", "typologyCode" })
-            Assert.Contains("name=\"" + field + "\"", partial);
-        Assert.Contains("<partial name=\"_VdrNumbers\"", Read("PEMS.Web", "Areas", "Admin", "Views", "Numbering", "Index.cshtml"));
-    }
-
     [Theory]
     [InlineData("numbering", "Index", "Numbering")]
     [InlineData(null, "Details", null)]
@@ -43,7 +31,13 @@ public class VdrNumberingAndFilesTests
     {
         var method = typeof(VDRController).GetMethod("NumberGenerationResult", BindingFlags.NonPublic | BindingFlags.Instance)!;
         var controllerInstance = (VDRController)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(VDRController));
-        var result = Assert.IsType<RedirectToActionResult>(method.Invoke(controllerInstance, [7, returnTo]));
+        var answer = method.Invoke(controllerInstance, [7, returnTo]);
+        if (returnTo == "numbering")
+        {
+            Assert.Equal("/p/numbering-vdr", Assert.IsType<RedirectResult>(answer).Url);   // the admin numbering page is a definition page now
+            return;
+        }
+        var result = Assert.IsType<RedirectToActionResult>(answer);
         Assert.Equal(action, result.ActionName);
         Assert.Equal(controller, result.ControllerName);
         if (controller != null) { Assert.Equal("Admin", result.RouteValues!["area"]); Assert.Equal(7, result.RouteValues["vdrItemId"]); }

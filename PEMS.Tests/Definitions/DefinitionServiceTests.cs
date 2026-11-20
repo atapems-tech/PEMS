@@ -247,7 +247,7 @@ public class DefinitionServiceTests
         var rev = (await s.GetDraftAsync(id)).Value!.Info.Revision;
         var published = await s.PublishAsync(id, rev, User);
         Assert.True(published.Success, string.Join(";", published.Errors?.Select(e => e.Pointer + " " + e.Code) ?? []));
-        var reference = await db.DefinitionReferences.SingleAsync();
+        var reference = await db.DefinitionReferences.SingleAsync(r => r.ToKind == "component");   // the layout of the page is a reference too (SCRUM-451)
         Assert.Equal(("component", "button", "renders"), (reference.ToKind, reference.ToKey, reference.Role));
     }
 

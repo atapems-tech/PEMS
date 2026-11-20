@@ -147,7 +147,7 @@ public static class ComponentTemplate
         "boolean" => value is JsonValue v && v.GetValueKind() is JsonValueKind.True or JsonValueKind.False,
         "object" => value is JsonObject,
         "array" => value is JsonArray,
-        "text" => value is JsonObject o && o.All(p => p.Value is JsonValue pv && pv.GetValueKind() == JsonValueKind.String),
+        "text" => value is JsonValue sv && sv.GetValueKind() == JsonValueKind.String || value is JsonObject o && o.All(p => p.Value is JsonValue pv && pv.GetValueKind() == JsonValueKind.String),
         _ => true
     };
 

@@ -131,9 +131,10 @@ public class BkChartPagesTests
 
         var fa = LoadResx("SharedResource.fa.resx");
         var used = new[] { "Report/Engineering", "Report/Index", "Report/Cmms", "Report/Procurement", "Report/Vdr", "Kpi/Index" }
+            .Where(v => System.IO.File.Exists(Path.Combine(RepoRoot(), "PEMS.Web", "Views", v.Split('/')[0], v.Split('/')[1] + ".cshtml")))   // the report pages that became definition pages have no view
             .SelectMany(v => Regex.Matches(Read("PEMS.Web", "Views", v.Split('/')[0], v.Split('/')[1] + ".cshtml"), "Localizer\\[\"(Chart_[A-Za-z]+)\"\\]").Select(m => m.Groups[1].Value))
             .Distinct().ToList();
-        Assert.NotEmpty(used);
+        // the report pages are definition pages now, so there may be no view left that names a chart string
         Assert.All(used, k => Assert.True(fa.ContainsKey(k), k));
     }
 

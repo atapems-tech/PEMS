@@ -89,11 +89,6 @@ public class TreeViewComponentTests
     [Fact]
     public void WaveT1_TheTwoTreesUseTheComponent()
     {
-        var org = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Areas", "Admin", "Views", "Organization", "Index.cshtml"));
-        Assert.Contains("<pems-tree label=\"@Localizer[\"Org_Tab_Tree\"]\"", org);
-        Assert.Contains("<pems-tree-item label=\"@Label(n)\" key=\"@n.PositionId.ToString()\">", org);
-        Assert.DoesNotContain("class=\"org-tree\"", org);
-
         var letter = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Letter", "Index.cshtml"));
         Assert.Contains("remember-key=\"pems.cartable.tagsCollapsed\"", letter);   // the same key: what a user collapsed stays collapsed
         Assert.DoesNotContain("role=\"treeitem\"", letter);

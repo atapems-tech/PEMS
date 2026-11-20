@@ -1,5 +1,10 @@
 # Combined test run: batches 1, 2, 3, 4b and 5 (owner decision 2026-11-20; was 1, 2 and 4 on 2026-11-19)
 
+**RUN DONE 2026-11-20 (owner input in chat).** Automated result: build 0 errors; UI 628 of 628; Definitions 500 of 501; Web 750 of 751; gates slice 375 of 376; the single failure in each is a SQL-instance test (no SQL Server reachable). **Not run: the browser checks and the SQL-instance families; they stay unchecked lines on the issues.** What the run found and fixed is in `plan/sheets/build-status.md`. Steps 1 to 4 of the order below were done; step 5 (SQL) and step 6 (browser) are open.
+
+The text below is the plan as it was written before the run.
+
+
 Written and merged; **not run**. One combined run covers the five batches (components and screen engines, data/action/security engines, designers/governance/migrator, the Admin-area conversions still open, shell/organization/AI/dashboards conversions). **Trigger: batches 3, 4b and 5 are all In Review; then ask the owner; nothing heavy and no build of a test project before that, and none without the owner's answer.** Run it once, when the machine is quiet, then fix and cite it on every issue's QA line 1.
 
 Gap batches 1b, 2b and 3b (sprint-batches.md) are done after the combined run is decided; they are separate issues, so they do not hold the run.

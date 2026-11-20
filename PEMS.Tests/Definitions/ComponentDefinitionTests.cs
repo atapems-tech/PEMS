@@ -78,7 +78,7 @@ public sealed class ComponentDefinitionTests : IDisposable
     {
         const string page = "{\"layout\":\"list-page\",\"template\":\"entity-list\",\"args\":{\"id\":\"x\"}}";
         Assert.Empty(_pageKind.Validate(page, new DefinitionLimits()));
-        Assert.Equal(new DefinitionRef("component-definition", "entity-list", "templates"), Assert.Single(_pageKind.References(page)));
+        Assert.Contains(new DefinitionRef("component-definition", "entity-list", "templates"), _pageKind.References(page));   // the layout of the page is a reference too (SCRUM-451)
         Assert.Contains(_pageKind.Validate("{\"layout\":\"list-page\",\"args\":{}}", new DefinitionLimits()), e => e.Pointer == "/args");
         Assert.Contains(_pageKind.Validate("{\"layout\":\"list-page\"}", new DefinitionLimits()), e => e.Pointer == "/regions");
     }
