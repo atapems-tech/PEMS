@@ -43,7 +43,7 @@ A gap found in a batch is an issue of the same sprint, listed here under the bat
 |---|---|---|
 | 1b | 792 live preview in the catalog, 793 saved views per role on the server, 794 filter bar part, 795 related-records part | 340, 599, 600 |
 | 2b | 796 platform field marks (owner decides), 797 ownership preflight report on Database Update and /health/database, 798 ADR for field ownership, 799 prove action.steps with a shipped definition, 800 generic PDF output, 801 download of a stored file by key | 515, 593, 615 |
-| 3b | 784 manager history, diff, export and import screens, 785 used-by and references REST and the check in REST publish, 786 storage growth, cache statistics, retain setting and size warning, 787 fallback and live fa/en RTL/LTR preview, 788 smoke test, post-publish check and auto-rollback, 789 precheck-rollback REST and verdict on the screen, 790 browser tests of the API client, 791 manifest coverage test | 449, 450, 455, 419, 609, 457, 459, 454, 585 |
+| 3b | 784 manager history, diff, export and import screens, 785 used-by and references REST and the check in REST publish, 786 storage growth, cache statistics, retain setting and size warning, 787 fallback and live fa/en RTL/LTR preview, 788 smoke test, post-publish check and auto-rollback, 789 precheck-rollback REST and verdict on the screen, 790 browser tests of the API client, 791 manifest coverage test, 807 apply a feed plan (gap of 583) | 449, 450, 455, 419, 609, 457, 459, 454, 585, 583 |
 
 Batch 3 issues not started (439, 604, 606, 607, 608, 440, 581, 582, 583, 584, 612, 613, 503) stay To Do in batch 3 itself. The missing QA checklists of 372, 448, 516, 517, 574 to 577, 590 to 592, 594 to 596, 611 and 628 are not gaps: they belong to the owners of those batches (2 and 1).
 
