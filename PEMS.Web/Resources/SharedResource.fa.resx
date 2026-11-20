@@ -5130,4 +5130,5 @@
   <data name="Rpt_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
   <data name="Rpt_HigherIsBetter" xml:space="preserve"><value>بیشتر بهتر است</value></data>
   <data name="Rpt_LowerIsBetter" xml:space="preserve"><value>کمتر بهتر است</value></data>
+  <data name="Notif_Err_NotFound" xml:space="preserve"><value>اعلان پیدا نشد.</value></data>
 </root>
