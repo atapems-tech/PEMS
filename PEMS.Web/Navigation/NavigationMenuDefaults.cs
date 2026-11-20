@@ -76,7 +76,7 @@ public static class NavigationMenuDefaults
         Section("sec.ai", 200, "AI & Knowledge", "bi-robot", "Module:AIIntelligence",
             "EngineeringDocumentIntelligence,KnowledgeBase,AISearch,ChatAssistant,AIInsights"),
         Link("ai.docintel", "sec.ai", 10, "DocumentIntelligence", "bi-diagram-3-fill", "EngineeringDocumentIntelligence", rule: "Perm:EngineeringDocuments.View"),
-        Link("ai.kb", "sec.ai", 20, "KnowledgeBaseSearch", "bi-stars", "KnowledgeBase"),
+        new("ai.kb", "sec.ai", L, 20, "KnowledgeBaseSearch", "bi-stars", Always, ExternalPath: "/p/knowledge-base"),   // SCRUM-712: a definition page (/p/...), not a controller
         Link("ai.search", "sec.ai", 30, "AI Search", "bi-search-heart", "AISearch"),
         Link("ai.chat", "sec.ai", 40, "Engineering Chat Assistant", "bi-chat-dots", "ChatAssistant"),
         Link("ai.copilot", "sec.ai", 50, "Engineering Copilot", "bi-stars", "AIInsights"),

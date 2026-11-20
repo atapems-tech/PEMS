@@ -100,9 +100,12 @@ public sealed class OperationGridProvider(OperationReader reader) : IGridDataPro
     public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
     {
         var typed = request.Grid.Filters.GroupBy(f => f.Field).ToDictionary(g => g.Key, g => (string?)g.First().Value);      // the column filters are the parameters of the operation
+        // batch 5: the text typed in the quick search of the grid is the argument "param:search" (a semantic or full-text search of the service); the service has already searched, so the rows are not filtered again by their text
+        var searchGoesToOperation = request.Parameters.GetValueOrDefault("args") is { } argsJson && argsJson.Contains("\"param:search\"", StringComparison.Ordinal);
+        if (searchGoesToOperation && !string.IsNullOrWhiteSpace(request.Grid.Search)) typed["search"] = request.Grid.Search.Trim();
         var rows = await reader.ReadAsync(request.Parameters, request.Culture, request.Roles, request.UserName, ct, typed) ?? throw new UnauthorizedAccessException();
         IEnumerable<IDictionary<string, object?>> query = rows;
-        if (!string.IsNullOrWhiteSpace(request.Grid.Search))
+        if (!searchGoesToOperation && !string.IsNullOrWhiteSpace(request.Grid.Search))
         {
             var q = request.Grid.Search.Trim();
             query = query.Where(r => r.Values.Any(v => v is string s && s.Contains(q, StringComparison.OrdinalIgnoreCase)));
