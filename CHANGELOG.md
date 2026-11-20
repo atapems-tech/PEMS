@@ -29,6 +29,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Notification inbox as a definition page (SCRUM-731)
+
+### Changed
+- /p/notifications (filter bar, grid, mark read / dismiss / mark all / dismiss all as actions over `INotificationOperations`) replaces the Index page of NotificationController; the bell dropdown, the unread counter and the open-redirect stay in the controller (shell widget, code-only).
+
 ## 2026-11-20 - Report and KPI labels in both languages, KPI choice list in the target form (SCRUM-713, 747)
 
 ### Changed

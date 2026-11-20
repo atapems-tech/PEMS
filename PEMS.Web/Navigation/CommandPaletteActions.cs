@@ -29,7 +29,7 @@ public sealed class CommandPaletteActions
         new CommandPaletteAction("NewMaterialRequisition", "MaterialRequisition", "Create", "bi-cart-plus", SearchAccessRule.Permission("MaterialRequisition", "Create")),
         new CommandPaletteAction("NewContract", "Contract", "Create", "bi-file-earmark-text", SearchAccessRule.Permission("Contracts", "Create")),
         new CommandPaletteAction("MyWork", "MyWork", "Index", "bi-inbox", SearchAccessRule.AnyUser(), Url: "/p/my-work"),   // SCRUM-730: a definition page
-        new CommandPaletteAction("Notifications", "Notification", "Index", "bi-bell", SearchAccessRule.AnyUser()),
+        new CommandPaletteAction("Notifications", "Notification", "Index", "bi-bell", SearchAccessRule.AnyUser(), Url: "/p/notifications"),   // SCRUM-731
         new CommandPaletteAction("Help", "Help", "Index", "bi-life-preserver", SearchAccessRule.AnyUser()),
         new CommandPaletteAction("ChangePassword", "Account", "ChangePassword", "bi-key", SearchAccessRule.AnyUser()),
     };
