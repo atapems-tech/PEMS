@@ -20,6 +20,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Engineering Copilot page as a definition (SCRUM-668)
+
+### Added
+- Record binding `first` (first row of the source); operations `AiInsights.*` (`IAiInsightsOperations`).
+### Changed
+- The Engineering Copilot page is the definition `ai-insights` (NCR patterns grid, delay totals as tiles, narrative, three delay grids); AIInsightsController and its view are deleted; /AIInsights redirects.
+
 ## 2026-11-20 - Discipline master data and workspace list as definitions (SCRUM-682)
 
 ### Changed
