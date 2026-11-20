@@ -151,7 +151,7 @@
 
             @await Html.PartialAsync("_ContextualHelpButton")
 
-            <pems-link asp-controller="Help" asp-action="Index" asp-area="" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
+            <pems-link href="/p/help" class="text-secondary" title="@(isRtl ? "مرکز راهنما" : "Help Center")">
                 <pems-icon name="bi-question-circle" css="fs-5" />
             </pems-link>
 

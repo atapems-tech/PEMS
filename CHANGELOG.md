@@ -36,6 +36,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Help center list as a definition page (SCRUM-704)
+
+### Changed
+- /p/help (search, category filter, article grid) over `IHelpOperations` replaces the Index, Category and Search pages of HelpController; /Help, /Help/Category/{id} and /Help/Search redirect. The article page, the contextual help JSON and the AI explainer stay in the controller.
+
 ## 2026-11-20 - Engineering dashboard as a definition page (SCRUM-688)
 
 ### Changed

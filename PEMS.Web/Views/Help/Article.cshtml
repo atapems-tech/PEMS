@@ -10,8 +10,8 @@
 
 <nav aria-label="breadcrumb" class="mb-2">
     <pems-crumb-trail css="mb-0 small">
-        <pems-bullet class="breadcrumb-item"><pems-link asp-action="Index">@L("Help Center", "مرکز راهنما")</pems-link></pems-bullet>
-        <pems-bullet class="breadcrumb-item"><pems-link asp-action="Category" asp-route-id="@Model.HelpCategoryId">@Model.CategoryName</pems-link></pems-bullet>
+        <pems-bullet class="breadcrumb-item"><pems-link href="/p/help">@L("Help Center", "مرکز راهنما")</pems-link></pems-bullet>
+        <pems-bullet class="breadcrumb-item"><pems-link href="@("/p/help?categoryId=" + Model.HelpCategoryId)">@Model.CategoryName</pems-link></pems-bullet>
         <pems-bullet class="breadcrumb-item active">@Model.Title</pems-bullet>
     </pems-crumb-trail>
 </nav>
