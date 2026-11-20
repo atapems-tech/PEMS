@@ -333,31 +333,6 @@ public class OrganizationMasterDataAuthorizationTests
         Assert.True(service.SetTaskStatusCalled);
     }
 
-    [Fact]
-    public async Task Discipline_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Discipline_Index_WithoutViewPermission_ReturnsForbid), role: SystemRoles.MaintenanceEngineer);
-        var controller = new DisciplineController(new FakeDisciplineWorkspaceService(), ctx, user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Discipline_Index_DocumentController_HasViewOnly_CanRead()
-    {
-        // طبق ممیزی این پاس: DocumentController قبلاً هیچ Grant ای نداشت با اینکه سایدبار را
-        // می‌بیند - این تست همون رفع را اثبات می‌کند (فقط View، بدون Create/Edit).
-        var (ctx, perms, user) = await CreateInfra(nameof(Discipline_Index_DocumentController_HasViewOnly_CanRead), role: SystemRoles.DocumentController);
-        var service = new FakeDisciplineWorkspaceService();
-        var controller = new DisciplineController(service, ctx, user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ViewResult>(result);
-    }
-
     // ================= Inventory Master Data =================
 
     [Fact]

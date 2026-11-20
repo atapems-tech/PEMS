@@ -168,7 +168,7 @@
                 <pems-icon name="bi-collection" /> @Localizer["MDB"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("Discipline"))" asp-controller="Discipline" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/discipline-workspaces" active="@(Context.Request.Path.StartsWithSegments("/p/discipline-workspaces") || IsActive("Discipline"))">
                 <pems-icon name="bi-diagram-3" /> @Localizer["Disciplines"]
             </pems-nav-link>
         </div>
@@ -680,7 +680,7 @@
     }
     @if (!canSeeAdminCore && canSeeDisciplineMaster)
     {
-        var activeOrg = IsActive("Discipline") && currentAction == "Manage";
+        var activeOrg = Context.Request.Path.StartsWithSegments("/p/disciplines");
         <div class="nav-section-title" data-bs-toggle="collapse" data-bs-target="#sec-admin-org" role="button" tabindex="0" aria-expanded="@activeOrg.ToString().ToLower()">
             <pems-icon name="bi-gear" css="nav-section-icon" />
             <span>@Localizer["Administration"]</span>
@@ -688,7 +688,7 @@
         </div>
         <div class="@SectionClass(activeOrg)" id="sec-admin-org">
             <div class="nav-subheading">@Localizer["Organization"]</div>
-            <pems-nav-link item="false" sub="true" active="@(activeOrg)" asp-controller="Discipline" asp-action="Manage" asp-area="">
+            <pems-nav-link item="false" sub="true" href="/p/disciplines" active="@(activeOrg)">
                 <pems-icon name="bi-sliders" /> @Localizer["Disc_Master_Nav"]
             </pems-nav-link>
         </div>
@@ -756,7 +756,7 @@
                     <pems-icon name="bi-people" /> @Localizer["Employees"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("Discipline") && currentAction == "Manage")" asp-controller="Discipline" asp-action="Manage" asp-area="">
+                <pems-nav-link item="false" sub="true" href="/p/disciplines" active="@Context.Request.Path.StartsWithSegments("/p/disciplines")">
                     <pems-icon name="bi-sliders" /> @Localizer["Disc_Master_Nav"]
                 </pems-nav-link>
 

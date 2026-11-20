@@ -34,9 +34,13 @@ public static class DisciplineErrorKeys
 /// </summary>
 public interface IDisciplineMasterService
 {
+    [PEMS.Application.Common.PemsOperation("DisciplineMaster", "List", "DisciplineMaster.View")]   // SCRUM-682: the master-data page reads, creates and edits through these operations
     Task<List<DisciplineRow>> GetAllAsync(CancellationToken ct = default);
+    [PEMS.Application.Common.PemsOperation("DisciplineMaster", "Create", "DisciplineMaster.Create")]
     Task<DisciplineOpResult> CreateAsync(string code, string name, string? description, string? importAliases, string? transmittalCode, CancellationToken ct = default);
+    [PEMS.Application.Common.PemsOperation("DisciplineMaster", "Update", "DisciplineMaster.Edit")]
     Task<DisciplineOpResult> UpdateAsync(int disciplineId, string code, string name, string? description, string? importAliases, string? transmittalCode, CancellationToken ct = default);
+    [PEMS.Application.Common.PemsOperation("DisciplineMaster", "SetActive", "DisciplineMaster.Edit")]
     Task<DisciplineOpResult> SetActiveAsync(int disciplineId, bool isActive, CancellationToken ct = default);
 
     // REST API (SCRUM-435): same rules as the pages above, plus row version and a result that carries the stored record.

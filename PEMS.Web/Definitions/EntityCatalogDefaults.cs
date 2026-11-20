@@ -32,6 +32,8 @@ internal static class EntityCatalogDefaults
         .Add<Project>("ProjectId", e => e   // SCRUM-740: the Projects controller had no permission of its own; the menu rule and the signed-in user decide, as before
             .Readable("ProjectCode", "ProjectName", "ClientName", "Location", "StartDate", "EndDate", "Status", "IsActive", "CreatedDate")
             .Writable("ProjectCode", "ProjectName", "ClientName", "Location", "StartDate", "EndDate", "Status", "IsActive", "CreatedDate"))
+        .Add<Discipline>("DisciplineId", e => e.Read("DisciplineMaster.View").Create("DisciplineMaster.Create").Edit("DisciplineMaster.Edit")   // SCRUM-682: reads and writes go through the DisciplineMaster operations; the catalog loads the row into the edit form
+            .Readable("Code", "Name", "Description", "ImportAliases", "TransmittalCode", "IsActive", "CreatedDate").Writable("Code", "Name", "Description", "ImportAliases", "TransmittalCode"))
         .Add<SoDPolicy>("SoDPolicyId", e => e.Roles(AdminRoles, AdminRoles)
             .Readable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate").Writable("PermissionAId", "PermissionBId", "Description", "IsActive", "CreatedDate"))
         .Add<ContractApprovalAuthorityRule>("ContractApprovalAuthorityRuleId", e => e.Roles(AdminRoles, AdminRoles)
