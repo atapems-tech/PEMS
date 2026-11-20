@@ -33,6 +33,13 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Charts on the report and KPI pages (batch 5 gap)
+
+### Added
+- The five report pages and the executive KPI page now show charts (volume by month, by discipline/status/priority/vendor, equipment by status, top equipment by cost) through `def:entity-chart`; they follow the page filters (a chart `source` may carry `?f.x=...`).
+- Report rows carry a stable `Key` and numbers (`Number`, `Number2`); a grid data source of the `operation` provider accepts fixed `where` filters, so one operation feeds several charts.
+
 ## 2026-11-20 - Quick setup as a definition page (SCRUM-743)
 
 ### Changed

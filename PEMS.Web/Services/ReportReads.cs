@@ -83,12 +83,23 @@ public sealed class ReportReads(ICorrespondenceReportService correspondence, IEn
             {
                 foreach (var item in list)
                     if (item is ITuple tuple && tuple.Length >= 2)
-                        rows.Add(new ReportRow(words, Show(tuple[0]), string.Join(" / ", Enumerable.Range(1, tuple.Length - 1).Select(i => Show(tuple[i])))));
+                        rows.Add(new ReportRow(words, Show(tuple[0]), string.Join(" / ", Enumerable.Range(1, tuple.Length - 1).Select(i => Show(tuple[i]))), property.Name,
+                            Numbers(tuple).ElementAtOrDefault(0), Numbers(tuple).ElementAtOrDefault(1)));
             }
-            else rows.Add(new ReportRow(label is null ? "Summary" : label("Summary"), words, Show(value)));
+            else rows.Add(new ReportRow(label is null ? "Summary" : label("Summary"), words, Show(value), "Summary", Num(value)));
         }
         return rows;
     }
+
+    /// <summary>The value as a number when it is a number (a count, a sum), else null.</summary>
+    private static double? Num(object? value) => value switch
+    {
+        int or long or short or byte or double or float or decimal => Convert.ToDouble(value, CultureInfo.InvariantCulture),
+        _ => null,
+    };
+
+    /// <summary>The numeric elements after the name of a tuple, in order (the colour of a tag is skipped).</summary>
+    private static IEnumerable<double?> Numbers(ITuple tuple) => Enumerable.Range(1, tuple.Length - 1).Select(i => Num(tuple[i])).Where(n => n is not null);
 
     private string Label(string name) { var text = loc["Rpt_" + name]; return text.ResourceNotFound ? Words(name) : text.Value; }
 

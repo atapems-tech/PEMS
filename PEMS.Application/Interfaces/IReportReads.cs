@@ -1,7 +1,7 @@
 namespace PEMS.Application.Interfaces;
 
-/// <summary>One line of a report: the section it belongs to (Summary, By discipline, Volume by month ...), the name and the value(s) as text.</summary>
-public sealed record ReportRow(string Section, string Name, string Value);
+/// <summary>One line of a report: the section it belongs to (Summary, By discipline, Volume by month ...), the name and the value(s) as text. <c>Key</c> is the stable (not translated) name of the section and <c>Number</c> the value as a number when it is one (charts read these).</summary>
+public sealed record ReportRow(string Section, string Name, string Value, string Key = "", double? Number = null, double? Number2 = null);
 
 /// <summary>One choice of a report filter (project, discipline, work center, material item).</summary>
 public sealed record ReportChoiceRow(string Value, string Label);

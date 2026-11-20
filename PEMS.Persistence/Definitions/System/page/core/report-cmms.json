@@ -151,6 +151,50 @@
           }
         },
         {
+          "id": "chart-volume-by-month",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-cmms-chart-volume-by-month?f.status={{params.status|url}}&f.priority={{params.priority|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "bar",
+            "ariaLabel": {
+              "en": "Volume by month",
+              "fa": "حجم به تفکیک ماه"
+            }
+          }
+        },
+        {
+          "id": "chart-by-priority",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-cmms-chart-by-priority?f.status={{params.status|url}}&f.priority={{params.priority|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "By priority",
+              "fa": "بر اساس اولویت"
+            }
+          }
+        },
+        {
           "id": "report-cmms-rows",
           "component": "data-grid",
           "options": {
