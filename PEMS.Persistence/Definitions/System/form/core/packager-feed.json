@@ -75,10 +75,19 @@
         "maxLength": 20
       },
       {
+        "name": "keyFields",
+        "label": {
+          "en": "Key fields (comma separated; default Code, else Name)",
+          "fa": "فیلدهای کلید (با ویرگول؛ پیش‌فرض Code سپس Name)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
         "name": "rows",
         "label": {
-          "en": "Rows (JSON array of objects)",
-          "fa": "ردیف‌ها (آرایه JSON)"
+          "en": "Rows (a JSON array of objects, or CSV with the field names in the first line)",
+          "fa": "ردیف‌ها (آرایه JSON از اشیا، یا CSV با نام فیلدها در خط اول)"
         },
         "kind": "textArea",
         "required": true,

@@ -173,6 +173,8 @@ builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionPublishGuard>(); 
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionWorkbench, PEMS.Persistence.Services.DefinitionWorkbench>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionDesigner, PEMS.Persistence.Services.DefinitionDesigner>();   // SCRUM-439, 604, 606, 607, 608
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMigratorCenter, PEMS.Web.Services.MigratorCenter>();   // SCRUM-582
+builder.Services.AddSingleton<PEMS.Web.Definitions.PackageFeedApplier>();   // SCRUM-807: the apply step of a feed, through the entity catalog
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.MigratorHistoryGridProvider>();   // SCRUM-814
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPackageBuilder, PEMS.Web.Services.PackageBuilder>();   // SCRUM-584 (signing key only on the vendor deployment)
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
