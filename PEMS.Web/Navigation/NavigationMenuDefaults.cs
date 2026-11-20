@@ -169,7 +169,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,Department,Employee,NavigationMenu,Organization,OrganizationImport,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,Department,Employee,NavigationMenu,Organization,OrganizationImport,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
@@ -207,7 +207,8 @@ public static class NavigationMenuDefaults
         new("admin.authaudit", "admin.sub.monitoring", L, 20, "Authorization Audit", "bi-journal-check", "Module:Administration", ExternalPath: "/p/authorization-audit"),
         // SCRUM-633: a definition page (/p/...), not a controller
         new("admin.dbupdate", "admin.sub.monitoring", L, 25, "Database Update", "bi-database-up", "Module:Administration", ExternalPath: "/p/database-update"),
-        Link("admin.license", "admin.sub.monitoring", 26, "Licence", "bi-key", "License", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-635: a definition page (/p/...), not a controller
+        new("admin.license", "admin.sub.monitoring", L, 26, "Licence", "bi-key", "Module:Administration", ExternalPath: "/p/license"),
         new("admin.performance", "admin.sub.monitoring", L, 30, "Performance Testing", "bi-speedometer2", "Module:Administration", ExternalPath: "/p/performance"),   // SCRUM-733: a definition page (/p/...), not a controller
         new("admin.hangfire", "admin.sub.monitoring", L, 40, "Background Jobs Dashboard", "bi-hdd-stack", "Module:Administration",
             ExternalPath: "/hangfire", OpenInNewTab: true),

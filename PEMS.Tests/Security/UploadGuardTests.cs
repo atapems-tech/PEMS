@@ -110,13 +110,6 @@ public class UploadGuardTests
         Assert.Empty(offenders);
     }
 
-    [Fact]
-    public void ImportCenterTest_StillCoversTheLicenceUpload()
-    {
-        // the licence upload (SCRUM-26) is a guarded non-import upload; ImportCenterNavigationTests lists it with a reason
-        Assert.Contains(Actions(), m => m.DeclaringType!.Name == "LicenseController" && m.GetCustomAttribute<UploadPolicyAttribute>()?.Profile == UploadProfile.LicenceFile);
-    }
-
     private static string RepoRoot([System.Runtime.CompilerServices.CallerFilePath] string thisFile = "")
     {
         var dir = new DirectoryInfo(Path.GetDirectoryName(thisFile)!);
