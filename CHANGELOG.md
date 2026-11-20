@@ -39,6 +39,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Home dashboard as a definition page (SCRUM-705)
+
+### Changed
+- /p/home (what needs your attention, twelve counts, documents-by-status donut, discipline performance, my widgets) over `IHomeOperations` replaces the Index view of HomeController; `/` forwards to it. Privacy, the status page and the error page stay. The tiles no longer link to their lists and the setup progress is a row, not a bar.
+
 ## 2026-11-20 - AI extraction review as definition pages (SCRUM-667)
 
 ### Changed
