@@ -67,20 +67,6 @@ public class KpiTileComponentTests
         Assert.Contains("<div class=\"kpi-value\">42 <small>%</small></div>", html);
     }
 
-    [Theory]
-    [InlineData("Index", 6)]
-    [InlineData("Cmms", 6)]
-    [InlineData("Engineering", 6)]
-    [InlineData("Operations", 6)]
-    [InlineData("Procurement", 10)]
-    [InlineData("Vdr", 6)]
-    public void WaveK1_ReportPages_TakeTheirTilesFromTheComponent(string page, int tiles)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Report", page + ".cshtml"));
-        Assert.Equal(tiles, Regex.Matches(text, "<pems-kpi-tile ").Count);
-        Assert.DoesNotContain("kpi-card", text);
-    }
-
     // ---- K2: the tile built in code (the retired _KpiCard partial's view model)
     [Fact]
     public async Task Model_FillsTheTile_LikeTheRetiredPartial()

@@ -128,7 +128,7 @@ public static class NavigationMenuDefaults
         Link("proj.tasks", "sec.projctrl", 10, "Tasks", "bi-check2-square", "Task", rule: "Perm:Task.View", badge: NavigationBadges.TasksOpen),
         Link("proj.taskmanager", "sec.projctrl", 15, "Nav_TaskManager", "bi-kanban", "TaskManager", rule: "Perm:Task.View"),
         Link("proj.meetings", "sec.projctrl", 20, "Meetings", "bi-people", "Meeting"),
-        Link("proj.reports", "sec.projctrl", 30, "Reports", "bi-graph-up", "Report"),
+        new("proj.reports", "sec.projctrl", L, 30, "Reports", "bi-graph-up", Always, ExternalPath: "/p/report-correspondence"),   // SCRUM-747: a definition page (/p/...)
 
         // ---- CMMS (قاعده‌ی هر آیتم همان IsCmmsItemVisible: مجوز + Override مدیر)
         Section("sec.cmms", 700, "CmmsIntegration", "bi-tools", "Module:CmmsIntegration",
