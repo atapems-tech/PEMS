@@ -139,6 +139,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Defi
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.StepsAction>();
 // SCRUM-596 and 615: a file that comes in (file.upload) and a file that goes out (file.export) are settings of an action definition
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileUploadAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileDownloadAction>();   // SCRUM-615: a stored file by key, inside the folder the definition names
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileExportAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionTransaction, PEMS.Web.Definitions.EfActionTransaction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Definitions.WebAuthnStepUpVerifier>();
@@ -163,6 +164,14 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.EntityRecordLoader>();
 // SCRUM-437: service operations: the interface methods marked [PemsOperation] are runnable from action definitions through the one handler operation.invoke
 builder.Services.AddSingleton(PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.OperationInvokeAction>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IBuildEntitlementService, PEMS.Web.Services.BuildEntitlementService>();   // SCRUM-633
+builder.Services.AddScoped<PEMS.Application.Interfaces.ILicencePageService, PEMS.Web.Services.LicencePageService>();   // SCRUM-635
+builder.Services.AddScoped<PEMS.Application.Interfaces.INavigationVisibilityPageService, PEMS.Web.Services.NavigationVisibilityPageService>();   // SCRUM-637
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermissionMatrixPageService, PEMS.Web.Services.PermissionMatrixPageService>();   // SCRUM-641
+builder.Services.AddScoped<PEMS.Application.Interfaces.IAuthorizationReportService, PEMS.Web.Services.AuthorizationReportService>();   // SCRUM-631
+builder.Services.AddSingleton<PEMS.Web.Definitions.OperationReader>();   // SCRUM-775: read operations as grid rows and choices
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OperationGridProvider>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.OperationOptionsProvider>();
 builder.Services.AddScoped<PEMS.Web.Definitions.DataSourceExecutor>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());

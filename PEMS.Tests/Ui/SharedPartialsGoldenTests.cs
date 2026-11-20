@@ -19,7 +19,7 @@ public class SharedPartialsGoldenTests
 {
     private static async Task<string> RenderAsync(string view, object? model, Action<ViewDataDictionary>? configure = null)
     {
-        var host = new PermissionMatrixController(null!, null!, null!);
+        var host = new PEMS.Tests.TestSupport.ViewRenderHost();
         host.ViewData.Model = model;
         configure?.Invoke(host.ViewData);   // the renderer copies the controller's ViewData
         var result = new ViewResult { ViewData = new ViewDataDictionary(host.ViewData) { Model = model } };

@@ -5,6 +5,7 @@ using System.Text.Json.Nodes;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.Definitions;
+using PEMS.Application.Uploads;
 using PEMS.Persistence.Context;
 using PEMS.UI.Abstractions;
 
@@ -76,15 +77,25 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return t == typeof(string) || t == typeof(int) || t == typeof(long) || t == typeof(decimal) || t == typeof(double) || t == typeof(bool) || t == typeof(DateTime) || t.IsEnum;
     }
 
+    /// <summary>SCRUM-635: the upload profiles an operation file argument may name (the checks of the upload guard: allow-list, size, content, malware hook).</summary>
+    private static readonly IReadOnlyDictionary<string, UploadProfile> UploadProfiles = new Dictionary<string, UploadProfile>(StringComparer.Ordinal)
+    {
+        ["attachment"] = UploadProfile.Attachment, ["image"] = UploadProfile.Image, ["spreadsheet"] = UploadProfile.Spreadsheet, ["csv"] = UploadProfile.Csv, ["pdf"] = UploadProfile.Pdf, ["licenceFile"] = UploadProfile.LicenceFile
+    };
+
     private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent", "userId", "disciplineId" };
 
     /// <summary>A plain options object (settable simple properties, no constructor arguments), such as a completion-data record: its properties are bound from the form values of the same name (first letter lower-case), or from the sources the definition lists for them.</summary>
+    /// <summary>A record whose constructor takes only simple values (a positional "input" record): built from the sources the definition lists for each constructor parameter (default: the form field of the same name).</summary>
+    private static bool IsInput(Type t) => t.IsClass && t != typeof(string) && !IsTextList(t) && t.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault() is { } c
+        && c.GetParameters().Length > 0 && c.GetParameters().All(cp => IsSimple(cp.ParameterType)) && !c.GetParameters().All(cp => ContextNames.Contains(cp.Name!));
+
     private static bool IsBag(Type t) => t.IsClass && t != typeof(string) && t.GetConstructor(Type.EmptyTypes) is not null
         && t.GetProperties().Any(pr => pr.CanWrite && IsSimple(pr.PropertyType));
 
     private static string CamelCase(string name) => char.ToLowerInvariant(name[0]) + name[1..];
 
-    private static bool IsSource(string s) => s.StartsWith("field:") && s.Length > 6 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]);
+    private static bool IsSource(string s) => s.StartsWith("field:") && s.Length > 6 || s.StartsWith("file:") && s.Length > 5 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]);
 
     private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
 
@@ -113,6 +124,10 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (EntityJson.Str(g["mode"]) is { } mode && mode is not ("sod" or "strict")) errors.Add(new("/guard/mode", "wrong-guard", "Def_Err_Type", "mode is sod (only a separation-of-duties refusal stops the action) or strict (anything but an explicit allow stops it)."));
             }
         }
+        // SCRUM-781: require = { field: message } must be true before the operation runs; precondition = another operation ({ model, action, args }) that must succeed first
+        if (parameters["require"] is not null and not JsonObject) errors.Add(new("/require", "wrong-require", "Def_Err_Type", "require is an object: { fieldName: { en, fa } }."));
+        if (parameters["precondition"] is JsonObject pre) errors.AddRange(ValidateParameters(pre).Select(e => e with { Pointer = "/precondition" + e.Pointer }));
+        else if (parameters["precondition"] is not null) errors.Add(new("/precondition", "wrong-precondition", "Def_Err_Type", "precondition is an operation: { model, action, args }."));
         errors.AddRange(OperationSectionGuard.Validate(parameters["sectionGuard"] as JsonObject, IsSource));
         if (parameters["sectionGuard"] is not null and not JsonObject) errors.Add(new("/sectionGuard", "wrong-guard", "Def_Err_Type", "sectionGuard is an object: { section, action, workOrderId, reason, recordRef, audit }."));
         var args = parameters["args"] as JsonObject ?? [];
@@ -121,6 +136,13 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             var s = EntityJson.Str(source) ?? "";
             if (!names.Contains(name)) errors.Add(new("/args/" + name, "unknown-parameter", "Def_Err_UnknownField", $"'{name}' is not a parameter of {op.Name}."));
+            else if (source is JsonObject inputMap && IsInput(op.Method.GetParameters().First(pp => pp.Name == name).ParameterType))
+            {
+                var ctor = op.Method.GetParameters().First(pp => pp.Name == name).ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).First();
+                foreach (var (property, propertySource) in inputMap)
+                    if (ctor.GetParameters().All(cp => !string.Equals(cp.Name, property, StringComparison.OrdinalIgnoreCase))) errors.Add(new($"/args/{name}/{property}", "unknown-parameter", "Def_Err_UnknownField", $"'{property}' is not a value of {name}."));
+                    else if (!IsSource(EntityJson.Str(propertySource) ?? "")) errors.Add(new($"/args/{name}/{property}", "wrong-source", "Def_Err_Type", "A source is field:name, literal:text or context:employeeId|roles|userName|culture."));
+            }
             else if (source is JsonObject bag)
             {
                 var type = op.Method.GetParameters().First(pp => pp.Name == name).ParameterType;
@@ -138,13 +160,20 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             if (p.ParameterType == typeof(CancellationToken)) continue;
             if (IsSimple(p.ParameterType)) continue;
+            if (p.ParameterType == typeof(byte[]))
+            {
+                // SCRUM-635: the bytes of an uploaded file: args names the form field as file:field and the action names the upload profile
+                if (!(EntityJson.Str(args[p.Name!]) ?? "").StartsWith("file:")) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The file parameter '{p.Name}' of {op.Name} takes file:field."));
+                if (parameters["upload"] is not JsonObject up || !UploadProfiles.ContainsKey(EntityJson.Str(up["profile"]) ?? "")) errors.Add(new("/upload", "required", "Def_Err_Required", $"upload: {{ profile, maxFileMb }} is required for a file parameter; profile is one of: {string.Join(", ", UploadProfiles.Keys)}."));
+                continue;
+            }
             if (IsTextList(p.ParameterType))
             {
                 if (!IsRoles(p)) { if (args.ContainsKey(p.Name!)) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list '{p.Name}' of {op.Name} cannot be set from a definition; leave it out.")); continue; }
                 if (EntityJson.Str(args[p.Name!]) is not "context:roles") errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list parameter '{p.Name}' of {op.Name} is the roles of the user: set it to context:roles."));
                 continue;
             }
-            if (IsBag(p.ParameterType)) continue;
+            if (IsBag(p.ParameterType) || IsInput(p.ParameterType)) continue;
             var ctor = p.ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
             if (ctor is null || ctor.GetParameters().Any(cp => !ContextNames.Contains(cp.Name!)))
                 errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Name} is neither a simple value nor an object built from the context (employeeId, roles, userName, culture)."));
@@ -193,6 +222,39 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return null;
     }
 
+    /// <summary>A result object of the shape { Success, Error, Args } (the Po result of procurement and its kind): the refusal text is the Error, a resource key when the shared resources know it (filled with Args), in both languages.</summary>
+    /// <summary>A result object with Bytes (and FileName, ContentType) is a file for the user to download; a result with Success false is a refusal, not a file (SCRUM-635).</summary>
+    private static FileResult? FileOf(object answer)
+    {
+        var t = answer.GetType();
+        if (t.GetProperty("Bytes")?.GetValue(answer) is not byte[] bytes) return null;
+        if (t.GetProperty("Success")?.GetValue(answer) is false) return null;
+        return new FileResult(bytes, t.GetProperty("FileName")?.GetValue(answer) as string ?? "download", t.GetProperty("ContentType")?.GetValue(answer) as string ?? "application/octet-stream");
+    }
+
+    private static (bool Success, string? Error, object?[] Args)? ResultOf(object answer)
+    {
+        var t = answer.GetType();
+        if (t.GetProperty("Success")?.GetValue(answer) is not bool ok)
+            return t.GetProperty("Succeeded")?.GetValue(answer) is bool done ? (done, t.GetProperty("Message")?.GetValue(answer) as string, [])
+                : t.GetProperty("Message")?.GetValue(answer) is string text && t.IsClass && t != typeof(string) ? (true, text, []) : null;
+        var args = t.GetProperty("Args")?.GetValue(answer) as object?[] ?? [];
+        return (ok, t.GetProperty("Error")?.GetValue(answer) as string, args);
+    }
+
+    private static TranslatableText ResultMessage(IServiceProvider services, (bool Success, string? Error, object?[] Args) result)
+    {
+        var key = result.Error ?? "The operation was refused.";
+        var localizer = services.GetService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>();
+        string In(string culture)
+        {
+            var previous = CultureInfo.CurrentUICulture;
+            try { CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(culture); var s = localizer?[key, result.Args!]; return s is { ResourceNotFound: false } ? s.Value : key; }
+            finally { CultureInfo.CurrentUICulture = previous; }
+        }
+        return TranslatableText.Of(("en", In("en")), ("fa", In("fa")));
+    }
+
     public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
     {
         var op = catalog.Get(EntityJson.Str(invocation.Parameters?["model"]), EntityJson.Str(invocation.Parameters?["action"]));
@@ -201,6 +263,19 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(op.Permission, invocation.Roles, ct)
             || op.Roles.Count > 0 && !invocation.Roles.Any(r => op.Roles.Contains(r, StringComparer.OrdinalIgnoreCase)))      // SCRUM-773: an operation may also name the roles that can run it
             return ActionOutcome.Refused(TranslatableText.Of(("en", "You may not do this."), ("fa", "اجازه‌ی انجام این کار را ندارید.")));
+
+        // SCRUM-781: fields that must be ticked (a confirmation), then a precondition operation of a service (entitlement, state) that must succeed
+        if (invocation.Parameters?["require"] is JsonObject required)
+            foreach (var (field, message) in required)
+                if (invocation.Values.GetValueOrDefault(field) is not ("true" or "on" or "1" or "True"))
+                    return ActionOutcome.Refused(message is JsonObject mo
+                        ? TranslatableText.Of(("en", EntityJson.Str(mo["en"]) ?? "Confirm first."), ("fa", EntityJson.Str(mo["fa"]) ?? "ابتدا تأیید کنید."))
+                        : TranslatableText.Literal(EntityJson.Str(message) ?? "Confirm first."));
+        if (invocation.Parameters?["precondition"] is JsonObject precondition)
+        {
+            var check = await ExecuteAsync(invocation with { Parameters = precondition }, ct);
+            if (!check.Ok) return check;
+        }
 
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
         var identity = invocation.UserName is null ? null : await db.Users.Where(u => u.UserName == invocation.UserName).Select(u => new { u.Id, u.EmployeeId }).FirstOrDefaultAsync(ct);
@@ -230,6 +305,26 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         foreach (var p in op.Method.GetParameters())
         {
             if (p.ParameterType == typeof(CancellationToken)) { values.Add(ct); continue; }
+            if (p.ParameterType == typeof(byte[]))
+            {
+                var source = EntityJson.Str(args[p.Name!]) ?? string.Empty;
+                var fileField = source.StartsWith("file:") ? source[5..] : p.Name!;
+                var file = invocation.Files?.FirstOrDefault(f => f.Field == fileField);
+                if (file is null) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", "Choose a file."), ("fa", "یک فایل انتخاب کنید.")));
+                var upload = invocation.Parameters?["upload"] as JsonObject;
+                var guard = scope.ServiceProvider.GetService<IUploadGuard>();
+                if (guard is null || upload is null || !UploadProfiles.TryGetValue(EntityJson.Str(upload["profile"]) ?? "", out var profile))
+                    return ActionOutcome.Refused(TranslatableText.Of(("en", "The action is not set up."), ("fa", "کنش درست تنظیم نشده است.")));
+                var limitMb = upload["maxFileMb"] is JsonValue lv && lv.TryGetValue<int>(out var mb) ? mb : 0;
+                if (limitMb > 0 && file.Length > limitMb * 1024L * 1024L) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} is larger than {limitMb} MB."), ("fa", $"حجم فایل {file.FileName} بیش از {limitMb} مگابایت است.")));
+                var check = await guard.CheckAsync(profile, file.FileName, file.ContentType, file.Length, file.Open, ct);
+                if (!check.Ok) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} was refused ({check.Error})."), ("fa", $"فایل {file.FileName} رد شد ({check.Error}).")));
+                await using var stream = file.Open();
+                using var buffer = new MemoryStream();
+                await stream.CopyToAsync(buffer, ct);
+                values.Add(buffer.ToArray());
+                continue;
+            }
             if (IsTextList(p.ParameterType))
             {
                 values.Add(IsRoles(p) ? invocation.Roles.ToList() : null);
@@ -245,6 +340,23 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (plainValue && !p.HasDefaultValue && string.IsNullOrWhiteSpace(text))
                     return ActionOutcome.Refused(TranslatableText.Of(("en", $"'{p.Name}' is required."), ("fa", $"«{p.Name}» الزامی است.")));
                 values.Add(converted);
+            }
+            else if (IsInput(p.ParameterType))
+            {
+                var ctor = p.ParameterType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).First();
+                var map = args[p.Name!] as JsonObject ?? [];
+                var built = new List<object?>();
+                foreach (var cp in ctor.GetParameters())
+                {
+                    var source = EntityJson.Str(map.FirstOrDefault(kv => string.Equals(kv.Key, cp.Name, StringComparison.OrdinalIgnoreCase)).Value) ?? "field:" + CamelCase(cp.Name!);
+                    var text = source.StartsWith("literal:") ? source[8..] : source.StartsWith("context:") ? EntityJson.Show(context[source[8..]]) : invocation.Values.GetValueOrDefault(source[6..]);
+                    var converted = EntityJson.Convert(cp.ParameterType, text);
+                    if (converted is EntityJson.NotConvertible) return ActionOutcome.Refused(TranslatableText.Of(("en", $"The value of '{cp.Name}' is not valid."), ("fa", $"مقدار «{cp.Name}» معتبر نیست.")));
+                    var plainValue = cp.ParameterType.IsValueType && Nullable.GetUnderlyingType(cp.ParameterType) is null && cp.ParameterType != typeof(bool);
+                    if (plainValue && string.IsNullOrWhiteSpace(text)) return ActionOutcome.Refused(TranslatableText.Of(("en", $"'{cp.Name}' is required."), ("fa", $"«{cp.Name}» الزامی است.")));
+                    built.Add(converted);
+                }
+                values.Add(ctor.Invoke(built.ToArray()));
             }
             else if (IsBag(p.ParameterType))
             {
@@ -287,6 +399,8 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             bool ok => ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد."))),
             ITuple t when t.Length >= 2 && t[0] is bool success => success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused.")),
+            _ when answer is not null && FileOf(answer) is { } produced => ActionOutcome.Download(produced),
+            _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done(result.Error is null ? null : ResultMessage(scope.ServiceProvider, result)) : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
             _ => ActionOutcome.Done()
         };
         if (outcome.Ok && sectionPlan is not null)

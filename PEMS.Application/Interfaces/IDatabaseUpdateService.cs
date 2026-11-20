@@ -9,6 +9,7 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface IDatabaseUpdateService
 {
+    [PEMS.Application.Common.PemsOperation("DatabaseUpdate", "Status", Roles = "SystemAdmin")]
     Task<DatabaseUpdateStatusDto> GetStatusAsync(CancellationToken ct = default);
 
     /// <summary>
@@ -18,5 +19,6 @@ public interface IDatabaseUpdateService
     /// </summary>
     /// <param name="trigger">"Startup" or "Admin".</param>
     /// <param name="performedBy">User name for admin runs.</param>
+    [PEMS.Application.Common.PemsOperation("DatabaseUpdate", "Apply", Roles = "SystemAdmin")]
     Task<DatabaseUpdateResultDto> ApplyAsync(string trigger, string? performedBy, CancellationToken ct = default);
 }

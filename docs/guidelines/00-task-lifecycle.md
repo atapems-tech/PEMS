@@ -86,6 +86,7 @@ Every issue of the block ends in In Review (conditional done, `qa-pending`, QA c
 - Stopping at a blocker that is a To Do issue of the same area instead of doing it first.
 - Treating "continue" as a reason to skip the audit because the last block did one.
 - Starting a batch's code while its issues were still To Do, so another agent could take one (2026-11-19: claim the batch first).
+- Leaving an issue of a started batch in To Do (owner decision 2026-11-19): while a batch is started, **every issue of it that is To Do, existing or created later for it (an engine input, a gap), goes to In Progress at once**, assigned, in the sprint; In Review only after the merge. An issue that is not part of the started batch stays To Do. **Check it twice**: when the batch starts, and every time you create an issue for the started batch (search `sprint = <id> AND status = "To Do"` before you write code); a started batch with a To Do issue is a collision risk. The same rule is in `plan/sheets/sprint-batches.md`. **The batch table there has a Status column (Not started, Started, In Review, Tested, Closed): update it in the PR that starts the batch, when its last issue goes to In Review, and when its tests run** (owner decision 2026-11-20).
 
 ## 1. Before you start (the "Step 0" checklist)
 

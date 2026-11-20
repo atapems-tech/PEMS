@@ -12,6 +12,26 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+## 2026-11-20 - Text pages as definitions: content-blocks, Performance page (SCRUM-733)
+
+### Added
+- Component `content-blocks` (PEMS.UI): a page that only shows text is a list of blocks written in both languages in a page definition.
+### Changed
+- The Performance testing page is the definition `performance` (page and old-address route); PerformanceController and its view are deleted.
+
+## 2026-11-19 - Platform-owned system fields in shipped forms (SCRUM-515)
+
+### Changed
+- Six shipped forms (po-authority create/edit, routing-rules edit, sod-policies create, storage-routing create/edit) mark their system fields `owner: platform`; business fields stay the customer's.
+
+## 2026-11-19 - Stored file download by definition (SCRUM-615)
+
+### Added
+- Action handler `file.download`: a stored file by key, served only inside the folder the definition names, with the action's permission and roles; returned through `ActionOutcome.Download`.
+
 ## 2026-11-19 - One field-error shape (SCRUM-380)
 
 ### Added
