@@ -346,10 +346,7 @@ public sealed class DefinitionsApiController : ApiControllerBase
     [EndpointDescription("Checks every item (kind, payload, content hash) and creates drafts; nothing is published.")]
     public async Task<IActionResult> Import([FromBody] DefinitionPackageResource package, CancellationToken ct)
     {
-        var items = package.Items?.Select(i => new DefinitionPackageItem(i.Kind ?? "", i.Key ?? "", i.AppKey ?? "core", i.Title.ValueKind == JsonValueKind.Undefined ? "" : i.Title.GetRawText(),
-            i.Description is { ValueKind: not JsonValueKind.Null } d ? d.GetRawText() : null, i.Payload.ValueKind == JsonValueKind.Undefined ? "" : i.Payload.GetRawText(), i.ContentHash ?? "", i.VersionNumber)).ToList()
-            ?? new List<DefinitionPackageItem>();
-        var r = await _service.ImportAsync(new DefinitionPackage(package.Format ?? "", package.ExportedAt, items), Actor, ct);
+        var r = await _service.ImportAsync(package.ToPackage(), Actor, ct);
         if (!r.Success) return Problem(r);
         return StatusCode(StatusCodes.Status201Created, new DefinitionImportResource(r.Value!.Created, r.Value.Updated, r.Value.DefinitionIds));
     }

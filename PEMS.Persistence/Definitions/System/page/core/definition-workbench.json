@@ -154,6 +154,22 @@
           ]
         }
       ]
+    },
+    "regions": {
+      "toolbar": [
+        {
+          "id": "import",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Import package",
+              "fa": "ورود بسته"
+            },
+            "tone": "neutral",
+            "href": "/f/definition-import"
+          }
+        }
+      ]
     }
   }
 }

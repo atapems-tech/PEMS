@@ -72,7 +72,17 @@ public sealed record DefinitionUpstreamResource(bool Customized, bool UpstreamCh
         new(u.Customized, u.UpstreamChanged, u.ShippedVersion, u.BasedOnShippedVersion, u.PublishedVersion, u.Diff.Select(d => new DefinitionDiffEntryResource(d.Pointer, d.Change, d.Published, d.Shipped)).ToList(), u.Truncated);
 }
 
-public sealed record DefinitionPackageResource(string Format, DateTime ExportedAt, IReadOnlyList<DefinitionPackageItemResource> Items);
+public sealed record DefinitionPackageResource(string Format, DateTime ExportedAt, IReadOnlyList<DefinitionPackageItemResource> Items)
+{
+    /// <summary>The package of the application layer (the same mapping the REST import and the import action use); missing parts become empty text.</summary>
+    public PEMS.Application.Definitions.DefinitionPackage ToPackage()
+    {
+        var items = Items?.Select(i => new PEMS.Application.Definitions.DefinitionPackageItem(i.Kind ?? "", i.Key ?? "", i.AppKey ?? "core", i.Title.ValueKind == JsonValueKind.Undefined ? "" : i.Title.GetRawText(),
+            i.Description is { ValueKind: not JsonValueKind.Null } d ? d.GetRawText() : null, i.Payload.ValueKind == JsonValueKind.Undefined ? "" : i.Payload.GetRawText(), i.ContentHash ?? "", i.VersionNumber)).ToList()
+            ?? new List<PEMS.Application.Definitions.DefinitionPackageItem>();
+        return new PEMS.Application.Definitions.DefinitionPackage(Format ?? "", ExportedAt, items);
+    }
+}
 
 public sealed record DefinitionPackageItemResource(string Kind, string Key, string AppKey, JsonElement Title, JsonElement? Description, JsonElement Payload, string ContentHash, int VersionNumber);
 

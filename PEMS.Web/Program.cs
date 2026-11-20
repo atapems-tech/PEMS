@@ -141,6 +141,8 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Defi
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileUploadAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileDownloadAction>();   // SCRUM-615: a stored file by key, inside the folder the definition names
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileExportAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DefinitionExportAction>();   // SCRUM-784
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DefinitionImportAction>();   // SCRUM-784
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionTransaction, PEMS.Web.Definitions.EfActionTransaction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Definitions.WebAuthnStepUpVerifier>();
 // the entity catalog: the master-data entities a definition may list and create, with the permissions that guard them (the code checks them; a definition cannot widen access)
@@ -153,6 +155,8 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.D
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionUsagesGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionLargestGridProvider>();   // SCRUM-455
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionGrowthGridProvider>();   // SCRUM-786
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionVersionsGridProvider>();   // SCRUM-784, 789
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionDiffGridProvider>();   // SCRUM-784
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OwnershipPreflightGridProvider>();   // SCRUM-797
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionHealthGridProvider>();   // SCRUM-786
 // SCRUM-786 (fail closed): the only supported retention of definition versions is forever; any other value would promise a policy that is not active

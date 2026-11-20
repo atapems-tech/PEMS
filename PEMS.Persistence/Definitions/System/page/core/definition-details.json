@@ -216,6 +216,20 @@
             }
           }
         }
+      ],
+      "header": [
+        {
+          "id": "history",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "History and export",
+              "fa": "تاریخچه و خروجی"
+            },
+            "tone": "neutral",
+            "href": "/p/definition-history?ref={{params.id|url}}"
+          }
+        }
       ]
     }
   }
