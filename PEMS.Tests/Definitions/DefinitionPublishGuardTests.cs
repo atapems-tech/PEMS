@@ -26,12 +26,15 @@ public sealed class DefinitionPublishGuardTests
                 : inner.PrecheckRollbackAsync(id, toVersion, ct);
     }
 
-    private static (DefinitionService Service, DefinitionPublishGuard Guard) Build(DefinitionTestWorld w, params int[] failingSmokeVersions)
+    private static (DefinitionService Service, DefinitionPublishGuard Guard) Build(DefinitionTestWorld w, params int[] failingSmokeVersions) => Build(w, null, failingSmokeVersions);
+
+    private static (DefinitionService Service, DefinitionPublishGuard Guard) Build(DefinitionTestWorld w, string? protectedDefinitions, params int[] failingSmokeVersions)
     {
         var (service, _, db) = w.NewService();
         IDefinitionImpact impact = new DefinitionImpactService(db, []);
         if (failingSmokeVersions.Length > 0) impact = new ForcedSmoke(impact, failingSmokeVersions);
-        var guard = new DefinitionPublishGuard(service, impact, new ConfigurationBuilder().Build(), NullLogger<DefinitionPublishGuard>.Instance);
+        var settings = new Dictionary<string, string?> { ["Definitions:ProtectedDefinitions"] = protectedDefinitions };
+        var guard = new DefinitionPublishGuard(service, impact, new ConfigurationBuilder().AddInMemoryCollection(settings).Build(), NullLogger<DefinitionPublishGuard>.Instance);
         return (service, guard);
     }
 
@@ -112,6 +115,29 @@ public sealed class DefinitionPublishGuardTests
         Assert.Equal(PublishStages.RollbackStopped, result.Stage);
         Assert.Contains("not safe either", result.Reason);
         Assert.Equal(2, (await service.GetAsync(id)).Value!.Summary.PublishedVersion);      // no loop, no second rollback
+    }
+
+    [Fact]
+    public async Task A_protected_definition_is_published_by_a_second_person_not_by_the_author_of_the_draft()
+    {
+        var w = new DefinitionTestWorld();
+        var (id, revision) = await PublishedWithDraftAsync(w, DefinitionTestWorld.Form.Replace("Item", "Thing"));
+        var (service, guard) = Build(w, "form:*");
+        var alone = await guard.PublishAsync(id, revision, User, acknowledge: false);                 // "tester" made the draft
+        Assert.Equal(PublishStages.NeedsSecondApprover, alone.Stage);
+        Assert.Equal(1, (await service.GetAsync(id)).Value!.Summary.PublishedVersion);               // nothing was published
+        var second = await guard.PublishAsync(id, revision, "saber", acknowledge: false);
+        Assert.Equal(PublishStages.Published, second.Stage);
+        Assert.Equal(2, (await service.GetAsync(id)).Value!.Summary.PublishedVersion);
+    }
+
+    [Fact]
+    public async Task A_definition_that_is_not_protected_is_published_by_its_author()
+    {
+        var w = new DefinitionTestWorld();
+        var (id, revision) = await PublishedWithDraftAsync(w, DefinitionTestWorld.Form.Replace("Item", "Thing"));
+        var (_, guard) = Build(w, "page:*");
+        Assert.Equal(PublishStages.Published, (await guard.PublishAsync(id, revision, User, acknowledge: false)).Stage);
     }
 
     [Theory]

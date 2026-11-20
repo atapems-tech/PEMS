@@ -38,7 +38,7 @@ public sealed record DefinitionOutcome<T>(T? Value, DefinitionFailure Failure = 
 }
 
 public sealed record DefinitionVersionInfo(int Number, DefinitionStatus Status, string ContentHash, string? ChangeSummary, int? ClonedFromNumber,
-    DateTime CreatedAtUtc, DateTime? ValidatedAtUtc, DateTime? PublishedAtUtc, string? PublishedBy, DateTime? RetiredAtUtc, long Revision);
+    DateTime CreatedAtUtc, DateTime? ValidatedAtUtc, DateTime? PublishedAtUtc, string? PublishedBy, DateTime? RetiredAtUtc, long Revision, string? CreatedBy = null);
 
 public sealed record DefinitionVersionPayload(DefinitionVersionInfo Info, string PayloadJson);
 

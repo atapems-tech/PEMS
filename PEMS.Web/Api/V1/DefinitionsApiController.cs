@@ -298,6 +298,8 @@ public sealed class DefinitionsApiController : ApiControllerBase
         {
             case PEMS.Persistence.Services.PublishStages.Blocked:
                 return ApiProblem.Validation(result.Report.Items.Where(i => i.Severity == "blocked").Select(i => new ApiFieldError(i.Path, "impact-blocked", "Def_Err_Impact", i.Message)).ToList());
+            case PEMS.Persistence.Services.PublishStages.NeedsSecondApprover:
+                return ApiProblem.Build(409, "second-approver-required", "A second approver is required.", detail: result.Reason);
             case PEMS.Persistence.Services.PublishStages.NeedsAcknowledgement:
                 return ApiProblem.Build(409, "breaking-changes-not-acknowledged", "The change has warnings.", detail: result.Reason + " Publish again with acknowledge=true to go on.");
             case PEMS.Persistence.Services.PublishStages.Failed:
