@@ -11,7 +11,7 @@ public sealed class QuickSetupOperations(ISetupService setup, LinkGenerator link
     /// <summary>The pages that were controllers and are definition pages now (the link generator knows no action for them any more).</summary>
     private static string ConvertedPage(string? controller) => controller switch
     {
-        "Employee" => "/p/employees", "Projects" => "/p/projects", "Discipline" => "/p/discipline-workspaces", "PermissionMatrix" => "/p/permission-matrix", _ => ""
+        "Employee" => "/p/employees", "Projects" => "/p/projects", "Discipline" => "/p/discipline-workspaces", "PermissionMatrix" => "/p/permission-matrix", "Team" => "/p/teams", _ => ""
     };
 
     public async Task<List<QuickSetupRow>> StepsAsync(List<string> userRoles)
