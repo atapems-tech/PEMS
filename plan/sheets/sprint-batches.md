@@ -45,7 +45,34 @@ A gap found in a batch is an issue of the same sprint, listed here under the bat
 | 2b | 796 platform field marks (owner decides), 797 ownership preflight report on Database Update and /health/database, 798 ADR for field ownership, 799 prove action.steps with a shipped definition, 800 generic PDF output, 801 download of a stored file by key | 515, 593, 615 |
 | 3b | 784 manager history, diff, export and import screens, 785 used-by and references REST and the check in REST publish, 786 storage growth, cache statistics, retain setting and size warning, 787 fallback and live fa/en RTL/LTR preview, 788 smoke test, post-publish check and auto-rollback, 789 precheck-rollback REST and verdict on the screen, 790 browser tests of the API client, 791 manifest coverage test, 807 apply a feed plan (gap of 583), 808 two-person publish and policy tests (440), 809 page designer canvas (439), 810 form designer rules and sections (604), 811 action designer pickers (606), 812 data-source designer editors (607), 813 menu tree, grants and SoD view (608), 814 migrator center run (582), 815 vendor panel scripts, CSV and preview (584) | 449, 450, 455, 419, 609, 457, 459, 454, 585, 583, 439, 440, 604, 606, 607, 608 |
 
+**Status 2026-11-21:** 1b, 2b and 3b are In Progress as a group while their slices merge, then In Review; the written results and what is still open are in the section "Gap batches 1b, 2b and 3b: written 2026-11-21" below. No build or test ran.
+
 Batch 3 has no open issue of its own left; 612, 613 and 503 (browser QA) were cancelled on 2026-11-20 because there is no QA issue: their checks are lines of SCRUM-768, 437 and 342 (guideline 07 section 1c). The missing QA checklists of 372, 448, 516, 517, 574 to 577, 590 to 592, 594 to 596, 611 and 628 are not gaps: they belong to the owners of those batches (2 and 1).
+
+## Gap batches 1b, 2b and 3b: written 2026-11-21, not built or run (owner decision 2026-11-21: no heavy test or build until the end of the batches)
+
+Started together in one session (21 + 6 issues, all In Progress, then In Review as their slice merged). Everything below is written and merged **without a build or a test run**; the end-of-batch run decides. Merged in PRs 438, 439 and the follow-up of 2026-11-21.
+
+| Issue | What was written | Still open (a line of the issue, not a new issue) |
+|---|---|---|
+| 794 filter bar, 795 related records | `entity-list` takes `filters`; `entity-details` takes `related` (component definition `related-table`) | browser check of both |
+| 791 manifest test | `ChangeManifestCoverageTests`; the manifest names the migration of this batch | run in the Definitions slice |
+| 796, 798 field ownership | `code` of 7 master-data forms is a platform field; ADR-0016 | owner may mark more fields |
+| 799 steps proof | shipped action `warehouses-create-with-location` and its form; tests of commit and rollback | SQL Server rollback proof of two tables (SQL family) |
+| 800 PDF, 801 download | `file.export` format `pdf`; `file.download` `authorizeBy` (record-level decision) | Persian font in the PDF (browser/QA) |
+| 786 storage | growth per month, health grid with cache counters and size warning, `RetainRetiredVersions=forever` in every env file, fail-closed start, no-delete test | numbers move in the browser |
+| 797 preflight report | Database Update page and `/health/database` list form, field, reason | none |
+| 785, 788, 789 safe publish | used-by, references, precheck endpoints; 422 for blocked, 409 for warnings without `acknowledge`, smoke check, auto-rollback with loop guard; verdict per version on the history page | OpenAPI snapshot re-record; the 412 reload prompt of 784; a runtime probe per kind (the smoke check is the reference and validity check today) |
+| 784 history, diff, export, import | page `definition-history`, `definition.export` and `definition.import` actions | browser check |
+| 792, 787 preview | preview host `/preview/component/{key}` and `/preview/definition` (fa/en, RTL/LTR, light/dark) | form preview (a form version is not rendered by the page renderer): QA line |
+| 793 saved views | tables `GridSavedViews` and `AppliedPackages` by migration `20261121010000_Scrum807PackagesAndViews`; data source `grid-views`, actions `grid-view-save` and `grid-view-delete`; the grid script shows them with a scope picker | browser check on two devices; model snapshot check of the hand-written migration |
+| 790 client tests | `tools/js-tests/pems-definition-client.test.js` (stub fetch: 200, 412, 422, 401, 403, retry, autosave) and the documented events | run with `node`; real Playwright against a stub server is not needed for these cases |
+| 807 feed apply, 814 migrator run, 815 vendor panel | `PackageFeedApplier` (entity catalog, permissions, validation, all-or-nothing), `Migrator.Run` with confirmation and history page, CSV rows with key fields and a preview | migration scripts do not travel in packages (code-first migrations travel with the release, decision 2026-10-22); a refeed through the browser |
+| 808 two-person publish | `Definitions:ProtectedDefinitions`; `DefinitionPolicyTableTests` has a test per cell | workflow-platform second approver (not built: a second person with `Definitions.Approve` is the rule) |
+| 809 page designer | edit an option by component id, move a component between regions, preview the draft, history | the drag and drop canvas and undo/redo in the browser (JS) are not written |
+| 810, 811, 812, 813 designers | typed editors for a form field, layout, rules, action guards, entity grid, menu move; operation arguments picker; menu tree page; role grants page; separation-of-duties page | preview with sample data of a data source (the JSON of `/d/{key}?pageSize=5` is the preview); drag reorder of the menu tree in the browser |
+
+To expect in the end-of-batch run (besides the usual order): (1) build: this batch adds C# in `PEMS.Web`, `PEMS.Persistence` and `PEMS.Application` that nobody compiled; (2) re-record the OpenAPI snapshot (`PEMS_GOLDEN_RECORD=1`, new endpoints under `/api/v1/definitions`) and the UI manifest snapshot (`data-grid` has the optional text `viewScopeMe`); (3) `plan/sheets/classification.json` has the new host controller `DefinitionPreviewHostController`; (4) the model-snapshot test and `MigrationCompatibilityRulesTests` read the hand-written migration `20261121010000_Scrum807PackagesAndViews` (written by script from the snapshot, not by `dotnet ef`: if the model test fails, regenerate it with `dotnet ef migrations add` and delete the hand-written files).
 
 ## Combined heavy run: RESULT (2026-11-20)
 

@@ -15,6 +15,11 @@ Batch 3 adds (to expect): the definition workbench (grid providers `definitions`
 
 The issues SCRUM-503, 612 and 613 were cancelled: their checks are lines of the proper issues (SCRUM-342 adoption pass, SCRUM-768 generic hosts and routes, SCRUM-437 converted actions) and of the checklist of every issue in the batches. Step 6 below runs those lines.
 
+## Gap batches 1b, 2b, 3b (written 2026-11-21, not built, not run)
+
+Run them with the combined run after the owner says so. New or changed test classes to expect (all in `PEMS.Tests` unless noted): `ChangeManifestCoverageTests`, `DefinitionStorageHealthTests`, `OwnershipPreflightReportTests`, `DefinitionPublishGuardTests`, `DefinitionPolicyTableTests`, `DefinitionHistoryTests`, `DefinitionPreviewTests`, `GridViewsTests`, `DesignerEditorsTests`, `PackageFeedApplierTests`; extended: `StepActionsTests` (shipped action), `FileActionsTests` (pdf, record-level download), `FileDownloadTests`, `ShippedKinds` (new handlers and providers); node: `node tools/js-tests/pems-definition-client.test.js`. Re-record: OpenAPI snapshot and the `data-grid` UI manifest. SQL-instance lines: the rollback proof of the two-table action, the hand-written migration against a real database, the EF transaction of the feed.
+Browser lines (one per issue, on the issue): history page of a definition (versions, verdict, diff, export, import), preview of a catalog component in fa/en and RTL/LTR, saved views per role on two devices, Database Update preflight table, definition storage page (growth, health), migrator run and history, role grants and separation-of-duties pages, menu tree, a list page with a filter bar, a details page with a child table.
+
 ## Order
 
 1. **Record the new component snapshot** (batch 1 added `record-view`, `matrix`; changed `kpi-tile`, `field`). Only the files that changed are kept:
