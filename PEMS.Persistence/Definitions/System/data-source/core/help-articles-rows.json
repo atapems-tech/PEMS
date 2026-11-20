@@ -16,7 +16,7 @@
     "provider": "operation",
     "parameters": {
       "model": "Help",
-      "action": "Articles"
+      "action": "AdminArticles"
     }
   }
 }

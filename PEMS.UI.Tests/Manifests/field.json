@@ -54,6 +54,12 @@
           "readOnly": {
             "type": "boolean"
           },
+          "owner": {
+            "enum": [
+              "application",
+              "platform"
+            ]
+          },
           "helpText": {
             "oneOf": [
               {

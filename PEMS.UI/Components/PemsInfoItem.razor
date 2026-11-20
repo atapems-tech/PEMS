@@ -6,7 +6,7 @@
     /// <summary>The value markup.</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>True when the page wrote no value (the tag helper sees the rendered child); the empty text shows.</summary>
-    [Parameter] public bool Empty { get; set; }
+    [Parameter, PEMS.UI.Rendering.PemsHostSet] public bool Empty { get; set; }
     private string ItemCss => Options.Wide ? "pems-info__item pems-info__item--wide" : "pems-info__item";
     private string ValueCss
     {

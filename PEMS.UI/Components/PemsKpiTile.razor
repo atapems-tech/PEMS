@@ -13,7 +13,7 @@ else
     /// <summary>The value markup (a count, a decimal, "42 &lt;small&gt;%&lt;/small&gt;").</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>True when the page wrote no value: a dash shows.</summary>
-    [Parameter] public bool Empty { get; set; }
+    [Parameter, PEMS.UI.Rendering.PemsHostSet] public bool Empty { get; set; }
     private string Css
     {
         get

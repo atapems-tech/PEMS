@@ -45,6 +45,7 @@ internal static class EntityCatalogDefaults
         .Add<StorageRoute>("StorageRouteId", e => e.Roles(AdminRoles, null).Readable("Module", "DocumentType", "StorageProviderId", "RelativeRootPath", "IsEnabled", "IsDefault", "Priority"))
         .Add<StorageProvider>("StorageProviderId", e => e.Roles(AdminRoles, null).Readable("Name", "Code", "ProviderType", "Host", "Port", "Username", "RootPath", "BaseUrl", "UseSsl", "UsePassiveMode", "AllowRead", "AllowWrite", "AllowDelete", "IsEnabled", "IsDefault", "LastHealthStatus", "LastHealthCheckAt"))
         // read-only registrations used for related counts and labels
+        .Add<Equipment>("EquipmentId", e => e.Read("Equipment.View").Readable("TagNumber", "Name"))   // SCRUM-667: the choices of the AI tag approval form
         .Add<ApplicationUser>("Id", e => e.Roles(AdminRoles, null).Readable("UserName"))
         .Add<Permission>("PermissionId", e => e.Roles(AdminRoles, null).Readable("Name", "IsActive"))
         .Add<Employee>("EmployeeId", e => e.Roles(OrganizationRoles, OrganizationRoles)   // SCRUM-687: the edit form loads the row and entity.update writes the personal fields (the checks are the Employee.ValidateEdit operation)

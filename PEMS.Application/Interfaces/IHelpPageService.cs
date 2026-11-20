@@ -19,7 +19,7 @@ public class HelpHistoryRowDto { public int ArticleId { get; set; } public DateT
 /// <summary>SCRUM-634: the Admin Help (articles, visuals, standard references) as operations of a page service; the rules stay in IHelpService, IHelpVisualService and IHelpStandardReferenceService. SystemAdmin and EngineeringManager only, as the controller.</summary>
 public interface IHelpPageService
 {
-    [PEMS.Application.Common.PemsOperation("Help", "Articles", Roles = "SystemAdmin,EngineeringManager")]
+    [PEMS.Application.Common.PemsOperation("Help", "AdminArticles", Roles = "SystemAdmin,EngineeringManager")]
     Task<List<HelpArticleSummaryDto>> ArticlesAsync();
 
     [PEMS.Application.Common.PemsOperation("Help", "ArticleOf", Roles = "SystemAdmin,EngineeringManager")]

@@ -45,7 +45,7 @@ public static class ComponentManifestGenerator
 
         var all = ParametersOf(component);
         var parameters = all.Select(p => new ManifestParameter(CamelCase(p.Name), p.PropertyType.Name, KindOf(p.PropertyType), p.GetCustomAttribute<EditorRequiredAttribute>() is not null)).ToList();
-        var data = all.Where(p => KindOf(p.PropertyType) == "option").ToList();
+        var data = all.Where(p => KindOf(p.PropertyType) == "option" && p.GetCustomAttribute<PemsHostSetAttribute>() is null).ToList();
 
         // One required parameter named Options: the instance options JSON is that record itself (the common case: button, badge, states).
         string? optionsParameter = null;

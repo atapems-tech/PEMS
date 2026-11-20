@@ -18,6 +18,7 @@ public sealed class DisciplineDefinitionsTests
     [InlineData("DisciplineMaster", "Create", "DisciplineMaster.Create")]
     [InlineData("DisciplineMaster", "Update", "DisciplineMaster.Edit")]
     [InlineData("DisciplineMaster", "SetActive", "DisciplineMaster.Edit")]
+    [InlineData("DisciplineWorkspace", "Workspaces", "DisciplineWorkspace.View")]
     [InlineData("DisciplineWorkspace", "Summary", "DisciplineWorkspace.View")]
     public void The_operations_keep_the_permission_the_controller_checked(string model, string action, string permission)
         => Assert.Equal(permission, Operations.Get(model, action)?.Permission);
@@ -47,7 +48,7 @@ public sealed class DisciplineDefinitionsTests
     [Fact]
     public void The_grids_read_through_registered_operations()
     {
-        foreach (var (key, model, action) in new[] { ("disciplines-grid", "DisciplineMaster", "List"), ("discipline-workspaces-grid", "DisciplineWorkspace", "Summary") })
+        foreach (var (key, model, action) in new[] { ("disciplines-grid", "DisciplineMaster", "List"), ("discipline-workspaces-grid", "DisciplineWorkspace", "Workspaces") })
         {
             var parameters = Shipped("data-source", key)["parameters"]!.AsObject();
             Assert.Equal((model, action), ((string?)parameters["model"], (string?)parameters["action"]));
