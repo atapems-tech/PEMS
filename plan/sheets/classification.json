@@ -183,6 +183,12 @@
     },
     {
       "kind": "controller",
+      "type": "PEMS.Web.Controllers.DefinitionPreviewHostController",
+      "status": "host",
+      "reason": "generic preview host of the definition workbench (SCRUM-792, 787): renders a component sample or a page version in a language, direction and theme"
+    },
+    {
+      "kind": "controller",
       "type": "PEMS.Web.Controllers.DataHostController",
       "status": "host",
       "reason": "generic host, sign-in or infrastructure controller: code by decision"
