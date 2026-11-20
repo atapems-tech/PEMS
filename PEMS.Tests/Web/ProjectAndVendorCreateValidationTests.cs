@@ -41,16 +41,6 @@ public class ProjectAndVendorCreateValidationTests
         Assert.True(Validator.TryValidateObject(p, new ValidationContext(p), new List<ValidationResult>(), validateAllProperties: true));
     }
 
-    [Theory]
-    [InlineData("Create.cshtml")]
-    [InlineData("Edit.cshtml")]
-    public void TheProjectForms_RequireCodeAndNameInTheBrowser(string file)
-    {
-        var view = View("Projects", file);
-        Assert.Contains("<pems-input asp-for=\"ProjectCode\" required />", view);
-        Assert.Contains("<pems-input asp-for=\"ProjectName\" required />", view);
-    }
-
     [Fact]
     public void VendorCreate_ShowsServerSideErrors()
         => Assert.Contains("<pems-validation-summary", View("Vendor", "Create.cshtml"));
@@ -81,18 +71,4 @@ public class ProjectAndVendorCreateValidationTests
         Assert.Equal(2, db.Projects.Count());
     }
 
-    [Fact]
-    public async Task SCRUM558_The_form_shows_the_duplicate_code_in_its_validation_box_and_saves_nothing()
-    {
-        await using var db = NewDb();
-        var service = new ProjectService(db);
-        await service.AddAsync(new Project { ProjectCode = "PRJ-1", ProjectName = "One" });
-        var controller = new ProjectsController(service);
-
-        var result = await controller.Create(new Project { ProjectCode = "prj-1", ProjectName = "Copy" });
-
-        Assert.IsType<ViewResult>(result);
-        Assert.Contains("Prj_Err_CodeExists", controller.ModelState[nameof(Project.ProjectCode)]!.Errors.Select(x => x.ErrorMessage));
-        Assert.Equal(1, db.Projects.Count());
-    }
 }

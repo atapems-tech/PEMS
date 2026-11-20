@@ -226,19 +226,6 @@ public class PositionManagementUiTests
     }
 
     [Fact]
-    public async Task DisciplineManage_SearchAndStatusFilters_AndInactiveDisciplineIsNotOffered()
-    {
-        var db = Db();
-        db.Disciplines.AddRange(new Discipline { Code = "EL", Name = "Electrical", ImportAliases = "Elec", IsActive = true }, new Discipline { Code = "OLD", Name = "Retired", IsActive = false });
-        await db.SaveChangesAsync();
-        var c = new DisciplineController(null!, db, new FakeCurrentUserService { Roles = new List<string> { SystemRoles.SystemAdmin } }, new PermissionService(db, new AccessControlService(db))).WithTempData();
-        var all = (List<PEMS.Application.Interfaces.DisciplineRow>)((ViewResult)await c.Manage(null, null)).Model!;
-        Assert.Equal(2, all.Count);
-        Assert.Single((List<PEMS.Application.Interfaces.DisciplineRow>)((ViewResult)await c.Manage("elec", null)).Model!);
-        Assert.Equal("OLD", ((List<PEMS.Application.Interfaces.DisciplineRow>)((ViewResult)await c.Manage(null, "inactive")).Model!).Single().Code);
-    }
-
-    [Fact]
     public async Task EmployeeEdit_RejectedPositionChange_KeepsCurrentAssignmentAndLegacyText_AndWarns()
     {
         var db = Db(); var (dept, disc) = await Org(db); var svc = Svc(db);

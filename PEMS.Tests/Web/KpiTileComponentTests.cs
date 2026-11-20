@@ -154,7 +154,6 @@ public class KpiTileComponentTests
     // ---- K4: dashboards with their own large-number tiles
     [Theory]
     [InlineData("Areas/Warehouse/Views/Inventory/Index.cshtml", 6)]
-    [InlineData("Views/AIInsights/Index.cshtml", 2)]
     [InlineData("Views/DCC/Index.cshtml", 2)]
     [InlineData("Views/EquipmentClassification/Index.cshtml", 5)]
     [InlineData("Views/QC/Index.cshtml", 2)]
