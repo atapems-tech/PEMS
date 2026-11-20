@@ -30,6 +30,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Import center as a definition page (SCRUM-706)
+
+### Changed
+- /p/import-center (grid over `ImportCenter.Entries`) replaces ImportCenterController and its view; the employee and instrument spreadsheet imports are now forms (/f/employee-import, /f/instrument-import) over `IImportCenterOperations` and their controller actions are removed.
 ## 2026-11-20 - Warehouse bilingual review polish (SCRUM-540)
 
 - Material details, stock movement labels, receive/edit dialogs and warehouse barcode messages now use the selected language. The part catalogue report shares one period display formatter with its Excel export, eliminating duplicated All time captions.

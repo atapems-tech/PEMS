@@ -60,7 +60,7 @@ public class ImportCenterNavigationTests
     [Fact]
     public void EveryCatalogEntry_PointsToAnExistingControllerAction()
     {
-        var asm = typeof(ImportCenterController).Assembly;
+        var asm = typeof(ImportCatalog).Assembly;
         foreach (var e in ImportCatalog.All)
         {
             var type = ControllerType(asm, e);
@@ -91,7 +91,7 @@ public class ImportCenterNavigationTests
     [Fact]
     public void EveryControllerWithFileUploadAction_IsInCatalog_OrExplicitlyExcluded()
     {
-        var asm = typeof(ImportCenterController).Assembly;
+        var asm = typeof(ImportCatalog).Assembly;
         var catalogControllers = ImportCatalog.All.Select(e => e.Controller).ToHashSet();
         var offenders = new List<string>();
 
@@ -169,23 +169,6 @@ public class ImportCenterNavigationTests
         Assert.Contains(spy.Asked, a => a.Module == "MDRImport" && a.Action == "View");
     }
 
-    [Fact]
-    public async Task ImportCenterController_Index_ReturnsOnlyImportsTheUserMayOpen()
-    {
-        var spy = new SpyPermissionService();
-        spy.Denied.Add("MrsImport");
-        var controller = new ImportCenterController(spy, new FakeCurrentUserService { Roles = new List<string> { SystemRoles.SystemAdmin } })
-        {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext { User = UserWith(SystemRoles.SystemAdmin) } }
-        };
-
-        var view = Assert.IsType<ViewResult>(await controller.Index());
-        var model = Assert.IsAssignableFrom<IReadOnlyList<ImportCatalog.ImportEntry>>(view.Model);
-
-        Assert.Equal(13, model.Count); // 14 در کاتالوگ منهای Mrs (رد مجوز)
-        Assert.DoesNotContain(model, e => e.Key == "Mrs");
-    }
-
     // ---------- (5) old scattered sidebar links are gone, one entry remains ----------
 
     // مسیر را از محل خودِ فایل تست پیدا می‌کند (نه از پوشه‌ی خروجی Build) تا از هر خروجی اجرا شود
@@ -261,7 +244,7 @@ public class ImportCenterNavigationTests
         {
             Assert.Equal("Import", e.Action);
             Assert.False(string.IsNullOrEmpty(e.Accept));
-            var type = ControllerType(typeof(ImportCenterController).Assembly, e)!;
+            var type = ControllerType(typeof(ImportCatalog).Assembly, e)!;
             var post = type.GetMethods().Single(m => m.Name == "Import" && m.GetCustomAttributes<HttpPostAttribute>().Any());
             Assert.Contains(post.GetParameters(), p => p.ParameterType == typeof(IFormFile));
         }
