@@ -98,7 +98,6 @@ public class KpiTileComponentTests
 
     [Theory]
     [InlineData("Views/Discipline/Details.cshtml", 6)]
-    [InlineData("Views/EngineeringDashboard/Index.cshtml", 3)]
     [InlineData("Views/EngineeringDocumentIntelligence/Index.cshtml", 4)]
     [InlineData("Views/OCRProcessing/Index.cshtml", 4)]
     [InlineData("Views/Home/Index.cshtml", 1)]

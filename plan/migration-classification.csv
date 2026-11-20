@@ -41,7 +41,6 @@ Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,prop
 ,DocumentRevisions,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,page-definition,proposed,view-only pages: page definitions
 ,DocumentUpload,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,DocumentWorkflow,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
-,EngineeringDashboard,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,EngineeringDocumentIntelligence,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,EngineeringDocuments,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,MDB,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions

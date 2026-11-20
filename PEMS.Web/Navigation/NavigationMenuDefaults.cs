@@ -60,7 +60,7 @@ public static class NavigationMenuDefaults
         // ---- مدیریت مهندسی
         Section("sec.eng", 100, "EngineeringManagement", "bi-building", "Module:EngineeringManagement",
             "EngineeringDashboard,Projects,EngineeringDocuments,DocumentRegister,DocumentRevisions,DocumentWorkflow,VDR,Transmittal,MDB"),
-        Link("eng.dashboard", "sec.eng", 10, "EngineeringDashboard", "bi-speedometer2", "EngineeringDashboard"),
+        new("eng.dashboard", "sec.eng", L, 10, "EngineeringDashboard", "bi-speedometer2", Always, ExternalPath: "/p/engineering-dashboard"),   // SCRUM-688: a definition page (/p/...)
         new("eng.projects", "sec.eng", L, 20, "Projects", "bi-kanban", Always, ExternalPath: "/p/projects"),   // SCRUM-740: a definition page (/p/...), not a controller
         Link("eng.documents", "sec.eng", 30, "EngineeringDocuments", "bi-file-earmark-text", "EngineeringDocuments"),
         Link("eng.register", "sec.eng", 40, "DocumentRegister", "bi-journal-bookmark", "DocumentRegister"),
