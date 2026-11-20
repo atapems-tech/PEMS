@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
+using PEMS.Application.Exceptions;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
 using PEMS.Web.Resources;
@@ -123,12 +124,18 @@ public class TransmittalController : Controller
             var id = await _service.CreateAsync(transmittalNo, projectId, from, to, purpose, description,
                 documentIds!, responseRequired, recipients);
 
-            TempData["Message"] = "Transmittal created successfully";
+            TempData["Message"] = T("Transmittal created successfully");
             return RedirectToAction(nameof(Details), new { id });
         }
-        catch (InvalidOperationException ex)
+        catch (PemsException ex) when (ex.Code is "transmittal-code-required" or "transmittal-code-duplicate" or "transmittal-documents-held")
         {
-            ModelState.AddModelError(string.Empty, ex.Message);
+            var key = ex.Code switch
+            {
+                "transmittal-code-required" => "Transmittal_CreateCodeRequired",
+                "transmittal-code-duplicate" => "Transmittal_CreateCodeDuplicate",
+                _ => "Transmittal_CreateDocumentsHeld"
+            };
+            ModelState.AddModelError(string.Empty, T(key));
             await LoadCreateViewBagsAsync();
             ViewData["Title"] = "New Transmittal";
             ViewData["Section"] = "Engineering Management";

@@ -15,8 +15,8 @@
     <pems-form asp-action="Create" method="post">
         <pems-row gap="3">
             <pems-col md="6">
-                <pems-label>Transmittal No</pems-label>
-                <pems-input name="transmittalNo" placeholder="e.g. TR-2026-001" required />
+                <pems-label>@Localizer["Transmittal code"]</pems-label>
+                <pems-input name="transmittalNo" placeholder="@Localizer["Transmittal_FinalCodeExample"]" data-required-message="@Localizer["The {0} field is required.", Localizer["Transmittal code"].Value]" required />
             </pems-col>
             <pems-col md="6">
                 <pems-label>@Localizer["Project"]</pems-label>
@@ -29,29 +29,29 @@
             </pems-col>
             <pems-col md="6">
                 <pems-label>@Localizer["From"]</pems-label>
-                <pems-input name="from" placeholder="e.g. Engineering Department" required />
+                <pems-input name="from" placeholder="@Localizer["Transmittal_FromExample"]" data-required-message="@Localizer["The {0} field is required.", Localizer["From"].Value]" required />
             </pems-col>
             <pems-col md="6">
-                <pems-label>To <span class="text-muted small">(free-text summary - optional if recipients added below)</span></pems-label>
-                <pems-input name="to" placeholder="e.g. Contractor XYZ" />
+                <pems-label>@Localizer["To"] <span class="text-muted small">@Localizer["Transmittal_ToHint"]</span></pems-label>
+                <pems-input name="to" placeholder="@Localizer["Transmittal_ToExample"]" />
             </pems-col>
             <pems-col md="6">
                 <pems-label>@Localizer["Purpose"]</pems-label>
                 <pems-select name="purpose">
                     <option value="IFA">@Localizer["IFA - Issued for Approval"]</option>
                     <option value="IFR">@Localizer["IFR - Issue for Review and Comments"]</option>
-                    <option value="IFI">IFI - Issue for Information</option>
+                    <option value="IFI">@Localizer["IFI - Issue for Information"]</option>
                     <option value="FI">@Localizer["FI - Final Issue (without comments)"]</option>
                     <option value="For Approval">@Localizer["For Approval (legacy)"]</option>
                     <option value="For Construction">@Localizer["For Construction (legacy)"]</option>
                     <option value="For Information" selected>@Localizer["For Information (legacy)"]</option>
-                    <option value="For Review">For Review (legacy)</option>
+                    <option value="For Review">@Localizer["For Review (legacy)"]</option>
                 </pems-select>
             </pems-col>
             <pems-col md="6" css="d-flex align-items-end">
                 <pems-check-row>
                     <pems-input kind="check" type="checkbox" name="responseRequired" value="true" id="responseRequired" />
-                    <label class="form-check-label" for="responseRequired">Response Required</label>
+                    <label class="form-check-label" for="responseRequired">@Localizer["Response Required"]</label>
                     <input type="hidden" name="responseRequired" value="false" />
                 </pems-check-row>
             </pems-col>
@@ -61,20 +61,20 @@
             </pems-col>
 
             <pems-col span="12">
-                <pems-label css="d-block">Recipients <span class="text-muted small">(structured - required)</span></pems-label>
+                <pems-label css="d-block">@Localizer["Recipients"] <span class="text-muted small">@Localizer["Transmittal_RecipientsHint"]</span></pems-label>
                 <div id="recipientRows"></div>
-                <pems-button tone="neutral" size="small" outline="true" css="mt-1" type="button" id="addRecipientBtn"><pems-icon name="bi-plus-lg" /> Add Recipient</pems-button>
+                <pems-button tone="neutral" size="small" outline="true" css="mt-1" type="button" id="addRecipientBtn"><pems-icon name="bi-plus-lg" /> @Localizer["Transmittal_AddRecipient"]</pems-button>
             </pems-col>
 
             <pems-col span="12">
                 <pems-flex justify="between" align="center" wrap="true" gap="2">
-                    <pems-label css="d-block mb-0">Documents to include</pems-label>
-                    <span class="small text-muted" id="docPickerCounter"></span>
+                    <pems-label css="d-block mb-0">@Localizer["Transmittal_DocumentsToInclude"]</pems-label>
+                    <span class="small text-muted" id="docPickerCounter" data-format="@Localizer["Transmittal_DocumentCounter"]"></span>
                 </pems-flex>
                 <pems-text class="text-muted small mb-1">
-                    Only showing documents from the selected project. Documents on Hold cannot be transmitted. Type to search by number or title.
+                    @Localizer["Transmittal_DocumentPickerHint"]
                 </pems-text>
-                <pems-input scale="small" css="mb-2" type="text" id="docPickerSearch" placeholder="Search by document number or title..." />
+                <pems-input scale="small" css="mb-2" type="text" id="docPickerSearch" placeholder="@Localizer["Transmittal_DocumentSearch"]" />
                 <div class="border rounded p-2 pems-scroll-320" id="docPickerList">
                     @foreach (var d in documents)
                     {
@@ -82,7 +82,7 @@
                             <pems-input type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" kind="check" css="doc-picker-checkbox" />
                             <label class="form-check-label" for="doc_@d.DocumentId">
                                 @d.DocumentNo - @d.Title
-                                <span class="text-muted small">(Rev @d.RevisionNo &middot; @d.DisciplineName &middot; @d.Status)</span>
+                                <span class="text-muted small">(@Localizer["Rev"] @d.RevisionNo &middot; @(d.DisciplineName == "Unassigned" ? Localizer["Unassigned"].Value : (string)d.DisciplineName) &middot; @Localizer[(string)d.Status])</span>
                                 @if ((bool)d.IsOnHold)
                                 {
                                     <pems-badge tone="warning">@Localizer["On Hold"]</pems-badge>
@@ -93,13 +93,13 @@
                 </div>
                 @if (!documents.Any())
                 {
-                    <pems-text class="text-muted small mb-0">No documents available.</pems-text>
+                    <pems-text class="text-muted small mb-0">@Localizer["Transmittal_NoDocuments"]</pems-text>
                 }
             </pems-col>
         </pems-row>
 
         <pems-action-bar css="mt-4">
-            <pems-button tone="primary" type="submit">Create Transmittal</pems-button>
+            <pems-button tone="primary" type="submit">@Localizer["Create Transmittal"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </pems-action-bar>
     </pems-form>
@@ -110,7 +110,7 @@
         <pems-col md="3"><pems-input scale="small" name="recipientName" placeholder="@Localizer["Name"]" /></pems-col>
         <pems-col md="3">
             <pems-select scale="small" name="recipientType">
-                <option value="External">External</option>
+                <option value="External">@Localizer["External"]</option>
                 <option value="Internal">@Localizer["Internal"]</option>
                 <option value="Vendor">@Localizer["Vendor"]</option>
                 <option value="Client">@Localizer["Client"]</option>
@@ -119,7 +119,7 @@
         <pems-col md="3"><pems-input scale="small" name="recipientOrganization" placeholder="@Localizer["Organization"]" /></pems-col>
         <pems-col md="2" css="form-check">
             <pems-input kind="check" type="checkbox" name="recipientResponseRequired" value="true" />
-            <label class="form-check-label small">Response req.</label>
+            <label class="form-check-label small">@Localizer["Response Required"]</label>
         </pems-col>
         <pems-col md="1"><pems-button tone="danger" size="small" outline="true" css="remove-recipient-btn" type="button"><pems-icon name="bi-x-lg" /></pems-button></pems-col>
     </pems-row>

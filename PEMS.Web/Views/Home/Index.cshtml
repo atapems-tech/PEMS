@@ -11,7 +11,7 @@
 {
     <pems-alert tone="warning" css="d-flex align-items-start gap-2">
         <pems-icon name="bi-exclamation-triangle-fill" css="mt-1" />
-        <div class="small">@ViewBag.DashboardWarning</div>
+        <div class="small">@Localizer["Dashboard_SchemaWarning", (string)ViewBag.DashboardWarning]</div>
     </pems-alert>
 }
 
@@ -23,7 +23,7 @@
     <pems-content-card css="mb-4">
         <pems-flex justify="between" align="center" wrap="true" gap="2" css="mb-2">
             <pems-heading level="6" class="mb-0"><pems-icon name="bi-rocket-takeoff" /> @Localizer["System Setup"]</pems-heading>
-            <span class="text-muted small">@setupStatus.CompletedCount of @setupStatus.TotalCount setup areas ready</span>
+            <span class="text-muted small">@Localizer["Dashboard_SetupProgress", setupStatus.CompletedCount, setupStatus.TotalCount]</span>
         </pems-flex>
         <pems-progress value="@setupStatus.PercentComplete" height="18px" css="mb-3">@setupStatus.PercentComplete%</pems-progress>
         <pems-button as="a" tone="none" size="small" css="btn-primary" asp-controller="QuickSetup" asp-action="Index">@Localizer["Continue Setup"]</pems-button>
@@ -43,7 +43,7 @@
         {
             <div class="text-center text-muted py-4">
                 <pems-icon name="bi-emoji-smile" css="pems-s-4361a2ff" />
-                <pems-text class="mb-0 mt-2">You're all caught up. No items currently require your attention.</pems-text>
+                <pems-text class="mb-0 mt-2">@Localizer["Dashboard_AllCaughtUp"]</pems-text>
             </div>
         }
         else
@@ -54,11 +54,11 @@
                     <pems-col md="4">
                         <pems-link asp-controller="Permit" asp-action="Index" asp-route-pendingMyApproval="true"
                            class="d-block p-2 rounded text-decoration-none"
-                           aria-label="@myWork.PendingPermitApprovals Permit Approvals waiting for your approval"><pems-flex align="center" gap="3">
+                           aria-label="@myWork.PendingPermitApprovals @Localizer["Dashboard_PermitApprovals"]"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.PendingPermitApprovals > 0 ? "bg-icon-red" : "bg-icon-slate")"><pems-icon name="bi-shield-check" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.PendingPermitApprovals</div>
-                                <div class="small text-muted">Permit Approvals waiting for you</div>
+                                <div class="small text-muted">@Localizer["Dashboard_PermitApprovals"]</div>
                             </div>
                         </pems-flex></pems-link>
                     </pems-col>
@@ -68,11 +68,11 @@
                     <pems-col md="4">
                         <pems-link asp-controller="WorkOrder" asp-action="Index" asp-route-assignedToMe="true"
                            class="d-block p-2 rounded text-decoration-none"
-                           aria-label="@myWork.MyWorkOrdersCount Work Orders assigned to you"><pems-flex align="center" gap="3">
+                           aria-label="@myWork.MyWorkOrdersCount @Localizer["Dashboard_AssignedWorkOrders"]"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.MyWorkOrdersCount > 0 ? "bg-icon-orange" : "bg-icon-slate")"><pems-icon name="bi-clipboard-check" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.MyWorkOrdersCount</div>
-                                <div class="small text-muted">Work Orders assigned to you</div>
+                                <div class="small text-muted">@Localizer["Dashboard_AssignedWorkOrders"]</div>
                             </div>
                         </pems-flex></pems-link>
                     </pems-col>
@@ -82,11 +82,11 @@
                     <pems-col md="4">
                         <pems-link asp-controller="Letter" asp-action="MyReferrals"
                            class="d-block p-2 rounded text-decoration-none"
-                           aria-label="@myWork.MyReferralsCount Correspondence Referrals requiring your action"><pems-flex align="center" gap="3">
+                           aria-label="@myWork.MyReferralsCount @Localizer["Dashboard_Referrals"]"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.MyReferralsCount > 0 ? "bg-icon-blue" : "bg-icon-slate")"><pems-icon name="bi-envelope-paper" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.MyReferralsCount</div>
-                                <div class="small text-muted">Referrals requiring your action</div>
+                                <div class="small text-muted">@Localizer["Dashboard_Referrals"]</div>
                             </div>
                         </pems-flex></pems-link>
                     </pems-col>
@@ -110,11 +110,11 @@
                     <pems-col md="4">
                         <pems-link asp-controller="EngineeringDocuments" asp-action="Index"
                            class="d-block p-2 rounded text-decoration-none"
-                           aria-label="@myWork.PendingDocumentReviewsCount Engineering Documents awaiting your review or approval"><pems-flex align="center" gap="3">
+                           aria-label="@myWork.PendingDocumentReviewsCount @Localizer["Dashboard_DocumentReviews"]"><pems-flex align="center" gap="3">
                             <div class="kpi-icon @(myWork.PendingDocumentReviewsCount > 0 ? "bg-icon-purple" : "bg-icon-slate")"><pems-icon name="bi-file-earmark-check" /></div>
                             <div>
                                 <div class="kpi-value">@myWork.PendingDocumentReviewsCount</div>
-                                <div class="small text-muted">Documents awaiting your review</div>
+                                <div class="small text-muted">@Localizer["Dashboard_DocumentReviews"]</div>
                             </div>
                         </pems-flex></pems-link>
                     </pems-col>
@@ -129,8 +129,14 @@
 <pems-row gap="3" css="mb-4">
     @foreach (var kpi in Model.KpiCards)
     {
+        var localizedKpi = new PEMS.Web.Models.KpiCardViewModel
+        {
+            Title = Localizer[kpi.Title].Value,
+            Hint = string.IsNullOrEmpty(kpi.Hint) ? null : Localizer[kpi.Hint].Value,
+            Count = kpi.Count, IconClass = kpi.IconClass, ColorClass = kpi.ColorClass, Url = kpi.Url
+        };
         <pems-col md="3" sm="6">
-            <pems-kpi-tile model="kpi" />
+            <pems-kpi-tile model="localizedKpi" />
         </pems-col>
     }
 </pems-row>
@@ -143,7 +149,7 @@
             <pems-heading level="6" class="mb-3">@Localizer["Documents by Status"]</pems-heading>
             @* SCRUM-337 C3: the shared chart host (Bklit donut with its hover-linked legend) *@
             @{ var docsDonut = PEMS.Web.Models.BkChartSpec.Donut(Localizer["Documents by Status"].Value, Localizer["No documents to chart yet."].Value,
-                   Localizer["Documents"].Value, Model.DocumentsByStatus.Select(kv => (kv.Key, (double)kv.Value))); }
+                   Localizer["Documents"].Value, Model.DocumentsByStatus.Select(kv => (Localizer[kv.Key].Value, (double)kv.Value))); }
             <pems-chart spec="@docsDonut" />
         </pems-content-card>
     </pems-col>
@@ -196,12 +202,12 @@
 
             <div class="@colClass">
                 <pems-content-card css="h-100">
-                    <pems-heading level="6" class="mb-3">@w.DisplayName</pems-heading>
+                    <pems-heading level="6" class="mb-3">@Localizer[w.DisplayName]</pems-heading>
                     @if (value is List<string> list)
                     {
                         <pems-bullet-list class="list-unstyled small mb-0">
                             @foreach (var item in list) { <pems-bullet class="border-bottom py-1">@item</pems-bullet> }
-                            @if (!list.Any()) { <pems-bullet class="text-muted">Nothing to show</pems-bullet> }
+                            @if (!list.Any()) { <pems-bullet class="text-muted">@Localizer["Dashboard_NothingToShow"]</pems-bullet> }
                         </pems-bullet-list>
                     }
                     else
@@ -217,7 +223,7 @@ else
 {
     <div class="text-center mt-3">
         <pems-button tone="primary" size="small" outline="true" as="a" asp-controller="DashboardSettings" asp-action="Index">
-            <pems-icon name="bi-sliders" /> Customize your dashboard
+            <pems-icon name="bi-sliders" /> @Localizer["Dashboard_Customize"]
         </pems-button>
     </div>
 }

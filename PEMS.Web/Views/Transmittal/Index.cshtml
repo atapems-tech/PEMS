@@ -53,7 +53,7 @@
                             <pems-table-cell class="small">@t.ProjectName</pems-table-cell>
                             <pems-table-cell class="small">@t.From</pems-table-cell>
                             <pems-table-cell class="small">@t.To</pems-table-cell>
-                            <pems-table-cell class="vs-hide-md small">@t.Purpose</pems-table-cell>
+                            <pems-table-cell class="vs-hide-md small">@VdrUi.Loc(Localizer, "Transmittal_Purpose_", t.Purpose)</pems-table-cell>
                             <pems-table-cell><span class="vs-pill vs-pill--neutral vs-num">@t.ItemsCount</span></pems-table-cell>
                             <pems-table-cell>
                                 <span class="vs-pill @VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span>

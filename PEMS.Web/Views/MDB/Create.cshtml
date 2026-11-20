@@ -41,7 +41,7 @@
                 </pems-select>
             </pems-col>
             <pems-col md="6">
-                <pems-label>Purchase Order <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
+                <pems-label>@Localizer["Purchase Order"] <span class="text-muted small">@Localizer["(optional)"]</span></pems-label>
                 <pems-select name="poId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var po in pos)
@@ -51,13 +51,13 @@
                 </pems-select>
             </pems-col>
             <pems-col md="6">
-                <pems-label>Planned Final Issue Date <span class="text-muted small">(index due 4 weeks before)</span></pems-label>
+                <pems-label>@Localizer["MDB_PlannedFinalIssueDate"] <span class="text-muted small">@Localizer["MDB_IndexDueHint"]</span></pems-label>
                 <pems-date name="plannedFinalIssueDate" />
             </pems-col>
         </pems-row>
 
         <pems-action-bar css="mt-4">
-            <pems-button tone="primary" type="submit">Create MDB</pems-button>
+            <pems-button tone="primary" type="submit">@Localizer["MDB_Create"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </pems-action-bar>
     </pems-form>

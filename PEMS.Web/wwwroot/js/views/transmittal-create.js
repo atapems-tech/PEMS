@@ -7,6 +7,13 @@
             var template = document.getElementById('recipientRowTemplate');
             var addBtn = document.getElementById('addRecipientBtn');
 
+            document.querySelectorAll('[data-required-message]').forEach(function (input) {
+                input.addEventListener('invalid', function () {
+                    if (input.validity.valueMissing) input.setCustomValidity(input.dataset.requiredMessage);
+                });
+                input.addEventListener('input', function () { input.setCustomValidity(''); });
+            });
+
             function addRecipientRow() {
                 var clone = template.content.cloneNode(true);
                 clone.querySelector('.remove-recipient-btn').addEventListener('click', function (e) {
@@ -34,7 +41,10 @@
                     if (row.querySelector('.doc-picker-checkbox').checked) selectedCount++;
                 });
 
-                counter.textContent = visibleCount + ' shown, ' + selectedCount + ' selected';
+                var numberFormat = new Intl.NumberFormat(document.documentElement.lang || 'en');
+                counter.textContent = counter.dataset.format
+                    .replace('{0}', numberFormat.format(visibleCount))
+                    .replace('{1}', numberFormat.format(selectedCount));
             }
 
             projectSelect.addEventListener('change', applyFilter);
