@@ -226,10 +226,14 @@ public sealed class PageDefinitionKind : IDefinitionKind
         _ => []
     };
 
-    public IReadOnlyList<DefinitionRef> References(string payloadJson)
+    public IReadOnlyList<DefinitionRef> References(string payloadJson) => ReferencesOf(payloadJson);
+
+    /// <summary>SCRUM-451: the references of a page payload (its layout, its template, the data sources and actions its parts use); static so the harness can read them without the component registry.</summary>
+    public static IReadOnlyList<DefinitionRef> ReferencesOf(string payloadJson)
     {
         var refs = new List<DefinitionRef>();
         var root = (JsonObject)JsonNode.Parse(payloadJson)!;
+        if (root["layout"] is JsonValue layoutKey && layoutKey.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)layoutKey)) refs.Add(new DefinitionRef("layout", (string)layoutKey!, "frames"));
         if (root["template"] is JsonValue tpl && tpl.GetValueKind() == JsonValueKind.String) refs.Add(new DefinitionRef("component-definition", (string)tpl!, "templates"));
         // the /d/{key} urls in the arguments of a template are bindings too (the template puts them into a grid)
         if (root["args"] is JsonObject templateArgs)

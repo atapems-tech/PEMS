@@ -42,6 +42,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Definition kind harness and the layout reference of a page (SCRUM-451)
+
+### Added
+- `DefinitionKindHarnessTests`: every registered kind has a sample (a shipped definition or a named test); a page now lists its layout as a reference.
+
 ## 2026-11-20 - Teams as definition pages (SCRUM-757)
 
 ### Changed
