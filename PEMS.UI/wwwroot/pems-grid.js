@@ -225,7 +225,7 @@
             var cell = tpl('dg-cell-actions'), box = slot(cell, 'actions');
             if (item) (c.actions || []).forEach(function (a) {
                 if (!holds(a.showWhen, item)) return;
-                var id = String(item[cfg.idField]), url = a.url.split('{id}').join(encodeURIComponent(id));
+                var id = String(item[cfg.idField]), url = a.url.split('{id}').join(encodeURIComponent(id)).replace(/\{raw\.([A-Za-z_][A-Za-z0-9_]*)\}/g, function (m, p) { var v = item[p]; return typeof v === 'string' && v.charAt(0) === '/' && v.charAt(1) !== '/' ? v : ''; });   // {raw.field}: a path of this site the row carries (batch 5)
                 var post = a.method === 'post', el = tpl(post ? 'dg-row-button' : 'dg-row-link'), node = slot(el, post ? 'button' : 'link');
                 node.textContent = a.label;
                 node.classList.add('btn-outline-' + (a.tone || 'secondary'));
