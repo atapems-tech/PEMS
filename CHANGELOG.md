@@ -15,6 +15,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Settings hub as a definition (SCRUM-748)
+
+### Added
+- `content-blocks` block `cards` (icon, title, text, links).
+### Changed
+- Settings is the definition page `settings` (roles decide the administration part) with routes for /Settings and /Admin/Settings; both SettingsControllers and the view are deleted; the sidebar entry points at /p/settings.
+
 ## 2026-11-20 - Text pages as definitions: content-blocks, Performance page (SCRUM-733)
 
 ### Added

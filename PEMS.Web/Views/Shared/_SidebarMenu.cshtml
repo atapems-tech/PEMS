@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Department", "Employee", "OrganizationImport" };
+    var adminControllers = new[] { "Users", "Department", "Employee", "OrganizationImport" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -704,7 +704,7 @@
         </div>
         <div class="@SectionClass(active)" id="sec-admin">
 
-            <pems-nav-link item="false" active="@(IsActive("Settings"))" asp-controller="Settings" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/settings" active="@Context.Request.Path.StartsWithSegments("/p/settings")">
                 <pems-icon name="bi-gear" /> @Localizer["Settings"]
             </pems-nav-link>
 
