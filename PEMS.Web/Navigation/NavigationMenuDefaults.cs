@@ -173,7 +173,8 @@ public static class NavigationMenuDefaults
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
-        Link("admin.numbering", "sec.admin", 15, "Num_Title", "bi-123", "Numbering", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
+        // SCRUM-638: a definition page (/p/...), not a controller
+        new("admin.numbering", "sec.admin", L, 15, "Num_Title", "bi-123", "Module:Administration&Role:SystemAdmin", ExternalPath: "/p/numbering"),
         Sub("admin.sub.access", "sec.admin", 20, "User & Access"),
         Link("admin.users", "admin.sub.access", 10, "Users", "bi-people", "Users", area: "Admin", rule: "Module:Administration"),
         // SCRUM-644: a definition page (/p/...), not a controller
