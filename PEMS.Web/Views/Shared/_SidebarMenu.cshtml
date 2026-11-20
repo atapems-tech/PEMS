@@ -835,11 +835,6 @@
                 <pems-nav-link item="false" sub="true" href="/hangfire" target="_blank">
                    <pems-icon name="bi-hdd-stack" /> @Localizer["Background Jobs Dashboard"]
                 </pems-nav-link>
-
-                <pems-nav-link item="false" active="@(InArea("Admin") && IsActive("ProjectIntelligence"))"
-                   asp-area="Admin" asp-controller="ProjectIntelligence" asp-action="Index">
-                   <pems-icon name="bi-graph-up-arrow" /> @Localizer["Project Intelligence"]
-                </pems-nav-link>
             }
         </div>
     }
