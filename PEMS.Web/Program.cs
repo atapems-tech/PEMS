@@ -158,6 +158,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider>(sp => new 
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionImpact, PEMS.Persistence.Services.DefinitionImpactService>();   // SCRUM-450, 457, 459
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionWorkbench, PEMS.Persistence.Services.DefinitionWorkbench>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionDesigner, PEMS.Persistence.Services.DefinitionDesigner>();   // SCRUM-439, 604, 606, 607, 608
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMigratorCenter, PEMS.Web.Services.MigratorCenter>();   // SCRUM-582
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityUpdateAction>();

@@ -15,6 +15,8 @@ public enum UploadProfile
     Pdf,
     /// <summary>A licence file or licence bundle (SCRUM-26).</summary>
     LicenceFile,
+    /// <summary>A signed migration package (SCRUM-581, 582): a zip the migrator reads; its signature and checksums are checked after the upload checks.</summary>
+    MigrationPackage,
 }
 
 /// <summary>
@@ -90,6 +92,7 @@ public static class UploadPolicy
         [UploadProfile.Csv] = new[] { ".csv", ".txt" },
         [UploadProfile.Pdf] = new[] { ".pdf" },
         [UploadProfile.LicenceFile] = new[] { ".pemslic", ".zip" },
+        [UploadProfile.MigrationPackage] = new[] { ".zip" },
     };
 
     /// <summary>Content types that are never accepted, whatever the extension says (HTML, SVG, scripts, executables).</summary>
