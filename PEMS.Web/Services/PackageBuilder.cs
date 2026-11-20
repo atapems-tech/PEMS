@@ -21,7 +21,7 @@ public sealed class PackageBuilder(IConfiguration configuration, IDefinitionServ
 
         var file = $"data/{entity.Trim()}.json";
         var files = new Dictionary<string, byte[]> { [file] = Encoding.UTF8.GetBytes(array.ToJsonString()) };
-        return Build(PackageKind.Feed, null, toVersion, null, [], [new PackageDataSet(entity.Trim(), mode, file, array.Count)], files, $"pems-feed-{entity.Trim().ToLowerInvariant()}-{toVersion}.zip");
+        return Task.FromResult(Build(PackageKind.Feed, null, toVersion, null, [], [new PackageDataSet(entity.Trim(), mode, file, array.Count)], files, $"pems-feed-{entity.Trim().ToLowerInvariant()}-{toVersion}.zip"));
     }
 
     public async Task<PackageFileResult> BuildInstallAsync(string toVersion, string schemaLevel, string? definitionRefs)
