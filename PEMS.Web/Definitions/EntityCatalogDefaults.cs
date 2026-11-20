@@ -38,7 +38,7 @@ internal static class EntityCatalogDefaults
         .Add<AIConfidenceSettings>("AIConfidenceSettingsId", e => e.Roles(AdminRoles, null).Readable("HighThreshold", "MediumThreshold", "ModifiedDate"))
         .Add<PurchaseOrderAuthorityRule>("PurchaseOrderAuthorityRuleId", e => e.Roles(AdminRoles, null).Readable("Level", "MinAmount", "MaxAmount", "Currency", "ApproverRole", "Description", "IsActive"))
         .Add<StorageRoute>("StorageRouteId", e => e.Roles(AdminRoles, null).Readable("Module", "DocumentType", "StorageProviderId", "RelativeRootPath", "IsEnabled", "IsDefault", "Priority"))
-        .Add<StorageProvider>("StorageProviderId", e => e.Roles(AdminRoles, null).Readable("Name", "ProviderType"))
+        .Add<StorageProvider>("StorageProviderId", e => e.Roles(AdminRoles, null).Readable("Name", "Code", "ProviderType", "Host", "Port", "Username", "RootPath", "BaseUrl", "UseSsl", "UsePassiveMode", "AllowRead", "AllowWrite", "AllowDelete", "IsEnabled", "IsDefault", "LastHealthStatus", "LastHealthCheckAt"))
         // read-only registrations used for related counts and labels
         .Add<ApplicationUser>("Id", e => e.Roles(AdminRoles, null).Readable("UserName"))
         .Add<Permission>("PermissionId", e => e.Roles(AdminRoles, null).Readable("Name", "IsActive"))

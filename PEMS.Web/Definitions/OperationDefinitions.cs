@@ -213,7 +213,8 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     {
         var t = answer.GetType();
         if (t.GetProperty("Success")?.GetValue(answer) is not bool ok)
-            return t.GetProperty("Succeeded")?.GetValue(answer) is bool done ? (done, t.GetProperty("Message")?.GetValue(answer) as string, []) : null;
+            return t.GetProperty("Succeeded")?.GetValue(answer) is bool done ? (done, t.GetProperty("Message")?.GetValue(answer) as string, [])
+                : t.GetProperty("Message")?.GetValue(answer) is string text && t.IsClass && t != typeof(string) ? (true, text, []) : null;
         var args = t.GetProperty("Args")?.GetValue(answer) as object?[] ?? [];
         return (ok, t.GetProperty("Error")?.GetValue(answer) as string, args);
     }

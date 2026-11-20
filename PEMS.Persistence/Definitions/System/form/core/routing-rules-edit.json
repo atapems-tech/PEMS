@@ -98,8 +98,7 @@
             "en": "Target module is required.",
             "fa": "ماژول مقصد الزامی است."
           }
-        },
-        "owner": "platform"
+        }
       },
       {
         "name": "allowAutoRouting",

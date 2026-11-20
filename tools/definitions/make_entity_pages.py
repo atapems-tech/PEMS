@@ -47,7 +47,7 @@ def form_fields(spec, key):
         prop, kind, en, fa = f["prop"], f.get("kind", "text"), f["en"], f["fa"]
         name = camel(prop)
         d = {"name": name, "label": t(en, fa), "kind": kind}
-        for k in ("maxLength", "minLength", "min", "max", "pattern", "span", "readOnly"):
+        for k in ("maxLength", "minLength", "min", "max", "pattern", "span", "readOnly", "visible"):
             if k in f: d[k] = f[k]
         if "static" in f:
             d["options"] = [{"value": v, "label": t(v, v)} for v in f["static"]]
@@ -103,6 +103,7 @@ def make(spec):
         grid["newUrl"] = "/f/" + key + "-create"
         grid["newLabel"] = t("New " + spec["singular"][0].lower(), spec["singular"][1] + " جدید")
         ff, map_, required = form_fields(spec, key)
+        ff = [f for f in ff if f["name"] not in spec.get("edit_only", [])]      # fields that only exist on the edit form (their create value is a literal of the operation)
         create_params = {"entity": entity, "map": map_, "required": required, "defaults": spec.get("defaults", {}), "unique": spec.get("unique", [])}
         if spec.get("create_redirect"): create_params["redirect"] = spec["create_redirect"]
         if spec.get("create_deny"): create_params["deny"] = spec["create_deny"]
@@ -126,7 +127,7 @@ def make(spec):
         if spec.get("edit_op"):
             # the service writes (it keeps its caches and rules); the entity only loads the current values into the form
             edit_handler = "operation.invoke"
-            load = {"entity": entity, "map": edit_map}
+            load = {"entity": entity, "map": {k: v for k, v in edit_map.items() if k not in spec.get("noload", [])}}      # a secret is never loaded back into the form
             if spec.get("load_defaults"): load["defaults"] = spec["load_defaults"]
             edit_params = {"model": spec["edit_op"]["model"], "action": spec["edit_op"]["action"], "args": spec["edit_op"]["args"], "load": load}
         if spec.get("validate"): edit_params["validate"] = {"model": spec["validate"]["model"], "action": spec["validate"]["action"], "args": {**spec["validate"]["args"], "ruleId": "field:id"}}
@@ -151,6 +152,12 @@ def make(spec):
         action(key + "-delete", t(*verb), delete_handler, dp, "/p/" + key, t(spec["singular"][0] + (" deactivated." if d.get("deactivate") else " deleted."), spec["singular"][1] + (" غیرفعال شد." if d.get("deactivate") else " حذف شد.")))
         ra = {"key": "delete", "label": t(*verb), "url": "/a/" + key + "-delete", "method": "post", "tone": "danger", "confirm": t(verb[0] + " this record?", "این رکورد " + verb[1] + " شود؟")}
         if d.get("showWhen"): ra["showWhen"] = d["showWhen"]
+        row_actions.append(ra)
+    for ro in spec.get("row_ops", []):
+        # an extra row action that runs one service operation with the row id (test connection, set default ...)
+        action(key + "-" + ro["key"], t(*ro["label"]), "operation.invoke", {"model": ro["model"], "action": ro["action"], "args": ro["args"]}, "/p/" + key, t(*ro["done"]))
+        ra = {"key": ro["key"], "label": t(*ro["label"]), "url": "/a/" + key + "-" + ro["key"], "method": "post", "confirm": t(*ro["confirm"])}
+        if ro.get("showWhen"): ra["showWhen"] = ro["showWhen"]
         row_actions.append(ra)
     if row_actions:
         grid["columns"].append({"key": "_actions", "header": t("Actions", "عملیات"), "type": "actions", "width": 280, "sortable": False, "filterable": False, "actions": row_actions})
@@ -354,6 +361,34 @@ SPECS += [
          defaults={"IsActive": True, "Currency": "IRR", "Level": 1, "MinAmount": 0}, sort=["Level", "Currency"],
          create_op={"model": "PoAuthority", "action": "Save", "args": {"input": {"id": "literal:", "level": "field:level", "minAmount": "field:minAmount", "maxAmount": "field:maxAmount", "currency": "field:currency", "approverRole": "field:approverRole", "description": "field:description", "isActive": "field:isActive"}}},
          edit_op={"model": "PoAuthority", "action": "Save", "args": {"input": {"id": "field:id", "level": "field:level", "minAmount": "field:minAmount", "maxAmount": "field:maxAmount", "currency": "field:currency", "approverRole": "field:approverRole", "description": "field:description", "isActive": "field:isActive"}}}),
+    # ---- W1 administration: storage providers (SCRUM-648): the service writes, validates and tests; the entity lists and loads the edit form (never the password)
+    dict(simple("storage-providers", "StorageProvider", "StorageProviderId", ("Storage providers", "ارائه‌دهندگان ذخیره‌سازی"), ("Storage provider", "ارائه‌دهنده‌ی ذخیره‌سازی"),
+                [("Name", "Name", "نام", "text", 200, True), ("Code", "Code", "کد", "text", 120, True), ("ProviderType", "Type", "نوع", "text", 120), ("RootPath", "Root path", "مسیر ریشه", "text", 260, True),
+                 ("IsEnabled", "Enabled", "فعال", "bool", 100), ("IsDefault", "Default", "پیش‌فرض", "bool", 100), ("LastHealthStatus", "Health", "وضعیت سلامت", "text", 120), ("LastHealthCheckAt", "Checked", "آخرین بررسی", "datetime", 170)],
+                [{"prop": "Name", "en": "Name", "fa": "نام", "maxLength": 200, "required": True},
+                 {"prop": "Code", "en": "Code (unique, used in routing)", "fa": "کد (یکتا، برای مسیریابی)", "maxLength": 50, "required": True},
+                 {"prop": "ProviderType", "kind": "select", "en": "Provider type", "fa": "نوع ارائه‌دهنده", "required": True, "static": ["Local", "NetworkShare", "Ftp", "Sftp"]},
+                 {"prop": "Host", "en": "Host", "fa": "میزبان", "maxLength": 300, "visible": "values.providerType in ['NetworkShare', 'Ftp', 'Sftp']"},
+                 {"prop": "Port", "kind": "number", "en": "Port", "fa": "درگاه", "min": 1, "max": 65535, "visible": "values.providerType in ['Ftp', 'Sftp']"},
+                 {"prop": "Username", "en": "User name", "fa": "نام کاربری", "maxLength": 200, "visible": "values.providerType in ['NetworkShare', 'Ftp', 'Sftp']"},
+                 {"prop": "Password", "kind": "password", "en": "Password (blank keeps the current one)", "fa": "گذرواژه (خالی = بدون تغییر)", "visible": "values.providerType in ['NetworkShare', 'Ftp', 'Sftp']"},
+                 {"prop": "RootPath", "en": "Root path (local folder, UNC path or server-side root)", "fa": "مسیر ریشه (پوشه‌ی محلی، مسیر UNC یا ریشه‌ی سرور)", "maxLength": 500, "required": True, "span": 2},
+                 {"prop": "BaseUrl", "en": "Base URL (optional)", "fa": "نشانی پایه (اختیاری)", "maxLength": 500},
+                 {"prop": "UseSsl", "kind": "switch", "en": "Use SSL/TLS", "fa": "استفاده از SSL/TLS", "visible": "values.providerType == 'Ftp'"},
+                 {"prop": "UsePassiveMode", "kind": "switch", "en": "Passive mode", "fa": "حالت Passive", "visible": "values.providerType == 'Ftp'"},
+                 {"prop": "AllowRead", "kind": "switch", "en": "Allow read", "fa": "اجازه‌ی خواندن"}, {"prop": "AllowWrite", "kind": "switch", "en": "Allow write", "fa": "اجازه‌ی نوشتن"},
+                 {"prop": "AllowDelete", "kind": "switch", "en": "Allow delete", "fa": "اجازه‌ی حذف"}, {"prop": "IsEnabled", "kind": "switch", "en": "Enabled", "fa": "فعال"}],
+                [], toggle=None),
+         sort=["Name"], delete={"label": ("Remove", "حذف")}, edit_only=["allowRead", "allowWrite", "allowDelete", "usePassiveMode", "isEnabled"], noload=["password"],
+         create_op={"model": "StorageProvider", "action": "Create", "args": {"request": {"Name": "field:name", "Code": "field:code", "ProviderType": "field:providerType", "Host": "field:host", "Port": "field:port", "Username": "field:username", "Password": "field:password", "RootPath": "field:rootPath",
+                    "BaseUrl": "field:baseUrl", "UseSsl": "field:useSsl", "UsePassiveMode": "literal:true", "AllowRead": "literal:true", "AllowWrite": "literal:true", "AllowDelete": "literal:true", "IsEnabled": "literal:true"}, "createdBy": "context:userName"}},
+         edit_op={"model": "StorageProvider", "action": "Update", "args": {"id": "field:id", "request": {"Name": "field:name", "Code": "field:code", "ProviderType": "field:providerType", "Host": "field:host", "Port": "field:port", "Username": "field:username", "Password": "field:password", "RootPath": "field:rootPath",
+                    "BaseUrl": "field:baseUrl", "UseSsl": "field:useSsl", "UsePassiveMode": "field:usePassiveMode", "AllowRead": "field:allowRead", "AllowWrite": "field:allowWrite", "AllowDelete": "field:allowDelete", "IsEnabled": "field:isEnabled"}, "modifiedBy": "context:userName"}},
+         delete_op={"model": "StorageProvider", "action": "Delete", "args": {"id": "field:id"}},
+         row_ops=[{"key": "test", "label": ("Test connection", "آزمون اتصال"), "model": "StorageProvider", "action": "TestConnection", "args": {"id": "field:id"}, "done": ("Connection tested.", "اتصال آزموده شد."), "confirm": ("Test the connection now?", "اتصال همین حالا آزموده شود؟")},
+                  {"key": "set-default", "label": ("Set as default", "تنظیم به‌عنوان پیش‌فرض"), "model": "StorageProvider", "action": "SetDefault", "args": {"id": "field:id", "modifiedBy": "context:userName"}, "done": ("Default provider updated.", "ارائه‌دهنده‌ی پیش‌فرض به‌روز شد."), "confirm": ("Make this the default provider?", "این ارائه‌دهنده پیش‌فرض شود؟"), "showWhen": "row.isDefault == false"},
+                  {"key": "enable", "label": ("Enable", "فعال‌سازی"), "model": "StorageProvider", "action": "SetEnabled", "args": {"id": "field:id", "enabled": "literal:true", "modifiedBy": "context:userName"}, "done": ("Provider enabled.", "ارائه‌دهنده فعال شد."), "confirm": ("Enable this provider?", "این ارائه‌دهنده فعال شود؟"), "showWhen": "row.isEnabled == false"},
+                  {"key": "disable", "label": ("Disable", "غیرفعال‌سازی"), "model": "StorageProvider", "action": "SetEnabled", "args": {"id": "field:id", "enabled": "literal:false", "modifiedBy": "context:userName"}, "done": ("Provider disabled.", "ارائه‌دهنده غیرفعال شد."), "confirm": ("Disable this provider?", "این ارائه‌دهنده غیرفعال شود؟"), "showWhen": "row.isEnabled == true"}]),
     # ---- W4 storage locations (InventoryMasterData permissions)
     simple("storage-locations", "StorageLocation", "StorageLocationId", ("Storage locations", "محل‌های نگهداری"), ("Storage location", "محل نگهداری"),
            [("Code", "Code", "کد", "text", 140, True), ("Name", "Name", "نام", "text", 240, True), ("Warehouse", "Warehouse", "انبار", "lookup", 180), ("Parent", "Parent location", "محل والد", "lookup", 180), ("IsActive", "Active", "فعال", "bool", 100)],

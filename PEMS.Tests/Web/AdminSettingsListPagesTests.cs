@@ -18,7 +18,7 @@ namespace PEMS.Tests.Web;
 public class AdminSettingsListPagesTests
 {
     private static readonly string[] Pages =
-        { "StorageProviders", "WorkflowManagement", "Help" };
+        { "WorkflowManagement", "Help" };
 
     private static Task<string> Render<TController>(string view, object? model, Action<ViewDataDictionary>? data = null) where TController : Controller
     {
@@ -36,23 +36,6 @@ public class AdminSettingsListPagesTests
         Assert.DoesNotContain("content-card", html);
         Assert.DoesNotContain("admin-hero", html);
         Assert.DoesNotContain("class=\"badge ", html);
-    }
-
-    [Fact]
-    public async Task StorageProviders_CountCardsAreKpis_HealthIsAPill_AndDeleteOnlyWhenUnused()
-    {
-        var html = await Render<StorageProvidersController>("/Areas/Admin/Views/StorageProviders/Index.cshtml", new List<StorageProviderDto>
-        {
-            new() { StorageProviderId = 1, Name = "Main", Code = "MAIN", ProviderType = "Local", RootPath = "D:/files", IsDefault = true, IsEnabled = true, LastHealthStatus = "Online", ActiveRouteCount = 2 },
-            new() { StorageProviderId = 2, Name = "Backup", Code = "BK", ProviderType = "Sftp", Host = "h", Port = 22, RootPath = "/", LastHealthStatus = "AuthenticationFailed" },
-        });
-
-        AssertBuiltFromTheComponent(html, 2);
-        Assert.Contains("id=\"stpKpis\"", html);
-        Assert.Equal(6, Regex.Matches(Regex.Match(html, "id=\"stpKpis\"[^>]*>(.*?)</div>", RegexOptions.Singleline).Value, "class=\"vs-chip").Count);
-        Assert.Contains("vs-pill vs-pill--danger", html);                                // authentication failed
-        Assert.Single(Regex.Matches(html, "bi-trash"));                                  // only the unused, non-default one
-        Assert.Single(Regex.Matches(html, "bi-star\""));                                 // set default only for the other one
     }
 
     [Fact]
