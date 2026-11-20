@@ -560,7 +560,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("CmmsReadiness"))
             {
-                <pems-nav-link item="false" active="@(IsActive("CmmsReadiness"))" asp-controller="CmmsReadiness" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/cmms-readiness" active="@Context.Request.Path.StartsWithSegments("/p/cmms-readiness")">
                     <pems-icon name="bi-clipboard-check" /> @Localizer["CMMS Readiness"]
                 </pems-nav-link>
             }

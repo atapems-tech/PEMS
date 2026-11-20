@@ -23,6 +23,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - CMMS readiness as definitions (SCRUM-674)
+
+### Changed
+- /p/cmms-readiness (tiles and class activation backlog) and /p/cmms-readiness-equipment (readiness of every equipment) over `ICmmsReadinessReads` replace CmmsReadinessController and its views; old addresses redirect (the class detail opens the all-equipment grid).
+
 ## 2026-11-20 - CMMS operations dashboard and maintenance backlog as definitions (SCRUM-673)
 
 ### Changed
