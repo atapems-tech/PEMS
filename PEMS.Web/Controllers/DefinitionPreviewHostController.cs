@@ -87,7 +87,7 @@ public sealed class DefinitionPreviewHostController(PageRenderer renderer, Compo
         static string E(string s) => WebUtility.HtmlEncode(s);
         string Link(string label, PreviewOptions next, bool on)
         {
-            var join = baseUrl.Contains('?') ? "&" : "?";
+            var join = baseUrl.Contains((char)63) ? "&amp;" : "?";
             return $"<a class=\"btn btn-sm {(on ? "btn-primary" : "btn-outline-secondary")}\" href=\"{E(baseUrl)}{join}culture={next.Culture}&amp;dir={next.Dir}&amp;theme={next.Theme}\">{E(label)}</a>";
         }
         var html = new StringBuilder();
