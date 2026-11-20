@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Department", "Employee", "OrganizationImport", "Numbering" };
+    var adminControllers = new[] { "Settings", "Users", "Department", "Employee", "OrganizationImport" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -711,7 +711,7 @@
             @* SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات؛ همان نقش کنترلر (SystemAdmin) *@
             @if (canSeeAdminCore && User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
             {
-                <pems-nav-link item="false" active="@(InArea("Admin") && IsActive("Numbering", "Admin"))" asp-area="Admin" asp-controller="Numbering" asp-action="Index">
+                <pems-nav-link item="false" href="/p/numbering" active="@Context.Request.Path.StartsWithSegments("/p/numbering")">
                     <pems-icon name="bi-123" /> @Localizer["Num_Title"]
                 </pems-nav-link>
             }

@@ -65,14 +65,6 @@ public class AdminSettingsListPagesTests
             Assert.Contains("_content/PEMS.UI/pems-list.js", view);
             Assert.DoesNotContain("class=\"btn btn-", view);                             // buttons come from the components
         }
-        // the inline editors moved with the RelatedList row-form mode (SCRUM-337): list frame, rows edited in place
-        foreach (var editor in new[] { "Numbering" })
-        {
-            var view = File.ReadAllText(Path.Combine(views, editor, "Index.cshtml"));
-            Assert.Contains("<pems-list-page", view);
-            Assert.Contains("<pems-related-row-form", view);
-            Assert.Contains("<pems-related-save", view);
-            Assert.DoesNotContain("class=\"btn btn-", view);
-        }
+        // SCRUM-638: the numbering editor is a definition page now (no view to check)
     }
 }
