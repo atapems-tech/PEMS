@@ -38,6 +38,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - AI extraction review as definition pages (SCRUM-667)
+
+### Changed
+- /p/ai-extraction (analysed files) and /p/ai-extraction-review (tags and specifications with approve/reject actions; the tag approval is the form /f/ai-tag-approve with an equipment choice) over `IAiExtractionOperations` replace AIExtractionController and its views. Permissions AIExtraction.View/Approve/Create are the floors of the operations. Approve/Reject links show on every row; the service ignores rows that are not Draft.
+
 ## 2026-11-20 - Discipline workspace as a definition page (SCRUM-682)
 
 ### Changed
