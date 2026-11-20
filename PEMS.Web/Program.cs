@@ -181,6 +181,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.ILicencePageService, PEMS
 builder.Services.AddScoped<PEMS.Application.Interfaces.INavigationVisibilityPageService, PEMS.Web.Services.NavigationVisibilityPageService>();   // SCRUM-637
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPermissionMatrixPageService, PEMS.Web.Services.PermissionMatrixPageService>();   // SCRUM-641
 builder.Services.AddScoped<PEMS.Application.Interfaces.IUserAdminPageService, PEMS.Web.Services.UserAdminPageService>();   // SCRUM-650
+builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationImportPageService, PEMS.Web.Services.OrganizationImportPageService>();   // SCRUM-640
 builder.Services.AddScoped<PEMS.Application.Interfaces.IAuthorizationReportService, PEMS.Web.Services.AuthorizationReportService>();   // SCRUM-631
 builder.Services.AddSingleton<PEMS.Web.Definitions.OperationReader>();   // SCRUM-775: read operations as grid rows and choices
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OperationGridProvider>();
