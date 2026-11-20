@@ -139,7 +139,7 @@ public static class NavigationMenuDefaults
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),
         Link("cmms.strategy", "cmms.sub.planning", 10, "Maintenance Strategy", "bi-diagram-2", "MaintenanceStrategy", rule: "CmmsItem:MaintenanceStrategy"),
         Link("cmms.plan", "cmms.sub.planning", 20, "Maintenance Plan", "bi-calendar-check", "MaintenancePlan", rule: "CmmsItem:MaintenancePlan"),
-        Link("cmms.backlog", "cmms.sub.planning", 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsOperations", "Backlog", rule: "CmmsItem:CmmsOperations"),
+        new("cmms.backlog", "cmms.sub.planning", L, 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsItem:CmmsOperations", ExternalPath: "/p/maintenance-backlog"),   // SCRUM-673: a definition page (/p/...)
         Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),
         Link("cmms.jobplan", "sec.cmms", 50, "Job Plans", "bi-list-check", "JobPlan", rule: "CmmsItem:JobPlan"),
         Link("cmms.workrequest", "sec.cmms", 60, "Work Requests", "bi-clipboard-plus", "WorkRequest", rule: "CmmsItem:WorkRequest"),
@@ -151,7 +151,7 @@ public static class NavigationMenuDefaults
         Link("cmms.masterdata", "sec.cmms", 120, "Maintenance Master Data", "bi-collection", "MaintenanceMasterData", rule: "CmmsItem:MaintenanceMasterData"),
         Link("cmms.classification", "sec.cmms", 130, "Equipment Classification", "bi-diagram-3-fill", "EquipmentClassification", rule: "CmmsItem:EquipmentClassification"),
         Link("cmms.readiness", "sec.cmms", 140, "CMMS Readiness", "bi-clipboard-check", "CmmsReadiness", rule: "CmmsItem:CmmsReadiness"),
-        Link("cmms.operations", "sec.cmms", 150, "CMMS Operations", "bi-speedometer2", "CmmsOperations", "Dashboard", rule: "CmmsItem:CmmsOperations", isDefault: true),
+        new("cmms.operations", "sec.cmms", L, 150, "CMMS Operations", "bi-speedometer2", "CmmsItem:CmmsOperations", ExternalPath: "/p/cmms-operations"),   // SCRUM-673
         Link("cmms.rcm", "sec.cmms", 160, "RCM / FMEA", "bi-clipboard2-pulse", "RcmFmea", rule: "CmmsItem:RcmFmea"),
         Link("cmms.criticality", "sec.cmms", 170, "Criticality Analysis", "bi-shield-exclamation", "EquipmentCriticality", rule: "CmmsItem:EquipmentCriticality"),
         Link("cmms.assessment", "sec.cmms", 180, "Criticality Assessment", "bi-clipboard2-check", "CriticalityAssessment", "Dashboard", rule: "CmmsItem:CriticalityAssessment"),

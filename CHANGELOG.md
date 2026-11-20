@@ -22,6 +22,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - CMMS operations dashboard and maintenance backlog as definitions (SCRUM-673)
+
+### Changed
+- /p/cmms-operations and /p/maintenance-backlog (operations `CmmsOperations.*`, `ICmmsOperationsReads`) replace CmmsOperationsController and its views; old addresses redirect.
+
 ## 2026-11-20 - My Work as a definition (SCRUM-730)
 
 ### Added

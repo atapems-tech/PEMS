@@ -477,8 +477,7 @@
 
                 @if (navVisibility.IsCmmsItemVisible("CmmsOperations"))
                 {
-                    <pems-nav-link item="false" sub="true" active="@(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() == "Backlog")"
-                       asp-controller="CmmsOperations" asp-action="Backlog" asp-area="">
+                    <pems-nav-link item="false" sub="true" href="/p/maintenance-backlog" active="@Context.Request.Path.StartsWithSegments("/p/maintenance-backlog")">
                         <pems-icon name="bi-hourglass-split" /> @Localizer["Maintenance Backlog"]
                     </pems-nav-link>
                 }
@@ -568,7 +567,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("CmmsOperations"))
             {
-                <pems-nav-link item="false" active="@(IsActive("CmmsOperations") && ViewContext.RouteData.Values["action"]!.ToString() != "Backlog")" asp-controller="CmmsOperations" asp-action="Dashboard" asp-area="">
+                <pems-nav-link item="false" href="/p/cmms-operations" active="@Context.Request.Path.StartsWithSegments("/p/cmms-operations")">
                     <pems-icon name="bi-speedometer2" /> @Localizer["CMMS Operations"]
                 </pems-nav-link>
             }

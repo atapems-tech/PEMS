@@ -427,8 +427,6 @@ public class DynamicSidebarTests
     [Theory]
     [InlineData("Letter", "MyReferrals", null, "corr.referrals", "corr.letters")]
     [InlineData("Letter", "Details", null, "corr.letters", "corr.referrals")]
-    [InlineData("CmmsOperations", "Backlog", null, "cmms.backlog", "cmms.operations")]
-    [InlineData("CmmsOperations", "Kpis", null, "cmms.operations", "cmms.backlog")]
     [InlineData("Organization", "Positions", "Admin", "admin.positions", "admin.org")]
     [InlineData("Organization", "Index", "Admin", "admin.org", "admin.positions")]
     [InlineData("MaterialItem", "Details", "Warehouse", "proc.wh.material", "proc.wh.dashboard")]

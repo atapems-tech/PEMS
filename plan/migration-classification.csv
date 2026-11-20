@@ -30,7 +30,6 @@ Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,prop
 ,ShiftHandover,Organization and people,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Team,Organization and people,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Permit,Permit to work and safety,"W2 CMMS, maintenance, reliability",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
-,CmmsOperations,Platform and shell,"W2 CMMS, maintenance, reliability",Hamid,page-definition,proposed,view-only pages: page definitions
 ,CmmsReadiness,Platform and shell,"W2 CMMS, maintenance, reliability",Hamid,page-definition,proposed,view-only pages: page definitions
 ,Task,Work and tasks,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,TaskManager,Work and tasks,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
