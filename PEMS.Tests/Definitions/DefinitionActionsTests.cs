@@ -170,4 +170,15 @@ public sealed class DefinitionActionsTests
         await hydrator.HydrateAsync(page, Req());
         Assert.Empty(page.Hydrated);
     }
+
+    [Fact]
+    public void A_revealed_secret_is_a_successful_outcome_carrying_the_value_and_no_message_or_redirect()
+    {
+        var secret = new ActionSecret(TranslatableText.Literal("t"), null, [new SecretItem(TranslatableText.Literal("l"), "abc")], null, SecretTexts.Print);
+        var outcome = ActionOutcome.Revealed(secret);
+        Assert.True(outcome.Ok);
+        Assert.Same(secret, outcome.Secret);
+        Assert.Null(outcome.Message);
+        Assert.Null(outcome.Redirect);
+    }
 }

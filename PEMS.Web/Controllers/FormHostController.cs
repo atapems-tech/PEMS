@@ -66,6 +66,13 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
             case ActionStatus.Refused:
                 return await Show(key, loaded, posted, result.Outcome!.FieldErrors ?? new Dictionary<string, TranslatableText>(), result.Outcome.FormError is { } fe ? [fe] : []);
         }
+        if (result.Outcome?.Secret is { } secret)
+        {
+            // SCRUM-816: a value shown once is rendered in this answer: no redirect, no TempData, nothing cached
+            Response.Headers.CacheControl = "no-store, no-cache";
+            Response.Headers.Pragma = "no-cache";
+            return View("Secret", secret);
+        }
         if (result.Message is { IsEmpty: false } message) TempData["Message"] = message.Resolve(CultureInfo.CurrentUICulture);
         var target = result.Redirect;
         return target is not null && Url.IsLocalUrl(target) ? LocalRedirect(target) : RedirectToAction(nameof(Index), new { key, id });
