@@ -16,6 +16,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Projects as definitions (SCRUM-740)
+
+### Changed
+- Projects are the generic entity layer: entity `Project` registered, page, details page, create and edit forms and actions, toggle action, grid data source and an old-address route (all from `tools/definitions/make_entity_pages.py projects`); ProjectsController and its three views are deleted. The unique project code is a `unique` rule of the actions; the generator takes a key to run one spec and Persian labels of static options (`staticFa`).
+
 ## 2026-11-20 - Settings hub as a definition (SCRUM-748)
 
 ### Added
