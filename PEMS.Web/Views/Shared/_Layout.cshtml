@@ -175,7 +175,7 @@
                 </pems-button>
                 <pems-dropdown-menu end="true">
                     <pems-bullet><pems-heading level="6" class="dropdown-header">@User.Identity?.Name</pems-heading></pems-bullet>
-                    <pems-bullet><pems-link class="dropdown-item" asp-controller="MyProfile" asp-action="Index" asp-area=""><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="/p/my-profile"><pems-icon name="bi-person-badge" /> @Localizer["Shell_MyProfile"]</pems-link></pems-bullet>
                     <pems-bullet><pems-link class="dropdown-item" asp-controller="Account" asp-action="ManagePasskeys" asp-area=""><pems-icon name="bi-key" /> @Localizer["Shell_Passkeys"]</pems-link></pems-bullet>
                     @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                     {

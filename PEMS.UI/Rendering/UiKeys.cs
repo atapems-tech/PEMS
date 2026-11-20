@@ -68,6 +68,7 @@ public static class UiKeys
     public const string TreeItem = "tree-item";
     public const string Chart = "chart";
     public const string SignaturePad = "signature-pad";
+    public const string Image = "image";
     public const string ScriptIsland = "script-island";
     public const string Date = "date";
     public const string ButtonFrame = "button-frame";

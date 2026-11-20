@@ -44,6 +44,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - My Profile as a definition page (SCRUM-729)
+
+### Changed
+- /p/my-profile (profile tiles, photo, drawn signature through the `signature-pad` component, the photo form /f/my-profile-photo) over `IMyProfileOperations` replaces MyProfileController, its view and script; /MyProfile redirects. New component `image`.
+
 ## 2026-11-20 - Components: signature pad and script island (SCRUM-729, SCRUM-697)
 
 ### Added
