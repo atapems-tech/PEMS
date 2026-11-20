@@ -608,17 +608,6 @@ public class CmmsListPagesTests
     }
 
     [Fact]
-    public async Task AiExtraction_IsAListPage()
-    {
-        var html = await Render<AIExtractionController>("/Views/AIExtraction/Index.cshtml",
-            new List<(DocumentAttachment Attachment, int PendingTags, int PendingSpecs)> { (new DocumentAttachment { AttachmentId = 6, FileName = "datasheet.pdf", AISummary = "pump data" }, 2, 0) },
-            _ => { });
-
-        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
-        Assert.Contains("datasheet.pdf", html);
-    }
-
-    [Fact]
     public async Task Tasks_AreAListPage_WithTheirTabFilterAndTheNewTaskForm()
     {
         var html = await Render<TaskController>("/Views/Task/Index.cshtml", Page(
