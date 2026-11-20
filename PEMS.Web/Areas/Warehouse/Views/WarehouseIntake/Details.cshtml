@@ -3,6 +3,7 @@
 @using PEMS.Domain.Entities
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@using PEMS.Web.Helpers
 @{
     // SCRUM-472: warehouse intake of one work order's stock lines
     var canSource = ViewBag.CanSource is true;
@@ -41,7 +42,7 @@
             var cell_16_4 = DataCell.Template(rows_16, @<text>@{ var l = item; }
                         @foreach (var r in l.Requisitions)
                         {
-                            <div><pems-link href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber</pems-link> · @r.WarehouseCode · @r.Status · <span dir="ltr">@r.Quantity.ToString("0.###")</span></div>
+                            <div><pems-link href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber</pems-link> · @r.WarehouseCode · @VdrUi.Loc(Localizer, "SrL_St_", r.Status) · <span dir="ltr">@r.Quantity.ToString("0.###")</span></div>
                         }
                         @if (l.SupplyCode == WorkOrderMaterialSupplyCodes.DirectPurchase) { <span class="text-muted">@Localizer["Whi_DirectPurchaseNote"]</span> }
                     </text>);

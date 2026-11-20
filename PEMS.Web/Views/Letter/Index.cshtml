@@ -68,7 +68,7 @@
         var tagName = tagNodes.FirstOrDefault(t => t.TagId == currentTagId.Value)?.Name ?? ("#" + currentTagId);
         chips.Add((Localizer["Ct_Tag"].Value + ": " + tagName, Without("tagId")));
     }
-    if (currentConfidentiality.Length > 0) chips.Add((Localizer["Ct_Confidentiality"].Value + ": " + currentConfidentiality, Without("confidentiality")));
+    if (currentConfidentiality.Length > 0) chips.Add((Localizer["Ct_Confidentiality"].Value + ": " + Localizer[currentConfidentiality].Value, Without("confidentiality")));
     if (f.projectId != null)
     {
         var projectName = projects.Where(p => p.ProjectId == f.projectId).Select(p => (string)p.ProjectName).FirstOrDefault() ?? ("#" + (int)f.projectId);
@@ -350,7 +350,7 @@
                                         <option value="">@Localizer["Lt_Any"]</option>
                                         @foreach (var level in new[] { "Public", "Internal", "Confidential", "Restricted" })
                                         {
-                                            <option value="@level" selected="@(currentConfidentiality == level)">@level</option>
+                                            <option value="@level" selected="@(currentConfidentiality == level)">@Localizer[level]</option>
                                         }
                                     </pems-select>
                                 </div>
@@ -622,7 +622,7 @@
                                             @if (l.IsRevived) { <span class="ct-chip ct-chip--revived"><pems-icon name="bi-arrow-repeat" aria-hidden="true" /> @Localizer["Ct_RevivedChip"]</span> }
                                             @if (l.MyReminderAt.HasValue) { <span class="ct-chip ct-chip--remind" title="@PemsDates.DateTime(l.MyReminderAt.Value)"><pems-icon name="bi-bell" aria-hidden="true" /> @l.MyReminderAt.Value.ToString("MM-dd")</span> }
                                             @if (l.IsTrashed && !inTrash) { <span class="ct-chip ct-chip--trash"><pems-icon name="bi-trash3" aria-hidden="true" /> @Localizer["Ct_FolderTrash"]</span> }
-                                            @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <pems-badge tone="@(veryConfidential ? "ct-chip ct-chip--vconf" : "dark")"><pems-icon name="bi-lock-fill" /> @l.ConfidentialityLevel</pems-badge> }
+                                            @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal") { <pems-badge tone="@(veryConfidential ? "ct-chip ct-chip--vconf" : "dark")"><pems-icon name="bi-lock-fill" /> @Localizer[l.ConfidentialityLevel]</pems-badge> }
                                             @if (!string.IsNullOrEmpty(l.RelatedDocumentNo)) { <pems-badge tone="info"><pems-icon name="bi-file-earmark-text" /> @l.RelatedDocumentNo</pems-badge> }
                                             @if (!string.IsNullOrEmpty(l.RelatedMRNumber)) { <pems-badge tone="info"><pems-icon name="bi-cart-check" /> @l.RelatedMRNumber</pems-badge> }
                                             @if (l.OpenReferralsCount > 0) { <pems-badge tone="@(l.HasOverdueReferral ? "danger" : "warning")"><pems-icon name="bi-signpost-split" /> @l.OpenReferralsCount</pems-badge> }

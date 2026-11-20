@@ -46,7 +46,7 @@ public sealed class CommandPaletteService
         return groups.Select(g =>
         {
             var icon = GroupIcons.TryGetValue(g.EntityType, out var i) ? i : "bi-search";
-            var items = g.Items.Select(x => new CommandPaletteItem(x.Label, x.SubLabel, url.Content("~" + x.Url), icon)).ToList();
+            var items = g.Items.Select(x => new CommandPaletteItem(x.Label, SearchResultText.SubLabel(x, _text), url.Content("~" + x.Url), icon)).ToList();
             return new CommandPaletteGroup(g.EntityType, GroupTitle(g.EntityType), icon, g.TotalCount, items);
         }).ToList();
     }

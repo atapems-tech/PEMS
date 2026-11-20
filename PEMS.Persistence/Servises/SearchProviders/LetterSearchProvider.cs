@@ -134,9 +134,9 @@ public class LetterSearchProvider : ISearchableEntityProvider
                 SubLabel = string.Join(" — ", new[]
                 {
                     x.Letter.Subject,
-                    x.Letter.Sender ?? x.Letter.Receiver,
-                    x.Letter.LetterType
+                    x.Letter.Sender ?? x.Letter.Receiver
                 }.Where(s => !string.IsNullOrWhiteSpace(s))),
+                SubLabelSuffixKey = x.Letter.LetterType,
                 Url = $"/Letter/Details/{x.Letter.LetterId}",
                 Score = x.Score
             })

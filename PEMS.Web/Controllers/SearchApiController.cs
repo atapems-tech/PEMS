@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PEMS.Application.Interfaces;
 using PEMS.Web.Navigation;
+using Microsoft.Extensions.Localization;
+using PEMS.Web.Resources;
 
 namespace PEMS.Web.Controllers;
 
@@ -17,11 +19,13 @@ public class SearchApiController : Controller
 {
     private readonly IGlobalSearchService _searchService;
     private readonly CommandPaletteService _palette;
+    private readonly IStringLocalizer<SharedResource>? _localizer;
 
-    public SearchApiController(IGlobalSearchService searchService, CommandPaletteService palette)
+    public SearchApiController(IGlobalSearchService searchService, CommandPaletteService palette, IStringLocalizer<SharedResource>? localizer = null)
     {
         _searchService = searchService;
         _palette = palette;
+        _localizer = localizer;
     }
 
     // SCRUM-64 command palette: records of every module the user may open (access rule + row scope), max 5 per type.
@@ -46,6 +50,7 @@ public class SearchApiController : Controller
         try
         {
             var result = await _searchService.SearchAsync(type, q, page, pageSize, projectId);
+            foreach (var item in result.Items) item.SubLabel = SearchResultText.SubLabel(item, _localizer);
             return Json(result);
         }
         catch (InvalidOperationException ex)

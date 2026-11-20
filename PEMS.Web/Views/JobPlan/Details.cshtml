@@ -28,8 +28,8 @@
         <pems-info-item label="@Localizer["Safety Requirements"]">@Model.SafetyRequirements</pems-info-item>
         <pems-info-item label="@Localizer["Equipment Class"]">@Model.EquipmentClassName</pems-info-item>
         <pems-info-item label="@Localizer["Info_SafetyControls"]">
-            <pems-badge tone="@(Model.PermitRequired ? "warning" : "light")">Permit @(Model.PermitRequired ? "Required" : "Not Required")</pems-badge>
-            <pems-badge tone="@(Model.LOTORequired ? "warning" : "light")">LOTO @(Model.LOTORequired ? "Required" : "Not Required")</pems-badge>
+            <pems-badge tone="@(Model.PermitRequired ? "warning" : "light")">@Localizer[Model.PermitRequired ? "Permit Required" : "Permit Not Required"]</pems-badge>
+            <pems-badge tone="@(Model.LOTORequired ? "warning" : "light")">@Localizer[Model.LOTORequired ? "LOTO Required" : "LOTO Not Required"]</pems-badge>
         </pems-info-item>
     </pems-info-grid>
 </pems-content-card>
