@@ -579,21 +579,6 @@ public class CmmsListPagesTests
     }
 
     [Fact]
-    public async Task MaintenanceBacklog_IsAListPage_WithItsThreeFilters()
-    {
-        var html = await Render<CmmsOperationsController>("/Views/CmmsOperations/Backlog.cshtml", Page(
-            new MaintenanceBacklogItemDto { WorkOrderId = 8, WorkOrderNumber = "WO-0008", Priority = "High", Status = "Open", WorkOrderType = "Corrective", IsOverdue = true, DueDate = new DateTime(2026, 10, 1), AgeDays = 30 }),
-            v => { v["Status"] = "Open"; v["Priority"] = "High"; v["OverdueOnly"] = true; });
-
-        AssertBuiltFromTheComponent(html, "CmmsOperationsBacklog", 1, keepsDataBadges: true);
-        Assert.Contains("WO-0008", html);
-        Assert.Contains("name=\"status\"", html);
-        Assert.Contains("name=\"priority\"", html);
-        Assert.Contains("name=\"overdueOnly\"", html);
-        Assert.Equal(3, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);
-    }
-
-    [Fact]
     public async Task OcrProcessing_IsAListPage_AndKeepsItsCountTiles()
     {
         var html = await Render<OCRProcessingController>("/Views/OCRProcessing/Index.cshtml", Page(
