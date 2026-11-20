@@ -29,10 +29,26 @@ public interface IDataSourceProvider
 public sealed record ActionInvocation(IReadOnlyDictionary<string, string?> Values, string Culture, IReadOnlyCollection<string> Roles, string? UserName, JsonObject? Parameters = null, string? IpAddress = null, string? UserAgent = null,
     IReadOnlyList<UploadedFile>? Files = null);
 
+/// <summary>One value of a secret page: its label and the value (shown once, never stored).</summary>
+public sealed record SecretItem(TranslatableText Label, string Value);
+
+/// <summary>SCRUM-816: the page shown once after an action that produced a secret.</summary>
+public sealed record ActionSecret(TranslatableText Title, TranslatableText? Note, IReadOnlyList<SecretItem> Items, string? BackUrl, TranslatableText BackLabel);
+
+public static class SecretTexts
+{
+    public static readonly TranslatableText Copy = TranslatableText.Of(("en", "Copy"), ("fa", "کپی"));
+    public static readonly TranslatableText Copied = TranslatableText.Of(("en", "Copied"), ("fa", "کپی شد"));
+    public static readonly TranslatableText Print = TranslatableText.Of(("en", "Print"), ("fa", "چاپ"));
+}
+
 /// <summary>What an action did. A refused action says why per field or for the form as a whole; a text is always in both languages.</summary>
 public sealed record ActionOutcome(bool Ok, TranslatableText? Message = null, IReadOnlyDictionary<string, TranslatableText>? FieldErrors = null, TranslatableText? FormError = null, string? Redirect = null,
-    IReadOnlyDictionary<string, string?>? Returned = null, FileResult? File = null)
+    IReadOnlyDictionary<string, string?>? Returned = null, FileResult? File = null, ActionSecret? Secret = null)
 {
+    /// <summary>SCRUM-816: the action produced a value to show once (a temporary password); the host answers with a no-store page, no redirect, no TempData.</summary>
+    public static ActionOutcome Revealed(ActionSecret secret) => new(true, null, null, null, null, null, null, secret);
+
     /// <summary>SCRUM-615: the action produced a file for the user to download; the host sends it instead of redirecting.</summary>
     public static ActionOutcome Download(FileResult file, TranslatableText? message = null) => new(true, message, null, null, null, null, file);
 

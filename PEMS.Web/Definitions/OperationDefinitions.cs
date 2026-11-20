@@ -223,6 +223,18 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     }
 
     /// <summary>A result object of the shape { Success, Error, Args } (the Po result of procurement and its kind): the refusal text is the Error, a resource key when the shared resources know it (filled with Args), in both languages.</summary>
+    /// <summary>SCRUM-816: a result object with SecretValue (and SecretLabel, SecretTitle, SecretNote, BackUrl, BackLabel as resource keys) is a value to show once; a result with Success false is a refusal.</summary>
+    private static ActionSecret? SecretOf(IServiceProvider services, object answer)
+    {
+        var t = answer.GetType();
+        if (t.GetProperty("SecretValue")?.GetValue(answer) is not string value || value.Length == 0) return null;
+        if (t.GetProperty("Success")?.GetValue(answer) is false) return null;
+        string? Key(string name) => t.GetProperty(name)?.GetValue(answer) as string;
+        TranslatableText Text(string? key, string fallback) => ResultMessage(services, (true, string.IsNullOrWhiteSpace(key) ? fallback : key, []));
+        var note = Key("SecretNote");
+        return new ActionSecret(Text(Key("SecretTitle"), "Secret"), string.IsNullOrWhiteSpace(note) ? null : Text(note, note), [new SecretItem(Text(Key("SecretLabel"), "Secret"), value)], Key("BackUrl"), Text(Key("BackLabel"), "Back"));
+    }
+
     /// <summary>A result object with Bytes (and FileName, ContentType) is a file for the user to download; a result with Success false is a refusal, not a file (SCRUM-635).</summary>
     private static FileResult? FileOf(object answer)
     {
@@ -402,6 +414,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             bool ok => ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد."))),
             ITuple t when t.Length >= 2 && t[0] is bool success => success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused.")),
+            _ when answer is not null && SecretOf(scope.ServiceProvider, answer) is { } secret => ActionOutcome.Revealed(secret),
             _ when answer is not null && FileOf(answer) is { } produced => ActionOutcome.Download(produced),
             _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done(result.Error is null ? null : ResultMessage(scope.ServiceProvider, result)) : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
             _ => ActionOutcome.Done()
