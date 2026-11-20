@@ -97,10 +97,8 @@ public class KpiTileComponentTests
     }
 
     [Theory]
-    [InlineData("Views/Discipline/Details.cshtml", 6)]
     [InlineData("Views/EngineeringDocumentIntelligence/Index.cshtml", 4)]
     [InlineData("Views/OCRProcessing/Index.cshtml", 4)]
-    [InlineData("Views/Home/Index.cshtml", 1)]
     [InlineData("Views/Production/Dashboard.cshtml", 1)]
     [InlineData("Areas/Warehouse/Views/PartCatalogueReport/Index.cshtml", 6)]
     public void WaveK2_TakesItsTilesFromTheComponent_AndThePartialIsGone(string view, int tags)

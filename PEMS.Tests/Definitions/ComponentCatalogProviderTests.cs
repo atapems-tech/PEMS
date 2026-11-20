@@ -24,7 +24,7 @@ public sealed class ComponentCatalogProviderTests
         Assert.True(total >= 100);
         var row = (Dictionary<string, object?>)items.Single(i => (string)((Dictionary<string, object?>)i)["key"]! == "record-view");
         Assert.Equal("display", row["category"]);
-        Assert.Contains("fields*", (string)row["parameters"]!);
+        Assert.Contains("options*", (string)row["parameters"]!);   // one required Options record (SCRUM-743: the host-set flags are not options)
         Assert.Contains("\"fields\"", (string)row["sample"]!);
     }
 

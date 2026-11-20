@@ -181,7 +181,7 @@ public static class NavigationMenuDefaults
         new("admin.roles", "admin.sub.access", L, 20, "Roles", "bi-shield-check", "Module:Administration", ExternalPath: "/p/roles"),
         // SCRUM-651: a definition page (/p/...), not a controller
         new("admin.workflow", "admin.sub.access", L, 30, "Workflow Management", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/workflow-management"),
-        Link("admin.navmenu", "admin.sub.access", 35, "Nav_Admin_Title", "bi-menu-button-wide", "NavigationMenu", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
+        new("admin.navmenu", "admin.sub.access", L, 35, "Nav_Admin_Title", "bi-menu-button-wide", "Module:Administration&Role:SystemAdmin", ExternalPath: "/p/navigation-menu"),   // a definition page (/p/...), not a controller
         // SCRUM-634: a definition page (/p/...), not a controller
         new("admin.help", "admin.sub.access", L, 40, "Help Administration", "bi-life-preserver", "Module:Administration", ExternalPath: "/p/help-admin"),
         Sub("admin.sub.org", "sec.admin", 30, "Organization"),

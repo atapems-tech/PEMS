@@ -61,7 +61,6 @@ internal static class EntityCatalogDefaults
         .Add<StorageLocation>("StorageLocationId", e => e.Create("InventoryMasterData.Create").Edit("InventoryMasterData.Edit")
             .Readable("Code", "Name", "WarehouseId", "ParentLocationId", "IsActive", "CreatedDate").Writable("Code", "Name", "WarehouseId", "ParentLocationId", "IsActive", "CreatedDate"))
         // Maintenance master data (W2): MaintenanceMasterData permissions
-        .Add<Discipline>("DisciplineId", e => e.Readable("Code", "Name", "IsActive"))
         .Add<MaintenanceGroup>("MaintenanceGroupId", e => e.Read("MaintenanceMasterData.View").Create("MaintenanceMasterData.Create").Edit("MaintenanceMasterData.Edit")
             .Readable("Code", "Name", "DisciplineId", "ParentMaintenanceGroupId", "Description", "IsSystemDefault", "IsActive", "CreatedDate").Writable("Code", "Name", "DisciplineId", "ParentMaintenanceGroupId", "Description", "IsActive", "CreatedDate"))
         .Add<Skill>("SkillId", e => e.Read("MaintenanceMasterData.View").Create("MaintenanceMasterData.Create").Edit("MaintenanceMasterData.Edit")

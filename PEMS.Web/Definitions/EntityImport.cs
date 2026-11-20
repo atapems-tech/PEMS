@@ -90,7 +90,7 @@ public sealed class EntityImportAction(IServiceScopeFactory scopes, EntityCatalo
                 added++;
             }
         }
-        catch (Exception e) when (e is InvalidDataException or ArgumentException or IOException)
+        catch (Exception e) when (e is InvalidDataException or ArgumentException or IOException or FormatException)
         {
             return ActionOutcome.Refused(field, Msg("The file could not be read as a spreadsheet.", "فایل به‌عنوان صفحه‌گسترده خوانده نشد."));
         }

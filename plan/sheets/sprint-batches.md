@@ -47,6 +47,10 @@ A gap found in a batch is an issue of the same sprint, listed here under the bat
 
 Batch 3 has no open issue of its own left; 612, 613 and 503 (browser QA) were cancelled on 2026-11-20 because there is no QA issue: their checks are lines of SCRUM-768, 437 and 342 (guideline 07 section 1c). The missing QA checklists of 372, 448, 516, 517, 574 to 577, 590 to 592, 594 to 596, 611 and 628 are not gaps: they belong to the owners of those batches (2 and 1).
 
+## Combined heavy run: RESULT (2026-11-20)
+
+Run on the owner's input: build green; UI 628 of 628; Definitions 500 of 501; Web 750 of 751; gates slice 375 of 376; each single failure is a SQL-instance test (no SQL Server reachable). **Batches 1, 2, 3, 4b and 5: automated tests done ("Tested", browser checks and SQL families still open as unchecked lines on the issues).** Findings and fixes: `plan/sheets/build-status.md`. Still open from the run: the browser checks, the SQL-instance families, and the QA lines of the In Review issues (cite this run on line 1).
+
 ## Combined heavy run (owner decision 2026-11-20)
 
 Batches 1, 2, 3, 4b (the Admin conversions not yet In Review) and 5 are tested **together, once**, after batches 3, 4b and 5 are all In Review. Until then no batch runs a heavy test, a solution or test-project build, `gates.py --run` or a browser run, and after that only with the owner's input (guideline 00 section 0.3). Batch 3 is worked in session B3 here; 4b and 5 are started by the owner in their own sessions. The order and the lines to run are in [batch-test-plan.md](batch-test-plan.md).

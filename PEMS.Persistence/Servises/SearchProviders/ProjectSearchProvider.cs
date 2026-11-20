@@ -56,7 +56,7 @@ public class ProjectSearchProvider : ISearchableEntityProvider
                 Label = x.Project.ProjectCode,
                 HighlightedLabel = SearchScoring.Highlight(x.Project.ProjectCode, query),
                 SubLabel = string.Join(" — ", new[] { x.Project.ProjectName, x.Project.ClientName, x.Project.Status }.Where(s => !string.IsNullOrWhiteSpace(s))),
-                Url = $"/Projects/Edit/{x.Project.ProjectId}",
+                Url = $"/p/projects-details?id={x.Project.ProjectId}",   // the Projects controller is a definition page now
                 Score = x.Score
             }).ToList();
 
