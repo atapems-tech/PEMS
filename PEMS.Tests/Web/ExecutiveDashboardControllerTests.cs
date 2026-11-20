@@ -155,44 +155,22 @@ public class ExecutiveDashboardControllerTests
     // ------------------------------------------------------------------ host page
 
     [Fact]
-    public void Index_ShipsEveryExecString_AndTheLinksTheUiNeeds()
+    public void TheDashboardPage_ShipsEveryExecString_InBothLanguages_AndTheLinksTheUiNeeds()
     {
-        var rig = NewRig("index", lang: "fa");
-
-        var result = Assert.IsType<ViewResult>(rig.Controller.Index());
-
-        var i18n = (Dictionary<string, string>)rig.Controller.ViewBag.I18n;
-        Assert.All(i18n.Keys, k => Assert.StartsWith("Exec_", k));
-        Assert.Equal("داشبورد مدیریتی", i18n["Exec_Title"]);
-        Assert.Equal("داشبورد مدیریتی", result.ViewData["Title"]);
-        var links = (Dictionary<string, string?>)rig.Controller.ViewBag.Links;
+        var page = System.Text.Json.Nodes.JsonNode.Parse(Read("PEMS.Persistence", "Definitions", "System", "page", "core", "executive-dashboard.json"))!;
+        var options = page["payload"]!["regions"]!["content"]!.AsArray().Single()!["options"]!;
+        var i18n = options["i18n"]!.AsObject();
+        Assert.All(i18n.Select(p => p.Key), k => Assert.StartsWith("Exec_", k));
+        Assert.Equal("داشبورد مدیریتی", (string)i18n["Exec_Title"]!["fa"]!);
+        Assert.Equal("Executive Dashboard", (string)i18n["Exec_Title"]!["en"]!);
+        Assert.Equal(Regex.Matches(Read("PEMS.Web", "Resources", "SharedResource.resx"), "name=\"Exec_").Count, i18n.Count);   // every Exec_ resource is in the definition
+        var links = options["links"]!.AsObject();
         foreach (var key in new[] { "Engineering", "EngRejected", "EngInReview", "Vdr", "Procurement", "Cmms", "Correspondence" })
             Assert.True(links.ContainsKey(key), key);
-        Assert.Equal("/ExecutiveDashboard/Data", (string)rig.Controller.ViewBag.DataUrl);
-    }
-
-    [Fact]
-    public async Task HostView_RendersTheMountPoint_BootJson_AndScopedAssets()
-    {
-        var rig = NewRig("view");
-        rig.Controller.Index();
-        rig.Controller.ViewBag.DataUrl = "/ExecutiveDashboard/Data";
-
-        var html = await RazorViewRenderer.RenderAsync(rig.Controller, new ViewResult(), "~/Views/ExecutiveDashboard/Index.cshtml");
-
-        Assert.Contains("id=\"executive-root\"", html);
-        Assert.Contains("bk-scope", html);
-        var boot = Regex.Match(html, "<script type=\"application/json\" id=\"exec-boot\">(.*?)</script>", RegexOptions.Singleline).Groups[1].Value;
-        Assert.DoesNotContain("<", boot);
-        var parsed = JsonDocument.Parse(boot).RootElement;
-        Assert.Equal("/ExecutiveDashboard/Data", parsed.GetProperty("dataUrl").GetString());
-        Assert.Equal("Executive Dashboard", parsed.GetProperty("i18n").GetProperty("Exec_Title").GetString());
-        Assert.False(parsed.GetProperty("rtl").GetBoolean());
-        // the script/style tags live in @section blocks, which the render harness skips: check the view source instead
-        var source = Read("PEMS.Web", "Views", "ExecutiveDashboard", "Index.cshtml");
-        Assert.Contains("dist/dashboards/dashboards.js", source);
-        Assert.Contains("dist/dashboards/dashboards.css", source);
-        Assert.Contains("type=\"module\"", source);
+        Assert.Equal("/ExecutiveDashboard/Data", (string)options["values"]!["dataUrl"]!);
+        Assert.Equal("exec-boot", (string)options["bootId"]!);
+        Assert.Equal("executive-root", (string)options["id"]!);
+        Assert.Equal("/dist/dashboards/dashboards.js", (string)options["module"]!);
     }
 
     // ------------------------------------------------------------------ navigation + built assets
@@ -202,11 +180,11 @@ public class ExecutiveDashboardControllerTests
     {
         var items = NavigationMenuDefaults.All.Where(i => i.ParentKey == null && i.Kind == NavigationMenuItemKinds.Link).OrderBy(i => i.SortOrder).Take(3).ToList();
         Assert.Equal(new[] { "home", "exec.dashboard", "mywork" }, items.Select(i => i.Key));
-        Assert.Equal("ExecutiveDashboard", items[1].Controller);
+        Assert.Equal("/p/executive-dashboard", items[1].ExternalPath);
 
         var legacy = Read("PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml");
-        Assert.True(legacy.IndexOf("ExecutiveDashboard", StringComparison.Ordinal) > legacy.IndexOf("asp-controller=\"Home\"", StringComparison.Ordinal));
-        Assert.True(legacy.IndexOf("ExecutiveDashboard", StringComparison.Ordinal) < legacy.IndexOf("asp-controller=\"MyWork\"", StringComparison.Ordinal));
+        Assert.True(legacy.IndexOf("/p/executive-dashboard", StringComparison.Ordinal) > legacy.IndexOf("asp-controller=\"Home\"", StringComparison.Ordinal));
+        Assert.True(legacy.IndexOf("/p/executive-dashboard", StringComparison.Ordinal) < legacy.IndexOf("/p/my-work", StringComparison.Ordinal));
     }
 
     [Fact]
