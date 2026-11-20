@@ -136,8 +136,7 @@ public class PersianMessagesAndTitlesTests
     {
         Assert.Contains("T(\"Equipment, Vendor and Project are required.\")", Read("PEMS.Web", "Controllers", "MDBController.cs"));
         Assert.Contains("T(\"Please select at least one document.\")", Read("PEMS.Web", "Controllers", "TransmittalController.cs"));
-        Assert.Contains("T(\"A valid, active discipline is required to create an employee.\")", Read("PEMS.Web", "Areas", "Admin", "Controllers", "UsersController.cs"));
-        Assert.Contains("@Localizer[\"This user has no linked employee", Read("PEMS.Web", "Areas", "Admin", "Views", "Users", "Edit.cshtml"));
+        Assert.Contains("Refuse(\"A valid, active discipline is required to create an employee.\")", Read("PEMS.Web", "Services", "UserAdminPageService.cs"));
     }
 
     [Fact]

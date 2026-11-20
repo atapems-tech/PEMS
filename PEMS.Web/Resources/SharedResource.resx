@@ -4187,4 +4187,10 @@
   <data name="Transmittal_Purpose_For Construction" xml:space="preserve"><value>For Construction</value></data>
   <data name="Transmittal_Purpose_For Information" xml:space="preserve"><value>For Information</value></data>
   <data name="Transmittal_Purpose_For Review" xml:space="preserve"><value>For Review</value></data>
+  <data name="The user could not be saved: {0}" xml:space="preserve"><value>The user could not be saved: {0}</value></data>
+  <data name="Unknown role(s): {0}" xml:space="preserve"><value>Unknown role(s): {0}</value></data>
+  <data name="User updated, but some role assignments failed: {0}" xml:space="preserve"><value>User updated, but some role assignments failed: {0}</value></data>
+  <data name="User updated, but the password was not changed: {0}" xml:space="preserve"><value>User updated, but the password was not changed: {0}</value></data>
+  <data name="There are more users than the safe export limit allows." xml:space="preserve"><value>There are more users than the safe export limit allows. Ask the system administrator for a batch export.</value></data>
+  <data name="Temporary password" xml:space="preserve"><value>Temporary password</value></data>
 </root>

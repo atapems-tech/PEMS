@@ -10,8 +10,6 @@ using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Admin.Controllers;
-using PEMS.Web.Areas.Admin.Models;
 
 namespace PEMS.Tests.Security;
 
@@ -244,9 +242,7 @@ public class RecoveryEventServiceTests
 
     // ------------------------------------------------------------------ UsersController.Edit (مسیر قدیمی ریست رمز)
 
-    private static UsersController NewUsersController(Env e) =>
-        new UsersController(e.Users, e.Sp.GetRequiredService<RoleManager<ApplicationRole>>(), e.Ctx, null!, null!, null!, null!,
-            new UserRoleAssignmentSynchronizer(e.Ctx), null, null, e.Service).WithTempData();
+    private static UsersFacade NewUsersController(Env e) => UsersFacade.For(e.Users, e.Sp.GetRequiredService<RoleManager<ApplicationRole>>(), e.Ctx, e.Service);
 
     private static async Task<(Employee Emp, ApplicationUser User)> LinkedUser(Env e, string name, bool admin)
     {
@@ -261,7 +257,7 @@ public class RecoveryEventServiceTests
         return (emp, u);
     }
 
-    private static UserFormViewModel EditModel(ApplicationUser u, Employee emp, string? password, IEnumerable<string>? roles = null) => new()
+    private static UserForm EditModel(ApplicationUser u, Employee emp, string? password, IEnumerable<string>? roles = null) => new()
     {
         Id = u.Id, UserName = u.UserName!, Email = u.Email!, FullName = u.FullName, IsActive = true,
         ExistingEmployeeId = emp.EmployeeId, Password = password, SelectedRoles = roles?.ToList() ?? new()
@@ -277,7 +273,7 @@ public class RecoveryEventServiceTests
 
         var res = await NewUsersController(e).Edit(EditModel(admin, emp, "Newpass@12345", new[] { SystemRoles.SystemAdmin }));
 
-        Assert.IsType<RedirectToActionResult>(res);
+        UsersFacade.Saved(res);
         var ev = await e.Ctx.SecurityEvents.AsNoTracking().SingleAsync();
         Assert.Equal((RecoveryMethods.AdminConsole, RecoveryResults.Success, admin.Id), (ev.Method, ev.Result, ev.TargetUserId));
         Assert.NotEqual(before, await StampOf(e, admin.Id));
@@ -294,8 +290,8 @@ public class RecoveryEventServiceTests
 
         var res = await c.Edit(EditModel(admin, emp, "abc", new[] { SystemRoles.SystemAdmin }));          // خیلی ضعیف
 
-        Assert.IsType<RedirectToActionResult>(res);
-        Assert.Contains("password was not changed", c.TempData["Error"]?.ToString());                      // قبلاً نتیجه نادیده گرفته می‌شد
+        UsersFacade.Refused(res);
+        Assert.Equal("User updated, but the password was not changed: {0}", res.Error);                    // before, the result was ignored
         var ev = await e.Ctx.SecurityEvents.AsNoTracking().SingleAsync();
         Assert.Equal((RecoveryResults.Failure, RecoveryFailureReasons.PasswordRejected), (ev.Result, ev.FailureReason));
         Assert.Empty(e.Notes.Sent);
