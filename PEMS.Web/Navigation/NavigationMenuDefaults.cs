@@ -150,7 +150,7 @@ public static class NavigationMenuDefaults
         Link("cmms.shifthandover", "sec.cmms", 110, "Shift Handovers", "bi-arrow-left-right", "ShiftHandover", rule: "CmmsItem:ShiftHandover"),
         Link("cmms.masterdata", "sec.cmms", 120, "Maintenance Master Data", "bi-collection", "MaintenanceMasterData", rule: "CmmsItem:MaintenanceMasterData"),
         Link("cmms.classification", "sec.cmms", 130, "Equipment Classification", "bi-diagram-3-fill", "EquipmentClassification", rule: "CmmsItem:EquipmentClassification"),
-        Link("cmms.readiness", "sec.cmms", 140, "CMMS Readiness", "bi-clipboard-check", "CmmsReadiness", rule: "CmmsItem:CmmsReadiness"),
+        new("cmms.readiness", "sec.cmms", L, 140, "CMMS Readiness", "bi-clipboard-check", "CmmsItem:CmmsReadiness", ExternalPath: "/p/cmms-readiness"),   // SCRUM-674: a definition page (/p/...)
         new("cmms.operations", "sec.cmms", L, 150, "CMMS Operations", "bi-speedometer2", "CmmsItem:CmmsOperations", ExternalPath: "/p/cmms-operations"),   // SCRUM-673
         Link("cmms.rcm", "sec.cmms", 160, "RCM / FMEA", "bi-clipboard2-pulse", "RcmFmea", rule: "CmmsItem:RcmFmea"),
         Link("cmms.criticality", "sec.cmms", 170, "Criticality Analysis", "bi-shield-exclamation", "EquipmentCriticality", rule: "CmmsItem:EquipmentCriticality"),
