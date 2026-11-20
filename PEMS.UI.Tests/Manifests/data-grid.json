@@ -140,7 +140,10 @@
         }
       },
       "texts": {
-        "type": "object",
+        "type": [
+          "object",
+          "null"
+        ],
         "properties": {
           "search": {
             "oneOf": [
@@ -529,8 +532,7 @@
     "required": [
       "id",
       "url",
-      "columns",
-      "texts"
+      "columns"
     ],
     "additionalProperties": false
   },

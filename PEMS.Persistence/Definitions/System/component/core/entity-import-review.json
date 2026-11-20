@@ -72,7 +72,7 @@
           "options": {
             "action": "${cancelAction}",
             "label": "${cancelLabel}",
-            "tone": "secondary",
+            "tone": "neutral",
             "values": {
               "session": "{{params.id}}"
             }

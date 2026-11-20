@@ -11,7 +11,7 @@
     /// <summary>The configuration the script reads: every text already in the language of the request, nothing else the script has to look up.</summary>
     private string Config()
     {
-        var t = Options.Texts;
+        var t = Options.Texts ?? GridTexts.Default;
         string T(PEMS.UI.Abstractions.TranslatableText x) => Locale.Text(x);
         var config = new
         {
