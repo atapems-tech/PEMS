@@ -355,5 +355,5 @@
 
 /* SCRUM-627: the editable matrix (rows by columns of cells) */
 .pems-matrix__scroll { overflow-x: auto; }
-.pems-matrix__table th[scope="row"] { white-space: nowrap; position: sticky; inset-inline-start: 0; background: var(--pems-surface, #fff); }
+.pems-matrix__table th[scope="row"] { white-space: nowrap; position: sticky; inset-inline-start: 0; background: var(--pems-surface); }
 .pems-matrix__table input, .pems-matrix__table select { min-inline-size: 7rem; }

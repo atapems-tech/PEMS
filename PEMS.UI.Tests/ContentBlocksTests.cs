@@ -16,7 +16,7 @@ public sealed class ContentBlocksTests
     public void The_sample_renders_every_block_in_both_languages()
     {
         var en = Render(Sample());
-        var fa = Render(Sample(), "fa");
+        var fa = System.Net.WebUtility.HtmlDecode(Render(Sample(), "fa"));
         Assert.Contains("<h2 class=\"h3 mb-3\">Notes</h2>", en);
         Assert.Contains("alert alert-warning", en);
         Assert.Contains("<li>Second</li>", en);

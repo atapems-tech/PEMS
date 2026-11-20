@@ -93,10 +93,9 @@
     }
   ],
   "sample": {
-    "options": {
-      "label": "Open",
-      "icon": "bi-tools",
-      "iconClass": "bg-icon-green"
-    }
+    "label": "Open",
+    "icon": "bi-tools",
+    "iconClass": "bg-icon-green",
+    "value": "12"
   }
 }

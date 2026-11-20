@@ -78,8 +78,6 @@
     }
   ],
   "sample": {
-    "options": {
-      "label": "Vendor code"
-    }
+    "label": "Vendor code"
   }
 }
