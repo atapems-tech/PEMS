@@ -1,9 +1,0 @@
-@model PEMS.Application.DTOs.StorageProviderUpsertRequest
-
-<pems-page-shell kind="admin">
-    <pems-page-hero><pems-flex align="center" gap="3"><div><pems-text>@Model.Name</pems-text></div></pems-flex></pems-page-hero>
-    @if (TempData["Error"] != null) { <pems-alert tone="danger">@TempData["Error"]</pems-alert> }
-    <pems-form asp-action="Edit" asp-route-id="@ViewBag.StorageProviderId" method="post">
-        @await Html.PartialAsync("_Form", Model)
-    </pems-form>
-</pems-page-shell>

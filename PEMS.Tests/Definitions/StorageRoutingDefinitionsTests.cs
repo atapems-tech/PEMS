@@ -68,7 +68,7 @@ public sealed class StorageRoutingDefinitionsTests
         var (scopes, _) = Setup();
         var refused = await new OperationInvokeAction(scopes, Operations).ExecuteAsync(Run("storage-routing-create", ["Planner"], ("module", "VDR"), ("storageProviderId", "3"), ("isEnabled", "true")), CancellationToken.None);
         Assert.False(refused.Ok);
-        Assert.Equal(["Name", "ProviderType", "StorageProviderId"], Entities.Get("StorageProvider")!.Readable.OrderBy(x => x));       // no host, user name or password
+        Assert.DoesNotContain(Entities.Get("StorageProvider")!.Readable, p => p.Contains("Password", StringComparison.OrdinalIgnoreCase) || p.Contains("Secret", StringComparison.OrdinalIgnoreCase));       // SCRUM-648: the edit form needs host and user name, never the password
         Assert.Empty(Entities.Get("StorageProvider")!.Writable);
         Assert.Empty(Entities.Get("StorageRoute")!.Writable);
     }
