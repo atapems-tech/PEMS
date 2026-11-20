@@ -169,11 +169,12 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,Department,Employee,NavigationMenu,Organization,OrganizationImport,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,Department,Employee,OrganizationImport,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)
-        Link("admin.numbering", "sec.admin", 15, "Num_Title", "bi-123", "Numbering", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
+        // SCRUM-638: a definition page (/p/...), not a controller
+        new("admin.numbering", "sec.admin", L, 15, "Num_Title", "bi-123", "Module:Administration&Role:SystemAdmin", ExternalPath: "/p/numbering"),
         Sub("admin.sub.access", "sec.admin", 20, "User & Access"),
         Link("admin.users", "admin.sub.access", 10, "Users", "bi-people", "Users", area: "Admin", rule: "Module:Administration"),
         // SCRUM-644: a definition page (/p/...), not a controller
@@ -185,8 +186,9 @@ public static class NavigationMenuDefaults
         Link("admin.departments", "admin.sub.org", 10, "Departments", "bi-building", "Department", rule: "Module:Administration"),
         Link("admin.employees", "admin.sub.org", 20, "Employees", "bi-people", "Employee", rule: "Module:Administration"),
         Link("admin.disciplines", "admin.sub.org", 30, "Disc_Master_Nav", "bi-sliders", "Discipline", "Manage", rule: "Module:Administration|Flag:DisciplineMaster"),
-        Link("admin.positions", "admin.sub.org", 40, "Org_Positions_Nav", "bi-person-badge", "Organization", "Positions", area: "Admin", rule: "Module:Administration"),
-        Link("admin.org", "admin.sub.org", 50, "Org_Title", "bi-diagram-3", "Organization", area: "Admin", rule: "Module:Administration", isDefault: true),
+        // SCRUM-639: definition pages (/p/...), not a controller
+        new("admin.positions", "admin.sub.org", L, 40, "Org_Positions_Nav", "bi-person-badge", "Module:Administration", ExternalPath: "/p/organization-positions"),
+        new("admin.org", "admin.sub.org", L, 50, "Org_Title", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/organization-chart"),
         Sub("admin.sub.ai", "sec.admin", 40, "AI Administration"),
         Link("admin.intake", "admin.sub.ai", 10, "AIIntakeQueue", "bi-inboxes", "Intake", rule: "Module:Administration"),
         Link("admin.ocr", "admin.sub.ai", 20, "OCR Processing", "bi-badge-ad", "OCRProcessing", rule: "Module:Administration&Perm:OCRProcessing.View"),

@@ -246,7 +246,7 @@ public class VDRController : Controller
     // SCRUM-529: the two number forms live on Admin > Document numbering; returnTo="numbering" brings the user back there.
     private IActionResult NumberGenerationResult(int vdrItemId, string? returnTo) =>
         returnTo == "numbering"
-            ? RedirectToAction("Index", "Numbering", new { area = "Admin", vdrItemId })
+            ? Redirect("/p/numbering-vdr")
             : RedirectToAction(nameof(Details), new { id = vdrItemId });
 
     // طبق بخش ۵.۲ همان سند: آپلود واقعی فایل روی FTP Server. طبق تصمیم کاربر بخش ایمیل حذف شده -

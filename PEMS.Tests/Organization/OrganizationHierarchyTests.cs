@@ -349,7 +349,11 @@ public class OrganizationHierarchyTests
     [Fact]
     public void OrganizationControllers_AreSystemAdminOnly()
     {
-        foreach (var t in new[] { typeof(PEMS.Web.Areas.Admin.Controllers.OrganizationController), typeof(PEMS.Web.Areas.Admin.Controllers.OrganizationImportController) })
+        // SCRUM-639: the organization pages are operations (SystemAdmin only); the import is still a controller
+        var operations = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        foreach (var action in new[] { "CreatePosition", "UpdatePosition", "SetPositionActive", "SetPositionHierarchy", "Assign", "UpdateAssignment", "EndAssignment", "PositionRows", "Issues", "ChartRows" })
+            Assert.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin, operations.Get("Organization", action)!.Roles);
+        foreach (var t in new[] { typeof(PEMS.Web.Areas.Admin.Controllers.OrganizationImportController) })
         {
             var attr = (Microsoft.AspNetCore.Authorization.AuthorizeAttribute)Attribute.GetCustomAttribute(t, typeof(Microsoft.AspNetCore.Authorization.AuthorizeAttribute))!;
             Assert.Equal(PEMS.Persistence.Identity.SystemRoles.SystemAdmin, attr.Roles);
