@@ -25,6 +25,18 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+## 2026-11-20 - AI search page as a definition (SCRUM-669)
+
+### Changed
+- /p/ai-search (filter bar with query, discipline, document type and status; grid over `AiSearch.Search`) replaces AISearchController and its view; /AISearch redirects.
+
+## 2026-11-20 - Filter bar for report and search pages (SCRUM-747, 713, 669)
+
+### Added
+- Component `page-filters` and the instance binding `filterOptions`.
+
 ## 2026-11-20 - Global search page as a definition (SCRUM-703)
 
 ### Changed
