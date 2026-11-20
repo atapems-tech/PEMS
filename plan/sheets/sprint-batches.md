@@ -31,6 +31,7 @@ One generic engine per kind; every page, form, action or menu entry is an input 
 Inputs still missing (each is an issue in batch 4; a conversion waits on it; SCRUM-780 result and status display, 781 action preconditions, 782 matrix editor, 783 hierarchy editor, plus 595, 596, 615 for files and step-up): result and status display of an operation (test connection, update status), action preconditions (confirm fields, entitlement), matrix editors (permission, navigation visibility), hierarchy editors (menu, organization) on the tree component, file and JSON endpoints (595, 596, 615).
 
 Rules for every batch
+- A started batch has no issue in To Do: claim all of its issues (In Progress, assigned) when it starts and again whenever an issue is created for it (guideline 00 section 0).
 - The engines of batch 1 to 3 are written once and generic; conversions (4 to 9) add only definitions, services and feed (skill `pems-definition-engineer`), never handlers or controllers.
 - A conversion issue is closed only when its controller, views and inline scripts are deleted and its routes ship as `route` definitions.
 - Every batch: tests per issue run through the real handler, definitions validated by the shipped kinds, plan rows updated, the Jira comment lists the browser checks.
