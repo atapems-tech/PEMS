@@ -102,7 +102,7 @@
         <pems-icon name="bi-graph-up-arrow" /> @Localizer["Exec_NavTitle"]
     </pems-nav-link>
 
-    <pems-nav-link item="false" active="@(IsActive("MyWork"))" asp-controller="MyWork" asp-action="Index" asp-area="">
+    <pems-nav-link item="false" href="/p/my-work" active="@Context.Request.Path.StartsWithSegments("/p/my-work")">
         <pems-icon name="bi-list-check" /> @Localizer["My Work"]
     </pems-nav-link>
 

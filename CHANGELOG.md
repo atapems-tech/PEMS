@@ -21,6 +21,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - My Work as a definition (SCRUM-730)
+
+### Added
+- Operation `MyWork.Approvals` (`IMyWorkOperations`), grid action urls with `{raw.field}`, `Url` on command palette actions.
+### Changed
+- My Work is the definition page `my-work` (module, stage, personal, record, assigned, due, overdue; open the record); MyWorkController and its view are deleted; /MyWork redirects.
+
 ## 2026-11-20 - Engineering Copilot page as a definition (SCRUM-668)
 
 ### Added

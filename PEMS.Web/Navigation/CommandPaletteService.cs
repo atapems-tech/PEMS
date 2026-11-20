@@ -56,7 +56,7 @@ public sealed class CommandPaletteService
         var list = new List<CommandPaletteItem>();
         foreach (var a in _actions.All)
             if (await _search.IsAllowedAsync(a.Access))
-                list.Add(new CommandPaletteItem(_text["Palette_Action_" + a.Key], null, url.Action(a.Action, a.Controller, new { area = "" })!, a.Icon));
+                list.Add(new CommandPaletteItem(_text["Palette_Action_" + a.Key], null, a.Url ?? url.Action(a.Action, a.Controller, new { area = "" })!, a.Icon));
 
         var back = !string.IsNullOrEmpty(returnUrl) && url.IsLocalUrl(returnUrl) ? returnUrl : "/";
         foreach (var (theme, icon, key) in new[] { ("light", "bi-sun", "Theme_Light"), ("dark", "bi-moon-stars", "Theme_Dark"), ("turquoise", "bi-gem", "Theme_Turquoise") })
