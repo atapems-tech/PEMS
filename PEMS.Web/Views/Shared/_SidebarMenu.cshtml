@@ -742,8 +742,7 @@
                 <pems-nav-link item="false" sub="true" href="/p/workflow-management" active="@Context.Request.Path.StartsWithSegments("/p/workflow")">
                     <pems-icon name="bi-diagram-3" /> @Localizer["Workflow Management"]
                 </pems-nav-link>
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Help", "Admin"))"
-                   asp-area="Admin" asp-controller="Help" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/help-admin" active="@Context.Request.Path.StartsWithSegments("/p/help")">
                     <pems-icon name="bi-life-preserver" /> @Localizer["Help Administration"]
                 </pems-nav-link>
 
