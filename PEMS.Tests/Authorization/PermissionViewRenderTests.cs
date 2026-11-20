@@ -21,40 +21,6 @@ public class PermissionViewRenderTests
         return RazorViewRenderer.RenderAsync(c, result, path);
     }
 
-    // ------------------------------------------------------------------ Permission Matrix
-    [Fact]
-    public async Task PermissionMatrix_Renders_WithAutoSaveStructure()
-    {
-        var controller = new PermissionMatrixController(null!, null!, null!);
-        controller.ViewBag.Roles = new[] { "SystemAdmin", "Engineer", "Viewer" };
-        controller.ViewBag.Modules = new[] { "WorkOrder", "Task" };
-        var model = new List<RolePermissionDto>
-        {
-            new() { RoleName = "Engineer", ModuleName = "WorkOrder", CanView = true }
-        };
-
-        var html = await Render(controller, "~/Areas/Admin/Views/PermissionMatrix/Index.cshtml", model);
-
-        Assert.Contains("id=\"pmRoot\"", html);
-        Assert.Contains("id=\"pmRoleSearch\"", html);
-        Assert.Contains("id=\"pmModuleSearch\"", html);
-        Assert.Contains("id=\"pmStatusFilter\"", html);
-        // SystemAdmin is intentionally not a role card; the other two are, collapsed by default
-        Assert.DoesNotContain("data-role=\"SystemAdmin\"", html);
-        Assert.Equal(2, Regex.Matches(html, "<details class=\"permission-role\"").Count);
-        Assert.DoesNotContain("permission-role\" id=\"role-Engineer\" open", html);
-        // 10 action columns per role table, each with a column toggle and a risk class
-        Assert.Equal(2 * 10, Regex.Matches(html, "class=\"form-check-input pm-col-all\"").Count);
-        Assert.Contains("pm-risk-danger", html);
-        // one box per (role x module x action) and exactly one is checked (Engineer / WorkOrder / View)
-        Assert.Equal(2 * 2 * 10, Regex.Matches(html, "class=\"form-check-input pm-box\"").Count);
-        Assert.Single(Regex.Matches(html, "<input[^>]*data-action=\"View\"[^>]*checked=\"checked\""));   // SCRUM-533: the component writes checked at the end of the tag
-        // the no-JS fallback form and Save button are still rendered
-        Assert.Contains("permission-save", html);
-        Assert.Contains("name=\"permissions[0].CanView\"", html);
-        Assert.Contains("(1/2)", html); // Engineer: 1 of 2 modules configured
-    }
-
     // ------------------------------------------------------------------ Users/Details Effective tab
     private static UsersController UsersControllerForRender() =>
         new(null!, null!, PemsDbContextFactory.CreateInMemory(nameof(PermissionViewRenderTests)), null!, null!, null!, null!);

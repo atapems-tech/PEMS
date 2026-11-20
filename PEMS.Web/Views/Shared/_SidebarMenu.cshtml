@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "PermissionMatrix", "Department", "Employee", "NavigationVisibility", "Organization", "OrganizationImport", "Numbering" };
+    var adminControllers = new[] { "Settings", "Users", "Department", "Employee", "NavigationVisibility", "Organization", "OrganizationImport", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند

@@ -21,7 +21,7 @@ public class OrganizationChartViewRenderTests
 
     private static Task<string> RenderAsync(int? selectedDisciplineId = null)
     {
-        var host = new PermissionMatrixController(null!, null!, null!);
+        var host = new PEMS.Tests.TestSupport.ViewRenderHost();
         host.ViewBag.Disciplines = new List<DisciplineItem>
         {
             new() { DisciplineId = 1, Name = "Electrical" },

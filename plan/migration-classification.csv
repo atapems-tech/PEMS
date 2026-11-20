@@ -8,7 +8,6 @@ Admin,NavigationVisibility,Administration,"W1 admin, account, shell",Hamid,code-
 Admin,Numbering,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,Organization,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Admin,OrganizationImport,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-Admin,PermissionMatrix,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Admin,Settings,Administration,"W1 admin, account, shell",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Admin,WorkflowManagement,Administration,"W1 admin, account, shell",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
