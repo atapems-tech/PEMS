@@ -103,7 +103,7 @@
         </pems-flex>
 
         <div class="pems-search d-none d-md-block">
-            <pems-form role="search" asp-controller="GlobalSearch" asp-action="Index" asp-area="" method="get"><pems-flex>
+            <pems-form role="search" action="/p/global-search" method="get"><pems-flex>
                 <pems-input type="search" name="q" placeholder="@Localizer["Palette_OpenHint"]" aria-label="@Localizer["Palette_OpenHint"]" aria-keyshortcuts="Control+K" data-pems-command-palette-trigger />
             </pems-flex></pems-form>
         </div>
@@ -274,7 +274,7 @@
             data-placeholder="@Localizer["Shell_SidebarSearch"]" data-results="@Localizer["Shell_SidebarSearchResults"]" data-empty="@Localizer["Shell_SidebarSearchEmpty"]"></script>
     <script src="~/_content/PEMS.UI/pems-command-palette.js" asp-append-version="true"
             data-search-url="@Url.Action("Palette", "SearchApi", new { area = "" })" data-actions-url="@Url.Action("PaletteActions", "SearchApi", new { area = "" })"
-            data-all-url="@Url.Action("Index", "GlobalSearch", new { area = "" })" data-title="@Localizer["Palette_Title"]"
+            data-all-url="/p/global-search" data-title="@Localizer["Palette_Title"]"
             data-placeholder="@Localizer["Palette_Placeholder"]" data-menus="@Localizer["Palette_Menus"]" data-actions="@Localizer["Palette_Actions"]"
             data-empty="@Localizer["Palette_Empty"]" data-loading="@Localizer["Palette_Loading"]" data-error="@Localizer["Palette_Error"]"
             data-keys="@Localizer["Palette_Keys"]" data-min-chars="@Localizer["Palette_MinChars"]" data-show-all="@Localizer["Palette_ShowAll"]"

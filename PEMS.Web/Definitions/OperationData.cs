@@ -110,7 +110,8 @@ public sealed class OperationGridProvider(OperationReader reader) : IGridDataPro
             var q = request.Grid.Search.Trim();
             query = query.Where(r => r.Values.Any(v => v is string s && s.Contains(q, StringComparison.OrdinalIgnoreCase)));
         }
-        foreach (var f in request.Grid.Filters)
+        var argumentFilters = ArgumentParameters(request.Parameters.GetValueOrDefault("args"));   // filters the service already took as arguments (a page passes them in the url of the grid)
+        foreach (var f in request.Grid.Filters.Where(f => !argumentFilters.Contains(f.Field)))
         {
             var field = f.Field; var value = f.Value;
             query = f.Op == "eq" ? query.Where(r => string.Equals(Text(r, field), value, StringComparison.OrdinalIgnoreCase)) : query.Where(r => (Text(r, field) ?? "").Contains(value, StringComparison.OrdinalIgnoreCase));
@@ -120,6 +121,15 @@ public sealed class OperationGridProvider(OperationReader reader) : IGridDataPro
             list = (sort.Descending ? list.OrderByDescending(r => r[sort.Field], Comparer<object?>.Create(Compare)) : list.OrderBy(r => r[sort.Field], Comparer<object?>.Create(Compare))).ToList();
         var page = Math.Max(1, request.Grid.Page);
         return (list.Skip((page - 1) * request.Grid.PageSize).Take(request.Grid.PageSize).Cast<object>().ToList(), list.Count);
+    }
+
+    /// <summary>The names after <c>param:</c> in the arguments of the operation (the filters and the search the service handles itself).</summary>
+    private static HashSet<string> ArgumentParameters(string? argsJson)
+    {
+        var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        if (argsJson is null || JsonNode.Parse(argsJson) is not JsonObject args) return names;
+        foreach (var (_, source) in args) if (EntityJson.Str(source) is { } text && text.StartsWith("param:", StringComparison.Ordinal)) names.Add(text[6..]);
+        return names;
     }
 
     private static string? Text(IDictionary<string, object?> row, string field) => row.TryGetValue(field, out var v) ? Convert.ToString(v, CultureInfo.InvariantCulture) : null;

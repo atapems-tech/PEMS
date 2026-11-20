@@ -83,9 +83,9 @@ public class CommandPaletteAccessTests
     [Fact]
     public void GlobalSearchPage_NoLongerQueriesTablesDirectly()
     {
-        var controller = File.ReadAllText(RepoFile("PEMS.Web", "Controllers", "GlobalSearchController.cs"));
-        Assert.DoesNotContain("PEMSDbContext", controller);
-        Assert.Contains("CommandPaletteService", controller);
+        var operation = File.ReadAllText(RepoFile("PEMS.Web", "Services", "GlobalSearchOperations.cs"));
+        Assert.DoesNotContain("PEMSDbContext", operation);
+        Assert.Contains("CommandPaletteService", operation);
     }
 
     [Fact]
