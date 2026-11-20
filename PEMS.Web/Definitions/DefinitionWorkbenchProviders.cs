@@ -319,3 +319,130 @@ public sealed class OperationCatalogGridProvider(OperationCatalog catalog) : IGr
         return Task.FromResult((rows, all.Count));
     }
 }
+
+/// <summary>
+/// The arguments of one operation as rows for the action designer (SCRUM-811): filter <c>ref</c> = <c>Model.Action</c>; one row per argument with <c>argument</c>, <c>source</c> (the source the designer suggests: <c>context:userName</c>
+/// for <c>actor</c> and <c>userName</c>, <c>context:roles</c> for <c>roles</c>, else <c>field:name</c> of the same name) and the <c>json</c> of the whole arguments object, so an action is written without guessing a name.
+/// </summary>
+public sealed class OperationArgumentsGridProvider(OperationCatalog catalog) : IGridDataProvider
+{
+    public string Key => "operation-arguments";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    /// <summary>The source a designer suggests for an argument by its name.</summary>
+    public static string Suggest(string argument) => argument switch
+    {
+        "actor" or "userName" or "performedBy" => "context:userName",
+        "roles" => "context:roles",
+        "employeeId" => "context:employeeId",
+        "culture" => "context:culture",
+        _ => "field:" + argument,
+    };
+
+    public Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        var reference = WorkbenchRows.FilterValue(request, "ref");
+        var dot = reference.IndexOf('.');
+        var operation = dot <= 0 ? null : catalog.Describe().FirstOrDefault(o => o.Model == reference[..dot] && o.Action == reference[(dot + 1)..]);
+        if (operation is null) return Task.FromResult(((IReadOnlyList<object>)[], 0));
+        var json = "{ " + string.Join(", ", operation.Arguments.Select(a => $"\"{a}\": \"{Suggest(a)}\"")) + " }";
+        IReadOnlyList<object> rows = operation.Arguments.Select(a => (object)new Dictionary<string, object?> { ["argument"] = a, ["source"] = Suggest(a), ["json"] = json }).ToList();
+        return Task.FromResult((rows, rows.Count));
+    }
+}
+
+/// <summary>
+/// The items of a menu definition as an indented tree (SCRUM-813): filter <c>ref</c> = <c>appKey:menu:key</c> (the published version, or the draft with <c>draft</c> = <c>1</c>); rows <c>id</c> (<c>ref|/items|index</c>, the row id of the
+/// designer move buttons), <c>key</c>, <c>title</c> (indented by depth), <c>parent</c>, <c>order</c>, <c>target</c>.
+/// </summary>
+public sealed class MenuTreeGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    public string Key => "menu-tree";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    /// <summary>The items in tree order (children after their parent, siblings by order then key) with their depth; an item whose parent does not exist is shown at the top level. Pure.</summary>
+    public static IReadOnlyList<(int Index, JsonElement Item, int Depth)> Walk(JsonElement items)
+    {
+        var list = items.EnumerateArray().Select((e, i) => (Index: i, Item: e)).ToList();
+        string? KeyOf(JsonElement e) => e.TryGetProperty("key", out var k) && k.ValueKind == JsonValueKind.String ? k.GetString() : null;
+        string? ParentOf(JsonElement e) => e.TryGetProperty("parent", out var p) && p.ValueKind == JsonValueKind.String ? p.GetString() : null;
+        int OrderOf(JsonElement e) => e.TryGetProperty("order", out var o) && o.TryGetInt32(out var n) ? n : 0;
+        var keys = list.Select(x => KeyOf(x.Item)).Where(k => k != null).ToHashSet(StringComparer.Ordinal);
+        var result = new List<(int, JsonElement, int)>();
+        var seen = new HashSet<int>();
+        void Add(string? parent, int depth)
+        {
+            foreach (var x in list.Where(x => (parent is null ? ParentOf(x.Item) is null || !keys.Contains(ParentOf(x.Item)!) : ParentOf(x.Item) == parent)).OrderBy(x => OrderOf(x.Item)).ThenBy(x => KeyOf(x.Item), StringComparer.Ordinal))
+            {
+                if (!seen.Add(x.Index) || depth > 8) continue;
+                result.Add((x.Index, x.Item, depth));
+                if (KeyOf(x.Item) is { } k) Add(k, depth + 1);
+            }
+        }
+        Add(null, 0);
+        return result;
+    }
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        var reference = WorkbenchRows.FilterValue(request, "ref");
+        if (reference.Length == 0) return ([], 0);
+        using var scope = scopes.CreateScope();
+        var definitions = scope.ServiceProvider.GetRequiredService<IDefinitionService>();
+        var id = await HistoryRows.FindAsync(definitions, reference, ct);
+        if (id is null) return ([], 0);
+        var payload = WorkbenchRows.FilterValue(request, "draft") == "1" ? await definitions.GetDraftAsync(id.Value, ct) : null;
+        if (payload is null || !payload.Success)
+        {
+            var detail = await definitions.GetAsync(id.Value, ct);
+            if (!detail.Success || detail.Value!.Summary.PublishedVersion is not { } published) return ([], 0);
+            payload = await definitions.GetVersionAsync(id.Value, published, ct);
+            if (!payload.Success) return ([], 0);
+        }
+        using var doc = JsonDocument.Parse(payload.Value!.PayloadJson);
+        if (!doc.RootElement.TryGetProperty("items", out var items) || items.ValueKind != JsonValueKind.Array) return ([], 0);
+        string Text(JsonElement e, string name) => e.TryGetProperty(name, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() ?? "" : "";
+        var rows = Walk(items).Select(w =>
+        {
+            var title = w.Item.TryGetProperty("title", out var t) && t.ValueKind == JsonValueKind.Object ? (t.TryGetProperty(request.Culture, out var tl) && tl.ValueKind == JsonValueKind.String ? tl.GetString() : t.TryGetProperty("en", out var te) ? te.GetString() : "") : Text(w.Item, "titleKey");
+            var target = Text(w.Item, "page") is { Length: > 0 } pg ? "/p/" + pg : Text(w.Item, "form") is { Length: > 0 } fm ? "/f/" + fm : Text(w.Item, "url");
+            return (object)new Dictionary<string, object?>
+            {
+                ["id"] = reference + "|/items|" + w.Index, ["key"] = Text(w.Item, "key"), ["title"] = new string('\u00A0', w.Depth * 4) + title, ["parent"] = Text(w.Item, "parent"),
+                ["order"] = w.Item.TryGetProperty("order", out var o) && o.TryGetInt32(out var n) ? n : 0, ["target"] = target, ["depth"] = w.Depth,
+            };
+        }).ToList();
+        return (rows, rows.Count);
+    }
+}
+
+/// <summary>
+/// Who may design and who may publish (SCRUM-813): one row per role with <c>role</c>, <c>view</c>, <c>create</c>, <c>edit</c>, <c>approve</c> (yes or no, from the permission matrix through the same access check the pages use) and
+/// <c>separation</c>: <c>one person can design and publish</c> when the role holds both Edit and Approve (the two-person rule, SCRUM-808, is what stops the author publishing a protected definition), <c>designs only</c>, <c>publishes only</c> or empty.
+/// </summary>
+public sealed class DefinitionSodGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    public string Key => "definition-sod";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    /// <summary>The separation note of a role from what it may do. Pure.</summary>
+    public static string Separation(bool edit, bool approve) => edit && approve ? "one person can design and publish" : edit ? "designs only" : approve ? "publishes only" : "";
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        using var scope = scopes.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        var access = scope.ServiceProvider.GetRequiredService<IDefinitionAccess>();
+        var roles = await db.Roles.AsNoTracking().Select(r => r.Name!).OrderBy(n => n).ToListAsync(ct);
+        var rows = new List<object>();
+        foreach (var role in roles)
+        {
+            async Task<bool> Can(string action) => await access.CanOpenAsync("Definitions." + action, [role], ct);
+            bool view = await Can("View"), create = await Can("Create"), edit = await Can("Edit"), approve = await Can("Approve");
+            if (!view && !create && !edit && !approve) continue;
+            string YesNo(bool b) => b ? "yes" : "no";
+            rows.Add(new Dictionary<string, object?> { ["role"] = role, ["view"] = YesNo(view), ["create"] = YesNo(create), ["edit"] = YesNo(edit), ["approve"] = YesNo(approve), ["separation"] = Separation(edit, approve) });
+        }
+        return (rows, rows.Count);
+    }
+}
