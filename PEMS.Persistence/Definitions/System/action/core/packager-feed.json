@@ -21,7 +21,8 @@
         "toVersion": "field:toVersion",
         "entity": "field:entity",
         "mode": "field:mode",
-        "rowsJson": "field:rows"
+        "rowsJson": "field:rows",
+        "keyFields": "field:keyFields"
       }
     }
   }

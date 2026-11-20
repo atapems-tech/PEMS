@@ -163,10 +163,19 @@
                   "fa": "عملیات"
                 },
                 "type": "actions",
-                "width": 140,
+                "width": 220,
                 "sortable": false,
                 "filterable": false,
                 "actions": [
+                  {
+                    "key": "preview",
+                    "label": {
+                      "en": "Preview",
+                      "fa": "پیش‌نمایش"
+                    },
+                    "url": "{raw.previewUrl}",
+                    "method": "get"
+                  },
                   {
                     "key": "export",
                     "label": {

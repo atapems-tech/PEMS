@@ -23,7 +23,7 @@
             {
                 search = T(t.Search), columns = T(t.Columns), density = T(t.Density), compact = T(t.Compact), comfortable = T(t.Comfortable), export = T(t.Export), views = T(t.Views),
                 saveView = T(t.SaveView), viewName = T(t.ViewName), loading = T(t.Loading), empty = T(t.Empty), error = T(t.Error), rows = T(t.Rows), selected = T(t.Selected),
-                selectAllMatching = T(t.SelectAllMatching), clearSelection = T(t.ClearSelection), filter = T(t.Filter), delete = T(t.Delete)
+                selectAllMatching = T(t.SelectAllMatching), clearSelection = T(t.ClearSelection), filter = T(t.Filter), delete = T(t.Delete), viewScopeMe = T(t.ViewScopeMe)
             }
         };
         return JsonSerializer.Serialize(config, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });

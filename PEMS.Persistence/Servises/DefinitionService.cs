@@ -639,7 +639,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper, 
 
     private static DefinitionVersionInfo Info(Definition d, DefinitionVersion v) =>
         new(v.VersionNumber, v.Status, v.ContentHash, v.ChangeSummary, v.ClonedFromVersionId is { } c ? d.Versions.FirstOrDefault(x => x.DefinitionVersionId == c)?.VersionNumber : null,
-            v.CreatedAtUtc, v.ValidatedAtUtc, v.PublishedAtUtc, v.PublishedBy, v.RetiredAtUtc, v.Revision);
+            v.CreatedAtUtc, v.ValidatedAtUtc, v.PublishedAtUtc, v.PublishedBy, v.RetiredAtUtc, v.Revision, v.CreatedBy);
 
     private static DefinitionVersionPayload Payload(Definition d, DefinitionVersion v) => new(Info(d, v), v.PayloadJson);
 

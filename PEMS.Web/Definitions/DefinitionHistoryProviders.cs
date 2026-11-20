@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Definitions;
 
 namespace PEMS.Web.Definitions;
@@ -100,7 +101,7 @@ public sealed class DefinitionVersionsGridProvider(IServiceScopeFactory scopes) 
             rows.Add(new Dictionary<string, object?>
             {
                 ["versionRef"] = reference + ":" + v.Number, ["ref"] = reference, ["number"] = v.Number, ["status"] = v.Status.ToString(), ["hash"] = v.ContentHash.Length > 12 ? v.ContentHash[..12] : v.ContentHash,
-                ["summary"] = v.ChangeSummary ?? "", ["createdAt"] = v.CreatedAtUtc.ToString("s", System.Globalization.CultureInfo.InvariantCulture),
+                ["summary"] = v.ChangeSummary ?? "", ["previewUrl"] = $"/preview/definition?ref={Uri.EscapeDataString(reference)}&version={v.Number}", ["createdAt"] = v.CreatedAtUtc.ToString("s", System.Globalization.CultureInfo.InvariantCulture),
                 ["publishedAt"] = v.PublishedAtUtc?.ToString("s", System.Globalization.CultureInfo.InvariantCulture) ?? "", ["publishedBy"] = v.PublishedBy ?? "",
                 ["retiredAt"] = v.RetiredAtUtc?.ToString("s", System.Globalization.CultureInfo.InvariantCulture) ?? "", ["verdict"] = verdict, ["reason"] = reason,
             });
@@ -131,5 +132,26 @@ public sealed class DefinitionDiffGridProvider(IServiceScopeFactory scopes) : IG
         IReadOnlyList<object> items = rows.Skip((page - 1) * request.Grid.PageSize).Take(request.Grid.PageSize)
             .Select(r => (object)new Dictionary<string, object?> { ["pointer"] = r.Pointer, ["change"] = r.Change, ["from"] = r.From ?? "", ["to"] = r.To ?? "" }).ToList();
         return (items, rows.Count);
+    }
+}
+
+/// <summary>The packages run on this installation (SCRUM-814), newest first: <c>id</c>, <c>kind</c>, <c>version</c>, <c>result</c> (applied or failed), <c>summary</c>, <c>backup</c>, <c>by</c>, <c>at</c>, <c>hash</c> (first 12 characters).</summary>
+public sealed class MigratorHistoryGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    public string Key => "migrator-history";
+    public IReadOnlyCollection<string>? AllowedRoles => ["SystemAdmin"];
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        using var scope = scopes.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PEMS.Persistence.Context.PEMSDbContext>();
+        var total = await db.AppliedPackages.AsNoTracking().CountAsync(ct);
+        var page = Math.Max(1, request.Grid.Page);
+        var rows = await db.AppliedPackages.AsNoTracking().OrderByDescending(p => p.AppliedAtUtc).Skip((page - 1) * request.Grid.PageSize).Take(request.Grid.PageSize).ToListAsync(ct);
+        return (rows.Select(p => (object)new Dictionary<string, object?>
+        {
+            ["id"] = p.AppliedPackageId, ["kind"] = p.Kind, ["version"] = p.Version ?? "", ["result"] = p.Succeeded ? "applied" : "failed", ["summary"] = p.Summary ?? "", ["backup"] = p.BackupPoint ?? "",
+            ["by"] = p.AppliedBy ?? "", ["at"] = p.AppliedAtUtc.ToString("s", System.Globalization.CultureInfo.InvariantCulture), ["hash"] = p.PackageHash.Length > 12 ? p.PackageHash[..12] : p.PackageHash,
+        }).ToList(), total);
     }
 }

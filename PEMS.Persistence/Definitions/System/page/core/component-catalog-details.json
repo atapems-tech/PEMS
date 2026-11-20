@@ -82,6 +82,34 @@
         "en": "Back to the catalog",
         "fa": "بازگشت به فهرست"
       }
+    },
+    "regions": {
+      "header": [
+        {
+          "id": "preview-fa",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Live preview (fa, RTL)",
+              "fa": "پیش‌نمایش زنده (فارسی، راست‌به‌چپ)"
+            },
+            "tone": "primary",
+            "href": "/preview/component/{{params.id|url}}?culture=fa&dir=rtl&theme=light"
+          }
+        },
+        {
+          "id": "preview-en",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Live preview (en, LTR)",
+              "fa": "پیش‌نمایش زنده (انگلیسی، چپ‌به‌راست)"
+            },
+            "tone": "primary",
+            "href": "/preview/component/{{params.id|url}}?culture=en&dir=ltr&theme=light"
+          }
+        }
+      ]
     }
   }
 }

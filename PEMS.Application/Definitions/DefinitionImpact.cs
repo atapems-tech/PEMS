@@ -90,3 +90,21 @@ public static class DefinitionCompatibility
         return map;
     }
 }
+
+/// <summary>
+/// The two-person publish rule (SCRUM-808, guideline 04 policy table): a protected definition is published by a person other than the one who made the draft, so a critical page never changes by one person alone.
+/// Protected definitions are the setting <c>Definitions:ProtectedDefinitions</c>: a comma separated list of <c>kind:key</c> or <c>kind:*</c> (every definition of a kind). The rule is enforced by the REST publish and by the
+/// workbench alike; the permission to publish (Definitions.Approve) is still needed. Pure.
+/// </summary>
+public static class TwoPersonPublish
+{
+    public static bool IsProtected(string? setting, string kind, string key)
+        => (setting ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Any(e => string.Equals(e, kind + ":" + key, StringComparison.OrdinalIgnoreCase) || string.Equals(e, kind + ":*", StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>True when the publish must wait for another person: the definition is protected and the publisher made the draft.</summary>
+    public static bool NeedsSecondApprover(string? setting, string kind, string key, string? draftCreatedBy, string publisher)
+        => IsProtected(setting, kind, key) && !string.IsNullOrWhiteSpace(draftCreatedBy) && string.Equals(draftCreatedBy, publisher, StringComparison.OrdinalIgnoreCase);
+
+    public const string Message = "This definition is protected: another person with the permission to publish must publish it, not the person who made the draft.";
+}

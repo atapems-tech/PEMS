@@ -17,6 +17,8 @@ public static class PublishStages
     public const string Blocked = "blocked";
     /// <summary>The change only warns (data shape, type changes); publish again with acknowledge to go on; nothing was published.</summary>
     public const string NeedsAcknowledgement = "needs-acknowledgement";
+    /// <summary>The definition is protected (<c>Definitions:ProtectedDefinitions</c>) and the publisher made the draft: another approver must publish it (SCRUM-808); nothing was published.</summary>
+    public const string NeedsSecondApprover = "needs-second-approver";
     /// <summary>The service refused the publish (stale, invalid); <see cref="GuardedPublish.Outcome"/> says why.</summary>
     public const string Failed = "failed";
     /// <summary>Published and the smoke check passed.</summary>
@@ -36,6 +38,8 @@ public sealed class DefinitionPublishGuard(IDefinitionService definitions, IDefi
 
     public async Task<GuardedPublish> PublishAsync(int id, long expectedDraftRevision, string actor, bool acknowledge, CancellationToken ct = default)
     {
+        var second = await SecondApproverAsync(id, actor, ct);
+        if (second != null) return new GuardedPublish(PublishStages.NeedsSecondApprover, ImpactReport.From([]), null, second);
         var report = await impact.PrecheckPublishAsync(id, ct);
         if (report.Blocked) return new GuardedPublish(PublishStages.Blocked, report, null, report.Text());
         if (report.Verdict == "warnings" && !acknowledge) return new GuardedPublish(PublishStages.NeedsAcknowledgement, report, null, report.Text());
@@ -46,6 +50,18 @@ public sealed class DefinitionPublishGuard(IDefinitionService definitions, IDefi
         var failure = await SmokeAsync(id, outcome.Value!.Summary.PublishedVersion, ct);
         if (failure is null) return new GuardedPublish(PublishStages.Published, report, outcome);
         return await AutoRollbackAsync(id, outcome, report, actor, failure, ct);
+    }
+
+    /// <summary>The reason a protected definition may not be published by this person (they made the draft), or null (SCRUM-808).</summary>
+    public async Task<string?> SecondApproverAsync(int id, string actor, CancellationToken ct = default)
+    {
+        var setting = configuration["Definitions:ProtectedDefinitions"];
+        if (string.IsNullOrWhiteSpace(setting)) return null;
+        var detail = await definitions.GetAsync(id, ct);
+        if (!detail.Success) return null;
+        var draft = await definitions.GetDraftAsync(id, ct);
+        if (!draft.Success) return null;
+        return TwoPersonPublish.NeedsSecondApprover(setting, detail.Value!.Summary.Kind, detail.Value.Summary.Key, draft.Value!.Info.CreatedBy, actor) ? TwoPersonPublish.Message : null;
     }
 
     /// <summary>

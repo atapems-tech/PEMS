@@ -18,8 +18,14 @@ public sealed class PackageFileResult
 public interface IPackageBuilder
 {
     /// <summary>A feed package: <paramref name="rowsJson"/> is a JSON array of objects (field name to text) for <paramref name="entity"/>, applied in <paramref name="mode"/> (append, overwrite or merge).</summary>
+    /// <param name="rowsJson">A JSON array of objects, or CSV text (the first line holds the field names; a comma, semicolon or tab separates, quotes protect them) (SCRUM-815).</param>
+    /// <param name="keyFields">The fields that identify a row, comma separated (default Code, else Name, else the first field); a row without them or a key twice in the file is refused before the package is signed.</param>
     [PEMS.Application.Common.PemsOperation("Packager", "BuildFeed", Roles = "SystemAdmin")]
-    Task<PackageFileResult> BuildFeedAsync(string toVersion, string entity, string mode, string rowsJson);
+    Task<PackageFileResult> BuildFeedAsync(string toVersion, string entity, string mode, string rowsJson, string? keyFields = null);
+
+    /// <summary>What the feed package would contain (entity, mode, key fields, row count, the first rows, what is refused) without signing or handing out anything: the preview before download (SCRUM-815).</summary>
+    [PEMS.Application.Common.PemsOperation("Packager", "PreviewFeed", Roles = "SystemAdmin")]
+    Task<MigratorResult> PreviewFeedAsync(string toVersion, string entity, string mode, string rowsJson, string? keyFields = null);
 
     /// <summary>A first-installation package: the definitions listed in <paramref name="definitionRefs"/> (appKey:kind:key, comma separated) and the schema level.</summary>
     [PEMS.Application.Common.PemsOperation("Packager", "BuildInstall", Roles = "SystemAdmin")]

@@ -126,6 +126,216 @@ public sealed class DefinitionDesigner(IDefinitionService definitions, IDefiniti
         return await workbench.CreateAsync("action", key.Trim(), appKey, $"{model} {action}", $"{model} {action}", payload.ToJsonString(), "Designer: action", actor);
     }
 
+    // ------------------------------------------------------------------ SCRUM-810, 811, 812, 813: typed editors
+
+    private static string? Clean(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
+    /// <summary>Sets a property of an object from text: null leaves it, <c>-</c> removes it, otherwise the text is stored as the type asks (text, whole number, true or false).</summary>
+    private static string? SetProperty(JsonObject target, string name, string? text, string type = "string")
+    {
+        var value = Clean(text);
+        if (value is null) return null;
+        if (value == "-") { target.Remove(name); return null; }
+        switch (type)
+        {
+            case "int":
+                if (!int.TryParse(value, out var n) || n < 0) return $"{name} is a whole number.";
+                target[name] = n;
+                return null;
+            case "bool":
+                if (!bool.TryParse(value, out var b)) return $"{name} is true or false.";
+                target[name] = b;
+                return null;
+            default:
+                target[name] = value;
+                return null;
+        }
+    }
+
+    private static void SetText(JsonObject target, string name, string? en, string? fa)
+    {
+        var e = Clean(en); var f = Clean(fa);
+        if (e is null && f is null) return;
+        var map = target[name] as JsonObject ?? new JsonObject();
+        if (e is not null) map["en"] = e;
+        if (f is not null) map["fa"] = f;
+        target[name] = map;
+    }
+
+    public Task<(bool Success, string? Error)> EditFormFieldAsync(string reference, string name, string? titleEn, string? titleFa, string? kind, string? required, string? visible, string? requiredWhen, string? readOnlyWhen,
+        string? minLength, string? maxLength, string? pattern, string? span, string? optionsFrom, string? helpEn, string? helpFa, string actor)
+        => EditAsync(reference, actor, "Designer: edit field " + name, root =>
+        {
+            if (root["fields"] is not JsonArray fields) return "The form has no fields.";
+            var field = fields.OfType<JsonObject>().FirstOrDefault(f => string.Equals((string?)f["name"], name?.Trim(), StringComparison.Ordinal));
+            if (field is null) return $"The form has no field '{name}'.";
+            SetText(field, "label", titleEn, titleFa);
+            SetText(field, "helpText", helpEn, helpFa);
+            foreach (var problem in new[]
+            {
+                SetProperty(field, "kind", kind), SetProperty(field, "required", required, "bool"), SetProperty(field, "visible", visible), SetProperty(field, "requiredWhen", requiredWhen),
+                SetProperty(field, "readOnlyWhen", readOnlyWhen), SetProperty(field, "minLength", minLength, "int"), SetProperty(field, "maxLength", maxLength, "int"), SetProperty(field, "pattern", pattern),
+                SetProperty(field, "span", span, "int"), SetProperty(field, "optionsFrom", optionsFrom),
+            })
+                if (problem != null) return problem;
+            return null;
+        });
+
+    public Task<(bool Success, string? Error)> SetFormLayoutAsync(string reference, string? columns, string? warnOnLeave, string? submitEn, string? submitFa, string actor)
+        => EditAsync(reference, actor, "Designer: form layout", root =>
+        {
+            if (root is not JsonObject form) return "The form is not an object.";
+            if (Clean(columns) is { } c && c != "-" && c is not ("1" or "2")) return "columns is 1 or 2.";
+            var problem = SetProperty(form, "columns", columns, "int") ?? SetProperty(form, "warnOnLeave", warnOnLeave, "bool");
+            if (problem != null) return problem;
+            SetText(form, "submitLabel", submitEn, submitFa);
+            return null;
+        });
+
+    public Task<(bool Success, string? Error)> AddFormRuleAsync(string reference, string expression, string? field, string messageEn, string messageFa, string actor)
+        => EditAsync(reference, actor, "Designer: form rule", root =>
+        {
+            if (root is not JsonObject form) return "The form is not an object.";
+            if (string.IsNullOrWhiteSpace(expression)) return "A rule needs an expression.";
+            if (string.IsNullOrWhiteSpace(messageEn) || string.IsNullOrWhiteSpace(messageFa)) return "A rule needs its message in both languages.";
+            var rule = new JsonObject { ["expression"] = expression.Trim(), ["message"] = new JsonObject { ["en"] = messageEn.Trim(), ["fa"] = messageFa.Trim() } };
+            if (Clean(field) is { } f) rule["field"] = f;
+            var rules = form["rules"] as JsonArray ?? new JsonArray();
+            rules.Add(rule);
+            form["rules"] = rules;
+            return null;
+        });
+
+    private static JsonObject? ActionParameters(JsonNode root, out string? error)
+    {
+        error = null;
+        if (root is JsonObject o && o["parameters"] is JsonObject p) return p;
+        error = "The action has no parameters (only an operation action has a guard).";
+        return null;
+    }
+
+    public Task<(bool Success, string? Error)> SetActionGuardAsync(string reference, string resource, string action, string? resourceId, string? mode, string actor)
+        => EditAsync(reference, actor, "Designer: action guard", root =>
+        {
+            var parameters = ActionParameters(root, out var error);
+            if (parameters is null) return error;
+            if (string.IsNullOrWhiteSpace(resource) || string.IsNullOrWhiteSpace(action)) return "A guard names the resource and the action of the access decision.";
+            if (Clean(mode) is { } m && m is not ("sod" or "strict")) return "mode is sod or strict.";
+            var guard = new JsonObject { ["resource"] = resource.Trim(), ["action"] = action.Trim() };
+            if (Clean(resourceId) is { } r) guard["resourceId"] = r;
+            if (Clean(mode) is { } md) guard["mode"] = md;
+            parameters["guard"] = guard;
+            return null;
+        });
+
+    public Task<(bool Success, string? Error)> SetSectionGuardAsync(string reference, string section, string action, string? workOrderId, string? reason, string? recordRef, string actor)
+        => EditAsync(reference, actor, "Designer: section guard", root =>
+        {
+            var parameters = ActionParameters(root, out var error);
+            if (parameters is null) return error;
+            if (string.IsNullOrWhiteSpace(section) || string.IsNullOrWhiteSpace(action)) return "A section guard names the section and the action.";
+            var guard = new JsonObject { ["section"] = section.Trim(), ["action"] = action.Trim() };
+            if (Clean(workOrderId) is { } w) guard["workOrderId"] = w;
+            if (Clean(reason) is { } rs) guard["reason"] = rs;
+            if (Clean(recordRef) is { } rr) guard["recordRef"] = rr;
+            parameters["sectionGuard"] = guard;
+            return null;
+        });
+
+    public Task<(bool Success, string? Error)> SetEntityGridAsync(string reference, string entity, string? fields, string? searchFields, string? sort, string? whereJson, string? pageSize, string actor)
+        => EditAsync(reference, actor, "Designer: entity grid", root =>
+        {
+            if (root is not JsonObject source || source["parameters"] is not JsonObject parameters) return "The data source has no parameters.";
+            if (string.IsNullOrWhiteSpace(entity)) return "Say which entity the list reads.";
+            parameters["entity"] = entity.Trim();
+            static JsonArray Names(string text) => new(text.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(n => (JsonNode?)JsonValue.Create(n)).ToArray());
+            if (Clean(fields) is { } f) parameters["fields"] = Names(f);
+            if (Clean(searchFields) is { } sf) parameters["search"] = Names(sf);
+            if (Clean(sort) is { } so) parameters["sort"] = Names(so);
+            if (Clean(whereJson) is { } wj)
+            {
+                var where = ParseJson(wj, out var error);
+                if (error != null || where is not JsonObject) return "The fixed row scope is a JSON object of property to value, for example { \"IsActive\": true }.";
+                parameters["where"] = where;
+            }
+            if (Clean(pageSize) is { } ps)
+            {
+                if (!int.TryParse(ps, out var n) || n is < 1 or > 500) return "The page size is a number from 1 to 500.";
+                parameters["maxRows"] = n;
+            }
+            return null;
+        });
+
+    public Task<(bool Success, string? Error)> MoveMenuItemAsync(string reference, string itemKey, string? parent, int order, string actor)
+        => EditAsync(reference, actor, "Designer: move menu item " + itemKey, root =>
+        {
+            if (root["items"] is not JsonArray items) return "The menu has no items.";
+            var item = items.OfType<JsonObject>().FirstOrDefault(i => string.Equals((string?)i["key"], itemKey?.Trim(), StringComparison.Ordinal));
+            if (item is null) return $"The menu has no item '{itemKey}'.";
+            var newParent = Clean(parent);
+            if (newParent is not null)
+            {
+                if (string.Equals(newParent, itemKey.Trim(), StringComparison.Ordinal)) return "An item cannot be its own parent.";
+                var target = items.OfType<JsonObject>().FirstOrDefault(i => string.Equals((string?)i["key"], newParent, StringComparison.Ordinal));
+                if (target is null) return $"The menu has no item '{newParent}' to move under.";
+                // the new parent may not be a descendant of the item (a loop)
+                for (var cursor = target; cursor is not null;)
+                {
+                    var up = (string?)cursor["parent"];
+                    if (string.Equals(up, itemKey.Trim(), StringComparison.Ordinal)) return "An item cannot be moved under its own descendant.";
+                    cursor = up is null ? null : items.OfType<JsonObject>().FirstOrDefault(i => string.Equals((string?)i["key"], up, StringComparison.Ordinal));
+                }
+                item["parent"] = newParent;
+            }
+            else item.Remove("parent");
+            item["order"] = order;
+            return null;
+        });
+
+    // ------------------------------------------------------------------ SCRUM-809: component instances by id
+
+    private static (JsonArray? List, JsonObject? Instance) FindInstance(JsonNode root, string instanceId)
+    {
+        if (root["regions"] is not JsonObject regions) return (null, null);
+        foreach (var (_, node) in regions)
+            if (node is JsonArray list)
+                foreach (var instance in list.OfType<JsonObject>())
+                    if (string.Equals((string?)instance["id"], instanceId?.Trim(), StringComparison.Ordinal)) return (list, instance);
+        return (null, null);
+    }
+
+    public Task<(bool Success, string? Error)> SetInstanceOptionAsync(string reference, string instanceId, string option, string? valueJson, string actor)
+        => EditAsync(reference, actor, $"Designer: option {option} of {instanceId}", root =>
+        {
+            var (_, instance) = FindInstance(root, instanceId);
+            if (instance is null) return $"The page has no component with the id '{instanceId}'.";
+            if (string.IsNullOrWhiteSpace(option) || option.Contains('/')) return "The option is the name of one option of the component.";
+            var options = instance["options"] as JsonObject ?? new JsonObject();
+            if (string.IsNullOrWhiteSpace(valueJson)) options.Remove(option.Trim());
+            else
+            {
+                var value = ParseJson(valueJson, out var error);
+                if (error != null) return "The value is JSON: text in quotes, a number, true or false, or an object.";
+                options[option.Trim()] = value;
+            }
+            instance["options"] = options;
+            return null;
+        });
+
+    public Task<(bool Success, string? Error)> MoveInstanceAsync(string reference, string instanceId, string region, int position, string actor)
+        => EditAsync(reference, actor, $"Designer: move {instanceId} to {region}", root =>
+        {
+            var (list, instance) = FindInstance(root, instanceId);
+            if (list is null || instance is null) return $"The page has no component with the id '{instanceId}'.";
+            if (string.IsNullOrWhiteSpace(region)) return "Say which region to move the component to.";
+            if (root["regions"] is not JsonObject regions) return "The page has no regions.";
+            var target = regions[region.Trim()] as JsonArray;
+            if (target is null) { target = new JsonArray(); regions[region.Trim()] = target; }
+            list.Remove(instance);
+            target.Insert(Math.Clamp(position, 0, target.Count), instance);
+            return null;
+        });
+
     // ------------------------------------------------------------------ the draft edit
 
     private async Task<(bool Success, string? Error)> EditAsync(string reference, string actor, string summary, Func<JsonNode, string?> change)
