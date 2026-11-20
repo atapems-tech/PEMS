@@ -37,6 +37,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Discipline workspace as a definition page (SCRUM-682)
+
+### Changed
+- /p/discipline-workspace (filters, totals, tasks with status actions, documents, equipment, VDR, MR/MRQ; the add-task form /f/discipline-task) over `IDisciplineWorkspaceOperations` replaces DisciplineController and its view; /Discipline/Details/{id} redirects. Permissions DisciplineWorkspace.View/Create/Edit are the floors of the operations.
+
 ## 2026-11-20 - Help center list as a definition page (SCRUM-704)
 
 ### Changed

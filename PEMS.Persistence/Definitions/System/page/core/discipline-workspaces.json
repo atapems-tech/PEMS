@@ -108,7 +108,7 @@
                 "en": "Open workspace",
                 "fa": "باز کردن فضای کاری"
               },
-              "url": "/Discipline/Details/{id}",
+              "url": "/p/discipline-workspace?id={id}",
               "method": "get"
             }
           ]

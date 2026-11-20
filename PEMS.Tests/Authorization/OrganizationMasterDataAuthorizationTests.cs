@@ -276,63 +276,6 @@ public class OrganizationMasterDataAuthorizationTests
         Assert.IsType<ForbidResult>(result);
     }
 
-    // ================= Discipline (reuses the existing "DisciplineWorkspace" module) =================
-
-    [Fact]
-    public async Task Discipline_AddTask_WithoutPermission_ReturnsForbid_DoesNotAdd()
-    {
-        // MaintenanceEngineer هیچ Grant ای روی "DisciplineWorkspace" ندارد
-        var (ctx, perms, user) = await CreateInfra(nameof(Discipline_AddTask_WithoutPermission_ReturnsForbid_DoesNotAdd), role: SystemRoles.MaintenanceEngineer);
-        var service = new FakeDisciplineWorkspaceService();
-        var controller = new DisciplineController(service, ctx, user, perms).WithTempData();
-
-        var result = await controller.AddTask(1, null, "Title", null, "Action", null, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.AddTaskCalled);
-    }
-
-    [Fact]
-    public async Task Discipline_AddTask_WithPermission_Adds()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Discipline_AddTask_WithPermission_Adds), role: SystemRoles.DisciplineEngineer);
-        var service = new FakeDisciplineWorkspaceService();
-        var controller = new DisciplineController(service, ctx, user, perms).WithTempData();
-
-        var result = await controller.AddTask(1, null, "Title", null, "Action", null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(service.AddTaskCalled);
-    }
-
-    [Fact]
-    public async Task Discipline_SetTaskStatus_WithoutPermission_ReturnsForbid_DoesNotChangeStatus()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Discipline_SetTaskStatus_WithoutPermission_ReturnsForbid_DoesNotChangeStatus), role: SystemRoles.ContractManager);
-        var service = new FakeDisciplineWorkspaceService();
-        var controller = new DisciplineController(service, ctx, user, perms).WithTempData();
-
-        var result = await controller.SetTaskStatus(1, 1, "Done");
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.SetTaskStatusCalled);
-    }
-
-    [Fact]
-    public async Task Discipline_SetTaskStatus_WithPermission_ChangesStatus()
-    {
-        // طبق ممیزی این پاس: EngineeringManager قبلاً هیچ Grant ای روی DisciplineWorkspace
-        // نداشت با اینکه سایدبار «Disciplines» را می‌بیند - این تست همون رفع را اثبات می‌کند.
-        var (ctx, perms, user) = await CreateInfra(nameof(Discipline_SetTaskStatus_WithPermission_ChangesStatus), role: SystemRoles.EngineeringManager);
-        var service = new FakeDisciplineWorkspaceService();
-        var controller = new DisciplineController(service, ctx, user, perms).WithTempData();
-
-        var result = await controller.SetTaskStatus(1, 1, "Done");
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(service.SetTaskStatusCalled);
-    }
-
     // ================= Inventory Master Data =================
 
     [Fact]
