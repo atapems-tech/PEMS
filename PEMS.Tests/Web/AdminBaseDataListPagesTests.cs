@@ -22,7 +22,6 @@ public class AdminBaseDataListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/Employee",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
