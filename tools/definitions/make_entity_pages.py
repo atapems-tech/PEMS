@@ -12,7 +12,7 @@ For an entry of SPECS it writes into PEMS.Persistence/Definitions/System:
 
     python3 tools/definitions/make_entity_pages.py
 """
-import json, os, re
+import json, os, re, sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OUT = os.path.join(ROOT, "PEMS.Persistence", "Definitions", "System")
@@ -50,7 +50,7 @@ def form_fields(spec, key):
         for k in ("maxLength", "minLength", "min", "max", "pattern", "span", "readOnly", "visible"):
             if k in f: d[k] = f[k]
         if "static" in f:
-            d["options"] = [{"value": v, "label": t(v, v)} for v in f["static"]]
+            d["options"] = [{"value": v, "label": t(v, f.get("staticFa", {}).get(v, v))} for v in f["static"]]
         if "messages" in f: d["messages"] = dict(f["messages"])
         if f.get("required"):
             d["required"] = True
@@ -410,8 +410,26 @@ SPECS += [
            [], toggle=False, deactivate="IsActive", where={"IsActive": True}, presets={"lowStock": {"left": "QuantityOnHand", "op": "lte", "right": "ReorderPoint"}}),
 ]
 
+
+# ---- batch 5: Projects (SCRUM-740)
+SPECS += [
+    simple("projects", "Project", "ProjectId", ("Projects", "پروژه‌ها"), ("Project", "پروژه"),
+           [("ProjectCode", "Project code", "کد پروژه", "text", 140, True), ("ProjectName", "Project name", "نام پروژه", "text", 260, True), ("ClientName", "Client", "کارفرما", "text", 200, True),
+            ("Location", "Location", "محل", "text", 180, True), ("StartDate", "Start date", "تاریخ شروع", "date", 130), ("EndDate", "End date", "تاریخ پایان", "date", 130),
+            ("Status", "Status", "وضعیت", "text", 120), ("IsActive", "Active", "فعال", "bool", 100)],
+           [{"prop": "ProjectCode", "en": "Project code", "fa": "کد پروژه", "required": True, "maxLength": 50}, {"prop": "ProjectName", "en": "Project name", "fa": "نام پروژه", "required": True, "maxLength": 200},
+            {"prop": "ClientName", "en": "Client", "fa": "کارفرما", "maxLength": 200}, {"prop": "Location", "en": "Location", "fa": "محل", "maxLength": 200},
+            {"prop": "StartDate", "kind": "date", "en": "Start date", "fa": "تاریخ شروع"}, {"prop": "EndDate", "kind": "date", "en": "End date", "fa": "تاریخ پایان"},
+            {"prop": "Status", "kind": "select", "en": "Status", "fa": "وضعیت", "required": True, "static": ["Planning", "Active", "Completed", "Cancelled"],
+             "staticFa": {"Planning": "برنامه‌ریزی", "Active": "فعال", "Completed": "تکمیل‌شده", "Cancelled": "لغوشده"}}],
+           [unique(["ProjectCode"], "A project with this code already exists.", "پروژه‌ای با این کد از قبل وجود دارد.")]),
+]
+
 if __name__ == "__main__":
+    only = set(sys.argv[1:])
     for s in SPECS:
+        if only and s["key"] not in only:
+            continue
         make(s)
         print("wrote", s["key"])
         if s["key"] == "spare-parts":

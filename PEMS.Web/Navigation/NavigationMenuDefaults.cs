@@ -62,7 +62,7 @@ public static class NavigationMenuDefaults
         Section("sec.eng", 100, "EngineeringManagement", "bi-building", "Module:EngineeringManagement",
             "EngineeringDashboard,Projects,EngineeringDocuments,DocumentRegister,DocumentRevisions,DocumentWorkflow,VDR,Transmittal,MDB"),
         Link("eng.dashboard", "sec.eng", 10, "EngineeringDashboard", "bi-speedometer2", "EngineeringDashboard"),
-        Link("eng.projects", "sec.eng", 20, "Projects", "bi-kanban", "Projects"),
+        new("eng.projects", "sec.eng", L, 20, "Projects", "bi-kanban", Always, ExternalPath: "/p/projects"),   // SCRUM-740: a definition page (/p/...), not a controller
         Link("eng.documents", "sec.eng", 30, "EngineeringDocuments", "bi-file-earmark-text", "EngineeringDocuments"),
         Link("eng.register", "sec.eng", 40, "DocumentRegister", "bi-journal-bookmark", "DocumentRegister"),
         Link("eng.revisions", "sec.eng", 50, "Document Revision", "bi-clock-history", "DocumentRevisions"),
@@ -179,7 +179,8 @@ public static class NavigationMenuDefaults
         Link("admin.users", "admin.sub.access", 10, "Users", "bi-people", "Users", area: "Admin", rule: "Module:Administration"),
         // SCRUM-644: a definition page (/p/...), not a controller
         new("admin.roles", "admin.sub.access", L, 20, "Roles", "bi-shield-check", "Module:Administration", ExternalPath: "/p/roles"),
-        Link("admin.workflow", "admin.sub.access", 30, "Workflow Management", "bi-diagram-3", "WorkflowManagement", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-651: a definition page (/p/...), not a controller
+        new("admin.workflow", "admin.sub.access", L, 30, "Workflow Management", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/workflow-management"),
         Link("admin.navmenu", "admin.sub.access", 35, "Nav_Admin_Title", "bi-menu-button-wide", "NavigationMenu", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
         Link("admin.help", "admin.sub.access", 40, "Help Administration", "bi-life-preserver", "Help", area: "Admin", rule: "Module:Administration"),
         Sub("admin.sub.org", "sec.admin", 30, "Organization"),
