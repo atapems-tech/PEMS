@@ -4952,4 +4952,12 @@
   <data name="Transmittal_CreateCodeRequired" xml:space="preserve"><value>کد ترنسمیتال الزامی است.</value></data>
   <data name="Transmittal_CreateCodeDuplicate" xml:space="preserve"><value>این کد ترنسمیتال قبلاً استفاده شده است. کد دیگری انتخاب کنید.</value></data>
   <data name="Transmittal_CreateDocumentsHeld" xml:space="preserve"><value>یک یا چند مدرک انتخاب‌شده معلق هستند و قابل ارسال نیستند. آن‌ها را حذف کرده و دوباره تلاش کنید.</value></data>
+  <data name="Transmittal_Purpose_IFA" xml:space="preserve"><value>IFA - صدور برای تأیید</value></data>
+  <data name="Transmittal_Purpose_IFR" xml:space="preserve"><value>IFR - صدور برای بازبینی و نظر</value></data>
+  <data name="Transmittal_Purpose_IFI" xml:space="preserve"><value>IFI - صدور برای اطلاع</value></data>
+  <data name="Transmittal_Purpose_FI" xml:space="preserve"><value>FI - صدور نهایی (بدون نظر)</value></data>
+  <data name="Transmittal_Purpose_For Approval" xml:space="preserve"><value>برای تأیید</value></data>
+  <data name="Transmittal_Purpose_For Construction" xml:space="preserve"><value>برای ساخت</value></data>
+  <data name="Transmittal_Purpose_For Information" xml:space="preserve"><value>برای اطلاع</value></data>
+  <data name="Transmittal_Purpose_For Review" xml:space="preserve"><value>برای بازبینی</value></data>
 </root>

@@ -17,7 +17,7 @@
         <pems-info-item label="@Localizer["Vs_Project"]">@Model.ProjectName</pems-info-item>
         <pems-info-item label="@Localizer["Vs_From"]">@Model.From</pems-info-item>
         <pems-info-item label="@Localizer["Vs_To"]">@Model.To</pems-info-item>
-        <pems-info-item label="@Localizer["Vs_Purpose"]">@Model.Purpose</pems-info-item>
+        <pems-info-item label="@Localizer["Vs_Purpose"]">@VdrUi.Loc(Localizer, "Transmittal_Purpose_", Model.Purpose)</pems-info-item>
         <pems-info-item label="@Localizer["Td_Created"]" num>@PemsDates.Date(Model.TransmittalDate)</pems-info-item>
         <pems-info-item label="@Localizer["Td_Sent"]" num>@PemsDates.Date(Model.SentDate)</pems-info-item>
     </pems-info-grid>

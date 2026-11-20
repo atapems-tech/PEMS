@@ -4179,4 +4179,12 @@
   <data name="Transmittal_CreateCodeRequired" xml:space="preserve"><value>Transmittal code is required.</value></data>
   <data name="Transmittal_CreateCodeDuplicate" xml:space="preserve"><value>This transmittal code is already in use. Choose a different code.</value></data>
   <data name="Transmittal_CreateDocumentsHeld" xml:space="preserve"><value>One or more selected documents are on hold and cannot be transmitted. Remove them and try again.</value></data>
+  <data name="Transmittal_Purpose_IFA" xml:space="preserve"><value>IFA - Issued for Approval</value></data>
+  <data name="Transmittal_Purpose_IFR" xml:space="preserve"><value>IFR - Issue for Review and Comments</value></data>
+  <data name="Transmittal_Purpose_IFI" xml:space="preserve"><value>IFI - Issue for Information</value></data>
+  <data name="Transmittal_Purpose_FI" xml:space="preserve"><value>FI - Final Issue (without comments)</value></data>
+  <data name="Transmittal_Purpose_For Approval" xml:space="preserve"><value>For Approval</value></data>
+  <data name="Transmittal_Purpose_For Construction" xml:space="preserve"><value>For Construction</value></data>
+  <data name="Transmittal_Purpose_For Information" xml:space="preserve"><value>For Information</value></data>
+  <data name="Transmittal_Purpose_For Review" xml:space="preserve"><value>For Review</value></data>
 </root>

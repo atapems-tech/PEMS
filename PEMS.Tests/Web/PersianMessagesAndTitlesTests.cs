@@ -236,6 +236,8 @@ public class PersianMessagesAndTitlesTests
             Assert.Contains("{1}", resource["Transmittal_DocumentCounter"]);
             foreach (var key in new[] { "Transmittal_CreateCodeRequired", "Transmittal_CreateCodeDuplicate", "Transmittal_CreateDocumentsHeld", "Transmittal created successfully", "MDB created successfully", "Unassigned" })
                 Assert.True(resource.ContainsKey(key), key);
+            foreach (var purpose in new[] { "IFA", "IFR", "IFI", "FI", "For Approval", "For Construction", "For Information", "For Review" })
+                Assert.True(resource.ContainsKey("Transmittal_Purpose_" + purpose), purpose);
         }
         var script = Read("PEMS.Web", "wwwroot", "js", "views", "transmittal-create.js");
         Assert.Contains("counter.dataset.format", script);
