@@ -80,7 +80,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     /// <summary>SCRUM-635: the upload profiles an operation file argument may name (the checks of the upload guard: allow-list, size, content, malware hook).</summary>
     private static readonly IReadOnlyDictionary<string, UploadProfile> UploadProfiles = new Dictionary<string, UploadProfile>(StringComparer.Ordinal)
     {
-        ["attachment"] = UploadProfile.Attachment, ["image"] = UploadProfile.Image, ["spreadsheet"] = UploadProfile.Spreadsheet, ["csv"] = UploadProfile.Csv, ["pdf"] = UploadProfile.Pdf, ["licenceFile"] = UploadProfile.LicenceFile
+        ["attachment"] = UploadProfile.Attachment, ["image"] = UploadProfile.Image, ["spreadsheet"] = UploadProfile.Spreadsheet, ["csv"] = UploadProfile.Csv, ["pdf"] = UploadProfile.Pdf, ["licenceFile"] = UploadProfile.LicenceFile, ["migrationPackage"] = UploadProfile.MigrationPackage
     };
 
     private static readonly HashSet<string> ContextNames = new(StringComparer.OrdinalIgnoreCase) { "employeeId", "roles", "userName", "culture", "ip", "userAgent", "userId", "disciplineId" };
