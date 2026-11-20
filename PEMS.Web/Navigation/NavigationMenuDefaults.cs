@@ -211,6 +211,5 @@ public static class NavigationMenuDefaults
         Link("admin.performance", "admin.sub.monitoring", 30, "Performance Testing", "bi-speedometer2", "Performance", rule: "Module:Administration"),
         new("admin.hangfire", "admin.sub.monitoring", L, 40, "Background Jobs Dashboard", "bi-hdd-stack", "Module:Administration",
             ExternalPath: "/hangfire", OpenInNewTab: true),
-        Link("admin.projectintel", "admin.sub.monitoring", 50, "Project Intelligence", "bi-graph-up-arrow", "ProjectIntelligence", area: "Admin", rule: "Module:Administration"),
     };
 }
