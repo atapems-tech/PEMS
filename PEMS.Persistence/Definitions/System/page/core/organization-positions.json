@@ -131,7 +131,7 @@
                 "en": "Edit the assignment",
                 "fa": "ویرایش تخصیص"
               },
-              "url": "/f/organization-assignment-edit/{assignmentId}",
+              "url": "/f/organization-assignment-edit/{id}",
               "method": "get",
               "showWhen": "row.isVacant == false"
             },
@@ -141,7 +141,7 @@
                 "en": "End the assignment",
                 "fa": "پایان تخصیص"
               },
-              "url": "/f/organization-assignment-end/{assignmentId}",
+              "url": "/f/organization-assignment-end/{id}",
               "method": "get",
               "showWhen": "row.isVacant == false"
             },

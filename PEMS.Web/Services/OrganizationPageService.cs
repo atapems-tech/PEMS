@@ -47,9 +47,21 @@ public sealed class OrganizationPageService(IOrganizationHierarchyService hierar
         return p == null ? [] : [new OrgHierarchyFormRowDto { PositionCode = p.PositionCode, ParentPositionId = p.ParentPositionId?.ToString() }];
     }
 
-    public async Task<List<OrgAssignmentFormRowDto>> AssignmentOfAsync(int assignmentId)
+    public async Task<List<OrgAssignmentFormRowDto>> AssignmentOfAsync(int positionId)
     {
-        var p = (await hierarchy.GetPositionRowsAsync()).FirstOrDefault(x => x.AssignmentId == assignmentId);
+        var p = (await hierarchy.GetPositionRowsAsync()).FirstOrDefault(x => x.PositionId == positionId && x.AssignmentId != null);
         return p == null ? [] : [new OrgAssignmentFormRowDto { IsPrimary = p.HolderIsPrimary, StartDate = (p.StartDate ?? DateTime.Today).ToString("yyyy-MM-dd"), EndDate = p.EndDate?.ToString("yyyy-MM-dd") }];
+    }
+
+    public async Task<OrgOpResult> UpdateAssignmentOfPositionAsync(int positionId, bool isPrimary, DateTime startDate, DateTime? endDate)
+    {
+        var p = (await hierarchy.GetPositionRowsAsync()).FirstOrDefault(x => x.PositionId == positionId && x.AssignmentId != null);
+        return p?.AssignmentId is int id ? await hierarchy.UpdateAssignmentAsync(id, isPrimary, startDate, endDate) : OrgOpResult.Fail("Org_Err_Generic");
+    }
+
+    public async Task<OrgOpResult> EndAssignmentOfPositionAsync(int positionId, string? notes)
+    {
+        var p = (await hierarchy.GetPositionRowsAsync()).FirstOrDefault(x => x.PositionId == positionId && x.AssignmentId != null);
+        return p?.AssignmentId is int id ? await hierarchy.EndAssignmentAsync(id, notes) : OrgOpResult.Fail("Org_Err_Generic");
     }
 }
