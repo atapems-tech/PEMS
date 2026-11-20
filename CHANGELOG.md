@@ -30,6 +30,10 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+## 2026-11-20 - Warehouse bilingual review polish (SCRUM-540)
+
+- Material details, stock movement labels, receive/edit dialogs and warehouse barcode messages now use the selected language. The part catalogue report shares one period display formatter with its Excel export, eliminating duplicated All time captions.
+
 ## 2026-11-20 - Notification inbox as a definition page (SCRUM-731)
 
 ### Changed
