@@ -12,7 +12,7 @@ public static class LicenceFreeSurfaces
         "/Account",          // login, logout, passkeys: an administrator must always be able to sign in and fix the licence
         "/Admin/License",    // the licence page itself (old address, redirects to the definition page)
         "/p/license", "/f/license-request", "/f/license-upload", "/a/license-request", "/a/license-upload", "/d/license-status",    // SCRUM-635: the licence page as definitions (page, two forms, their actions, the status rows)
-        "/QuickSetup",       // first-run setup
+        "/QuickSetup", "/p/quick-setup", "/d/quick-setup-grid",       // first-run setup (SCRUM-743: a definition page)
         "/Culture",          // language switch
         "/Home/Error", "/Home/StatusPage",
         "/health",           // details-free probes used by deploy pipelines (open question Q9 of the design)
