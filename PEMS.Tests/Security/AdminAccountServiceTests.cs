@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.Common;
@@ -10,8 +9,6 @@ using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Admin.Controllers;
-using PEMS.Web.Areas.Admin.Models;
 
 namespace PEMS.Tests.Security;
 
@@ -268,14 +265,8 @@ public class AdminAccountServiceTests
 
     // ------------------------------------------------------------------ UsersController
 
-    private static UsersController NewUsersController(Env e, int? actorId = null)
-    {
-        var c = new UsersController(e.Users, e.Sp.GetRequiredService<RoleManager<ApplicationRole>>(), e.Ctx, null!, null!, null!, null!,
-            new UserRoleAssignmentSynchronizer(e.Ctx), null, null, e.Events, e.Admins).WithTempData();
-        if (actorId.HasValue)
-            c.ControllerContext.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, actorId.Value.ToString()) }, "test"));
-        return c;
-    }
+    private static UsersFacade NewUsersController(Env e, int? actorId = null) =>
+        UsersFacade.For(e.Users, e.Sp.GetRequiredService<RoleManager<ApplicationRole>>(), e.Ctx, e.Events, e.Admins, actorId ?? 0);
 
     private static async Task<Employee> LinkEmployee(Env e, ApplicationUser u)
     {
@@ -290,7 +281,7 @@ public class AdminAccountServiceTests
         return emp;
     }
 
-    private static UserFormViewModel EditModel(ApplicationUser u, Employee emp, bool active, params string[] roles) => new()
+    private static UserForm EditModel(ApplicationUser u, Employee emp, bool active, params string[] roles) => new()
     {
         Id = u.Id, UserName = u.UserName!, Email = u.Email!, FullName = u.FullName, IsActive = active,
         ExistingEmployeeId = emp.EmployeeId, SelectedRoles = roles.ToList()
@@ -306,8 +297,9 @@ public class AdminAccountServiceTests
         var deactivate = await NewUsersController(e).Edit(EditModel(only, emp, active: false, SystemRoles.SystemAdmin));
         var demote = await NewUsersController(e).Edit(EditModel(only, emp, active: true));   // تیک SystemAdmin برداشته شد
 
-        Assert.IsType<ViewResult>(deactivate);
-        Assert.IsType<ViewResult>(demote);
+        UsersFacade.Refused(deactivate);
+        UsersFacade.Refused(demote);
+        Assert.StartsWith("This is the last active administrator", deactivate.Error);
         Assert.True((await Reload(e, only.Id)).IsActive);
         Assert.True(await e.Users.IsInRoleAsync((await e.Users.FindByIdAsync(only.Id.ToString()))!, SystemRoles.SystemAdmin));
     }
@@ -322,7 +314,7 @@ public class AdminAccountServiceTests
 
         var res = await NewUsersController(e).Edit(EditModel(a1, emp, active: false, SystemRoles.SystemAdmin));
 
-        Assert.IsType<RedirectToActionResult>(res);
+        UsersFacade.Saved(res);
         Assert.False((await Reload(e, a1.Id)).IsActive);
     }
 
@@ -334,49 +326,46 @@ public class AdminAccountServiceTests
         var worker = await AddUser(e, "worker", false);
 
         var c = NewUsersController(e);
-        await c.ToggleActive(only.Id);
+        var blocked = await c.ToggleActive(only.Id);
         Assert.True((await Reload(e, only.Id)).IsActive);
-        Assert.Contains("last active administrator", c.TempData["Error"]?.ToString());
+        Assert.Contains("last active administrator", blocked.Error);
 
         await c.ToggleActive(worker.Id);
         Assert.False((await Reload(e, worker.Id)).IsActive);
     }
 
     [Fact]
-    public async Task ResetAdminPost_ShowsThePasswordOnlyInTheResponse_NoRedirect_NoCache_NoTempData()
+    public async Task ResetAdmin_ReturnsTheTemporaryPasswordAsAOneTimeSecret_NotARedirectOrAMessage()
     {
         var e = NewEnv();
         var actor = await AddUser(e, "admin1", true);
         var target = await AddUser(e, "admin2", true);
-        var c = NewUsersController(e, actor.Id);
 
-        var res = await c.ResetAdmin(target.Id, confirm: true);
+        var res = await NewUsersController(e, actor.Id).ResetAdmin(target.Id);
 
-        var view = Assert.IsType<ViewResult>(res);
-        Assert.Equal("ResetAdminResult", view.ViewName);
-        var model = Assert.IsType<AdminResetResult>(view.Model);
-        Assert.True(model.Succeeded);
-        Assert.Contains("no-store", c.Response.Headers.CacheControl.ToString());
-        Assert.DoesNotContain(c.TempData.Values.Select(v => v?.ToString() ?? ""), v => v.Contains(model.TemporaryPassword!));
+        Assert.True(res.Success);
+        Assert.False(string.IsNullOrEmpty(res.SecretValue));          // the generic secret page shows it once, with no-store headers
+        Assert.NotNull(res.SecretTitle);
+        Assert.Equal("/p/users", res.BackUrl);
     }
 
     [Fact]
-    public async Task ResetAdminPost_ForSelf_IsRefused_WithAMessage()
+    public async Task ResetAdmin_ForSelf_IsRefused_WithAMessage_AndNoSecret()
     {
         var e = NewEnv();
         var admin = await AddUser(e, "admin1", true);
         await AddUser(e, "admin2", true);
-        var c = NewUsersController(e, admin.Id);
 
-        var res = await c.ResetAdmin(admin.Id, confirm: true);
+        var res = await NewUsersController(e, admin.Id).ResetAdmin(admin.Id);
 
-        Assert.IsType<RedirectToActionResult>(res);
-        Assert.Contains("cannot reset your own account", c.TempData["Error"]?.ToString());
+        Assert.False(res.Success);
+        Assert.Null(res.SecretValue);
+        Assert.Contains("cannot reset your own account", res.Error);
         Assert.True(await e.Users.CheckPasswordAsync((await e.Users.FindByIdAsync(admin.Id.ToString()))!, OldPassword));
     }
 
     [Fact]
-    public async Task ResetAdminGet_OnlyForAnotherAdmin()
+    public async Task ResetAdmin_OnlyForAnotherAdmin()
     {
         var e = NewEnv();
         var actor = await AddUser(e, "admin1", true);
@@ -384,24 +373,19 @@ public class AdminAccountServiceTests
         var worker = await AddUser(e, "worker", false);
         var c = NewUsersController(e, actor.Id);
 
-        var ok = await c.ResetAdmin(other.Id);
-        Assert.IsType<ViewResult>(ok);
-        Assert.IsType<RedirectToActionResult>(await c.ResetAdmin(actor.Id));        // خودش
-        Assert.IsType<RedirectToActionResult>(await c.ResetAdmin(worker.Id));       // مدیر نیست
-        Assert.IsType<NotFoundResult>(await c.ResetAdmin(9999));
+        Assert.True((await c.ResetAdmin(other.Id)).Success);
+        Assert.False((await c.ResetAdmin(actor.Id)).Success);        // themselves
+        Assert.False((await c.ResetAdmin(worker.Id)).Success);       // not an administrator
+        Assert.False((await c.ResetAdmin(9999)).Success);            // unknown account
     }
 
     [Fact]
-    public void ResetAdminViews_Exist_AndTheUsersListOffersTheActionOnlyForOtherAdmins()
+    public void ResetAdmin_IsADefinition_ConfirmedByASwitch_AndTheListOffersItOnlyForAdministrators()
     {
         var root = RepoRoot();
-        var confirm = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Areas", "Admin", "Views", "Users", "ResetAdmin.cshtml"));
-        var result = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Areas", "Admin", "Views", "Users", "ResetAdminResult.cshtml"));
-        var list = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Areas", "Admin", "Views", "Users", "Index.cshtml"));
-
-        Assert.Contains("method=\"post\"", confirm);
-        Assert.Contains("TemporaryPassword", result);
-        Assert.Contains("u.Roles.Contains(\"SystemAdmin\") && u.Id != currentUserId", list);
+        string Def(string kind, string key) => File.ReadAllText(Path.Combine(root, "PEMS.Persistence", "Definitions", "System", kind, "core", key + ".json"));
+        Assert.Contains("\"require\"", Def("action", "users-reset-admin"));
+        Assert.Contains("row.isAdmin == true", Def("page", "users"));
     }
 
     private static string RepoRoot()
