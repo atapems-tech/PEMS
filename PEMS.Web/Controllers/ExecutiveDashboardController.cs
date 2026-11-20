@@ -33,36 +33,7 @@ public class ExecutiveDashboardController : Controller
         _localizer = localizer;
     }
 
-    [HttpGet]
-    public IActionResult Index()
-    {
-        ViewData["Title"] = _localizer["Exec_Title"].Value;
-        ViewData["Section"] = "Dashboard";
-
-        // برچسب‌ها و پیام‌ها: هر کلید Exec_* در SharedResource خودکار به رابط می‌رسد (بدون فهرست دستی کلیدها)
-        ViewBag.I18n = _localizer.GetAllStrings(includeParentCultures: true)
-            .Where(s => s.Name.StartsWith("Exec_", StringComparison.Ordinal))
-            .ToDictionary(s => s.Name, s => s.Value);
-
-        // پیوند صفحه‌ی مقصد هر مورد «نیازمند توجه» و هر ماژول (ساخته‌شده با Url.Action، نه آدرس دستی در جاوااسکریپت)
-        ViewBag.Links = new Dictionary<string, string?>
-        {
-            ["Engineering"] = Url.Action("Index", "EngineeringDocuments"),
-            ["EngRejected"] = Url.Action("Index", "EngineeringDocuments", new { status = "Rejected" }),
-            ["EngReturned"] = Url.Action("Index", "EngineeringDocuments", new { status = "Rejected" }),
-            ["EngInReview"] = Url.Action("Index", "EngineeringDocuments", new { status = "Submitted,Checked" }),
-            ["EngOverdue"] = Url.Action("Index", "EngineeringDocuments"),
-            ["Vdr"] = Url.Action("Index", "VDR"),
-            ["Procurement"] = Url.Action("Index", "MaterialRequisition"),
-            ["Transmittals"] = Url.Action("Index", "Transmittal"),
-            ["Cmms"] = Url.Action("Index", "WorkOrder"),
-            ["Correspondence"] = Url.Action("Index", "Letter"),
-            ["Reports"] = "/p/report-correspondence"
-        };
-
-        ViewBag.DataUrl = Url.Action(nameof(Data), "ExecutiveDashboard");
-        return View();
-    }
+    // SCRUM-697: the host page is the definition page /p/executive-dashboard (the script-island component); this controller only answers the JSON the bundle reads.
 
     [HttpGet]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -45,6 +45,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Executive dashboard host as a definition page (SCRUM-697)
+
+### Changed
+- /p/executive-dashboard mounts the dashboards bundle through the `script-island` component (the Exec_ texts in both languages and the links are in the definition) and replaces the Index view of ExecutiveDashboardController; the controller answers only the JSON read. /ExecutiveDashboard redirects.
+
 ## 2026-11-20 - My Profile as a definition page (SCRUM-729)
 
 ### Changed

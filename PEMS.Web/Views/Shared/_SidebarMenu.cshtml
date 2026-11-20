@@ -98,7 +98,7 @@
         <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
     </pems-nav-link>
 
-    <pems-nav-link item="false" active="@(IsActive("ExecutiveDashboard"))" asp-controller="ExecutiveDashboard" asp-action="Index" asp-area="">
+    <pems-nav-link item="false" href="/p/executive-dashboard" active="@(IsActive("ExecutiveDashboard") || Context.Request.Path.StartsWithSegments("/p/executive-dashboard"))">
         <pems-icon name="bi-graph-up-arrow" /> @Localizer["Exec_NavTitle"]
     </pems-nav-link>
 

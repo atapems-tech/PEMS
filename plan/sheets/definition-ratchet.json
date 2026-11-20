@@ -380,7 +380,7 @@
     "PEMS.Web.Controllers.EquipmentFunctionalLocationAssignmentController": 7,
     "PEMS.Web.Controllers.EquipmentImportController": 8,
     "PEMS.Web.Controllers.ExecutionGateController": 2,
-    "PEMS.Web.Controllers.ExecutiveDashboardController": 2,
+    "PEMS.Web.Controllers.ExecutiveDashboardController": 1,
     "PEMS.Web.Controllers.FailureModeCatalogController": 4,
     "PEMS.Web.Controllers.FilesController": 3,
     "PEMS.Web.Controllers.FindingController": 5,
