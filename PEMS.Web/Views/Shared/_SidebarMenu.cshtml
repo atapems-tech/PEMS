@@ -720,8 +720,7 @@
             {
                 <div class="nav-subheading">@Localizer["User & Access"]</div>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Users", "Admin"))"
-                   asp-area="Admin" asp-controller="Users" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/users" active="@(Context.Request.Path.StartsWithSegments("/p/users"))">
                     <pems-icon name="bi-people" /> @Localizer["Users"]
                 </pems-nav-link>
 

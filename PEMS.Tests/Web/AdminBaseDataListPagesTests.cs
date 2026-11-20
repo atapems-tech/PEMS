@@ -22,7 +22,7 @@ public class AdminBaseDataListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Areas/Admin/Views/Users", "Views/Department", "Views/Discipline", "Views/Employee",
+        "Views/Department", "Views/Discipline", "Views/Employee",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
@@ -49,22 +49,6 @@ public class AdminBaseDataListPagesTests
     }
 
     private static string Chips(string html) => Regex.Match(html, "<div class=\"lp-chips\">(.*?)</div>", RegexOptions.Singleline).Value;
-
-    [Fact]
-    public async Task Users_SearchIsAChip_StatusesArePills_AndTheToggleAsksInTheLanguage()
-    {
-        var html = await Render<UsersController>("/Areas/Admin/Views/Users/Index.cshtml",
-            Page(new UserListItemViewModel { Id = 7, UserName = "ali", FullName = "Ali R", IsActive = true, LockedOut = true, Roles = new List<string> { "SystemAdmin" } }),
-            v => v["SearchTerm"] = "ali");
-
-        AssertBuiltFromTheComponent(html, "AdminUsers", 1);
-        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
-        Assert.Contains("vs-pill--success", html);                                       // active
-        Assert.Contains("vs-pill--danger", html);                                        // locked
-        Assert.Contains("data-pems-confirm=\"Deactivate user ali?\"", html);
-        Assert.Contains("bi-key", html);                                                 // reset administrator (another admin)
-        Assert.Contains("lp-compose", html);
-    }
 
     [Fact]
     public async Task Departments_And_Disciplines_UseTheListFrame()

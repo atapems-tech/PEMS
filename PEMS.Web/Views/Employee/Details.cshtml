@@ -237,7 +237,7 @@
                 @if (User.IsInRole(PEMS.Persistence.Identity.SystemRoles.SystemAdmin))
                 {
                     <pems-action-bar css="mt-3">
-                        <pems-button tone="neutral" size="small" outline="true" as="a" asp-area="Admin" asp-controller="Users" asp-action="Edit" asp-route-id="@linkedUser.Id"><pems-icon name="bi-person-gear" /> @L("Manage Access", "مدیریت دسترسی")</pems-button>
+                        <pems-button tone="neutral" size="small" outline="true" as="a" href="/f/users-edit/@linkedUser.Id"><pems-icon name="bi-person-gear" /> @L("Manage Access", "مدیریت دسترسی")</pems-button>
                     </pems-action-bar>
                 }
             }

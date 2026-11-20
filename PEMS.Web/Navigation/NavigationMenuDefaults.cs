@@ -176,7 +176,8 @@ public static class NavigationMenuDefaults
         // SCRUM-638: a definition page (/p/...), not a controller
         new("admin.numbering", "sec.admin", L, 15, "Num_Title", "bi-123", "Module:Administration&Role:SystemAdmin", ExternalPath: "/p/numbering"),
         Sub("admin.sub.access", "sec.admin", 20, "User & Access"),
-        Link("admin.users", "admin.sub.access", 10, "Users", "bi-people", "Users", area: "Admin", rule: "Module:Administration"),
+        // SCRUM-650: a definition page (/p/...), not a controller
+        new("admin.users", "admin.sub.access", L, 10, "Users", "bi-people", "Module:Administration", ExternalPath: "/p/users"),
         // SCRUM-644: a definition page (/p/...), not a controller
         new("admin.roles", "admin.sub.access", L, 20, "Roles", "bi-shield-check", "Module:Administration", ExternalPath: "/p/roles"),
         // SCRUM-651: a definition page (/p/...), not a controller
