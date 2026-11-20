@@ -12,7 +12,7 @@ public class ButtonRoutingRenderTests
     [Fact]
     public async Task StatusPage_home_link_is_an_anchor_with_the_button_classes()
     {
-        var host = new HomeController(null!, null!, null!, null!, null!, null!, null!, null!, null!) { ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() } };
+        var host = new HomeController() { ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() } };
         var result = Assert.IsType<ViewResult>(host.StatusPage(404));
         var html = await RazorViewRenderer.RenderAsync(host, result, "~/Views/Home/StatusPage.cshtml");
 

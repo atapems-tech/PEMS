@@ -51,7 +51,7 @@ public static class NavigationMenuDefaults
     private static List<NavigationMenuItemDefinition> Build() => new()
     {
         // ---- سطح بالا
-        Link("home", null, 10, "Dashboard", "bi-speedometer2", "Home"),
+        new("home", null, L, 10, "Dashboard", "bi-speedometer2", Always, ExternalPath: "/p/home"),   // SCRUM-705: a definition page (/p/...)
         Link("exec.dashboard", null, 15, "Exec_NavTitle", "bi-graph-up-arrow", "ExecutiveDashboard", rule: "Perm:EngineeringDocuments.View"),
         new("mywork", null, L, 20, "My Work", "bi-list-check", Always, BadgeKey: NavigationBadges.MyWorkPending, ExternalPath: "/p/my-work"),   // SCRUM-730: a definition page (/p/...)
         new("quicksetup", null, L, 30, "Quick Setup", "bi-rocket-takeoff", "Module:QuickSetup", ExternalPath: "/p/quick-setup"),   // SCRUM-743: a definition page (/p/...)
