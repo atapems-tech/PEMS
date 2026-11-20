@@ -17,4 +17,4 @@ Rule (guideline 04 section 7, PR template): every change declares `migration:`, 
 
 Not covered yet (a gap, owner of the next issue: SCRUM-581 and 582): the update **package** that carries these to a customer without the product starting on its own. Today they travel with the release and run at start (auto-run stays, as the issue says).
 
-Check in the test gates: `DefinitionCutoverTests` and `PilotPagesTests` already fail when a shipped definition is not valid or references something missing, which is the "every shipped definition is covered" check; a test that lists every migration and every definition file against this table is part of the migrator issues (581, 583).
+Check in the test gates: `DefinitionCutoverTests` and `PilotPagesTests` already fail when a shipped definition is not valid or references something missing, which is the "every shipped definition is covered" check; `ChangeManifestCoverageTests` (SCRUM-791, namespace Definitions, picked by gates.py) fails for a migration dated after 2026-11-20 whose id is not named in this file and for a shipped definition kind folder this file does not name: add the row here in the same PR as the migration.

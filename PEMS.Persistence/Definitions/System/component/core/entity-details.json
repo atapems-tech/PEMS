@@ -48,6 +48,10 @@
       "editLabel": {
         "type": "text",
         "description": "The label of the edit button"
+      },
+      "related": {
+        "type": "array",
+        "description": "Child tables under the record (id, title, url, idField, columns); the url filters a grid data source by the record id, for example /d/children?f.parentId={{params.id|url}}"
       }
     },
     "regions": {
@@ -65,6 +69,19 @@
               "idField": "${idField}",
               "id": "{{params.id}}"
             }
+          }
+        },
+        {
+          "id": "related",
+          "each": "${related}",
+          "as": "rel",
+          "component": "def:related-table",
+          "options": {
+            "id": "${rel.id}",
+            "title": "${rel.title}",
+            "url": "${rel.url}",
+            "idField": "${rel.idField}",
+            "columns": "${rel.columns}"
           }
         }
       ],
