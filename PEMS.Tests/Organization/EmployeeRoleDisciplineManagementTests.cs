@@ -416,58 +416,6 @@ public class EmployeeRoleDisciplineManagementTests
         Assert.Equal("Disc_Err_NotFound", (await svc.SetActiveAsync(9999, false)).ErrorKey);
     }
 
-    private static async Task<(DisciplineController C, PEMSDbContext Ctx)> DisciplineCtl(params string[] roles)
-    {
-        var ctx = PemsDbContextFactory.CreateInMemory("dm_" + Guid.NewGuid().ToString("N"));
-        foreach (var r in SystemRoles.All) ctx.Roles.Add(new ApplicationRole(r) { NormalizedName = r.ToUpperInvariant() });
-        await ctx.SaveChangesAsync();
-        var access = new AccessControlService(ctx);
-        var perm = new PermissionService(ctx, access);
-        await perm.SeedDefaultsAsync();
-        var services = new ServiceCollection(); services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-        var user = new FakeCurrentUserService { Roles = roles.ToList() };
-        return (new DisciplineController(null!, ctx, user, perm).WithTempData(), ctx);
-    }
-
-    [Fact]
-    public async Task DisciplineMasterData_IsPermissionBased_EngineeringManagerAndAdminMayManage_TaskRolesMayNot()
-    {
-        // EngineeringManager: permission DisciplineMaster (View/Create/Edit) -> can open and mutate
-        var (mgr, mctx) = await DisciplineCtl(SystemRoles.EngineeringManager);
-        Assert.IsType<ViewResult>(await mgr.Manage(null, null));
-        Assert.IsType<RedirectToActionResult>(await mgr.CreateDiscipline("ABC", "Alpha", null, null, null));
-        Assert.Equal(1, await mctx.Disciplines.CountAsync(d => d.Code == "ABC"));
-        var id = (await mctx.Disciplines.SingleAsync(d => d.Code == "ABC")).DisciplineId;
-        Assert.IsType<RedirectToActionResult>(await mgr.SetDisciplineActive(id, false));
-        Assert.False((await mctx.Disciplines.AsNoTracking().SingleAsync(d => d.DisciplineId == id)).IsActive);
-
-        // SystemAdmin bypass
-        var (admin, _) = await DisciplineCtl(SystemRoles.SystemAdmin);
-        Assert.IsType<ViewResult>(await admin.Manage(null, null));
-
-        // roles that only hold the task-level DisciplineWorkspace permission (or none) are denied on every master-data action, server-side
-        foreach (var role in new[] { SystemRoles.DisciplineEngineer, SystemRoles.EngineeringSupervisor, SystemRoles.DocumentController, SystemRoles.Viewer, SystemRoles.ContractManager })
-        {
-            var (c, ctx) = await DisciplineCtl(role);
-            Assert.IsType<ForbidResult>(await c.Manage(null, null));
-            Assert.IsType<ForbidResult>(await c.CreateDiscipline("ZZZ", "Zed", null, null, null));
-            Assert.IsType<ForbidResult>(await c.EditDiscipline(1, "ZZZ", "Zed", null, null, null));
-            Assert.IsType<ForbidResult>(await c.SetDisciplineActive(1, false));
-            Assert.Empty(ctx.Disciplines.Where(d => d.Code == "ZZZ"));
-        }
-        var (none, _) = await DisciplineCtl();
-        Assert.IsType<ForbidResult>(await none.Manage(null, null));
-
-        // antiforgery on mutations; no hard-coded role attributes on the master-data actions
-        var t = typeof(DisciplineController);
-        foreach (var name in new[] { "CreateDiscipline", "EditDiscipline", "SetDisciplineActive" })
-        {
-            Assert.NotNull(t.GetMethod(name)!.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), false).SingleOrDefault());
-            Assert.Null(t.GetMethod(name)!.GetCustomAttributes(typeof(AuthorizeAttribute), false).SingleOrDefault());
-        }
-    }
-
     [Fact]
     public async Task DisciplineMasterNavigation_FollowsThePermission_NotRoleNames()
     {

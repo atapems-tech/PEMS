@@ -19,6 +19,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Discipline master data and workspace list as definitions (SCRUM-682)
+
+### Changed
+- /p/disciplines (master data: create, edit, activate, deactivate through the DisciplineMaster operations) and /p/discipline-workspaces (summary list) replace the Manage and Index actions and views of DisciplineController; Details, AddTask and SetTaskStatus (the workspace) stay in the controller until its page is converted. Old addresses /Discipline and /Discipline/Manage redirect.
+
 ## 2026-11-20 - Spreadsheet import by definition; Departments (SCRUM-681)
 
 ### Added

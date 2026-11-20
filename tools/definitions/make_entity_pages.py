@@ -425,6 +425,26 @@ SPECS += [
            [unique(["ProjectCode"], "A project with this code already exists.", "پروژه‌ای با این کد از قبل وجود دارد.")]),
 ]
 
+
+# ---- batch 5: Discipline master data (SCRUM-682); the service validates and writes (messages by resource key), the entity only loads the edit form
+SPECS += [
+    {"key": "disciplines", "entity": "Discipline", "id": "DisciplineId", "title": ("Disciplines", "دیسیپلین‌ها"), "singular": ("Discipline", "دیسیپلین"),
+     "columns": [("Code", "Code", "کد", "text", 120, True), ("Name", "Name", "نام", "text", 240, True), ("Description", "Description", "توضیحات", "text", 280, True), ("ImportAliases", "Import aliases", "نام‌های مستعار ایمپورت", "text", 220, True),
+                 ("TransmittalCode", "Transmittal code", "کد ترانسمیتال", "text", 120), ("EmployeeCount", "Employees", "کارکنان", "number", 100), ("DocumentCount", "Documents", "اسناد", "number", 100), ("IsActive", "Active", "فعال", "bool", 100)],
+     "sort": ["Name"],
+     "form": [{"prop": "Code", "en": "Code", "fa": "کد", "required": True, "maxLength": 20}, {"prop": "Name", "en": "Name", "fa": "نام", "required": True, "maxLength": 150},
+              {"prop": "Description", "kind": "textArea", "en": "Description", "fa": "توضیحات", "maxLength": 500, "span": 2},
+              {"prop": "ImportAliases", "en": "Import aliases (comma separated)", "fa": "نام‌های مستعار ایمپورت (جداشده با ویرگول)", "maxLength": 500, "span": 2},
+              {"prop": "TransmittalCode", "en": "Transmittal code (one letter)", "fa": "کد ترانسمیتال (یک حرف)", "maxLength": 1}],
+     "edit": True, "toggle": None,
+     "create_op": {"model": "DisciplineMaster", "action": "Create", "args": {"code": "field:code", "name": "field:name", "description": "field:description", "importAliases": "field:importAliases", "transmittalCode": "field:transmittalCode"}},
+     "edit_op": {"model": "DisciplineMaster", "action": "Update", "args": {"disciplineId": "field:id", "code": "field:code", "name": "field:name", "description": "field:description", "importAliases": "field:importAliases", "transmittalCode": "field:transmittalCode"}},
+     "row_ops": [
+         {"key": "activate", "label": ("Activate", "فعال‌سازی"), "model": "DisciplineMaster", "action": "SetActive", "args": {"disciplineId": "field:id", "isActive": "literal:true"}, "done": ("Discipline reactivated.", "دیسیپلین فعال شد."), "confirm": ("Activate this discipline?", "این دیسیپلین فعال شود؟"), "showWhen": "row.isActive == false"},
+         {"key": "deactivate", "label": ("Deactivate", "غیرفعال‌سازی"), "model": "DisciplineMaster", "action": "SetActive", "args": {"disciplineId": "field:id", "isActive": "literal:false"}, "done": ("Discipline deactivated.", "دیسیپلین غیرفعال شد."), "confirm": ("Deactivate this discipline?", "این دیسیپلین غیرفعال شود؟"), "showWhen": "row.isActive"},
+     ]},
+]
+
 if __name__ == "__main__":
     only = set(sys.argv[1:])
     for s in SPECS:

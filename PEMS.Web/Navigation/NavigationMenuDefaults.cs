@@ -70,7 +70,7 @@ public static class NavigationMenuDefaults
         Link("eng.vdr", "sec.eng", 70, "VDR", "bi-journal-check", "VDR"),
         Link("eng.transmittal", "sec.eng", 80, "Transmittal", "bi-send", "Transmittal"),
         Link("eng.mdb", "sec.eng", 90, "MDB", "bi-collection", "MDB"),
-        Link("eng.disciplines", "sec.eng", 130, "Disciplines", "bi-diagram-3", "Discipline", rule: "Perm:DisciplineWorkspace.View", isDefault: true),
+        new("eng.disciplines", "sec.eng", L, 130, "Disciplines", "bi-diagram-3", "Perm:DisciplineWorkspace.View", ExternalPath: "/p/discipline-workspaces"),   // SCRUM-682: a definition page (/p/...)
 
         // ---- هوش مصنوعی و دانش
         Section("sec.ai", 200, "AI & Knowledge", "bi-robot", "Module:AIIntelligence",
@@ -187,7 +187,7 @@ public static class NavigationMenuDefaults
         Sub("admin.sub.org", "sec.admin", 30, "Organization"),
         new("admin.departments", "admin.sub.org", L, 10, "Departments", "bi-building", "Module:Administration", ExternalPath: "/p/departments"),   // SCRUM-681: a definition page (/p/...), not a controller
         Link("admin.employees", "admin.sub.org", 20, "Employees", "bi-people", "Employee", rule: "Module:Administration"),
-        Link("admin.disciplines", "admin.sub.org", 30, "Disc_Master_Nav", "bi-sliders", "Discipline", "Manage", rule: "Module:Administration|Flag:DisciplineMaster"),
+        new("admin.disciplines", "admin.sub.org", L, 30, "Disc_Master_Nav", "bi-sliders", "Module:Administration|Flag:DisciplineMaster", ExternalPath: "/p/disciplines"),   // SCRUM-682
         // SCRUM-639: definition pages (/p/...), not a controller
         new("admin.positions", "admin.sub.org", L, 40, "Org_Positions_Nav", "bi-person-badge", "Module:Administration", ExternalPath: "/p/organization-positions"),
         new("admin.org", "admin.sub.org", L, 50, "Org_Title", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/organization-chart"),
