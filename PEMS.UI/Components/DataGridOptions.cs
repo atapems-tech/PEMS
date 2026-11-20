@@ -68,6 +68,29 @@ public sealed record GridTexts
     public required TranslatableText ClearSelection { get; init; }
     public required TranslatableText Filter { get; init; }
     public required TranslatableText Delete { get; init; }
+
+    /// <summary>The grid texts a page gets when it writes none (SCRUM-743: a stored page needs no texts block); every text has both languages, the page may still replace any of them.</summary>
+    public static GridTexts Default { get; } = new()
+    {
+        Search = TranslatableText.Of(("en", "Search"), ("fa", "جستجو")),
+        Columns = TranslatableText.Of(("en", "Columns"), ("fa", "ستون‌ها")),
+        Density = TranslatableText.Of(("en", "Density"), ("fa", "تراکم")),
+        Compact = TranslatableText.Of(("en", "Compact"), ("fa", "فشرده")),
+        Comfortable = TranslatableText.Of(("en", "Comfortable"), ("fa", "راحت")),
+        Export = TranslatableText.Of(("en", "Export"), ("fa", "خروجی")),
+        Views = TranslatableText.Of(("en", "Views"), ("fa", "نماها")),
+        SaveView = TranslatableText.Of(("en", "Save view"), ("fa", "ذخیره نما")),
+        ViewName = TranslatableText.Of(("en", "View name"), ("fa", "نام نما")),
+        Loading = TranslatableText.Of(("en", "Loading"), ("fa", "در حال بارگذاری")),
+        Empty = TranslatableText.Of(("en", "No rows"), ("fa", "ردیفی نیست")),
+        Error = TranslatableText.Of(("en", "Could not load"), ("fa", "بارگذاری نشد")),
+        Rows = TranslatableText.Of(("en", "{0} rows"), ("fa", "{0} ردیف")),
+        Selected = TranslatableText.Of(("en", "{0} selected"), ("fa", "{0} انتخاب شد")),
+        SelectAllMatching = TranslatableText.Of(("en", "Select all {0}"), ("fa", "انتخاب همه {0}")),
+        ClearSelection = TranslatableText.Of(("en", "Clear"), ("fa", "پاک کردن")),
+        Filter = TranslatableText.Of(("en", "Filter"), ("fa", "فیلتر")),
+        Delete = TranslatableText.Of(("en", "Delete"), ("fa", "حذف")),
+    };
 }
 
 /// <summary>Inputs of <see cref="PemsDataGrid"/>. The endpoint answers <c>GET url?page=&amp;pageSize=&amp;sort=&amp;q=&amp;f.column=op:value</c> with <c>{ items: [...], total: n }</c> (see <c>GridQueryExtensions</c>).</summary>
@@ -77,7 +100,8 @@ public sealed record DataGridOptions : FrameOptions
     public required string Url { get; init; }
     public string IdField { get; init; } = "id";
     public required IReadOnlyList<GridColumn> Columns { get; init; }
-    public required GridTexts Texts { get; init; }
+    /// <summary>Null uses <see cref="GridTexts.Default"/>.</summary>
+    public GridTexts? Texts { get; init; }
     public int PageSize { get; init; } = 100;
     /// <summary>Row height in pixels; fixed, so only the rows in view are written.</summary>
     public int RowHeight { get; init; } = 36;

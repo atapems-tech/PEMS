@@ -125,7 +125,7 @@
               "en": "Cards",
               "fa": "کارت‌ها"
             },
-            "tone": "secondary",
+            "tone": "neutral",
             "href": "?view=cards"
           }
         },
@@ -137,7 +137,7 @@
               "en": "Board",
               "fa": "تابلو"
             },
-            "tone": "secondary",
+            "tone": "neutral",
             "href": "?view=kanban"
           },
           "if": "${kanban}"
@@ -150,7 +150,7 @@
               "en": "Calendar",
               "fa": "تقویم"
             },
-            "tone": "secondary",
+            "tone": "neutral",
             "href": "?view=calendar"
           },
           "if": "${calendarView}"
@@ -163,7 +163,7 @@
               "en": "Timeline",
               "fa": "خط زمان"
             },
-            "tone": "secondary",
+            "tone": "neutral",
             "href": "?view=timeline"
           },
           "if": "${timeline}"
@@ -176,7 +176,7 @@
               "en": "Gantt",
               "fa": "گانت"
             },
-            "tone": "secondary",
+            "tone": "neutral",
             "href": "?view=gantt"
           },
           "if": "${gantt}"
@@ -189,7 +189,7 @@
               "en": "Tree",
               "fa": "درخت"
             },
-            "tone": "secondary",
+            "tone": "neutral",
             "href": "?view=tree"
           },
           "if": "${tree}"

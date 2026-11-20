@@ -75,7 +75,7 @@
           "component": "button",
           "options": {
             "label": "${backLabel}",
-            "tone": "secondary",
+            "tone": "neutral",
             "href": "${backUrl}"
           }
         },
