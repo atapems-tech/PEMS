@@ -25,7 +25,7 @@
         </div>
         <pems-flex align="center" gap="2">
             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Relationship" asp-action="ProcurementPackage" asp-route-id="@s.ProcurementPackageId"><pems-icon name="bi-diagram-3" /> @Localizer["Cm_Relationships"]</pems-button>
-            <pems-badge tone="@(s.Status == "Closed" ? "success" : "warning")" css="fs-6">@s.Status</pems-badge>
+            <pems-badge tone="@(s.Status == "Closed" ? "success" : "warning")" css="fs-6">@VdrUi.Loc(Localizer, "PkL_St_", s.Status)</pems-badge>
         </pems-flex>
     </pems-flex>
 
@@ -39,7 +39,7 @@
                 {
                     <span class="btn-group">
                         <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Tender" asp-action="Details" asp-route-id="@t.TenderId">
-                            @t.TenderNumber <pems-badge tone="neutral">@t.Status</pems-badge>
+                            @t.TenderNumber <pems-badge tone="neutral">@Localizer[t.Status]</pems-badge>
                             @if (t.AwardedBid != null)
                             {
                                 <text> — @Localizer["Awarded"]: @t.AwardedBid.Vendor?.Name</text>
@@ -67,13 +67,13 @@
             <pems-form asp-action="AdvanceStage" method="post" class="d-inline">
                 <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                 <input type="hidden" name="newStage" value="@st" />
-                <pems-button tone="none" size="small" css="@(st == s.Stage ? "btn-pems-solid" : "btn-outline-secondary")" type="submit" disabled="@(s.Status == "Closed" || s.Status == "Cancelled")">@st</pems-button>
+                <pems-button tone="none" size="small" css="@(st == s.Stage ? "btn-pems-solid" : "btn-outline-secondary")" type="submit" disabled="@(s.Status == "Closed" || s.Status == "Cancelled")">@VdrUi.Loc(Localizer, "PkL_Stage_", st)</pems-button>
             </pems-form>
         }
         @* Closeout فقط از فرم اختصاصی «Closeout Package» (Approve + گیت بازرسی) انجام می‌شود، نه تغییر مرحله‌ی عمومی *@
         @if (s.Stage == "Closeout")
         {
-            <pems-button as="span" tone="primary" size="small" css="disabled">Closeout</pems-button>
+            <pems-button as="span" tone="primary" size="small" css="disabled">@Localizer["Closeout"]</pems-button>
         }
     </pems-flex>
 </pems-content-card>
@@ -112,7 +112,7 @@
                 <pems-table-body>
                     @foreach (var q in Model.Quotations)
                     {
-                        <pems-table-row><pems-table-cell><span class="vs-num">@q.MRQNumber</span></pems-table-cell><pems-table-cell>@q.VendorName</pems-table-cell><pems-table-cell><span class="vs-pill vs-pill--neutral">@q.QuotationStatus</span></pems-table-cell></pems-table-row>
+                        <pems-table-row><pems-table-cell><span class="vs-num">@q.MRQNumber</span></pems-table-cell><pems-table-cell>@q.VendorName</pems-table-cell><pems-table-cell><span class="vs-pill vs-pill--neutral">@Localizer[q.QuotationStatus]</span></pems-table-cell></pems-table-row>
                     }
                 </pems-table-body>
             </pems-related-table>
@@ -130,7 +130,7 @@
             @foreach (var c in Model.Communications)
             {
                 <pems-table-row>
-                    <pems-table-cell><pems-badge tone="neutral">@c.Type</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="neutral">@Localizer[c.Type]</pems-badge></pems-table-cell>
                     <pems-table-cell>@c.Subject<div class="small text-muted">@c.Body</div></pems-table-cell>
                     <pems-table-cell>@c.VendorName</pems-table-cell>
                     <pems-table-cell>@c.RaisedByName</pems-table-cell>
@@ -139,13 +139,13 @@
                         @{
                             var ab = c.ActionStatus switch { "Closed" => "success", "Answered" => "info", _ => "danger" };
                         }
-                        <pems-badge tone="@ab">@c.ActionStatus</pems-badge>
+                        <pems-badge tone="@ab">@Localizer[c.ActionStatus]</pems-badge>
                         <pems-form asp-action="SetCommunicationStatus" method="post" class="d-inline">
                             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
                             <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
                             <pems-select class="pems-w-110" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
                                 @foreach (var opt in new[] { "Open", "Answered", "Closed" })
-                                { <option value="@opt" selected="@(opt == c.ActionStatus)">@opt</option> }
+                                { <option value="@opt" selected="@(opt == c.ActionStatus)">@Localizer[opt]</option> }
                             </pems-select>
                         </pems-form>
                     </pems-table-cell>
@@ -172,15 +172,15 @@
             <input type="hidden" name="packageId" value="@s.ProcurementPackageId" />
             <pems-col md="2">
                 <pems-select scale="small" name="type">
-                    <option value="VendorInquiry">Vendor Inquiry</option>
-                    <option value="TechnicalClarification">Technical Clarification</option>
-                    <option value="EngineeringQuestion">Engineering Question</option>
+                    <option value="VendorInquiry">@Localizer["Vendor Inquiry"]</option>
+                    <option value="TechnicalClarification">@Localizer["Technical Clarification"]</option>
+                    <option value="EngineeringQuestion">@Localizer["Engineering Question"]</option>
                     <option value="Response">@Localizer["Response"]</option>
                 </pems-select>
             </pems-col>
             <pems-col md="2">
                 <pems-select scale="small" name="vendorId">
-                    <option value="">-- Vendor --</option>
+                    <option value="">@Localizer["-- Vendor --"]</option>
                     @foreach (var v in vendors) { <option value="@v.VendorId">@v.Name</option> }
                 </pems-select>
             </pems-col>

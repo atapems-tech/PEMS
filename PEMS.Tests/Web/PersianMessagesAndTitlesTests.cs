@@ -245,6 +245,46 @@ public class PersianMessagesAndTitlesTests
     }
 
     [Fact]
+    public void LegacyPersianLiteralResourceKeys_HaveEnglishValues()
+    {
+        var en = Resx("SharedResource.resx");
+        var views = new[] { Path.Combine(Repo(), "PEMS.Web", "Views"), Path.Combine(Repo(), "PEMS.Web", "Areas") };
+        var keys = views.SelectMany(dir => Directory.EnumerateFiles(dir, "*.cshtml", SearchOption.AllDirectories))
+            .SelectMany(file => Regex.Matches(File.ReadAllText(file), "Localizer\\[\\\"([^\\\"\\r\\n]+)\\\"\\]").Select(m => m.Groups[1].Value))
+            .Where(key => Regex.IsMatch(key, "[\\u0600-\\u06FF]"))
+            .Distinct();
+        var untranslated = keys.Where(key => !en.TryGetValue(key, out var value) || Regex.IsMatch(value, "[\\u0600-\\u06FF]"));
+        Assert.Empty(untranslated);
+    }
+
+    [Fact]
+    public void JiraReviewLabelsAndMessages_HaveBothLanguageResources()
+    {
+        var en = Resx("SharedResource.resx");
+        var fa = Resx("SharedResource.fa.resx");
+        var keys = new[] { "By Role", "Lock/Tag", "Isolated By", "Verified By", "Tested At", "Parent Equipment", "Installation Date", "Inspection Type", "Inspection Date", "Measurement Value", "Lower Limit", "Permit Not Required", "LOTO Required", "Save MR", "Equipment Tag (optional)", "Responsible Engineer", "Purchase Order created as Draft", "Contract created successfully", "Purchase Order issued", "IRN submitted for inspection.", "Disposition recorded - awaiting QA approval.", "Disposition approved - accepted quantity posted to stock.", "User created successfully", "User updated successfully", "This IRN is not awaiting approval.", "EngineeringQuestion", "TechnicalClarification", "Answered", "Repl_St_Converted", "NotQualified", "Public", "Confidential", "Restricted", "SR_ConfirmAdvance", "WarehouseIntakePurpose" };
+        foreach (var key in keys)
+        {
+            Assert.True(en.ContainsKey(key), key);
+            Assert.True(fa.ContainsKey(key), key);
+            Assert.NotEqual(en[key], fa[key]);
+        }
+    }
+
+    [Fact]
+    public void SearchAndWarehousePurpose_TranslateOnlyControlledText()
+    {
+        var l = new KeyLocalizer();
+        var item = new PEMS.Application.DTOs.GlobalSearchResultItemDto { SubLabel = "Incoming order — QA vendor", SubLabelSuffixKey = "Incoming" };
+        Assert.Equal("Incoming order — QA vendor — fa:Incoming", PEMS.Web.Navigation.SearchResultText.SubLabel(item, l));
+        Assert.Equal("fa:WarehouseIntakePurpose:WO-001", PEMS.Web.Helpers.StoreRequisitionUi.Purpose(l, "Warehouse intake of work order WO-001"));
+        Assert.Equal("QA free-text purpose", PEMS.Web.Helpers.StoreRequisitionUi.Purpose(l, "QA free-text purpose"));
+        var fallback = new SelectiveLocalizer();
+        Assert.Equal("متن رابط کاربری", PEMS.Web.Helpers.VdrUi.Loc(fallback, "Missing_", "Known UI text"));
+        Assert.Equal("Unknown status", PEMS.Web.Helpers.VdrUi.Loc(fallback, "Missing_", "Unknown status"));
+    }
+
+    [Fact]
     public void LegacyHtmlSafetyNet_TranslatesOnlyKnownUiText_InTextAndAccessibleAttributes()
     {
         var localizer = new SelectiveLocalizer();

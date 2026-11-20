@@ -156,10 +156,6 @@ public class UiStandardTests
         Assert.True(offenders.Count == 0, "A second <h1> duplicates the global page title; use <h2> or set ViewData[\"HidePageTitle\"]: " + string.Join(", ", offenders));
     }
 
-    [Fact]
-    public void MyWorkView_UsesNoH1()
-        => Assert.DoesNotMatch(new Regex(@"<h1[\s>]"), Web("Views", "MyWork", "Index.cshtml"));
-
     private static IEnumerable<string> AllViews() =>
         SourceTree.Files(Path.Combine(Root(), "PEMS.Web"), "*.cshtml")
             .Where(f => !f.Contains(Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar) && !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar));

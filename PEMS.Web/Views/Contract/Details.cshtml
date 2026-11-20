@@ -28,11 +28,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <pems-alert tone="success">@TempData["Message"]</pems-alert>
+    <pems-alert tone="success">@Localizer[TempData["Message"]?.ToString() ?? ""]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <pems-alert tone="danger">@TempData["Error"]</pems-alert>
+    <pems-alert tone="danger">@Localizer[TempData["Error"]?.ToString() ?? ""]</pems-alert>
 }
 
 @* ================= PROCUREMENT ORIGIN ================= *@

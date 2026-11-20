@@ -39,7 +39,7 @@
                 <pems-badge tone="none" css="@statusBadgeClass">@l.Status</pems-badge>
                 <pems-badge tone="light">@l.LetterType</pems-badge>
                 @if (l.ConfidentialityLevel != "Public" && l.ConfidentialityLevel != "Internal")
-                { <pems-badge tone="dark"><pems-icon name="bi-lock-fill" /> @l.ConfidentialityLevel</pems-badge> }
+                { <pems-badge tone="dark"><pems-icon name="bi-lock-fill" /> @Localizer[l.ConfidentialityLevel]</pems-badge> }
                 @if (l.RevisionCount > 0)
                 { <pems-badge tone="light">Rev. @l.RevisionCount</pems-badge> }
             </pems-flex>

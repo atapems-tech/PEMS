@@ -62,22 +62,22 @@ public class TenderService : ITenderService
     public async Task<(bool Success, string? Error)> InviteVendorAsync(int tenderId, int vendorId)
     {
         var tender = await _context.Tenders.FirstOrDefaultAsync(x => x.TenderId == tenderId);
-        if (tender == null) return (false, "مناقصه یافت نشد.");
+        if (tender == null) return (false, "Tender not found.");
         if (tender.Status != "Draft" && tender.Status != "Issued")
-            return (false, $"دعوت فروشنده فقط پیش از باز شدن مناقصه مجاز است (وضعیت فعلی: {tender.Status}).");
+            return (false, "Vendor invitations are allowed only before bidding opens.");
 
         var vendor = await _context.Vendors.FirstOrDefaultAsync(x => x.VendorId == vendorId);
-        if (vendor == null) return (false, "فروشنده یافت نشد.");
+        if (vendor == null) return (false, "Vendor not found.");
 
         var alreadyInvited = await _context.TenderInvitedVendors.AnyAsync(x => x.TenderId == tenderId && x.VendorId == vendorId);
-        if (alreadyInvited) return (false, "این فروشنده قبلاً دعوت شده است.");
+        if (alreadyInvited) return (false, "This vendor has already been invited.");
 
         // طبق §I قاعده‌ی ۱/۱۴: بسته‌های نیازمند صلاحیت نمی‌توانند فروشنده‌ی غیرواجد‌شرایط را دعوت کنند
         var isQualifiedNow = vendor.QualificationStatus == "Qualified"
             && (!vendor.QualificationExpiryDate.HasValue || vendor.QualificationExpiryDate.Value >= DateTime.Now);
 
         if (tender.RequiresVendorQualification && !isQualifiedNow)
-            return (false, $"فروشنده «{vendor.Name}» واجد صلاحیت نیست (وضعیت: {vendor.QualificationStatus}) - این مناقصه نیازمند صلاحیت است.");
+            return (false, "This tender requires a currently qualified vendor.");
 
         _context.TenderInvitedVendors.Add(new TenderInvitedVendor
         {

@@ -517,7 +517,7 @@ else
             @foreach (var r in reviewStatus)
             {
                 var badgeClass = r.Status switch { "Approve" => "success", "Comment" => "warning", "Reject" => "danger", _ => "neutral" };
-                <pems-badge tone="@badgeClass">@r.DisciplineName: @r.Status</pems-badge>
+                <pems-badge tone="@badgeClass">@r.DisciplineName: @Localizer[r.Status]</pems-badge>
             }
         </pems-flex>
 

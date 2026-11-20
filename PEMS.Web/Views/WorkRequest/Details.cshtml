@@ -4,6 +4,7 @@
 @using PEMS.Web.Models
 @using PEMS.WorkflowPlatform.Interfaces
 @inject IStringLocalizer<SharedResource> Localizer
+@using PEMS.Web.Helpers
 @{
     var nextStatus = (string?)ViewBag.NextStatus;
     var canCreate = (bool?)ViewBag.CanCreate ?? false;
@@ -60,7 +61,7 @@
     <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-clipboard-plus" /></div>
         <div>
-            <pems-heading level="5" class="mb-0">@Model.RequestNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></pems-heading>
+            <pems-heading level="5" class="mb-0">@Model.RequestNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@VdrUi.Loc(Localizer, "Wr_St_", Model.Status)</pems-badge></pems-heading>
             <span class="text-muted small">@Localizer["Requested By"] @Model.RequestedByName @Localizer["on"] <bdi dir="ltr">@PemsDates.Date(Model.RequestedDate)</bdi></span>
         </div>
     </pems-flex>
@@ -78,7 +79,7 @@
         <pems-info-item label="@Localizer["Info_Asset"]" num>@Model.AssetNumber</pems-info-item>
         <pems-info-item label="@Localizer["Functional Location"]">@Model.FunctionalLocationBreadcrumb</pems-info-item>
         <pems-info-item label="@Localizer["Priority"]">
-            @Model.Priority
+            @VdrUi.Loc(Localizer, "Pri_", Model.Priority)
             @if (!string.IsNullOrWhiteSpace(Model.EquipmentCriticalityClass))
             {
                 <pems-badge tone="light" title="Equipment Criticality (context only, not auto-applied)">Crit: @Model.EquipmentCriticalityClass</pems-badge>

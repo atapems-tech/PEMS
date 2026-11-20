@@ -2,6 +2,7 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@using PEMS.Web.Helpers
 @{
     var s = Model.Summary;
     var canReview = (bool)ViewBag.CanReview;
@@ -28,7 +29,7 @@
             </div>
         </div>
         <div>
-            <pems-badge tone="none" css="@badge fs-6">@s.Status</pems-badge>
+            <pems-badge tone="none" css="@badge fs-6">@VdrUi.Loc(Localizer, "Repl_St_", s.Status)</pems-badge>
             @if (!s.IsCurrentlyDefinitive) { <pems-badge tone="danger" css="fs-6">@Localizer["Repl_NotDefinitive"]</pems-badge> }
         </div>
     </pems-flex>

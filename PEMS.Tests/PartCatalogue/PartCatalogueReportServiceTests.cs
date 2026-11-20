@@ -282,6 +282,16 @@ public class PartCatalogueReportServiceTests
     }
 
     [Fact]
+    public async Task Workbook_AllTimePeriodIsNotRepeated()
+    {
+        var env = await SeedAsync();
+        var report = await env.Svc.GetReportAsync(new PartCatalogueReportFilter { Period = PartCatalogueReportPeriods.All }, All(), Today);
+        var t = new PartCatalogueReportTexts(new KeyLocalizer(), rightToLeft: false);
+        using var wb = new XLWorkbook(new MemoryStream(PartCatalogueReportExport.Build(report, t, null)));
+        Assert.Equal("PcRpt_Period_All", wb.Worksheet("PcRpt_Sheet_Summary").Cell(2, 2).GetString());
+    }
+
+    [Fact]
     public async Task Controller_RefusesAUserWithoutPartCatalogueView()
     {
         var env = await SeedAsync();

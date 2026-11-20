@@ -2,6 +2,7 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@using PEMS.Web.Helpers
 
 
 <pems-content-card css="mb-3">
@@ -18,7 +19,7 @@
                 <pems-select scale="small" css="d-inline w-auto" name="status" data-pems-change="submit-form">
                     @foreach (var s in new[] { "Draft", "Submitted", "Under Technical Review", "Approved", "Issued to Procurement", "Closed", "Cancelled" })
                     {
-                        <option value="@s" selected="@(s == Model.Status)">@s</option>
+                        <option value="@s" selected="@(s == Model.Status)">@VdrUi.Loc(Localizer, "MrL_St_", s)</option>
                     }
                 </pems-select>
             </pems-form>
@@ -63,7 +64,7 @@
                     <pems-table-cell>@q.MRQNumber</pems-table-cell>
                     <pems-table-cell>@q.VendorName</pems-table-cell>
                     <pems-table-cell>@(q.QuotedAmount.HasValue ? $"{q.QuotedAmount:N2} {q.Currency}" : "-")</pems-table-cell>
-                    <pems-table-cell><pems-badge tone="neutral">@q.QuotationStatus</pems-badge></pems-table-cell>
+                    <pems-table-cell><pems-badge tone="neutral">@Localizer[q.QuotationStatus]</pems-badge></pems-table-cell>
                     <pems-table-cell colspan="4">
                         <pems-form asp-action="UpdateQuotationEvaluation" method="post"><pems-flex gap="1" align="center" wrap="true">
                             <input type="hidden" name="mrId" value="@Model.MRId" />
@@ -71,17 +72,17 @@
 
                             <pems-select class="pems-w-110" scale="small" name="technical" title="Technical Evaluation">
                                 @foreach (var v in new[] { "Pending", "Passed", "Failed" })
-                                { <option value="@v" selected="@(v == q.TechnicalEvaluation)">@v</option> }
+                                { <option value="@v" selected="@(v == q.TechnicalEvaluation)">@Localizer[v]</option> }
                             </pems-select>
 
                             <pems-select class="pems-w-110" scale="small" name="commercial" title="Commercial Evaluation">
                                 @foreach (var v in new[] { "Pending", "Passed", "Failed" })
-                                { <option value="@v" selected="@(v == q.CommercialEvaluation)">@v</option> }
+                                { <option value="@v" selected="@(v == q.CommercialEvaluation)">@Localizer[v]</option> }
                             </pems-select>
 
                             <pems-select class="pems-w-110" scale="small" name="approval" title="Approval Status">
                                 @foreach (var v in new[] { "Pending", "Approved", "Rejected" })
-                                { <option value="@v" selected="@(v == q.ApprovalStatus)">@v</option> }
+                                { <option value="@v" selected="@(v == q.ApprovalStatus)">@Localizer[v]</option> }
                             </pems-select>
 
                             <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Save"]</pems-button>
