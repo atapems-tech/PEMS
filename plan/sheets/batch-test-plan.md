@@ -6,6 +6,10 @@ Gap batches 1b, 2b and 3b (sprint-batches.md) are done after the combined run is
 
 Batch 3 adds (to expect): the definition workbench (grid providers `definitions`, `definition-kinds`, `definition-usages`; stored pages `definition-workbench`, `definition-details`, `definition-kinds`; forms and actions `definition-*`; operations model `Definition`), designer and migrator pieces as they land; its test classes are listed in the batch-3 Jira comments.
 
+## Browser checks are lines, not issues (owner decision 2026-11-20)
+
+The issues SCRUM-503, 612 and 613 were cancelled: their checks are lines of the proper issues (SCRUM-342 adoption pass, SCRUM-768 generic hosts and routes, SCRUM-437 converted actions) and of the checklist of every issue in the batches. Step 6 below runs those lines.
+
 ## Order
 
 1. **Record the new component snapshot** (batch 1 added `record-view`, `matrix`; changed `kpi-tile`, `field`). Only the files that changed are kept:

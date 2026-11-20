@@ -158,6 +158,8 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider>(sp => new 
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionImpact, PEMS.Persistence.Services.DefinitionImpactService>();   // SCRUM-450, 457, 459
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionWorkbench, PEMS.Persistence.Services.DefinitionWorkbench>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionDesigner, PEMS.Persistence.Services.DefinitionDesigner>();   // SCRUM-439, 604, 606, 607, 608
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMigratorCenter, PEMS.Web.Services.MigratorCenter>();   // SCRUM-582
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPackageBuilder, PEMS.Web.Services.PackageBuilder>();   // SCRUM-584 (signing key only on the vendor deployment)
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityImportAction>();   // batch 5: a spreadsheet of a registered entity is imported by a definition
@@ -169,6 +171,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.EntityRecordLoader>();
 builder.Services.AddSingleton(PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.OperationInvokeAction>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IBuildEntitlementService, PEMS.Web.Services.BuildEntitlementService>();   // SCRUM-633
+builder.Services.AddScoped<PEMS.Application.Interfaces.IHelpPageService, PEMS.Web.Services.HelpPageService>();   // SCRUM-634
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkflowManagementPageService, PEMS.Web.Services.WorkflowManagementPageService>();   // SCRUM-651
 builder.Services.AddScoped<PEMS.Application.Interfaces.INumberingPageService, PEMS.Web.Services.NumberingPageService>();   // SCRUM-638
 builder.Services.AddScoped<PEMS.Application.Organization.IOrganizationPageService, PEMS.Web.Services.OrganizationPageService>();   // SCRUM-639
