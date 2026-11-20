@@ -27,6 +27,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - The six report pages as definitions (SCRUM-747)
+
+### Changed
+- /p/report-correspondence, -engineering, -vdr, -cmms, -procurement (with its pipeline) and -operations (filter bar plus a grid of the report sections over `IReportReads`) replace ReportController and its six views; old addresses redirect. The charts and tiles of the old pages are not part of the definitions yet.
+
 ## 2026-11-20 - AI search page as a definition (SCRUM-669)
 
 ### Changed

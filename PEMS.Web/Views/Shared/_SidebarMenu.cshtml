@@ -77,7 +77,7 @@
     var qualityControllers = new[] { "QC", "MOC" };
     // SCRUM-423: خرید (از مدیریت مهندسی)، قرارداد و فروشنده (از مدیریت قرارداد) و انبار در یک بخش «تدارکات و زنجیره‌ی تأمین»
     var procurementControllers = new[] { "ProcurementPackage", "Tender", "MaterialRequisition", "Contract", "Vendor", "PurchaseOrder", "PreProcurement" };
-    var projectControlControllers = new[] { "Task", "TaskManager", "Tag", "Report", "Meeting" };
+    var projectControlControllers = new[] { "Task", "TaskManager", "Tag", "Meeting" };
     var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
@@ -411,7 +411,7 @@
                 <pems-icon name="bi-people" /> @Localizer["Meetings"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("Report"))" asp-controller="Report" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/report-correspondence" active="@Context.Request.Path.StartsWithSegments("/p/report")">
                 <pems-icon name="bi-graph-up" /> @Localizer["Reports"]
             </pems-nav-link>
         </div>

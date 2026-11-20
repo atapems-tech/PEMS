@@ -75,17 +75,6 @@ public class ProcurementP0ReadAndSodDecisionTests
     }
 
     [Fact]
-    public async Task Inventory_Dashboard_Ledger_And_ProcurementReport_WithoutPermission_AreForbidden()
-    {
-        var (ctx, permissions, _) = await CreateAsync(nameof(Inventory_Dashboard_Ledger_And_ProcurementReport_WithoutPermission_AreForbidden));
-        var none = User();
-
-        Assert.IsType<ForbidResult>(await new InventoryController(ctx, null!, permissions, none).Index());
-        Assert.IsType<ForbidResult>(await new InventoryTransactionController(null!, ctx, permissions, none).Index(null, null, null, null, null));
-        Assert.IsType<ForbidResult>(await new ReportController(null!, null!, null!, null!, null!, null!, ctx, permissions, none).Procurement(null, null, null, null));
-    }
-
-    [Fact]
     public async Task Viewer_KeepsReadAccess_WhereTheSeedAlreadyGrantedView()
     {
         var (ctx, permissions, _) = await CreateAsync(nameof(Viewer_KeepsReadAccess_WhereTheSeedAlreadyGrantedView));

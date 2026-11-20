@@ -57,7 +57,7 @@ public class ExecutiveDashboardController : Controller
             ["Transmittals"] = Url.Action("Index", "Transmittal"),
             ["Cmms"] = Url.Action("Index", "WorkOrder"),
             ["Correspondence"] = Url.Action("Index", "Letter"),
-            ["Reports"] = Url.Action("Index", "Report")
+            ["Reports"] = "/p/report-correspondence"
         };
 
         ViewBag.DataUrl = Url.Action(nameof(Data), "ExecutiveDashboard");

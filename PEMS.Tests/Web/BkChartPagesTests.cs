@@ -115,27 +115,6 @@ public class BkChartPagesTests
 
     // ------------------------------------------------------------------ report pages
 
-    private static readonly string[] ReportViews = { "Engineering", "Index", "Cmms", "Procurement", "Vdr" };
-
-    [Fact]
-    public void ReportPages_NoLongerShipChartJs_AndLoadTheBklitBundle()
-    {
-        foreach (var name in ReportViews)
-        {
-            var source = Read("PEMS.Web", "Views", "Report", name + ".cshtml");
-            Assert.DoesNotContain("<canvas", source);
-            Assert.DoesNotContain("new Chart(", source);
-            Assert.DoesNotContain("chartjs", source);
-            Assert.Contains("<pems-chart spec=", source);
-            Assert.DoesNotContain("_BkChart\"", source);
-            Assert.Contains("_BkChartStyles", source);
-            Assert.Contains("_BkChartScripts", source);
-        }
-        var kpi = Read("PEMS.Web", "Views", "Kpi", "Index.cshtml");
-        Assert.Contains("_BkChartScripts", kpi);
-        Assert.DoesNotContain("<canvas", kpi);
-    }
-
     [Fact]
     public async Task EngineeringReport_RendersThreeCharts_WithFoldedDisciplines()
     {
