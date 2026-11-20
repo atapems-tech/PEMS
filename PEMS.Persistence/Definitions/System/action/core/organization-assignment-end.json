@@ -16,9 +16,9 @@
     "handler": "operation.invoke",
     "parameters": {
       "model": "Organization",
-      "action": "EndAssignment",
+      "action": "EndAssignmentOfPosition",
       "args": {
-        "assignmentId": "field:id",
+        "positionId": "field:id",
         "notes": "field:notes"
       }
     },

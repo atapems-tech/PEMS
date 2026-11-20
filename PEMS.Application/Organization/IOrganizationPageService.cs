@@ -55,5 +55,12 @@ public interface IOrganizationPageService
     Task<List<OrgHierarchyFormRowDto>> HierarchyOfAsync(int positionId);
 
     [PEMS.Application.Common.PemsOperation("Organization", "AssignmentOf", Roles = "SystemAdmin")]
-    Task<List<OrgAssignmentFormRowDto>> AssignmentOfAsync(int assignmentId);
+    Task<List<OrgAssignmentFormRowDto>> AssignmentOfAsync(int positionId);
+
+    /// <summary>The grid row action link only carries the id of the row (the position), so the assignment is addressed by the position it fills.</summary>
+    [PEMS.Application.Common.PemsOperation("Organization", "UpdateAssignmentOfPosition", Roles = "SystemAdmin")]
+    Task<OrgOpResult> UpdateAssignmentOfPositionAsync(int positionId, bool isPrimary, DateTime startDate, DateTime? endDate);
+
+    [PEMS.Application.Common.PemsOperation("Organization", "EndAssignmentOfPosition", Roles = "SystemAdmin")]
+    Task<OrgOpResult> EndAssignmentOfPositionAsync(int positionId, string? notes);
 }
