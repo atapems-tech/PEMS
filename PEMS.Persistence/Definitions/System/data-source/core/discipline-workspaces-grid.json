@@ -16,7 +16,7 @@
     "provider": "operation",
     "parameters": {
       "model": "DisciplineWorkspace",
-      "action": "Summary"
+      "action": "Workspaces"
     }
   }
 }

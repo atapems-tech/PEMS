@@ -16,7 +16,7 @@ public sealed class PageFiltersTests
     public void The_sample_renders_the_form_with_the_value_selected_in_both_languages()
     {
         var en = Render(Sample());
-        var fa = Render(Sample(), "fa");
+        var fa = System.Net.WebUtility.HtmlDecode(Render(Sample(), "fa"));
         Assert.Contains("<form method=\"get\"", en);
         Assert.Contains("<option value=\"2\" selected", en);
         Assert.Contains("type=\"date\"", en);

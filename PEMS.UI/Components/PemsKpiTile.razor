@@ -1,19 +1,20 @@
 @namespace PEMS.UI.Components
 @attribute [PEMS.UI.Rendering.PemsComponent("kpi-tile", Category = "display", Icon = "bi-speedometer2")]
+@inject IPemsLocale Locale
 @if (!string.IsNullOrEmpty(Options.Href))
 {
-    <a class="@Css" href="@Options.Href" title="@(string.IsNullOrEmpty(Options.Hint) ? null : Options.Hint)" @attributes="Options.Attributes">@Body</a>
+    <a class="@Css" href="@Options.Href" title="@(string.IsNullOrEmpty(HintText) ? null : HintText)" @attributes="Options.Attributes">@Body</a>
 }
 else
 {
-    <div class="@Css" title="@(string.IsNullOrEmpty(Options.Hint) ? null : Options.Hint)" @attributes="Options.Attributes">@Body</div>
+    <div class="@Css" title="@(string.IsNullOrEmpty(HintText) ? null : HintText)" @attributes="Options.Attributes">@Body</div>
 }
 @code {
     [Parameter, EditorRequired] public KpiTileOptions Options { get; set; } = default!;
     /// <summary>The value markup (a count, a decimal, "42 &lt;small&gt;%&lt;/small&gt;").</summary>
     [Parameter] public RenderFragment? ChildContent { get; set; }
     /// <summary>True when the page wrote no value: a dash shows.</summary>
-    [Parameter] public bool Empty { get; set; }
+    [Parameter, PEMS.UI.Rendering.PemsHostSet] public bool Empty { get; set; }
     private string Css
     {
         get
@@ -23,6 +24,9 @@ else
             return string.IsNullOrWhiteSpace(Options.CssClass) ? css : css + " " + Options.CssClass.Trim();
         }
     }
+    private string LabelText => Locale.Text(Options.Label);
+    private string SubText => Options.Sub is null ? "" : Locale.Text(Options.Sub);
+    private string HintText => Options.Hint is null ? "" : Locale.Text(Options.Hint);
     private string ValueCss => Options.Tone is "danger" or "success" or "warning" ? "kpi-value text-" + Options.Tone : "kpi-value";
     private RenderFragment Body => b =>
     {
@@ -43,13 +47,13 @@ else
         b.CloseElement();
         b.OpenElement(10, "div");
         b.AddAttribute(11, "class", "kpi-label");
-        b.AddContent(12, Options.Label);
+        b.AddContent(12, LabelText);
         b.CloseElement();
-        if (!string.IsNullOrEmpty(Options.Sub))
+        if (!string.IsNullOrEmpty(SubText))
         {
             b.OpenElement(13, "div");
             b.AddAttribute(14, "class", "kpi-sub");
-            b.AddContent(15, Options.Sub);
+            b.AddContent(15, SubText);
             b.CloseElement();
         }
         b.CloseElement();

@@ -19,7 +19,7 @@ public class HelpAdminAuthorizationTests
     {
         // SCRUM-634: the Admin Help is operations of the page service, every one for the two roles the controller allowed
         var operations = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
-        var names = new[] { "Articles", "ArticleOf", "SaveArticle", "ArticleSetPublished", "DeleteArticle", "Visuals", "SaveVisual", "VisualSetPublished", "DeleteVisual", "StandardMatrix", "SaveStandard", "StandardSetPublished", "DeleteStandard", "History" };
+        var names = new[] { "AdminArticles", "ArticleOf", "SaveArticle", "ArticleSetPublished", "DeleteArticle", "Visuals", "SaveVisual", "VisualSetPublished", "DeleteVisual", "StandardMatrix", "SaveStandard", "StandardSetPublished", "DeleteStandard", "History" };
         foreach (var name in names)
         {
             var op = operations.Get("Help", name);

@@ -87,6 +87,12 @@
                 "readOnly": {
                   "type": "boolean"
                 },
+                "owner": {
+                  "enum": [
+                    "application",
+                    "platform"
+                  ]
+                },
                 "helpText": {
                   "oneOf": [
                     {
@@ -386,6 +392,18 @@
                     "null"
                   ],
                   "pattern": "^-?(?:0|[1-9]\\d*)$"
+                },
+                "mask": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "inputMode": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
                 }
               },
               "required": [

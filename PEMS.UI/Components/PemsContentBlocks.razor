@@ -11,7 +11,7 @@ else
     <div class="@Join("pems-content-blocks", Options.Css, Options.PageClass)" id="@Options.Id" @attributes="Options.Attributes">
         @foreach (var block in Options.Blocks)
         {
-            switch (block.Type)
+            @switch (block.Type)
             {
                 case "heading":
                     <text>@HeadingTag(block)</text>
@@ -30,7 +30,7 @@ else
                     </div>
                     break;
                 case "list":
-                    if (block.Ordered)
+                    @if (block.Ordered)
                     {
                         <ol class="@Join("mb-3", block.Css)">@foreach (var item in block.Items) { <li>@Locale.Text(item)</li> }</ol>
                     }
@@ -43,7 +43,7 @@ else
                     <pre class="@Join("pems-content-blocks__code", "mb-3", block.Css)"><code>@Locale.Text(block.Text)</code></pre>
                     break;
                 case "link":
-                    if (SafeHref(block.Href) is { } href)
+                    @if (SafeHref(block.Href) is { } href)
                     {
                         <p class="mb-3"><a class="@Join("link-primary", block.Css)" href="@href">@Locale.Text(block.Text)</a></p>
                     }

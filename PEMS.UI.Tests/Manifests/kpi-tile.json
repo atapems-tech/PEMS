@@ -4,85 +4,84 @@
   "category": "display",
   "icon": "bi-speedometer2",
   "nameKey": "component.kpi-tile",
-  "optionsParameter": null,
+  "optionsParameter": "Options",
   "manifestVersion": 1,
   "options": {
     "type": "object",
     "properties": {
-      "empty": {
+      "label": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "icon": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "iconClass": {
+        "type": "string"
+      },
+      "sub": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "href": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "hint": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "value": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "compact": {
         "type": "boolean"
       },
-      "options": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "string"
-          },
-          "icon": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "iconClass": {
-            "type": "string"
-          },
-          "sub": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "href": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "hint": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "value": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "compact": {
-            "type": "boolean"
-          },
-          "tone": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "cssClass": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "attributes": {
-            "type": [
-              "object",
-              "null"
-            ]
-          }
-        },
-        "required": [
-          "label"
-        ],
-        "additionalProperties": false
+      "tone": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "cssClass": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "attributes": {
+        "type": [
+          "object",
+          "null"
+        ]
       }
     },
-    "additionalProperties": false,
     "required": [
-      "options"
-    ]
+      "label"
+    ],
+    "additionalProperties": false
   },
   "parameters": [
     {
@@ -105,10 +104,9 @@
     }
   ],
   "sample": {
-    "options": {
-      "label": "Open",
-      "icon": "bi-tools",
-      "iconClass": "bg-icon-green"
-    }
+    "label": "Open",
+    "icon": "bi-tools",
+    "iconClass": "bg-icon-green",
+    "value": "12"
   }
 }

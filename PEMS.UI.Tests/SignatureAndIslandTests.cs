@@ -32,7 +32,7 @@ public sealed class SignatureAndIslandTests
     [Fact]
     public void The_signature_pad_speaks_the_language_of_the_request()
     {
-        var html = Render("signature-pad", ComponentSamples.Get("signature-pad")!.ToJsonString(), "fa");
+        var html = System.Net.WebUtility.HtmlDecode(Render("signature-pad", ComponentSamples.Get("signature-pad")!.ToJsonString(), "fa"));
         Assert.Contains("پاک کردن", html);
         Assert.Contains("امضای فعلی", html);
     }
@@ -76,6 +76,6 @@ public sealed class SignatureAndIslandTests
         var json = ComponentSamples.Get("script-island")!.ToJsonString().Replace("\"Executive\"", "\"</script><b>x\"");
         var html = Render("script-island", json);
         Assert.DoesNotContain("</script><b>", html);
-        Assert.Contains("\\u003c/script>", html);
+        Assert.True(html.Contains("\\u003C/script"), html);
     }
 }
