@@ -169,7 +169,7 @@ public static class NavigationMenuDefaults
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
-            "Settings,Users,PermissionMatrix,Department,Employee,Authorization,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
+            "Settings,Users,PermissionMatrix,Department,Employee,NavigationVisibility,NavigationMenu,Organization,OrganizationImport,License,Intake,OCRProcessing,AIExtraction,TableExtraction,Relationship",
             activeArea: "Admin"),
         Link("admin.settings", "sec.admin", 10, "Settings", "bi-gear", "Settings", rule: "Module:Administration"),
         // SCRUM-40: الگوهای شماره‌گذاری اسناد تدارکات (کنترلر فقط SystemAdmin)

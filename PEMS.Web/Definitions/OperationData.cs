@@ -24,7 +24,7 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
         var names = op.Method.GetParameters().Select(p => p.Name!).ToHashSet(StringComparer.Ordinal);
         foreach (var (name, source) in args)
             if (!names.Contains(name)) errors.Add(new("/args/" + name, "unknown-parameter", "Def_Err_UnknownField", $"'{name}' is not a parameter of {op.Name}."));
-            else if (!IsSource(EntityJson.Str(source) ?? "")) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", "A source of a read operation is literal:text or context:employeeId|roles|userName|culture."));
+            else if (!IsSource(EntityJson.Str(source) ?? "")) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", "A source of a read operation is literal:text, param:name (a value typed in a column filter of the grid) or context:employeeId|roles|userName|culture."));
         foreach (var p in op.Method.GetParameters())
             if (p.ParameterType != typeof(CancellationToken) && !Simple(p.ParameterType) && !(IsRoles(p) && EntityJson.Str(args[p.Name!]) == "context:roles"))
                 errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Name} must be a simple value (give it a literal or a context source) or the roles of the user (context:roles)."));
@@ -38,10 +38,10 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
     }
 
     private static bool IsRoles(ParameterInfo p) => p.Name!.EndsWith("Roles", StringComparison.OrdinalIgnoreCase) && p.ParameterType != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(p.ParameterType);
-    private static bool IsSource(string s) => s.StartsWith("literal:") || s.StartsWith("context:") && s[8..] is "employeeId" or "roles" or "userName" or "culture";
+    private static bool IsSource(string s) => s.StartsWith("literal:") || s.StartsWith("param:") && s.Length > 6 || s.StartsWith("context:") && s[8..] is "employeeId" or "roles" or "userName" or "culture";
 
     /// <summary>The rows of the answer: one dictionary per item (properties by name, first letter lower-case); a text list becomes rows with a "value" column. Null when the user may not run the operation.</summary>
-    public async Task<IReadOnlyList<IDictionary<string, object?>>?> ReadAsync(IReadOnlyDictionary<string, string?> parameters, string culture, IReadOnlyCollection<string> roles, string? userName, CancellationToken ct)
+    public async Task<IReadOnlyList<IDictionary<string, object?>>?> ReadAsync(IReadOnlyDictionary<string, string?> parameters, string culture, IReadOnlyCollection<string> roles, string? userName, CancellationToken ct, IReadOnlyDictionary<string, string?>? query = null)
     {
         var op = catalog.Get(parameters.GetValueOrDefault("model"), parameters.GetValueOrDefault("action")) ?? throw new InvalidOperationException("unknown operation");
         using var scope = scopes.CreateScope();
@@ -56,7 +56,8 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
             var source = EntityJson.Str(args[p.Name!]);
             if (IsRoles(p)) { values.Add(roles.ToList()); continue; }
             if (source is null) { values.Add(p.HasDefaultValue ? p.DefaultValue : p.ParameterType.IsValueType && Nullable.GetUnderlyingType(p.ParameterType) is null ? Activator.CreateInstance(p.ParameterType) : null); continue; }
-            var text = source.StartsWith("literal:") ? source[8..] : source[8..] switch { "userName" => userName, "culture" => culture, "roles" => string.Join(",", roles), _ => null };
+            if (source.StartsWith("param:") && !p.IsOptional && string.IsNullOrWhiteSpace(query?.GetValueOrDefault(source[6..]))) return [];      // nothing typed yet: no rows, the service is not called
+            var text = source.StartsWith("literal:") ? source[8..] : source.StartsWith("param:") ? query?.GetValueOrDefault(source[6..]) : source[8..] switch { "userName" => userName, "culture" => culture, "roles" => string.Join(",", roles), _ => null };
             values.Add(EntityJson.Convert(p.ParameterType, text) is var c && c is EntityJson.NotConvertible ? throw new InvalidOperationException($"'{p.Name}' is not valid.") : c);
         }
         var service = scope.ServiceProvider.GetRequiredService(op.ServiceType);
@@ -98,7 +99,8 @@ public sealed class OperationGridProvider(OperationReader reader) : IGridDataPro
 
     public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
     {
-        var rows = await reader.ReadAsync(request.Parameters, request.Culture, request.Roles, request.UserName, ct) ?? throw new UnauthorizedAccessException();
+        var typed = request.Grid.Filters.GroupBy(f => f.Field).ToDictionary(g => g.Key, g => (string?)g.First().Value);      // the column filters are the parameters of the operation
+        var rows = await reader.ReadAsync(request.Parameters, request.Culture, request.Roles, request.UserName, ct, typed) ?? throw new UnauthorizedAccessException();
         IEnumerable<IDictionary<string, object?>> query = rows;
         if (!string.IsNullOrWhiteSpace(request.Grid.Search))
         {
