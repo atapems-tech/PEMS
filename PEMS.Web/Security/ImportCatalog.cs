@@ -44,7 +44,7 @@ public static class ImportCatalog
     public sealed record ImportEntry(
         string Key, string Category, string Controller, string Action, LaunchMode Mode,
         string FileTypes, string? Accept, bool Staged, string WorkflowType, string? PermissionModule,
-        IReadOnlyList<string[]> RequiredRoleSets, string Icon, string Area = "");
+        IReadOnlyList<string[]> RequiredRoleSets, string Icon, string Area = "", string? Url = null);
 
     private static string[][] Sets(params string[][] s) => s;
 
@@ -83,8 +83,8 @@ public static class ImportCatalog
 
         // ---- Organization: direct imports (existing POST Department/Import, Employee/Import); controllers carry
         // [Authorize(Roles=SystemAdmin,EngineeringManager)], the card keeps the narrower legacy sidebar exposure (SystemAdmin).
-        new("Department", Category.Organization, "Department", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
-            Sets(MenuAccess.Administration), "bi-building"),
+        new("Department", Category.Organization, "Department", "Index", LaunchMode.Page, ".xlsx", ".xlsx", false, Workflow.Direct, null,
+            Sets(MenuAccess.Administration), "bi-building", Url: "/f/departments-import"),   // SCRUM-681: the import is the definition departments-import
         new("Employee", Category.Organization, "Employee", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
             Sets(MenuAccess.Administration), "bi-people"),
         // Organization hierarchy (Positions / ParentPosition / holders / effective dates): validate-then-commit, all-or-nothing.

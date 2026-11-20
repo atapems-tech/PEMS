@@ -162,6 +162,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IMigratorCenter, PEMS.Web
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPackageBuilder, PEMS.Web.Services.PackageBuilder>();   // SCRUM-584 (signing key only on the vendor deployment)
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.EntityOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityCreateAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityImportAction>();   // batch 5: a spreadsheet of a registered entity is imported by a definition
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityUpdateAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityDeleteAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityToggleAction>();
