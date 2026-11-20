@@ -106,6 +106,7 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.DataView, typeof(PemsDataView));
         Register(UiKeys.RecordView, typeof(PemsRecordView));
         Register(UiKeys.Matrix, typeof(PemsMatrix));
+        Register(UiKeys.ContentBlocks, typeof(PemsContentBlocks));
         Register(UiKeys.WorkflowHistory, typeof(PemsWorkflowHistory));
         Register(UiKeys.Uploader, typeof(PemsUploader));
         Register(UiKeys.CommentsThread, typeof(PemsCommentsThread));
