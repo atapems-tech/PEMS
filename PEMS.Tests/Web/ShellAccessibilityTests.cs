@@ -160,7 +160,7 @@ public class ShellAccessibilityTests
 
     // ------------------------------------------------------------------ status page
 
-    private static HomeController NewHome() => new(null!, null!, null!, null!, null!, null!, null!, null!, null!)
+    private static HomeController NewHome() => new()
     {
         ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
     };
