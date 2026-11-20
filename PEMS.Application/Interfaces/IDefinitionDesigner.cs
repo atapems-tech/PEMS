@@ -79,4 +79,14 @@ public interface IDefinitionDesigner
     /// <summary>Moves the item <paramref name="itemKey"/> of a menu draft under <paramref name="parent"/> (empty = the top level) at the order <paramref name="order"/>.</summary>
     [PEMS.Application.Common.PemsOperation("Designer", "MoveMenuItem", "Definitions.Edit")]
     Task<(bool Success, string? Error)> MoveMenuItemAsync(string reference, string itemKey, string? parent, int order, string actor);
+
+    // ---- SCRUM-809: the page designer edits a component instance by its id, wherever it is
+
+    /// <summary>Sets one option of the component instance <paramref name="instanceId"/> of a page draft (any region): the value is JSON (<c>"text"</c>, <c>12</c>, <c>true</c>, an object); an empty value removes the option. The options are checked against the manifest of the component when the draft is validated.</summary>
+    [PEMS.Application.Common.PemsOperation("Designer", "SetInstanceOption", "Definitions.Edit")]
+    Task<(bool Success, string? Error)> SetInstanceOptionAsync(string reference, string instanceId, string option, string? valueJson, string actor);
+
+    /// <summary>Moves the component instance <paramref name="instanceId"/> of a page draft into <paramref name="region"/> at <paramref name="position"/> (0 = first; beyond the end = last): the same move a drag and drop on a canvas makes.</summary>
+    [PEMS.Application.Common.PemsOperation("Designer", "MoveInstance", "Definitions.Edit")]
+    Task<(bool Success, string? Error)> MoveInstanceAsync(string reference, string instanceId, string region, int position, string actor);
 }

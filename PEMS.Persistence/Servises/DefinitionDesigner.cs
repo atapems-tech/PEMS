@@ -292,6 +292,50 @@ public sealed class DefinitionDesigner(IDefinitionService definitions, IDefiniti
             return null;
         });
 
+    // ------------------------------------------------------------------ SCRUM-809: component instances by id
+
+    private static (JsonArray? List, JsonObject? Instance) FindInstance(JsonNode root, string instanceId)
+    {
+        if (root["regions"] is not JsonObject regions) return (null, null);
+        foreach (var (_, node) in regions)
+            if (node is JsonArray list)
+                foreach (var instance in list.OfType<JsonObject>())
+                    if (string.Equals((string?)instance["id"], instanceId?.Trim(), StringComparison.Ordinal)) return (list, instance);
+        return (null, null);
+    }
+
+    public Task<(bool Success, string? Error)> SetInstanceOptionAsync(string reference, string instanceId, string option, string? valueJson, string actor)
+        => EditAsync(reference, actor, $"Designer: option {option} of {instanceId}", root =>
+        {
+            var (_, instance) = FindInstance(root, instanceId);
+            if (instance is null) return $"The page has no component with the id '{instanceId}'.";
+            if (string.IsNullOrWhiteSpace(option) || option.Contains('/')) return "The option is the name of one option of the component.";
+            var options = instance["options"] as JsonObject ?? new JsonObject();
+            if (string.IsNullOrWhiteSpace(valueJson)) options.Remove(option.Trim());
+            else
+            {
+                var value = ParseJson(valueJson, out var error);
+                if (error != null) return "The value is JSON: text in quotes, a number, true or false, or an object.";
+                options[option.Trim()] = value;
+            }
+            instance["options"] = options;
+            return null;
+        });
+
+    public Task<(bool Success, string? Error)> MoveInstanceAsync(string reference, string instanceId, string region, int position, string actor)
+        => EditAsync(reference, actor, $"Designer: move {instanceId} to {region}", root =>
+        {
+            var (list, instance) = FindInstance(root, instanceId);
+            if (list is null || instance is null) return $"The page has no component with the id '{instanceId}'.";
+            if (string.IsNullOrWhiteSpace(region)) return "Say which region to move the component to.";
+            if (root["regions"] is not JsonObject regions) return "The page has no regions.";
+            var target = regions[region.Trim()] as JsonArray;
+            if (target is null) { target = new JsonArray(); regions[region.Trim()] = target; }
+            list.Remove(instance);
+            target.Insert(Math.Clamp(position, 0, target.Count), instance);
+            return null;
+        });
+
     // ------------------------------------------------------------------ the draft edit
 
     private async Task<(bool Success, string? Error)> EditAsync(string reference, string actor, string summary, Func<JsonNode, string?> change)

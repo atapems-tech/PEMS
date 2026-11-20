@@ -104,4 +104,43 @@ public sealed class DesignerEditorsTests
     [InlineData(false, false, "")]
     public void A_role_that_holds_edit_and_approve_is_flagged_for_separation_of_duties(bool edit, bool approve, string note)
         => Assert.Equal(note, DefinitionSodGridProvider.Separation(edit, approve));
+
+    // ---- SCRUM-809: component instances by id
+
+    private static async Task<(DefinitionDesigner Designer, DefinitionService Service, int Id)> WorldWithPageAsync()
+    {
+        var w = new DefinitionTestWorld();
+        var (service, _, db) = w.NewService();
+        var payload = DefinitionTestWorld.Page(("one", "button", """{ "label": { "en": "One" }, "tone": "primary" }"""), ("two", "button", """{ "label": { "en": "Two" }, "tone": "neutral" }"""));
+        var created = await service.CreateAsync(new PEMS.Application.Definitions.CreateDefinition("page", "t.page", "core", """{"en":"T","fa":"ت"}""", null, payload, "first"), User);
+        Assert.True(created.Success, created.Code);
+        return (new DefinitionDesigner(service, new DefinitionWorkbench(service, new DefinitionImpactService(db, []))), service, created.Value!.Summary.Id);
+    }
+
+    [Fact]
+    public async Task An_option_of_a_component_is_set_and_removed_by_the_id_of_the_component()
+    {
+        var (designer, service, id) = await WorldWithPageAsync();
+        Assert.True((await designer.SetInstanceOptionAsync("core:page:t.page", "two", "tone", "\"danger\"", User)).Success);
+        var page = await DraftAsync(service, id);
+        Assert.Equal("danger", (string)page["regions"]!["main"]![1]!["options"]!["tone"]!);
+        Assert.True((await designer.SetInstanceOptionAsync("core:page:t.page", "two", "tone", "", User)).Success);
+        Assert.False(((JsonObject)(await DraftAsync(service, id))["regions"]!["main"]![1]!["options"]!).ContainsKey("tone"));
+        Assert.Contains("no component with the id", (await designer.SetInstanceOptionAsync("core:page:t.page", "nope", "tone", "1", User)).Error);
+        Assert.Contains("JSON", (await designer.SetInstanceOptionAsync("core:page:t.page", "one", "tone", "{bad", User)).Error);
+    }
+
+    [Fact]
+    public async Task A_component_moves_to_another_region_at_a_position_the_way_a_drop_does()
+    {
+        var (designer, service, id) = await WorldWithPageAsync();
+        Assert.True((await designer.MoveInstanceAsync("core:page:t.page", "one", "side", 0, User)).Success);
+        var page = await DraftAsync(service, id);
+        Assert.Equal(["two"], ((JsonArray)page["regions"]!["main"]!).Select(n => (string)n!["id"]!));
+        Assert.Equal(["one"], ((JsonArray)page["regions"]!["side"]!).Select(n => (string)n!["id"]!));
+        Assert.True((await designer.MoveInstanceAsync("core:page:t.page", "two", "side", 99, User)).Success);          // beyond the end: last
+        page = await DraftAsync(service, id);
+        Assert.Equal(["one", "two"], ((JsonArray)page["regions"]!["side"]!).Select(n => (string)n!["id"]!));
+        Assert.False((await designer.MoveInstanceAsync("core:page:t.page", "ghost", "side", 0, User)).Success);
+    }
 }

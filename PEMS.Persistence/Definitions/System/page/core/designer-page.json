@@ -96,6 +96,70 @@
           ]
         }
       ]
+    },
+    "regions": {
+      "toolbar": [
+        {
+          "id": "opt",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Set an option",
+              "fa": "تنظیم گزینه"
+            },
+            "tone": "neutral",
+            "href": "/f/designer-instance-option?ref={{params.ref|url}}"
+          }
+        },
+        {
+          "id": "mv",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Move a component",
+              "fa": "جابه‌جایی مؤلفه"
+            },
+            "tone": "neutral",
+            "href": "/f/designer-move-instance?ref={{params.ref|url}}"
+          }
+        },
+        {
+          "id": "pv-fa",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Preview the draft (fa, RTL)",
+              "fa": "پیش‌نمایش پیش‌نویس (فارسی)"
+            },
+            "tone": "primary",
+            "href": "/preview/definition?ref={{params.ref|url}}&culture=fa&dir=rtl&theme=light"
+          }
+        },
+        {
+          "id": "pv-en",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Preview the draft (en, LTR)",
+              "fa": "پیش‌نمایش پیش‌نویس (انگلیسی)"
+            },
+            "tone": "primary",
+            "href": "/preview/definition?ref={{params.ref|url}}&culture=en&dir=ltr&theme=light"
+          }
+        },
+        {
+          "id": "hist",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "History, diff and undo by version",
+              "fa": "تاریخچه و بازگشت"
+            },
+            "tone": "neutral",
+            "href": "/p/definition-history?ref={{params.ref|url}}"
+          }
+        }
+      ]
     }
   }
 }
