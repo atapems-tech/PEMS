@@ -47,7 +47,9 @@ internal static class EntityCatalogDefaults
         // read-only registrations used for related counts and labels
         .Add<ApplicationUser>("Id", e => e.Roles(AdminRoles, null).Readable("UserName"))
         .Add<Permission>("PermissionId", e => e.Roles(AdminRoles, null).Readable("Name", "IsActive"))
-        .Add<Employee>("EmployeeId", e => e.Roles(OrganizationRoles, null).Readable("DepartmentId", "IsActive"))
+        .Add<Employee>("EmployeeId", e => e.Roles(OrganizationRoles, OrganizationRoles)   // SCRUM-687: the edit form loads the row and entity.update writes the personal fields (the checks are the Employee.ValidateEdit operation)
+            .Readable("PersonnelCode", "FirstName", "LastName", "Email", "Phone", "DepartmentId", "DisciplineId", "PersonnelType", "VendorId", "IsActive", "HireDate", "Location", "Shift", "HomeAddress")
+            .Writable("PersonnelCode", "FirstName", "LastName", "Email", "Phone", "DepartmentId", "DisciplineId", "PersonnelType", "VendorId", "HireDate", "Location", "Shift", "HomeAddress"))
         .Add<IdentityUserRole<int>>("RoleId", e => e.Roles(AdminRoles, null).Readable("UserId", "RoleId"))
         .Add<RolePermissionGrant>("RolePermissionGrantId", e => e.Roles(AdminRoles, null).Readable("RoleId", "IsActive"))
         // Inventory master data (W4): InventoryMasterData permissions

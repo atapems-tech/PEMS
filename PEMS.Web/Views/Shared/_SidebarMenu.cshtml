@@ -750,7 +750,7 @@
                     <pems-icon name="bi-building" /> @Localizer["Departments"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("Employee"))" asp-controller="Employee" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" href="/p/employees" active="@(IsActive("Employee") || Context.Request.Path.StartsWithSegments("/p/employee"))">
                     <pems-icon name="bi-people" /> @Localizer["Employees"]
                 </pems-nav-link>
 

@@ -40,6 +40,13 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Employees as definition pages (SCRUM-687)
+
+### Changed
+- /p/employees (filters, search, details, edit, activate/deactivate, Excel export, add) and /p/employee-details (profile, account, skills, qualifications, certifications, labor rates, team history, with their add forms and remove actions) over `IEmployeeOperations` replace EmployeeController and its views; /Employee and /Employee/Details/{id} redirect. Editing the personal fields is the generic `entity.update` action checked by `Employee.ValidateEdit`.
+- The roles of a new account are no longer chosen in the add form: assign them in Administration, Users. An Internal employee must not have a vendor (it is refused instead of cleared). Quick setup links to converted pages work again.
+
 ## 2026-11-20 - Home dashboard as a definition page (SCRUM-705)
 
 ### Changed

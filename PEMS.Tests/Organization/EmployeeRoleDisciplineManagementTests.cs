@@ -15,7 +15,6 @@ using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
 using PEMS.Web.Controllers;
-using EmployeeController = PEMS.Web.Controllers.EmployeeController;
 using PEMS.Web.Security;
 
 namespace PEMS.Tests.Organization;
@@ -283,97 +282,26 @@ public class EmployeeRoleDisciplineManagementTests
         Assert.False(await Allowed(e, u.Id, "ResB2", "View"));                                      // no roles
     }
 
-    // ------------------------------------------------------------------ Employee controller
-
-    private static EmployeeController NewEmployeeController(Env e) =>
-        new EmployeeController(e.Ctx, e.Users, e.Roles, null!, null!, new UserRoleAssignmentSynchronizer(e.Ctx)).WithTempData();
+    // ------------------------------------------------------------------ Employee operations (SCRUM-687)
 
     [Fact]
     public async Task EmployeeCreateAndEdit_RejectInvalidOrInactiveDepartmentDiscipline()
     {
         var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
-        var c = NewEmployeeController(e);
-        await c.Create("", "A", "B", null, null, null, dept, 0, false, null, null, null, null, null, null, null, null);          // discipline 0
-        await c.Create("", "A", "B", null, null, null, 9999, disc, false, null, null, null, null, null, null, null, null);       // unknown department
+        var ops = new PEMS.Web.Services.EmployeeOperations(e.Ctx, e.Users, null!, null!, new UserRoleAssignmentSynchronizer(e.Ctx), null!);
+        var roles = new List<string>();
+        Assert.False((await ops.CreateAsync(roles, "A", "B", dept, 0)).Success);          // discipline 0
+        Assert.False((await ops.CreateAsync(roles, "A", "B", 9999, disc)).Success);       // unknown department
         Assert.Empty(e.Ctx.Employees);
 
-        await c.Create("", "Good", "Employee", null, null, null, dept, disc, false, null, null, null, null, null, null, null, null);
+        Assert.True((await ops.CreateAsync(roles, "Good", "Employee", dept, disc)).Success);
         var emp = await e.Ctx.Employees.SingleAsync();
-        await c.Edit(emp.EmployeeId, "", "Good", "Employee", null, null, null, dept, 0, null, null, null, null, null, null);       // edit to discipline 0
-        Assert.Equal(disc, (await e.Ctx.Employees.AsNoTracking().SingleAsync()).DisciplineId);
+        Assert.False((await ops.ValidateEditAsync(emp.EmployeeId, "Good", "Employee", dept, 0)).Success);       // edit to discipline 0
 
         (await e.Ctx.Disciplines.FindAsync(disc))!.IsActive = false; await e.Ctx.SaveChangesAsync();
-        await c.Create("", "Third", "Person", null, null, null, dept, disc, false, null, null, null, null, null, null, null, null);   // inactive discipline for a NEW employee
+        Assert.False((await ops.CreateAsync(roles, "Third", "Person", dept, disc)).Success);   // inactive discipline for a NEW employee
+        Assert.True((await ops.ValidateEditAsync(emp.EmployeeId, "Good", "Employee", dept, disc)).Success);   // an unchanged inactive discipline of the current employee is accepted
         Assert.Equal(1, await e.Ctx.Employees.CountAsync());
-    }
-
-    private static IFormFile Xlsx(params string[][] rows)
-    {
-        var wb = new XLWorkbook(); var ws = wb.AddWorksheet("Employees");
-        var header = new[] { "Code", "First", "Last", "Position", "Email", "Phone", "Department", "Discipline" };
-        for (var c = 0; c < header.Length; c++) ws.Cell(1, c + 1).Value = header[c];
-        for (var r = 0; r < rows.Length; r++) for (var c = 0; c < rows[r].Length; c++) ws.Cell(r + 2, c + 1).Value = rows[r][c];
-        var ms = new MemoryStream(); wb.SaveAs(ms); ms.Position = 0;
-        return new FormFile(ms, 0, ms.Length, "file", "emp.xlsx");
-    }
-
-    [Fact]
-    public async Task EmployeeImport_ValidAndInvalidDepartmentDiscipline_NoSilentFallbackToZero()
-    {
-        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
-        e.Ctx.Disciplines.Add(new Discipline { Code = "EL", Name = "Electrical", IsActive = true });
-        e.Ctx.Disciplines.Add(new Discipline { Code = "XX", Name = "Retired", IsActive = false });
-        e.Ctx.Disciplines.Add(new Discipline { Code = "A1", Name = "Dup Name", IsActive = true }); e.Ctx.Disciplines.Add(new Discipline { Code = "A2", Name = "Dup Name", IsActive = true });
-        await e.Ctx.SaveChangesAsync();
-        var c = NewEmployeeController(e);
-
-        var result = await c.Import(Xlsx(
-            new[] { "P1", "Ok", "ByName", "", "", "", "Dept 1", "Process" },
-            new[] { "P2", "Ok", "ByCode", "", "", "", "D1", "EL" },
-            new[] { "P3", "Ok", "ByAlias", "", "", "", "Dept 1", "Proc Eng" },
-            new[] { "P4", "Bad", "UnknownDiscipline", "", "", "", "Dept 1", "Nope" },
-            new[] { "P5", "Bad", "BlankDiscipline", "", "", "", "Dept 1", "" },
-            new[] { "P6", "Bad", "InactiveDiscipline", "", "", "", "Dept 1", "Retired" },
-            new[] { "P7", "Bad", "AmbiguousDiscipline", "", "", "", "Dept 1", "Dup Name" },
-            new[] { "P8", "Bad", "UnknownDepartment", "", "", "", "Nowhere", "Process" }));
-        Assert.IsType<RedirectToActionResult>(result);
-
-        var saved = await e.Ctx.Employees.AsNoTracking().OrderBy(x => x.PersonnelCode).ToListAsync();
-        Assert.Equal(new[] { "P1", "P2", "P3" }, saved.Select(x => x.PersonnelCode).ToArray());
-        Assert.All(saved, x => Assert.True(x.DisciplineId > 0 && x.DepartmentId == dept));
-        Assert.Equal(disc, saved[0].DisciplineId); Assert.Equal(disc, saved[2].DisciplineId);
-        Assert.Contains("5 نامعتبر", (string)c.TempData["Message"]!);
-    }
-
-    [Fact]
-    public async Task EmployeeDetails_ExposesLinkedAccountRolesAndOrganizationalPosition_NoSecondRoleManager()
-    {
-        var e = NewEnv(); var (dept, disc) = await Org(e.Ctx);
-        var emp = new Employee { FirstName = "L", LastName = "U", DepartmentId = dept, DisciplineId = disc, IsActive = true }; e.Ctx.Employees.Add(emp); await e.Ctx.SaveChangesAsync();
-        var role = await Role(e, "RoleD");
-        var u = await User(e, "linked", emp.EmployeeId); e.Ctx.UserRoles.Add(new IdentityUserRole<int> { UserId = u.Id, RoleId = role.Id });
-        var pos = new Position { Title = "Pos", IsActive = true, DepartmentId = dept }; e.Ctx.Positions.Add(pos); await e.Ctx.SaveChangesAsync();
-        e.Ctx.EmployeeAssignments.Add(new EmployeeAssignment { PositionId = pos.PositionId, EmployeeId = emp.EmployeeId, IsActive = true, IsPrimary = true, StartDate = DateTime.Now.AddDays(-1) });
-        await e.Ctx.SaveChangesAsync();
-
-        var laborStub = new StubLabor();
-        var c = new EmployeeController(e.Ctx, e.Users, e.Roles, laborStub, null!, null).WithTempData();
-        var view = Assert.IsType<ViewResult>(await c.Details(emp.EmployeeId));
-        object linked = c.ViewBag.LinkedUser;
-        Assert.NotNull(linked);
-        Assert.Equal("linked", (string)linked.GetType().GetProperty("UserName")!.GetValue(linked)!);
-        Assert.Contains("RoleD", (IEnumerable<string>)linked.GetType().GetProperty("Roles")!.GetValue(linked)!);
-        var ctx = Assert.IsType<OrganizationalContext>(c.ViewBag.OrgContext);
-        Assert.Equal(pos.PositionId, ctx.PrimaryPositionId);
-        // no role-mutation action exists on EmployeeController (roles are managed only in Administration → Users)
-        Assert.DoesNotContain(typeof(EmployeeController).GetMethods().Select(m => m.Name), n => n.Contains("Role", StringComparison.OrdinalIgnoreCase) && n != "ToString");
-    }
-
-    private sealed class StubLabor : IEmployeeLaborRateService
-    {
-        public Task SetRateAsync(int employeeId, string rateType, decimal rate, string currency, DateTime effectiveFrom) => Task.CompletedTask;
-        public Task<List<PEMS.Domain.Entities.EmployeeLaborRate>> GetHistoryAsync(int employeeId) => Task.FromResult(new List<PEMS.Domain.Entities.EmployeeLaborRate>());
-        public Task<PEMS.Domain.Entities.EmployeeLaborRate?> GetEffectiveRateAsync(int employeeId, string rateType, DateTime asOf) => Task.FromResult<PEMS.Domain.Entities.EmployeeLaborRate?>(null);
     }
 
     // ------------------------------------------------------------------ Discipline master data
