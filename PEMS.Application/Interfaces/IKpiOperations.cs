@@ -24,6 +24,9 @@ public interface IKpiOperations
     [PEMS.Application.Common.PemsOperation("Kpi", "Targets", "Reliability.View")]
     Task<List<KpiTargetRow>> TargetsAsync();
 
+    [PEMS.Application.Common.PemsOperation("Kpi", "TargetChoices", "Reliability.View")]
+    Task<List<ReportChoiceRow>> TargetChoicesAsync();
+
     [PEMS.Application.Common.PemsOperation("Kpi", "SaveTarget", "Reliability.Edit")]
     Task<KpiSaveResult> SaveTargetAsync(string key, string? target = null, string? warn = null);
 }

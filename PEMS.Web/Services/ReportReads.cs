@@ -3,9 +3,11 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
+using PEMS.Web.Resources;
 
 namespace PEMS.Web.Services;
 
@@ -14,25 +16,25 @@ namespace PEMS.Web.Services;
 /// (name, number, ...) becomes the lines of the section named after the list. Nothing is calculated here.
 /// </summary>
 public sealed class ReportReads(ICorrespondenceReportService correspondence, IEngineeringReportService engineering, IVDRReportService vdr, ICmmsReportService cmms,
-    IProcurementReportService procurement, IOperationsReportService operations, PEMSDbContext context) : IReportReads
+    IProcurementReportService procurement, IOperationsReportService operations, PEMSDbContext context, IStringLocalizer<SharedResource> loc) : IReportReads
 {
     public const int PipelinePageSize = 100;
     public const int MaxPipelinePages = 50;
 
     public async Task<List<ReportRow>> CorrespondenceAsync(int? projectId = null, int? disciplineId = null, DateTime? fromDate = null, DateTime? toDate = null)
-        => Flatten(await correspondence.GetReportAsync(projectId, disciplineId, fromDate, toDate));
+        => Flatten(await correspondence.GetReportAsync(projectId, disciplineId, fromDate, toDate), Label);
 
     public async Task<List<ReportRow>> EngineeringAsync(int? projectId = null, int? disciplineId = null, DateTime? fromDate = null, DateTime? toDate = null)
-        => Flatten(await engineering.GetReportAsync(projectId, disciplineId, fromDate, toDate));
+        => Flatten(await engineering.GetReportAsync(projectId, disciplineId, fromDate, toDate), Label);
 
     public async Task<List<ReportRow>> VdrAsync(int? projectId = null, int? disciplineId = null, DateTime? fromDate = null, DateTime? toDate = null)
-        => Flatten(await vdr.GetReportAsync(projectId, disciplineId, fromDate, toDate));
+        => Flatten(await vdr.GetReportAsync(projectId, disciplineId, fromDate, toDate), Label);
 
     public async Task<List<ReportRow>> CmmsAsync(string? status = null, string? priority = null, DateTime? fromDate = null, DateTime? toDate = null)
-        => Flatten(await cmms.GetReportAsync(status, priority, fromDate, toDate));
+        => Flatten(await cmms.GetReportAsync(status, priority, fromDate, toDate), Label);
 
     public async Task<List<ReportRow>> ProcurementAsync(int? projectId = null, int? disciplineId = null, DateTime? fromDate = null, DateTime? toDate = null)
-        => Flatten(await procurement.GetReportAsync(projectId, disciplineId, fromDate, toDate));
+        => Flatten(await procurement.GetReportAsync(projectId, disciplineId, fromDate, toDate), Label);
 
     public async Task<List<ReportPipelineRow>> ProcurementPipelineAsync(int? projectId = null, int? disciplineId = null, DateTime? fromDate = null, DateTime? toDate = null)
     {
@@ -50,7 +52,7 @@ public sealed class ReportReads(ICorrespondenceReportService correspondence, IEn
     public async Task<List<ReportRow>> OperationsAsync(string? periodType = null, DateTime? anchorOrFrom = null, DateTime? toDate = null, int? productionWorkCenterId = null, int? materialItemId = null)
     {
         var normalized = periodType switch { "Month" => PeriodType.Month, "CustomRange" => PeriodType.CustomRange, _ => PeriodType.Day };
-        return Flatten(await operations.GetSummaryAsync(normalized, anchorOrFrom, toDate, weekStartDay: null, productionWorkCenterId, materialItemId));
+        return Flatten(await operations.GetSummaryAsync(normalized, anchorOrFrom, toDate, weekStartDay: null, productionWorkCenterId, materialItemId), Label);
     }
 
     public async Task<List<ReportChoiceRow>> ProjectsAsync()
@@ -70,23 +72,25 @@ public sealed class ReportReads(ICorrespondenceReportService correspondence, IEn
             .Select(x => new ReportChoiceRow(x.MaterialItemId.ToString(CultureInfo.InvariantCulture), x.MaterialCode)).ToList();
 
     /// <summary>The lines of a report DTO: scalar properties are the section Summary, a list of tuples is a section named after the property (the first element is the name, the others are joined with " / ").</summary>
-    public static List<ReportRow> Flatten(object dto)
+    public static List<ReportRow> Flatten(object dto, Func<string, string>? label = null)
     {
         var rows = new List<ReportRow>();
         foreach (var property in dto.GetType().GetProperties())
         {
             if (property.GetIndexParameters().Length > 0 || property.GetValue(dto) is not { } value) continue;
-            var words = Words(property.Name);
+            var words = label is null ? Words(property.Name) : label(property.Name);
             if (value is IEnumerable list && value is not string)
             {
                 foreach (var item in list)
                     if (item is ITuple tuple && tuple.Length >= 2)
                         rows.Add(new ReportRow(words, Show(tuple[0]), string.Join(" / ", Enumerable.Range(1, tuple.Length - 1).Select(i => Show(tuple[i])))));
             }
-            else rows.Add(new ReportRow("Summary", words, Show(value)));
+            else rows.Add(new ReportRow(label is null ? "Summary" : label("Summary"), words, Show(value)));
         }
         return rows;
     }
+
+    private string Label(string name) { var text = loc["Rpt_" + name]; return text.ResourceNotFound ? Words(name) : text.Value; }
 
     private static string Show(object? value) => value switch
     {

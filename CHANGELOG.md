@@ -29,6 +29,11 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+## 2026-11-20 - Report and KPI labels in both languages, KPI choice list in the target form (SCRUM-713, 747)
+
+### Changed
+- Report rows, KPI names, sections and statuses are localized (resource keys `Rpt_*`, `Kpi_*`); the target form picks the KPI from a list (`Kpi.TargetChoices`).
+
 ## 2026-11-20 - KPI pages as definitions (SCRUM-713)
 
 ### Changed

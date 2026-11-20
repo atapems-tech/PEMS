@@ -4305,4 +4305,92 @@
   <data name="هیچ طرح CBM معوقی وجود ندارد." xml:space="preserve"><value>There are no overdue CBM plans.</value></data>
   <data name="هیچ قرائتی در این بازه ثبت نشده." xml:space="preserve"><value>No readings have been recorded in this period.</value></data>
   <data name="هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد." xml:space="preserve"><value>No monitoring points currently require attention.</value></data>
+  <data name="Rpt_Summary" xml:space="preserve"><value>Summary</value></data>
+  <data name="Rpt_TotalWorkOrders" xml:space="preserve"><value>Total work orders</value></data>
+  <data name="Rpt_OpenCount" xml:space="preserve"><value>Open</value></data>
+  <data name="Rpt_InProgressCount" xml:space="preserve"><value>In progress</value></data>
+  <data name="Rpt_CompletedCount" xml:space="preserve"><value>Completed</value></data>
+  <data name="Rpt_CriticalCount" xml:space="preserve"><value>Critical</value></data>
+  <data name="Rpt_AvgCompletionDays" xml:space="preserve"><value>Average completion days</value></data>
+  <data name="Rpt_TotalSpareCost" xml:space="preserve"><value>Total spare parts cost</value></data>
+  <data name="Rpt_VolumeByMonth" xml:space="preserve"><value>Volume by month</value></data>
+  <data name="Rpt_ByType" xml:space="preserve"><value>By type</value></data>
+  <data name="Rpt_ByPriority" xml:space="preserve"><value>By priority</value></data>
+  <data name="Rpt_TopEquipment" xml:space="preserve"><value>Top equipment</value></data>
+  <data name="Rpt_TotalLetters" xml:space="preserve"><value>Total letters</value></data>
+  <data name="Rpt_TotalIncoming" xml:space="preserve"><value>Incoming</value></data>
+  <data name="Rpt_TotalOutgoing" xml:space="preserve"><value>Outgoing</value></data>
+  <data name="Rpt_TotalInternal" xml:space="preserve"><value>Internal</value></data>
+  <data name="Rpt_OverdueReferrals" xml:space="preserve"><value>Overdue referrals</value></data>
+  <data name="Rpt_AvgReferralCompletionDays" xml:space="preserve"><value>Average referral completion days</value></data>
+  <data name="Rpt_ByDiscipline" xml:space="preserve"><value>By discipline</value></data>
+  <data name="Rpt_ByStatus" xml:space="preserve"><value>By status</value></data>
+  <data name="Rpt_TopTags" xml:space="preserve"><value>Top tags</value></data>
+  <data name="Rpt_TopSenders" xml:space="preserve"><value>Top senders</value></data>
+  <data name="Rpt_TotalDocuments" xml:space="preserve"><value>Total documents</value></data>
+  <data name="Rpt_ApprovedCount" xml:space="preserve"><value>Approved</value></data>
+  <data name="Rpt_PendingCount" xml:space="preserve"><value>Pending</value></data>
+  <data name="Rpt_RejectedCount" xml:space="preserve"><value>Rejected</value></data>
+  <data name="Rpt_IssuedCount" xml:space="preserve"><value>Issued</value></data>
+  <data name="Rpt_AvgDaysToApprove" xml:space="preserve"><value>Average days to approve</value></data>
+  <data name="Rpt_TotalRevisions" xml:space="preserve"><value>Total revisions</value></data>
+  <data name="Rpt_OverdueCount" xml:space="preserve"><value>Overdue</value></data>
+  <data name="Rpt_ByProject" xml:space="preserve"><value>By project</value></data>
+  <data name="Rpt_TotalPackages" xml:space="preserve"><value>Total packages</value></data>
+  <data name="Rpt_TotalMRs" xml:space="preserve"><value>Total MRs</value></data>
+  <data name="Rpt_TotalMRQs" xml:space="preserve"><value>Total MRQs</value></data>
+  <data name="Rpt_ClosedCount" xml:space="preserve"><value>Closed</value></data>
+  <data name="Rpt_ByVendor" xml:space="preserve"><value>By vendor</value></data>
+  <data name="Rpt_TotalTenders" xml:space="preserve"><value>Total tenders</value></data>
+  <data name="Rpt_TotalBids" xml:space="preserve"><value>Total bids</value></data>
+  <data name="Rpt_TotalContracts" xml:space="preserve"><value>Total contracts</value></data>
+  <data name="Rpt_TotalPurchaseOrders" xml:space="preserve"><value>Total purchase orders</value></data>
+  <data name="Rpt_TotalNTPsIssued" xml:space="preserve"><value>NTPs issued</value></data>
+  <data name="Rpt_ByContractStatus" xml:space="preserve"><value>By contract status</value></data>
+  <data name="Rpt_TotalItems" xml:space="preserve"><value>Total items</value></data>
+  <data name="Rpt_UnderReviewCount" xml:space="preserve"><value>Under review</value></data>
+  <data name="Rpt_PendingResubmissionCount" xml:space="preserve"><value>Pending resubmission</value></data>
+  <data name="Rpt_TotalSubmissions" xml:space="preserve"><value>Total submissions</value></data>
+  <data name="Rpt_SubmissionsByMonth" xml:space="preserve"><value>Submissions by month</value></data>
+  <data name="Rpt_ByReviewCategory" xml:space="preserve"><value>By review category</value></data>
+  <data name="Rpt_ByWorkflowStatus" xml:space="preserve"><value>By workflow status</value></data>
+  <data name="Rpt_PeriodStart" xml:space="preserve"><value>Period start</value></data>
+  <data name="Rpt_PeriodEnd" xml:space="preserve"><value>Period end</value></data>
+  <data name="Rpt_TotalOutputQuantity" xml:space="preserve"><value>Total output</value></data>
+  <data name="Rpt_AcceptedQuantity" xml:space="preserve"><value>Accepted</value></data>
+  <data name="Rpt_RejectedQuantity" xml:space="preserve"><value>Rejected quantity</value></data>
+  <data name="Rpt_PendingQcQuantity" xml:space="preserve"><value>Pending QC</value></data>
+  <data name="Rpt_BlockedQuantity" xml:space="preserve"><value>Blocked</value></data>
+  <data name="Rpt_TotalLossQuantity" xml:space="preserve"><value>Total loss</value></data>
+  <data name="Rpt_TotalTargetQuantity" xml:space="preserve"><value>Total target</value></data>
+  <data name="Rpt_VarianceQuantity" xml:space="preserve"><value>Variance</value></data>
+  <data name="Rpt_TotalCost" xml:space="preserve"><value>Total cost</value></data>
+  <data name="Rpt_LaborCost" xml:space="preserve"><value>Labor cost</value></data>
+  <data name="Rpt_MaterialCost" xml:space="preserve"><value>Material cost</value></data>
+  <data name="Rpt_ContractorCost" xml:space="preserve"><value>Contractor cost</value></data>
+  <data name="Rpt_PmCompliancePercent" xml:space="preserve"><value>PM compliance %</value></data>
+  <data name="Rpt_PmOverdueCount" xml:space="preserve"><value>PM overdue</value></data>
+  <data name="Rpt_PmActivePlanCount" xml:space="preserve"><value>Active PM plans</value></data>
+  <data name="Rpt_BacklogCount" xml:space="preserve"><value>Backlog</value></data>
+  <data name="Rpt_BacklogHours" xml:space="preserve"><value>Backlog hours</value></data>
+  <data name="Rpt_PlannedPercent" xml:space="preserve"><value>Planned %</value></data>
+  <data name="Rpt_UnplannedPercent" xml:space="preserve"><value>Unplanned %</value></data>
+  <data name="Rpt_EmergencyPercent" xml:space="preserve"><value>Emergency %</value></data>
+  <data name="Rpt_WorkOrderAgingDays" xml:space="preserve"><value>Work order aging days</value></data>
+  <data name="Rpt_WorkOrderCompletionRatePercent" xml:space="preserve"><value>Work order completion %</value></data>
+  <data name="Rpt_TotalWorkOrdersInPeriod" xml:space="preserve"><value>Work orders in period</value></data>
+  <data name="Rpt_Cost" xml:space="preserve"><value>Cost</value></data>
+  <data name="Rpt_Maintenance" xml:space="preserve"><value>Maintenance</value></data>
+  <data name="Rpt_Reliability" xml:space="preserve"><value>Reliability</value></data>
+  <data name="Rpt_EquipmentWithFailures" xml:space="preserve"><value>Equipment with failures</value></data>
+  <data name="Rpt_TotalFailureCount" xml:space="preserve"><value>Total failure count</value></data>
+  <data name="Rpt_AverageAvailabilityPercent" xml:space="preserve"><value>Average availability %</value></data>
+  <data name="Rpt_TopEquipmentByCost" xml:space="preserve"><value>Top equipment by cost</value></data>
+  <data name="Rpt_CostByFunctionalLocation" xml:space="preserve"><value>Cost by functional location</value></data>
+  <data name="Rpt_CostByMaintenanceType" xml:space="preserve"><value>Cost by maintenance type</value></data>
+  <data name="Rpt_EquipmentByStatus" xml:space="preserve"><value>Equipment by status</value></data>
+  <data name="Rpt_Custom" xml:space="preserve"><value>Custom</value></data>
+  <data name="Rpt_Default" xml:space="preserve"><value>Default</value></data>
+  <data name="Rpt_HigherIsBetter" xml:space="preserve"><value>Higher is better</value></data>
+  <data name="Rpt_LowerIsBetter" xml:space="preserve"><value>Lower is better</value></data>
 </root>

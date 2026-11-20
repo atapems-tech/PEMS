@@ -5042,4 +5042,92 @@
   <data name="PendingApproval" xml:space="preserve"><value>در انتظار تأیید</value></data>
   <data name="InReview" xml:space="preserve"><value>در حال بازبینی</value></data>
   <data name="PartiallyIssued" xml:space="preserve"><value>بخشی صادرشده</value></data>
+  <data name="Rpt_Summary" xml:space="preserve"><value>خلاصه</value></data>
+  <data name="Rpt_TotalWorkOrders" xml:space="preserve"><value>کل دستورکارها</value></data>
+  <data name="Rpt_OpenCount" xml:space="preserve"><value>باز</value></data>
+  <data name="Rpt_InProgressCount" xml:space="preserve"><value>در حال انجام</value></data>
+  <data name="Rpt_CompletedCount" xml:space="preserve"><value>تکمیل‌شده</value></data>
+  <data name="Rpt_CriticalCount" xml:space="preserve"><value>بحرانی</value></data>
+  <data name="Rpt_AvgCompletionDays" xml:space="preserve"><value>میانگین روز تکمیل</value></data>
+  <data name="Rpt_TotalSpareCost" xml:space="preserve"><value>هزینه کل قطعات یدکی</value></data>
+  <data name="Rpt_VolumeByMonth" xml:space="preserve"><value>حجم به تفکیک ماه</value></data>
+  <data name="Rpt_ByType" xml:space="preserve"><value>به تفکیک نوع</value></data>
+  <data name="Rpt_ByPriority" xml:space="preserve"><value>به تفکیک اولویت</value></data>
+  <data name="Rpt_TopEquipment" xml:space="preserve"><value>پرکارترین تجهیزات</value></data>
+  <data name="Rpt_TotalLetters" xml:space="preserve"><value>کل نامه‌ها</value></data>
+  <data name="Rpt_TotalIncoming" xml:space="preserve"><value>وارده</value></data>
+  <data name="Rpt_TotalOutgoing" xml:space="preserve"><value>صادره</value></data>
+  <data name="Rpt_TotalInternal" xml:space="preserve"><value>داخلی</value></data>
+  <data name="Rpt_OverdueReferrals" xml:space="preserve"><value>ارجاع‌های معوق</value></data>
+  <data name="Rpt_AvgReferralCompletionDays" xml:space="preserve"><value>میانگین روز تکمیل ارجاع</value></data>
+  <data name="Rpt_ByDiscipline" xml:space="preserve"><value>به تفکیک دیسیپلین</value></data>
+  <data name="Rpt_ByStatus" xml:space="preserve"><value>به تفکیک وضعیت</value></data>
+  <data name="Rpt_TopTags" xml:space="preserve"><value>پرکاربردترین برچسب‌ها</value></data>
+  <data name="Rpt_TopSenders" xml:space="preserve"><value>پرتکرارترین فرستندگان</value></data>
+  <data name="Rpt_TotalDocuments" xml:space="preserve"><value>کل مدارک</value></data>
+  <data name="Rpt_ApprovedCount" xml:space="preserve"><value>تأییدشده</value></data>
+  <data name="Rpt_PendingCount" xml:space="preserve"><value>در انتظار</value></data>
+  <data name="Rpt_RejectedCount" xml:space="preserve"><value>ردشده</value></data>
+  <data name="Rpt_IssuedCount" xml:space="preserve"><value>صادرشده</value></data>
+  <data name="Rpt_AvgDaysToApprove" xml:space="preserve"><value>میانگین روز تا تأیید</value></data>
+  <data name="Rpt_TotalRevisions" xml:space="preserve"><value>کل بازنگری‌ها</value></data>
+  <data name="Rpt_OverdueCount" xml:space="preserve"><value>معوق</value></data>
+  <data name="Rpt_ByProject" xml:space="preserve"><value>به تفکیک پروژه</value></data>
+  <data name="Rpt_TotalPackages" xml:space="preserve"><value>کل پکیج‌ها</value></data>
+  <data name="Rpt_TotalMRs" xml:space="preserve"><value>کل MR</value></data>
+  <data name="Rpt_TotalMRQs" xml:space="preserve"><value>کل MRQ</value></data>
+  <data name="Rpt_ClosedCount" xml:space="preserve"><value>بسته‌شده</value></data>
+  <data name="Rpt_ByVendor" xml:space="preserve"><value>به تفکیک وندور</value></data>
+  <data name="Rpt_TotalTenders" xml:space="preserve"><value>کل مناقصه‌ها</value></data>
+  <data name="Rpt_TotalBids" xml:space="preserve"><value>کل پیشنهادها</value></data>
+  <data name="Rpt_TotalContracts" xml:space="preserve"><value>کل قراردادها</value></data>
+  <data name="Rpt_TotalPurchaseOrders" xml:space="preserve"><value>کل سفارش‌های خرید</value></data>
+  <data name="Rpt_TotalNTPsIssued" xml:space="preserve"><value>ابلاغ‌های صادرشده</value></data>
+  <data name="Rpt_ByContractStatus" xml:space="preserve"><value>به تفکیک وضعیت قرارداد</value></data>
+  <data name="Rpt_TotalItems" xml:space="preserve"><value>کل آیتم‌ها</value></data>
+  <data name="Rpt_UnderReviewCount" xml:space="preserve"><value>در حال بررسی</value></data>
+  <data name="Rpt_PendingResubmissionCount" xml:space="preserve"><value>در انتظار ارسال مجدد</value></data>
+  <data name="Rpt_TotalSubmissions" xml:space="preserve"><value>کل ارسال‌ها</value></data>
+  <data name="Rpt_SubmissionsByMonth" xml:space="preserve"><value>ارسال‌ها به تفکیک ماه</value></data>
+  <data name="Rpt_ByReviewCategory" xml:space="preserve"><value>به تفکیک دسته بررسی</value></data>
+  <data name="Rpt_ByWorkflowStatus" xml:space="preserve"><value>به تفکیک وضعیت گردش</value></data>
+  <data name="Rpt_PeriodStart" xml:space="preserve"><value>شروع دوره</value></data>
+  <data name="Rpt_PeriodEnd" xml:space="preserve"><value>پایان دوره</value></data>
+  <data name="Rpt_TotalOutputQuantity" xml:space="preserve"><value>کل تولید</value></data>
+  <data name="Rpt_AcceptedQuantity" xml:space="preserve"><value>پذیرفته‌شده</value></data>
+  <data name="Rpt_RejectedQuantity" xml:space="preserve"><value>مقدار ردشده</value></data>
+  <data name="Rpt_PendingQcQuantity" xml:space="preserve"><value>در انتظار QC</value></data>
+  <data name="Rpt_BlockedQuantity" xml:space="preserve"><value>مسدود</value></data>
+  <data name="Rpt_TotalLossQuantity" xml:space="preserve"><value>کل ضایعات</value></data>
+  <data name="Rpt_TotalTargetQuantity" xml:space="preserve"><value>کل هدف</value></data>
+  <data name="Rpt_VarianceQuantity" xml:space="preserve"><value>انحراف</value></data>
+  <data name="Rpt_TotalCost" xml:space="preserve"><value>هزینه کل</value></data>
+  <data name="Rpt_LaborCost" xml:space="preserve"><value>هزینه نیروی کار</value></data>
+  <data name="Rpt_MaterialCost" xml:space="preserve"><value>هزینه مواد</value></data>
+  <data name="Rpt_ContractorCost" xml:space="preserve"><value>هزینه پیمانکار</value></data>
+  <data name="Rpt_PmCompliancePercent" xml:space="preserve"><value>پایبندی به PM ٪</value></data>
+  <data name="Rpt_PmOverdueCount" xml:space="preserve"><value>PM معوق</value></data>
+  <data name="Rpt_PmActivePlanCount" xml:space="preserve"><value>برنامه‌های PM فعال</value></data>
+  <data name="Rpt_BacklogCount" xml:space="preserve"><value>کارهای عقب‌مانده</value></data>
+  <data name="Rpt_BacklogHours" xml:space="preserve"><value>ساعت عقب‌مانده</value></data>
+  <data name="Rpt_PlannedPercent" xml:space="preserve"><value>برنامه‌ریزی‌شده ٪</value></data>
+  <data name="Rpt_UnplannedPercent" xml:space="preserve"><value>برنامه‌ریزی‌نشده ٪</value></data>
+  <data name="Rpt_EmergencyPercent" xml:space="preserve"><value>اضطراری ٪</value></data>
+  <data name="Rpt_WorkOrderAgingDays" xml:space="preserve"><value>سن دستورکار (روز)</value></data>
+  <data name="Rpt_WorkOrderCompletionRatePercent" xml:space="preserve"><value>نرخ تکمیل دستورکار ٪</value></data>
+  <data name="Rpt_TotalWorkOrdersInPeriod" xml:space="preserve"><value>دستورکارهای دوره</value></data>
+  <data name="Rpt_Cost" xml:space="preserve"><value>هزینه</value></data>
+  <data name="Rpt_Maintenance" xml:space="preserve"><value>نگهداری</value></data>
+  <data name="Rpt_Reliability" xml:space="preserve"><value>قابلیت اطمینان</value></data>
+  <data name="Rpt_EquipmentWithFailures" xml:space="preserve"><value>تجهیزات دارای خرابی</value></data>
+  <data name="Rpt_TotalFailureCount" xml:space="preserve"><value>کل خرابی‌ها</value></data>
+  <data name="Rpt_AverageAvailabilityPercent" xml:space="preserve"><value>میانگین دسترس‌پذیری ٪</value></data>
+  <data name="Rpt_TopEquipmentByCost" xml:space="preserve"><value>پرهزینه‌ترین تجهیزات</value></data>
+  <data name="Rpt_CostByFunctionalLocation" xml:space="preserve"><value>هزینه به تفکیک مکان عملکردی</value></data>
+  <data name="Rpt_CostByMaintenanceType" xml:space="preserve"><value>هزینه به تفکیک نوع نگهداری</value></data>
+  <data name="Rpt_EquipmentByStatus" xml:space="preserve"><value>تجهیزات به تفکیک وضعیت</value></data>
+  <data name="Rpt_Custom" xml:space="preserve"><value>سفارشی</value></data>
+  <data name="Rpt_Default" xml:space="preserve"><value>پیش‌فرض</value></data>
+  <data name="Rpt_HigherIsBetter" xml:space="preserve"><value>بیشتر بهتر است</value></data>
+  <data name="Rpt_LowerIsBetter" xml:space="preserve"><value>کمتر بهتر است</value></data>
 </root>
