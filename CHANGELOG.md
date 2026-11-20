@@ -28,6 +28,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - KPI pages as definitions (SCRUM-713)
+
+### Changed
+- /p/kpi and /p/kpi-executive (date filter bar, grids over `IKpiOperations`) plus the form /f/kpi-target with the action kpi-save-target replace KpiController and its views; /Kpi and /Kpi/Executive redirect. Charts and tiles are grids for now. Also removed the chart tests of the deleted Report views (left behind by SCRUM-747).
+
 ## 2026-11-20 - The six report pages as definitions (SCRUM-747)
 
 ### Changed

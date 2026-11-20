@@ -78,7 +78,7 @@
     // SCRUM-423: خرید (از مدیریت مهندسی)، قرارداد و فروشنده (از مدیریت قرارداد) و انبار در یک بخش «تدارکات و زنجیره‌ی تأمین»
     var procurementControllers = new[] { "ProcurementPackage", "Tender", "MaterialRequisition", "Contract", "Vendor", "PurchaseOrder", "PreProcurement" };
     var projectControlControllers = new[] { "Task", "TaskManager", "Tag", "Meeting" };
-    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Kpi", "Permit", "CmmsReadiness", "CmmsOperations" };
+    var cmmsControllers = new[] { "Equipment", "Instrument", "Asset", "MaintenanceStrategy", "FailureModeCatalog", "StrategyImport", "MaintenancePlan", "MaintenanceCalendar", "JobPlan", "WorkRequest", "WorkOrder", "SparePart", "Team", "Crew", "ShiftHandover", "MaintenanceMasterData", "EquipmentClassification", "RcmFmea", "EquipmentCriticality", "CriticalityAssessment", "FunctionalLocation", "Barcode", "Reliability", "Inspection", "Permit", "CmmsReadiness", "CmmsOperations" };
     var inventoryControllers = new[] { "Inventory", "MaterialItem", "IrnReceipt", "InventoryMasterData", "InventoryTransaction", "StoreRequisition", "Replenishment" };
     // طبق «PEMS Operations CMMS Boundary Correction»: Operations دیگر زیرمجموعه‌ی CMMS Integration
     // نیست - بخش سایدباری کاملاً مستقل خودش را دارد (دقیقاً هم‌الگو با جدایی Inventory & Materials
@@ -609,7 +609,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Kpi"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Kpi"))" asp-controller="Kpi" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/kpi" active="@Context.Request.Path.StartsWithSegments("/p/kpi")">
                     <pems-icon name="bi-speedometer2" /> @Localizer["KPI Dashboard"]
                 </pems-nav-link>
             }

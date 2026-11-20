@@ -59,12 +59,6 @@ public class ChartComponentTests
     }
 
     [Theory]
-    [InlineData("Views/Report/Index.cshtml", 3)]
-    [InlineData("Views/Report/Cmms.cshtml", 3)]
-    [InlineData("Views/Report/Engineering.cshtml", 3)]
-    [InlineData("Views/Report/Procurement.cshtml", 3)]
-    [InlineData("Views/Report/Vdr.cshtml", 3)]
-    [InlineData("Views/Kpi/Index.cshtml", 8)]
     [InlineData("Views/LetterCartable/Report.cshtml", 4)]
     [InlineData("Areas/Warehouse/Views/PartCatalogueReport/Index.cshtml", 4)]
     public void WaveC1_PagesTakeTheirChartsFromTheComponent(string view, int charts)
