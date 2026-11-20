@@ -26,7 +26,7 @@
                 </pems-select>
             </pems-col>
             <pems-col md="6">
-                <pems-label>Equipment Tag (optional)</pems-label>
+                <pems-label>@Localizer["Equipment Tag (optional)"]</pems-label>
                 <pems-input name="equipmentTagNumber" placeholder="e.g. P-101A" />
             </pems-col>
             <pems-col md="6">
@@ -34,7 +34,7 @@
                 <pems-date name="requiredDate" />
             </pems-col>
             <pems-col md="6">
-                <pems-label>Responsible Engineer</pems-label>
+                <pems-label>@Localizer["Responsible Engineer"]</pems-label>
                 <pems-select name="responsibleEngineerId">
                     <option value="">@Localizer["-- None --"]</option>
                     @foreach (var e in engineers) { <option value="@e.EmployeeId">@e.Name</option> }
@@ -77,7 +77,7 @@
         <pems-button tone="neutral" size="small" outline="true" type="button" id="addItemBtn"><pems-icon name="bi-plus" /> @Localizer["Mr_AddItem"]</pems-button>
 
         <pems-action-bar css="mt-4">
-            <pems-button tone="primary" type="submit">Save MR</pems-button>
+            <pems-button tone="primary" type="submit">@Localizer["Save MR"]</pems-button>
             <pems-button tone="neutral" outline="true" as="a" asp-action="Index">@Localizer["Cancel"]</pems-button>
         </pems-action-bar>
     </pems-form>

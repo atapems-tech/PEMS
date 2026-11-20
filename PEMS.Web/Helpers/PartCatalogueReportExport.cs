@@ -53,7 +53,9 @@ public static class PartCatalogueReportExport
         var p = r.Pipeline;
         var rows = new List<(string, XLCellValue)>
         {
-            (t["PcRpt_Filter_Period"], t.PeriodName(r.Filter.Period) + " (" + t.Period(r) + ")"),
+            (t["PcRpt_Filter_Period"], r.PeriodStart == null && r.PeriodEnd == null
+                ? t.PeriodName(r.Filter.Period)
+                : t.PeriodName(r.Filter.Period) + " (" + t.Period(r) + ")"),
             (t["PcRpt_Kpi_Requests"], p.Total),
             (t["Pc_Type_Add"], p.Add),
             (t["Pc_Type_Change"], p.Change),

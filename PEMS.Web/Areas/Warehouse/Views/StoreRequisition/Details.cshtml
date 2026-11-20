@@ -2,6 +2,7 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@using PEMS.Web.Helpers
 @{
     var materialItems = (IEnumerable<dynamic>)ViewBag.MaterialItems;
     var statusHistory = (List<PEMS.Domain.Entities.StoreRequisitionStatusHistory>)ViewBag.StatusHistory;
@@ -25,11 +26,11 @@
     <pems-flex justify="between" align="start" wrap="true" gap="2">
         <div>
             <pems-heading level="5" class="mb-1">@Model.RequisitionNumber</pems-heading>
-            <div class="text-muted small">انبار: @Model.Warehouse?.Code - درخواست‌کننده: @(Model.RequestedBy?.FirstName) @(Model.RequestedBy?.LastName) - @PemsDates.Date(Model.RequestedDate)</div>
-            @if (!string.IsNullOrWhiteSpace(Model.Purpose)) { <div class="small mt-1">@Model.Purpose</div> }
+            <div class="text-muted small">@Localizer["Warehouse"]: @Model.Warehouse?.Code - @Localizer["Requested By"]: @(Model.RequestedBy?.FirstName) @(Model.RequestedBy?.LastName) - @PemsDates.Date(Model.RequestedDate)</div>
+            @if (!string.IsNullOrWhiteSpace(Model.Purpose)) { <div class="small mt-1">@StoreRequisitionUi.Purpose(Localizer, Model.Purpose)</div> }
         </div>
         <pems-flex gap="2">
-            <pems-badge tone="none" css="fs-6 @(Model.Status is "Closed" or "Issued" ? "bg-success" : Model.Status == "PartiallyIssued" ? "bg-info text-dark" : Model.Status is "Rejected" or "Cancelled" ? "bg-secondary" : "bg-warning text-dark")">@Model.Status</pems-badge>
+            <pems-badge tone="none" css="fs-6 @(Model.Status is "Closed" or "Issued" ? "bg-success" : Model.Status == "PartiallyIssued" ? "bg-info text-dark" : Model.Status is "Rejected" or "Cancelled" ? "bg-secondary" : "bg-warning text-dark")">@VdrUi.Loc(Localizer, "SrL_St_", Model.Status)</pems-badge>
         </pems-flex>
     </pems-flex>
     <pems-divider />
@@ -39,28 +40,28 @@
             <pems-form asp-action="AdvanceStatus" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
                 <input type="hidden" name="requestKey" value="@Guid.NewGuid().ToString("N")" />
-                <pems-button tone="primary" size="small" type="submit" data-pems-confirm="وضعیت به @nextStatus تغییر کنه؟">@Localizer["SR_AdvanceTo"] @nextStatus</pems-button>
+                <pems-button tone="primary" size="small" type="submit" data-pems-confirm="@Localizer["SR_ConfirmAdvance", VdrUi.Loc(Localizer, "SrL_St_", nextStatus)]">@Localizer["SR_AdvanceTo"] @VdrUi.Loc(Localizer, "SrL_St_", nextStatus)</pems-button>
             </pems-form>
         }
         @if (Model.Status is "Draft" or "Submitted" or "Approved" && Can("Reject"))
         {
             <pems-form asp-action="Reject" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
-                <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="این درخواست رد بشه؟">@Localizer["Reject"]</pems-button>
+                <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["SR_ConfirmReject"]">@Localizer["Reject"]</pems-button>
             </pems-form>
         }
         @if (Model.Status == "PartiallyIssued" && Can("CloseShort"))
         {
             <pems-form asp-action="CloseShort" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
-                <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="درخواست با کسری بسته شود و باقی‌مانده‌ی رزرو آزاد شود؟">@Localizer["SR_CloseShort"]</pems-button>
+                <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["SR_ConfirmCloseShort"]">@Localizer["SR_CloseShort"]</pems-button>
             </pems-form>
         }
         @if (Model.Status is "Draft" or "Submitted" or "Approved" or "Reserved" && Can("Cancel"))
         {
             <pems-form asp-action="Cancel" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.StoreRequisitionId" />
-                <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="این درخواست لغو بشه؟">@Localizer["Cancel"]</pems-button>
+                <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["SR_ConfirmCancel"]">@Localizer["Cancel"]</pems-button>
             </pems-form>
         }
     </pems-flex>
@@ -97,7 +98,7 @@
     @if (editApproved) { <pems-button tone="primary" size="small" type="submit">@Localizer["Save"]</pems-button> }
     @if (canIssue) { <pems-button tone="primary" size="small" type="submit">@Localizer["SR_IssuePartialOrFull"]</pems-button> <span class="small text-muted">@Localizer["SR_IssueHint"]</span> }
     </pems-form>
-    @if (!Model.Lines.Any()) { <pems-text class="text-muted text-center py-3">@Localizer["هنوز خطی اضافه نشده."]</pems-text> }
+    @if (!Model.Lines.Any()) { <pems-text class="text-muted text-center py-3">@Localizer["No lines added yet."]</pems-text> }
 
     @if (Model.Status == "Draft")
     {
@@ -116,5 +117,5 @@
 
 <pems-content-card>
     <pems-heading level="6" class="mb-3">@Localizer["Status History"]</pems-heading>
-    <pems-data-table data="@(DataRows.Of(statusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)(h.FromStatus)).Add("To", h => (object?)(h.ToStatus)).Add("By", h => (object?)(h.ChangedBy != null ? h.ChangedBy.FirstName + " " + h.ChangedBy.LastName : "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(PemsDates.DateTime(h.ChangedDate)), css: "small").Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason ?? "-"), css: "small text-muted")))" dense="true" />
+    <pems-data-table data="@(DataRows.Of(statusHistory, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), h => (object?)VdrUi.Loc(Localizer, "SrL_St_", h.FromStatus)).Add("To", h => (object?)VdrUi.Loc(Localizer, "SrL_St_", h.ToStatus)).Add("By", h => (object?)(h.ChangedBy != null ? h.ChangedBy.FirstName + " " + h.ChangedBy.LastName : "-"), css: "small").Add(((Localizer["Date"])?.ToString() ?? ""), h => (object?)(PemsDates.DateTime(h.ChangedDate)), css: "small").Add(((Localizer["Reason"])?.ToString() ?? ""), h => (object?)(h.Reason ?? "-"), css: "small text-muted")))" dense="true" />
 </pems-content-card>

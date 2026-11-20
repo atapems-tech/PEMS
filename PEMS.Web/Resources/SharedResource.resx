@@ -4193,4 +4193,115 @@
   <data name="User updated, but the password was not changed: {0}" xml:space="preserve"><value>User updated, but the password was not changed: {0}</value></data>
   <data name="There are more users than the safe export limit allows." xml:space="preserve"><value>There are more users than the safe export limit allows. Ask the system administrator for a batch export.</value></data>
   <data name="Temporary password" xml:space="preserve"><value>Temporary password</value></data>
+  <data name="Lock/Tag" xml:space="preserve"><value>Lock/Tag</value></data>
+  <data name="Isolated By" xml:space="preserve"><value>Isolated By</value></data>
+  <data name="Verified By" xml:space="preserve"><value>Verified By</value></data>
+  <data name="Parent Equipment" xml:space="preserve"><value>Parent Equipment</value></data>
+  <data name="Assign Functional Location / Parent Equipment" xml:space="preserve"><value>Assign Functional Location / Parent Equipment</value></data>
+  <data name="Installation Date" xml:space="preserve"><value>Installation Date</value></data>
+  <data name="Inspection Type" xml:space="preserve"><value>Inspection Type</value></data>
+  <data name="Inspection Date" xml:space="preserve"><value>Inspection Date</value></data>
+  <data name="Measurement Value" xml:space="preserve"><value>Measurement Value</value></data>
+  <data name="Lower Limit" xml:space="preserve"><value>Lower Limit</value></data>
+  <data name="Upper Limit" xml:space="preserve"><value>Upper Limit</value></data>
+  <data name="Next Inspection Date" xml:space="preserve"><value>Next Inspection Date</value></data>
+  <data name="Permit Not Required" xml:space="preserve"><value>Permit Not Required</value></data>
+  <data name="Permit Required" xml:space="preserve"><value>Permit Required</value></data>
+  <data name="LOTO Required" xml:space="preserve"><value>LOTO Required</value></data>
+  <data name="LOTO Not Required" xml:space="preserve"><value>LOTO Not Required</value></data>
+  <data name="No / Unknown" xml:space="preserve"><value>No / Unknown</value></data>
+  <data name="Save MR" xml:space="preserve"><value>Save MR</value></data>
+  <data name="Equipment Tag (optional)" xml:space="preserve"><value>Equipment Tag (optional)</value></data>
+  <data name="Responsible Engineer" xml:space="preserve"><value>Responsible Engineer</value></data>
+  <data name="Purchase Order created as Draft" xml:space="preserve"><value>Purchase Order created as Draft</value></data>
+  <data name="Contract created successfully" xml:space="preserve"><value>Contract created successfully</value></data>
+  <data name="Contract created successfully (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)" xml:space="preserve"><value>Contract created successfully (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)</value></data>
+  <data name="Purchase Order issued" xml:space="preserve"><value>Purchase Order issued</value></data>
+  <data name="IRN submitted for inspection." xml:space="preserve"><value>IRN submitted for inspection.</value></data>
+  <data name="Disposition recorded - awaiting QA approval." xml:space="preserve"><value>Disposition recorded - awaiting QA approval.</value></data>
+  <data name="Disposition approved - accepted quantity posted to stock." xml:space="preserve"><value>Disposition approved - accepted quantity posted to stock.</value></data>
+  <data name="Disposition rejected - IRN returned for re-inspection." xml:space="preserve"><value>Disposition rejected - IRN returned for re-inspection.</value></data>
+  <data name="Vendor invited" xml:space="preserve"><value>Vendor invited</value></data>
+  <data name="User created successfully" xml:space="preserve"><value>User created successfully</value></data>
+  <data name="User updated successfully" xml:space="preserve"><value>User updated successfully</value></data>
+  <data name="This IRN is not awaiting approval." xml:space="preserve"><value>This IRN is not awaiting approval.</value></data>
+  <data name="Functional Location / Parent Equipment updated" xml:space="preserve"><value>Functional Location / Parent Equipment updated</value></data>
+  <data name="InProgress" xml:space="preserve"><value>InProgress</value></data>
+  <data name="EngineeringQuestion" xml:space="preserve"><value>EngineeringQuestion</value></data>
+  <data name="TechnicalClarification" xml:space="preserve"><value>TechnicalClarification</value></data>
+  <data name="VendorInquiry" xml:space="preserve"><value>VendorInquiry</value></data>
+  <data name="Technical Clarification" xml:space="preserve"><value>Technical Clarification</value></data>
+  <data name="Engineering Question" xml:space="preserve"><value>Engineering Question</value></data>
+  <data name="Vendor Inquiry" xml:space="preserve"><value>Vendor Inquiry</value></data>
+  <data name="Answered" xml:space="preserve"><value>Answered</value></data>
+  <data name="Revoked" xml:space="preserve"><value>Revoked</value></data>
+  <data name="Converted" xml:space="preserve"><value>Converted</value></data>
+  <data name="Sent" xml:space="preserve"><value>Sent</value></data>
+  <data name="Reserved" xml:space="preserve"><value>Reserved</value></data>
+  <data name="Receipt" xml:space="preserve"><value>Receipt</value></data>
+  <data name="Issue" xml:space="preserve"><value>Issue</value></data>
+  <data name="AutoSkip" xml:space="preserve"><value>AutoSkip</value></data>
+  <data name="NotQualified" xml:space="preserve"><value>NotQualified</value></data>
+  <data name="Public" xml:space="preserve"><value>Public</value></data>
+  <data name="Confidential" xml:space="preserve"><value>Confidential</value></data>
+  <data name="Restricted" xml:space="preserve"><value>Restricted</value></data>
+  <data name="Secret" xml:space="preserve"><value>Secret</value></data>
+  <data name="VeryConfidential" xml:space="preserve"><value>VeryConfidential</value></data>
+  <data name="HighlyConfidential" xml:space="preserve"><value>HighlyConfidential</value></data>
+  <data name="Outgoing" xml:space="preserve"><value>Outgoing</value></data>
+  <data name="SR_ConfirmAdvance" xml:space="preserve"><value>Change status to {0}?</value></data>
+  <data name="Repl_St_Converted" xml:space="preserve"><value>Sent to procurement</value></data>
+  <data name="WarehouseIntakePurpose" xml:space="preserve"><value>Warehouse intake of work order {0}</value></data>
+  <data name="-- Vendor --" xml:space="preserve"><value>-- Vendor --</value></data>
+  <data name="Closeout" xml:space="preserve"><value>Closeout</value></data>
+  <data name="Approval" xml:space="preserve"><value>Approval</value></data>
+  <data name="MRQ" xml:space="preserve"><value>MRQ</value></data>
+  <data name="Response" xml:space="preserve"><value>Response</value></data>
+  <data name="Tender not found." xml:space="preserve"><value>Tender not found.</value></data>
+  <data name="Vendor invitations are allowed only before bidding opens." xml:space="preserve"><value>Vendor invitations are allowed only before bidding opens.</value></data>
+  <data name="Vendor not found." xml:space="preserve"><value>Vendor not found.</value></data>
+  <data name="This vendor has already been invited." xml:space="preserve"><value>This vendor has already been invited.</value></data>
+  <data name="This tender requires a currently qualified vendor." xml:space="preserve"><value>This tender requires a currently qualified vendor.</value></data>
+  <data name="SR_ConfirmReject" xml:space="preserve"><value>Reject this requisition?</value></data>
+  <data name="SR_ConfirmCloseShort" xml:space="preserve"><value>Close short and release the remaining reservation?</value></data>
+  <data name="SR_ConfirmCancel" xml:space="preserve"><value>Cancel this requisition?</value></data>
+  <data name="MrL_St_Under Technical Review" xml:space="preserve"><value>Under Technical Review</value></data>
+  <data name="MrL_St_Issued to Procurement" xml:space="preserve"><value>Issued to Procurement</value></data>
+  <data name="Recommendation" xml:space="preserve"><value>Recommendation</value></data>
+  <data name="Passed" xml:space="preserve"><value>Passed</value></data>
+  <data name="Qualified" xml:space="preserve"><value>Qualified</value></data>
+  <data name="PendingApproval" xml:space="preserve"><value>PendingApproval</value></data>
+  <data name="InReview" xml:space="preserve"><value>InReview</value></data>
+  <data name="PartiallyIssued" xml:space="preserve"><value>PartiallyIssued</value></data>
+  <data name="Equipment (اختیاری)" xml:space="preserve"><value>Equipment (optional)</value></data>
+  <data name="Equipment Class (اختیاری - خالی یعنی عمومی)" xml:space="preserve"><value>Equipment Class (optional - leave blank for general)</value></data>
+  <data name="Failure Cause (اختیاری)" xml:space="preserve"><value>Failure Cause (optional)</value></data>
+  <data name="Failure Mode (ISO 14224، اختیاری)" xml:space="preserve"><value>Failure Mode (ISO 14224, optional)</value></data>
+  <data name="High Value (اختیاری)" xml:space="preserve"><value>High Value (optional)</value></data>
+  <data name="Instrument (اختیاری)" xml:space="preserve"><value>Instrument (optional)</value></data>
+  <data name="Low Value (اختیاری)" xml:space="preserve"><value>Low Value (optional)</value></data>
+  <data name="Operating Condition (اختیاری)" xml:space="preserve"><value>Operating Condition (optional)</value></data>
+  <data name="Recommended Action (اختیاری)" xml:space="preserve"><value>Recommended Action (optional)</value></data>
+  <data name="Standard Reference (اختیاری)" xml:space="preserve"><value>Standard Reference (optional)</value></data>
+  <data name="این تجهیز به‌عنوان Rotating طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد." xml:space="preserve"><value>This equipment is classified as rotating; equipment cannot be both rotating and static.</value></data>
+  <data name="این تجهیز به‌عنوان Static طبقه‌بندی شده - یک تجهیز نمی‌تواند هم Rotating هم Static باشد." xml:space="preserve"><value>This equipment is classified as static; equipment cannot be both rotating and static.</value></data>
+  <data name="این نگاشت تعیین می‌کند که یافتن یک وضعیت (Condition) چه اولویتی (Priority) برای Work Request نتیجه‌شده دارد - قبلاً این نگاشت مستقیم در کد برنامه نوشته شده بود؛ حالا اینجا قابل‌مشاهده و قابل‌ویرایش است." xml:space="preserve"><value>This mapping determines the priority of the work request resulting from a detected condition. Previously hard-coded, it can now be viewed and edited here.</value></data>
+  <data name="با استراتژی CBM" xml:space="preserve"><value>With CBM strategy</value></data>
+  <data name="با پروفایل ارزیابی" xml:space="preserve"><value>With evaluation profile</value></data>
+  <data name="پیکربندی نشده" xml:space="preserve"><value>Not configured</value></data>
+  <data name="روز" xml:space="preserve"><value>days</value></data>
+  <data name="ساخت استراتژی CBM برای این نقطه‌ی پایش" xml:space="preserve"><value>Create a CBM strategy for this monitoring point</value></data>
+  <data name="فقط تعریف پروفایل - آستانه‌های واقعی را بعداً از دکمه‌ی «Add Limit» هر ردیف وارد کنید." xml:space="preserve"><value>Define the profile only; enter actual thresholds later using Add Limit on each row.</value></data>
+  <data name="فقط مقدار واقعی مهندسی وارد کنید - هیچ مقداری حدس زده نمی‌شود؛ خالی گذاشتن هر دو فیلد رد می‌شود." xml:space="preserve"><value>Enter actual engineering values only; no values are assumed. Leaving both fields empty is not allowed.</value></data>
+  <data name="فهرست به بالاترین ۵۰ مورد محدود شده است." xml:space="preserve"><value>The list is limited to the top 50 items.</value></data>
+  <data name="مثلاً Normal Load" xml:space="preserve"><value>e.g. Normal Load</value></data>
+  <data name="مثلاً VIB-PUMP-ISO20816" xml:space="preserve"><value>e.g. VIB-PUMP-ISO20816</value></data>
+  <data name="نگاشت جدید" xml:space="preserve"><value>New mapping</value></data>
+  <data name="هنوز Evaluation Profile ای ساخته نشده." xml:space="preserve"><value>No evaluation profiles have been created yet.</value></data>
+  <data name="هنوز به‌عنوان Rotating طبقه‌بندی نشده." xml:space="preserve"><value>Not yet classified as rotating.</value></data>
+  <data name="هنوز به‌عنوان Static طبقه‌بندی نشده." xml:space="preserve"><value>Not yet classified as static.</value></data>
+  <data name="هنوز نگاشتی ساخته نشده." xml:space="preserve"><value>No mappings have been created yet.</value></data>
+  <data name="هیچ طرح CBM معوقی وجود ندارد." xml:space="preserve"><value>There are no overdue CBM plans.</value></data>
+  <data name="هیچ قرائتی در این بازه ثبت نشده." xml:space="preserve"><value>No readings have been recorded in this period.</value></data>
+  <data name="هیچ نقطه‌ی پایشی در حال حاضر نیاز به توجه ندارد." xml:space="preserve"><value>No monitoring points currently require attention.</value></data>
 </root>

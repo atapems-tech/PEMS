@@ -26,7 +26,7 @@
         <pems-info-item label="@Localizer["Tender No"]" num>@Model.TenderNumber</pems-info-item>
         <pems-info-item label="@Localizer["Title"]">@Model.Title</pems-info-item>
         <pems-info-item label="@Localizer["Package"]" num>@Model.ProcurementPackage?.PackageNumber</pems-info-item>
-        <pems-info-item label="@Localizer["Status"]"><pems-badge tone="info">@Model.Status</pems-badge></pems-info-item>
+        <pems-info-item label="@Localizer["Status"]"><pems-badge tone="info">@Localizer[Model.Status]</pems-badge></pems-info-item>
         <pems-info-item label="@Localizer["Deadline"]" num>@PemsDates.Date(Model.ResponseDeadline)</pems-info-item>
         <pems-info-item label="@Localizer["Requires Vendor Qualification"]">@(Model.RequiresVendorQualification ? Localizer["Yes"] : Localizer["No"])</pems-info-item>
         @if (Model.AwardedBid != null)
@@ -256,7 +256,7 @@
     {
         <div class="border-bottom px-3 py-2">
             <pems-flex justify="between" wrap="true">
-                <div><pems-badge tone="neutral">@c.Type</pems-badge> <strong>@c.Subject</strong> @(c.Vendor != null ? "— " + c.Vendor.Name : "")</div>
+                <div><pems-badge tone="neutral">@Localizer[c.Type]</pems-badge> <strong>@c.Subject</strong> @(c.Vendor != null ? "— " + c.Vendor.Name : "")</div>
                 <pems-badge tone="@(c.ActionStatus == "Answered" ? "success" : "warning")">@c.ActionStatus</pems-badge>
             </pems-flex>
             <pems-text class="mb-1 mt-1">@c.Body</pems-text>

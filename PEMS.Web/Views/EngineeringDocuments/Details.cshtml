@@ -779,7 +779,7 @@
                             <div class="pems-timeline-content">
                                 <pems-flex justify="between" wrap="true" gap="2">
                                     <div>
-                                        <pems-badge tone="neutral">@item.ActionType</pems-badge>
+                                        <pems-badge tone="neutral">@Localizer[item.ActionType]</pems-badge>
                                         <span class="small text-muted ms-1">@(item.FromStageName ?? "—") &rarr; @(item.ToStageName ?? "—")</span>
                                     </div>
                                     <span class="small text-muted">@PemsDates.DateTime(item.ActionDate)</span>
@@ -796,7 +796,7 @@
 
                 <details class="mt-3 small">
                     <summary class="text-muted">Full audit table (@orderedWorkflow.Count)</summary>
-                    <pems-data-table data="@(DataRows.Of(orderedWorkflow, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), item => (object?)(item.FromStageName ?? "—")).Add("To", item => (object?)(item.ToStageName ?? "—")).Add(((Localizer["Action"])?.ToString() ?? ""), item => (object?)(item.ActionType), kind: DataCellKind.Badge, tone: item => "neutral").Add(((Localizer["Comment"])?.ToString() ?? ""), item => (object?)(item.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), item => (object?)(PemsDates.DateTime(item.ActionDate)), css: "small text-muted").Add(((Localizer["User"])?.ToString() ?? ""), item => (object?)(item.ActorName ?? "System"))))" css="mt-2" />
+                    <pems-data-table data="@(DataRows.Of(orderedWorkflow, c_ => c_.Add(((Localizer["From"])?.ToString() ?? ""), item => (object?)(item.FromStageName ?? "—")).Add("To", item => (object?)(item.ToStageName ?? "—")).Add(((Localizer["Action"])?.ToString() ?? ""), item => (object?)Localizer[item.ActionType].Value, kind: DataCellKind.Badge, tone: item => "neutral").Add(((Localizer["Comment"])?.ToString() ?? ""), item => (object?)(item.Comment)).Add(((Localizer["Date"])?.ToString() ?? ""), item => (object?)(PemsDates.DateTime(item.ActionDate)), css: "small text-muted").Add(((Localizer["User"])?.ToString() ?? ""), item => (object?)(item.ActorName ?? "System"))))" css="mt-2" />
                 </details>
             }
             else
@@ -835,7 +835,7 @@
                 var rows_32 = relatedTransmittals;
                 var cell_32_4 = DataCell.Template(rows_32, @<text>@{ var t = item; }<span class="vs-pill @PEMS.Web.Helpers.VdrUi.TransmittalTone(t.Status)">@VdrUi.Loc(Localizer, "St_", t.Status)</span></text>);
                 var cell_32_5 = DataCell.Template(rows_32, @<text>@{ var t = item; }<pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Transmittal" asp-action="Details" asp-route-id="@t.TransmittalId" data-bs-toggle="tooltip" title="View transmittal" aria-label="View transmittal @t.TransmittalNo"><pems-icon name="bi-eye" /></pems-button></text>);
-                <pems-data-table data="@(DataRows.Of(rows_32, c_ => c_.Add(((Localizer["Ed_TransmittalNo"])?.ToString() ?? ""), t => (object?)(t.TransmittalNo)).Add(((Localizer["Ed_RevSent"])?.ToString() ?? ""), t => (object?)(DataCell.Group(Localizer["Ed_CurrentRev"], " ", DataCell.Span("vs-num", t.RevisionNoAtTransmittal))), css: "small text-muted").Add(((Localizer["Ed_Purpose"])?.ToString() ?? ""), t => (object?)(t.Purpose)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), t => (object?)((PemsDates.Date(t.SentDate) ?? PemsDates.Date(t.TransmittalDate))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), t => (object?)cell_32_4(t)).Add("", t => (object?)cell_32_5(t))))" />
+                <pems-data-table data="@(DataRows.Of(rows_32, c_ => c_.Add(((Localizer["Ed_TransmittalNo"])?.ToString() ?? ""), t => (object?)(t.TransmittalNo)).Add(((Localizer["Ed_RevSent"])?.ToString() ?? ""), t => (object?)(DataCell.Group(Localizer["Ed_CurrentRev"], " ", DataCell.Span("vs-num", t.RevisionNoAtTransmittal))), css: "small text-muted").Add(((Localizer["Ed_Purpose"])?.ToString() ?? ""), t => (object?)VdrUi.Loc(Localizer, "Transmittal_Purpose_", t.Purpose)).Add(((Localizer["Ed_Date"])?.ToString() ?? ""), t => (object?)((PemsDates.Date(t.SentDate) ?? PemsDates.Date(t.TransmittalDate))), css: "small text-muted").Add(((Localizer["Ed_Status"])?.ToString() ?? ""), t => (object?)cell_32_4(t)).Add("", t => (object?)cell_32_5(t))))" />
             }
             else
             {

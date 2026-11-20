@@ -218,7 +218,7 @@
         {
             <pems-toast tone="success" role="alert" data-bs-delay="5000" data-bs-autohide="true">
                 <pems-flex>
-                    <div class="toast-body"><pems-icon name="bi-check-circle-fill" css="me-1" /> @TempData["Message"]</div>
+                    <div class="toast-body"><pems-icon name="bi-check-circle-fill" css="me-1" /> @Localizer[TempData["Message"]?.ToString() ?? ""]</div>
                     <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
                 </pems-flex>
             </pems-toast>
@@ -227,7 +227,7 @@
         {
             <pems-toast tone="danger" role="alert" data-bs-delay="7000" data-bs-autohide="true">
                 <pems-flex>
-                    <div class="toast-body"><pems-icon name="bi-exclamation-triangle-fill" css="me-1" /> @TempData["Error"]</div>
+                    <div class="toast-body"><pems-icon name="bi-exclamation-triangle-fill" css="me-1" /> @Localizer[TempData["Error"]?.ToString() ?? ""]</div>
                     <pems-button plain="true" type="button" css="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></pems-button>
                 </pems-flex>
             </pems-toast>

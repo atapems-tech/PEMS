@@ -96,7 +96,7 @@
             <div class="small">FMEA (class-level): <pems-badge tone="@StatusBadge(Model.FMEAReadiness)">@Model.FMEAReadiness</pems-badge></div>
             <div class="small">RCM (class-level): <pems-badge tone="@StatusBadge(Model.RCMReadiness)">@Model.RCMReadiness</pems-badge></div>
             <div class="small mt-1">Permit Required: @(Model.AnyLinkedJobPlanRequiresPermit ? "Yes" : "No / Unknown")</div>
-            <div class="small">LOTO Required: @(Model.AnyLinkedJobPlanRequiresLOTO ? "Yes" : "No / Unknown")</div>
+            <div class="small">@Localizer["LOTO Required"]: @Localizer[Model.AnyLinkedJobPlanRequiresLOTO ? "Yes" : "No / Unknown"]</div>
         </pems-content-card>
     </pems-col>
 </pems-row>

@@ -78,7 +78,7 @@
     <pems-flex align="center" gap="3" wrap="true" css="mb-2">
         <div class="kpi-icon bg-icon-blue pems-s-792bd2d6"><pems-icon name="bi-shield-check" /></div>
         <div>
-            <pems-heading level="5" class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@Model.Status</pems-badge></pems-heading>
+            <pems-heading level="5" class="mb-0">@Model.PermitNumber &mdash; @Model.Title <pems-badge tone="@badgeClass">@VdrUi.Loc(Localizer, "Pt_St_", Model.Status)</pems-badge></pems-heading>
             <span class="text-muted small">@Model.PermitType - Requested by @Model.RequestedByName on @PemsDates.Date(Model.CreatedDate)</span>
         </div>
     </pems-flex>
@@ -86,7 +86,7 @@
         <pems-info-item label="@Localizer["Equipment"]" num>@Model.EquipmentTagNumber</pems-info-item>
         <pems-info-item label="@Localizer["Functional Location"]">@Model.FunctionalLocationBreadcrumb</pems-info-item>
         <pems-info-item label="@Localizer["Work Order"]" num>@if (Model.WorkOrderId.HasValue) { <pems-link asp-controller="WorkOrder" asp-action="Details" asp-route-id="@Model.WorkOrderId">@Model.WorkOrderNumber</pems-link> }</pems-info-item>
-        <pems-info-item label="@Localizer["Priority"]">@Model.Priority</pems-info-item>
+        <pems-info-item label="@Localizer["Priority"]">@VdrUi.Loc(Localizer, "Pri_", Model.Priority)</pems-info-item>
         <pems-info-item label="@Localizer["Info_PermitIssuer"]">@Model.IssuerName</pems-info-item>
         <pems-info-item label="@Localizer["Info_PermitReceiver"]">
             @Model.ReceiverName
@@ -385,14 +385,14 @@
         @if (approvalHistory != null && approvalHistory.Any())
         {
             <pems-related-table>
-                <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>By Role</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header></pems-table-row></pems-table-head>
+                <pems-table-head><pems-table-row><pems-table-header>@Localizer["From"]</pems-table-header><pems-table-header>To</pems-table-header><pems-table-header>@Localizer["Action"]</pems-table-header><pems-table-header>@Localizer["By Role"]</pems-table-header><pems-table-header>@Localizer["Comment"]</pems-table-header><pems-table-header>@Localizer["Date"]</pems-table-header></pems-table-row></pems-table-head>
                 <pems-table-body>
                     @foreach (var h in approvalHistory.OrderByDescending(h => h.ActionDate))
                     {
                         <pems-table-row>
                             <pems-table-cell class="small">@(h.FromStageName ?? "-")</pems-table-cell>
                             <pems-table-cell class="small">@(h.ToStageName ?? "-")</pems-table-cell>
-                            <pems-table-cell class="small">@h.ActionType</pems-table-cell>
+                            <pems-table-cell class="small">@Localizer[h.ActionType]</pems-table-cell>
                             <pems-table-cell class="small">@(h.Role ?? "-")</pems-table-cell>
                             <pems-table-cell class="small text-muted">@h.Comment</pems-table-cell>
                             <pems-table-cell class="small">@PemsDates.DateTime(h.ActionDate)</pems-table-cell>
@@ -432,7 +432,7 @@
     }
 
     <pems-related-table>
-        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Energy Type"]</pems-table-header><pems-table-header>@Localizer["Location"]</pems-table-header><pems-table-header>Lock/Tag</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>Isolated By</pems-table-header><pems-table-header>Verified By</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
+        <pems-table-head><pems-table-row><pems-table-header>@Localizer["Energy Type"]</pems-table-header><pems-table-header>@Localizer["Location"]</pems-table-header><pems-table-header>@Localizer["Lock/Tag"]</pems-table-header><pems-table-header>@Localizer["Status"]</pems-table-header><pems-table-header>@Localizer["Isolated By"]</pems-table-header><pems-table-header>@Localizer["Verified By"]</pems-table-header><pems-table-header></pems-table-header></pems-table-row></pems-table-head>
         <pems-table-body>
             @foreach (var p in isolationPoints)
             {

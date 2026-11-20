@@ -4966,4 +4966,79 @@
   <data name="User updated, but the password was not changed: {0}" xml:space="preserve"><value>کاربر به‌روزرسانی شد، اما رمز عبور تغییر نکرد: {0}</value></data>
   <data name="There are more users than the safe export limit allows." xml:space="preserve"><value>تعداد کاربران از سقف امن خروجی بیشتر است. برای خروجی دسته‌ای با مدیر سیستم تماس بگیرید.</value></data>
   <data name="Temporary password" xml:space="preserve"><value>رمز موقت</value></data>
+  <data name="Lock/Tag" xml:space="preserve"><value>قفل/برچسب</value></data>
+  <data name="Isolated By" xml:space="preserve"><value>جداسازی توسط</value></data>
+  <data name="Verified By" xml:space="preserve"><value>تأیید توسط</value></data>
+  <data name="Parent Equipment" xml:space="preserve"><value>تجهیز والد</value></data>
+  <data name="Assign Functional Location / Parent Equipment" xml:space="preserve"><value>تخصیص محل عملکردی / تجهیز والد</value></data>
+  <data name="Installation Date" xml:space="preserve"><value>تاریخ نصب</value></data>
+  <data name="Inspection Type" xml:space="preserve"><value>نوع بازرسی</value></data>
+  <data name="Inspection Date" xml:space="preserve"><value>تاریخ بازرسی</value></data>
+  <data name="Measurement Value" xml:space="preserve"><value>مقدار اندازه‌گیری</value></data>
+  <data name="Lower Limit" xml:space="preserve"><value>حد پایین</value></data>
+  <data name="Upper Limit" xml:space="preserve"><value>حد بالا</value></data>
+  <data name="Next Inspection Date" xml:space="preserve"><value>تاریخ بازرسی بعدی</value></data>
+  <data name="Permit Not Required" xml:space="preserve"><value>مجوز کار لازم نیست</value></data>
+  <data name="Permit Required" xml:space="preserve"><value>مجوز کار الزامی است</value></data>
+  <data name="LOTO Required" xml:space="preserve"><value>قفل و برچسب‌گذاری الزامی است</value></data>
+  <data name="LOTO Not Required" xml:space="preserve"><value>قفل و برچسب‌گذاری لازم نیست</value></data>
+  <data name="No / Unknown" xml:space="preserve"><value>خیر / نامشخص</value></data>
+  <data name="Save MR" xml:space="preserve"><value>ذخیره درخواست خرید</value></data>
+  <data name="Equipment Tag (optional)" xml:space="preserve"><value>تگ تجهیز (اختیاری)</value></data>
+  <data name="Responsible Engineer" xml:space="preserve"><value>مهندس مسئول</value></data>
+  <data name="Purchase Order created as Draft" xml:space="preserve"><value>سفارش خرید به‌صورت پیش‌نویس ایجاد شد</value></data>
+  <data name="Contract created successfully" xml:space="preserve"><value>قرارداد با موفقیت ایجاد شد</value></data>
+  <data name="Contract created successfully (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)" xml:space="preserve"><value>قرارداد با موفقیت ایجاد شد؛ نتیجه ثبت با بررسی مجدد پایگاه داده تأیید شد و رکورد تکراری ایجاد نشد.</value></data>
+  <data name="Purchase Order issued" xml:space="preserve"><value>سفارش خرید صادر شد</value></data>
+  <data name="IRN submitted for inspection." xml:space="preserve"><value>درخواست بازرسی دریافت کالا برای بازرسی ارسال شد.</value></data>
+  <data name="Disposition recorded - awaiting QA approval." xml:space="preserve"><value>تصمیم بازرسی ثبت شد؛ در انتظار تأیید کنترل کیفیت.</value></data>
+  <data name="Disposition approved - accepted quantity posted to stock." xml:space="preserve"><value>تصمیم بازرسی تأیید شد؛ مقدار پذیرفته‌شده در موجودی ثبت شد.</value></data>
+  <data name="Disposition rejected - IRN returned for re-inspection." xml:space="preserve"><value>تصمیم بازرسی رد شد؛ درخواست دریافت برای بازرسی مجدد بازگشت.</value></data>
+  <data name="Vendor invited" xml:space="preserve"><value>فروشنده دعوت شد</value></data>
+  <data name="User created successfully" xml:space="preserve"><value>کاربر با موفقیت ایجاد شد</value></data>
+  <data name="User updated successfully" xml:space="preserve"><value>کاربر با موفقیت به‌روزرسانی شد</value></data>
+  <data name="This IRN is not awaiting approval." xml:space="preserve"><value>این درخواست بازرسی دریافت در انتظار تأیید نیست.</value></data>
+  <data name="Functional Location / Parent Equipment updated" xml:space="preserve"><value>محل عملکردی / تجهیز والد به‌روزرسانی شد</value></data>
+  <data name="EngineeringQuestion" xml:space="preserve"><value>پرسش مهندسی</value></data>
+  <data name="TechnicalClarification" xml:space="preserve"><value>شفاف‌سازی فنی</value></data>
+  <data name="VendorInquiry" xml:space="preserve"><value>استعلام فروشنده</value></data>
+  <data name="Technical Clarification" xml:space="preserve"><value>شفاف‌سازی فنی</value></data>
+  <data name="Engineering Question" xml:space="preserve"><value>پرسش مهندسی</value></data>
+  <data name="Vendor Inquiry" xml:space="preserve"><value>استعلام فروشنده</value></data>
+  <data name="Answered" xml:space="preserve"><value>پاسخ داده‌شده</value></data>
+  <data name="Revoked" xml:space="preserve"><value>لغوشده</value></data>
+  <data name="Converted" xml:space="preserve"><value>تبدیل‌شده</value></data>
+  <data name="Sent" xml:space="preserve"><value>ارسال‌شده</value></data>
+  <data name="Reserved" xml:space="preserve"><value>رزروشده</value></data>
+  <data name="Receipt" xml:space="preserve"><value>دریافت</value></data>
+  <data name="Issue" xml:space="preserve"><value>صدور</value></data>
+  <data name="AutoSkip" xml:space="preserve"><value>عبور خودکار</value></data>
+  <data name="NotQualified" xml:space="preserve"><value>فاقد صلاحیت</value></data>
+  <data name="Public" xml:space="preserve"><value>عمومی</value></data>
+  <data name="Confidential" xml:space="preserve"><value>محرمانه</value></data>
+  <data name="Restricted" xml:space="preserve"><value>محدود</value></data>
+  <data name="Secret" xml:space="preserve"><value>سری</value></data>
+  <data name="VeryConfidential" xml:space="preserve"><value>بسیار محرمانه</value></data>
+  <data name="HighlyConfidential" xml:space="preserve"><value>بسیار محرمانه</value></data>
+  <data name="SR_ConfirmAdvance" xml:space="preserve"><value>آیا وضعیت به {0} تغییر کند؟</value></data>
+  <data name="Repl_St_Converted" xml:space="preserve"><value>ارسال‌شده به تدارکات</value></data>
+  <data name="WarehouseIntakePurpose" xml:space="preserve"><value>دریافت انبار از دستورکار {0}</value></data>
+  <data name="-- Vendor --" xml:space="preserve"><value>-- فروشنده --</value></data>
+  <data name="Closeout" xml:space="preserve"><value>اختتام</value></data>
+  <data name="MRQ" xml:space="preserve"><value>درخواست استعلام بها</value></data>
+  <data name="Tender not found." xml:space="preserve"><value>مناقصه یافت نشد.</value></data>
+  <data name="Vendor invitations are allowed only before bidding opens." xml:space="preserve"><value>دعوت فروشنده فقط پیش از باز شدن مناقصه مجاز است.</value></data>
+  <data name="Vendor not found." xml:space="preserve"><value>فروشنده یافت نشد.</value></data>
+  <data name="This vendor has already been invited." xml:space="preserve"><value>این فروشنده قبلاً دعوت شده است.</value></data>
+  <data name="This tender requires a currently qualified vendor." xml:space="preserve"><value>این مناقصه به فروشنده دارای صلاحیت معتبر نیاز دارد.</value></data>
+  <data name="SR_ConfirmReject" xml:space="preserve"><value>آیا این درخواست رد شود؟</value></data>
+  <data name="SR_ConfirmCloseShort" xml:space="preserve"><value>آیا درخواست با کسری بسته شود و باقیمانده رزرو آزاد شود؟</value></data>
+  <data name="SR_ConfirmCancel" xml:space="preserve"><value>آیا این درخواست لغو شود؟</value></data>
+  <data name="MrL_St_Under Technical Review" xml:space="preserve"><value>در حال بازبینی فنی</value></data>
+  <data name="MrL_St_Issued to Procurement" xml:space="preserve"><value>ارسال‌شده به تدارکات</value></data>
+  <data name="Recommendation" xml:space="preserve"><value>توصیه</value></data>
+  <data name="Qualified" xml:space="preserve"><value>دارای صلاحیت</value></data>
+  <data name="PendingApproval" xml:space="preserve"><value>در انتظار تأیید</value></data>
+  <data name="InReview" xml:space="preserve"><value>در حال بازبینی</value></data>
+  <data name="PartiallyIssued" xml:space="preserve"><value>بخشی صادرشده</value></data>
 </root>
