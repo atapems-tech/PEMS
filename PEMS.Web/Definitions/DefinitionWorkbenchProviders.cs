@@ -105,3 +105,85 @@ public sealed class DefinitionUsagesGridProvider(IServiceScopeFactory scopes) : 
         return (rows.Select(x => (object)new Dictionary<string, object?> { ["fromKind"] = x.Kind, ["fromKey"] = x.Key, ["role"] = x.Role, ["ref"] = x.Kind + ":" + x.Key }).ToList(), total);
     }
 }
+
+/// <summary>
+/// The heaviest definitions (SCRUM-455): one row per definition with <c>ref</c>, <c>kind</c>, <c>key</c>, <c>versions</c>, <c>publishedBytes</c>, <c>totalBytes</c> (every version), ordered by total size, so growth is visible where it
+/// happens. Versions are kept forever; nothing here deletes.
+/// </summary>
+public sealed class DefinitionLargestGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    public string Key => "definition-largest";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        using var scope = scopes.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        var rows = await db.DefinitionVersions.AsNoTracking().GroupBy(v => new { v.Definition!.Kind, v.Definition.Key, v.Definition.AppKey })
+            .Select(g => new { g.Key.Kind, g.Key.Key, g.Key.AppKey, Versions = g.Count(), TotalBytes = g.Sum(v => v.PayloadJson.Length) })
+            .OrderByDescending(x => x.TotalBytes).Take(Math.Max(1, request.Grid.PageSize)).ToListAsync(ct);
+        IReadOnlyList<object> items = rows.Select(x => (object)new Dictionary<string, object?>
+            { ["ref"] = $"{x.AppKey}:{x.Kind}:{x.Key}", ["kind"] = x.Kind, ["key"] = x.Key, ["versions"] = x.Versions, ["totalBytes"] = x.TotalBytes }).ToList();
+        return (items, items.Count);
+    }
+}
+
+/// <summary>
+/// Missing translations of published definitions (SCRUM-419, 609): every language map (an object with <c>en</c> or <c>fa</c>) of a published form, page or menu whose other language is empty or absent is one row: <c>ref</c>,
+/// <c>kind</c>, <c>key</c>, <c>path</c> in the payload, <c>missing</c> (the language), <c>shown</c> (the text a user sees through the fallback). Filter <c>kind</c> narrows to one kind.
+/// </summary>
+public sealed class DefinitionTranslationsGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    private static readonly string[] Languages = ["en", "fa"];
+    public string Key => "definition-translations";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        using var scope = scopes.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        var kind = WorkbenchRows.FilterValue(request, "kind");
+        var query = db.Definitions.AsNoTracking().Where(d => d.PublishedVersionId != null && (kind == "" ? d.Kind == "form" || d.Kind == "page" || d.Kind == "menu" : d.Kind == kind));
+        var published = await query.Select(d => new { d.Kind, d.Key, d.AppKey, Payload = d.PublishedVersion!.PayloadJson }).ToListAsync(ct);
+        var rows = new List<object>();
+        foreach (var d in published)
+        {
+            try
+            {
+                using var doc = JsonDocument.Parse(d.Payload);
+                Walk(doc.RootElement, "", (path, missing, shown) => rows.Add(new Dictionary<string, object?>
+                    { ["ref"] = $"{d.AppKey}:{d.Kind}:{d.Key}", ["kind"] = d.Kind, ["key"] = d.Key, ["path"] = path, ["missing"] = missing, ["shown"] = shown }));
+            }
+            catch (JsonException) { }
+        }
+        var page = Math.Max(1, request.Grid.Page);
+        return (rows.Skip((page - 1) * request.Grid.PageSize).Take(request.Grid.PageSize).ToList(), rows.Count);
+    }
+
+    private static void Walk(JsonElement e, string path, Action<string, string, string> found)
+    {
+        if (e.ValueKind == JsonValueKind.Object)
+        {
+            var isMap = e.EnumerateObject().Any(p => Languages.Contains(p.Name)) && e.EnumerateObject().All(p => p.Value.ValueKind == JsonValueKind.String);
+            if (isMap)
+            {
+                foreach (var lang in Languages)
+                {
+                    var has = e.TryGetProperty(lang, out var v) && v.ValueKind == JsonValueKind.String && !string.IsNullOrWhiteSpace(v.GetString());
+                    if (!has)
+                    {
+                        var other = Languages.First(l => l != lang);
+                        found(path.Length == 0 ? "/" : path, lang, e.TryGetProperty(other, out var o) ? o.GetString() ?? "" : "");
+                    }
+                }
+                return;
+            }
+            foreach (var p in e.EnumerateObject()) Walk(p.Value, path + "/" + p.Name, found);
+        }
+        else if (e.ValueKind == JsonValueKind.Array)
+        {
+            var i = 0;
+            foreach (var item in e.EnumerateArray()) Walk(item, path + "/" + i++, found);
+        }
+    }
+}

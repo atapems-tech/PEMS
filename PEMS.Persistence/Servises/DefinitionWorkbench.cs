@@ -5,7 +5,7 @@ using PEMS.Application.Interfaces;
 namespace PEMS.Persistence.Services;
 
 /// <summary>The definition workbench (SCRUM-449): resolves a definition by app, kind and key, takes the latest revisions and runs the definition service; see <see cref="IDefinitionWorkbench"/>.</summary>
-public sealed class DefinitionWorkbench(IDefinitionService definitions) : IDefinitionWorkbench
+public sealed class DefinitionWorkbench(IDefinitionService definitions, IDefinitionImpact impact) : IDefinitionWorkbench
 {
     public async Task<(bool Success, string? Error)> CreateAsync(string kind, string key, string? appKey, string titleEn, string titleFa, string payloadJson, string? changeSummary, string actor)
     {
@@ -45,6 +45,9 @@ public sealed class DefinitionWorkbench(IDefinitionService definitions) : IDefin
         if (id is null) return (false, error);
         var draft = await definitions.GetDraftAsync(id.Value);
         if (!draft.Success) return (false, "There is no draft to publish.");
+        // SCRUM-450, 457: a draft whose references are missing or unpublished, or that would drop stored data, is stopped with the report; changes that only warn go on
+        var report = await impact.PrecheckPublishAsync(id.Value);
+        if (report.Blocked) return (false, report.Text());
         // publishing a draft that was not validated validates it first: one step for the designer, the same checks as the REST API
         var validated = await definitions.ValidateAsync(id.Value, draft.Value!.Info.Revision, actor);
         if (!validated.Success) return Answer(validated);
@@ -57,6 +60,9 @@ public sealed class DefinitionWorkbench(IDefinitionService definitions) : IDefin
         if (id is null) return (false, error);
         var detail = await definitions.GetAsync(id.Value);
         if (!detail.Success) return Answer(detail);
+        // SCRUM-459: a retired version is published again only if it passes the same check against today's definitions and data shape
+        var report = await impact.PrecheckRollbackAsync(id.Value, toVersion);
+        if (report.Blocked) return (false, report.Text());
         return Answer(await definitions.RollbackAsync(id.Value, toVersion, detail.Value!.Summary.Revision, actor));
     }
 

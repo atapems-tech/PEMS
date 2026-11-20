@@ -32,6 +32,8 @@ def source(key, provider, title_en, title_fa):
 source("definitions-grid", "definitions", "Definitions", "تعریف‌ها")
 source("definition-kinds-grid", "definition-kinds", "Definition kinds", "انواع تعریف")
 source("definition-usages-grid", "definition-usages", "Where a definition is used", "محل استفاده از تعریف")
+source("definition-largest-grid", "definition-largest", "Largest definitions", "بزرگ‌ترین تعریف‌ها")
+source("definition-translations-grid", "definition-translations", "Missing translations", "ترجمه‌های ناقص")
 
 
 def action(key, title, args, ok, redirect="/p/definition-workbench"):
@@ -121,4 +123,14 @@ write("page", "definition-kinds", t("Definition kinds and storage", "انواع 
        "args": {"id": "definition-kinds", "url": "/d/definition-kinds-grid", "idField": "kind", "columns": kind_cols},
        "regions": {"kpis": [{"id": "size", "component": "def:entity-chart", "options": {"url": "/d/definition-kinds-grid", "labelField": "kind", "series": [{"field": "payloadBytes", "name": t("Published bytes", "حجم منتشرشده")}],
                                                                                    "kind": "hbar", "sort": "-payloadBytes", "ariaLabel": t("Published definition size by kind", "حجم تعریف‌ها بر اساس نوع")}}]}})
+tr_cols = [{"key": "kind", "header": t("Kind", "نوع"), "width": 110}, {"key": "key", "header": t("Key", "کلید"), "width": 240}, {"key": "path", "header": t("Where", "محل"), "width": 320},
+           {"key": "missing", "header": t("Missing language", "زبان ناقص"), "width": 130}, {"key": "shown", "header": t("Shown instead", "متن جایگزین"), "width": 260}]
+write("page", "definition-translations", t("Missing translations", "ترجمه‌های ناقص"), t("Every text of a published form, page or menu that has no text in one language, with what a user sees instead", "هر متنی که یک زبان ندارد"),
+      {"layout": "list-page", "route": "definition-translations", "permission": "Definitions.View", "template": "entity-list",
+       "args": {"id": "definition-translations", "url": "/d/definition-translations-grid", "idField": "ref", "columns": tr_cols}})
+big_cols = [{"key": "kind", "header": t("Kind", "نوع"), "width": 110}, {"key": "key", "header": t("Key", "کلید"), "width": 260}, {"key": "versions", "header": t("Versions", "نسخه‌ها"), "width": 110, "type": "number"},
+            {"key": "totalBytes", "header": t("All versions, bytes", "حجم همه نسخه‌ها"), "width": 170, "type": "number"}]
+write("page", "definition-storage", t("Definition storage", "حجم ذخیره تعریف‌ها"), t("The definitions that take the most space; versions are kept forever", "تعریف‌های پرحجم؛ نسخه‌ها همیشه نگهداری می‌شوند"),
+      {"layout": "list-page", "route": "definition-storage", "permission": "Definitions.View", "template": "entity-list",
+       "args": {"id": "definition-storage", "url": "/d/definition-largest-grid", "idField": "ref", "columns": big_cols}})
 print("ok")

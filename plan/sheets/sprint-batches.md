@@ -16,6 +16,10 @@ Order is by dependency: a later batch only uses what an earlier one shipped.
 | 9 | Conversion: Documents, VDR and letters | 679, 683 to 686, 689 to 690, 714 to 719, 732, 753, 760 to 762 | 18 | no compiled document or letter screen |
 | 10 | **Cutover and rehearsal** | 766 final cutover, 767 release rehearsal, 614 docs | 3 | the application serves only definitions; the rehearsal runs on demo with no build |
 
+## Combined heavy run (owner decision 2026-11-20)
+
+Batches 1, 2, 3, 4b (the Admin conversions not yet In Review) and 5 are tested **together, once**, after batches 3, 4b and 5 are all In Review. Until then no batch runs a heavy test, a solution or test-project build, `gates.py --run` or a browser run, and after that only with the owner's input (guideline 00 section 0.3). Batch 3 is worked in session B3 here; 4b and 5 are started by the owner in their own sessions. The order and the lines to run are in [batch-test-plan.md](batch-test-plan.md).
+
 Rules for every batch
 - The engines of batch 1 to 3 are written once and generic; conversions (4 to 9) add only definitions, services and feed (skill `pems-definition-engineer`), never handlers or controllers.
 - A conversion issue is closed only when its controller, views and inline scripts are deleted and its routes ship as `route` definitions.
