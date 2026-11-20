@@ -27,11 +27,10 @@
       {
         "name": "key",
         "label": {
-          "en": "KPI key (see the targets list)",
-          "fa": "کلید شاخص (از فهرست اهداف)"
+          "en": "KPI",
+          "fa": "شاخص"
         },
-        "kind": "text",
-        "maxLength": 60,
+        "kind": "select",
         "required": true,
         "span": 2,
         "messages": {
@@ -39,7 +38,8 @@
             "en": "KPI key is required.",
             "fa": "کلید شاخص الزامی است."
           }
-        }
+        },
+        "optionsFrom": "kpi-target-options"
       },
       {
         "name": "target",
