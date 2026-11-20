@@ -152,6 +152,11 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.D
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionKindsGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionUsagesGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionLargestGridProvider>();   // SCRUM-455
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionGrowthGridProvider>();   // SCRUM-786
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionHealthGridProvider>();   // SCRUM-786
+// SCRUM-786 (fail closed): the only supported retention of definition versions is forever; any other value would promise a policy that is not active
+if (builder.Configuration["Definitions:RetainRetiredVersions"] is { Length: > 0 } retainSetting && !string.Equals(retainSetting, "forever", StringComparison.OrdinalIgnoreCase))
+    throw new InvalidOperationException($"Definitions:RetainRetiredVersions must be 'forever' (got '{retainSetting}'): retired definition versions are never deleted.");
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionTranslationsGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionPayloadGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider>(sp => new PEMS.Web.Definitions.OperationCatalogGridProvider(sp.GetRequiredService<PEMS.Web.Definitions.OperationCatalog>()));   // SCRUM-606   // SCRUM-439, 604, 606, 607, 608   // SCRUM-419, 609

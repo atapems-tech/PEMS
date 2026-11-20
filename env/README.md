@@ -72,3 +72,4 @@ Run these after changing or adding a setting (QA procedure: [../docs/guidelines/
 - No customer-specific code or branches: customer differences are the `production-<customer>.env` file and the licence.
 - Not every literal is a setting: classify it first with [../docs/design/CONFIGURATION_CONSTANTS.md](../docs/design/CONFIGURATION_CONSTANTS.md) (setting / policy constant / domain rule / tuning).
 - Rotate any secret that was ever pasted into chat, a ticket or a commit.
+- `Definitions__RetainRetiredVersions=forever` (SCRUM-786, in every full environment file): retired definition versions are never deleted; `forever` is the only supported value and any other stops the start. `Definitions__StorageWarnMb` (default 1024): the storage report on Admin > Definitions > Storage warns above this size.

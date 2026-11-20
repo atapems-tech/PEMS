@@ -238,4 +238,59 @@ public sealed class FileActionsTests
     [Fact]
     public void A_good_export_setting_is_valid()
         => Assert.Empty(new FileExportAction(Scopes()).ValidateParameters(P(ExportJson)));
+
+    // ---- SCRUM-800: PDF output from the same definition
+
+    [Fact]
+    public async Task A_pdf_export_returns_a_pdf_built_from_the_columns_with_the_rights_of_the_user()
+    {
+        var json = ExportJson.Replace("\"format\": \"csv\"", "\"format\": \"pdf\", \"title\": { \"en\": \"Stock\", \"fa\": \"موجودی\" }");
+        Assert.Empty(new FileExportAction(Scopes()).ValidateParameters(P(json)));
+        var outcome = await new FileExportAction(Scopes(rows: new Rows(30))).ExecuteAsync(Invocation(P(json)), default);
+        Assert.True(outcome.Ok);
+        Assert.Equal("application/pdf", outcome.File!.ContentType);
+        Assert.EndsWith(".pdf", outcome.File.FileName);
+        Assert.Equal("%PDF", Encoding.ASCII.GetString(outcome.File.Bytes, 0, 4));
+        var denied = await new FileExportAction(Scopes(rows: new Rows(5), allow: false)).ExecuteAsync(Invocation(P(json)), default);
+        Assert.False(denied.Ok);                                                           // the data source permission still decides
+    }
+
+    [Fact]
+    public void A_pdf_setting_is_checked_when_the_definition_is_loaded()
+    {
+        Assert.Contains(new FileExportAction(Scopes()).ValidateParameters(P(ExportJson.Replace("\"format\": \"csv\"", "\"format\": \"pdf\", \"landscape\": 1"))), e => e.Pointer == "/landscape");
+        Assert.Contains(new FileExportAction(Scopes()).ValidateParameters(P(ExportJson.Replace("\"format\": \"csv\"", "\"format\": \"doc\""))), e => e.Pointer == "/format");
+    }
+
+    // ---- SCRUM-801: the file of a record is served only when the user may read that record
+
+    private sealed class ReadableStorage : IFileStorageService
+    {
+        public Task<string> SaveAsync(string logicalFolder, string originalFileName, Stream content) => throw new NotSupportedException();
+        public Task<Stream> OpenReadAsync(string key) => Task.FromResult<Stream>(new MemoryStream([1, 2, 3]));
+        public Task<bool> ExistsAsync(string key) => Task.FromResult(true);
+        public Task DeleteAsync(string key) => Task.CompletedTask;
+    }
+
+    private const string DownloadJson = """{ "prefix": "vdr/comments", "authorizeBy": { "dataSource": "rows-grid", "filter": "fileKey" } }""";
+
+    private static IServiceScopeFactory DownloadScopes(Rows rows, bool allow)
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton<IFileStorageService>(new ReadableStorage());
+        services.AddScoped(_ => new DataSourceExecutor(new OneSource(), new Access(allow), [rows]));
+        return services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
+    }
+
+    [Fact]
+    public async Task A_file_is_downloaded_only_when_the_user_may_read_the_record_that_owns_it()
+    {
+        var download = (Rows rows, bool allow) => new FileDownloadAction(DownloadScopes(rows, allow)).ExecuteAsync(Invocation(P(DownloadJson), null, ("key", "vdr/comments/ab12.pdf")), default);
+        var owned = await download(new Rows(1), true);
+        Assert.True(owned.Ok);
+        Assert.Equal([1, 2, 3], owned.File!.Bytes);
+        Assert.False((await download(new Rows(0), true)).Ok);                              // no record of this user's view owns the file
+        Assert.False((await download(new Rows(1), false)).Ok);                             // the user may not open the data source of the record
+        Assert.False((await new FileDownloadAction(DownloadScopes(new Rows(1), true)).ExecuteAsync(Invocation(P(DownloadJson), null, ("key", "vdr/other/ab12.pdf")), default)).Ok);   // outside the folder
+    }
 }

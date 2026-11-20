@@ -289,6 +289,45 @@ public sealed class StepActionsTests
         Assert.Equal(2, factory.Created);
     }
 
+    // ---- SCRUM-799: the shipped multi-table action proves action.steps
+
+    private static JsonObject ShippedWarehouseAction()
+    {
+        var file = Path.Combine(PEMS.Tests.TestSupport.SupportedReleases.RepoRoot(), "PEMS.Persistence", "Definitions", "System", "action", "core", "warehouses-create-with-location.json");
+        return (JsonObject)((JsonObject)JsonNode.Parse(File.ReadAllText(file))!)["payload"]!["parameters"]!.DeepClone();
+    }
+
+    [Fact]
+    public async Task The_shipped_warehouse_with_location_action_passes_the_second_step_the_id_of_the_first()
+    {
+        var tx = new FakeTransaction();
+        var entity = new Recorder("entity.create", call => call.Parameters?["entity"]?.GetValue<string>() == "Warehouse"
+            ? ActionOutcome.Done(returned: new Dictionary<string, string?> { ["WarehouseId"] = "7", ["Code"] = "W-7" })
+            : ActionOutcome.Done());
+        var steps = new StepsAction(new Services(entity), tx);
+        var parameters = ShippedWarehouseAction();
+        Assert.Empty(steps.ValidateParameters(parameters));
+        var outcome = await steps.ExecuteAsync(Invocation(parameters, ("code", "W-7"), ("name", "Main"), ("locationCode", "A1"), ("locationName", "Aisle 1")), default);
+        Assert.True(outcome.Ok);
+        Assert.Equal(["begin", "commit"], tx.Log);
+        Assert.Equal(2, entity.Calls.Count);
+        Assert.Equal("7", entity.Calls[1].Values["warehouseId"]);       // the new warehouse id reaches the location through step:warehouse.WarehouseId
+    }
+
+    [Fact]
+    public async Task A_refusal_in_the_second_step_of_the_shipped_action_rolls_the_first_step_back()
+    {
+        var tx = new FakeTransaction();
+        var entity = new Recorder("entity.create", call => call.Parameters?["entity"]?.GetValue<string>() == "Warehouse"
+            ? ActionOutcome.Done(returned: new Dictionary<string, string?> { ["WarehouseId"] = "7" })
+            : ActionOutcome.Refused(TranslatableText.Of(("en", "Code is required."), ("fa", "کد الزامی است."))));
+        var steps = new StepsAction(new Services(entity), tx);
+        var outcome = await steps.ExecuteAsync(Invocation(ShippedWarehouseAction(), ("code", "W-7"), ("name", "Main")), default);
+        Assert.False(outcome.Ok);
+        Assert.Equal(["begin", "rollback"], tx.Log);                    // step 1 ran, step 2 refused: the transaction is rolled back, so the warehouse is not written
+        Assert.Equal(2, entity.Calls.Count);
+    }
+
     // ---- fakes of the definition store and access
 
     private sealed class OneAction(string payload) : IDefinitionStore

@@ -27,6 +27,7 @@
     "fields": [
       {
         "name": "code",
+        "owner": "platform",
         "label": {
           "en": "Code",
           "fa": "کد"
