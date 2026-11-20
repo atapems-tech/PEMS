@@ -157,7 +157,7 @@ public static class NavigationMenuDefaults
         Link("cmms.assessment", "sec.cmms", 180, "Criticality Assessment", "bi-clipboard2-check", "CriticalityAssessment", "Dashboard", rule: "CmmsItem:CriticalityAssessment"),
         Link("cmms.reliability", "sec.cmms", 190, "Reliability", "bi-graph-up-arrow", "Reliability", "Dashboard", rule: "CmmsItem:Reliability"),
         Link("cmms.inspection", "sec.cmms", 200, "Inspections", "bi-clipboard-pulse", "Inspection", rule: "CmmsItem:Inspection"),
-        Link("cmms.kpi", "sec.cmms", 210, "KPI Dashboard", "bi-speedometer2", "Kpi", rule: "CmmsItem:Kpi"),
+        new("cmms.kpi", "sec.cmms", L, 210, "KPI Dashboard", "bi-speedometer2", "CmmsItem:Kpi", ExternalPath: "/p/kpi"),   // SCRUM-713: a definition page (/p/...)
         Link("cmms.permit", "sec.cmms", 220, "Permits", "bi-shield-check", "Permit", rule: "CmmsItem:Permit"),
         Link("cmms.fl", "sec.cmms", 230, "Functional Locations", "bi-diagram-3", "FunctionalLocation", rule: "CmmsItem:FunctionalLocation"),
         Link("cmms.barcode", "sec.cmms", 240, "Barcode", "bi-upc-scan", "Barcode", rule: "CmmsItem:Barcode"),

@@ -64,47 +64,4 @@ public class Phase8AuthorizationGapTests
         Assert.Single(ctx.Crews);
     }
 
-    private static async Task<(KpiController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateKpiController(
-        string dbName, string? role)
-    {
-        var ctx = PemsDbContextFactory.CreateInMemory($"P8AuthKpi_{dbName}");
-        foreach (var roleName in SystemRoles.All)
-            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
-        await ctx.SaveChangesAsync();
-
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
-        await permissionService.SeedDefaultsAsync();
-
-        var services = new ServiceCollection();
-        services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
-        var kpiService = new KpiService(ctx);
-        var reliabilityService = new ReliabilityService(ctx);
-
-        var controller = new KpiController(kpiService, reliabilityService, currentUser, permissionService);
-        return (controller, ctx);
-    }
-
-    [Fact]
-    public async Task Index_WithoutReliabilityViewPermission_ReturnsForbid()
-    {
-        var (controller, _) = await CreateKpiController(nameof(Index_WithoutReliabilityViewPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index(null, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Index_WithReliabilityViewPermission_ReturnsView()
-    {
-        var (controller, _) = await CreateKpiController(nameof(Index_WithReliabilityViewPermission_ReturnsView), role: SystemRoles.MaintenanceEngineer);
-
-        var result = await controller.Index(null, null);
-
-        Assert.IsType<ViewResult>(result);
-    }
 }
