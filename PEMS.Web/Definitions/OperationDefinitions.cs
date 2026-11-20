@@ -239,7 +239,10 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             return t.GetProperty("Succeeded")?.GetValue(answer) is bool done ? (done, t.GetProperty("Message")?.GetValue(answer) as string, [])
                 : t.GetProperty("Message")?.GetValue(answer) is string text && t.IsClass && t != typeof(string) ? (true, text, []) : null;
         var args = t.GetProperty("Args")?.GetValue(answer) as object?[] ?? [];
-        return (ok, t.GetProperty("Error")?.GetValue(answer) as string, args);
+        var error = t.GetProperty("Error")?.GetValue(answer) as string ?? t.GetProperty("ErrorKey")?.GetValue(answer) as string;
+        var detail = t.GetProperty("Detail")?.GetValue(answer) as string;
+        if (!ok && !string.IsNullOrWhiteSpace(detail) && args.Length == 0) args = [detail];      // the detail is the first argument of the message ({0}) when there is no other
+        return (ok, error, args);
     }
 
     private static TranslatableText ResultMessage(IServiceProvider services, (bool Success, string? Error, object?[] Args) result)

@@ -85,7 +85,7 @@
     // از CMMS Integration که از قبل در همین فایل وجود داشت).
     var operationsControllers = new[] { "Production", "ProductionOrder", "ProductionRun" };
     var aiAdminControllers = new[] { "Intake", "OCRProcessing", "AIExtraction", "TableExtraction", "Relationship" };
-    var adminControllers = new[] { "Settings", "Users", "Department", "Employee", "Organization", "OrganizationImport", "Numbering" };
+    var adminControllers = new[] { "Settings", "Users", "Department", "Employee", "OrganizationImport", "Numbering" };
 
     bool ContainsActive(string[] controllers) => controllers.Any(c => currentController.Equals(c, StringComparison.OrdinalIgnoreCase));
     // Warehouse یک Area مستقل است؛ کنترلرهای هم‌نام در Areaهای دیگر نباید بخش را فعال کنند
@@ -762,13 +762,11 @@
                     <pems-icon name="bi-sliders" /> @Localizer["Disc_Master_Nav"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Organization") && currentAction == "Positions")"
-                   asp-area="Admin" asp-controller="Organization" asp-action="Positions">
+                <pems-nav-link item="false" sub="true" href="/p/organization-positions" active="@Context.Request.Path.StartsWithSegments("/p/organization-positions")">
                     <pems-icon name="bi-person-badge" /> @Localizer["Org_Positions_Nav"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Organization") && currentAction != "Positions")"
-                   asp-area="Admin" asp-controller="Organization" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/organization-chart" active="@Context.Request.Path.StartsWithSegments("/p/organization-chart")">
                     <pems-icon name="bi-diagram-3" /> @Localizer["Org_Title"]
                 </pems-nav-link>
             }

@@ -194,12 +194,10 @@ public class PositionManagementUiTests
     [Fact]
     public void PositionActions_AreSystemAdminOnly_AndMutationsAreAntiForgeryProtected()
     {
-        var t = typeof(OrganizationController);
-        var cls = (AuthorizeAttribute)Attribute.GetCustomAttribute(t, typeof(AuthorizeAttribute))!;
-        Assert.Equal(SystemRoles.SystemAdmin, cls.Roles);
-        foreach (var name in new[] { "CreatePosition", "EditPosition", "SetPositionActive" })
-            Assert.NotNull(t.GetMethod(name)!.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), false).SingleOrDefault());
-        Assert.NotNull(t.GetMethod("Positions"));
+        // SCRUM-639: the position actions are operations for SystemAdmin only (the action host validates the antiforgery token of every post)
+        var operations = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        foreach (var name in new[] { "CreatePosition", "UpdatePosition", "SetPositionActive" })
+            Assert.Contains(SystemRoles.SystemAdmin, operations.Get("Organization", name)!.Roles);
     }
 
     [Fact]
@@ -215,8 +213,8 @@ public class PositionManagementUiTests
         Assert.Contains("!canSeeAdminCore && canSeeDisciplineMaster", side);
         Assert.DoesNotContain("Positions", limited);                 // Position management is never exposed through the limited section
         Assert.DoesNotContain("asp-controller=\"Organization\"", limited);
-        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "asp-controller=\"Organization\" asp-action=\"Positions\""));
-        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "asp-controller=\"Organization\" asp-action=\"Index\""));
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "href=\"/p/organization-positions\""));
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "href=\"/p/organization-chart\""));
         Assert.Single(System.Text.RegularExpressions.Regex.Matches(side, "asp-controller=\"Employee\" asp-action=\"Index\""));
         // the position selector is wired into create, edit (per row) and the details edit modal - no free-text position inputs remain
         foreach (var f in new[] { "Index", "Details" })
