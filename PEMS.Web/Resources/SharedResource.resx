@@ -4174,4 +4174,9 @@
   <data name="AI Intake Queue Summary" xml:space="preserve"><value>AI Intake Queue Summary</value></data>
   <data name="My Discipline Tasks" xml:space="preserve"><value>My Discipline Tasks</value></data>
   <data name="Knowledge Base Quick Search" xml:space="preserve"><value>Knowledge Base Quick Search</value></data>
+  <data name="Transmittal created successfully" xml:space="preserve"><value>Transmittal created successfully</value></data>
+  <data name="MDB created successfully" xml:space="preserve"><value>MDB created successfully</value></data>
+  <data name="Transmittal_CreateCodeRequired" xml:space="preserve"><value>Transmittal code is required.</value></data>
+  <data name="Transmittal_CreateCodeDuplicate" xml:space="preserve"><value>This transmittal code is already in use. Choose a different code.</value></data>
+  <data name="Transmittal_CreateDocumentsHeld" xml:space="preserve"><value>One or more selected documents are on hold and cannot be transmitted. Remove them and try again.</value></data>
 </root>

@@ -234,8 +234,13 @@ public class PersianMessagesAndTitlesTests
         {
             Assert.Contains("{0}", resource["Transmittal_DocumentCounter"]);
             Assert.Contains("{1}", resource["Transmittal_DocumentCounter"]);
+            foreach (var key in new[] { "Transmittal_CreateCodeRequired", "Transmittal_CreateCodeDuplicate", "Transmittal_CreateDocumentsHeld", "Transmittal created successfully", "MDB created successfully", "Unassigned" })
+                Assert.True(resource.ContainsKey(key), key);
         }
-        Assert.Contains("counter.dataset.format", Read("PEMS.Web", "wwwroot", "js", "views", "transmittal-create.js"));
+        var script = Read("PEMS.Web", "wwwroot", "js", "views", "transmittal-create.js");
+        Assert.Contains("counter.dataset.format", script);
+        Assert.Contains("input.setCustomValidity(input.dataset.requiredMessage)", script);
+        Assert.Contains("data-required-message", Read("PEMS.Web", "Views", "Transmittal", "Create.cshtml"));
     }
 
     [Fact]

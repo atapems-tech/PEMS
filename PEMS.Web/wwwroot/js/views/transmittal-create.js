@@ -7,6 +7,13 @@
             var template = document.getElementById('recipientRowTemplate');
             var addBtn = document.getElementById('addRecipientBtn');
 
+            document.querySelectorAll('[data-required-message]').forEach(function (input) {
+                input.addEventListener('invalid', function () {
+                    if (input.validity.valueMissing) input.setCustomValidity(input.dataset.requiredMessage);
+                });
+                input.addEventListener('input', function () { input.setCustomValidity(''); });
+            });
+
             function addRecipientRow() {
                 var clone = template.content.cloneNode(true);
                 clone.querySelector('.remove-recipient-btn').addEventListener('click', function (e) {

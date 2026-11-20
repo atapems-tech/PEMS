@@ -92,7 +92,7 @@ public class MDBController : Controller
 
         var id = await _service.CreateAsync(equipmentId, vendorId, poId, projectId, plannedFinalIssueDate);
 
-        TempData["Message"] = "MDB created successfully";
+        TempData["Message"] = T("MDB created successfully");
         return RedirectToAction(nameof(Details), new { id });
     }
 

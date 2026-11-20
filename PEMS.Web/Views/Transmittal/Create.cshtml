@@ -16,7 +16,7 @@
         <pems-row gap="3">
             <pems-col md="6">
                 <pems-label>@Localizer["Transmittal code"]</pems-label>
-                <pems-input name="transmittalNo" placeholder="@Localizer["Transmittal_FinalCodeExample"]" required />
+                <pems-input name="transmittalNo" placeholder="@Localizer["Transmittal_FinalCodeExample"]" data-required-message="@Localizer["The {0} field is required.", Localizer["Transmittal code"].Value]" required />
             </pems-col>
             <pems-col md="6">
                 <pems-label>@Localizer["Project"]</pems-label>
@@ -29,7 +29,7 @@
             </pems-col>
             <pems-col md="6">
                 <pems-label>@Localizer["From"]</pems-label>
-                <pems-input name="from" placeholder="@Localizer["Transmittal_FromExample"]" required />
+                <pems-input name="from" placeholder="@Localizer["Transmittal_FromExample"]" data-required-message="@Localizer["The {0} field is required.", Localizer["From"].Value]" required />
             </pems-col>
             <pems-col md="6">
                 <pems-label>@Localizer["To"] <span class="text-muted small">@Localizer["Transmittal_ToHint"]</span></pems-label>
@@ -82,7 +82,7 @@
                             <pems-input type="checkbox" name="documentIds" value="@d.DocumentId" id="doc_@d.DocumentId" disabled="@((bool)d.IsOnHold)" kind="check" css="doc-picker-checkbox" />
                             <label class="form-check-label" for="doc_@d.DocumentId">
                                 @d.DocumentNo - @d.Title
-                                <span class="text-muted small">(@Localizer["Rev"] @d.RevisionNo &middot; @d.DisciplineName &middot; @Localizer[(string)d.Status])</span>
+                                <span class="text-muted small">(@Localizer["Rev"] @d.RevisionNo &middot; @(d.DisciplineName == "Unassigned" ? Localizer["Unassigned"].Value : (string)d.DisciplineName) &middot; @Localizer[(string)d.Status])</span>
                                 @if ((bool)d.IsOnHold)
                                 {
                                     <pems-badge tone="warning">@Localizer["On Hold"]</pems-badge>

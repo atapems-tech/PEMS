@@ -4947,4 +4947,9 @@
   <data name="AI Intake Queue Summary" xml:space="preserve"><value>خلاصه صف دریافت هوش مصنوعی</value></data>
   <data name="My Discipline Tasks" xml:space="preserve"><value>کارهای دیسیپلین من</value></data>
   <data name="Knowledge Base Quick Search" xml:space="preserve"><value>جستجوی سریع پایگاه دانش</value></data>
+  <data name="Transmittal created successfully" xml:space="preserve"><value>ترنسمیتال با موفقیت ایجاد شد</value></data>
+  <data name="MDB created successfully" xml:space="preserve"><value>MDB با موفقیت ایجاد شد</value></data>
+  <data name="Transmittal_CreateCodeRequired" xml:space="preserve"><value>کد ترنسمیتال الزامی است.</value></data>
+  <data name="Transmittal_CreateCodeDuplicate" xml:space="preserve"><value>این کد ترنسمیتال قبلاً استفاده شده است. کد دیگری انتخاب کنید.</value></data>
+  <data name="Transmittal_CreateDocumentsHeld" xml:space="preserve"><value>یک یا چند مدرک انتخاب‌شده معلق هستند و قابل ارسال نیستند. آن‌ها را حذف کرده و دوباره تلاش کنید.</value></data>
 </root>
