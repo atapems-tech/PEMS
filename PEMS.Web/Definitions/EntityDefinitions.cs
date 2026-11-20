@@ -409,13 +409,21 @@ public sealed class EntityOptionsProvider(IServiceScopeFactory scopes, EntityCat
 }
 
 /// <summary>Loads the current values of one row for an edit form: the form's action names the entity and maps form fields to properties; the values come back by form field name.</summary>
-public sealed class EntityRecordLoader(IServiceScopeFactory scopes, EntityCatalog catalog)
+public sealed class EntityRecordLoader(IServiceScopeFactory scopes, EntityCatalog catalog, OperationReader? operations = null)
 {
     /// <summary>Null when the row does not exist or the user may not read it.</summary>
     public async Task<IReadOnlyDictionary<string, string?>?> LoadAsync(JsonObject? actionParameters, string id, IReadOnlyCollection<string> roles, CancellationToken ct)
     {
         // an operation-backed action (operation.invoke) names its source in "load": { entity, map, defaults } (SCRUM-645); an entity action names it at the top
         var source = actionParameters?["load"] as JsonObject ?? actionParameters;
+        if (source?["operation"] is JsonObject loadOp && operations is not null)
+        {
+            // SCRUM-782: the values of the form come from a read operation of a service (its first row); the form id is the parameter param:id
+            var read = new Dictionary<string, string?> { ["model"] = EntityJson.Str(loadOp["model"]), ["action"] = EntityJson.Str(loadOp["action"]), ["args"] = (loadOp["args"] as JsonObject)?.ToJsonString() };
+            var rows = await operations.ReadAsync(read, "en", roles, null, ct, new Dictionary<string, string?> { ["id"] = id });
+            if (rows is null || rows.Count == 0) return null;
+            return rows[0].ToDictionary(kv => kv.Key, kv => kv.Value is bool flag ? (flag ? "true" : "false") : (string?)System.Convert.ToString(kv.Value, System.Globalization.CultureInfo.InvariantCulture), StringComparer.Ordinal);
+        }
         var entity = catalog.Get(EntityJson.Str(source?["entity"]));
         if (entity is null || source!["map"] is not JsonObject map) return null;
         using var scope = scopes.CreateScope();

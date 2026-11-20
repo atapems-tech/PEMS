@@ -37,7 +37,7 @@ public class PageHeaderCallersTests
     [Fact]
     public async Task ImportCenterIndex_RendersTheTitleRowAboveItsContent()
     {
-        var host = new PermissionMatrixController(null!, null!, null!);
+        var host = new PEMS.Tests.TestSupport.ViewRenderHost();
         var model = Array.Empty<ImportCatalog.ImportEntry>().ToList().AsReadOnly();
         var result = new ViewResult { ViewData = new ViewDataDictionary(host.ViewData) { Model = model } };
         var html = await RazorViewRenderer.RenderAsync(host, result, "~/Views/ImportCenter/Index.cshtml");
