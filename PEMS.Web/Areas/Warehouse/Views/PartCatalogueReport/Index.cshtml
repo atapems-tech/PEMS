@@ -90,7 +90,7 @@
     </nav>
 
     <pems-list-panel>
-        <pems-list-toolbar heading="@heading" heading-title="@t.PeriodName(f.Period) (@t.Period(r))" total="@total">
+        <pems-list-toolbar heading="@heading" heading-title="@t.PeriodDisplay(r)" total="@total">
             <pems-list-tools>
                 <pems-list-menu id="pcRptPeriodBtn" icon="bi-calendar3" label="@Localizer["PcRpt_Filter_Period"]">
                     @foreach (var per in PartCatalogueReportPeriods.Values.Where(v => v != PartCatalogueReportPeriods.Custom))

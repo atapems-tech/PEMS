@@ -5131,4 +5131,25 @@
   <data name="Rpt_HigherIsBetter" xml:space="preserve"><value>بیشتر بهتر است</value></data>
   <data name="Rpt_LowerIsBetter" xml:space="preserve"><value>کمتر بهتر است</value></data>
   <data name="Notif_Err_NotFound" xml:space="preserve"><value>اعلان پیدا نشد.</value></data>
+  <data name="Mat_ReceiveStock" xml:space="preserve"><value>دریافت کالا</value></data>
+  <data name="Mat_Stock" xml:space="preserve"><value>موجودی</value></data>
+  <data name="Mat_RecentTransactions" xml:space="preserve"><value>تراکنش‌های اخیر</value></data>
+  <data name="Mat_SourceImports" xml:space="preserve"><value>ورودی‌های منبع</value></data>
+  <data name="Mat_ConfirmToggleActive" xml:space="preserve"><value>وضعیت فعال بودن این ماده تغییر کند؟</value></data>
+  <data name="Mat_NoStock" xml:space="preserve"><value>هنوز موجودی در هیچ انباری ثبت نشده است.</value></data>
+  <data name="Mat_SourceImportsHint" xml:space="preserve"><value>این ماده از ردیف‌های اکسل ایجاد یا به‌روزرسانی شده است. هر واردسازی به‌عنوان رکورد منبع جداگانه باقی می‌ماند.</value></data>
+  <data name="Mat_ScanWarehouse" xml:space="preserve"><value>اسکن بارکد انبار...</value></data>
+  <data name="Mat_BarcodeResolveFailed" xml:space="preserve"><value>بارکد قابل شناسایی نیست.</value></data>
+  <data name="Mat_BarcodeWrongType" xml:space="preserve"><value>این بارکد مربوط به انبار نیست.</value></data>
+  <data name="Mat_BarcodeWarehouseNotListed" xml:space="preserve"><value>انبار شناسایی‌شده در این فهرست موجود نیست.</value></data>
+  <data name="Mat_AdjustStock" xml:space="preserve"><value>اصلاح موجودی</value></data>
+  <data name="Mat_TransferStock" xml:space="preserve"><value>انتقال بین انبارها</value></data>
+  <data name="Mat_Maximum" xml:space="preserve"><value>حداکثر</value></data>
+  <data name="Mat_EditMaterial" xml:space="preserve"><value>ویرایش ماده</value></data>
+  <data name="Source File" xml:space="preserve"><value>فایل منبع</value></data>
+  <data name="Import Date" xml:space="preserve"><value>تاریخ ورود</value></data>
+  <data name="PO No" xml:space="preserve"><value>شماره سفارش خرید</value></data>
+  <data name="Open Batch" xml:space="preserve"><value>باز کردن دسته</value></data>
+  <data name="Adjust" xml:space="preserve"><value>اصلاح</value></data>
+  <data name="Transfer" xml:space="preserve"><value>انتقال</value></data>
 </root>

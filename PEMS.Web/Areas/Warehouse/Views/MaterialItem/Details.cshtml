@@ -2,6 +2,7 @@
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
+@using PEMS.Web.Helpers
 @{
     var warehouses = (IEnumerable<dynamic>)ViewBag.Warehouses;
     // SCRUM-545: the edit modal posts every field the service saves, so a save never clears them.
@@ -18,11 +19,11 @@
 
 @if (TempData["Message"] != null)
 {
-    <pems-alert tone="success" css="py-2 px-3 small">@TempData["Message"]</pems-alert>
+    <pems-alert tone="success" css="py-2 px-3 small">@Localizer[TempData["Message"]?.ToString() ?? ""]</pems-alert>
 }
 @if (TempData["Error"] != null)
 {
-    <pems-alert tone="danger" css="py-2 px-3 small">@TempData["Error"]</pems-alert>
+    <pems-alert tone="danger" css="py-2 px-3 small">@Localizer[TempData["Error"]?.ToString() ?? ""]</pems-alert>
 }
 
 <pems-content-card css="mb-3">
@@ -33,10 +34,10 @@
         </div>
         <pems-flex gap="2">
             <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#editMaterialModal"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-button>
-            <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#receiveStockModal"><pems-icon name="bi-box-arrow-in-down" /> Receive Stock</pems-button>
+            <pems-button tone="primary" size="small" outline="true" type="button" data-bs-toggle="modal" data-bs-target="#receiveStockModal"><pems-icon name="bi-box-arrow-in-down" /> @Localizer["Mat_ReceiveStock"]</pems-button>
             <pems-form asp-action="ToggleActive" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.MaterialItemId" />
-                <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="وضعیت این متریال تغییر کنه؟"><pems-icon name="bi-slash-circle" /></pems-button>
+                <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Mat_ConfirmToggleActive"]"><pems-icon name="bi-slash-circle" /></pems-button>
             </pems-form>
         </pems-flex>
     </pems-flex>
@@ -54,11 +55,11 @@
 </pems-content-card>
 
 <pems-nav css="mb-3">
-    <pems-tab target="tab-stock" active="true"><pems-icon name="bi-boxes" /> Stock <pems-badge tone="neutral">@Model.Stocks.Count</pems-badge></pems-tab>
-    <pems-tab target="tab-tx"><pems-icon name="bi-list-ul" /> Recent Transactions</pems-tab>
+    <pems-tab target="tab-stock" active="true"><pems-icon name="bi-boxes" /> @Localizer["Mat_Stock"] <pems-badge tone="neutral">@Model.Stocks.Count</pems-badge></pems-tab>
+    <pems-tab target="tab-tx"><pems-icon name="bi-list-ul" /> @Localizer["Mat_RecentTransactions"]</pems-tab>
     @if (Model.SourceImports.Any())
     {
-        <pems-tab target="tab-source"><pems-icon name="bi-file-earmark-excel" /> Source Imports <pems-badge tone="neutral">@Model.SourceImports.Count</pems-badge></pems-tab>
+        <pems-tab target="tab-source"><pems-icon name="bi-file-earmark-excel" /> @Localizer["Mat_SourceImports"] <pems-badge tone="neutral">@Model.SourceImports.Count</pems-badge></pems-tab>
     }
     <pems-tab target="tab-barcode"><pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]</pems-tab>
 </pems-nav>
@@ -69,12 +70,12 @@
             @{
                 var rows_12 = Model.Stocks;
                 var cell_12_6 = DataCell.Template(rows_12, @<text>@{ var s = item; }
-                                <pems-button tone="neutral" size="small" outline="true" css="adjust-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-onhand="@s.OnHandQuantity" title="Adjust"><pems-icon name="bi-sliders" /></pems-button>
-                                <pems-button tone="neutral" size="small" outline="true" css="transfer-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-available="@s.AvailableQuantity" title="Transfer"><pems-icon name="bi-arrow-left-right" /></pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" css="adjust-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-onhand="@s.OnHandQuantity" title="@Localizer["Adjust"]"><pems-icon name="bi-sliders" /></pems-button>
+                                <pems-button tone="neutral" size="small" outline="true" css="transfer-stock-btn" type="button" data-warehouse-id="@s.WarehouseId" data-warehouse-code="@s.WarehouseCode" data-available="@s.AvailableQuantity" title="@Localizer["Transfer"]"><pems-icon name="bi-arrow-left-right" /></pems-button>
                             </text>);
             }
-            <pems-data-table data="@(DataRows.Of(rows_12, c_ => c_.Add(((Localizer["Warehouse"])?.ToString() ?? ""), s => (object?)(s.WarehouseCode)).Add(((Localizer["Location"])?.ToString() ?? ""), s => (object?)((s.StorageLocationCode ?? "-")), css: "small").Add(((Localizer["On Hand"])?.ToString() ?? ""), s => (object?)(s.OnHandQuantity)).Add("Reserved", s => (object?)(s.ReservedQuantity)).Add(((Localizer["Available"])?.ToString() ?? ""), s => (object?)(s.AvailableQuantity)).Add(((Localizer["Reorder Point"])?.ToString() ?? ""), s => (object?)((s.ReorderPoint?.ToString() ?? "-"))).Add("", s => (object?)cell_12_6(s), css: "text-end"), rowClass: s => (s.IsOutOfStock ? "table-danger" : s.IsLowStock ? "table-warning" : "")))" />
-            @if (!Model.Stocks.Any()) { <pems-text class="text-muted text-center py-4">هنوز موجودی‌ای در هیچ انباری ثبت نشده.</pems-text> }
+            <pems-data-table data="@(DataRows.Of(rows_12, c_ => c_.Add(((Localizer["Warehouse"])?.ToString() ?? ""), s => (object?)(s.WarehouseCode)).Add(((Localizer["Location"])?.ToString() ?? ""), s => (object?)((s.StorageLocationCode ?? "-")), css: "small").Add(((Localizer["On Hand"])?.ToString() ?? ""), s => (object?)(s.OnHandQuantity)).Add(Localizer["Reserved"].Value, s => (object?)(s.ReservedQuantity)).Add(((Localizer["Available"])?.ToString() ?? ""), s => (object?)(s.AvailableQuantity)).Add(((Localizer["Reorder Point"])?.ToString() ?? ""), s => (object?)((s.ReorderPoint?.ToString() ?? "-"))).Add("", s => (object?)cell_12_6(s), css: "text-end"), rowClass: s => (s.IsOutOfStock ? "table-danger" : s.IsLowStock ? "table-warning" : "")))" />
+            @if (!Model.Stocks.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["Mat_NoStock"]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
 
@@ -83,17 +84,16 @@
         <pems-tab-pane fade="true" id="tab-source" role="tabpanel">
             <pems-content-card>
                 <pems-text class="text-muted small">
-                    این متریال از این ردیف(های) Excel ساخته/به‌روزرسانی شده - طبق پایه‌ی Metadata، هر بار Import یک رکورد
-                    جداگانه می‌ماند (رونویسی نمی‌شود).
+                    @Localizer["Mat_SourceImportsHint"]
                 </pems-text>
-                <pems-data-table data="@(DataRows.Of(Model.SourceImports, c_ => c_.Add("Source File", s => (object?)(s.SourceFileName), css: "small").Add("Import Date", s => (object?)((PemsDates.DateTime(s.ImportDate))), css: "small").Add(((Localizer["MRS No"])?.ToString() ?? ""), s => (object?)((s.RawMrsNo ?? "-")), css: "small").Add(((Localizer["Vendor"])?.ToString() ?? ""), s => (object?)((s.RawSupplier ?? "-")), css: "small").Add("PO No", s => (object?)((s.RawPoNo ?? "-")), css: "small").Add("", s => (object?)(DataCell.ButtonLink(Url.Action("Review", "MrsImport", new { batchId = s.MrsImportBatchId }), "neutral", "small", true, null, "Open Batch")), css: "text-end")))" />
+                <pems-data-table data="@(DataRows.Of(Model.SourceImports, c_ => c_.Add(Localizer["Source File"].Value, s => (object?)(s.SourceFileName), css: "small").Add(Localizer["Import Date"].Value, s => (object?)((PemsDates.DateTime(s.ImportDate))), css: "small").Add(((Localizer["MRS No"])?.ToString() ?? ""), s => (object?)((s.RawMrsNo ?? "-")), css: "small").Add(((Localizer["Vendor"])?.ToString() ?? ""), s => (object?)((s.RawSupplier ?? "-")), css: "small").Add(Localizer["PO No"].Value, s => (object?)((s.RawPoNo ?? "-")), css: "small").Add("", s => (object?)(DataCell.ButtonLink(Url.Action("Review", "MrsImport", new { batchId = s.MrsImportBatchId }), "neutral", "small", true, null, Localizer["Open Batch"].Value)), css: "text-end")))" />
             </pems-content-card>
         </pems-tab-pane>
     }
 
     <pems-tab-pane fade="true" id="tab-tx" role="tabpanel">
         <pems-content-card>
-            <pems-data-table data="@(DataRows.Of(Model.RecentTransactions, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), t => (object?)(PemsDates.DateTime(t.TransactionDate)), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), t => (object?)(t.TransactionType), kind: DataCellKind.Badge, tone: t => "light").Add(((Localizer["Warehouse"])?.ToString() ?? ""), t => (object?)(t.WarehouseCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), t => (object?)(t.Quantity)).Add(((Localizer["Reference"])?.ToString() ?? ""), t => DataCell.Join((t.ReferenceType ?? "-"), " ", (t.ReferenceId?.ToString() ?? "")), css: "small").Add("By", t => (object?)(t.EmployeeName ?? "-"), css: "small")))" />
+            <pems-data-table data="@(DataRows.Of(Model.RecentTransactions, c_ => c_.Add(((Localizer["Date"])?.ToString() ?? ""), t => (object?)(PemsDates.DateTime(t.TransactionDate)), css: "small").Add(((Localizer["Type"])?.ToString() ?? ""), t => (object?)VdrUi.Loc(Localizer, "ItL_Type_", t.TransactionType), kind: DataCellKind.Badge, tone: t => "light").Add(((Localizer["Warehouse"])?.ToString() ?? ""), t => (object?)(t.WarehouseCode)).Add(((Localizer["Qty"])?.ToString() ?? ""), t => (object?)(t.Quantity)).Add(((Localizer["Reference"])?.ToString() ?? ""), t => DataCell.Join((t.ReferenceType ?? "-"), " ", (t.ReferenceId?.ToString() ?? "")), css: "small").Add(Localizer["By"].Value, t => (object?)(t.EmployeeName ?? "-"), css: "small")))" />
             @if (!Model.RecentTransactions.Any()) { <pems-text class="text-muted text-center py-4">@Localizer["هنوز تراکنشی ثبت نشده."]</pems-text> }
         </pems-content-card>
     </pems-tab-pane>
@@ -112,7 +112,7 @@
                     <pems-label css="small">@Localizer["اسکن بارکد انبار (اختیاری)"]</pems-label>
                     <div class="input-group input-group-sm">
                         <span class="input-group-text"><pems-icon name="bi-upc-scan" /></span>
-                        <pems-input type="text" id="receiveWarehouseScanInput" dir="ltr" placeholder="Scan Warehouse barcode..." />
+                        <pems-input type="text" id="receiveWarehouseScanInput" dir="ltr" placeholder="@Localizer["Mat_ScanWarehouse"]" data-resolve-failed="@Localizer["Mat_BarcodeResolveFailed"]" data-wrong-target="@Localizer["Mat_BarcodeWrongType"]" data-not-in-list="@Localizer["Mat_BarcodeWarehouseNotListed"]" />
                         <pems-button tone="neutral" outline="true" type="button" id="receiveWarehouseScanBtn">@Localizer["Resolve"]</pems-button>
                     </div>
                 </pems-form-group>
@@ -136,7 +136,7 @@
         <pems-form asp-action="AdjustStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="warehouseId" id="adjustWarehouseId" />
-            <pems-modal-header>اصلاح موجودی <span id="adjustWarehouseLabel" class="text-muted small"></span></pems-modal-header>
+            <pems-modal-header>@Localizer["Mat_AdjustStock"] <span id="adjustWarehouseLabel" class="text-muted small"></span></pems-modal-header>
             <pems-modal-body>
                 <pems-form-group css="mb-2"><pems-label css="small">@Localizer["موجودی جدید (On Hand)"]</pems-label><pems-input scale="small" name="newOnHandQuantity" id="adjustNewOnHand" type="number" step="0.001" required /></pems-form-group>
                 <pems-form-group css="mb-2"><pems-label css="small">@Localizer["دلیل"]</pems-label><pems-input scale="small" name="reason" required /></pems-form-group>
@@ -152,7 +152,7 @@
         <pems-form asp-action="TransferStock" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
             <input type="hidden" name="fromWarehouseId" id="transferFromWarehouseId" />
-            <pems-modal-header>انتقال بین انبارها <span id="transferFromWarehouseLabel" class="text-muted small"></span></pems-modal-header>
+            <pems-modal-header>@Localizer["Mat_TransferStock"] <span id="transferFromWarehouseLabel" class="text-muted small"></span></pems-modal-header>
             <pems-modal-body>
                 <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["انبار مقصد"]</pems-label>
@@ -160,7 +160,7 @@
                         @foreach (var w in warehouses) { <option value="@w.WarehouseId">@w.Code</option> }
                     </pems-select>
                 </pems-form-group>
-                <pems-form-group css="mb-2"><pems-label css="small">مقدار (حداکثر: <span id="transferAvailable"></span>)</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></pems-form-group>
+                <pems-form-group css="mb-2"><pems-label css="small">@Localizer["Quantity"] (@Localizer["Mat_Maximum"]: <span id="transferAvailable"></span>)</pems-label><pems-input scale="small" name="quantity" type="number" step="0.001" required /></pems-form-group>
                 <pems-form-group css="mb-2"><pems-label css="small">@Localizer["دلیل / مرجع (اختیاری)"]</pems-label><pems-input scale="small" name="reason" /></pems-form-group>
             </pems-modal-body>
             <pems-modal-footer>
@@ -173,7 +173,7 @@
 <pems-modal size="large" id="editMaterialModal" tabindex="-1">
         <pems-form asp-action="Edit" method="post">
             <input type="hidden" name="materialItemId" value="@Model.MaterialItemId" />
-            <pems-modal-header>Edit Material</pems-modal-header>
+            <pems-modal-header>@Localizer["Mat_EditMaterial"]</pems-modal-header>
             <pems-modal-body>
                 <pems-row gap="3" css="mb-2">
                     <pems-col md="6"><pems-label>@Localizer["Material Code"]</pems-label><pems-input name="materialCode" value="@Model.MaterialCode" required /></pems-col>
