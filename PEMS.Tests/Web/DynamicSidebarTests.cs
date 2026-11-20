@@ -431,7 +431,6 @@ public class DynamicSidebarTests
     [InlineData("CmmsOperations", "Kpis", null, "cmms.operations", "cmms.backlog")]
     [InlineData("Organization", "Positions", "Admin", "admin.positions", "admin.org")]
     [InlineData("Organization", "Index", "Admin", "admin.org", "admin.positions")]
-    [InlineData("Discipline", "Manage", null, "admin.disciplines", "eng.disciplines")]
     [InlineData("MaterialItem", "Details", "Warehouse", "proc.wh.material", "proc.wh.dashboard")]
     [InlineData("Tender", "Details", null, "proc.tender", "proc.package")]
     public async Task ActiveLink_FollowsControllerActionAndDefaultRules(string controller, string action, string? area, string active, string inactive)

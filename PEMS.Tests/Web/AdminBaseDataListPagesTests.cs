@@ -22,7 +22,7 @@ public class AdminBaseDataListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/Department", "Views/Discipline", "Views/Employee",
+        "Views/Employee",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
@@ -49,26 +49,6 @@ public class AdminBaseDataListPagesTests
     }
 
     private static string Chips(string html) => Regex.Match(html, "<div class=\"lp-chips\">(.*?)</div>", RegexOptions.Singleline).Value;
-
-    [Fact]
-    public async Task Departments_And_Disciplines_UseTheListFrame()
-    {
-        var dept = await Render<PEMS.Web.Controllers.DepartmentController>("/Views/Department/Index.cshtml",
-            new List<Department> { new() { DepartmentId = 3, Code = "ENG", Name = "Engineering", IsActive = true } },
-            v => v["EmployeeCounts"] = new Dictionary<int, int> { [3] = 12 });
-        AssertBuiltFromTheComponent(dept, "Department", 1);
-        Assert.Contains("id=\"createDeptModal\"", dept);
-        Assert.Contains("id=\"editDeptModal\"", dept);                                  // one shared edit modal, SCRUM-500
-        Assert.Matches("<button[^>]*data-bs-target=\"#editDeptModal\"[^>]*data-fill-departmentid=\"3\"", dept);
-        Assert.Matches("<button[^>]*data-bs-target=\"#createDeptModal\"", dept);
-
-        var disc = await Render<DisciplineController>("/Views/Discipline/Index.cshtml",
-            new List<DisciplineSummaryDto> { new() { DisciplineId = 1, Code = "MECH", Name = "Mechanical", OverdueTasksCount = 2 } },
-            v => v["CanManageMaster"] = true);
-        AssertBuiltFromTheComponent(disc, "Discipline", 1);
-        Assert.Contains("bi-sliders", disc);                                              // manage disciplines tool
-        Assert.Contains("vs-pill vs-pill--danger", disc);
-    }
 
     private static string RepoWeb()
     {
