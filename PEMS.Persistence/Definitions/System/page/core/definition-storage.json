@@ -1,0 +1,61 @@
+{
+  "kind": "page",
+  "key": "definition-storage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Definition storage",
+    "fa": "حجم ذخیره تعریف‌ها"
+  },
+  "description": {
+    "en": "The definitions that take the most space; versions are kept forever",
+    "fa": "تعریف‌های پرحجم؛ نسخه‌ها همیشه نگهداری می‌شوند"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "definition-storage",
+    "permission": "Definitions.View",
+    "template": "entity-list",
+    "args": {
+      "id": "definition-storage",
+      "url": "/d/definition-largest-grid",
+      "idField": "ref",
+      "columns": [
+        {
+          "key": "kind",
+          "header": {
+            "en": "Kind",
+            "fa": "نوع"
+          },
+          "width": 110
+        },
+        {
+          "key": "key",
+          "header": {
+            "en": "Key",
+            "fa": "کلید"
+          },
+          "width": 260
+        },
+        {
+          "key": "versions",
+          "header": {
+            "en": "Versions",
+            "fa": "نسخه‌ها"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "totalBytes",
+          "header": {
+            "en": "All versions, bytes",
+            "fa": "حجم همه نسخه‌ها"
+          },
+          "width": 170,
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

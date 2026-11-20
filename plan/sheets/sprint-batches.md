@@ -35,6 +35,22 @@ Inputs still missing (each is an issue in batch 4; a conversion waits on it; SCR
 
 No heavy test and no build run until **batches 3, 4b and 5 are all In Review**; then ONE combined run (batches 1, 2, 3, 4, 4b and 5) with the owner's input, never automatically. Until then each session writes code, merges, and moves its issues to In Review without a build or test run (a build or a light class only when the owner approves it). Sessions: batch 3 and batch 5 are started by the owner in their own sessions; batch 4b runs in the session that closed batch 4.
 
+## Gap batches (owner decision 2026-11-20, guideline 07 section 1c)
+
+A gap found in a batch is an issue of the same sprint, listed here under the batch letter plus `b` (a second round of gaps of the same batch becomes `c`). They stay To Do in the sprint until someone claims the whole letter batch; a gap that belongs to no batch goes to the backlog instead.
+
+| Batch | Gap issues | Of |
+|---|---|---|
+| 1b | 792 live preview in the catalog, 793 saved views per role on the server, 794 filter bar part, 795 related-records part | 340, 599, 600 |
+| 2b | 796 platform field marks (owner decides), 797 ownership preflight report on Database Update and /health/database, 798 ADR for field ownership, 799 prove action.steps with a shipped definition, 800 generic PDF output, 801 download of a stored file by key | 515, 593, 615 |
+| 3b | 784 manager history, diff, export and import screens, 785 used-by and references REST and the check in REST publish, 786 storage growth, cache statistics, retain setting and size warning, 787 fallback and live fa/en RTL/LTR preview, 788 smoke test, post-publish check and auto-rollback, 789 precheck-rollback REST and verdict on the screen, 790 browser tests of the API client, 791 manifest coverage test | 449, 450, 455, 419, 609, 457, 459, 454, 585 |
+
+Batch 3 issues not started (439, 604, 606, 607, 608, 440, 581, 582, 583, 584, 612, 613, 503) stay To Do in batch 3 itself. The missing QA checklists of 372, 448, 516, 517, 574 to 577, 590 to 592, 594 to 596, 611 and 628 are not gaps: they belong to the owners of those batches (2 and 1).
+
+## Combined heavy run (owner decision 2026-11-20)
+
+Batches 1, 2, 3, 4b (the Admin conversions not yet In Review) and 5 are tested **together, once**, after batches 3, 4b and 5 are all In Review. Until then no batch runs a heavy test, a solution or test-project build, `gates.py --run` or a browser run, and after that only with the owner's input (guideline 00 section 0.3). Batch 3 is worked in session B3 here; 4b and 5 are started by the owner in their own sessions. The order and the lines to run are in [batch-test-plan.md](batch-test-plan.md).
+
 Rules for every batch
 - **Keep the Status column of the table above current** (owner decision 2026-11-20): Not started, Started (all issues In Progress), In Review (all issues In Review; heavy tests pending), Tested, Closed. Update it in the same PR that starts a batch, moves its last issue to In Review, or runs its tests, with the date and the counts.
 - A started batch has no issue in To Do: claim all of its issues (In Progress, assigned) when it starts and again whenever an issue is created for it (guideline 00 section 0).
