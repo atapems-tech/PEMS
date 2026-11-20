@@ -130,16 +130,6 @@ public class TreeViewComponentTests
         Assert.False(File.Exists(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", "_HelpNodeTreeItem.cshtml")));
     }
 
-    [Fact]
-    public void NavigationVisibility_StaysADisclosure_BecauseItsNodesHoldForms()
-    {
-        // a tree item may not hold controls (WAI-ARIA); every node of this editor holds role forms, so <details> is the right pattern
-        var view = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Areas", "Admin", "Views", "NavigationVisibility", "Index.cshtml"));
-        Assert.Contains("<details class=\"navvis-module", view);
-        Assert.Contains("<pems-form method=\"post\"", view);
-        Assert.DoesNotContain("role=\"tree\"", view);
-    }
-
     private static string RepoRoot()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
