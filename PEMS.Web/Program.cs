@@ -153,6 +153,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.D
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionUsagesGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionLargestGridProvider>();   // SCRUM-455
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionGrowthGridProvider>();   // SCRUM-786
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OwnershipPreflightGridProvider>();   // SCRUM-797
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionHealthGridProvider>();   // SCRUM-786
 // SCRUM-786 (fail closed): the only supported retention of definition versions is forever; any other value would promise a policy that is not active
 if (builder.Configuration["Definitions:RetainRetiredVersions"] is { Length: > 0 } retainSetting && !string.Equals(retainSetting, "forever", StringComparison.OrdinalIgnoreCase))
@@ -214,6 +215,8 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web
 builder.Services.AddScoped<PEMS.Web.Definitions.DataSourceExecutor>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionPreflight>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());   // SCRUM-797
+builder.Services.AddSingleton<PEMS.Web.Definitions.OwnershipPreflightReport>();   // SCRUM-797: the preflight of the shipped package, cached, for Database Update and /health/database
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
@@ -1414,15 +1417,16 @@ app.MapGet("/health", async (PEMS.Persistence.Context.PEMSDbContext db) =>
 
 // Anonymous, details-free schema state for deployment pipelines/monitors: 200 only when every shipped
 // migration is applied; 503 otherwise (body is just the state name).
-app.MapGet("/health/database", async (PEMS.Application.Interfaces.IDatabaseUpdateService updates) =>
+app.MapGet("/health/database", async (PEMS.Application.Interfaces.IDatabaseUpdateService updates, PEMS.Web.Definitions.OwnershipPreflightReport ownership) =>
 {
     try
     {
         var status = await updates.GetStatusAsync();
-        return Results.Text(status.State.ToString(),
-            statusCode: status.State == PEMS.Application.DTOs.DatabaseSetupState.UpToDate
-                ? StatusCodes.Status200OK
-                : StatusCodes.Status503ServiceUnavailable);
+        var upToDate = status.State == PEMS.Application.DTOs.DatabaseSetupState.UpToDate;
+        // SCRUM-797: an update whose shipped forms would collide with a customer's application field stops before it writes; the form, field and reason are listed here (product form names only, no customer data)
+        var conflicts = await ownership.GetAsync();
+        var body = conflicts.Count == 0 ? status.State.ToString() : status.State + "\r\n" + string.Join("\r\n", conflicts.Select(c => c.Line));
+        return Results.Text(body, statusCode: upToDate && conflicts.Count == 0 ? StatusCodes.Status200OK : StatusCodes.Status503ServiceUnavailable);
     }
     catch
     {

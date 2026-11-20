@@ -14,7 +14,7 @@ namespace PEMS.Persistence.Services;
 /// The write path of the definition store (SCRUM-434, ADR-0010/0011): draft → validated → published → retired, rollback by republishing,
 /// optimistic concurrency by revision numbers, kind validation, references, per-kind cache stamps. The REST API is its only caller.
 /// </summary>
-public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
+public sealed class DefinitionService : IDefinitionService, IDefinitionShipper, IDefinitionPreflight
 {
     private static readonly Regex KeyPattern = new(@"^[a-z0-9]+([._-][a-z0-9]+)*$", RegexOptions.Compiled);
     private static readonly Regex AppKeyPattern = new(@"^[a-z0-9]+(-[a-z0-9]+)*$", RegexOptions.Compiled);
@@ -271,9 +271,12 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
         return shipped == null ? [] : FormOwnership.Protect(shipped.PayloadJson, payloadJson);
     }
 
-    private async Task<IReadOnlyList<string>> OwnershipPreflightAsync(IReadOnlyList<ShippedDefinition> items, CancellationToken ct)
+    /// <inheritdoc />
+    public Task<IReadOnlyList<OwnershipProblem>> CheckOwnershipAsync(IReadOnlyList<ShippedDefinition> items, CancellationToken ct = default) => OwnershipPreflightAsync(items, ct);
+
+    private async Task<IReadOnlyList<OwnershipProblem>> OwnershipPreflightAsync(IReadOnlyList<ShippedDefinition> items, CancellationToken ct)
     {
-        var problems = new List<string>();
+        var problems = new List<OwnershipProblem>();
         foreach (var item in items.Where(i => i.Kind == "form"))
         {
             var def = await _db.Definitions.Include(d => d.Versions).AsNoTracking().FirstOrDefaultAsync(d => d.AppKey == item.AppKey && d.Kind == item.Kind && d.Key == item.Key, ct);
@@ -283,7 +286,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
             var canonical = Canonicalize(item.PayloadJson, out var perr);
             if (perr != null) continue;                                  // reported by the normal path
             foreach (var c in FormOwnership.Merge(published.PayloadJson, canonical!).Conflicts)
-                problems.Add($"{item.Kind}/{item.AppKey}/{item.Key}: field '{c.Field}' ({c.Code}) {c.Message}");
+                problems.Add(new OwnershipProblem(item.Kind, item.AppKey, item.Key, c.Field, c.Code, c.Message));
         }
         return problems;
     }
@@ -434,7 +437,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper
 
         // SCRUM-515 preflight: an update that cannot keep the customer's application fields and data stops before it changes anything, with every conflict listed at once
         var conflicts = await OwnershipPreflightAsync(items, ct);
-        if (conflicts.Count > 0) return new DefinitionShipResult(0, 0, 0, 0, 0, conflicts);
+        if (conflicts.Count > 0) return new DefinitionShipResult(0, 0, 0, 0, 0, conflicts.Select(c => c.Line).ToList());
 
         foreach (var item in items)
         {

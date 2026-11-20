@@ -101,6 +101,80 @@
         "en": "Apply pending updates",
         "fa": "اعمال به‌روزرسانی‌های در انتظار"
       }
+    },
+    "regions": {
+      "content": [
+        {
+          "id": "preflight-title",
+          "component": "content-blocks",
+          "options": {
+            "id": "preflight-title",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Preflight: forms an update would collide with",
+                  "fa": "پیش‌بررسی: فرم‌هایی که به‌روزرسانی با آنها تعارض دارد"
+                }
+              },
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "An update that would break a field of the customer stops before it changes anything and lists the form, field and reason here and on /health/database. No rows: the update can be applied.",
+                  "fa": "به‌روزرسانی‌ای که فیلد مشتری را خراب کند پیش از هر تغییر متوقف می‌شود و فرم، فیلد و دلیل را اینجا و در /health/database نشان می‌دهد. بدون ردیف: قابل اعمال است."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "preflight",
+          "component": "data-grid",
+          "options": {
+            "id": "database-update-preflight",
+            "url": "/d/database-update-ownership-grid",
+            "idField": "form",
+            "pageSize": 20,
+            "height": 240,
+            "columns": [
+              {
+                "key": "form",
+                "header": {
+                  "en": "Form",
+                  "fa": "فرم"
+                },
+                "width": 240
+              },
+              {
+                "key": "field",
+                "header": {
+                  "en": "Field",
+                  "fa": "فیلد"
+                },
+                "width": 160
+              },
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 120
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 480
+              }
+            ]
+          }
+        }
+      ]
     }
   }
 }

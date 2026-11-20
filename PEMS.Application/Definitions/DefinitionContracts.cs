@@ -141,6 +141,19 @@ public interface IDefinitionShipper
     Task<DefinitionShipResult> ShipAsync(IReadOnlyList<ShippedDefinition> items, string actor, CancellationToken ct = default);
 }
 
+/// <summary>One reason a product update cannot be applied to a customised form (SCRUM-515, 797): the form, the field, the code and the readable reason.</summary>
+public sealed record OwnershipProblem(string Kind, string AppKey, string Key, string Field, string Code, string Message)
+{
+    /// <summary>The line the shipping result and the logs use.</summary>
+    public string Line => $"{Kind}/{AppKey}/{Key}: field '{Field}' ({Code}) {Message}";
+}
+
+/// <summary>The ownership preflight of an update without writing anything: which customised forms the shipped package would collide with (SCRUM-797).</summary>
+public interface IDefinitionPreflight
+{
+    Task<IReadOnlyList<OwnershipProblem>> CheckOwnershipAsync(IReadOnlyList<ShippedDefinition> items, CancellationToken ct = default);
+}
+
 /// <summary>The definitions that ship as JSON files in the data layer (ADR-0014): read once, validated, reloaded when a file changes.</summary>
 public interface IDefinitionFiles
 {
