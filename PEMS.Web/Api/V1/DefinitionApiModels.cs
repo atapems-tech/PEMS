@@ -13,6 +13,25 @@ public sealed record CreateDraftInput(int? FromVersion);
 
 public sealed record RollbackInput(int? ToVersion);
 
+/// <summary>One finding of an impact check: severity safe, warning or blocked, the pointer (into the payload or the missing target) and the message.</summary>
+public sealed record ImpactItemResource(string Severity, string Path, string Message);
+
+/// <summary>The verdict of a precheck (SCRUM-785, 789): allowed, warnings or blocked, with the findings.</summary>
+public sealed record ImpactReportResource(string Verdict, IReadOnlyList<ImpactItemResource> Items)
+{
+    public static ImpactReportResource From(ImpactReport r) => new(r.Verdict, r.Items.Select(i => new ImpactItemResource(i.Severity, i.Path, i.Message)).ToList());
+}
+
+/// <summary>A published definition that points at this one.</summary>
+public sealed record DefinitionUsageResource(string Kind, string Key, string Role);
+
+/// <summary>What this definition points at and whether the target exists and is published.</summary>
+public sealed record DefinitionTargetResource(string Kind, string Key, string Role, bool Exists);
+
+public sealed record DefinitionUsedByResource(IReadOnlyList<DefinitionUsageResource> Items);
+
+public sealed record DefinitionReferencesResource(IReadOnlyList<DefinitionTargetResource> Items);
+
 public sealed record DefinitionVersionResource(int Number, string Status, string ContentHash, string? ChangeSummary, int? ClonedFromVersion, DateTime CreatedAt,
     DateTime? ValidatedAt, DateTime? PublishedAt, string? PublishedBy, DateTime? RetiredAt)
 {
@@ -53,7 +72,17 @@ public sealed record DefinitionUpstreamResource(bool Customized, bool UpstreamCh
         new(u.Customized, u.UpstreamChanged, u.ShippedVersion, u.BasedOnShippedVersion, u.PublishedVersion, u.Diff.Select(d => new DefinitionDiffEntryResource(d.Pointer, d.Change, d.Published, d.Shipped)).ToList(), u.Truncated);
 }
 
-public sealed record DefinitionPackageResource(string Format, DateTime ExportedAt, IReadOnlyList<DefinitionPackageItemResource> Items);
+public sealed record DefinitionPackageResource(string Format, DateTime ExportedAt, IReadOnlyList<DefinitionPackageItemResource> Items)
+{
+    /// <summary>The package of the application layer (the same mapping the REST import and the import action use); missing parts become empty text.</summary>
+    public PEMS.Application.Definitions.DefinitionPackage ToPackage()
+    {
+        var items = Items?.Select(i => new PEMS.Application.Definitions.DefinitionPackageItem(i.Kind ?? "", i.Key ?? "", i.AppKey ?? "core", i.Title.ValueKind == JsonValueKind.Undefined ? "" : i.Title.GetRawText(),
+            i.Description is { ValueKind: not JsonValueKind.Null } d ? d.GetRawText() : null, i.Payload.ValueKind == JsonValueKind.Undefined ? "" : i.Payload.GetRawText(), i.ContentHash ?? "", i.VersionNumber)).ToList()
+            ?? new List<PEMS.Application.Definitions.DefinitionPackageItem>();
+        return new PEMS.Application.Definitions.DefinitionPackage(Format ?? "", ExportedAt, items);
+    }
+}
 
 public sealed record DefinitionPackageItemResource(string Kind, string Key, string AppKey, JsonElement Title, JsonElement? Description, JsonElement Payload, string ContentHash, int VersionNumber);
 

@@ -21,6 +21,23 @@ public sealed class DefinitionImpactService(PEMSDbContext db, IEnumerable<IDefin
         return rows.Select(x => new DefinitionUsage(x.Kind, x.Key, x.Role)).Distinct().OrderBy(u => u.Kind, StringComparer.Ordinal).ThenBy(u => u.Key, StringComparer.Ordinal).ToList();
     }
 
+    public async Task<IReadOnlyList<DefinitionTarget>> ReferencesAsync(int id, CancellationToken ct = default)
+    {
+        var def = await LoadAsync(id, ct);
+        var current = def?.Versions.FirstOrDefault(v => v.DefinitionVersionId == def.PublishedVersionId);
+        if (def == null || current == null || !_kinds.TryGetValue(def.Kind, out var kind)) return [];
+        var targets = new List<DefinitionTarget>();
+        foreach (var r in kind.References(current.PayloadJson).Distinct())
+        {
+            var storeKind = r.ToKind == "component-definition" ? "component" : r.ToKind;
+            // the same scope as the check before publish: interface components and code routes are not definitions of the store
+            var owned = r.ToKind != "component" && r.Role is not ("menu-link" or "routes-to") && _kinds.ContainsKey(storeKind);
+            var exists = !owned || await db.Definitions.AsNoTracking().AnyAsync(d => d.Kind == storeKind && d.Key == r.ToKey && d.PublishedVersionId != null, ct);
+            targets.Add(new DefinitionTarget(storeKind, r.ToKey, r.Role, exists));
+        }
+        return targets.OrderBy(t => t.Kind, StringComparer.Ordinal).ThenBy(t => t.Key, StringComparer.Ordinal).ToList();
+    }
+
     public async Task<ImpactReport> PrecheckPublishAsync(int id, CancellationToken ct = default)
     {
         var def = await LoadAsync(id, ct);

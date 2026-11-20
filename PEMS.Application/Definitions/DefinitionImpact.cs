@@ -18,6 +18,9 @@ public sealed record ImpactReport(string Verdict, IReadOnlyList<ImpactItem> Item
     public string Text() => string.Join(" ", Items.Where(i => i.Severity != "safe").Select(i => $"[{i.Severity}] {i.Path}: {i.Message}"));
 }
 
+/// <summary>What a definition points at: the <c>Kind</c> and <c>Key</c> of the target, the <c>Role</c> of the reference and whether the target <c>Exists</c> as a published definition (components of the interface registry and links to code routes are always reported as existing).</summary>
+public sealed record DefinitionTarget(string Kind, string Key, string Role, bool Exists);
+
 /// <summary>A published definition that points at another one: <c>Kind</c> and <c>Key</c> of the user, and the <c>Role</c> of the reference.</summary>
 public sealed record DefinitionUsage(string Kind, string Key, string Role);
 
@@ -29,6 +32,9 @@ public interface IDefinitionImpact
 {
     /// <summary>Who uses this definition: the published definitions whose published version points at <paramref name="kind"/>/<paramref name="key"/>.</summary>
     Task<IReadOnlyList<DefinitionUsage>> UsedByAsync(string kind, string key, CancellationToken ct = default);
+
+    /// <summary>What the published version of the definition points at, with whether each target exists and is published (SCRUM-785).</summary>
+    Task<IReadOnlyList<DefinitionTarget>> ReferencesAsync(int id, CancellationToken ct = default);
 
     /// <summary>The check before publishing the open draft: its references and its changes against the published version.</summary>
     Task<ImpactReport> PrecheckPublishAsync(int id, CancellationToken ct = default);

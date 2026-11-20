@@ -99,6 +99,8 @@ public sealed class ApiConformanceHost : IAsyncDisposable
         builder.Services.AddScoped<DefinitionStore>();
         builder.Services.AddScoped<IDefinitionStore>(sp => sp.GetRequiredService<DefinitionStore>());
         builder.Services.AddScoped<IDefinitionService, DefinitionService>();
+        builder.Services.AddScoped<IDefinitionImpact, DefinitionImpactService>();
+        builder.Services.AddScoped<DefinitionPublishGuard>();
 
         var app = builder.Build();
         app.UseAuthentication();

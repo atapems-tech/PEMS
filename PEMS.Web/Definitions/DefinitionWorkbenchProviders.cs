@@ -129,6 +129,67 @@ public sealed class DefinitionLargestGridProvider(IServiceScopeFactory scopes) :
 }
 
 /// <summary>
+/// Growth of the definition store per month (SCRUM-786): one row per month of version creation with <c>month</c> (yyyy-MM), <c>versions</c> created and <c>bytes</c> of their payloads, newest first. Read only; nothing here deletes.
+/// </summary>
+public sealed class DefinitionGrowthGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    public string Key => "definition-growth";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        using var scope = scopes.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        var rows = await db.DefinitionVersions.AsNoTracking().GroupBy(v => new { v.CreatedAtUtc.Year, v.CreatedAtUtc.Month })
+            .Select(g => new { g.Key.Year, g.Key.Month, Versions = g.Count(), Bytes = g.Sum(v => v.PayloadJson.Length) })
+            .OrderByDescending(x => x.Year).ThenByDescending(x => x.Month).Take(Math.Max(1, request.Grid.PageSize)).ToListAsync(ct);
+        IReadOnlyList<object> items = rows.Select(x => (object)new Dictionary<string, object?>
+            { ["month"] = $"{x.Year:0000}-{x.Month:00}", ["versions"] = x.Versions, ["bytes"] = x.Bytes }).ToList();
+        return (items, items.Count);
+    }
+}
+
+/// <summary>
+/// The health of the definition store (SCRUM-786): rows <c>metric</c>, <c>value</c>, <c>note</c>: the policy (<c>Definitions:RetainRetiredVersions</c>, only <c>forever</c>), the total size of every version, the warning size
+/// (<c>Definitions:StorageWarnMb</c>, default 1024) and whether it is exceeded, and the cache counters of this process (hits, misses, stamp reads, evictions).
+/// </summary>
+public sealed class DefinitionHealthGridProvider(IServiceScopeFactory scopes) : IGridDataProvider
+{
+    public const int DefaultWarnMb = 1024;
+    public string Key => "definition-health";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    /// <summary>The warning size in MB from the setting; a missing or invalid value is the default.</summary>
+    public static int WarnMb(string? setting) => int.TryParse(setting, out var mb) && mb > 0 ? mb : DefaultWarnMb;
+
+    public async Task<(IReadOnlyList<object> Items, int Total)> QueryAsync(GridDataRequest request, CancellationToken ct)
+    {
+        using var scope = scopes.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+        var total = await db.DefinitionVersions.AsNoTracking().SumAsync(v => (long)v.PayloadJson.Length, ct);
+        var warnMb = WarnMb(config["Definitions:StorageWarnMb"]);
+        var exceeded = total > warnMb * 1024L * 1024L;
+        var hits = PEMS.Persistence.Services.DefinitionCacheStats.Hits;
+        var misses = PEMS.Persistence.Services.DefinitionCacheStats.Misses;
+        var rate = hits + misses == 0 ? "" : $"{100.0 * hits / (hits + misses):0.0}%";
+        object Row(string metric, object? value, string note = "") => new Dictionary<string, object?> { ["metric"] = metric, ["value"] = value?.ToString() ?? "", ["note"] = note };
+        IReadOnlyList<object> items =
+        [
+            Row("retainRetiredVersions", config["Definitions:RetainRetiredVersions"] ?? "forever", "retired versions are kept forever; nothing deletes a version"),
+            Row("totalBytes", total, "payload size of every version"),
+            Row("warnMb", warnMb, "Definitions:StorageWarnMb"),
+            Row("warning", exceeded ? "yes" : "no", exceeded ? $"the store is above {warnMb} MB: plan the archive decision (ADR-0010 section 5)" : ""),
+            Row("cacheHits", hits, "this process, since start"),
+            Row("cacheMisses", misses, rate),
+            Row("stampReads", PEMS.Persistence.Services.DefinitionCacheStats.StampReads),
+            Row("evictions", PEMS.Persistence.Services.DefinitionCacheStats.Evictions, "publishes seen by this process"),
+        ];
+        return (items, items.Count);
+    }
+}
+
+/// <summary>
 /// Missing translations of published definitions (SCRUM-419, 609): every language map (an object with <c>en</c> or <c>fa</c>) of a published form, page or menu whose other language is empty or absent is one row: <c>ref</c>,
 /// <c>kind</c>, <c>key</c>, <c>path</c> in the payload, <c>missing</c> (the language), <c>shown</c> (the text a user sees through the fallback). Filter <c>kind</c> narrows to one kind.
 /// </summary>

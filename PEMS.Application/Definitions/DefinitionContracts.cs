@@ -87,7 +87,8 @@ public interface IDefinitionService
     Task<DefinitionOutcome<DefinitionVersionPayload>> SaveDraftAsync(int id, string payloadJson, string? changeSummary, long expectedDraftRevision, string actor, CancellationToken ct = default);
     Task<DefinitionOutcome<DefinitionVersionPayload>> ValidateAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
     Task<DefinitionOutcome<DefinitionDetail>> PublishAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
-    Task<DefinitionOutcome<DefinitionDetail>> RollbackAsync(int id, int toVersion, long expectedEnvelopeRevision, string actor, CancellationToken ct = default);
+    /// <param name="changeSummary">The change summary of the new version; default "Rollback to version N" (the smoke check writes "auto-rollback: reason", SCRUM-788).</param>
+    Task<DefinitionOutcome<DefinitionDetail>> RollbackAsync(int id, int toVersion, long expectedEnvelopeRevision, string actor, CancellationToken ct = default, string? changeSummary = null);
     Task<DefinitionOutcome<DefinitionDetail>> DiscardDraftAsync(int id, long expectedDraftRevision, string actor, CancellationToken ct = default);
 
     /// <summary>SCRUM-448: the difference between a customised System definition and what the product ships now; NotFound for a definition that is not shipped.</summary>
@@ -139,6 +140,19 @@ public sealed record DefinitionShipResult(int Created, int Upgraded, int Unchang
 public interface IDefinitionShipper
 {
     Task<DefinitionShipResult> ShipAsync(IReadOnlyList<ShippedDefinition> items, string actor, CancellationToken ct = default);
+}
+
+/// <summary>One reason a product update cannot be applied to a customised form (SCRUM-515, 797): the form, the field, the code and the readable reason.</summary>
+public sealed record OwnershipProblem(string Kind, string AppKey, string Key, string Field, string Code, string Message)
+{
+    /// <summary>The line the shipping result and the logs use.</summary>
+    public string Line => $"{Kind}/{AppKey}/{Key}: field '{Field}' ({Code}) {Message}";
+}
+
+/// <summary>The ownership preflight of an update without writing anything: which customised forms the shipped package would collide with (SCRUM-797).</summary>
+public interface IDefinitionPreflight
+{
+    Task<IReadOnlyList<OwnershipProblem>> CheckOwnershipAsync(IReadOnlyList<ShippedDefinition> items, CancellationToken ct = default);
 }
 
 /// <summary>The definitions that ship as JSON files in the data layer (ADR-0014): read once, validated, reloaded when a file changes.</summary>

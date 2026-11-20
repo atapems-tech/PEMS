@@ -141,6 +141,8 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Defi
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileUploadAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileDownloadAction>();   // SCRUM-615: a stored file by key, inside the folder the definition names
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.FileExportAction>();
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DefinitionExportAction>();   // SCRUM-784
+builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.DefinitionImportAction>();   // SCRUM-784
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionTransaction, PEMS.Web.Definitions.EfActionTransaction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IStepUpVerifier, PEMS.Web.Definitions.WebAuthnStepUpVerifier>();
 // the entity catalog: the master-data entities a definition may list and create, with the permissions that guard them (the code checks them; a definition cannot widen access)
@@ -152,10 +154,19 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.D
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionKindsGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionUsagesGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionLargestGridProvider>();   // SCRUM-455
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionGrowthGridProvider>();   // SCRUM-786
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionVersionsGridProvider>();   // SCRUM-784, 789
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionDiffGridProvider>();   // SCRUM-784
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OwnershipPreflightGridProvider>();   // SCRUM-797
+builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionHealthGridProvider>();   // SCRUM-786
+// SCRUM-786 (fail closed): the only supported retention of definition versions is forever; any other value would promise a policy that is not active
+if (builder.Configuration["Definitions:RetainRetiredVersions"] is { Length: > 0 } retainSetting && !string.Equals(retainSetting, "forever", StringComparison.OrdinalIgnoreCase))
+    throw new InvalidOperationException($"Definitions:RetainRetiredVersions must be 'forever' (got '{retainSetting}'): retired definition versions are never deleted.");
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionTranslationsGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.DefinitionPayloadGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider>(sp => new PEMS.Web.Definitions.OperationCatalogGridProvider(sp.GetRequiredService<PEMS.Web.Definitions.OperationCatalog>()));   // SCRUM-606   // SCRUM-439, 604, 606, 607, 608   // SCRUM-419, 609
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionImpact, PEMS.Persistence.Services.DefinitionImpactService>();   // SCRUM-450, 457, 459
+builder.Services.AddScoped<PEMS.Persistence.Services.DefinitionPublishGuard>();   // SCRUM-785, 788, 789: precheck, acknowledgement, smoke check and automatic rollback of the REST publish
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionWorkbench, PEMS.Persistence.Services.DefinitionWorkbench>();
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDefinitionDesigner, PEMS.Persistence.Services.DefinitionDesigner>();   // SCRUM-439, 604, 606, 607, 608
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMigratorCenter, PEMS.Web.Services.MigratorCenter>();   // SCRUM-582
@@ -209,6 +220,8 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web
 builder.Services.AddScoped<PEMS.Web.Definitions.DataSourceExecutor>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());
+builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionPreflight>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());   // SCRUM-797
+builder.Services.AddSingleton<PEMS.Web.Definitions.OwnershipPreflightReport>();   // SCRUM-797: the preflight of the shipped package, cached, for Database Update and /health/database
 
 // یک [Authorize] سراسری روی همه‌ی صفحات؛ فقط اکشن‌هایی که [AllowAnonymous] دارند
 // (مثل صفحه‌ی Login) بدون ورود قابل دسترسی هستند.
@@ -1409,15 +1422,16 @@ app.MapGet("/health", async (PEMS.Persistence.Context.PEMSDbContext db) =>
 
 // Anonymous, details-free schema state for deployment pipelines/monitors: 200 only when every shipped
 // migration is applied; 503 otherwise (body is just the state name).
-app.MapGet("/health/database", async (PEMS.Application.Interfaces.IDatabaseUpdateService updates) =>
+app.MapGet("/health/database", async (PEMS.Application.Interfaces.IDatabaseUpdateService updates, PEMS.Web.Definitions.OwnershipPreflightReport ownership) =>
 {
     try
     {
         var status = await updates.GetStatusAsync();
-        return Results.Text(status.State.ToString(),
-            statusCode: status.State == PEMS.Application.DTOs.DatabaseSetupState.UpToDate
-                ? StatusCodes.Status200OK
-                : StatusCodes.Status503ServiceUnavailable);
+        var upToDate = status.State == PEMS.Application.DTOs.DatabaseSetupState.UpToDate;
+        // SCRUM-797: an update whose shipped forms would collide with a customer's application field stops before it writes; the form, field and reason are listed here (product form names only, no customer data)
+        var conflicts = await ownership.GetAsync();
+        var body = conflicts.Count == 0 ? status.State.ToString() : status.State + "\r\n" + string.Join("\r\n", conflicts.Select(c => c.Line));
+        return Results.Text(body, statusCode: upToDate && conflicts.Count == 0 ? StatusCodes.Status200OK : StatusCodes.Status503ServiceUnavailable);
     }
     catch
     {

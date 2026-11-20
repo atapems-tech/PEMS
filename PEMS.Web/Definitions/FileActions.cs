@@ -8,6 +8,9 @@ using PEMS.Application.Definitions;
 using PEMS.Application.Interfaces;
 using PEMS.Application.Uploads;
 using PEMS.UI.Abstractions;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace PEMS.Web.Definitions;
 
@@ -104,7 +107,7 @@ public sealed class FileUploadAction(IUploadGuard guard, IServiceScopeFactory sc
 }
 
 /// <summary>
-/// <c>file.export</c>: the rows of a grid data source definition as a CSV or Excel file (SCRUM-615). Parameters: <c>dataSource</c> (key of a grid data source), <c>format</c> (csv or xlsx), <c>fileName</c> (without extension),
+/// <c>file.export</c>: the rows of a grid data source definition as a CSV, Excel or PDF file (SCRUM-615, SCRUM-800). Parameters: <c>dataSource</c> (key of a grid data source), <c>format</c> (csv, xlsx or pdf), <c>fileName</c> (without extension), <c>title</c> (pdf: the heading, a text in both languages), <c>landscape</c> (pdf, default true),
 /// <c>columns</c> (<c>{ "field": "name", "header": {fa, en} }</c>), <c>maxRows</c> (default 5000, at most 50000). The data source is read with the rights of the user (its permission, the provider's roles, row-level rules); the posted values
 /// (search, sort, filters, as in a list) narrow the rows. A cell that would be read as a formula is written as text.
 /// </summary>
@@ -114,7 +117,7 @@ public sealed class FileExportAction(IServiceScopeFactory scopes) : IActionHandl
     public const int DefaultMaxRows = 5000;
     public const int AbsoluteMaxRows = 50000;
     private static readonly Regex Name = new("^[A-Za-z0-9._ -]{1,80}$", RegexOptions.Compiled);
-    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "dataSource", "format", "fileName", "columns", "maxRows" };
+    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "dataSource", "format", "fileName", "columns", "maxRows", "title", "landscape" };
     private static readonly JsonSerializerOptions Web = new(JsonSerializerDefaults.Web);
 
     public string Key => HandlerKey;
@@ -125,7 +128,9 @@ public sealed class FileExportAction(IServiceScopeFactory scopes) : IActionHandl
         var errors = new List<DefinitionFieldError>();
         foreach (var p in parameters ?? []) if (!Allowed.Contains(p.Key)) errors.Add(new("/" + p.Key, "unknown-property", "Def_Err_UnknownProperty", $"'{p.Key}' is not a setting of file.export."));
         if (string.IsNullOrWhiteSpace(EntityJson.Str(parameters?["dataSource"]))) errors.Add(new("/dataSource", "required", "Def_Err_Required", "dataSource is the key of a grid data source definition."));
-        if (EntityJson.Str(parameters?["format"]) is not ("csv" or "xlsx")) errors.Add(new("/format", "unknown-format", "Def_Err_Type", "format is csv or xlsx."));
+        if (EntityJson.Str(parameters?["format"]) is not ("csv" or "xlsx" or "pdf")) errors.Add(new("/format", "unknown-format", "Def_Err_Type", "format is csv, xlsx or pdf."));
+        if (parameters?["title"] is { } title) DataSourceDefinitionKind.CheckLabel(title, "/title", errors);
+        if (parameters?["landscape"] is { } land && !(land is JsonValue lv && lv.TryGetValue<bool>(out _))) errors.Add(new("/landscape", "wrong-type", "Def_Err_Type", "landscape is true or false."));
         if (parameters?["fileName"] is { } fn && (EntityJson.Str(fn) is not { } name || !Name.IsMatch(name))) errors.Add(new("/fileName", "invalid-name", "Def_Err_Type", "fileName is letters, digits, space . _ - (no extension, no path)."));
         if (parameters?["maxRows"] is { } mr && !(mr is JsonValue mv && mv.TryGetValue<int>(out var rows) && rows is >= 1 and <= AbsoluteMaxRows)) errors.Add(new("/maxRows", "range", "Def_Err_Range", $"maxRows is a whole number from 1 to {AbsoluteMaxRows}."));
         if (parameters?["columns"] is not JsonArray columns || columns.Count == 0 || columns.Count > 60) errors.Add(new("/columns", "required", "Def_Err_Required", "columns is a list of 1 to 60 columns."));
@@ -177,6 +182,29 @@ public sealed class FileExportAction(IServiceScopeFactory scopes) : IActionHandl
         return stream.ToArray();
     }
 
+    /// <summary>A PDF table of the rows (SCRUM-800): the heading, one header row and the rows, the page direction follows the language, every cell is plain text.</summary>
+    public static byte[] Pdf(string? title, IReadOnlyList<string> headers, IReadOnlyList<IReadOnlyList<string>> rows, bool rtl, bool landscape)
+    {
+        QuestPDF.Settings.License = LicenseType.Community;
+        var document = Document.Create(container => container.Page(page =>
+        {
+            page.Size(landscape ? PageSizes.A4.Landscape() : PageSizes.A4);
+            page.Margin(1f, Unit.Centimetre);
+            page.DefaultTextStyle(x => x.FontSize(9).FontFamily("Arial"));
+            if (rtl) page.ContentFromRightToLeft();
+            if (!string.IsNullOrWhiteSpace(title)) page.Header().PaddingBottom(6).Text(title).Bold().FontSize(13);
+            page.Content().Table(table =>
+            {
+                table.ColumnsDefinition(c => { foreach (var _ in headers) c.RelativeColumn(); });
+                foreach (var h in headers) table.Cell().Border(0.5f).Background(Colors.Grey.Lighten3).Padding(3).Text(h).SemiBold();
+                foreach (var row in rows)
+                    foreach (var cell in row) table.Cell().Border(0.5f).Padding(3).Text(string.IsNullOrEmpty(cell) ? " " : cell);
+            });
+            page.Footer().AlignCenter().Text(t => { t.CurrentPageNumber(); t.Span(" / "); t.TotalPages(); });
+        }));
+        return document.GeneratePdf();
+    }
+
     public async Task<ActionOutcome> ExecuteAsync(ActionInvocation invocation, CancellationToken ct)
     {
         var p = invocation.Parameters;
@@ -212,10 +240,17 @@ public sealed class FileExportAction(IServiceScopeFactory scopes) : IActionHandl
         }
 
         var headers = columns.Select(c => c["header"]?.Deserialize<TranslatableText>(PemsJson.Options)?.Resolve(culture) ?? EntityJson.Str(c["field"])!).ToList();
-        var bytes = format == "csv" ? Csv(headers, rows) : Xlsx(headers, rows);
+        var title = p?["title"]?.Deserialize<TranslatableText>(PemsJson.Options)?.Resolve(culture);
+        var landscape = p?["landscape"] is not JsonValue lv || !lv.TryGetValue<bool>(out var l) || l;
+        var bytes = format switch
+        {
+            "csv" => Csv(headers, rows),
+            "pdf" => Pdf(title, headers, rows, culture.TextInfo.IsRightToLeft, landscape),
+            _ => Xlsx(headers, rows),
+        };
         var baseName = EntityJson.Str(p?["fileName"]) ?? "export";
         var fileName = $"{baseName}-{DateTime.UtcNow:yyyyMMdd}.{format}";
-        var contentType = format == "csv" ? "text/csv; charset=utf-8" : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        var contentType = format switch { "csv" => "text/csv; charset=utf-8", "pdf" => "application/pdf", _ => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
         return ActionOutcome.Download(new FileResult(bytes, fileName, contentType));
     }
 
@@ -225,7 +260,8 @@ public sealed class FileExportAction(IServiceScopeFactory scopes) : IActionHandl
 /// <summary>
 /// <c>file.download</c>: a stored file for the user to download, by the key the upload gave (SCRUM-615). Parameters: <c>field</c> (the posted value that holds the key, default <c>key</c>), <c>prefix</c> (the logical folder the key must
 /// be in, for example <c>vdr/comments</c>: a key outside it is refused, so a definition can only serve the files of the folder it names), <c>fileName</c> (optional name shown to the user; default the stored name), <c>maxMb</c> (default 50).
-/// The action's own permission and roles decide who may run it; a record-level rule (who may read this file of this record) is a data source or a <c>deny</c> rule in the definition that names the record.
+/// The action's own permission and roles decide who may run it. <c>authorizeBy</c> (SCRUM-801) is the record-level decision: <c>{ "dataSource": "key", "filter": "fileKey" }</c> reads the grid data source of the owning record, filtered by the file key (<c>f.fileKey=eq:key</c>),
+/// with the rights of the user (its permission and row-level rules); the file is served only when that read returns a record, so a user who may not read the record that owns the file gets nothing.
 /// </summary>
 public sealed class FileDownloadAction(IServiceScopeFactory scopes) : IActionHandler
 {
@@ -233,7 +269,7 @@ public sealed class FileDownloadAction(IServiceScopeFactory scopes) : IActionHan
     public const int DefaultMaxMb = 50;
     private static readonly Regex Prefix = new("^[a-z0-9][a-z0-9/_-]{0,60}$", RegexOptions.Compiled);
     private static readonly Regex FieldName = new("^[A-Za-z][A-Za-z0-9_.-]{0,60}$", RegexOptions.Compiled);
-    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "field", "prefix", "fileName", "maxMb" };
+    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "field", "prefix", "fileName", "maxMb", "authorizeBy" };
 
     public string Key => HandlerKey;
     public IReadOnlyCollection<string>? AllowedRoles => null;
@@ -251,6 +287,16 @@ public sealed class FileDownloadAction(IServiceScopeFactory scopes) : IActionHan
         if (EntityJson.Str(parameters?["prefix"]) is not { } prefix || !Prefix.IsMatch(prefix) || prefix.Contains("//", StringComparison.Ordinal)) errors.Add(new("/prefix", "required", "Def_Err_Required", "prefix is the logical folder the files are in (lower-case letters, digits, / _ -)."));
         if (parameters?["fileName"] is { } n && !(EntityJson.Str(n) is { } ns && ns.Length is >= 1 and <= 120)) errors.Add(new("/fileName", "invalid-name", "Def_Err_Type", "fileName is a name of 1 to 120 characters."));
         if (parameters?["maxMb"] is { } max && !(max is JsonValue v && v.TryGetValue<int>(out var mb) && mb is >= 1 and <= 500)) errors.Add(new("/maxMb", "range", "Def_Err_Range", "maxMb is a whole number from 1 to 500."));
+        if (parameters?["authorizeBy"] is { } by)
+        {
+            if (by is not JsonObject auth) errors.Add(new("/authorizeBy", "wrong-type", "Def_Err_Type", "authorizeBy is { dataSource, filter }."));
+            else
+            {
+                foreach (var a in auth) if (a.Key is not ("dataSource" or "filter")) errors.Add(new("/authorizeBy/" + a.Key, "unknown-property", "Def_Err_UnknownProperty", $"'{a.Key}' is not a property of authorizeBy."));
+                if (string.IsNullOrWhiteSpace(EntityJson.Str(auth["dataSource"]))) errors.Add(new("/authorizeBy/dataSource", "required", "Def_Err_Required", "dataSource is the key of the grid data source of the record that owns the file."));
+                if (EntityJson.Str(auth["filter"]) is not { } filter || !FieldName.IsMatch(filter)) errors.Add(new("/authorizeBy/filter", "required", "Def_Err_Required", "filter is the field of the data source that holds the file key."));
+            }
+        }
         return errors;
     }
 
@@ -263,6 +309,17 @@ public sealed class FileDownloadAction(IServiceScopeFactory scopes) : IActionHan
         if (!KeyAllowed(prefix, key)) return ActionOutcome.Refused(field, Text("This file cannot be downloaded here.", "این فایل از اینجا قابل دریافت نیست."));
 
         using var scope = ActionScope.Open(scopes);
+        if (p?["authorizeBy"] is JsonObject authorize)
+        {
+            var data = scope.ServiceProvider.GetRequiredService<DataSourceExecutor>();
+            var query = new List<KeyValuePair<string, string?>>
+            {
+                new("f." + EntityJson.Str(authorize["filter"]), "eq:" + key), new("page", "1"), new("pageSize", "1"),
+            };
+            var owner = await data.QueryAsync(EntityJson.Str(authorize["dataSource"])!, query, invocation.Culture, invocation.Roles, invocation.UserName, ct: ct);
+            if (owner.Status != DataStatus.Ok || (owner.Items?.Count ?? 0) == 0)      // not found, not allowed or no record of this user's view owns the file: the same answer, so nothing is revealed
+                return ActionOutcome.Refused(field, Text("This file cannot be downloaded here.", "این فایل از اینجا قابل دریافت نیست."));
+        }
         var storage = scope.ServiceProvider.GetRequiredService<IFileStorageService>();
         if (!await storage.ExistsAsync(key!)) return ActionOutcome.Refused(field, Text("The file was not found.", "فایل پیدا نشد."));
 

@@ -29,6 +29,12 @@ public sealed class FileDownloadTests
     [InlineData("""{ "prefix": "a", "maxMb": 0 }""", "/maxMb")]
     [InlineData("""{ "prefix": "a", "field": "1x" }""", "/field")]
     [InlineData("""{ "prefix": "a", "path": "x" }""", "/path")]
+    [InlineData("""{ "prefix": "a", "authorizeBy": { "dataSource": "vdr-comments-grid", "filter": "fileKey" } }""", null)]
+    [InlineData("""{ "prefix": "a", "authorizeBy": { "filter": "fileKey" } }""", "/authorizeBy/dataSource")]
+    [InlineData("""{ "prefix": "a", "authorizeBy": { "dataSource": "x" } }""", "/authorizeBy/filter")]
+    [InlineData("""{ "prefix": "a", "authorizeBy": { "dataSource": "x", "filter": "1k" } }""", "/authorizeBy/filter")]
+    [InlineData("""{ "prefix": "a", "authorizeBy": { "dataSource": "x", "filter": "k", "any": 1 } }""", "/authorizeBy/any")]
+    [InlineData("""{ "prefix": "a", "authorizeBy": "x" }""", "/authorizeBy")]
     public void The_settings_are_checked_when_the_definition_is_loaded(string parameters, string? pointer)
     {
         var errors = new FileDownloadAction(null!).ValidateParameters((JsonObject)JsonNode.Parse(parameters)!);
