@@ -739,8 +739,7 @@
                    واقعیِ RolesController.Create است). Roles دست‌نخورده می‌ماند - نقش یک سازه‌ی
                    مستقل و قابل‌استفاده‌ی مجدد است، نه بخشی از این تجمیع. *@
 
-                <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("WorkflowManagement", "Admin"))"
-                   asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">
+                <pems-nav-link item="false" sub="true" href="/p/workflow-management" active="@Context.Request.Path.StartsWithSegments("/p/workflow")">
                     <pems-icon name="bi-diagram-3" /> @Localizer["Workflow Management"]
                 </pems-nav-link>
                 <pems-nav-link item="false" sub="true" active="@(InArea("Admin") && IsActive("Help", "Admin"))"

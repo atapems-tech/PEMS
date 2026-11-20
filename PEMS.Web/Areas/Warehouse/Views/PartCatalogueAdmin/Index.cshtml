@@ -72,7 +72,7 @@
     @* ---------------------------------------------------- Workflow (PEMS.WorkflowPlatform) *@
     <section class="vs-panel pc-card mt-3">
         <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-signpost-split" /> @Localizer["Pc_Adm_Steps"]</pems-heading>
-        <pems-text class="small text-muted">@Localizer["Pc_Adm_StepsHint"] <pems-link asp-area="Admin" asp-controller="WorkflowManagement" asp-action="Index">@Localizer["Pc_Adm_OpenWorkflowDesigner"]</pems-link></pems-text>
+        <pems-text class="small text-muted">@Localizer["Pc_Adm_StepsHint"] <pems-link href="/p/workflow-management">@Localizer["Pc_Adm_OpenWorkflowDesigner"]</pems-link></pems-text>
         <div class="pc-table-scroll">
             <pems-data-table data="@(DataRows.Of(ov.WorkflowStages, c_ => c_.Add(((Localizer["Pc_Col_Order"])?.ToString() ?? ""), st => (object?)(st.Order), css: "vs-num").Add(((Localizer["Pc_Col_Step"])?.ToString() ?? ""), st => (object?)(Localizer["Pc_Step_" + st.Name])).Add(((Localizer["Pc_Adm_Responsibility"])?.ToString() ?? ""), st => (object?)(st.ResponsibilityKey), kind: DataCellKind.Code).Add(((Localizer["Pc_Col_Condition"])?.ToString() ?? ""), st => (object?)(string.IsNullOrEmpty(st.EntryCondition) ? Localizer["Pc_Cond_Always"].Value : st.EntryCondition))))" enterprise="false" dense="true" css="table-enterprise vs-dense mb-0" />
             @if (!ov.WorkflowStages.Any()) { <div class="vs-empty py-2">@Localizer["Pc_Adm_NoWorkflow"]</div> }

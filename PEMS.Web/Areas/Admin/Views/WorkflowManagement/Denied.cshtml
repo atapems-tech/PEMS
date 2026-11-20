@@ -1,9 +1,0 @@
-@model string
-@using Microsoft.Extensions.Localization
-@using PEMS.Web.Resources
-@inject IStringLocalizer<SharedResource> Localizer
-<pems-page-shell kind="admin">
-    <pems-content-card>
-        <pems-alert tone="warning" css="mb-0"><pems-icon name="bi-shield-lock" /> @Model</pems-alert>
-    </pems-content-card>
-</pems-page-shell>
