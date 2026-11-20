@@ -131,7 +131,7 @@
         </div>
         <div class="@SectionClass(active)" id="sec-eng">
 
-            <pems-nav-link item="false" active="@(IsActive("EngineeringDashboard"))" asp-controller="EngineeringDashboard" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/engineering-dashboard" active="@(IsActive("EngineeringDashboard") || Context.Request.Path.StartsWithSegments("/p/engineering-dashboard"))">
                 <pems-icon name="bi-speedometer2" /> @Localizer["EngineeringDashboard"]
             </pems-nav-link>
 

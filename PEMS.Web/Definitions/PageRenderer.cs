@@ -295,14 +295,21 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
     private async Task<JsonObject?> ReadRecordAsync(JsonObject record, PipelineRequest request, string appKey, string id, List<string> problems, CancellationToken ct)
     {
         if (data is null) { problems.Add($"Instance \"{id}\": the record cannot be read here."); return null; }
-        var source = (string?)record["source"];
+        // batch 5: the source may carry the filters of the page (/d/key?f.x={{params.x|url}}), as the chart source does
+        var source = RuntimeValues.Substitute(record["source"]?.DeepClone(), request) is JsonValue srcValue && srcValue.GetValueKind() == JsonValueKind.String ? (string?)srcValue : null;
+        var sourceQuery = "";
+        if (source is not null && source.IndexOf('?') is var qIndex and >= 0) { sourceQuery = source[(qIndex + 1)..]; source = source[..qIndex]; }
         var idField = (string?)record["idField"];
         var first = record["first"] is JsonValue fv && fv.GetValueKind() is JsonValueKind.True;   // batch 5: the first row of the source (a one-object read operation has no id)
         var recordId = RuntimeValues.Substitute(record["id"]?.DeepClone(), request) is JsonValue v && v.GetValueKind() == JsonValueKind.String ? (string?)v : null;
         var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
         if (key is null || (!first && string.IsNullOrWhiteSpace(idField))) { problems.Add($"Instance \"{id}\": the record binding needs a /d/ source and an idField."); return null; }
         if (!first && string.IsNullOrWhiteSpace(recordId)) return null;   // no id on the request: the part shows "not found"
-        var result = await data.QueryAsync(key, first ? [new("page", "1"), new("pageSize", "1")] : [new("page", "1"), new("pageSize", "1"), new("f." + idField, "eq:" + recordId)], request.Culture, request.Roles, request.UserName, appKey, ct);
+        var recordQuery = new List<KeyValuePair<string, string?>> { new("page", "1"), new("pageSize", "1") };
+        if (!first) recordQuery.Add(new("f." + idField, "eq:" + recordId));
+        var recordExtra = System.Web.HttpUtility.ParseQueryString(sourceQuery);
+        foreach (var name in recordExtra.AllKeys.Where(n => n is not null && n.StartsWith("f.", StringComparison.Ordinal))) if (!string.IsNullOrEmpty(recordExtra[name])) recordQuery.Add(new(name!, recordExtra[name]));
+        var result = await data.QueryAsync(key, recordQuery, request.Culture, request.Roles, request.UserName, appKey, ct);
         switch (result.Status)
         {
             case DataStatus.Forbidden: problems.Add($"Instance \"{id}\": the record is not allowed for this user."); return null;

@@ -192,7 +192,7 @@ public sealed class PageDefinitionKind : IDefinitionKind
                             {
                                 if (bnode is not JsonObject ch) { errors.Add(new(at + "/bindings/chart", "wrong-type", "Def_Err_Type", "chart is an object (source, labelField, series).")); continue; }
                                 var csrc = ch["source"] is JsonValue cs && cs.GetValueKind() == JsonValueKind.String ? (string?)cs : null;
-                                if (csrc is null || !System.Text.RegularExpressions.Regex.IsMatch(csrc, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/chart/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                                if (csrc is null || !System.Text.RegularExpressions.Regex.IsMatch(csrc, "^/d/[a-z0-9][a-z0-9._-]*([?].*)?$")) errors.Add(new(at + "/bindings/chart/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
                                 if (!(ch["labelField"] is JsonValue lf && lf.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)lf))) errors.Add(new(at + "/bindings/chart/labelField", "required", "Def_Err_Required", "labelField names the row property of the labels."));
                                 if (ch["series"] is not JsonArray sa || sa.Count == 0 || sa.Any(x => !(x is JsonObject xo && xo["field"] is JsonValue xf && xf.GetValueKind() == JsonValueKind.String))) errors.Add(new(at + "/bindings/chart/series", "required", "Def_Err_Required", "series is a list of { field, name, color }."));
                                 continue;
@@ -200,7 +200,7 @@ public sealed class PageDefinitionKind : IDefinitionKind
                             if (bname != "record") { errors.Add(new(at + "/bindings/" + bname, "unknown-property", "Def_Err_UnknownProperty", $"'{bname}' is not a binding (record, chart)." )); continue; }
                             if (bnode is not JsonObject rec) { errors.Add(new(at + "/bindings/record", "wrong-type", "Def_Err_Type", "record is an object (source, idField, id).")); continue; }
                             var src = rec["source"] is JsonValue sv && sv.GetValueKind() == JsonValueKind.String ? (string?)sv : null;
-                            if (src is null || !System.Text.RegularExpressions.Regex.IsMatch(src, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/record/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                            if (src is null || !System.Text.RegularExpressions.Regex.IsMatch(src, "^/d/[a-z0-9][a-z0-9._-]*([?].*)?$")) errors.Add(new(at + "/bindings/record/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
                             var firstRow = rec["first"] is JsonValue fv0 && fv0.GetValueKind() == JsonValueKind.True;   // batch 5: the first row of the source needs no id
                             if (!firstRow && !(rec["idField"] is JsonValue iv && iv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)iv))) errors.Add(new(at + "/bindings/record/idField", "required", "Def_Err_Required", "idField names the row property of the id."));
                             if (!firstRow && !(rec["id"] is JsonValue idv2 && idv2.GetValueKind() == JsonValueKind.String)) errors.Add(new(at + "/bindings/record/id", "required", "Def_Err_Required", "id is text, usually {{params.id}}."));

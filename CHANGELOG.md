@@ -35,6 +35,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Engineering dashboard as a definition page (SCRUM-688)
+
+### Changed
+- /p/engineering-dashboard (filters, KPI tiles, most rejected, revision pressure, attention queue, discipline risk) over `IEngineeringDashboardOperations` replaces EngineeringDashboardController and its view; /EngineeringDashboard redirects. The discipline restriction is unchanged. The tiles no longer link to the filtered document list.
+
 ## 2026-11-20 - Definition kinds view and theme (SCRUM-451)
 
 ### Added
