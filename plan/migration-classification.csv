@@ -102,7 +102,6 @@ Warehouse,WarehouseIntake,Procurement and warehouse,"W4 procurement, inventory, 
 ,ProductionOrder,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,ProductionRun,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,QC,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
-,QuickSetup,Platform and shell,"W5 operations, production, organization, other",Hamid,page-definition,proposed,view-only pages: page definitions
 ,RcmFmea,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,RecoveryCodes,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,SearchApi,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"

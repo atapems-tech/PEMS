@@ -32,6 +32,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Quick setup as a definition page (SCRUM-743)
+
+### Changed
+- /p/quick-setup (grid over `QuickSetup.Steps`, permission Setup.View, licence-free like before) replaces QuickSetupController and its view; /QuickSetup redirects. The progress bar is a progress row for now.
+
 ## 2026-11-20 - Dashboard settings and chat assistant as definition pages (SCRUM-680, 672)
 
 ### Changed
