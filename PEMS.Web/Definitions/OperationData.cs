@@ -116,6 +116,9 @@ public sealed class OperationGridProvider(OperationReader reader) : IGridDataPro
             var field = f.Field; var value = f.Value;
             query = f.Op == "eq" ? query.Where(r => string.Equals(Text(r, field), value, StringComparison.OrdinalIgnoreCase)) : query.Where(r => (Text(r, field) ?? "").Contains(value, StringComparison.OrdinalIgnoreCase));
         }
+        // batch 5: fixed equality filters of the definition (<c>"where": { "key": "ByDiscipline" }</c>): one operation answers several charts, each source keeps the rows of one stable key
+        if (request.Parameters.GetValueOrDefault("where") is { } whereJson && JsonNode.Parse(whereJson) is JsonObject where)
+            foreach (var (field, expected) in where) { var f2 = field; var v2 = EntityJson.Str(expected); query = query.Where(r => string.Equals(Text(r, f2), v2, StringComparison.OrdinalIgnoreCase)); }
         var list = query.ToList();
         if (request.Grid.Sort.FirstOrDefault(s => list.Count > 0 && list[0].ContainsKey(s.Field)) is { } sort)
             list = (sort.Descending ? list.OrderByDescending(r => r[sort.Field], Comparer<object?>.Create(Compare)) : list.OrderBy(r => r[sort.Field], Comparer<object?>.Create(Compare))).ToList();

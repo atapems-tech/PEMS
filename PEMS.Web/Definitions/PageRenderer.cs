@@ -162,7 +162,10 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
     private async Task<JsonObject?> BuildChartAsync(JsonObject chart, PipelineRequest request, CultureInfo culture, string appKey, string id, List<string> problems, CancellationToken ct)
     {
         if (data is null) { problems.Add($"Instance \"{id}\": the chart cannot be read here."); return null; }
-        var source = (string?)chart["source"];
+        // batch 5: the source may carry the filters of the page (<c>/d/key?f.fromDate={{params.fromDate|url}}</c>), the same way the url of a grid does
+        var source = RuntimeValues.Substitute(chart["source"]?.DeepClone(), request) is JsonValue sv0 && sv0.GetValueKind() == JsonValueKind.String ? (string?)sv0 : null;
+        var sourceQuery = "";
+        if (source is not null && source.IndexOf('?') is var qi and >= 0) { sourceQuery = source[(qi + 1)..]; source = source[..qi]; }
         var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
         var labelField = (string?)chart["labelField"];
         if (key is null || string.IsNullOrWhiteSpace(labelField) || chart["series"] is not JsonArray series || series.Count == 0)
@@ -170,6 +173,8 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         var top = chart["top"] is JsonValue tv && tv.TryGetValue<int>(out var t) ? Math.Clamp(t, 1, 200) : 50;
         var query = new List<KeyValuePair<string, string?>> { new("page", "1"), new("pageSize", top.ToString(CultureInfo.InvariantCulture)) };
         if (chart["sort"] is JsonValue sv && sv.GetValueKind() == JsonValueKind.String) query.Add(new("sort", (string)sv!));
+        var extra = System.Web.HttpUtility.ParseQueryString(sourceQuery);
+        foreach (var name in extra.AllKeys.Where(n => n is not null && n.StartsWith("f.", StringComparison.Ordinal))) if (!string.IsNullOrEmpty(extra[name])) query.Add(new(name!, extra[name]));
         var result = await data.QueryAsync(key, query, request.Culture, request.Roles, request.UserName, appKey, ct);
         switch (result.Status)
         {

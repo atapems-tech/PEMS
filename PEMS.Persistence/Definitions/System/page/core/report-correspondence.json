@@ -79,6 +79,79 @@
           }
         },
         {
+          "id": "chart-volume-by-month",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-correspondence-chart-volume-by-month?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Incoming",
+                  "fa": "ورودی"
+                }
+              },
+              {
+                "field": "number2",
+                "name": {
+                  "en": "Outgoing",
+                  "fa": "خروجی"
+                }
+              }
+            ],
+            "kind": "bar",
+            "ariaLabel": {
+              "en": "Volume by month",
+              "fa": "حجم به تفکیک ماه"
+            }
+          }
+        },
+        {
+          "id": "chart-by-discipline",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-correspondence-chart-by-discipline?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "hbar",
+            "ariaLabel": {
+              "en": "By discipline",
+              "fa": "بر اساس دیسیپلین"
+            }
+          }
+        },
+        {
+          "id": "chart-by-status",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/report-correspondence-chart-by-status?f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}",
+            "labelField": "name",
+            "series": [
+              {
+                "field": "number",
+                "name": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "By status",
+              "fa": "بر اساس وضعیت"
+            }
+          }
+        },
+        {
           "id": "report-correspondence-rows",
           "component": "data-grid",
           "options": {
