@@ -18,6 +18,14 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-20 - Spreadsheet import by definition; Departments (SCRUM-681)
+
+### Added
+- Action handler `entity.import` (see guideline 04) and the Import Center entry field `Url`.
+### Changed
+- Departments: import and Excel export are the definitions `departments-import` (form and action) and `departments-export`; the list page has Import and Export buttons; both DepartmentControllers and the view are deleted; routes for /Department and /Admin/Department; the Import Center card opens the import form.
+
 ## 2026-11-20 - Knowledge base search as a definition, AI smoke test removed (SCRUM-712, 666)
 
 ### Added

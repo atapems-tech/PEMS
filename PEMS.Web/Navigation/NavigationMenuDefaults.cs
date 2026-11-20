@@ -184,7 +184,7 @@ public static class NavigationMenuDefaults
         Link("admin.navmenu", "admin.sub.access", 35, "Nav_Admin_Title", "bi-menu-button-wide", "NavigationMenu", area: "Admin", rule: "Module:Administration&Role:SystemAdmin"),
         Link("admin.help", "admin.sub.access", 40, "Help Administration", "bi-life-preserver", "Help", area: "Admin", rule: "Module:Administration"),
         Sub("admin.sub.org", "sec.admin", 30, "Organization"),
-        Link("admin.departments", "admin.sub.org", 10, "Departments", "bi-building", "Department", rule: "Module:Administration"),
+        new("admin.departments", "admin.sub.org", L, 10, "Departments", "bi-building", "Module:Administration", ExternalPath: "/p/departments"),   // SCRUM-681: a definition page (/p/...), not a controller
         Link("admin.employees", "admin.sub.org", 20, "Employees", "bi-people", "Employee", rule: "Module:Administration"),
         Link("admin.disciplines", "admin.sub.org", 30, "Disc_Master_Nav", "bi-sliders", "Discipline", "Manage", rule: "Module:Administration|Flag:DisciplineMaster"),
         // SCRUM-639: definition pages (/p/...), not a controller

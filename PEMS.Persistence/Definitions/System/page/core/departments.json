@@ -104,6 +104,35 @@
         "en": "New department",
         "fa": "دپارتمان جدید"
       }
+    },
+    "regions": {
+      "toolbar": [
+        {
+          "id": "import",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Import",
+              "fa": "ایمپورت"
+            },
+            "tone": "neutral",
+            "href": "/f/departments-import"
+          }
+        },
+        {
+          "id": "export",
+          "component": "action-button",
+          "options": {
+            "action": "departments-export",
+            "label": {
+              "en": "Export",
+              "fa": "خروجی"
+            },
+            "tone": "neutral",
+            "icon": "bi-download"
+          }
+        }
+      ]
     }
   }
 }
