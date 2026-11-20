@@ -62,6 +62,8 @@ public class PEMSDbContext
     // تازه‌ی این فاز - استثنای دستیِ Visibility، عمداً جدا از مدل داده‌ی Authorization بالا
     public DbSet<NavigationVisibilityOverride> NavigationVisibilityOverrides { get; set; }
     public DbSet<DefinitionGrant> DefinitionGrants { get; set; }   // SCRUM-591
+    public DbSet<AppliedPackage> AppliedPackages { get; set; }   // SCRUM-807, 814
+    public DbSet<GridSavedView> GridSavedViews { get; set; }   // SCRUM-793
 
     // سایدبار داده‌محور (مدیریت توسط SystemAdmin؛ قاعده‌ی نمایش آیتم‌های سیستمی از کد)
     public DbSet<NavigationMenuItem> NavigationMenuItems { get; set; }

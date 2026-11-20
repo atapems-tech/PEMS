@@ -21,6 +21,11 @@
         return null;
     }
     function token() { var el = document.querySelector('input[name="__RequestVerificationToken"]'); return el ? el.value : ''; }
+    /** A form post to an action of the site (the answer is JSON); used for the saved views kept on the server (SCRUM-793). */
+    function postForm(url, fields) {
+        return fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token() },
+            body: Object.keys(fields).map(function (k) { return encodeURIComponent(k) + '=' + encodeURIComponent(fields[k]); }).join('&') });
+    }
 
     function init(root) {
         if (root.getAttribute('data-pems-grid-ready') !== null) return;
@@ -317,8 +322,23 @@
                 item.addEventListener('click', function () { state.density = d; panel.hidden = true; offsets = layoutColumns(); draw(); remember(); });
                 panel.appendChild(item);
             });
-            if (kind === 'views') drawViews();
+            if (kind === 'views') { drawViews(); if (!server.loaded) loadServerViews(function () { if (!panel.hidden && panel.getAttribute('data-kind') === 'views') drawViews(); }); }
         }
+        // ---- saved views: the ones of this browser, and (SCRUM-793) the ones kept on the server per user and per role, which follow the user to another device; a view saved for a role is shared by its members
+        var server = { views: [], roles: [], loaded: false };
+        function loadServerViews(done) {
+            fetch('/d/grid-views?f.viewsKey=eq:' + encodeURIComponent(cfg.viewsKey) + '&pageSize=100', { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' })
+                .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                .then(function (d) {
+                    var items = d.items || [];
+                    server.views = items.filter(function (i) { return i.kind === 'view'; });
+                    server.roles = items.filter(function (i) { return i.kind === 'role'; });
+                    server.loaded = true;
+                })
+                .catch(function () { server.loaded = false; })     // no answer or no right: the views of this browser still work
+                .then(done);
+        }
+        function parseState(text) { try { return JSON.parse(text); } catch (e) { return null; } }
         function drawViews() {
             panel.textContent = '';
             var views = store(viewsKey) || {};
@@ -328,11 +348,36 @@
                 slot(item, 'remove').addEventListener('click', function () { delete views[name]; store(viewsKey, views); drawViews(); });
                 panel.appendChild(item);
             });
+            server.views.forEach(function (v) {
+                var label = v.scope === 'user' ? v.name : v.name + ' (' + v.scope.slice(5) + ')';
+                var item = tpl('dg-view-item', { name: label, remove: T.delete });
+                slot(item, 'name').addEventListener('click', function () { var st = parseState(v.state); if (!st) return; applyView(st, false); panel.hidden = true; searchEl.value = state.search; reload(); });
+                slot(item, 'remove').addEventListener('click', function () {
+                    postForm('/a/grid-view-delete', { viewsKey: cfg.viewsKey, name: v.name, scope: v.scope })
+                        .then(function () { loadServerViews(drawViews); });
+                });
+                panel.appendChild(item);
+            });
             var form = tpl('dg-view-save', { input: { attrs: { placeholder: T.viewName, 'aria-label': T.viewName } }, button: T.saveView });
             var input = slot(form, 'input');
+            var scopeBox = null;
+            if (server.loaded) {
+                var picker = tpl('dg-view-scope');
+                scopeBox = slot(picker, 'scope');
+                var me = document.createElement('option'); me.value = 'user'; me.textContent = T.viewScopeMe || 'Only me'; scopeBox.appendChild(me);
+                server.roles.forEach(function (r) { var o = document.createElement('option'); o.value = r.scope; o.textContent = r.name; scopeBox.appendChild(o); });
+                panel.appendChild(picker);
+            }
             slot(form, 'button').addEventListener('click', function () {
                 var name = input.value.trim();
                 if (!name) { input.focus(); return; }
+                if (server.loaded) {
+                    postForm('/a/grid-view-save', { viewsKey: cfg.viewsKey, name: name, scope: scopeBox ? scopeBox.value : 'user', state: JSON.stringify(snapshot()) })
+                        .then(function (r) { if (!r.ok) { views[name] = snapshot(); store(viewsKey, views); } })      // refused or offline: keep it in this browser
+                        .catch(function () { views[name] = snapshot(); store(viewsKey, views); })
+                        .then(function () { loadServerViews(drawViews); });
+                    return;
+                }
                 views[name] = snapshot(); store(viewsKey, views); drawViews();
             });
             panel.appendChild(form);

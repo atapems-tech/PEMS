@@ -526,6 +526,53 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("Alarms");
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.AppliedPackage", b =>
+                {
+                    b.Property<int>("AppliedPackageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AppliedPackageId"));
+
+                    b.Property<DateTime>("AppliedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("AppliedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("BackupPoint")
+                        .HasMaxLength(260)
+                        .HasColumnType("nvarchar(260)");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("PackageHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<bool>("Succeeded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Summary")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Version")
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("AppliedPackageId");
+
+                    b.HasIndex("PackageHash");
+
+                    b.ToTable("AppliedPackages", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Asset", b =>
                 {
                     b.Property<int>("AssetId")
@@ -6390,6 +6437,53 @@ namespace PEMS.Persistence.Migrations
                     b.HasKey("GasTestValidityRuleId");
 
                     b.ToTable("GasTestValidityRules");
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.GridSavedView", b =>
+                {
+                    b.Property<int>("GridSavedViewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GridSavedViewId"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ScopeKey")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ScopeKind")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("StateJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ViewsKey")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("GridSavedViewId");
+
+                    b.HasIndex("ViewsKey", "ScopeKind", "ScopeKey", "Name")
+                        .IsUnique();
+
+                    b.ToTable("GridSavedViews", (string)null);
                 });
 
             modelBuilder.Entity("PEMS.Domain.Entities.HelpArticle", b =>

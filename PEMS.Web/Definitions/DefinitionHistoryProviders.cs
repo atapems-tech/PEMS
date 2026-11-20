@@ -100,7 +100,7 @@ public sealed class DefinitionVersionsGridProvider(IServiceScopeFactory scopes) 
             rows.Add(new Dictionary<string, object?>
             {
                 ["versionRef"] = reference + ":" + v.Number, ["ref"] = reference, ["number"] = v.Number, ["status"] = v.Status.ToString(), ["hash"] = v.ContentHash.Length > 12 ? v.ContentHash[..12] : v.ContentHash,
-                ["summary"] = v.ChangeSummary ?? "", ["createdAt"] = v.CreatedAtUtc.ToString("s", System.Globalization.CultureInfo.InvariantCulture),
+                ["summary"] = v.ChangeSummary ?? "", ["previewUrl"] = $"/preview/definition?ref={Uri.EscapeDataString(reference)}&version={v.Number}", ["createdAt"] = v.CreatedAtUtc.ToString("s", System.Globalization.CultureInfo.InvariantCulture),
                 ["publishedAt"] = v.PublishedAtUtc?.ToString("s", System.Globalization.CultureInfo.InvariantCulture) ?? "", ["publishedBy"] = v.PublishedBy ?? "",
                 ["retiredAt"] = v.RetiredAtUtc?.ToString("s", System.Globalization.CultureInfo.InvariantCulture) ?? "", ["verdict"] = verdict, ["reason"] = reason,
             });

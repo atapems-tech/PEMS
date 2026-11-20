@@ -69,6 +69,9 @@ public sealed record GridTexts
     public required TranslatableText Filter { get; init; }
     public required TranslatableText Delete { get; init; }
 
+    /// <summary>The scope choice "only me" of a saved view (SCRUM-793); optional, a page that writes no texts block or an older one keeps this default.</summary>
+    public TranslatableText ViewScopeMe { get; init; } = TranslatableText.Of(("en", "Only me"), ("fa", "فقط من"));
+
     /// <summary>The grid texts a page gets when it writes none (SCRUM-743: a stored page needs no texts block); every text has both languages, the page may still replace any of them.</summary>
     public static GridTexts Default { get; } = new()
     {

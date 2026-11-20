@@ -173,7 +173,7 @@
                       "en": "Preview",
                       "fa": "پیش‌نمایش"
                     },
-                    "url": "/preview/definition?ref={raw.ref}&version={raw.number}",
+                    "url": "{raw.previewUrl}",
                     "method": "get"
                   },
                   {
