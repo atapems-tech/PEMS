@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the letter",
+    "fa": "رد نامه"
+  },
+  "description": {
+    "en": "Reject the letter",
+    "fa": "رد نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Reject",
+      "args": {
+        "letterId": "field:letterId",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "Letter rejected.",
+      "fa": "نامه رد شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

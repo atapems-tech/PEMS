@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-template-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate the letter template",
+    "fa": "غیرفعال‌سازی قالب نامه"
+  },
+  "description": {
+    "en": "Deactivate the letter template",
+    "fa": "غیرفعال‌سازی قالب نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "LetterTemplatePage",
+      "action": "SetActive",
+      "args": {
+        "id": "field:id",
+        "active": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Template deactivated.",
+      "fa": "قالب غیرفعال شد."
+    },
+    "redirect": "/p/letter-templates"
+  }
+}

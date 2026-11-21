@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-mark-recipient-read",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark a recipient as read",
+    "fa": "علامت خوانده‌شدن گیرنده"
+  },
+  "description": {
+    "en": "Mark a recipient as read",
+    "fa": "علامت خوانده‌شدن گیرنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "MarkRecipientRead",
+      "args": {
+        "letterId": "field:letterId",
+        "letterRecipientId": "field:letterRecipientId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

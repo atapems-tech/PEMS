@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "letter-send",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Send the letter",
+    "fa": "ارسال نامه"
+  },
+  "description": {
+    "en": "Send the letter",
+    "fa": "ارسال نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Send",
+      "args": {
+        "letterId": "field:letterId"
+      }
+    },
+    "success": {
+      "en": "Letter sent.",
+      "fa": "نامه ارسال شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

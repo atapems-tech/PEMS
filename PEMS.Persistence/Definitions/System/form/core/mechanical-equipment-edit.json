@@ -1,0 +1,114 @@
+{
+  "kind": "form",
+  "key": "mechanical-equipment-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit mechanical equipment",
+    "fa": "ویرایش تجهیز مکانیکی"
+  },
+  "description": {
+    "en": "Edit mechanical equipment",
+    "fa": "ویرایش تجهیز مکانیکی"
+  },
+  "payload": {
+    "id": "mechanical-equipment-edit",
+    "title": {
+      "en": "Edit mechanical equipment",
+      "fa": "ویرایش تجهیز مکانیکی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "mechanical-equipment-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "equipmentType",
+        "label": {
+          "en": "Equipment type",
+          "fa": "نوع تجهیز"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "manufacturer",
+        "label": {
+          "en": "Manufacturer",
+          "fa": "سازنده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "model",
+        "label": {
+          "en": "Model",
+          "fa": "مدل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "material",
+        "label": {
+          "en": "Material",
+          "fa": "جنس"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "designPressure",
+        "label": {
+          "en": "Design pressure",
+          "fa": "فشار طراحی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "designTemperature",
+        "label": {
+          "en": "Design temperature",
+          "fa": "دمای طراحی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "operatingPressure",
+        "label": {
+          "en": "Operating pressure",
+          "fa": "فشار عملیاتی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "operatingTemperature",
+        "label": {
+          "en": "Operating temperature",
+          "fa": "دمای عملیاتی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

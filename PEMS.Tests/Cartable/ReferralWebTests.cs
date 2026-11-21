@@ -182,6 +182,14 @@ public class ReferralWebTests
         return (c, ctx);
     }
 
+    // SCRUM-716: the review steps are operations (the definitions run them); a refusal is an UnauthorizedAccessException (the 403 page)
+    private static (PEMS.Web.Services.LetterOperations Ops, PEMSDbContext Ctx) Operations(string name, int userId, bool allowAll = false)
+    {
+        var ctx = LetterTestWorld.NewContext("RefWeb_" + name);
+        var letters = new LetterService(ctx, sanitizer: null!, knowledgeBaseService: null!);
+        return (new PEMS.Web.Services.LetterOperations(ctx, letters, null!, null!, null!, new User { UserId = userId }, new FakePermissionService { AllowAll = allowAll }), ctx);
+    }
+
     private static Letter PendingLetter(PEMSDbContext ctx, params int[] approvers)
     {
         var l = new Letter { LetterId = 900, LetterType = "Internal", LetterNumber = "P-900", LetterDate = DateTime.Today, Subject = "s", Body = "<p>b</p>", Category = "Request", Status = "PendingApproval",
@@ -197,28 +205,27 @@ public class ReferralWebTests
     [Fact]
     public async Task TheCurrentChainApprover_CanApproveWithoutTheModulePermission_OthersCannot()
     {
-        var (asApprover, ctx) = Controller(nameof(TheCurrentChainApprover_CanApproveWithoutTheModulePermission_OthersCannot), userId: 102);
+        var (asApprover, ctx) = Operations(nameof(TheCurrentChainApprover_CanApproveWithoutTheModulePermission_OthersCannot), userId: 102);
         PendingLetter(ctx, 102, 103);
 
         // the second approver's turn has not come: not allowed yet
-        var (notYet, _) = (Controller("later", 103).Ctl, 0);
-        Assert.IsType<ForbidResult>(await notYet.Approve(900, null));
+        var (notYet, _) = Operations("later", 103);
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => notYet.ApproveAsync(900, null));
 
-        var ok = await asApprover.Approve(900, "fine");
-        Assert.IsType<RedirectToActionResult>(ok);
-        Assert.Equal("Letter approved", asApprover.TempData["Message"]);
+        var ok = await asApprover.ApproveAsync(900, "fine");
+        Assert.True(ok.Success);
         Assert.Equal("Approved", ctx.LetterApprovalSteps.Single(s => s.ApproverUserId == 102).Status);
     }
 
     [Fact]
     public async Task SomeoneOutsideTheChain_IsForbiddenFromApproveReturnAndReject()
     {
-        var (c, ctx) = Controller(nameof(SomeoneOutsideTheChain_IsForbiddenFromApproveReturnAndReject), userId: 105);
+        var (c, ctx) = Operations(nameof(SomeoneOutsideTheChain_IsForbiddenFromApproveReturnAndReject), userId: 105);
         PendingLetter(ctx, 102);
 
-        Assert.IsType<ForbidResult>(await c.Approve(900, null));
-        Assert.IsType<ForbidResult>(await c.ReturnForRevision(900, "no"));
-        Assert.IsType<ForbidResult>(await c.Reject(900, "no"));
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => c.ApproveAsync(900, null));
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => c.ReturnForRevisionAsync(900, "no"));
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => c.RejectAsync(900, "no"));
         Assert.Equal("Pending", ctx.LetterApprovalSteps.Single().Status);
         Assert.Equal("PendingApproval", ctx.Letters.Single().Status);
     }
@@ -226,9 +233,9 @@ public class ReferralWebTests
     [Fact]
     public async Task AnApproverWithTheModulePermission_StillWorks()
     {
-        var (c, ctx) = Controller(nameof(AnApproverWithTheModulePermission_StillWorks), userId: 102, allowAll: true);
+        var (c, ctx) = Operations(nameof(AnApproverWithTheModulePermission_StillWorks), userId: 102, allowAll: true);
         PendingLetter(ctx, 102);
-        Assert.IsType<RedirectToActionResult>(await c.ReturnForRevision(900, "please fix"));
+        Assert.True((await c.ReturnForRevisionAsync(900, "please fix")).Success);
         Assert.Equal("ReturnedForRevision", ctx.Letters.Single().Status);
     }
 

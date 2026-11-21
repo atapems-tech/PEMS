@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mechanical-equipment-rotating",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mechanical equipment rotating",
+    "fa": "تجهیز مکانیکی Rotating"
+  },
+  "description": {
+    "en": "Mechanical equipment rotating",
+    "fa": "تجهیز مکانیکی Rotating"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MechanicalEquipment",
+      "action": "Rotating",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

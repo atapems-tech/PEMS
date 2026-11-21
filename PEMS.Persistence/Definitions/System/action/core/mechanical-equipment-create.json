@@ -1,0 +1,54 @@
+{
+  "kind": "action",
+  "key": "mechanical-equipment-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create mechanical equipment",
+    "fa": "ایجاد تجهیز مکانیکی"
+  },
+  "description": {
+    "en": "Create mechanical equipment",
+    "fa": "ایجاد تجهیز مکانیکی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "MechanicalEquipment",
+      "map": {
+        "equipmentId": "EquipmentId",
+        "tagNumber": "TagNumber",
+        "equipmentType": "EquipmentType",
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "description": "Description"
+      },
+      "required": [
+        "TagNumber",
+        "EquipmentType"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "EquipmentId"
+          ],
+          "message": {
+            "en": "This equipment already has a mechanical equipment profile.",
+            "fa": "این تجهیز از قبل یک پروفایل Mechanical Equipment دارد."
+          },
+          "ignoreEmpty": true
+        }
+      ]
+    },
+    "success": {
+      "en": "Mechanical equipment created.",
+      "fa": "Mechanical Equipment ساخته شد."
+    },
+    "redirect": "/p/mechanical-equipments"
+  }
+}

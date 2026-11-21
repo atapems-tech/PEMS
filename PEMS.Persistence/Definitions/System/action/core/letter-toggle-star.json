@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-toggle-star",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Star or unstar a letter",
+    "fa": "ستاره‌دار کردن نامه"
+  },
+  "description": {
+    "en": "Star or unstar a letter",
+    "fa": "ستاره‌دار کردن نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "ToggleStar",
+      "args": {
+        "letterId": "field:letterId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/Letter",
+    "redirectBack": true
+  }
+}

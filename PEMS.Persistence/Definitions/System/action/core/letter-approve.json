@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve the letter",
+    "fa": "تأیید نامه"
+  },
+  "description": {
+    "en": "Approve the letter",
+    "fa": "تأیید نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Approve",
+      "args": {
+        "letterId": "field:letterId",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "Letter approved.",
+      "fa": "نامه تأیید شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

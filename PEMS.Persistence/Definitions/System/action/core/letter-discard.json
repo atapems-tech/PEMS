@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "letter-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard the draft",
+    "fa": "حذف پیش‌نویس"
+  },
+  "description": {
+    "en": "Discard the draft",
+    "fa": "حذف پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "DiscardDraft",
+      "args": {
+        "letterId": "field:letterId"
+      }
+    },
+    "success": {
+      "en": "Draft discarded.",
+      "fa": "پیش‌نویس حذف شد."
+    },
+    "redirect": "/Letter"
+  }
+}

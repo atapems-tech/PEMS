@@ -78,6 +78,7 @@ public class LetterComposeControllerTests
         public LetterComposeService Compose = null!;
         public FakeFiles Files = null!;
         public FakePermissionService Permissions = null!;
+        public FakeUser User = null!;
     }
 
     private static Rig NewRig(int? userId = LetterTestWorld.Author, bool approverPermission = false, string[]? roles = null, string name = "ctl", ILetterTemplateService? templates = null)
@@ -90,7 +91,15 @@ public class LetterComposeControllerTests
         var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?> { ["Letterhead:CompanyName"] = "Acme <Corp>", ["Letterhead:Address"] = "1 Main St" }).Build();
         var controller = new LetterComposeController(compose, letters, new LetterComplianceService(ctx), ctx, user, permissions,
             new RichTextSanitizerService(), files, new ResxLocalizer(LoadResx("SharedResource.fa.resx")), config, templates).WithTempData().WithUrlHelper();
-        return new Rig { Controller = controller, Ctx = ctx, Letters = letters, Compose = compose, Files = files, Permissions = permissions };
+        return new Rig { Controller = controller, Ctx = ctx, Letters = letters, Compose = compose, Files = files, Permissions = permissions, User = user };
+    }
+
+    // SCRUM-715: discard, send, archive and the approver change are operations (the definitions run them)
+    private static PEMS.Web.Services.LetterOperations Ops(Rig rig, FakeUser? user = null)
+        => new(rig.Ctx, rig.Letters, null!, null!, rig.Compose, user ?? rig.User, rig.Permissions);
+
+    private static void Unused()
+    {
     }
 
 
@@ -405,9 +414,9 @@ public class LetterComposeControllerTests
         var rig = NewRig();
         var id = J(await rig.Controller.Save(Req(LetterTestWorld.ValidInput()))).GetProperty("letterId").GetInt32();
 
-        var result = await rig.Controller.Discard(id);
+        var result = await Ops(rig).DiscardDraftAsync(id);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.False(rig.Ctx.Letters.Single(l => l.LetterId == id).IsActive);   // soft
     }
 
@@ -416,15 +425,13 @@ public class LetterComposeControllerTests
     {
         var rig = NewRig();
         var id = await SentLetterAsync(rig);
-        await rig.Controller.Archive(id);
+        await Ops(rig).ArchiveAsync(id);
         Assert.Equal("Archived", rig.Ctx.Letters.Single(l => l.LetterId == id).Status);
 
         var rig2 = NewRig(name: "ctl2");
         var id2 = await SentLetterAsync(rig2);
-        var other = new LetterComposeController(rig2.Compose, rig2.Letters, new LetterComplianceService(rig2.Ctx), rig2.Ctx,
-            new FakeUser { UserId = LetterTestWorld.Other, UserName = "u5" }, rig2.Permissions, new RichTextSanitizerService(), rig2.Files,
-            new ResxLocalizer(new Dictionary<string, string>()), new ConfigurationBuilder().Build()).WithTempData().WithUrlHelper();
-        await other.Archive(id2);
+        var other = new FakeUser { UserId = LetterTestWorld.Other, UserName = "u5" };
+        await Ops(rig2, other).ArchiveAsync(id2);
         Assert.Equal("Sent", rig2.Ctx.Letters.Single(l => l.LetterId == id2).Status);
     }
 
@@ -437,13 +444,11 @@ public class LetterComposeControllerTests
         input.ApproverUserIds = new List<int> { LetterTestWorld.Approver1 };
         var id = J(await rig.Controller.Submit(Req(input))).GetProperty("letterId").GetInt32();
 
-        await rig.Controller.ReassignApprover(id, 1, LetterTestWorld.Approver2);
+        await Ops(rig).ReassignApproverAsync(id, 1, LetterTestWorld.Approver2);
         Assert.Equal(LetterTestWorld.Approver1, rig.Ctx.LetterApprovalSteps.Single(s => s.LetterId == id).ApproverUserId);   // plain user: unchanged
 
-        var admin = new LetterComposeController(rig.Compose, rig.Letters, new LetterComplianceService(rig.Ctx), rig.Ctx,
-            new FakeUser { UserId = LetterTestWorld.Other, UserName = "admin", Roles = new[] { "SystemAdmin" } }, rig.Permissions, new RichTextSanitizerService(), rig.Files,
-            new ResxLocalizer(new Dictionary<string, string>()), new ConfigurationBuilder().Build()).WithTempData().WithUrlHelper();
-        await admin.ReassignApprover(id, 1, LetterTestWorld.Approver2);
+        var admin = new FakeUser { UserId = LetterTestWorld.Other, UserName = "admin", Roles = new[] { "SystemAdmin" } };
+        await Ops(rig, admin).ReassignApproverAsync(id, 1, LetterTestWorld.Approver2);
         Assert.Equal(LetterTestWorld.Approver2, rig.Ctx.LetterApprovalSteps.Single(s => s.LetterId == id).ApproverUserId);
     }
 

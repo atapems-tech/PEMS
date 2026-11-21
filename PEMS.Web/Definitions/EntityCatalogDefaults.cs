@@ -78,5 +78,10 @@ internal static class EntityCatalogDefaults
         .Add<SparePart>("SparePartId", e => e.Readable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate")
             .Writable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate"))
         .Add<Warehouse>("WarehouseId", e => e.Create("InventoryMasterData.Create").Edit("InventoryMasterData.Edit")
-            .Readable("Code", "Name", "Description", "IsActive", "CreatedDate").Writable("Code", "Name", "Description", "IsActive", "CreatedDate"));
+            .Readable("Code", "Name", "Description", "IsActive", "CreatedDate").Writable("Code", "Name", "Description", "IsActive", "CreatedDate"))
+        // Mechanical equipment (SCRUM-727): the controller had no permission check beyond signing in; the rotating and static sub-classes are only counted by the list
+        .Add<MechanicalEquipment>("MechanicalEquipmentId", e => e.Readable("EquipmentId", "TagNumber", "EquipmentType", "Manufacturer", "Model", "Material", "DesignPressure", "DesignTemperature", "OperatingPressure", "OperatingTemperature", "Description", "IsActive", "CreatedDate")
+            .Writable("EquipmentId", "TagNumber", "EquipmentType", "Manufacturer", "Model", "Material", "DesignPressure", "DesignTemperature", "OperatingPressure", "OperatingTemperature", "Description", "IsActive", "CreatedDate"))
+        .Add<RotatingEquipment>("RotatingEquipmentId", e => e.Readable("MechanicalEquipmentId", "IsActive"))
+        .Add<StaticEquipment>("StaticEquipmentId", e => e.Readable("MechanicalEquipmentId", "IsActive"));
 }

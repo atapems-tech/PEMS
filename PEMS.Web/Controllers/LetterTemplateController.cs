@@ -20,27 +20,6 @@ public class LetterTemplateController : Controller
         _templates = templates;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        ViewData["Title"] = "Letter Templates";
-        ViewData["Section"] = "Correspondence Management";
-
-        return View(await _templates.ListAsync(null, includeInactive: true));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Edit(int id = 0)
-    {
-        ViewData["Title"] = "Letter Template";
-        ViewData["Section"] = "Correspondence Management";
-
-        if (id == 0) return View(new LetterTemplateDto());
-
-        var template = await _templates.GetAsync(id);
-        if (template == null) return NotFound();
-        return View(template);
-    }
-
     // پیش‌نمایش با مقادیر نمونه (نه داده‌ی واقعی نامه): نشان می‌دهد نشانه‌ها هنگام استفاده چه می‌شوند
     [HttpGet]
     public async Task<IActionResult> Preview(int id)
@@ -66,32 +45,5 @@ public class LetterTemplateController : Controller
         ViewBag.Subject = LetterTemplatePlaceholders.Apply(template.Subject, sample, htmlEncode: false);
         ViewBag.Body = LetterTemplatePlaceholders.Apply(template.Body, sample, htmlEncode: true);
         return View(template);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Save(LetterTemplateDto model)
-    {
-        var (success, error, id) = await _templates.SaveAsync(model);
-        if (!success)
-        {
-            ViewData["Title"] = "Letter Template";
-            ViewData["Section"] = "Correspondence Management";
-            ViewBag.Error = error;
-            return View(nameof(Edit), model);
-        }
-
-        TempData["Message"] = "Template saved";
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetActive(int id, bool active)
-    {
-        if (!await _templates.SetActiveAsync(id, active)) return NotFound();
-
-        TempData["Message"] = active ? "Template activated" : "Template deactivated";
-        return RedirectToAction(nameof(Index));
     }
 }

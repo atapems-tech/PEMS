@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mechanical-equipment-static",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mechanical equipment static",
+    "fa": "تجهیز مکانیکی Static"
+  },
+  "description": {
+    "en": "Mechanical equipment static",
+    "fa": "تجهیز مکانیکی Static"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MechanicalEquipment",
+      "action": "Static",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -8,24 +8,23 @@ namespace PEMS.Web.Services;
 /// <summary>SCRUM-727: the write commands of MechanicalEquipmentController, the logic moved without change (see <see cref="IMechanicalEquipmentOperations"/>).</summary>
 public sealed class MechanicalEquipmentOperations(PEMSDbContext context) : IMechanicalEquipmentOperations
 {
-    public async Task<(bool Success, string? Error)> EditAsync(int mechanicalEquipmentId, string equipmentType, decimal? designPressure = null, decimal? designTemperature = null, decimal? operatingPressure = null,
-        decimal? operatingTemperature = null, string? material = null, string? manufacturer = null, string? model = null, string? description = null)
+    public async Task<List<MechanicalEquipmentHeadRow>> HeadAsync(int id)
     {
-        var mechanical = await context.MechanicalEquipments.FirstOrDefaultAsync(x => x.MechanicalEquipmentId == mechanicalEquipmentId);
-        if (mechanical == null) return (false, "Mechanical equipment not found.");
-
-        mechanical.EquipmentType = equipmentType;
-        mechanical.DesignPressure = designPressure;
-        mechanical.DesignTemperature = designTemperature;
-        mechanical.OperatingPressure = operatingPressure;
-        mechanical.OperatingTemperature = operatingTemperature;
-        mechanical.Material = material;
-        mechanical.Manufacturer = manufacturer;
-        mechanical.Model = model;
-        mechanical.Description = description;
-        await context.SaveChangesAsync();
-        return (true, null);
+        var m = await context.MechanicalEquipments.AsNoTracking().Include(x => x.Equipment).FirstOrDefaultAsync(x => x.MechanicalEquipmentId == id);
+        if (m == null) return [];
+        var rotating = await context.RotatingEquipments.AnyAsync(x => x.MechanicalEquipmentId == id && x.IsActive);
+        var isStatic = await context.StaticEquipments.AnyAsync(x => x.MechanicalEquipmentId == id && x.IsActive);
+        return [new(m.MechanicalEquipmentId, m.TagNumber, m.EquipmentType, m.Equipment?.TagNumber ?? "", m.Manufacturer ?? "", m.Model ?? "", m.Material ?? "", m.DesignPressure?.ToString() ?? "", m.DesignTemperature?.ToString() ?? "",
+            m.OperatingPressure?.ToString() ?? "", m.OperatingTemperature?.ToString() ?? "", m.Description ?? "", m.IsActive, rotating ? "Rotating" : isStatic ? "Static" : "Unclassified")];
     }
+
+    public async Task<List<RotatingEquipmentRow>> RotatingAsync(int id)
+        => await context.RotatingEquipments.AsNoTracking().Where(x => x.MechanicalEquipmentId == id && x.IsActive)
+            .Select(r => new RotatingEquipmentRow(r.MechanicalEquipmentId, r.EquipmentType, r.FlowRate.ToString() ?? "", r.Head.ToString() ?? "", r.SpeedRPM.ToString() ?? "", r.PowerKW.ToString() ?? "", r.DriverType ?? "", r.BearingType ?? "", r.LubricationType ?? "", r.Description ?? "")).ToListAsync();
+
+    public async Task<List<StaticEquipmentRow>> StaticAsync(int id)
+        => await context.StaticEquipments.AsNoTracking().Where(x => x.MechanicalEquipmentId == id && x.IsActive)
+            .Select(r => new StaticEquipmentRow(r.MechanicalEquipmentId, r.EquipmentType, r.Volume.ToString() ?? "", r.DesignPressure.ToString() ?? "", r.DesignTemperature.ToString() ?? "", r.Material ?? "", r.Orientation ?? "", r.CodeStandard ?? "", r.Description ?? "")).ToListAsync();
 
     // the optional sub-class: exactly one of Rotating and Static (a service-level rule, not a database constraint), the same XOR as the Finding design
     public async Task<(bool Success, string? Error)> ClassifyRotatingAsync(int mechanicalEquipmentId, string equipmentType, decimal? flowRate = null, decimal? head = null, int? speedRPM = null, decimal? powerKW = null,

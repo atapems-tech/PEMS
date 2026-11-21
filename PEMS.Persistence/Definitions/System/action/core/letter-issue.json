@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "letter-issue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue the letter",
+    "fa": "صدور نامه"
+  },
+  "description": {
+    "en": "Issue the letter",
+    "fa": "صدور نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Issue",
+      "args": {
+        "letterId": "field:letterId"
+      }
+    },
+    "success": {
+      "en": "Letter issued.",
+      "fa": "نامه صادر شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

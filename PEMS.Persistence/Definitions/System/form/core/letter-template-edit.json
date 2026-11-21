@@ -1,0 +1,211 @@
+{
+  "kind": "form",
+  "key": "letter-template-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter template",
+    "fa": "قالب نامه"
+  },
+  "description": {
+    "en": "Letter template",
+    "fa": "قالب نامه"
+  },
+  "payload": {
+    "id": "letter-template-edit",
+    "title": {
+      "en": "Letter template",
+      "fa": "قالب نامه"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "letter-template-save",
+    "columns": 2,
+    "permission": "Correspondence.Approve",
+    "load": {
+      "model": "LetterTemplatePage",
+      "action": "One"
+    },
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Template name",
+          "fa": "نام قالب"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 150
+      },
+      {
+        "name": "letterType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "",
+            "label": {
+              "en": "All types",
+              "fa": "همه‌ی انواع"
+            }
+          },
+          {
+            "value": "Incoming",
+            "label": {
+              "en": "Incoming",
+              "fa": "وارده"
+            }
+          },
+          {
+            "value": "Outgoing",
+            "label": {
+              "en": "Outgoing",
+              "fa": "صادره"
+            }
+          },
+          {
+            "value": "Internal",
+            "label": {
+              "en": "Internal",
+              "fa": "داخلی"
+            }
+          }
+        ]
+      },
+      {
+        "name": "subject",
+        "label": {
+          "en": "Subject",
+          "fa": "موضوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "span": 2
+      },
+      {
+        "name": "body",
+        "label": {
+          "en": "Body",
+          "fa": "متن"
+        },
+        "kind": "richText",
+        "span": 2
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Normal",
+            "label": {
+              "en": "Normal",
+              "fa": "عادی"
+            }
+          },
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            }
+          }
+        ]
+      },
+      {
+        "name": "confidentialityLevel",
+        "label": {
+          "en": "Confidentiality",
+          "fa": "محرمانگی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Internal",
+            "label": {
+              "en": "Internal",
+              "fa": "Internal"
+            }
+          },
+          {
+            "value": "Public",
+            "label": {
+              "en": "Public",
+              "fa": "Public"
+            }
+          },
+          {
+            "value": "Confidential",
+            "label": {
+              "en": "Confidential",
+              "fa": "Confidential"
+            }
+          },
+          {
+            "value": "Restricted",
+            "label": {
+              "en": "Restricted",
+              "fa": "Restricted"
+            }
+          },
+          {
+            "value": "HighlyConfidential",
+            "label": {
+              "en": "HighlyConfidential",
+              "fa": "HighlyConfidential"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

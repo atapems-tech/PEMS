@@ -94,6 +94,16 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - The review steps (start the review, the discipline answer, the lead decision, return to the vendor), the details edit, hold and release, the deactivation and the comment action status of the vendor document register are definitions (/a/vdr-*); the review steps are the operations of IVdrWorkflowService itself, the rest of IVdrOperations; the module permissions are the floors (a refused user gets the 403 page instead of a message). The two legacy number generators of the controller (the numbering page already uses definitions) are removed. An error of any action definition now brings the user back to the address of the action (when it can be resolved from the posted values) instead of the home page. The list, details, create and the actions with files stay on VDRController (10 actions).
 
+## 2026-11-21 - SCRUM-716, 715: letter commands as definitions
+
+### Changed
+- The letter details commands are definitions (/a/letter-*) over ILetterOperations: the response requirement, star, recipients, tags, the review steps, issue, close, the draft edits, referrals, signature, and the send, archive, approver change and draft discard of the compose workspace. Every action on a letter still asks first whether the user may see it; a refusal is the 403 page. The list, the details page, create, reply, the composer's own JSON endpoints, the bulk bar and the files stay on LetterController (17 actions) and LetterComposeController (10). The controller tests of the review steps and of the compose lifecycle were ported to the operations, and the template permission test now reads the operation catalog.
+
+## 2026-11-21 - SCRUM-717: letter templates as definitions
+
+### Changed
+- The template list (/p/letter-templates), the edit form (/f/letter-template-edit, which loads the saved template through the new form load input), the save and the activate and deactivate are definitions over ILetterTemplateOperations (floor Correspondence.Approve). The preview of a template with sample values stays on LetterTemplateController (1 action).
+
 ## 2026-11-21 - SCRUM-818: a form loads its saved values from a read operation
 
 ### Changed

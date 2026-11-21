@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-mark-referral-read",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark a referral as read",
+    "fa": "علامت خوانده‌شدن ارجاع"
+  },
+  "description": {
+    "en": "Mark a referral as read",
+    "fa": "علامت خوانده‌شدن ارجاع"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "MarkReferralRead",
+      "args": {
+        "letterId": "field:letterId",
+        "referralId": "field:referralId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}
