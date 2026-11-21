@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "letter-resubmit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revise and resubmit the letter",
+    "fa": "اصلاح و ارسال مجدد نامه"
+  },
+  "description": {
+    "en": "Revise and resubmit the letter",
+    "fa": "اصلاح و ارسال مجدد نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Resubmit",
+      "args": {
+        "letterId": "field:letterId",
+        "subject": "field:subject",
+        "body": "field:body",
+        "rowVersion": "field:rowVersion"
+      }
+    },
+    "success": {
+      "en": "Letter revised and resubmitted for review.",
+      "fa": "نامه اصلاح و دوباره برای بازبینی ارسال شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

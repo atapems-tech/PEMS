@@ -33,6 +33,6 @@
       "en": "Static sub-class recorded.",
       "fa": "زیررده‌ی Static Equipment ثبت شد."
     },
-    "redirect": "/MechanicalEquipment/Passport/{mechanicalEquipmentId}"
+    "redirect": "/p/mechanical-equipment-passport?id={mechanicalEquipmentId}"
   }
 }

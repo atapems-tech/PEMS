@@ -93,6 +93,22 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Freeze, unfreeze, hold, release hold, submit, check, inter-discipline answer, approve, reject, issue, return for revision, client response, comment action status and the relationship analysis are definitions (/a/eng-doc-*) over IEngineeringDocumentOperations. They keep the status rules and messages of EngineeringDocumentsController, the module permission floors, the own-discipline rule of the approval and its separation-of-duties guard. The details page posts to them. The list, details, create, edit, delete, attachments, the new revision and the comments with files stay on the controller (15 actions).
 
+
+## 2026-11-21 - SCRUM-716, 715: letter commands as definitions
+
+### Changed
+- The letter details commands are definitions (/a/letter-*) over ILetterOperations: the response requirement, star, recipients, tags, the review steps, issue, close, the draft edits, referrals, signature, and the send, archive, approver change and draft discard of the compose workspace. Every action on a letter still asks first whether the user may see it; a refusal is the 403 page. The list, the details page, create, reply, the composer's own JSON endpoints, the bulk bar and the files stay on LetterController (17 actions) and LetterComposeController (10). The controller tests of the review steps and of the compose lifecycle were ported to the operations, and the template permission test now reads the operation catalog.
+
+## 2026-11-21 - SCRUM-717: letter templates as definitions
+
+### Changed
+- The template list (/p/letter-templates), the edit form (/f/letter-template-edit, which loads the saved template through the new form load input), the save and the activate and deactivate are definitions over ILetterTemplateOperations (floor Correspondence.Approve). The preview of a template with sample values stays on LetterTemplateController (1 action).
+
+## 2026-11-21 - SCRUM-818: a form loads its saved values from a read operation
+
+### Changed
+- A form definition may name a read operation in load (model, action, args). /f/{key}/{id} runs it and fills the fields of the same name from the first row, answers 404 when the id gives no row, and the definition is checked like a data source (the operation, its arguments and their sources). Tests: FormLoadTests. This unlocks the edit forms of the converted screens (letter templates, job plans, meeting minutes, part catalogue requests) and the large letter and document controllers.
+
 ## 2026-11-21 - Login screen branding
 
 ### Changed

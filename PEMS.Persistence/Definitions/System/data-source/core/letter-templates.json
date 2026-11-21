@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-templates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter templates",
+    "fa": "قالب‌های نامه"
+  },
+  "description": {
+    "en": "Letter templates",
+    "fa": "قالب‌های نامه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterTemplatePage",
+      "action": "List"
+    }
+  }
+}

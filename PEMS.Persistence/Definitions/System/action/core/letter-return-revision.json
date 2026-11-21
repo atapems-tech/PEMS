@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-return-revision",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Return the letter for revision",
+    "fa": "بازگرداندن نامه برای اصلاح"
+  },
+  "description": {
+    "en": "Return the letter for revision",
+    "fa": "بازگرداندن نامه برای اصلاح"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "ReturnForRevision",
+      "args": {
+        "letterId": "field:letterId",
+        "reason": "field:reason"
+      }
+    },
+    "success": {
+      "en": "Letter returned for revision.",
+      "fa": "نامه برای اصلاح بازگردانده شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

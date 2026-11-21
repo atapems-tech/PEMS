@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mechanical-equipment-edit-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mechanical equipment (old address)",
+    "fa": "تجهیز مکانیکی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Mechanical equipment (old address)",
+    "fa": "تجهیز مکانیکی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MechanicalEquipment/Edit/{id}",
+    "target": "/f/mechanical-equipment-edit/{id}",
+    "permanent": false
+  }
+}

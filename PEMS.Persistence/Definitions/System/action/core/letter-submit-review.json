@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "letter-submit-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit the draft for review",
+    "fa": "ارسال پیش‌نویس برای بازبینی"
+  },
+  "description": {
+    "en": "Submit the draft for review",
+    "fa": "ارسال پیش‌نویس برای بازبینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "SubmitForReview",
+      "args": {
+        "letterId": "field:letterId"
+      }
+    },
+    "success": {
+      "en": "Submitted for review.",
+      "fa": "برای بازبینی ارسال شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

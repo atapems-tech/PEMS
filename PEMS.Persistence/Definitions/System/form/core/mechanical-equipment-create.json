@@ -1,0 +1,98 @@
+{
+  "kind": "form",
+  "key": "mechanical-equipment-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New mechanical equipment",
+    "fa": "تجهیز مکانیکی جدید"
+  },
+  "description": {
+    "en": "New mechanical equipment",
+    "fa": "تجهیز مکانیکی جدید"
+  },
+  "payload": {
+    "id": "mechanical-equipment-create",
+    "title": {
+      "en": "New mechanical equipment",
+      "fa": "تجهیز مکانیکی جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "mechanical-equipment-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment record (optional)",
+          "fa": "رکورد تجهیز (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "equipment-options"
+      },
+      {
+        "name": "tagNumber",
+        "label": {
+          "en": "Tag number",
+          "fa": "شماره تگ"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "equipmentType",
+        "label": {
+          "en": "Equipment type",
+          "fa": "نوع تجهیز"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "manufacturer",
+        "label": {
+          "en": "Manufacturer",
+          "fa": "سازنده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "model",
+        "label": {
+          "en": "Model",
+          "fa": "مدل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}
