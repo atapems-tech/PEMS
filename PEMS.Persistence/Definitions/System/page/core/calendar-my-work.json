@@ -1,0 +1,168 @@
+{
+  "kind": "page",
+  "key": "calendar-my-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My Work",
+    "fa": "کار من"
+  },
+  "description": {
+    "en": "The planned work of the current user on a day (page definition)",
+    "fa": "کار برنامه‌ریزی‌شده‌ی کاربر جاری در یک روز (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "calendar-my-work",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "calendar-my-work-filters",
+            "resetUrl": "/p/calendar-my-work",
+            "fields": [
+              {
+                "name": "date",
+                "label": {
+                  "en": "Day (empty = today)",
+                  "fa": "روز (خالی = امروز)"
+                },
+                "kind": "date",
+                "value": "{{params.date}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "calendar",
+          "component": "content-blocks",
+          "options": {
+            "id": "calendar",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/MaintenanceCalendar",
+                "text": {
+                  "en": "Maintenance calendar",
+                  "fa": "تقویم نگهداری"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "my-work",
+          "component": "data-grid",
+          "options": {
+            "id": "my-work",
+            "url": "/d/calendar-my-work?f.date={{params.date|url}}",
+            "idField": "workOrderId",
+            "columns": [
+              {
+                "key": "plannedStart",
+                "header": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "width": 150,
+                "type": "datetime"
+              },
+              {
+                "key": "plannedFinish",
+                "header": {
+                  "en": "Finish",
+                  "fa": "پایان"
+                },
+                "width": 150,
+                "type": "datetime"
+              },
+              {
+                "key": "workOrderNumber",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستورکار"
+                },
+                "width": 140
+              },
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 240
+              },
+              {
+                "key": "workOrderType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 110
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "team",
+                "header": {
+                  "en": "Team",
+                  "fa": "تیم"
+                },
+                "width": 150
+              },
+              {
+                "key": "conflict",
+                "header": {
+                  "en": "Conflict",
+                  "fa": "تداخل"
+                },
+                "width": 80
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/WorkOrder/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 480
+          }
+        }
+      ]
+    },
+    "permission": "WorkOrder.View"
+  }
+}
