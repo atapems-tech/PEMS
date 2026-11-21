@@ -290,46 +290,7 @@ public class LetterComposeController : Controller
         return Json(new { success = true, letterId = saved.LetterId, redirect = Url.Action("Details", "Letter", new { id = saved.LetterId }) });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Discard(int letterId)
-    {
-        var actor = await BuildActorAsync();
-        if (actor == null) return Challenge();
-        var (ok, error) = await _compose.DiscardDraftAsync(letterId, actor);
-        TempData[ok ? "Message" : "Error"] = ok ? "Draft discarded" : error;
-        return ok ? RedirectToAction("Index", "Letter") : RedirectToAction("Details", "Letter", new { id = letterId });
-    }
-
     // ------------------------------------------------------------------ lifecycle actions from Details
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Send(int letterId)
-    {
-        var (ok, error) = await _letters.SendAsync(letterId, _currentUser.UserId);
-        TempData[ok ? "Message" : "Error"] = ok ? "Letter sent" : error;
-        return RedirectToAction("Details", "Letter", new { id = letterId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Archive(int letterId)
-    {
-        var canArchiveAny = await CanSeeAllAsync();
-        var (ok, error) = await _letters.ArchiveAsync(letterId, _currentUser.UserId, canArchiveAny);
-        TempData[ok ? "Message" : "Error"] = ok ? "Letter archived" : error;
-        return RedirectToAction("Details", "Letter", new { id = letterId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReassignApprover(int letterId, int stepOrder, int newApproverUserId)
-    {
-        var (ok, error) = await _letters.ReassignApprovalStepAsync(letterId, stepOrder, newApproverUserId, _currentUser.UserId, IsAdmin);
-        TempData[ok ? "Message" : "Error"] = ok ? "Approver reassigned" : error;
-        return RedirectToAction("Details", "Letter", new { id = letterId });
-    }
 
     // ------------------------------------------------------------------ directory / bulk recipients
 

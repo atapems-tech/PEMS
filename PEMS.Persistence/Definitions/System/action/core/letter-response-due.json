@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "letter-response-due",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the response requirement",
+    "fa": "ثبت نیاز به پاسخ"
+  },
+  "description": {
+    "en": "Set the response requirement",
+    "fa": "ثبت نیاز به پاسخ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "SetResponseDue",
+      "args": {
+        "letterId": "field:letterId",
+        "responseRequired": "field:responseRequired",
+        "responseDueDate": "field:responseDueDate"
+      }
+    },
+    "success": {
+      "en": "Response requirement updated.",
+      "fa": "نیاز به پاسخ به‌روز شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

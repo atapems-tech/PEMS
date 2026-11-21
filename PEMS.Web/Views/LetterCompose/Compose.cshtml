@@ -361,7 +361,7 @@
         <pems-button tone="neutral" outline="true" type="button" id="lcPreviewBtn"><pems-icon name="bi-eye" aria-hidden="true" /> @Localizer["Lc_Preview"]</pems-button>
         @if (input.LetterId.HasValue)
         {
-            <pems-form asp-action="Discard" asp-controller="LetterCompose" method="post" id="lcDiscardForm" class="d-inline">
+            <pems-form action="/a/letter-discard" method="post" id="lcDiscardForm" class="d-inline">
                 <input type="hidden" name="letterId" value="@input.LetterId" />
                 <pems-button tone="danger" outline="true" type="submit" id="lcDiscardBtn"><pems-icon name="bi-trash" aria-hidden="true" /> @Localizer["Lc_Discard"]</pems-button>
             </pems-form>

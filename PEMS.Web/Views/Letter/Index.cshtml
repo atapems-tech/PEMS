@@ -587,7 +587,7 @@
                             <pems-table-row class="lp-row @(l.IsUnread ? "lp-unread" : "") @(l.HasOverdueReferral ? "table-danger" : "") @(l.IsTrashed ? "ct-trashed" : "")" data-letter-id="@l.LetterId" data-thread-count="@l.ThreadCount">
                                 <pems-table-cell><pems-input kind="bare" type="checkbox" class="letter-select" value="@l.LetterId" aria-label="@Localizer["Lt_Select"] @l.LetterNumber" /></pems-table-cell>
                                 <pems-table-cell>
-                                    <pems-form asp-action="ToggleStar" method="post" class="d-inline">
+                                    <pems-form action="/a/letter-toggle-star" method="post" class="d-inline">
                                         <input type="hidden" name="letterId" value="@l.LetterId" />
                                         <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
                                         <pems-button tone="none" size="small" css="p-0 border-0 bg-transparent" type="submit" title="@Localizer["Lt_QueueStarred"]" aria-pressed="@(l.IsStarred ? "true" : "false")">

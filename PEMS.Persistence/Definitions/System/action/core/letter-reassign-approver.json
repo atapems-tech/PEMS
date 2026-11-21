@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "letter-reassign-approver",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reassign an approver",
+    "fa": "تغییر تأییدکننده"
+  },
+  "description": {
+    "en": "Reassign an approver",
+    "fa": "تغییر تأییدکننده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "ReassignApprover",
+      "args": {
+        "letterId": "field:letterId",
+        "stepOrder": "field:stepOrder",
+        "newApproverUserId": "field:newApproverUserId"
+      }
+    },
+    "success": {
+      "en": "Approver reassigned.",
+      "fa": "تأییدکننده تغییر کرد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}
