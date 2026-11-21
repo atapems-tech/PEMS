@@ -68,6 +68,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-677: crews as definitions
+
+### Changed
+- ICrewOperations (crew list, members, choices, create crew, add and remove member with the work order section guard and its change record inside the operation); page /p/crews and crew-* forms and actions. The section-guard test now runs against the operations; the six permission-only controller tests were removed (the operation permission floors replace them). Gap: ids are typed on the add member form.
+
 ## 2026-11-21 - SCRUM-699: findings as definitions
 
 ### Changed

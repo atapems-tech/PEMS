@@ -1016,7 +1016,7 @@ else
             <pems-form-group css="mb-2">
                 <span class="fw-bold small">@c.Code — @c.Name</span>
                 <span class="text-muted small">(@c.Members.Count(m => m.IsActive) عضو)</span>
-                @if (Ctl(WoSection.Crew)) { <pems-link asp-controller="Crew" asp-action="Index" class="small">@Localizer["مدیریت اعضا"]</pems-link> }
+                @if (Ctl(WoSection.Crew)) { <pems-link href="/p/crews" class="small">@Localizer["مدیریت اعضا"]</pems-link> }
             </pems-form-group>
         }
     }

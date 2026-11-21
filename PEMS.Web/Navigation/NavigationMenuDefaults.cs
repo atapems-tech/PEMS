@@ -145,7 +145,7 @@ public static class NavigationMenuDefaults
         Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
         new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)
         new("cmms.team", "sec.cmms", L, 90, "Teams", "bi-people", "CmmsItem:Team", ExternalPath: "/p/teams"),   // SCRUM-757: a definition page (/p/...)
-        Link("cmms.crew", "sec.cmms", 100, "Crews", "bi-people-fill", "Crew", rule: "CmmsItem:Crew"),
+        new("cmms.crew", "sec.cmms", L, 100, "Crews", "bi-people-fill", "CmmsItem:Crew", ExternalPath: "/p/crews"),   // SCRUM-677: a definition page (/p/...)
         Link("cmms.shifthandover", "sec.cmms", 110, "Shift Handovers", "bi-arrow-left-right", "ShiftHandover", rule: "CmmsItem:ShiftHandover"),
         Link("cmms.masterdata", "sec.cmms", 120, "Maintenance Master Data", "bi-collection", "MaintenanceMasterData", rule: "CmmsItem:MaintenanceMasterData"),
         Link("cmms.classification", "sec.cmms", 130, "Equipment Classification", "bi-diagram-3-fill", "EquipmentClassification", rule: "CmmsItem:EquipmentClassification"),
