@@ -1,9 +1,13 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Net.Http.Headers;
+using PEMS.Application.Definitions;
 using PEMS.Tests.Api;
 using PEMS.Tests.TestSupport;
+using PEMS.Persistence.Services;
 using PEMS.Web.Api;
 using PEMS.Web.Api.V1;
 using static PEMS.Tests.Api.ApiTestHost;
@@ -18,8 +22,14 @@ public class DefinitionsApiControllerTests
 
     private DefinitionsApiController Api(string? ifMatch = null, string query = "")
     {
-        var (service, _, _) = _world.NewService();
-        var c = new DefinitionsApiController(service, _auth, new FakeCurrentUserService { UserName = "tester" });
+        var (service, _, db) = _world.NewService();
+        IDefinitionImpact impact = new DefinitionImpactService(db, []);
+        var guard = new DefinitionPublishGuard(
+            service,
+            impact,
+            new ConfigurationBuilder().Build(),
+            NullLogger<DefinitionPublishGuard>.Instance);
+        var c = new DefinitionsApiController(service, impact, guard, _auth, new FakeCurrentUserService { UserName = "tester" });
         var http = new DefaultHttpContext();
         if (ifMatch != null) http.Request.Headers[HeaderNames.IfMatch] = ifMatch;
         http.Request.QueryString = new QueryString(query);
@@ -65,7 +75,7 @@ public class DefinitionsApiControllerTests
 
         // publish
         c = Api(etag2);
-        var published = Assert.IsType<DefinitionResource>(Assert.IsType<OkObjectResult>(await c.Publish(id, default)).Value);
+        var published = Assert.IsType<DefinitionResource>(Assert.IsType<OkObjectResult>(await c.Publish(id, false, default)).Value);
         Assert.Equal((1, false), (published.PublishedVersion, published.HasDraft));
         Assert.Contains("create-draft", published.AllowedActions);
 
@@ -77,7 +87,7 @@ public class DefinitionsApiControllerTests
         c = Api(ETag(c));
         Assert.IsType<OkObjectResult>(await c.SaveDraft(id, new DefinitionDraftInput(Json(DefinitionTestWorld.Form.Replace("Item", "Other")), null), default));
         c = Api(ETag(c));
-        Assert.IsType<OkObjectResult>(await c.Publish(id, default));
+        Assert.IsType<OkObjectResult>(await c.Publish(id, false, default));
 
         var read = Api();
         var detail = Assert.IsType<DefinitionResource>(Assert.IsType<OkObjectResult>(await read.Get(id, default)).Value);
@@ -111,7 +121,7 @@ public class DefinitionsApiControllerTests
         var id = Assert.IsType<DefinitionResource>(created.Value).Id;
         var c = Api();
         await c.GetDraft(id, default);
-        var p = Problem(await Api(ETag(c)).Publish(id, default), 422);
+        var p = Problem(await Api(ETag(c)).Publish(id, false, default), 422);
         Assert.Contains(p.Errors, e => e.Pointer == "/fields" && e.Code == "required");
         var read = Api();
         Assert.Null(Assert.IsType<DefinitionResource>(Assert.IsType<OkObjectResult>(await read.Get(id, default)).Value).PublishedVersion);
@@ -121,11 +131,11 @@ public class DefinitionsApiControllerTests
     public async Task Unknown_ids_are_404_and_actions_without_a_draft_say_so()
     {
         Problem(await Api().Get(99, default), 404);
-        Problem(await Api("*").Publish(99, default), 404);
+        Problem(await Api("*").Publish(99, false, default), 404);
         var id = await CreateAsync();
         var c = Api(); await c.GetDraft(id, default);
-        await Api(ETag(c)).Publish(id, default);   // only valid after fixes; payload is valid so this publishes
-        var p = Problem(await Api("*").Publish(id, default), 404);
+        await Api(ETag(c)).Publish(id, false, default);   // only valid after fixes; payload is valid so this publishes
+        var p = Problem(await Api("*").Publish(id, false, default), 404);
         Assert.Equal("urn:pems:problem:no-draft", p.Type);
     }
 
@@ -179,13 +189,19 @@ public class DefinitionsApiControllerTests
     {
         var id = await CreateAsync();
         var c = Api(); await c.GetDraft(id, default);
-        await Api(ETag(c)).Publish(id, default);
+        await Api(ETag(c)).Publish(id, false, default);
         Problem(await Api().Export(id, 5, default), 404);
         var package = Assert.IsType<DefinitionPackageResource>(Assert.IsType<OkObjectResult>(await Api().Export(id, null, default)).Value);
 
         var other = new DefinitionTestWorld();
-        var (service, _, _) = other.NewService();
-        var target = new DefinitionsApiController(service, _auth, new FakeCurrentUserService { UserName = "tester" }) { ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() } };
+        var (service, _, db) = other.NewService();
+        IDefinitionImpact impact = new DefinitionImpactService(db, []);
+        var guard = new DefinitionPublishGuard(
+            service,
+            impact,
+            new ConfigurationBuilder().Build(),
+            NullLogger<DefinitionPublishGuard>.Instance);
+        var target = new DefinitionsApiController(service, impact, guard, _auth, new FakeCurrentUserService { UserName = "tester" }) { ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() } };
         var ok = Assert.IsType<ObjectResult>(await target.Import(package, default));
         Assert.Equal(201, ok.StatusCode);
         Assert.Equal(1, Assert.IsType<DefinitionImportResource>(ok.Value).Created);

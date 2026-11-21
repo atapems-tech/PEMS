@@ -21,13 +21,11 @@
           "id": "wr-total",
           "component": "kpi-tile",
           "options": {
-            "options": {
             "label": {
               "en": "Work requests (total active)",
               "fa": "درخواست‌های کار (کل فعال)"
             },
             "icon": "bi-clipboard-check"
-            }
           },
           "bindings": {
             "record": {
@@ -43,14 +41,12 @@
           "id": "wr-pending",
           "component": "kpi-tile",
           "options": {
-            "options": {
             "label": {
               "en": "WR pending action (submitted, under review, approved)",
               "fa": "درخواست‌های منتظر اقدام"
             },
             "icon": "bi-hourglass-split",
             "tone": "warning"
-            }
           },
           "bindings": {
             "record": {
@@ -66,13 +62,11 @@
           "id": "wo-total",
           "component": "kpi-tile",
           "options": {
-            "options": {
             "label": {
               "en": "Work orders (total active)",
               "fa": "دستورکارها (کل فعال)"
             },
             "icon": "bi-tools"
-            }
           },
           "bindings": {
             "record": {
@@ -88,14 +82,12 @@
           "id": "wo-overdue",
           "component": "kpi-tile",
           "options": {
-            "options": {
             "label": {
               "en": "Work orders overdue (due date passed)",
               "fa": "دستورکارهای معوق (گذشتن از سررسید)"
             },
             "icon": "bi-alarm",
             "tone": "danger"
-            }
           },
           "bindings": {
             "record": {
@@ -151,13 +143,78 @@
               }
             ],
             "texts": {
-              "search": { "en": "Search", "fa": "جستجو" }, "columns": { "en": "Columns", "fa": "ستون‌ها" }, "density": { "en": "Density", "fa": "تراکم" },
-              "compact": { "en": "Compact", "fa": "فشرده" }, "comfortable": { "en": "Comfortable", "fa": "راحت" }, "export": { "en": "Export", "fa": "خروجی" },
-              "views": { "en": "Views", "fa": "نماها" }, "saveView": { "en": "Save view", "fa": "ذخیره نما" }, "viewName": { "en": "View name", "fa": "نام نما" },
-              "loading": { "en": "Loading", "fa": "در حال بارگذاری" }, "empty": { "en": "No rows", "fa": "ردیفی نیست" }, "error": { "en": "Could not load", "fa": "بارگذاری نشد" },
-              "rows": { "en": "{0} rows", "fa": "{0} ردیف" }, "selected": { "en": "{0} selected", "fa": "{0} انتخاب شده" },
-              "selectAllMatching": { "en": "Select all {0}", "fa": "انتخاب همه {0}" }, "clearSelection": { "en": "Clear", "fa": "پاک کردن" },
-              "filter": { "en": "Filter", "fa": "فیلتر" }, "delete": { "en": "Delete", "fa": "حذف" }
+              "search": {
+                "en": "Search",
+                "fa": "جستجو"
+              },
+              "columns": {
+                "en": "Columns",
+                "fa": "ستون‌ها"
+              },
+              "density": {
+                "en": "Density",
+                "fa": "تراکم"
+              },
+              "compact": {
+                "en": "Compact",
+                "fa": "فشرده"
+              },
+              "comfortable": {
+                "en": "Comfortable",
+                "fa": "راحت"
+              },
+              "export": {
+                "en": "Export",
+                "fa": "خروجی"
+              },
+              "views": {
+                "en": "Views",
+                "fa": "نماها"
+              },
+              "saveView": {
+                "en": "Save view",
+                "fa": "ذخیره نما"
+              },
+              "viewName": {
+                "en": "View name",
+                "fa": "نام نما"
+              },
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "No rows",
+                "fa": "ردیفی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "rows": {
+                "en": "{0} rows",
+                "fa": "{0} ردیف"
+              },
+              "selected": {
+                "en": "{0} selected",
+                "fa": "{0} انتخاب شده"
+              },
+              "selectAllMatching": {
+                "en": "Select all {0}",
+                "fa": "انتخاب همه {0}"
+              },
+              "clearSelection": {
+                "en": "Clear",
+                "fa": "پاک کردن"
+              },
+              "filter": {
+                "en": "Filter",
+                "fa": "فیلتر"
+              },
+              "delete": {
+                "en": "Delete",
+                "fa": "حذف"
+              }
             },
             "pageSize": 20,
             "height": 320
@@ -207,13 +264,78 @@
               }
             ],
             "texts": {
-              "search": { "en": "Search", "fa": "جستجو" }, "columns": { "en": "Columns", "fa": "ستون‌ها" }, "density": { "en": "Density", "fa": "تراکم" },
-              "compact": { "en": "Compact", "fa": "فشرده" }, "comfortable": { "en": "Comfortable", "fa": "راحت" }, "export": { "en": "Export", "fa": "خروجی" },
-              "views": { "en": "Views", "fa": "نماها" }, "saveView": { "en": "Save view", "fa": "ذخیره نما" }, "viewName": { "en": "View name", "fa": "نام نما" },
-              "loading": { "en": "Loading", "fa": "در حال بارگذاری" }, "empty": { "en": "No rows", "fa": "ردیفی نیست" }, "error": { "en": "Could not load", "fa": "بارگذاری نشد" },
-              "rows": { "en": "{0} rows", "fa": "{0} ردیف" }, "selected": { "en": "{0} selected", "fa": "{0} انتخاب شده" },
-              "selectAllMatching": { "en": "Select all {0}", "fa": "انتخاب همه {0}" }, "clearSelection": { "en": "Clear", "fa": "پاک کردن" },
-              "filter": { "en": "Filter", "fa": "فیلتر" }, "delete": { "en": "Delete", "fa": "حذف" }
+              "search": {
+                "en": "Search",
+                "fa": "جستجو"
+              },
+              "columns": {
+                "en": "Columns",
+                "fa": "ستون‌ها"
+              },
+              "density": {
+                "en": "Density",
+                "fa": "تراکم"
+              },
+              "compact": {
+                "en": "Compact",
+                "fa": "فشرده"
+              },
+              "comfortable": {
+                "en": "Comfortable",
+                "fa": "راحت"
+              },
+              "export": {
+                "en": "Export",
+                "fa": "خروجی"
+              },
+              "views": {
+                "en": "Views",
+                "fa": "نماها"
+              },
+              "saveView": {
+                "en": "Save view",
+                "fa": "ذخیره نما"
+              },
+              "viewName": {
+                "en": "View name",
+                "fa": "نام نما"
+              },
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "No rows",
+                "fa": "ردیفی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "rows": {
+                "en": "{0} rows",
+                "fa": "{0} ردیف"
+              },
+              "selected": {
+                "en": "{0} selected",
+                "fa": "{0} انتخاب شده"
+              },
+              "selectAllMatching": {
+                "en": "Select all {0}",
+                "fa": "انتخاب همه {0}"
+              },
+              "clearSelection": {
+                "en": "Clear",
+                "fa": "پاک کردن"
+              },
+              "filter": {
+                "en": "Filter",
+                "fa": "فیلتر"
+              },
+              "delete": {
+                "en": "Delete",
+                "fa": "حذف"
+              }
             },
             "pageSize": 20,
             "height": 360
@@ -370,13 +492,78 @@
               }
             ],
             "texts": {
-              "search": { "en": "Search", "fa": "جستجو" }, "columns": { "en": "Columns", "fa": "ستون‌ها" }, "density": { "en": "Density", "fa": "تراکم" },
-              "compact": { "en": "Compact", "fa": "فشرده" }, "comfortable": { "en": "Comfortable", "fa": "راحت" }, "export": { "en": "Export", "fa": "خروجی" },
-              "views": { "en": "Views", "fa": "نماها" }, "saveView": { "en": "Save view", "fa": "ذخیره نما" }, "viewName": { "en": "View name", "fa": "نام نما" },
-              "loading": { "en": "Loading", "fa": "در حال بارگذاری" }, "empty": { "en": "No rows", "fa": "ردیفی نیست" }, "error": { "en": "Could not load", "fa": "بارگذاری نشد" },
-              "rows": { "en": "{0} rows", "fa": "{0} ردیف" }, "selected": { "en": "{0} selected", "fa": "{0} انتخاب شده" },
-              "selectAllMatching": { "en": "Select all {0}", "fa": "انتخاب همه {0}" }, "clearSelection": { "en": "Clear", "fa": "پاک کردن" },
-              "filter": { "en": "Filter", "fa": "فیلتر" }, "delete": { "en": "Delete", "fa": "حذف" }
+              "search": {
+                "en": "Search",
+                "fa": "جستجو"
+              },
+              "columns": {
+                "en": "Columns",
+                "fa": "ستون‌ها"
+              },
+              "density": {
+                "en": "Density",
+                "fa": "تراکم"
+              },
+              "compact": {
+                "en": "Compact",
+                "fa": "فشرده"
+              },
+              "comfortable": {
+                "en": "Comfortable",
+                "fa": "راحت"
+              },
+              "export": {
+                "en": "Export",
+                "fa": "خروجی"
+              },
+              "views": {
+                "en": "Views",
+                "fa": "نماها"
+              },
+              "saveView": {
+                "en": "Save view",
+                "fa": "ذخیره نما"
+              },
+              "viewName": {
+                "en": "View name",
+                "fa": "نام نما"
+              },
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "No rows",
+                "fa": "ردیفی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "rows": {
+                "en": "{0} rows",
+                "fa": "{0} ردیف"
+              },
+              "selected": {
+                "en": "{0} selected",
+                "fa": "{0} انتخاب شده"
+              },
+              "selectAllMatching": {
+                "en": "Select all {0}",
+                "fa": "انتخاب همه {0}"
+              },
+              "clearSelection": {
+                "en": "Clear",
+                "fa": "پاک کردن"
+              },
+              "filter": {
+                "en": "Filter",
+                "fa": "فیلتر"
+              },
+              "delete": {
+                "en": "Delete",
+                "fa": "حذف"
+              }
             },
             "pageSize": 20,
             "height": 280
