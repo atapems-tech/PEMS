@@ -235,7 +235,7 @@
     "PEMS.Web.Controllers.RcmFmeaController": 2,
     "PEMS.Web.Controllers.RecoveryCodesController": 2,
     "PEMS.Web.Controllers.RelationshipController": 10,
-    "PEMS.Web.Controllers.ReliabilityController": 26,
+    "PEMS.Web.Controllers.ReliabilityController": 17,
     "PEMS.Web.Controllers.SearchApiController": 4,
     "PEMS.Web.Controllers.StrategyImportController": 5,
     "PEMS.Web.Controllers.TableExtractionController": 9,

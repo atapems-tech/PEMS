@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "reliability-cbm-strategy-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create CBM strategy",
+    "fa": "ایجاد استراتژی CBM"
+  },
+  "description": {
+    "en": "Create CBM strategy",
+    "fa": "ایجاد استراتژی CBM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "CreateCbmStrategy",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "conditionMonitoringPointId": "field:conditionMonitoringPointId",
+        "justification": "field:justification"
+      }
+    },
+    "success": {
+      "en": "CBM strategy created; build a plan from Maintenance Strategies to schedule it.",
+      "fa": "استراتژی CBM ساخته شد - برای زمان‌بندی واقعی، از Maintenance Strategies یک Plan بسازید."
+    },
+    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+  }
+}

@@ -1,4 +1,4 @@
-@model List<PEMS.Application.DTOs.RcmReviewRecommendationDto>
+﻿@model List<PEMS.Application.DTOs.RcmReviewRecommendationDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -33,7 +33,7 @@
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Intelligence"><pems-icon name="bi-clipboard-data-fill" /> @Localizer["Maintenance Intelligence"]</pems-button>
         @if (canGenerate)
         {
-            <pems-form asp-action="GenerateRcmEvidence" method="post" class="d-inline">
+            <pems-form action="/a/reliability-rcm-evidence-generate" method="post" class="d-inline">
                 <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-search" /> Generate Evidence</pems-button>
             </pems-form>
         }
@@ -65,12 +65,12 @@
         var cell_76_7 = DataCell.Template(rows_76, @<text>@{ var r = item; }
                         @if (r.Status == "PENDING" && canReview)
                         {
-                            <pems-form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                            <pems-form action="/a/reliability-rcm-recommendation-review" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="true" />
                                 <pems-button tone="success" size="small" outline="true" type="submit"><pems-icon name="bi-check-lg" /></pems-button>
                             </pems-form>
-                            <pems-form asp-action="ReviewRcmRecommendation" method="post" class="d-inline">
+                            <pems-form action="/a/reliability-rcm-recommendation-review" method="post" class="d-inline">
                                 <input type="hidden" name="recommendationId" value="@r.RcmReviewRecommendationId" />
                                 <input type="hidden" name="accept" value="false" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-x-lg" /></pems-button>

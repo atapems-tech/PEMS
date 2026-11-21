@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "reliability-ai-insight-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review AI insight",
+    "fa": "بازبینی بینش هوشمند"
+  },
+  "description": {
+    "en": "Review AI insight",
+    "fa": "بازبینی بینش هوشمند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "ReviewAiInsight",
+      "args": {
+        "insightId": "field:insightId",
+        "approve": "field:approve",
+        "notes": "field:notes",
+        "reviewedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The insight was reviewed.",
+      "fa": "بینش بازبینی شد."
+    },
+    "redirect": "/Reliability/AiInsights"
+  }
+}

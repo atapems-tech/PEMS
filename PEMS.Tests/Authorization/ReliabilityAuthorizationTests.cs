@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
@@ -37,6 +37,20 @@ public class ReliabilityAuthorizationTests
 
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>(), UserName = "tester" };
         return (ctx, permissionService, currentUser);
+    }
+
+    // SCRUM-678: the write commands are operations. The action host refuses a caller without the operation permission (false: nothing runs), else it calls the operation (true).
+    private static async Task<bool> RunOperation(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms, string action, Func<IReliabilityOperations, Task> call)
+    {
+        var permission = ((PEMS.Application.Common.PemsOperationAttribute)typeof(IReliabilityOperations).GetMethod(action + "Async")!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission!.Split('.');
+        if (!await perms.HasPermissionAsync(user.Roles, permission[0], permission[1])) return false;
+        var reliabilityService = new ReliabilityService(ctx);
+        var analyticsService = new ReliabilityAnalyticsService(ctx, reliabilityService);
+        var ops = new PEMS.Web.Services.ReliabilityOperations(ctx, new RcmFeedbackService(ctx), new ConditionMonitoringService(ctx),
+            new AIReliabilityInsightService(ctx, null!, analyticsService, new ReliabilityIntelligenceService(ctx), new Microsoft.Extensions.Configuration.ConfigurationBuilder().Build()), user);
+        await call(ops);
+        return true;
     }
 
     private static ReliabilityController CreateController(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms)
@@ -169,22 +183,18 @@ public class ReliabilityAuthorizationTests
     {
         // Viewer فقط View دارد، Edit ندارد - تولید شواهد یک عملیات نوشتنی است.
         var (ctx, perms, user) = await CreateInfra(nameof(GenerateRcmEvidence_ViewerRole_ReturnsForbid), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "GenerateRcmEvidence", o => o.GenerateRcmEvidenceAsync());
 
-        var result = await controller.GenerateRcmEvidence();
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(allowed);
     }
 
     [Fact]
     public async Task GenerateRcmEvidence_MaintenanceEngineer_CanGenerate()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(GenerateRcmEvidence_MaintenanceEngineer_CanGenerate), role: SystemRoles.MaintenanceEngineer);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "GenerateRcmEvidence", o => o.GenerateRcmEvidenceAsync());
 
-        var result = await controller.GenerateRcmEvidence();
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(allowed);
     }
 
     [Fact]
@@ -193,23 +203,18 @@ public class ReliabilityAuthorizationTests
         // Editor (MaintenanceEngineer) می‌تواند شواهد تولید کند اما نمی‌تواند بازبینی/تایید کند -
         // دقیقاً همان تفکیک Editor/Approver که در سراسر این پروژه (RCMFMEA، Reliability) رعایت شده.
         var (ctx, perms, user) = await CreateInfra(nameof(ReviewRcmRecommendation_MaintenanceEngineer_ReturnsForbid), role: SystemRoles.MaintenanceEngineer);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "ReviewRcmRecommendation", o => o.ReviewRcmRecommendationAsync(1, true, null));
 
-        var result = await controller.ReviewRcmRecommendation(1, true, null);
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(allowed);
     }
 
     [Fact]
     public async Task ReviewRcmRecommendation_EngineeringSupervisor_CanReview()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(ReviewRcmRecommendation_EngineeringSupervisor_CanReview), role: SystemRoles.EngineeringSupervisor);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "ReviewRcmRecommendation", o => o.ReviewRcmRecommendationAsync(99999, true, null));
 
-        // شناسه‌ی ناموجود عمداً استفاده شد - هدف این تست فقط اثبات عبور از گیت مجوز است، نه منطق سرویس
-        var result = await controller.ReviewRcmRecommendation(99999, true, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(allowed);
     }
 
     // ==============================================================================
@@ -299,23 +304,18 @@ public class ReliabilityAuthorizationTests
     public async Task CreateConditionMonitoringPoint_ViewerRole_CannotCreate_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(CreateConditionMonitoringPoint_ViewerRole_CannotCreate_ReturnsForbid), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "CreateConditionMonitoringPoint", o => o.CreateConditionMonitoringPointAsync(1, "Vibration", "VT-1"));
 
-        var result = await controller.CreateConditionMonitoringPoint(1, "Vibration", "VT-1", null, null, null, null);
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(allowed);
     }
 
     [Fact]
     public async Task CreateConditionMonitoringPoint_MaintenanceEngineer_CanCreate()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(CreateConditionMonitoringPoint_MaintenanceEngineer_CanCreate), role: SystemRoles.MaintenanceEngineer);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "CreateConditionMonitoringPoint", o => o.CreateConditionMonitoringPointAsync(99999, "Vibration", "VT-1"));
 
-        // شناسه‌ی ناموجود عمداً استفاده شد - هدف این تست فقط اثبات عبور از گیت مجوز است
-        var result = await controller.CreateConditionMonitoringPoint(99999, "Vibration", "VT-1", null, null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(allowed);
     }
 
     [Fact]
@@ -366,11 +366,9 @@ public class ReliabilityAuthorizationTests
     public async Task GenerateAiInsights_ViewerRole_CannotGenerate_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(GenerateAiInsights_ViewerRole_CannotGenerate_ReturnsForbid), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "GenerateAiInsights", o => o.GenerateAiInsightsAsync(null));
 
-        var result = await controller.GenerateAiInsights(null);
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(allowed);
     }
 
     [Fact]
@@ -379,21 +377,17 @@ public class ReliabilityAuthorizationTests
         // طبق بند ۱۷: بازبینی/تایید یک بینش AI باید همان سطح مجوز Approve را بخواهد -
         // دقیقاً مثل ReviewRcmRecommendation (نه فقط Edit).
         var (ctx, perms, user) = await CreateInfra(nameof(ReviewAiInsight_MaintenanceEngineer_CannotApprove_ReturnsForbid), role: SystemRoles.MaintenanceEngineer);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "ReviewAiInsight", o => o.ReviewAiInsightAsync(1, true, null, null));
 
-        var result = await controller.ReviewAiInsight(1, true, null);
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(allowed);
     }
 
     [Fact]
     public async Task ReviewAiInsight_EngineeringSupervisor_CanReview()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(ReviewAiInsight_EngineeringSupervisor_CanReview), role: SystemRoles.EngineeringSupervisor);
-        var controller = CreateController(ctx, user, perms);
+        var allowed = await RunOperation(ctx, user, perms, "ReviewAiInsight", o => o.ReviewAiInsightAsync(99999, true, null, null));
 
-        var result = await controller.ReviewAiInsight(99999, true, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(allowed);
     }
 }

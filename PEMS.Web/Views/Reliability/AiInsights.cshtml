@@ -1,4 +1,4 @@
-@model List<PEMS.Application.DTOs.AIReliabilityInsightDto>
+﻿@model List<PEMS.Application.DTOs.AIReliabilityInsightDto>
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -28,7 +28,7 @@
 @if (canGenerate)
 {
     <pems-content-card css="mb-3">
-        <pems-form method="post" asp-action="GenerateAiInsights"><pems-row gap="2" css="align-items-end">
+        <pems-form action="/a/reliability-ai-insights-generate" method="post"><pems-row gap="2" css="align-items-end">
             @Html.AntiForgeryToken()
             <pems-col span="auto">
                 <pems-label css="small mb-0">Equipment Class ID (optional)</pems-label>
@@ -61,13 +61,13 @@
         var cell_71_7 = DataCell.Template(rows_71, @<text>@{ var insight = item; }
                         @if (canReview && insight.ReviewStatus == "Draft")
                         {
-                            <pems-form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                            <pems-form action="/a/reliability-ai-insight-review" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="true" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
                             </pems-form>
-                            <pems-form method="post" asp-action="ReviewAiInsight" class="d-inline">
+                            <pems-form action="/a/reliability-ai-insight-review" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="insightId" value="@insight.AIReliabilityInsightId" />
                                 <input type="hidden" name="approve" value="false" />
