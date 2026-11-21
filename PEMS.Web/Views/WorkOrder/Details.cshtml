@@ -664,7 +664,7 @@ else
 
     @if (Ctl(WoSection.Labor))
     {
-    <pems-form asp-action="AddLaborEntry" method="post"><pems-row gap="2" css="mt-2">
+    <pems-form action="/a/work-order-add-labor" method="post"><pems-row gap="2" css="mt-2">
         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
         @if (Acc(WoSection.Labor) == SectionAccess.Correctable)
         {
@@ -796,7 +796,7 @@ else
                         <pems-table-cell>
                             @if (Ctl(WoSection.JobPlanTasks))
                             {
-                                <pems-form asp-action="@(t.IsCompleted ? "ReopenTask" : "CompleteTask")" method="post">
+                                <pems-form action="@(t.IsCompleted ? "/a/work-order-reopen-task" : "/a/work-order-complete-task")" method="post">
                                     <input type="hidden" name="workOrderTaskId" value="@t.WorkOrderTaskId" />
                                     <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                                     <pems-button tone="none" size="small" css="p-0 border-0" type="submit" title="@(t.IsCompleted ? "Reopen" : "Mark complete")">
@@ -900,7 +900,7 @@ else
                     <pems-table-cell class="small">
                         @if (Ctl(WoSection.RequiredMaterials) && !sourcedAlready)
                         {
-                        <pems-form asp-action="SetMaterialSupplyCode" method="post"><pems-flex gap="1">
+                        <pems-form action="/a/work-order-set-supply-code" method="post"><pems-flex gap="1">
                             <input type="hidden" name="workOrderMaterialId" value="@rm.WorkOrderMaterialId" />
                             <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                             <pems-select scale="small" name="supplyCode" aria-label="@Localizer["Whi_SupplyCode"]" data-pems-select="off">
@@ -965,7 +965,7 @@ else
                 <span class="vs-pill vs-pill--neutral">@Localizer["Whi_State_NotRequested"]</span>
                 @if (canEditWo)
                 {
-                    <pems-form asp-action="RequestWarehouseMaterials" method="post" class="d-inline">
+                    <pems-form action="/a/work-order-request-materials" method="post" class="d-inline">
                         <input type="hidden" name="workOrderId" value="@Model.WorkOrderId" />
                         <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-send" aria-hidden="true" /> @Localizer["Whi_Request"]</pems-button>
                     </pems-form>

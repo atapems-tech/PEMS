@@ -207,6 +207,7 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
             .AddSingleton<IWorkOrderChildService>(new WorkOrderChildService(Ctx))
             .AddSingleton<IWorkOrderReviewService>(new WorkOrderReviewService(Ctx, new PEMS.WorkflowPlatform.Services.WorkflowRuntimeService(Ctx)))
             .AddSingleton<IWorkOrderSectionGuard>(new WorkOrderSectionGuard(Ctx, AccessControl))
+            .AddSingleton<IWorkOrderTaskOperations>(new PEMS.Web.Services.WorkOrderTaskOperations(Ctx, new WorkOrderLaborService(Ctx, AccessControl), null!, null!))
             .BuildServiceProvider();
         var handler = new PEMS.Web.Definitions.OperationInvokeAction(services.GetRequiredService<IServiceScopeFactory>(),
             PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly));
@@ -257,4 +258,15 @@ public static class WorkOrderChildActionShims
 
     public static Task<Microsoft.AspNetCore.Mvc.IActionResult> RemoveRequiredMaterial(this WorkOrderController ctl, int workOrderMaterialId, int workOrderId)
         => Run(ctl, "work-order-remove-required-material", ("workOrderMaterialId", workOrderMaterialId.ToString()), ("workOrderId", workOrderId.ToString()));
+
+    // SCRUM-764: the task check-off and the labor entry are action definitions too (work-order-complete-task, work-order-reopen-task, work-order-add-labor)
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> CompleteTask(this WorkOrderController ctl, int workOrderTaskId, int workOrderId)
+        => Run(ctl, "work-order-complete-task", ("workOrderTaskId", workOrderTaskId.ToString()), ("workOrderId", workOrderId.ToString()));
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> ReopenTask(this WorkOrderController ctl, int workOrderTaskId, int workOrderId)
+        => Run(ctl, "work-order-reopen-task", ("workOrderTaskId", workOrderTaskId.ToString()), ("workOrderId", workOrderId.ToString()));
+
+    public static Task<Microsoft.AspNetCore.Mvc.IActionResult> AddLaborEntry(this WorkOrderController ctl, int workOrderId, int employeeId, int? teamId, DateTime workDate, decimal regularHours, decimal overtimeHours, string? notes, string? correctionReason = null)
+        => Run(ctl, "work-order-add-labor", ("workOrderId", workOrderId.ToString()), ("employeeId", employeeId.ToString()), ("teamId", teamId?.ToString()), ("workDate", workDate.ToString("O")),
+            ("regularHours", regularHours.ToString(System.Globalization.CultureInfo.InvariantCulture)), ("overtimeHours", overtimeHours.ToString(System.Globalization.CultureInfo.InvariantCulture)), ("notes", notes), ("correctionReason", correctionReason));
 }
