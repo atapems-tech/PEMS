@@ -62,7 +62,6 @@ Warehouse,PartCatalogueDedup,Procurement and warehouse,"W4 procurement, inventor
 Warehouse,PartCatalogueLookup,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Warehouse,PartCatalogueReport,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
-Warehouse,StoreRequisition,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,TechnicalQuery,Engineering documents,"W5 operations, production, organization, other",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,GasTest,Permit to work and safety,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
 ,Isolation,Permit to work and safety,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions

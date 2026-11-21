@@ -352,7 +352,7 @@
                     <pems-icon name="bi-list-ul" /> @Localizer["Transaction Ledger"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("StoreRequisition", "Warehouse"))" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/store-requisitions" active="@(IsActive("StoreRequisition", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/store-requisition"))">
                     <pems-icon name="bi-clipboard-check" /> @Localizer["Store Requisitions"]
                 </pems-nav-link>
 

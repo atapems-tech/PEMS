@@ -50,6 +50,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Store requisition as definition pages (SCRUM-664)
+
+### Changed
+- /p/store-requisitions and /p/store-requisition-details (with their forms and actions) replace StoreRequisitionController. The reads are StoreRequisition.* operations; the commands (create, add a line, advance, reject, cancel, close with a shortage, set an approved quantity, issue everything or one line) call IStoreRequisitionLifecycleService, which keeps the permission, separation-of-duties and transition rules. The per-line quantity form became per-line commands; the new requisition lands on the list. The old routes redirect.
+
 ## 2026-11-21 - Replenishment and the procurement queue as definition pages (SCRUM-663, 735)
 
 ### Changed

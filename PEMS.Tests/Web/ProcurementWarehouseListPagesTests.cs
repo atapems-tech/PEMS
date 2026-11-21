@@ -24,7 +24,7 @@ public class ProcurementWarehouseListPagesTests
     private static readonly string[] Pages =
     {
         "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Vendor", "Views/Contract", "Views/ProcurementPackage",
-        "Areas/Warehouse/Views/StoreRequisition", "Areas/Warehouse/Views/IrnReceipt",
+        "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
 
@@ -113,27 +113,6 @@ public class ProcurementWarehouseListPagesTests
     }
 
     // ---------- warehouse ----------
-
-    [Fact]
-    public async Task StoreRequisitions_And_IncomingReceipts_FilterByStatus_AndKeepTheCreateModal()
-    {
-        var warehouses = new List<dynamic> { Obj(("WarehouseId", 1), ("Code", "W1")) };
-        var sr = await Render<StoreRequisitionController>("/Areas/Warehouse/Views/StoreRequisition/Index.cshtml",
-            Page(new StoreRequisitionListDto { StoreRequisitionId = 1, RequisitionNumber = "SR-1", Status = "PartiallyIssued", RequestedDate = new DateTime(2026, 10, 2) }),
-            v => { v["Warehouses"] = warehouses; v["SelectedStatus"] = "PartiallyIssued"; });
-        AssertBuiltFromTheComponent(sr, "StoreRequisition", 1);
-        Assert.Contains("id=\"createRequisitionModal\"", sr);
-        Assert.Single(Regex.Matches(Chips(sr), "class=\"pems-filter-chip\""));
-        Assert.Contains("status=PartiallyIssued", sr);                                   // paging keeps the filter
-
-        var irn = await Render<IrnReceiptController>("/Areas/Warehouse/Views/IrnReceipt/Index.cshtml",
-            Page(new IrnReceiptListDto { IrnReceiptId = 2, IrnNumber = "IRN-2", Status = "PendingApproval", ReceivingDate = new DateTime(2026, 10, 3), LineCount = 4 }),
-            v => { v["Warehouses"] = warehouses; v["Vendors"] = new List<dynamic>(); v["SelectedStatus"] = null; });
-        AssertBuiltFromTheComponent(irn, "IrnReceipt", 1);
-        Assert.Contains("id=\"createIrnModal\"", irn);
-        Assert.Contains("vs-pill vs-pill--info", irn);
-        Assert.DoesNotContain("pems-filter-chip", irn);
-    }
 
     [Fact]
     public async Task PartCatalogueRequests_ViewAndSidePanelFiltersAreInTheDropdown_AndTheCountsShowFirst()

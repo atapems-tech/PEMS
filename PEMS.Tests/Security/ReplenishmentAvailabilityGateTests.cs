@@ -161,7 +161,7 @@ public class ReplenishmentAvailabilityGateTests
         static string Normalize(string s) => Regex.Replace(s, @"\s+", " ").Trim();
         Assert.Equal(Normalize(disabled), Normalize(link.Replace(enabled, "")));
         // سایر لینک‌های انبار/موجودی/مواد برای همین نقش بدون تغییر هستند
-        Assert.Contains("/Warehouse/StoreRequisition", disabled);
+        Assert.Contains("/p/store-requisitions", disabled);
         Assert.Contains("/p/inventory-ledger", disabled);
     }
 
