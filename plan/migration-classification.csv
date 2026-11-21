@@ -57,7 +57,6 @@ Warehouse,MrsImport,Procurement and warehouse,"W3 engineering documents, letters
 ,PreProcurement,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,ProcurementPackage,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,Vendor,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
-Warehouse,InventoryMasterData,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,converted-partly,"converted (definitions, generic entity layer): /p/uoms, /p/material-categories, /p/warehouses, /p/storage-locations with create, edit and activate/deactivate"
 Warehouse,IrnReceipt,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Warehouse,MaterialItem,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Warehouse,PartCatalogueAdmin,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions

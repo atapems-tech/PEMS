@@ -47,6 +47,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Inventory master data landing page (SCRUM-653)
+
+### Changed
+- /p/inventory-master-data replaces InventoryMasterDataController (its create and activate / deactivate commands were already the generic entity pages /p/uoms, /p/material-categories, /p/warehouses, /p/storage-locations); /Warehouse/InventoryMasterData redirects; the Barcode redirect and the Quick Setup step point to the page.
+
 ## 2026-11-21 - Inventory dashboard, ledger and warehouse intake as definition pages (SCRUM-652, 654, 665)
 
 ### Changed

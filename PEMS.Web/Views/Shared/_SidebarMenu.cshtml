@@ -363,7 +363,7 @@
                     </pems-nav-link>
                 }
 
-                <pems-nav-link item="false" active="@(IsActive("InventoryMasterData", "Warehouse"))" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/inventory-master-data" active="@(IsActive("InventoryMasterData", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/inventory-master-data"))">
                     <pems-icon name="bi-collection" /> @Localizer["Master Data"]
                 </pems-nav-link>
             }

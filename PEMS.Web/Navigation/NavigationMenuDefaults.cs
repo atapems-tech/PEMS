@@ -116,7 +116,7 @@ public static class NavigationMenuDefaults
         new("proc.wh.ledger", "proc.sub.warehouse", L, 40, "Transaction Ledger", "bi-list-ul", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/inventory-ledger"),   // SCRUM-654: a definition page (/p/...)
         Link("proc.wh.sr", "proc.sub.warehouse", 50, "Store Requisitions", "bi-clipboard-check", "StoreRequisition", area: "Warehouse", rule: "Module:Inventory&Perm:StoreRequisition.View", badge: NavigationBadges.StoreRequisitionsAwaitingApproval),
         Link("proc.wh.replenishment", "proc.sub.warehouse", 60, "Repl_Menu", "bi-cart-plus", "Replenishment", area: "Warehouse", rule: "Module:Inventory&Flag:Replenishment"),
-        Link("proc.wh.masterdata", "proc.sub.warehouse", 70, "Master Data", "bi-collection", "InventoryMasterData", area: "Warehouse", rule: "Module:Inventory&Perm:InventoryMasterData.View"),
+        new("proc.wh.masterdata", "proc.sub.warehouse", L, 70, "Master Data", "bi-collection", "Module:Inventory&Perm:InventoryMasterData.View", ExternalPath: "/p/inventory-master-data"),   // SCRUM-653: a definition page (/p/...)
         Link("proc.wh.partcatalogue", "proc.sub.warehouse", 80, "Pc_Menu", "bi-journal-plus", "PartCatalogueRequest", area: "Warehouse", rule: "Flag:PartCatalogue", badge: NavigationBadges.MyWorkPartCatalogue),
         // SCRUM-478: Part Catalogue reports
         Link("proc.wh.partcatalogue.reports", "proc.sub.warehouse", 85, "PcRpt_Menu", "bi-bar-chart-line", "PartCatalogueReport", area: "Warehouse", rule: "Flag:PartCatalogueReports"),
