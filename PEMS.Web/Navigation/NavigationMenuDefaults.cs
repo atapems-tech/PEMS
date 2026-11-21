@@ -110,10 +110,10 @@ public static class NavigationMenuDefaults
         ComingSoon("proc.milestones", "proc.sub.contracts", 20, "Contract Milestones", "bi-flag", "Contract Milestones", "Contract Management", "Module:ContractManagement"),
         ComingSoon("proc.claims", "proc.sub.contracts", 30, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management", "Module:ContractManagement"),
         Sub("proc.sub.warehouse", "sec.procurement", 40, "Warehouse"),
-        Link("proc.wh.dashboard", "proc.sub.warehouse", 10, "Dashboard", "bi-speedometer2", "Inventory", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
+        new("proc.wh.dashboard", "proc.sub.warehouse", L, 10, "Dashboard", "bi-speedometer2", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/inventory"),   // SCRUM-652: a definition page (/p/...)
         Link("proc.wh.material", "proc.sub.warehouse", 20, "Material Master", "bi-box-seam", "MaterialItem", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
         Link("proc.wh.irn", "proc.sub.warehouse", 30, "Incoming Receipts (IRN)", "bi-truck", "IrnReceipt", area: "Warehouse", rule: "Module:Inventory&Perm:IRN.View"),
-        Link("proc.wh.ledger", "proc.sub.warehouse", 40, "Transaction Ledger", "bi-list-ul", "InventoryTransaction", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
+        new("proc.wh.ledger", "proc.sub.warehouse", L, 40, "Transaction Ledger", "bi-list-ul", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/inventory-ledger"),   // SCRUM-654: a definition page (/p/...)
         Link("proc.wh.sr", "proc.sub.warehouse", 50, "Store Requisitions", "bi-clipboard-check", "StoreRequisition", area: "Warehouse", rule: "Module:Inventory&Perm:StoreRequisition.View", badge: NavigationBadges.StoreRequisitionsAwaitingApproval),
         Link("proc.wh.replenishment", "proc.sub.warehouse", 60, "Repl_Menu", "bi-cart-plus", "Replenishment", area: "Warehouse", rule: "Module:Inventory&Flag:Replenishment"),
         Link("proc.wh.masterdata", "proc.sub.warehouse", 70, "Master Data", "bi-collection", "InventoryMasterData", area: "Warehouse", rule: "Module:Inventory&Perm:InventoryMasterData.View"),

@@ -336,7 +336,7 @@
             }
             @if (inventoryVisible)
             {
-                <pems-nav-link item="false" active="@(IsActive("Inventory", "Warehouse"))" asp-controller="Inventory" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/inventory" active="@(IsActive("Inventory", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/inventory"))">
                     <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
                 </pems-nav-link>
 
@@ -348,7 +348,7 @@
                     <pems-icon name="bi-truck" /> @Localizer["Incoming Receipts (IRN)"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("InventoryTransaction", "Warehouse"))" asp-controller="InventoryTransaction" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/inventory-ledger" active="@(IsActive("InventoryTransaction", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/inventory-ledger"))">
                     <pems-icon name="bi-list-ul" /> @Localizer["Transaction Ledger"]
                 </pems-nav-link>
 

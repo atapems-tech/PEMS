@@ -24,7 +24,7 @@ public class ProcurementWarehouseListPagesTests
     private static readonly string[] Pages =
     {
         "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Vendor", "Views/Contract", "Views/ProcurementPackage",
-        "Areas/Warehouse/Views/InventoryTransaction", "Areas/Warehouse/Views/StoreRequisition", "Areas/Warehouse/Views/IrnReceipt",
+        "Areas/Warehouse/Views/StoreRequisition", "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/Replenishment", "Areas/Warehouse/Views/MaterialItem", "Areas/Warehouse/Views/PartCatalogueRequest",
     };
 
@@ -113,25 +113,6 @@ public class ProcurementWarehouseListPagesTests
     }
 
     // ---------- warehouse ----------
-
-    [Fact]
-    public async Task InventoryTransactions_FiltersMoveIntoTheDropdown_EachActiveOneIsAChip_AndPagingKeepsThem()
-    {
-        var html = await Render<InventoryTransactionController>("/Areas/Warehouse/Views/InventoryTransaction/Index.cshtml",
-            Page(new InventoryTransactionRowDto { MaterialCode = "M-1", MaterialDescription = "Bearing", TransactionType = "Issue", WarehouseCode = "W1", Quantity = 2, TransactionDate = new DateTime(2026, 10, 1) }),
-            v =>
-            {
-                v["Warehouses"] = new List<dynamic> { Obj(("WarehouseId", 1), ("Code", "W1")) };
-                v["WarehouseId"] = 1; v["TransactionType"] = "Issue"; v["FromDate"] = new DateTime(2026, 10, 1); v["ToDate"] = null;
-            });
-
-        AssertBuiltFromTheComponent(html, "InventoryTransaction", 1);
-        Assert.Matches("<span class=\"lp-badge\">3<", html);
-        var chips = Chips(html);
-        Assert.Equal(3, Regex.Matches(chips, "class=\"pems-filter-chip\"").Count);
-        Assert.Contains("W1", chips);
-        Assert.Matches("<option selected=\"selected\" value=\"Issue\">", html);
-    }
 
     [Fact]
     public async Task StoreRequisitions_And_IncomingReceipts_FilterByStatus_AndKeepTheCreateModal()
