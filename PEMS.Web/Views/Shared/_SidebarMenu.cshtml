@@ -375,7 +375,7 @@
             }
             @if (canSeePartCatalogueReports)
             {
-                <pems-nav-link item="false" active="@(IsActive("PartCatalogueReport", "Warehouse"))" asp-controller="PartCatalogueReport" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueReport", "Warehouse"))" href="/p/pc-report">
                     <pems-icon name="bi-bar-chart-line" /> @Localizer["PcRpt_Menu"]
                 </pems-nav-link>
             }
