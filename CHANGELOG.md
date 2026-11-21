@@ -63,6 +63,24 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+## 2026-11-21 - SCRUM-707, 728: meetings and inspections as definitions
+
+### Changed
+- Meeting list/details/create/add action item and the fleet inspection list, inspection create and one-click work request are operations (IMeetingInspectionOperations), pages meetings, meeting-details, inspections and forms/actions. Gaps: the meeting minutes form does not preload the saved text; a new meeting returns to the list; ids are typed numbers.
+
+## 2026-11-21 - SCRUM-750: SIMOPS as definitions
+
+### Changed
+- Create is an action over ISimopsService; Confirm, Resolve and AcceptRisk are stepUp actions over IPermitSafetyOperations (permit authority eligibility first). SimopsController deleted; the permit page posts to /a/simops-*.
+
+## 2026-11-21 - SCRUM-696, 702, 710: execution gate, gas test and isolation verify as definitions
+
+### Changed
+- ExecutionGate StartWork and EmergencyOverride and Isolation Verify are actions with stepUp (security key) over IPermitSafetyOperations, which checks the permit authority eligibility first; GasTest create (fixed O2, LEL, H2S, CO fields) and invalidate are actions. The three controllers are deleted; the permit page posts to /a/... Gap: the approval audit record that AuthorizeSensitiveActionAsync wrote on success is not written by the generic step-up (denials are audited).
+
 ## 2026-11-21 - SCRUM-662: Part Catalogue requests as definitions (list, details, workflow, files)
 
 ### Changed

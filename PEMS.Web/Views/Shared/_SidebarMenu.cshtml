@@ -407,7 +407,7 @@
                 <pems-icon name="bi-kanban" /> @Localizer["Nav_TaskManager"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("Meeting"))" asp-controller="Meeting" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Meeting"))" href="/p/meetings">
                 <pems-icon name="bi-people" /> @Localizer["Meetings"]
             </pems-nav-link>
 
@@ -602,7 +602,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Inspection"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Inspection"))" asp-controller="Inspection" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Inspection"))" href="/p/inspections">
                     <pems-icon name="bi-clipboard-pulse" /> @Localizer["Inspections"]
                 </pems-nav-link>
             }

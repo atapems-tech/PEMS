@@ -307,7 +307,7 @@
                         @switch (Model.RelatedType)
                         {
                             case "Letter": <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Letter"] #@Model.RelatedId</pems-link> break;
-                            case "Meeting": <pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@Model.RelatedId">@Localizer["Tm_Related_Meeting"] #@Model.RelatedId</pems-link> break;
+                            case "Meeting": <pems-link href="/p/meeting-details?id=@Model.RelatedId">@Localizer["Tm_Related_Meeting"] #@Model.RelatedId</pems-link> break;
                             default: <span>@Model.RelatedType #@Model.RelatedId</span> break;
                         }
                     </pems-info-item>

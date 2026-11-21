@@ -104,7 +104,7 @@
                                     @if (t.RelatedType == "Letter")
                                     { <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Letter"] #@t.RelatedId</pems-link> }
                                     else if (t.RelatedType == "Meeting")
-                                    { <pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@t.RelatedId">@Localizer["Tm_Related_Meeting"] #@t.RelatedId</pems-link> }
+                                    { <pems-link href="/p/meeting-details?id=@t.RelatedId">@Localizer["Tm_Related_Meeting"] #@t.RelatedId</pems-link> }
                                     else
                                     { @($"{t.RelatedType} #{t.RelatedId}") }
                                 }
