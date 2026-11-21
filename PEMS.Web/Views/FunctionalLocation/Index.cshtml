@@ -83,7 +83,7 @@
 </pems-list-page>
 
 <pems-modal id="createFlModal" tabindex="-1">
-        <pems-form asp-action="Create" method="post">
+        <pems-form action="/a/functional-location-create" method="post">
             <pems-modal-header>@Localizer["Fl_New"]</pems-modal-header>
             <pems-modal-body>
                 <pems-row gap="2" css="mb-2">
@@ -115,7 +115,7 @@
     </pems-modal>
 
 <pems-modal id="editFlModal" tabindex="-1">
-        <pems-form asp-action="Edit" method="post">
+        <pems-form action="/a/functional-location-edit" method="post">
             <input type="hidden" name="id" id="editFlId" />
             <pems-modal-header>@Localizer["Fl_Edit"]</pems-modal-header>
             <pems-modal-body>

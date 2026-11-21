@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "asset-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit asset",
+    "fa": "ویرایش دارایی"
+  },
+  "description": {
+    "en": "Edit asset",
+    "fa": "ویرایش دارایی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Asset",
+      "action": "Edit",
+      "args": {
+        "assetId": "field:assetId",
+        "assetNumber": "field:assetNumber",
+        "status": "field:status",
+        "functionalLocation": "field:functionalLocation",
+        "maintenanceClass": "field:maintenanceClass",
+        "commissioningDate": "field:commissioningDate",
+        "description": "field:description",
+        "functionalLocationId": "field:functionalLocationId"
+      }
+    },
+    "success": {
+      "en": "Asset updated",
+      "fa": "دارایی به‌روز شد"
+    },
+    "redirect": "/Asset/Index",
+    "redirectBack": true
+  }
+}

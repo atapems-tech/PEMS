@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "asset-toggle-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Asset status",
+    "fa": "وضعیت دارایی"
+  },
+  "description": {
+    "en": "Asset status",
+    "fa": "وضعیت دارایی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Asset",
+      "action": "ToggleActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Asset status updated",
+      "fa": "وضعیت دارایی به‌روز شد"
+    },
+    "redirect": "/Asset/Index",
+    "redirectBack": true
+  }
+}

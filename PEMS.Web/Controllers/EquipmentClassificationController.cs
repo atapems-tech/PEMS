@@ -64,28 +64,4 @@ public class EquipmentClassificationController : Controller
         var matrix = await _coverageService.GetCoverageMatrixAsync();
         return View(matrix);
     }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Accept(int id, string? comment, string status = "PENDING", int page = 1)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
-            return Forbid();
-
-        var ok = await _classificationService.AcceptSuggestionAsync(id, _currentUser.UserName ?? "Unknown", comment);
-        TempData[ok ? "Message" : "Error"] = ok ? "طبقه‌بندی تایید و اعمال شد." : "این پیشنهاد یافت نشد یا قبلاً بررسی شده.";
-        return RedirectToAction(nameof(ReviewQueue), new { status, page });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Reject(int id, string? comment, string status = "PENDING", int page = 1)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MaintenanceMasterData", "Edit"))
-            return Forbid();
-
-        var ok = await _classificationService.RejectSuggestionAsync(id, _currentUser.UserName ?? "Unknown", comment);
-        TempData[ok ? "Message" : "Error"] = ok ? "پیشنهاد رد شد." : "این پیشنهاد یافت نشد یا قبلاً بررسی شده.";
-        return RedirectToAction(nameof(ReviewQueue), new { status, page });
-    }
 }

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "classification-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject classification",
+    "fa": "رد طبقه‌بندی"
+  },
+  "description": {
+    "en": "Reject classification",
+    "fa": "رد طبقه‌بندی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentClassification",
+      "action": "Reject",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "پیشنهاد رد شد.",
+      "fa": "پیشنهاد رد شد."
+    },
+    "redirect": "/EquipmentClassification/ReviewQueue",
+    "redirectBack": true
+  }
+}
