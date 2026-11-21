@@ -546,7 +546,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("MaintenanceMasterData"))
             {
-                <pems-nav-link item="false" active="@(IsActive("MaintenanceMasterData"))" asp-controller="MaintenanceMasterData" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("MaintenanceMasterData"))" href="/p/maintenance-master-data">
                     <pems-icon name="bi-collection" /> @Localizer["Maintenance Master Data"]
                 </pems-nav-link>
             }

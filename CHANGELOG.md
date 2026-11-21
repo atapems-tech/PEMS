@@ -79,6 +79,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-723: maintenance master data as definitions
+
+### Changed
+- IMaintenanceMasterDataOperations: the 14 lists as one row shape and the 29 commands of MaintenanceMasterDataController moved with their validation and messages (generated from the controller), permissions as operation floors; page /p/maintenance-master-data (a grid per list with a toggle row action) and a form and an action per command. Gaps: free text where the old page had a fixed choice (evaluation status, priority, condition, variable type); ids typed on toggle forms; the permission-only controller tests were removed (CreateGroup was ported to the operations).
+
 ## 2026-11-21 - SCRUM-734: permits (list, create, approval response, close) as definitions
 
 ### Changed
