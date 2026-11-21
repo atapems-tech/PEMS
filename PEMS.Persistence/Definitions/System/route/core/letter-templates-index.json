@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-templates-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter templates (index) (old address)",
+    "fa": "Letter templates (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter templates (index) (old address)",
+    "fa": "Letter templates (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "LetterTemplate/Index",
+    "target": "/p/letter-templates",
+    "permanent": false
+  }
+}

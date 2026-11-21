@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-template-activate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate the letter template",
+    "fa": "فعال‌سازی قالب نامه"
+  },
+  "description": {
+    "en": "Activate the letter template",
+    "fa": "فعال‌سازی قالب نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "LetterTemplatePage",
+      "action": "SetActive",
+      "args": {
+        "id": "field:id",
+        "active": "literal:true"
+      }
+    },
+    "success": {
+      "en": "Template activated.",
+      "fa": "قالب فعال شد."
+    },
+    "redirect": "/p/letter-templates"
+  }
+}

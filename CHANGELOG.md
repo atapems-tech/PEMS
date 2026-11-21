@@ -88,6 +88,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-717: letter templates as definitions
+
+### Changed
+- The template list (/p/letter-templates), the edit form (/f/letter-template-edit, which loads the saved template through the new form load input), the save and the activate and deactivate are definitions over ILetterTemplateOperations (floor Correspondence.Approve). The preview of a template with sample values stays on LetterTemplateController (1 action).
+
 ## 2026-11-21 - SCRUM-818: a form loads its saved values from a read operation
 
 ### Changed
