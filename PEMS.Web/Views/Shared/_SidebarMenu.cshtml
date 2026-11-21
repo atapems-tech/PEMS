@@ -771,7 +771,7 @@
             {
                 <div class="nav-subheading">@Localizer["AI Administration"]</div>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("Intake"))" asp-controller="Intake" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" href="/p/intake" active="@(IsActive("Intake") || Context.Request.Path.StartsWithSegments("/p/intake"))">
                     <pems-icon name="bi-inboxes" /> @Localizer["AIIntakeQueue"]
                 </pems-nav-link>
 

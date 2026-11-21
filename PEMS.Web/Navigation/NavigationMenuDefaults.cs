@@ -192,7 +192,7 @@ public static class NavigationMenuDefaults
         new("admin.positions", "admin.sub.org", L, 40, "Org_Positions_Nav", "bi-person-badge", "Module:Administration", ExternalPath: "/p/organization-positions"),
         new("admin.org", "admin.sub.org", L, 50, "Org_Title", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/organization-chart"),
         Sub("admin.sub.ai", "sec.admin", 40, "AI Administration"),
-        Link("admin.intake", "admin.sub.ai", 10, "AIIntakeQueue", "bi-inboxes", "Intake", rule: "Module:Administration"),
+        new("admin.intake", "admin.sub.ai", L, 10, "AIIntakeQueue", "bi-inboxes", "Module:Administration", ExternalPath: "/p/intake"),   // SCRUM-709: a definition page (/p/...)
         Link("admin.ocr", "admin.sub.ai", 20, "OCR Processing", "bi-badge-ad", "OCRProcessing", rule: "Module:Administration&Perm:OCRProcessing.View"),
         new("admin.aiextraction", "admin.sub.ai", L, 30, "AI Extraction", "bi-cpu", "Module:Administration&Perm:AIExtraction.View", ExternalPath: "/p/ai-extraction"),   // SCRUM-667: a definition page (/p/...)
         Link("admin.tables", "admin.sub.ai", 40, "Table Extraction", "bi-table", "TableExtraction", rule: "Module:Administration&Perm:TableExtraction.View"),

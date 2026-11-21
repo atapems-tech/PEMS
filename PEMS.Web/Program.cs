@@ -208,6 +208,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IMaterialItemOperations, 
 builder.Services.AddScoped<PEMS.Application.Interfaces.IReplenishmentOperations, PEMS.Web.Services.ReplenishmentOperations>();   // SCRUM-663
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPreProcurementOperations, PEMS.Web.Services.PreProcurementOperations>();   // SCRUM-735
 builder.Services.AddScoped<PEMS.Application.Interfaces.IStoreRequisitionOperations, PEMS.Web.Services.StoreRequisitionOperations>();   // SCRUM-664
+builder.Services.AddScoped<PEMS.Application.Interfaces.IIntakeOperations, PEMS.Web.Services.IntakeOperations>();   // SCRUM-709
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMyProfileOperations, PEMS.Web.Services.MyProfileOperations>();   // SCRUM-729   // SCRUM-669   // SCRUM-703   // SCRUM-674   // SCRUM-673   // SCRUM-730: My Work as rows   // SCRUM-668: the copilot reads as operations   // batch 5: a spreadsheet of a registered entity is imported by a definition
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityUpdateAction>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IActionHandler, PEMS.Web.Definitions.EntityDeleteAction>();

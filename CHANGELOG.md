@@ -51,6 +51,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - AI intake queue as definition pages (SCRUM-709)
+
+### Changed
+- /p/intake and /p/intake-review (with the route and reject forms) replace IntakeController: the reads and the two decisions are Intake.* operations over the same IIntakeService calls (route with the reviewer's corrections, reject). The review form no longer pre-fills the AI suggestion (it is shown above it). /Intake redirects.
+
 ## 2026-11-21 - Store requisition as definition pages (SCRUM-664)
 
 ### Changed

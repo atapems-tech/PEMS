@@ -88,7 +88,7 @@ public class DocumentUploadController : Controller
         }
 
         TempData["Message"] = $"{attachmentIds.Count} file(s) uploaded to the AI Intake Queue and are being classified.";
-        return RedirectToAction("Index", "Intake");
+        return Redirect("/p/intake");
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()
