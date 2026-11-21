@@ -115,7 +115,6 @@ public class InfoGridComponentTests
 
     [Theory]
     [InlineData("Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml", 3)]
-    [InlineData("Views/PreProcurement/Details.cshtml", 1)]
     [InlineData("Views/PurchaseOrder/Details.cshtml", 1)]
     [InlineData("Views/Task/Details.cshtml", 1)]
     public void WaveI2_TheDescriptionListPagesUseTheRowsLayout(string view, int grids)

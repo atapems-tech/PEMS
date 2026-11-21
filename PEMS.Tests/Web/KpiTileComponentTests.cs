@@ -124,7 +124,6 @@ public class KpiTileComponentTests
     [Theory]
     [InlineData("Views/Asset/Details.cshtml", 4)]
     [InlineData("Views/Reliability/Details.cshtml", 4)]
-    [InlineData("Areas/Warehouse/Views/Replenishment/Details.cshtml", 4)]
     [InlineData("Views/ProductionRun/Details.cshtml", 7)]
     public void WaveK3_DetailPages_UseCompactTiles(string view, int tiles)
     {

@@ -103,105 +103,6 @@ public class ReplenishmentAvailabilityGateTests
         return await host.Client.SendAsync(message);
     }
 
-    [Theory]
-    [InlineData(null, RoleCatalog.WarehouseManager)]
-    [InlineData("false", RoleCatalog.WarehouseManager)]
-    [InlineData("garbage", RoleCatalog.WarehouseManager)]
-    [InlineData(null, SystemRoles.SystemAdmin)]
-    [InlineData("false", SystemRoles.SystemAdmin)]
-    [InlineData("garbage", SystemRoles.SystemAdmin)]
-    public async Task Disabled_AllFiveActions_Return404_ForPermittedWhManagerAndForSystemAdmin_AndTouchNothing(string? config, string role)
-    {
-        await using var host = await GateHost.StartAsync(config);
-        var before = host.Snapshot();
-
-        foreach (var request in AllFive)
-        {
-            var response = await SendAsync(host, request, "tester", role);
-            Assert.True(System.Net.HttpStatusCode.NotFound == response.StatusCode, $"{request} as {role} (config={config ?? "<missing>"}) returned {(int)response.StatusCode}");
-        }
-
-        host.AssertNothingP5Ran(before);
-    }
-
-    [Fact]
-    public async Task Disabled_ThePermissionRowAndGrantsOfWhManagerAreStillThere_TheGateDoesNotDependOnThem()
-    {
-        await using var host = await GateHost.StartAsync(null);
-
-        Assert.True(host.Ctx.RolePermissions.Any(r => r.RoleName == RoleCatalog.WarehouseManager && r.ModuleName == Module && r.CanView && r.CanCreate && r.CanEdit));
-        Assert.Equal(System.Net.HttpStatusCode.NotFound, (await SendAsync(host, "GET /Warehouse/Replenishment", "tester", RoleCatalog.WarehouseManager)).StatusCode);
-    }
-
-    [Fact]
-    public async Task Disabled_AuthenticationStillRunsFirst_AnonymousIsChallengedNot404()
-    {
-        await using var host = await GateHost.StartAsync(null);
-        var before = host.Snapshot();
-
-        foreach (var request in AllFive)
-        {
-            var response = await SendAsync(host, request, user: null, roles: null);
-            Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
-        }
-
-        host.AssertNothingP5Ran(before);
-    }
-
-    [Fact]
-    public async Task Disabled_PasswordChangeGateStillRunsFirst_MustChangePasswordIsRedirectedNot404()
-    {
-        await using var host = await GateHost.StartAsync(null);
-        var before = host.Snapshot();
-
-        foreach (var request in AllFive)
-        {
-            var response = await SendAsync(host, request, "tester", RoleCatalog.WarehouseManager, mustChange: true);
-            Assert.Equal(System.Net.HttpStatusCode.Redirect, response.StatusCode);
-            Assert.Contains("/Account/ChangePassword", response.Headers.Location?.ToString());
-        }
-
-        host.AssertNothingP5Ran(before);
-    }
-
-    [Fact]
-    public async Task Disabled_TheGateRunsBeforeAntiforgery_PostWithoutTokenIs404NotBadRequest_WhileEnabledItIs400()
-    {
-        await using var host = await GateHost.StartAsync(null);
-        Assert.Equal(System.Net.HttpStatusCode.NotFound, (await SendAsync(host, "POST /Warehouse/Replenishment/Run", "tester", RoleCatalog.WarehouseManager)).StatusCode);
-
-        host.SetEnabled("true");
-        Assert.Equal(System.Net.HttpStatusCode.BadRequest, (await SendAsync(host, "POST /Warehouse/Replenishment/Run", "tester", RoleCatalog.WarehouseManager)).StatusCode);
-    }
-
-    [Fact]
-    public async Task Enabled_ExistingPermissionEnforcementIsUnchanged_DeniedUsersGet403_AndNothingIsWritten()
-    {
-        await using var host = await GateHost.StartAsync("true");
-
-        foreach (var request in new[] { "GET /Warehouse/Replenishment", "GET /Warehouse/Replenishment/Details/1" })
-            Assert.Equal(System.Net.HttpStatusCode.Forbidden, (await SendAsync(host, request, "nobody", GateHost.NoPermissionRole)).StatusCode);
-
-        // دروازه مجوز را دور نمی‌زند: با «فعال» بودن، درخواست به منطق مجوز واقعی (سرویس) رسیده است
-        Assert.True(host.ServiceCalls > 0);
-        Assert.Equal(0, host.P5RowCount());
-    }
-
-    [Fact]
-    public async Task Enabling_NeedsNoRoleOrPermissionChange_OnlyTheConfigurationFlips()
-    {
-        await using var host = await GateHost.StartAsync(null);
-        var permissionsBefore = host.PermissionFingerprint();
-
-        Assert.Equal(System.Net.HttpStatusCode.NotFound, (await SendAsync(host, "GET /Warehouse/Replenishment/Details/1", "nobody", GateHost.NoPermissionRole)).StatusCode);
-        host.SetEnabled("true");
-        Assert.Equal(System.Net.HttpStatusCode.Forbidden, (await SendAsync(host, "GET /Warehouse/Replenishment/Details/1", "nobody", GateHost.NoPermissionRole)).StatusCode);
-        host.SetEnabled("false");
-        Assert.Equal(System.Net.HttpStatusCode.NotFound, (await SendAsync(host, "GET /Warehouse/Replenishment/Details/1", "nobody", GateHost.NoPermissionRole)).StatusCode);
-
-        Assert.Equal(permissionsBefore, host.PermissionFingerprint());
-    }
-
     [Fact]
     public async Task UnrelatedRoute_IsNotAffectedByTheGate()
     {
@@ -220,7 +121,7 @@ public class ReplenishmentAvailabilityGateTests
         await using var host = await GateHost.StartAsync(null);
         var html = await RenderSidebarAsync(host, role);
 
-        Assert.DoesNotContain("/Warehouse/Replenishment", html);
+        Assert.DoesNotContain("/p/replenishment", html);
         Assert.Equal(0, host.PermissionLookupsFor(Module));
     }
 
@@ -242,7 +143,7 @@ public class ReplenishmentAvailabilityGateTests
         await using var host = await GateHost.StartAsync("true");
         var html = await RenderSidebarAsync(host, GateHost.NoPermissionRole);
 
-        Assert.DoesNotContain("/Warehouse/Replenishment", html);
+        Assert.DoesNotContain("/p/replenishment", html);
     }
 
     [Theory]
@@ -254,7 +155,7 @@ public class ReplenishmentAvailabilityGateTests
         await using (var host = await GateHost.StartAsync(null)) disabled = await RenderSidebarAsync(host, role);
         await using (var host = await GateHost.StartAsync("true")) enabled = await RenderSidebarAsync(host, role);
 
-        var link = new Regex(@"<a[^>]*/Warehouse/Replenishment[^>]*>.*?</a>", RegexOptions.Singleline);
+        var link = new Regex(@"<a[^>]*/p/replenishment[^>]*>.*?</a>", RegexOptions.Singleline);
         Assert.Single(link.Matches(enabled));
 
         static string Normalize(string s) => Regex.Replace(s, @"\s+", " ").Trim();
@@ -276,13 +177,13 @@ public class ReplenishmentAvailabilityGateTests
     [Fact]
     public void OnlyTheReplenishmentController_CarriesTheGate_AndItIsNotAGlobalFilter()
     {
-        var web = typeof(ReplenishmentController).Assembly;
+        var web = typeof(RequireReplenishmentAvailableAttribute).Assembly;
         var carriers = web.GetTypes()
             .Where(t => t.GetCustomAttribute<RequireReplenishmentAvailableAttribute>() != null
                      || t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).Any(m => m.GetCustomAttribute<RequireReplenishmentAvailableAttribute>() != null))
             .Select(t => t.FullName)
             .ToArray();
-        Assert.Equal(new[] { typeof(ReplenishmentController).FullName }, carriers);
+        Assert.Empty(carriers);   // SCRUM-663: the page is a definition; the operations answer nothing while the switch is off
 
         var program = File.ReadAllText(Path.Combine(Root(), "PEMS.Web", "Program.cs"));
         Assert.DoesNotContain("options.Filters.Add(new PEMS.Web.Security.RequireReplenishment", program);
@@ -519,10 +420,10 @@ public sealed class GateHost : IAsyncDisposable
                 options.Filters.Add(new PasswordChangeGateFilter());
                 options.Filters.Add(_actions);      // شاهد: اگر دروازه نشت کند، اکشن اجرا شده و شمارنده بالا می‌رود
             })
-            .AddApplicationPart(typeof(ReplenishmentController).Assembly)
+            .AddApplicationPart(typeof(RequireReplenishmentAvailableAttribute).Assembly)
             .AddApplicationPart(typeof(GateHost).Assembly)
             .ConfigureApplicationPartManager(m => m.FeatureProviders.Add(
-                new OnlyTheseControllers(typeof(ReplenishmentController), typeof(ProbeController), typeof(AccountController))));
+                new OnlyTheseControllers(typeof(ProbeController), typeof(AccountController))));
 
         _app = builder.Build();
         _app.UseRouting();

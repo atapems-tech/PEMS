@@ -25,7 +25,7 @@ public class ProcurementWarehouseListPagesTests
     {
         "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Vendor", "Views/Contract", "Views/ProcurementPackage",
         "Areas/Warehouse/Views/StoreRequisition", "Areas/Warehouse/Views/IrnReceipt",
-        "Areas/Warehouse/Views/Replenishment", "Areas/Warehouse/Views/PartCatalogueRequest",
+        "Areas/Warehouse/Views/PartCatalogueRequest",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
@@ -133,26 +133,6 @@ public class ProcurementWarehouseListPagesTests
         Assert.Contains("id=\"createIrnModal\"", irn);
         Assert.Contains("vs-pill vs-pill--info", irn);
         Assert.DoesNotContain("pems-filter-chip", irn);
-    }
-
-    [Fact]
-    public async Task Replenishment_RunIsAToolOnlyForWhoMayRun_AndTheNotesStay()
-    {
-        Task<string> Run(bool canRun) => Render<ReplenishmentController>("/Areas/Warehouse/Views/Replenishment/Index.cshtml",
-            Page(new ReplenishmentListItem { Id = 1, MaterialCode = "M-1", Status = "Open", IsCurrentlyDefinitive = false }),
-            v =>
-            {
-                v["LastRun"] = null; v["CanRun"] = canRun; v["AttributionEntries"] = new List<string> { "WO-1" };
-                v["SelectedStatus"] = "Open"; v["Search"] = "bear"; v["DefinitiveOnly"] = false; v["RequestKey"] = "k";
-            });
-
-        var html = await Run(true);
-        AssertBuiltFromTheComponent(html, "Replenishment", 1);
-        Assert.Contains("bi-calculator", html);
-        Assert.Contains("alert-info", html);                                              // stock-only note
-        Assert.Contains("alert-warning", html);                                           // attribution note
-        Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);  // search + status
-        Assert.DoesNotContain("bi-calculator", await Run(false));
     }
 
     [Fact]

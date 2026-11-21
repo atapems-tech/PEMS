@@ -49,6 +49,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Replenishment and the procurement queue as definition pages (SCRUM-663, 735)
+
+### Changed
+- /p/replenishment, /p/replenishment-details, /p/pre-procurement and /p/pre-procurement-details (with their forms and actions) replace ReplenishmentController and PreProcurementController. The Replenishment.* operations keep the feature switch (a switched-off module answers nothing) and the commands run under the strict access guard like ProtectedActionGuard; the pre-procurement decisions are the operations marked on IPreProcurementService (convert to a new or a Draft requisition, accept, dismiss or return, send a recommendation). The row version of a recommendation is read when the command runs, not carried by the form. The old routes redirect.
+
 ## 2026-11-21 - Material Master as definition pages (SCRUM-656)
 
 ### Changed

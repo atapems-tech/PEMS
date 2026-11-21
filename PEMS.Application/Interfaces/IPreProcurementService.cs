@@ -48,6 +48,7 @@ public sealed record NewRequisitionInput(string? MrNumber, int ProjectId, int Di
 public interface IPreProcurementService
 {
     /// <summary>The warehouse hands an Open replenishment recommendation to procurement; the recommendation becomes Converted.</summary>
+    [PEMS.Application.Common.PemsOperation("PreProcurement", "SendRecommendation")]
     Task<PreProcurementResult> SendRecommendationAsync(int recommendationId, PreProcurementActor actor);
 
     /// <summary>Raises the direct-purchase lines of a released work order that are not raised yet (<c>Count</c> = new items).</summary>
@@ -64,12 +65,15 @@ public interface IPreProcurementService
     Task<IReadOnlySet<int>> GetLiveSourceIdsAsync(string sourceType, IReadOnlyCollection<int> sourceIds);
 
     /// <summary>Adds a material demand as a line to an existing Draft MR (<paramref name="existingMrId"/>) or to a new MR.</summary>
+    [PEMS.Application.Common.PemsOperation("PreProcurement", "Convert", "PreProcurement.Edit")]
     Task<PreProcurementResult> ConvertToRequisitionAsync(int procurementDemandId, int? existingMrId, NewRequisitionInput? newMr, PreProcurementActor actor);
 
     /// <summary>Accepts an engineering MR into procurement.</summary>
+    [PEMS.Application.Common.PemsOperation("PreProcurement", "Accept", "PreProcurement.Edit")]
     Task<PreProcurementResult> AcceptAsync(int procurementDemandId, PreProcurementActor actor);
 
     /// <summary>Dismisses a material demand, or returns an engineering MR to engineering (status back to Approved). A reason is required.</summary>
+    [PEMS.Application.Common.PemsOperation("PreProcurement", "Dismiss", "PreProcurement.Edit")]
     Task<PreProcurementResult> DismissAsync(int procurementDemandId, string reason, PreProcurementActor actor);
 }
 
