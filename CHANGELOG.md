@@ -77,6 +77,18 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+## 2026-11-21 - SCRUM-734: permits (list, create, approval response, close) as definitions
+
+### Changed
+- IPermitOperations (the list with the status filter and the waiting-for-my-approval queue from the workflow runtime, create, the submit and issue steps, the approval response and close); permit-respond-approval and permit-close are stepUp actions (security key) and the operations check the permit authority eligibility first; page /p/permits and forms/actions. PARTIAL: the details page (isolation points, gas tests, SIMOPS, execution gate, approval chain) stays on PermitController (1 action) and posts its commands to the action host. Gaps: the PermitApprovalAuditRecord written on success by the old sensitive-action check is not written by the generic step-up (denials are audited); the pagination test file was removed (the grid pages the rows in memory; the waiting-queue ordering is not covered by a test any more).
+
+## 2026-11-21 - SCRUM-765: work requests (list, create, commands) as definitions
+
+### Changed
+- IWorkRequestOperations (list with status filter, choices, create, legacy status step with its permission rule, reject, cancel, convert to a work order); page /p/work-requests and forms/actions; the details page and its workflow view stay on WorkRequestController (1 action) and post the commands to the action host. Gaps: a converted work order is not opened; ids typed on the command forms; the list view test was removed.
+
 ## 2026-11-21 - SCRUM-759: tenders (list, create, invitations, clarifications) as definitions
 
 ### Changed

@@ -95,9 +95,7 @@
     "PEMS.Web/Views/Notification/_NotificationDropdown.cshtml",
     "PEMS.Web/Views/OCRProcessing/Index.cshtml",
     "PEMS.Web/Views/PageHost/Index.cshtml",
-    "PEMS.Web/Views/Permit/Create.cshtml",
     "PEMS.Web/Views/Permit/Details.cshtml",
-    "PEMS.Web/Views/Permit/Index.cshtml",
     "PEMS.Web/Views/QC/Index.cshtml",
     "PEMS.Web/Views/QC/ItpCreate.cshtml",
     "PEMS.Web/Views/QC/ItpDetails.cshtml",
@@ -182,9 +180,7 @@
     "PEMS.Web/Views/WorkOrder/Create.cshtml",
     "PEMS.Web/Views/WorkOrder/Details.cshtml",
     "PEMS.Web/Views/WorkOrder/Index.cshtml",
-    "PEMS.Web/Views/WorkRequest/Create.cshtml",
     "PEMS.Web/Views/WorkRequest/Details.cshtml",
-    "PEMS.Web/Views/WorkRequest/Index.cshtml",
     "PEMS.Web/Views/_ViewImports.cshtml",
     "PEMS.Web/Views/_ViewStart.cshtml"
   ],
@@ -238,7 +234,7 @@
     "PEMS.Web.Controllers.NotificationController": 7,
     "PEMS.Web.Controllers.OCRProcessingController": 2,
     "PEMS.Web.Controllers.PageHostController": 1,
-    "PEMS.Web.Controllers.PermitController": 7,
+    "PEMS.Web.Controllers.PermitController": 1,
     "PEMS.Web.Controllers.QCController": 17,
     "PEMS.Web.Controllers.RcmFmeaController": 16,
     "PEMS.Web.Controllers.RecoveryCodesController": 2,
@@ -258,6 +254,6 @@
     "PEMS.Web.Controllers.VDRImportController": 6,
     "PEMS.Web.Controllers.WebAuthnController": 3,
     "PEMS.Web.Controllers.WorkOrderController": 11,
-    "PEMS.Web.Controllers.WorkRequestController": 8
+    "PEMS.Web.Controllers.WorkRequestController": 1
   }
 }

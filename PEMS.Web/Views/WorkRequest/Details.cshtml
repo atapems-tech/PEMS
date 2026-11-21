@@ -145,7 +145,7 @@
             @* اکشن کسب‌وکاری Work Request (نه اکشن عمومی): تبدیل به WorkOrder؛ قواعد خودش را در سرویس Work Request دارد *@
             @if (Model.CanConvert)
             {
-                <pems-form asp-action="ConvertToWorkOrder" method="post"><pems-flex gap="2" align="center">
+                <pems-form action="/a/work-request-convert" method="post"><pems-flex gap="2" align="center">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     @if (!Model.EquipmentId.HasValue)
                     {
@@ -177,7 +177,7 @@
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Submit to Workflow"]</pems-button>
                 </pems-form>
-                <pems-form asp-action="Cancel" method="post"><pems-flex gap="2">
+                <pems-form action="/a/work-request-cancel" method="post"><pems-flex gap="2">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     <pems-input class="pems-w-220" scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                     <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Are you sure?"]">@Localizer["Cancel Request"]</pems-button>
@@ -190,14 +190,14 @@
             <pems-badge tone="light">@Localizer["Legacy record - no workflow instance"]</pems-badge>
             @if (nextStatus != null)
             {
-                <pems-form asp-action="AdvanceStatus" method="post"><pems-flex gap="2">
+                <pems-form action="/a/work-request-advance" method="post"><pems-flex gap="2">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     <pems-button tone="primary" size="small" type="submit">@Localizer["Advance to"] @nextStatus</pems-button>
                 </pems-flex></pems-form>
             }
             @if (Model.Status == "Planned")
             {
-                <pems-form asp-action="ConvertToWorkOrder" method="post"><pems-flex gap="2" align="center">
+                <pems-form action="/a/work-request-convert" method="post"><pems-flex gap="2" align="center">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     <pems-select class="w-auto" scale="small" name="workOrderType">
                         <option value="Corrective">@Localizer["Corrective"]</option>
@@ -212,13 +212,13 @@
             }
             @if (Model.Status is "UnderReview" or "Approved")
             {
-                <pems-form asp-action="Reject" method="post"><pems-flex gap="2">
+                <pems-form action="/a/work-request-reject" method="post"><pems-flex gap="2">
                     <input type="hidden" name="id" value="@Model.WorkRequestId" />
                     <pems-input class="pems-w-220" scale="small" type="text" name="reason" required placeholder="@Localizer["Rejection reason (required)"]" />
                     <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
                 </pems-flex></pems-form>
             }
-            <pems-form asp-action="Cancel" method="post"><pems-flex gap="2">
+            <pems-form action="/a/work-request-cancel" method="post"><pems-flex gap="2">
                 <input type="hidden" name="id" value="@Model.WorkRequestId" />
                 <pems-input class="pems-w-220" scale="small" type="text" name="reason" required placeholder="@Localizer["Reason (required)"]" />
                 <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="@Localizer["Are you sure?"]">@Localizer["Cancel Request"]</pems-button>
