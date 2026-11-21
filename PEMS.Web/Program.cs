@@ -212,6 +212,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IVendorOperations, PEMS.W
 builder.Services.AddScoped<PEMS.Application.Interfaces.IIntakeOperations, PEMS.Web.Services.IntakeOperations>();   // SCRUM-709
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenanceMasterDataOperations, PEMS.Web.Services.MaintenanceMasterDataOperations>();   // SCRUM-723
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPermitOperations, PEMS.Web.Services.PermitOperations>();   // SCRUM-734
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenanceStrategyOperations, PEMS.Web.Services.MaintenanceStrategyOperations>();   // SCRUM-725
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkRequestOperations, PEMS.Web.Services.WorkRequestOperations>();   // SCRUM-765
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITenderOperations, PEMS.Web.Services.TenderOperations>();   // SCRUM-759
 builder.Services.AddScoped<PEMS.Application.Interfaces.IContractOperations, PEMS.Web.Services.ContractOperations>();   // SCRUM-676

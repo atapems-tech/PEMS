@@ -226,7 +226,7 @@
     "PEMS.Web.Controllers.MDBController": 10,
     "PEMS.Web.Controllers.MDRImportController": 8,
     "PEMS.Web.Controllers.MaintenanceCalendarController": 3,
-    "PEMS.Web.Controllers.MaintenanceStrategyController": 21,
+    "PEMS.Web.Controllers.MaintenanceStrategyController": 12,
     "PEMS.Web.Controllers.MechanicalEquipmentController": 8,
     "PEMS.Web.Controllers.NavigationBadgeController": 1,
     "PEMS.Web.Controllers.NotificationController": 7,

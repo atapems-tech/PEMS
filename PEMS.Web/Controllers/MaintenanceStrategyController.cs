@@ -212,91 +212,6 @@ public class MaintenanceStrategyController : Controller
         return RedirectToAction(nameof(Details), new { id = result.Id ?? id });
     }
 
-    // ==================== Lifecycle ====================
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Submit(int id)
-    {
-        if (!await Can("Edit")) return Forbid();
-        return Outcome(await _commands.SubmitForReviewAsync(id, await ActorAsync()), id, "Rcm_Info_Submitted");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Review(int id, bool approve, string? comment)
-    {
-        if (!await Can("Approve")) return Forbid();
-        return Outcome(await _commands.ReviewAsync(id, approve, comment, await ActorAsync()), id,
-            approve ? "Rcm_Info_Approved" : "Rcm_Info_Rejected");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Activate(int id, bool moveAssignments = true)
-    {
-        if (!await Can("Approve")) return Forbid();
-        return Outcome(await _commands.ActivateAsync(id, moveAssignments, await ActorAsync()), id, "Rcm_Info_Activated");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Retire(int id, string? comment)
-    {
-        if (!await Can("Approve")) return Forbid();
-        return Outcome(await _commands.RetireAsync(id, comment, await ActorAsync()), id, "Rcm_Info_Retired");
-    }
-
-    // سازگاری با فرم/لینک قبلی «Deactivate» - اکنون یعنی بایگانی (Retire) با کنترل تغییر
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Deactivate(int strategyId)
-    {
-        if (!await Can("Approve")) return Forbid();
-        var result = await _commands.RetireAsync(strategyId, null, await ActorAsync());
-        if (result.Errors.Any(e => e.Code == "Rcm_Err_StrategyNotFound")) return NotFound();
-        return Outcome(result, strategyId, "Rcm_Info_Retired", nameof(Index));
-    }
-
-    // ==================== Assignment ====================
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Assign(int id, List<int> equipmentIds)
-    {
-        if (!await Can("Approve")) return Forbid();
-
-        var result = await _assignments.AssignAsync(id, equipmentIds ?? new List<int>(), await ActorAsync());
-        return AssignOutcome(result, id);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Unassign(int assignmentId, int strategyId, string? comment)
-    {
-        if (!await Can("Approve")) return Forbid();
-        return Outcome(await _assignments.UnassignAsync(assignmentId, comment, await ActorAsync()), strategyId, "Rcm_Info_Unassigned");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RequestOverride(int assignmentId, int strategyId, int? overrideIntervalDays,
-        string? overrideTaskNote, string? overrideJustification)
-    {
-        if (!await Can("Edit")) return Forbid();
-        return Outcome(await _assignments.RequestOverrideAsync(assignmentId, overrideIntervalDays, overrideTaskNote,
-            overrideJustification, await ActorAsync()), strategyId, "Rcm_Info_OverrideRequested");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DecideOverride(int assignmentId, int strategyId, bool approve, string? comment)
-    {
-        if (!await Can("Approve")) return Forbid();
-        return Outcome(await _assignments.DecideOverrideAsync(assignmentId, approve, comment, await ActorAsync()), strategyId,
-            approve ? "Rcm_Info_OverrideApproved" : "Rcm_Info_OverrideRejected");
-    }
-
     // ==================== Bidirectional views / reports ====================
 
     /// <summary>از تگ: همه‌ی استراتژی‌های تخصیص‌یافته، Planها و WOهای باز.</summary>
@@ -586,22 +501,6 @@ public class MaintenanceStrategyController : Controller
         if (result.Skipped.Count > 0)
             TempData["RcmAssignReport"] = string.Join("\n", result.Skipped.Take(200).Select(s => $"{s.Tag}|{s.Reason}|{s.OtherStrategyId}"));
         return RedirectToAction(nameof(Details), new { id = strategyId });
-    }
-
-    private IActionResult Outcome(OpResult result, int id, string successKey, string? successAction = null)
-    {
-        if (!result.Success)
-        {
-            if (result.Errors.Any(e => e.Code is "Rcm_Err_StrategyNotFound" or "Rcm_Err_AssignmentNotFound")) return NotFound();
-            TempData["Error"] = string.Join(" | ", _l.TranslateAll(result.Errors));
-            TempData["RcmErrors"] = string.Join("\n", _l.TranslateAll(result.Errors));
-            return RedirectToAction(nameof(Details), new { id });
-        }
-
-        TempData["Message"] = T(successKey);
-        return successAction == null
-            ? RedirectToAction(nameof(Details), new { id })
-            : RedirectToAction(successAction);
     }
 
     private async Task<IActionResult> FormWithErrorsAsync(int? id, StrategyInputDto input, IEnumerable<RuleError> errors)
