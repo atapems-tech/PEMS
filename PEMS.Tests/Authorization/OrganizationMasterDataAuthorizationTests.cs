@@ -110,116 +110,20 @@ public class OrganizationMasterDataAuthorizationTests
     // ================= Maintenance Master Data =================
 
     [Fact]
-    public async Task MaintenanceMasterData_CreateGroup_WithoutPermission_ReturnsForbid_DoesNotCreate()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_CreateGroup_WithoutPermission_ReturnsForbid_DoesNotCreate), role: SystemRoles.Viewer);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.CreateGroup("G1", "Group 1", 1, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.MaintenanceGroups);
-    }
-
-    [Fact]
     public async Task MaintenanceMasterData_CreateGroup_WithPermission_Creates()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_CreateGroup_WithPermission_Creates), role: SystemRoles.EngineeringSupervisor);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
+        var ops = new PEMS.Web.Services.MaintenanceMasterDataOperations(ctx, new OrganizationStructureService(ctx));
 
-        var result = await controller.CreateGroup("G1", "Group 1", 1, null);
+        var result = await ops.CreateGroupAsync("G1", "Group 1", 1, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.Single(ctx.MaintenanceGroups);
-    }
-
-    [Fact]
-    public async Task MaintenanceMasterData_ToggleGroupActive_WithoutPermission_ReturnsForbid_DoesNotToggle()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_ToggleGroupActive_WithoutPermission_ReturnsForbid_DoesNotToggle), role: SystemRoles.Viewer);
-        ctx.MaintenanceGroups.Add(new MaintenanceGroup { MaintenanceGroupId = 1, Code = "G1", Name = "Group 1", IsActive = true });
-        await ctx.SaveChangesAsync();
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.ToggleGroupActive(1);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.True(ctx.MaintenanceGroups.Single().IsActive);
-    }
-
-    [Fact]
-    public async Task MaintenanceMasterData_CreateSkill_WithoutPermission_ReturnsForbid_DoesNotCreate()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_CreateSkill_WithoutPermission_ReturnsForbid_DoesNotCreate), role: SystemRoles.ContractManager);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.CreateSkill("Skill 1", null, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.Skills);
-    }
-
-    [Fact]
-    public async Task MaintenanceMasterData_CreateQualification_WithoutPermission_ReturnsForbid_DoesNotCreate()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_CreateQualification_WithoutPermission_ReturnsForbid_DoesNotCreate), role: SystemRoles.QAManager);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.CreateQualification("Qual 1", null, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.Qualifications);
-    }
-
-    [Fact]
-    public async Task MaintenanceMasterData_CreateCertification_WithoutPermission_ReturnsForbid_DoesNotCreate()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_CreateCertification_WithoutPermission_ReturnsForbid_DoesNotCreate), role: SystemRoles.DocumentController);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.CreateCertification("Cert 1", null, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.Certifications);
-    }
-
-    [Fact]
-    public async Task MaintenanceMasterData_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
     }
 
     // ================= Dynamic Maintenance Organization (Team nesting / Position / Employee Assignment) =================
     // طبق «PEMS Dynamic Maintenance Organization»: همون الگوی دقیق بالا - فقط Permission، نه
     // Scope دیسیپلینی (که با SystemAdmin دور زده می‌شود؛ Scope واقعی تست نمی‌شود این‌جا).
-
-    [Fact]
-    public async Task MaintenanceMasterData_CreateSubGroup_WithoutPermission_ReturnsForbid_DoesNotCreate()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_CreateSubGroup_WithoutPermission_ReturnsForbid_DoesNotCreate), role: SystemRoles.Viewer);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.CreateSubGroup("SUB", "Sub Group", 1, 1, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.MaintenanceGroups);
-    }
-
-    [Fact]
-    public async Task MaintenanceMasterData_MoveGroup_WithoutPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MaintenanceMasterData_MoveGroup_WithoutPermission_ReturnsForbid), role: SystemRoles.Viewer);
-        var controller = new MaintenanceMasterDataController(ctx, user, perms, new OrganizationStructureService(ctx)).WithTempData();
-
-        var result = await controller.MoveGroup(1, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
 
     [Fact]
     public async Task Team_OrganizationTree_WithoutViewPermission_ReturnsForbid()

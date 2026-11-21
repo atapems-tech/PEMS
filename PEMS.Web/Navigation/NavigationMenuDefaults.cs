@@ -147,7 +147,7 @@ public static class NavigationMenuDefaults
         new("cmms.team", "sec.cmms", L, 90, "Teams", "bi-people", "CmmsItem:Team", ExternalPath: "/p/teams"),   // SCRUM-757: a definition page (/p/...)
         new("cmms.crew", "sec.cmms", L, 100, "Crews", "bi-people-fill", "CmmsItem:Crew", ExternalPath: "/p/crews"),   // SCRUM-677: a definition page (/p/...)
         new("cmms.shifthandover", "sec.cmms", L, 110, "Shift Handovers", "bi-arrow-left-right", "CmmsItem:ShiftHandover", ExternalPath: "/p/shift-handovers"),   // SCRUM-749: a definition page (/p/...)
-        Link("cmms.masterdata", "sec.cmms", 120, "Maintenance Master Data", "bi-collection", "MaintenanceMasterData", rule: "CmmsItem:MaintenanceMasterData"),
+        new("cmms.masterdata", "sec.cmms", L, 120, "Maintenance Master Data", "bi-collection", "CmmsItem:MaintenanceMasterData", ExternalPath: "/p/maintenance-master-data"),   // SCRUM-723: a definition page (/p/...)
         Link("cmms.classification", "sec.cmms", 130, "Equipment Classification", "bi-diagram-3-fill", "EquipmentClassification", rule: "CmmsItem:EquipmentClassification"),
         new("cmms.readiness", "sec.cmms", L, 140, "CMMS Readiness", "bi-clipboard-check", "CmmsItem:CmmsReadiness", ExternalPath: "/p/cmms-readiness"),   // SCRUM-674: a definition page (/p/...)
         new("cmms.operations", "sec.cmms", L, 150, "CMMS Operations", "bi-speedometer2", "CmmsItem:CmmsOperations", ExternalPath: "/p/cmms-operations"),   // SCRUM-673
