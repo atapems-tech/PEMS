@@ -27,7 +27,7 @@
         <pems-col md="4"><strong>Approved:</strong> @(PemsDates.Date(Model.ApprovedDate) ?? "-")</pems-col>
         @if (Model.ProcurementPackage != null)
         {
-            <pems-col md="4" css="mt-2"><strong>@Localizer["Package"]:</strong> <pems-link asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</pems-link></pems-col>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Package"]:</strong> <pems-link href="/p/procurement-package-details?id=@Model.ProcurementPackageId">@Model.ProcurementPackage.PackageNumber</pems-link></pems-col>
         }
         @if (Model.Contract != null)
         {

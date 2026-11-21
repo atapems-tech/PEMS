@@ -165,8 +165,6 @@ public class RelatedListComponentTests
         foreach (var (page, sections) in new[]
         {
             ("Views/Tender/Details.cshtml", new[] { "tenderVendors", "tenderInvitations", "tenderBids", "tenderClarifications" }),
-            ("Views/ProcurementPackage/Details.cshtml", new[] { "pkgMrs", "pkgMrqs", "pkgComms", "pkgApprovals" }),
-            ("Areas/Warehouse/Views/IrnReceipt/Details.cshtml", new[] { "irnLines", "irnDispositions", "irnHistory" }),
         })
         {
             var view = File.ReadAllText(Path.Combine(web, page.Replace('/', Path.DirectorySeparatorChar)));

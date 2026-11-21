@@ -301,7 +301,7 @@
                     <pems-icon name="bi-cart-check" /> @Localizer["Material Requisition"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("ProcurementPackage"))" asp-controller="ProcurementPackage" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/procurement-packages" active="@(IsActive("ProcurementPackage") || Context.Request.Path.StartsWithSegments("/p/procurement-package"))">
                     <pems-icon name="bi-folder2-open" /> @Localizer["ProcurementPackage"]
                 </pems-nav-link>
 

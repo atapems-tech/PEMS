@@ -55,6 +55,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Procurement packages as definition pages (SCRUM-736)
+
+### Changed
+- /p/procurement-packages and /p/procurement-package-details (with the create, stage, MR link, clarification, response, status, approval and close-out forms) replace ProcurementPackageController: the reads are ProcurementPackage.* operations, the create keeps the access-control record behind the separation-of-duties check, and the commands are the operations marked on IProcurementPackageService; approve and close out run under the strict access guard (denials recorded, the creator may not approve). The controller-bound authorization, close-out and guard tests were removed with the controller (the service-level close-out tests stay); the old routes redirect.
+
 ## 2026-11-21 - Material requisitions as definition pages (SCRUM-726)
 
 ### Changed

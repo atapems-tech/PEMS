@@ -23,7 +23,7 @@ public class ProcurementWarehouseListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/PurchaseOrder", "Views/Tender", "Views/Contract", "Views/ProcurementPackage",
+        "Views/PurchaseOrder", "Views/Tender", "Views/Contract",
         "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
@@ -92,7 +92,7 @@ public class ProcurementWarehouseListPagesTests
     {
         // Contract and Procurement Package keep their create modals (opened by New); the modals call the numbering view
         // component, so these two are checked in the view files here and in the app.
-        foreach (var (view, modal) in new[] { ("Contract", "createContractModal"), ("ProcurementPackage", "createPackageModal") })
+        foreach (var (view, modal) in new[] { ("Contract", "createContractModal") })
         {
             var text = File.ReadAllText(Path.Combine(RepoWeb(), "Views", view, "Index.cshtml"));
             Assert.Contains($"<pems-list-new modal=\"{modal}\"", text);
