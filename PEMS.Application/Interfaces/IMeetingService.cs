@@ -18,6 +18,7 @@ public interface IMeetingService
 
     Task<MeetingDetailDto?> GetDetailAsync(int meetingId);
 
+    [PEMS.Application.Common.PemsOperation("Meeting", "Create")]
     Task<int> CreateAsync(string title, DateTime meetingDate, string? location, string? organizerName,
         int? projectId, string? agenda);
 

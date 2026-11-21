@@ -579,7 +579,8 @@
                 var cell_39_6 = DataCell.Template(rows_39, @<text>@{ var i = item; }
                                 @if (i.ConditionStatus == "Alert")
                                 {
-                                    <pems-form asp-controller="Inspection" asp-action="RaiseWorkRequest" method="post" class="d-inline">
+                                    <pems-form action="/a/inspection-raise-work-request" method="post" class="d-inline">
+                                        <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                                         <input type="hidden" name="inspectionRecordId" value="@i.InspectionRecordId" />
                                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-exclamation-triangle" /> @Localizer["Cm_RaiseWr"]</pems-button>
                                     </pems-form>
@@ -591,7 +592,7 @@
         </pems-content-card>
 
         <pems-modal id="newInspectionModal" tabindex="-1">
-                <pems-form asp-controller="Inspection" asp-action="Create" method="post">
+                <pems-form action="/a/inspection-create" method="post">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <pems-modal-header>New Inspection</pems-modal-header>
                     <pems-modal-body>

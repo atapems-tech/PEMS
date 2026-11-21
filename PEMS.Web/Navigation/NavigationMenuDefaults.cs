@@ -126,7 +126,7 @@ public static class NavigationMenuDefaults
         Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,TaskManager,Tag,Report,Meeting"),
         Link("proj.tasks", "sec.projctrl", 10, "Tasks", "bi-check2-square", "Task", rule: "Perm:Task.View", badge: NavigationBadges.TasksOpen),
         Link("proj.taskmanager", "sec.projctrl", 15, "Nav_TaskManager", "bi-kanban", "TaskManager", rule: "Perm:Task.View"),
-        Link("proj.meetings", "sec.projctrl", 20, "Meetings", "bi-people", "Meeting"),
+        new("proj.meetings", "sec.projctrl", L, 20, "Meetings", "bi-people", Always, ExternalPath: "/p/meetings"),   // SCRUM-728: a definition page (/p/...)
         new("proj.reports", "sec.projctrl", L, 30, "Reports", "bi-graph-up", Always, ExternalPath: "/p/report-correspondence"),   // SCRUM-747: a definition page (/p/...)
 
         // ---- CMMS (قاعده‌ی هر آیتم همان IsCmmsItemVisible: مجوز + Override مدیر)
@@ -155,7 +155,7 @@ public static class NavigationMenuDefaults
         Link("cmms.criticality", "sec.cmms", 170, "Criticality Analysis", "bi-shield-exclamation", "EquipmentCriticality", rule: "CmmsItem:EquipmentCriticality"),
         Link("cmms.assessment", "sec.cmms", 180, "Criticality Assessment", "bi-clipboard2-check", "CriticalityAssessment", "Dashboard", rule: "CmmsItem:CriticalityAssessment"),
         Link("cmms.reliability", "sec.cmms", 190, "Reliability", "bi-graph-up-arrow", "Reliability", "Dashboard", rule: "CmmsItem:Reliability"),
-        Link("cmms.inspection", "sec.cmms", 200, "Inspections", "bi-clipboard-pulse", "Inspection", rule: "CmmsItem:Inspection"),
+        new("cmms.inspection", "sec.cmms", L, 200, "Inspections", "bi-clipboard-pulse", "CmmsItem:Inspection", ExternalPath: "/p/inspections"),   // SCRUM-707: a definition page (/p/...)
         new("cmms.kpi", "sec.cmms", L, 210, "KPI Dashboard", "bi-speedometer2", "CmmsItem:Kpi", ExternalPath: "/p/kpi"),   // SCRUM-713: a definition page (/p/...)
         Link("cmms.permit", "sec.cmms", 220, "Permits", "bi-shield-check", "Permit", rule: "CmmsItem:Permit"),
         Link("cmms.fl", "sec.cmms", 230, "Functional Locations", "bi-diagram-3", "FunctionalLocation", rule: "CmmsItem:FunctionalLocation"),

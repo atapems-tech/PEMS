@@ -240,7 +240,7 @@
                 <pems-bullet-list class="list-unstyled mb-2">
                     @foreach (var m in kickoffs)
                     {
-                        <pems-bullet><pems-link asp-controller="Meeting" asp-action="Details" asp-route-id="@m.MeetingId">@m.Title</pems-link> — <pems-badge tone="neutral">@m.Status</pems-badge> (@PemsDates.Date(m.MeetingDate))</pems-bullet>
+                        <pems-bullet><a href="/p/meeting-details?id=@m.MeetingId">@m.Title</a> — <pems-badge tone="neutral">@m.Status</pems-badge> (@PemsDates.Date(m.MeetingDate))</pems-bullet>
                     }
                 </pems-bullet-list>
             }
