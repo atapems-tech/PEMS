@@ -44,7 +44,7 @@
     <pems-content-card css="mb-3">
         <pems-heading level="6" class="text-muted small mb-2">@Localizer["Procurement Origin"]</pems-heading>
         <pems-info-grid>
-            <pems-info-item label="@Localizer["Package"]" num><pems-link asp-controller="ProcurementPackage" asp-action="Details" asp-route-id="@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</pems-link></pems-info-item>
+            <pems-info-item label="@Localizer["Package"]" num><pems-link href="/p/procurement-package-details?id=@originatingTender.ProcurementPackageId">@originatingTender.ProcurementPackage?.PackageNumber</pems-link></pems-info-item>
             <pems-info-item label="@Localizer["Tender"]" num><pems-link asp-controller="Tender" asp-action="Details" asp-route-id="@originatingTender.TenderId">@originatingTender.TenderNumber</pems-link></pems-info-item>
             <pems-info-item label="@Localizer["Awarded Bid"]" num>@originatingTender.AwardedBid?.BidNumber</pems-info-item>
             <pems-info-item label="@Localizer["Awarded"]" num>@PemsDates.Date(originatingTender.AwardedDate)</pems-info-item>

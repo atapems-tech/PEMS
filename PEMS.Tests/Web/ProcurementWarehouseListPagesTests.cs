@@ -23,7 +23,7 @@ public class ProcurementWarehouseListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Contract", "Views/ProcurementPackage",
+        "Views/Tender", "Views/Contract",
         "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
@@ -62,18 +62,6 @@ public class ProcurementWarehouseListPagesTests
     // ---------- procurement ----------
 
     [Fact]
-    public async Task PurchaseOrders_StatusIsALocalisedPill_AndNewOpensTheCreatePage()
-    {
-        var html = await Render<PurchaseOrderController>("/Views/PurchaseOrder/Index.cshtml",
-            new List<PurchaseOrderDto> { new() { PoId = 3, PoNumber = "PO-0003", VendorName = "ACME", Value = 1200, Status = "Submitted" } });
-
-        AssertBuiltFromTheComponent(html, "PurchaseOrder", 1);
-        Assert.Contains("vs-pill vs-pill--warning", html);
-        Assert.Contains("class=\"lp-subject\" title=\"PO-0003\"", html);
-        Assert.Contains("lp-compose", html);
-    }
-
-    [Fact]
     public async Task Tenders_FromAPackage_ShowThePackageChip_AndOfferNewForThatPackage()
     {
         var tender = new Tender { TenderId = 5, TenderNumber = "TND-5", Title = "Pumps", Status = "Open", ProcurementPackage = new ProcurementPackage { PackageNumber = "PKG-9" } };
@@ -90,14 +78,9 @@ public class ProcurementWarehouseListPagesTests
     [Fact]
     public async Task MaterialRequisitions_Vendors_Contracts_AndPackages_KeepTheirModalsAndPaging()
     {
-        var mr = await Render<MaterialRequisitionController>("/Views/MaterialRequisition/Index.cshtml",
-            Page(new MRDto { MRId = 1, MRNumber = "MR-1", Status = "Sent", QuotationsCount = 2 }));
-        AssertBuiltFromTheComponent(mr, "MaterialRequisition", 1);
-        Assert.Contains("class=\"lp-footer\"", mr);
-
         // Contract and Procurement Package keep their create modals (opened by New); the modals call the numbering view
         // component, so these two are checked in the view files here and in the app.
-        foreach (var (view, modal) in new[] { ("Contract", "createContractModal"), ("ProcurementPackage", "createPackageModal") })
+        foreach (var (view, modal) in new[] { ("Contract", "createContractModal") })
         {
             var text = File.ReadAllText(Path.Combine(RepoWeb(), "Views", view, "Index.cshtml"));
             Assert.Contains($"<pems-list-new modal=\"{modal}\"", text);

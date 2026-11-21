@@ -297,11 +297,11 @@
             }
             @if (engProcurementVisible)
             {
-                <pems-nav-link item="false" active="@(IsActive("MaterialRequisition"))" asp-controller="MaterialRequisition" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/material-requisitions" active="@(IsActive("MaterialRequisition") || Context.Request.Path.StartsWithSegments("/p/material-requisition") || Context.Request.Path.StartsWithSegments("/p/mr-"))">
                     <pems-icon name="bi-cart-check" /> @Localizer["Material Requisition"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("ProcurementPackage"))" asp-controller="ProcurementPackage" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/procurement-packages" active="@(IsActive("ProcurementPackage") || Context.Request.Path.StartsWithSegments("/p/procurement-package"))">
                     <pems-icon name="bi-folder2-open" /> @Localizer["ProcurementPackage"]
                 </pems-nav-link>
 
@@ -311,7 +311,7 @@
             }
             @if (contractVisible)
             {
-                <pems-nav-link item="false" active="@(IsActive("PurchaseOrder"))" asp-controller="PurchaseOrder" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/purchase-orders" active="@(IsActive("PurchaseOrder") || Context.Request.Path.StartsWithSegments("/p/purchase-order") || Context.Request.Path.StartsWithSegments("/p/po-"))">
                     <pems-icon name="bi-receipt" /> @Localizer["Purchase Orders"]
                 </pems-nav-link>
 

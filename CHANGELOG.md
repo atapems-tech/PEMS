@@ -54,6 +54,24 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+## 2026-11-21 - Purchase orders as definition pages (SCRUM-741)
+
+### Changed
+- /p/purchase-orders and /p/purchase-order-details (with forms for create, create from an MR, add lines, edit and remove a line, submit, route again, approve, reject, issue and release inspection) replace PurchaseOrderController. The reads are PurchaseOrder.* operations, both create commands keep the access-control record behind the separation-of-duties rule, the line, approval and inspection commands are the operations marked on the purchase-order services, and issue runs under the strict access guard. Controller-bound authorization and break-glass tests were removed with the controller (the service-level tests stay); the old routes redirect.
+
+## 2026-11-21 - Procurement packages as definition pages (SCRUM-736)
+
+### Changed
+- /p/procurement-packages and /p/procurement-package-details (with the create, stage, MR link, clarification, response, status, approval and close-out forms) replace ProcurementPackageController: the reads are ProcurementPackage.* operations, the create keeps the access-control record behind the separation-of-duties check, and the commands are the operations marked on IProcurementPackageService; approve and close out run under the strict access guard (denials recorded, the creator may not approve). The controller-bound authorization, close-out and guard tests were removed with the controller (the service-level close-out tests stay); the old routes redirect.
+
+## 2026-11-21 - Material requisitions as definition pages (SCRUM-726)
+
+### Changed
+- /p/material-requisitions, /p/mr-details and /p/mr-quotations (with the create, status, quotation and evaluation forms) replace MaterialRequisitionController over MaterialRequisition.* operations (same service calls; reaching Approved still needs MaterialRequisition.Approve; an MR issued to procurement still enters the procurement queue). The item lines are typed one per line (description | part number | quantity | unit); the part lookup is the operation MaterialRequisition.PartLookup. The old routes redirect.
+
 ## 2026-11-21 - Vendors as definition pages (SCRUM-763)
 
 ### Changed

@@ -97,6 +97,7 @@ public interface IPurchaseOrderReceivingService
     Task<PoReceivingResult> ResolveHoldAsync(int irnReceiptLineId, decimal accepted, decimal rejected, string? notes, PoReceivingActor actor);
 
     /// <summary>Inspection release before shipment (optionally against an ITP), where the package requires inspection.</summary>
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "ReleaseInspection", "PurchaseOrder.View")]
     Task<PoReceivingResult> ReleaseInspectionAsync(int purchaseOrderLineId, int? inspectionTestPlanId, PoReceivingActor actor);
 
     Task<OsdReport?> GetOsdReportAsync(int irnReceiptId);

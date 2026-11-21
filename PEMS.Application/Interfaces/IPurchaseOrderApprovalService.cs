@@ -57,19 +57,24 @@ public interface IPurchaseOrderApprovalService
     Task<PoResult> CreateFromRequisitionAsync(int mrId, int vendorId, string currency, string? poNumber, PoActor actor);
 
     /// <summary>Adds the MR's free items to a Draft PO of the same project.</summary>
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "AddLinesFromRequisition", "PurchaseOrder.View")]
     Task<PoResult> AddLinesFromRequisitionAsync(int poId, int mrId, PoActor actor);
 
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "UpdateLine", "PurchaseOrder.View")]
     Task<PoResult> UpdateLineAsync(int lineId, PoLineInput input, PoActor actor);
 
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "RemoveLine", "PurchaseOrder.View")]
     Task<PoResult> RemoveLineAsync(int lineId, PoActor actor);
 
     Task<PoApprovalView?> GetAsync(int poId);
 
     /// <summary>Checks the lines, totals the value and routes the PO to the role of the matching authority rule (or leaves it "responsible not set").</summary>
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "Submit", "PurchaseOrder.View")]
     Task<PoResult> SubmitAsync(int poId, PoActor actor);
 
     /// <summary>Retries the routing of a submitted PO whose responsible was not set (after the admin added a rule), or whose route is no
     /// longer valid (SCRUM-546: the open task of the old role is cancelled first).</summary>
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "Route", "PurchaseOrder.View")]
     Task<PoResult> RouteAsync(int poId, PoActor actor);
 
     /// <summary>SCRUM-546: the roles that may be chosen as PO approver (those with PurchaseOrder Approve).</summary>
@@ -77,9 +82,11 @@ public interface IPurchaseOrderApprovalService
     Task<IReadOnlyList<string>> GetApproverRolesAsync();
 
     /// <summary>Approval by a holder of the routed role who neither created nor submitted the PO.</summary>
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "Approve", "PurchaseOrder.View")]
     Task<PoResult> ApproveAsync(int poId, PoActor actor);
 
     /// <summary>Back to Draft with a reason.</summary>
+    [PEMS.Application.Common.PemsOperation("PurchaseOrder", "Reject", "PurchaseOrder.View")]
     Task<PoResult> RejectAsync(int poId, string reason, PoActor actor);
 
     [PEMS.Application.Common.PemsOperation("PoAuthority", "Rules", Roles = "SystemAdmin")]

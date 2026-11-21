@@ -101,10 +101,10 @@ public static class NavigationMenuDefaults
         Sub("proc.sub.purchasing", "sec.procurement", 20, "Nav_Proc_Purchasing"),
         // SCRUM-471: the procurement cartable (pre-procurement queue), first under Purchasing
         new("proc.preprocurement", "proc.sub.purchasing", L, 5, "Ppr_Title", "bi-inbox", "Perm:PreProcurement.View", ExternalPath: "/p/pre-procurement"),   // SCRUM-735: a definition page (/p/...)
-        Link("proc.mr", "proc.sub.purchasing", 10, "Material Requisition", "bi-cart-check", "MaterialRequisition", rule: "Module:EngineeringManagement&Perm:MaterialRequisition.View"),
-        Link("proc.package", "proc.sub.purchasing", 20, "ProcurementPackage", "bi-folder2-open", "ProcurementPackage", rule: "Module:EngineeringManagement&Perm:ProcurementPackage.View"),
+        new("proc.mr", "proc.sub.purchasing", L, 10, "Material Requisition", "bi-cart-check", "Module:EngineeringManagement&Perm:MaterialRequisition.View", ExternalPath: "/p/material-requisitions"),   // SCRUM-726: a definition page (/p/...)
+        new("proc.package", "proc.sub.purchasing", L, 20, "ProcurementPackage", "bi-folder2-open", "Module:EngineeringManagement&Perm:ProcurementPackage.View", ExternalPath: "/p/procurement-packages"),   // SCRUM-736: a definition page (/p/...)
         Link("proc.tender", "proc.sub.purchasing", 30, "Tender", "bi-clipboard-check", "Tender", rule: "Module:EngineeringManagement&Perm:Tender.View"),
-        Link("proc.po", "proc.sub.purchasing", 40, "Purchase Orders", "bi-receipt", "PurchaseOrder", rule: "Module:ContractManagement&Perm:PurchaseOrder.View"),
+        new("proc.po", "proc.sub.purchasing", L, 40, "Purchase Orders", "bi-receipt", "Module:ContractManagement&Perm:PurchaseOrder.View", ExternalPath: "/p/purchase-orders"),   // SCRUM-741: a definition page (/p/...)
         Sub("proc.sub.contracts", "sec.procurement", 30, "Contracts"),
         Link("proc.contracts", "proc.sub.contracts", 10, "Contracts", "bi-file-earmark-ruled", "Contract", rule: "Module:ContractManagement&Perm:Contracts.View"),
         ComingSoon("proc.milestones", "proc.sub.contracts", 20, "Contract Milestones", "bi-flag", "Contract Milestones", "Contract Management", "Module:ContractManagement"),

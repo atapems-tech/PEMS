@@ -54,23 +54,6 @@ public class IdentifierValidationTests
         Assert.All(ctx.PurchaseOrders, po => Assert.Equal("Draft", po.Status));            // رفتار Draft قبلی دست‌نخورده
     }
 
-    [Fact]
-    public async Task PurchaseOrderController_Create_Duplicate_RedirectsToCreateWithAnError_NoSecondPo()
-    {
-        var ctx = NewCtx(nameof(PurchaseOrderController_Create_Duplicate_RedirectsToCreateWithAnError_NoSecondPo));
-        var service = new PurchaseOrderService(ctx);
-        await service.CreateAsync("PO-100", 1, 1, null, null, 10m);
-        var access = new AccessControlService(ctx);
-        var controller = new PurchaseOrderController(service, new FakePermissionService(), new FakeCurrentUserService { UserId = 1, Roles = new[] { "ContractManager" } }, ctx, access).WithTempData();
-
-        var result = await controller.Create("PO-100", 1, 1, null, null, 10m);
-
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(nameof(PurchaseOrderController.Create), redirect.ActionName);
-        Assert.NotNull(controller.TempData["Error"]);
-        Assert.Equal(1, await ctx.PurchaseOrders.CountAsync());
-    }
-
     // -------------------------------------------------------------- Contract
     [Fact]
     public async Task Contract_BlankDuplicateNegativeValueAndInvertedDates_AreRejected()
