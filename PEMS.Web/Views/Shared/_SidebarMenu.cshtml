@@ -499,7 +499,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("WorkRequest"))
             {
-                <pems-nav-link item="false" active="@(IsActive("WorkRequest"))" asp-controller="WorkRequest" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("WorkRequest"))" href="/p/work-requests">
                     <pems-icon name="bi-clipboard-plus" /> @Localizer["Work Requests"]
                 </pems-nav-link>
             }

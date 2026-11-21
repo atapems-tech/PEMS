@@ -24,7 +24,7 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag",
+        "WorkOrder", "Equipment", "FunctionalLocation", "Instrument", "Tag",
         "MaintenanceStrategy", "Permit", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
@@ -116,20 +116,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Work requests ----------
-
-    [Fact]
-    public async Task WorkRequests_TheStatusButtonRowBecameAFilterWithAChip()
-    {
-        var html = await Render<WorkRequestController>("/Views/WorkRequest/Index.cshtml",
-            Page(new WorkRequestListDto { WorkRequestId = 2, RequestNumber = "WR-0002", Title = "Seal leak", Status = "UnderReview", Priority = "High", RequestedByName = "A. Karimi", RequestedDate = new DateTime(2026, 10, 6) }),
-            v => v["SelectedStatus"] = "UnderReview");
-
-        AssertBuiltFromTheComponent(html, "WorkRequest", 1);
-        Assert.Contains("name=\"status\"", html);
-        Assert.Contains("Under review", Chips(html));
-        Assert.Contains("bi-hourglass-split", html);
-        Assert.Contains("vs-pill--warning", html);                               // high priority
-    }
 
     // ---------- Letter tags ----------
 

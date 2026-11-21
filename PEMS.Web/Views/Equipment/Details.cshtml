@@ -521,7 +521,7 @@
                 <pems-heading level="6" class="mb-0"><pems-icon name="bi-clipboard-plus" /> @Localizer["Cm_MaintHistoryWr"]</pems-heading>
                 @if (canCreateWr)
                 {
-                    <pems-link asp-controller="WorkRequest" asp-action="Create" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--primary vs-btn--sm">
+                    <pems-link href="/f/work-request-create?equipmentId=@eq.EquipmentId" class="vs-btn vs-btn--primary vs-btn--sm">
                         <pems-icon name="bi-plus-lg" /> @Localizer["Cm_NewWorkRequest"]
                     </pems-link>
                 }

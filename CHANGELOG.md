@@ -77,6 +77,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-765: work requests (list, create, commands) as definitions
+
+### Changed
+- IWorkRequestOperations (list with status filter, choices, create, legacy status step with its permission rule, reject, cancel, convert to a work order); page /p/work-requests and forms/actions; the details page and its workflow view stay on WorkRequestController (1 action) and post the commands to the action host. Gaps: a converted work order is not opened; ids typed on the command forms; the list view test was removed.
+
 ## 2026-11-21 - SCRUM-759: tenders (list, create, invitations, clarifications) as definitions
 
 ### Changed
