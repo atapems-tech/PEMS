@@ -1,0 +1,168 @@
+{
+  "kind": "page",
+  "key": "criticality-assessment-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment dashboard",
+    "fa": "داشبورد ارزیابی بحرانی‌بودن"
+  },
+  "description": {
+    "en": "Criticality assessment dashboard",
+    "fa": "داشبورد ارزیابی بحرانی‌بودن"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "criticality-assessment-dashboard",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/criticality-assessments",
+                "text": {
+                  "en": "Assessment queue",
+                  "fa": "صف ارزیابی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/criticality-assessment-create",
+                "text": {
+                  "en": "New assessment",
+                  "fa": "ارزیابی جدید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "counts",
+          "component": "data-grid",
+          "options": {
+            "id": "counts",
+            "url": "/d/criticality-assessment-dashboard",
+            "idField": "frameworkVersion",
+            "columns": [
+              {
+                "key": "totalActiveEquipment",
+                "header": {
+                  "en": "Active equipment",
+                  "fa": "تجهیز فعال"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "assessed",
+                "header": {
+                  "en": "Assessed",
+                  "fa": "ارزیابی‌شده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "unassessed",
+                "header": {
+                  "en": "Unassessed",
+                  "fa": "ارزیابی‌نشده"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "approved",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "underReview",
+                "header": {
+                  "en": "Under review",
+                  "fa": "در بازبینی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "draft",
+                "header": {
+                  "en": "Draft",
+                  "fa": "پیش‌نویس"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "superseded",
+                "header": {
+                  "en": "Superseded",
+                  "fa": "جایگزین‌شده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "publishedA",
+                "header": {
+                  "en": "Published A",
+                  "fa": "منتشرشده A"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "publishedB",
+                "header": {
+                  "en": "Published B",
+                  "fa": "منتشرشده B"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "publishedC",
+                "header": {
+                  "en": "Published C",
+                  "fa": "منتشرشده C"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "publishedOther",
+                "header": {
+                  "en": "Published other",
+                  "fa": "منتشرشده سایر"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "frameworkVersion",
+                "header": {
+                  "en": "Framework",
+                  "fa": "چارچوب"
+                },
+                "width": 110
+              }
+            ],
+            "pageSize": 5,
+            "height": 160
+          }
+        }
+      ]
+    },
+    "permission": "CriticalityAssessment.View"
+  }
+}

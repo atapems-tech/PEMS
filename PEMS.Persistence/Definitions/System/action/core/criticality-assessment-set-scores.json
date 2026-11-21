@@ -29,6 +29,6 @@
       "en": "Scores saved.",
       "fa": "امتیازها ثبت شد."
     },
-    "redirect": "/CriticalityAssessment/Details/{id}"
+    "redirect": "/p/criticality-assessment-details?id={id}"
   }
 }

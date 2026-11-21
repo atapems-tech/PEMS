@@ -1,0 +1,354 @@
+{
+  "kind": "page",
+  "key": "criticality-assessment-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment",
+    "fa": "ارزیابی بحرانی‌بودن"
+  },
+  "description": {
+    "en": "Criticality assessment",
+    "fa": "ارزیابی بحرانی‌بودن"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "criticality-assessment-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "criticality-assessment-record",
+            "fields": [
+              {
+                "key": "equipmentTag",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "equipmentClass",
+                "label": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "frameworkVersion",
+                "label": {
+                  "en": "Framework",
+                  "fa": "چارچوب"
+                }
+              },
+              {
+                "key": "assessmentDate",
+                "label": {
+                  "en": "Assessment date",
+                  "fa": "تاریخ ارزیابی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "preparedBy",
+                "label": {
+                  "en": "Prepared by",
+                  "fa": "تهیه‌کننده"
+                }
+              },
+              {
+                "key": "reviewedBy",
+                "label": {
+                  "en": "Reviewed by",
+                  "fa": "بازبین"
+                }
+              },
+              {
+                "key": "approvedBy",
+                "label": {
+                  "en": "Approved by",
+                  "fa": "تأییدکننده"
+                }
+              },
+              {
+                "key": "approvedAt",
+                "label": {
+                  "en": "Approved at",
+                  "fa": "تاریخ تأیید"
+                },
+                "type": "date"
+              },
+              {
+                "key": "safetyScore",
+                "label": {
+                  "en": "Safety",
+                  "fa": "ایمنی"
+                }
+              },
+              {
+                "key": "productionScore",
+                "label": {
+                  "en": "Production / availability",
+                  "fa": "تولید / دسترس‌پذیری"
+                }
+              },
+              {
+                "key": "environmentScore",
+                "label": {
+                  "en": "Environment",
+                  "fa": "محیط‌زیست"
+                }
+              },
+              {
+                "key": "calculatedMaxScore",
+                "label": {
+                  "en": "Calculated (max) score",
+                  "fa": "امتیاز محاسبه‌شده (بیشینه)"
+                }
+              },
+              {
+                "key": "proposedClass",
+                "label": {
+                  "en": "Proposed criticality class",
+                  "fa": "کلاس بحرانی‌بودن پیشنهادی"
+                }
+              },
+              {
+                "key": "rationale",
+                "label": {
+                  "en": "Rationale",
+                  "fa": "توجیه"
+                },
+                "wide": true
+              },
+              {
+                "key": "reasonForChange",
+                "label": {
+                  "en": "Reason for change",
+                  "fa": "دلیل تغییر"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/criticality-assessment-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/criticality-assessment-set-scores?id={{params.id}}",
+                "text": {
+                  "en": "Set dimension scores",
+                  "fa": "ثبت امتیازها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/criticality-assessment-add-evidence?id={{params.id}}",
+                "text": {
+                  "en": "Add evidence",
+                  "fa": "افزودن شاهد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/criticality-assessment-submit?id={{params.id}}",
+                "text": {
+                  "en": "Submit for review",
+                  "fa": "ارسال برای بازبینی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/criticality-assessment-approve?id={{params.id}}",
+                "text": {
+                  "en": "Approve and publish",
+                  "fa": "تأیید و انتشار"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/criticality-assessment-reject?id={{params.id}}",
+                "text": {
+                  "en": "Reject to draft",
+                  "fa": "بازگشت به پیش‌نویس"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/criticality-assessments",
+                "text": {
+                  "en": "Back to the queue",
+                  "fa": "بازگشت به صف"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "evidence",
+          "component": "def:related-table",
+          "options": {
+            "id": "evidence",
+            "title": {
+              "en": "Evidence",
+              "fa": "شواهد"
+            },
+            "url": "/d/criticality-assessment-evidence?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "sourceType",
+                "header": {
+                  "en": "Source type",
+                  "fa": "نوع منبع"
+                },
+                "width": 140
+              },
+              {
+                "key": "sourceIdentifier",
+                "header": {
+                  "en": "Identifier",
+                  "fa": "شناسه"
+                },
+                "width": 160
+              },
+              {
+                "key": "reference",
+                "header": {
+                  "en": "Reference",
+                  "fa": "مرجع"
+                },
+                "width": 160
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 320
+              },
+              {
+                "key": "createdBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 140
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 120,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "history",
+            "title": {
+              "en": "History (earlier versions are never deleted, only superseded)",
+              "fa": "تاریخچه (نسخه‌های قبلی حذف نمی‌شوند)"
+            },
+            "url": "/d/criticality-assessment-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "proposedClass",
+                "header": {
+                  "en": "Proposed",
+                  "fa": "پیشنهادی"
+                },
+                "width": 110
+              },
+              {
+                "key": "preparedBy",
+                "header": {
+                  "en": "Prepared by",
+                  "fa": "تهیه‌کننده"
+                },
+                "width": 150
+              },
+              {
+                "key": "approvedBy",
+                "header": {
+                  "en": "Approved by",
+                  "fa": "تأییدکننده"
+                },
+                "width": 150
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/criticality-assessment-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "CriticalityAssessment.View"
+  }
+}

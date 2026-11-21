@@ -1,0 +1,188 @@
+{
+  "kind": "form",
+  "key": "criticality-assessment-set-scores",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set dimension scores",
+    "fa": "ثبت امتیازها"
+  },
+  "description": {
+    "en": "Set dimension scores",
+    "fa": "ثبت امتیازها"
+  },
+  "payload": {
+    "id": "criticality-assessment-set-scores",
+    "title": {
+      "en": "Set dimension scores",
+      "fa": "ثبت امتیازها"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "criticality-assessment-set-scores",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Assessment id",
+          "fa": "شناسه‌ی ارزیابی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "safetyScore",
+        "label": {
+          "en": "Safety (1 negligible to 5 severe)",
+          "fa": "ایمنی (۱ ناچیز تا ۵ شدید)"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "1",
+            "label": {
+              "en": "1 - Negligible",
+              "fa": "۱ - ناچیز"
+            }
+          },
+          {
+            "value": "2",
+            "label": {
+              "en": "2 - Minor",
+              "fa": "۲ - جزئی"
+            }
+          },
+          {
+            "value": "3",
+            "label": {
+              "en": "3 - Moderate",
+              "fa": "۳ - متوسط"
+            }
+          },
+          {
+            "value": "4",
+            "label": {
+              "en": "4 - Major",
+              "fa": "۴ - عمده"
+            }
+          },
+          {
+            "value": "5",
+            "label": {
+              "en": "5 - Severe",
+              "fa": "۵ - شدید"
+            }
+          }
+        ]
+      },
+      {
+        "name": "productionScore",
+        "label": {
+          "en": "Production / availability",
+          "fa": "تولید / دسترس‌پذیری"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "1",
+            "label": {
+              "en": "1 - Negligible",
+              "fa": "۱ - ناچیز"
+            }
+          },
+          {
+            "value": "2",
+            "label": {
+              "en": "2 - Minor",
+              "fa": "۲ - جزئی"
+            }
+          },
+          {
+            "value": "3",
+            "label": {
+              "en": "3 - Moderate",
+              "fa": "۳ - متوسط"
+            }
+          },
+          {
+            "value": "4",
+            "label": {
+              "en": "4 - Major",
+              "fa": "۴ - عمده"
+            }
+          },
+          {
+            "value": "5",
+            "label": {
+              "en": "5 - Severe",
+              "fa": "۵ - شدید"
+            }
+          }
+        ]
+      },
+      {
+        "name": "environmentScore",
+        "label": {
+          "en": "Environment",
+          "fa": "محیط‌زیست"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "1",
+            "label": {
+              "en": "1 - Negligible",
+              "fa": "۱ - ناچیز"
+            }
+          },
+          {
+            "value": "2",
+            "label": {
+              "en": "2 - Minor",
+              "fa": "۲ - جزئی"
+            }
+          },
+          {
+            "value": "3",
+            "label": {
+              "en": "3 - Moderate",
+              "fa": "۳ - متوسط"
+            }
+          },
+          {
+            "value": "4",
+            "label": {
+              "en": "4 - Major",
+              "fa": "۴ - عمده"
+            }
+          },
+          {
+            "value": "5",
+            "label": {
+              "en": "5 - Severe",
+              "fa": "۵ - شدید"
+            }
+          }
+        ]
+      },
+      {
+        "name": "rationale",
+        "label": {
+          "en": "Rationale",
+          "fa": "توجیه"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

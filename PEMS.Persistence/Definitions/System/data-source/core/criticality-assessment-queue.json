@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "criticality-assessment-queue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment queue",
+    "fa": "ارزیابی بحرانی‌بودن Queue"
+  },
+  "description": {
+    "en": "Criticality assessment queue",
+    "fa": "ارزیابی بحرانی‌بودن Queue"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "Queue",
+      "args": {
+        "status": "param:status"
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "criticality-assessment-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit for review",
+    "fa": "ارسال برای بازبینی"
+  },
+  "description": {
+    "en": "Submit for review",
+    "fa": "ارسال برای بازبینی"
+  },
+  "payload": {
+    "id": "criticality-assessment-submit",
+    "title": {
+      "en": "Submit for review",
+      "fa": "ارسال برای بازبینی"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ارسال"
+    },
+    "actionKey": "criticality-assessment-submit",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Assessment id",
+          "fa": "شناسه‌ی ارزیابی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

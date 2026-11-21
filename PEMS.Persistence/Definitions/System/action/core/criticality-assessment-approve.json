@@ -25,6 +25,6 @@
       "en": "The assessment was approved and published to EquipmentCriticality.",
       "fa": "ارزیابی تایید و در EquipmentCriticality منتشر شد."
     },
-    "redirect": "/CriticalityAssessment/Details/{id}"
+    "redirect": "/p/criticality-assessment-details?id={id}"
   }
 }

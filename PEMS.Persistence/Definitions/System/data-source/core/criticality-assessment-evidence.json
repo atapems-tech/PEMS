@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "criticality-assessment-evidence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment evidence",
+    "fa": "ارزیابی بحرانی‌بودن Evidence"
+  },
+  "description": {
+    "en": "Criticality assessment evidence",
+    "fa": "ارزیابی بحرانی‌بودن Evidence"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "Evidence",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "criticality-assessment-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject to draft",
+    "fa": "بازگشت به پیش‌نویس"
+  },
+  "description": {
+    "en": "Reject to draft",
+    "fa": "بازگشت به پیش‌نویس"
+  },
+  "payload": {
+    "id": "criticality-assessment-reject",
+    "title": {
+      "en": "Reject to draft",
+      "fa": "بازگشت به پیش‌نویس"
+    },
+    "submitLabel": {
+      "en": "Reject",
+      "fa": "رد"
+    },
+    "actionKey": "criticality-assessment-reject",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Assessment id",
+          "fa": "شناسه‌ی ارزیابی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}
