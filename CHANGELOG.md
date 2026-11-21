@@ -86,6 +86,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-817 to 819: plan rows of the batch 7 gap issues and batch 6 and 7 status
+
+### Changed
+- Plan rows 817, 818 and 819 for the gap issues of batch 7 (details pages and guarded commands, engine inputs, step-up audit record and ported tests); the batch sheet shows batches 6 and 7 as written and In Review, not built or run.
+
 ## 2026-11-21 - SCRUM-721: calendar My Work page and drag and drop reschedule as definitions
 
 ### Changed
