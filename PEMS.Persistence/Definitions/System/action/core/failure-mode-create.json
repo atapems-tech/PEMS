@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "failure-mode-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create failure mode",
+    "fa": "ثبت حالت خرابی"
+  },
+  "description": {
+    "en": "Create failure mode",
+    "fa": "ثبت حالت خرابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "FailureMode",
+      "action": "Create",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "description": "field:description",
+        "equipmentClassId": "field:equipmentClassId",
+        "causeIds": "field:causeIds",
+        "isActive": "field:isActive"
+      }
+    },
+    "success": {
+      "en": "Catalogue saved.",
+      "fa": "کاتالوگ ذخیره شد."
+    },
+    "redirect": "/FailureModeCatalog/Index",
+    "redirectBack": false
+  }
+}

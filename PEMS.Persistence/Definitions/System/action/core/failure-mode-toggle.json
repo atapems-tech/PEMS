@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "failure-mode-toggle",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate failure mode",
+    "fa": "غیرفعال‌سازی حالت خرابی"
+  },
+  "description": {
+    "en": "Deactivate failure mode",
+    "fa": "غیرفعال‌سازی حالت خرابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "FailureMode",
+      "action": "SetActive",
+      "args": {
+        "failureModeId": "field:failureModeId",
+        "active": "field:active"
+      }
+    },
+    "success": {
+      "en": "Catalogue saved.",
+      "fa": "کاتالوگ ذخیره شد."
+    },
+    "redirect": "/FailureModeCatalog/Index",
+    "redirectBack": false
+  }
+}

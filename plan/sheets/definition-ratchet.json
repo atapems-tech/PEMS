@@ -209,7 +209,7 @@
     "PEMS.Web.Controllers.EquipmentFunctionalLocationAssignmentController": 7,
     "PEMS.Web.Controllers.EquipmentImportController": 8,
     "PEMS.Web.Controllers.ExecutiveDashboardController": 1,
-    "PEMS.Web.Controllers.FailureModeCatalogController": 4,
+    "PEMS.Web.Controllers.FailureModeCatalogController": 2,
     "PEMS.Web.Controllers.FilesController": 3,
     "PEMS.Web.Controllers.FormHostController": 2,
     "PEMS.Web.Controllers.FunctionalLocationController": 2,

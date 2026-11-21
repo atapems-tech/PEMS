@@ -60,35 +60,6 @@ public class FailureModeCatalogController : Controller
         return await FormAsync(dto, new List<string>());
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(FailureModeEditDto dto)
-    {
-        if (!await Can(dto.FailureModeId.HasValue ? "Edit" : "Create")) return Forbid();
-
-        var result = await _catalog.SaveAsync(dto);
-        if (result.Success)
-        {
-            TempData["Message"] = T("Rcm_Info_CatalogSaved");
-            return RedirectToAction(nameof(Index), new { classId = dto.EquipmentClassId });
-        }
-
-        Response.StatusCode = StatusCodes.Status400BadRequest;
-        return await FormAsync(dto, _l.TranslateAll(result.Errors));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Toggle(int id, bool active)
-    {
-        if (!await Can("Edit")) return Forbid();
-
-        var result = await _catalog.SetActiveAsync(id, active);
-        if (!result.Success) return NotFound();
-        TempData["Message"] = T("Rcm_Info_CatalogSaved");
-        return RedirectToAction(nameof(Index));
-    }
-
     private async Task<IActionResult> FormAsync(FailureModeEditDto dto, List<string> errors)
     {
         ViewData["Title"] = "Failure Mode Catalog";
