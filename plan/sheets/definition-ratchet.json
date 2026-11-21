@@ -224,7 +224,7 @@
     "PEMS.Web.Controllers.TenderController": 4,
     "PEMS.Web.Controllers.ThemeController": 1,
     "PEMS.Web.Controllers.TransmittalController": 9,
-    "PEMS.Web.Controllers.VDRController": 22,
+    "PEMS.Web.Controllers.VDRController": 10,
     "PEMS.Web.Controllers.VDRImportController": 6,
     "PEMS.Web.Controllers.WebAuthnController": 3,
     "PEMS.Web.Controllers.WorkOrderController": 6,

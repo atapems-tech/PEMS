@@ -231,6 +231,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IReliabilityRegisterOpera
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskManagerOperations, PEMS.Web.Services.TaskManagerOperations>();   // SCRUM-756
 builder.Services.AddScoped<PEMS.Application.Interfaces.ICalendarOperations, PEMS.Web.Services.CalendarOperations>();   // SCRUM-721
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDocumentFlowOperations, PEMS.Web.Services.DocumentFlowOperations>();   // SCRUM-684, 686, 732
+builder.Services.AddScoped<PEMS.Application.Interfaces.IVdrOperations, PEMS.Web.Services.VdrOperations>();   // SCRUM-761
 builder.Services.AddScoped<PEMS.Application.Interfaces.IEngineeringDocumentOperations, PEMS.Web.Services.EngineeringDocumentOperations>();   // SCRUM-690
 builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterOperations, PEMS.Web.Services.LetterOperations>();   // SCRUM-716, 715
 builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterTemplateOperations, PEMS.Web.Services.LetterTemplateOperations>();   // SCRUM-717

@@ -12,6 +12,7 @@ public interface IVdrWorkflowService
     /// می‌شود و اگر disciplineIds داده شود، مرحله‌ی بازبینی موازی با همان دیسیپلین‌ها شروع
     /// می‌شود؛ در غیر این صورت مستقیم به تصمیم نهایی می‌رود.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("VdrWorkflow", "SubmitForReview", "VDR.Edit")]
     Task SubmitForReviewAsync(
         int vdrItemId, int revisionNo, string vendorTransmittalNo, DateTime? vendorActualIssuedDate,
         string? purposeOfIssueCode, IReadOnlyList<int>? disciplineIds,
@@ -21,6 +22,7 @@ public interface IVdrWorkflowService
     /// <summary>
     /// پاسخ یک دیسیپلین به بازبینی موازی. decision: Approve/Comment/Reject.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("VdrWorkflow", "DisciplineRespond", "VDR.Edit")]
     Task DisciplineRespondAsync(
         int vdrItemId, string decision, string? comment,
         int actorEmployeeId, int actorDisciplineId,
@@ -29,6 +31,7 @@ public interface IVdrWorkflowService
     /// <summary>
     /// تصمیم نهایی بازبین ارشد - reviewCategory باید یکی از AP/NC/AC/CO/RE باشد.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("VdrWorkflow", "LeadReview", "VDR.Approve")]
     Task LeadReviewAsync(
         int vdrItemId, string reviewCategory, string? commentSheetNo, DateTime? commentDate,
         int? actionByEmployeeId, IReadOnlyList<string> actorRoles,
@@ -38,6 +41,7 @@ public interface IVdrWorkflowService
     /// بازگشت رسمی به وندور توسط DCC - طبق مقصد (داخلی/بیرونی) ممکن است نامه‌ی رسمی بسازد،
     /// دقیقاً مثل الگوی Issue مدرک مهندسی.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("VdrWorkflow", "ReturnToVendor", "VDR.Approve")]
     Task ReturnToVendorAsync(
         int vdrItemId, string? replySheetNo, string? clientTransmittalNo,
         int? actionByEmployeeId, IReadOnlyList<string> actorRoles,

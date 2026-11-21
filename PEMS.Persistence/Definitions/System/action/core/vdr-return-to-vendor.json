@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "vdr-return-to-vendor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Return the document to the vendor",
+    "fa": "بازگرداندن مدرک به وندور"
+  },
+  "description": {
+    "en": "Return the document to the vendor",
+    "fa": "بازگرداندن مدرک به وندور"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrWorkflow",
+      "action": "ReturnToVendor",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "replySheetNo": "field:replySheetNo",
+        "clientTransmittalNo": "field:clientTransmittalNo",
+        "actionByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Returned to the vendor; the official letter was created.",
+      "fa": "به وندور بازگشت داده شد و نامه‌ی رسمی ساخته شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

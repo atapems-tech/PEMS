@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "vdr-submit-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start the review of a VDR document",
+    "fa": "شروع بازبینی مدرک VDR"
+  },
+  "description": {
+    "en": "Start the review of a VDR document",
+    "fa": "شروع بازبینی مدرک VDR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrWorkflow",
+      "action": "SubmitForReview",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "revisionNo": "field:revisionNo",
+        "vendorTransmittalNo": "field:vendorTransmittalNo",
+        "vendorActualIssuedDate": "field:vendorActualIssuedDate",
+        "purposeOfIssueCode": "field:purposeOfIssueCode",
+        "disciplineIds": "field:disciplineIds",
+        "actionByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The review cycle started.",
+      "fa": "چرخه‌ی بازبینی شروع شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

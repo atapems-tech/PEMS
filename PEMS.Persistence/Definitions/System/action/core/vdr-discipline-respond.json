@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "vdr-discipline-respond",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Answer the parallel review",
+    "fa": "پاسخ به بازبینی موازی"
+  },
+  "description": {
+    "en": "Answer the parallel review",
+    "fa": "پاسخ به بازبینی موازی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrWorkflow",
+      "action": "DisciplineRespond",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "decision": "field:decision",
+        "comment": "field:comment",
+        "actorEmployeeId": "context:employeeId",
+        "actorDisciplineId": "context:disciplineId",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Your review answer was recorded.",
+      "fa": "پاسخ بازبینی شما ثبت شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "vdr-lead-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The final decision of the lead reviewer",
+    "fa": "تصمیم نهایی بازبین ارشد"
+  },
+  "description": {
+    "en": "The final decision of the lead reviewer",
+    "fa": "تصمیم نهایی بازبین ارشد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrWorkflow",
+      "action": "LeadReview",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "reviewCategory": "field:reviewCategory",
+        "commentSheetNo": "field:clientCommentSheetNo",
+        "commentDate": "field:clientCommentDate",
+        "actionByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The final decision was recorded.",
+      "fa": "تصمیم نهایی ثبت شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

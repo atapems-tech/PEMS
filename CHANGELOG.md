@@ -93,6 +93,10 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 ### Changed
 - Freeze, unfreeze, hold, release hold, submit, check, inter-discipline answer, approve, reject, issue, return for revision, client response, comment action status and the relationship analysis are definitions (/a/eng-doc-*) over IEngineeringDocumentOperations. They keep the status rules and messages of EngineeringDocumentsController, the module permission floors, the own-discipline rule of the approval and its separation-of-duties guard. The details page posts to them. The list, details, create, edit, delete, attachments, the new revision and the comments with files stay on the controller (15 actions).
 
+## 2026-11-21 - SCRUM-761: VDR review, hold and details commands as definitions
+
+### Changed
+- The review steps (start the review, the discipline answer, the lead decision, return to the vendor), the details edit, hold and release, the deactivation and the comment action status of the vendor document register are definitions (/a/vdr-*); the review steps are the operations of IVdrWorkflowService itself, the rest of IVdrOperations; the module permissions are the floors (a refused user gets the 403 page instead of a message). The two legacy number generators of the controller (the numbering page already uses definitions) are removed. An error of any action definition now brings the user back to the address of the action (when it can be resolved from the posted values) instead of the home page. The list, details, create and the actions with files stay on VDRController (10 actions).
 
 ## 2026-11-21 - SCRUM-716, 715: letter commands as definitions
 

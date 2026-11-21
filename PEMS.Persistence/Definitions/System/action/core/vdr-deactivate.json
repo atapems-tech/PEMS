@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "vdr-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate the document",
+    "fa": "غیرفعال‌سازی مدرک"
+  },
+  "description": {
+    "en": "Deactivate the document",
+    "fa": "غیرفعال‌سازی مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrItem",
+      "action": "Deactivate",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "reason": "field:reason",
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "The document was deactivated.",
+      "fa": "مدرک غیرفعال شد."
+    },
+    "redirect": "/VDR"
+  }
+}
