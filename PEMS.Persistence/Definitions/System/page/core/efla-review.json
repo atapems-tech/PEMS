@@ -1,0 +1,370 @@
+{
+  "kind": "page",
+  "key": "efla-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment functional location assignment review",
+    "fa": "تخصیص مکان عملیاتی به تجهیز بررسی"
+  },
+  "description": {
+    "en": "Equipment functional location assignment review",
+    "fa": "تخصیص مکان عملیاتی به تجهیز بررسی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "efla-review",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "efla-filters",
+            "resetUrl": "/p/efla-review?batchId={{params.batchId}}",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Row status",
+                  "fa": "وضعیت ردیف"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Exact",
+                    "label": {
+                      "en": "Exact",
+                      "fa": "Exact"
+                    }
+                  },
+                  {
+                    "value": "AlreadyAssigned",
+                    "label": {
+                      "en": "AlreadyAssigned",
+                      "fa": "AlreadyAssigned"
+                    }
+                  },
+                  {
+                    "value": "NoChange",
+                    "label": {
+                      "en": "NoChange",
+                      "fa": "NoChange"
+                    }
+                  },
+                  {
+                    "value": "UnresolvedEquipment",
+                    "label": {
+                      "en": "UnresolvedEquipment",
+                      "fa": "UnresolvedEquipment"
+                    }
+                  },
+                  {
+                    "value": "UnresolvedFunctionalLocation",
+                    "label": {
+                      "en": "UnresolvedFunctionalLocation",
+                      "fa": "UnresolvedFunctionalLocation"
+                    }
+                  },
+                  {
+                    "value": "ConflictEquipment",
+                    "label": {
+                      "en": "ConflictEquipment",
+                      "fa": "ConflictEquipment"
+                    }
+                  },
+                  {
+                    "value": "ConflictFunctionalLocation",
+                    "label": {
+                      "en": "ConflictFunctionalLocation",
+                      "fa": "ConflictFunctionalLocation"
+                    }
+                  },
+                  {
+                    "value": "ValidationError",
+                    "label": {
+                      "en": "ValidationError",
+                      "fa": "ValidationError"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/efla-commit?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Commit the batch",
+                  "fa": "تأیید دسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/efla-discard?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Discard the batch",
+                  "fa": "دور ریختن دسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/efla",
+                "text": {
+                  "en": "Back to the batches",
+                  "fa": "بازگشت به دسته‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batch",
+          "component": "data-grid",
+          "options": {
+            "id": "batch",
+            "url": "/d/efla-batch?f.batchId={{params.batchId}}",
+            "idField": "batchId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 260
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "importedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "totalRows",
+                "header": {
+                  "en": "Rows",
+                  "fa": "ردیف"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "exactCount",
+                "header": {
+                  "en": "Exact",
+                  "fa": "دقیق"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "alreadyAssignedCount",
+                "header": {
+                  "en": "Already assigned",
+                  "fa": "قبلاً تخصیص‌یافته"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "noChangeCount",
+                "header": {
+                  "en": "No change",
+                  "fa": "بدون تغییر"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "unresolvedCount",
+                "header": {
+                  "en": "Unresolved",
+                  "fa": "نامشخص"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "conflictCount",
+                "header": {
+                  "en": "Conflict",
+                  "fa": "متعارض"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "validationErrorCount",
+                "header": {
+                  "en": "Errors",
+                  "fa": "خطا"
+                },
+                "width": 80,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 160
+          }
+        },
+        {
+          "id": "rows",
+          "component": "data-grid",
+          "options": {
+            "id": "rows",
+            "url": "/d/efla-rows?f.batchId={{params.batchId}}&f.status={{params.status|url}}",
+            "idField": "rowId",
+            "columns": [
+              {
+                "key": "rowNumber",
+                "header": {
+                  "en": "Row",
+                  "fa": "ردیف"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "sourceRowNumber",
+                "header": {
+                  "en": "Source row",
+                  "fa": "ردیف منبع"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "equipmentTag",
+                "header": {
+                  "en": "Equipment tag",
+                  "fa": "تگ تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "equipmentDescription",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 220
+              },
+              {
+                "key": "currentLocation",
+                "header": {
+                  "en": "Current location",
+                  "fa": "مکان فعلی"
+                },
+                "width": 220
+              },
+              {
+                "key": "proposedLocation",
+                "header": {
+                  "en": "Proposed location",
+                  "fa": "مکان پیشنهادی"
+                },
+                "width": 220
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Match result",
+                  "fa": "نتیجه تطبیق"
+                },
+                "width": 190
+              },
+              {
+                "key": "replaceExisting",
+                "header": {
+                  "en": "Replace existing",
+                  "fa": "جایگزینی موجود"
+                },
+                "width": 120,
+                "type": "bool"
+              },
+              {
+                "key": "includeInCommit",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "validationMessage",
+                "header": {
+                  "en": "Note",
+                  "fa": "یادداشت"
+                },
+                "width": 280
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Include / exclude",
+                      "fa": "شمول / حذف"
+                    },
+                    "url": "/f/efla-toggle-row?rowId={id}&batchId={{params.batchId}}&include={raw.includeInCommit}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "replace",
+                    "label": {
+                      "en": "Replace existing",
+                      "fa": "جایگزینی موجود"
+                    },
+                    "url": "/f/efla-replace-existing?rowId={id}&batchId={{params.batchId}}&replace={raw.replaceExisting}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "EquipmentFunctionalLocationAssignment.View"
+  }
+}

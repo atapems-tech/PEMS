@@ -28,7 +28,6 @@ public class CmmsListPagesTests
         "MaintenanceStrategy", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
-        "EquipmentFunctionalLocationAssignment",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary> data) where TController : Controller
@@ -422,24 +421,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Equipment <-> functional location assignment ----------
-
-    [Fact]
-    public async Task AssignmentBatches_UploadOpensFromTheToolbar_WithoutAModal_AndCountsArePills()
-    {
-        var html = await Render<EquipmentFunctionalLocationAssignmentController>("/Views/EquipmentFunctionalLocationAssignment/Index.cshtml",
-            new List<EquipmentFunctionalLocationAssignmentBatchSummaryDto>
-            {
-                new() { EquipmentFunctionalLocationAssignmentBatchId = 9, FileName = "fl.xlsx", ImportDate = new DateTime(2026, 10, 29), Status = "Staging", TotalRows = 10, ExactCount = 7, UnresolvedCount = 2, ConflictCount = 1 },
-            }, _ => { });
-
-        AssertBuiltFromTheComponent(html, null, 1);
-        Assert.Contains("id=\"flaUploadBtn\"", html);
-        Assert.DoesNotContain("class=\"modal", html);                                   // SCRUM-341 ratchet: no new hand-written modal
-        var upload = html[html.IndexOf("id=\"flaUpload\"", StringComparison.Ordinal)..];
-        Assert.Contains("type=\"file\"", upload);
-        Assert.Contains("enctype=\"multipart/form-data\"", upload);
-        Assert.Equal(2, Regex.Matches(html, "vs-pill vs-pill--danger").Count);         // unresolved + conflicts
-    }
 
     [Fact]
     public void EveryWave2Page_UsesTheComponentAndItsAssets()

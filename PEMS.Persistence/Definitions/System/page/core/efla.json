@@ -1,0 +1,171 @@
+{
+  "kind": "page",
+  "key": "efla",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment functional location assignment",
+    "fa": "تخصیص مکان عملیاتی به تجهیز"
+  },
+  "description": {
+    "en": "Equipment functional location assignment",
+    "fa": "تخصیص مکان عملیاتی به تجهیز"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "efla",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/efla-upload",
+                "text": {
+                  "en": "Upload a workbook",
+                  "fa": "بارگذاری فایل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batches",
+          "component": "data-grid",
+          "options": {
+            "id": "batches",
+            "url": "/d/efla-batches",
+            "idField": "batchId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 260
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "importedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "totalRows",
+                "header": {
+                  "en": "Rows",
+                  "fa": "ردیف"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "exactCount",
+                "header": {
+                  "en": "Exact",
+                  "fa": "دقیق"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "alreadyAssignedCount",
+                "header": {
+                  "en": "Already assigned",
+                  "fa": "قبلاً تخصیص‌یافته"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "noChangeCount",
+                "header": {
+                  "en": "No change",
+                  "fa": "بدون تغییر"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "unresolvedCount",
+                "header": {
+                  "en": "Unresolved",
+                  "fa": "نامشخص"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "conflictCount",
+                "header": {
+                  "en": "Conflict",
+                  "fa": "متعارض"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "validationErrorCount",
+                "header": {
+                  "en": "Errors",
+                  "fa": "خطا"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بررسی"
+                    },
+                    "url": "/p/efla-review?batchId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 480
+          }
+        }
+      ]
+    },
+    "permission": "EquipmentFunctionalLocationAssignment.View"
+  }
+}

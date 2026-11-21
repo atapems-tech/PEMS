@@ -1,0 +1,67 @@
+{
+  "kind": "form",
+  "key": "efla-replace-existing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Allow replacing the existing assignment",
+    "fa": "اجازه جایگزینی تخصیص موجود"
+  },
+  "description": {
+    "en": "Allow replacing the existing assignment",
+    "fa": "اجازه جایگزینی تخصیص موجود"
+  },
+  "payload": {
+    "id": "efla-replace-existing",
+    "title": {
+      "en": "Allow replacing the existing assignment",
+      "fa": "اجازه جایگزینی تخصیص موجود"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "efla-replace-existing",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "rowId",
+        "label": {
+          "en": "Row id",
+          "fa": "شناسه‌ی ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه‌ی دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "replace",
+        "label": {
+          "en": "Replace the existing assignment",
+          "fa": "جایگزینی تخصیص موجود"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

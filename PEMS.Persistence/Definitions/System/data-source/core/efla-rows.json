@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "efla-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment functional location assignment rows",
+    "fa": "تخصیص مکان عملیاتی به تجهیز Rows"
+  },
+  "description": {
+    "en": "Equipment functional location assignment rows",
+    "fa": "تخصیص مکان عملیاتی به تجهیز Rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentFunctionalLocationAssignment",
+      "action": "Rows",
+      "args": {
+        "batchId": "param:batchId",
+        "status": "param:status"
+      }
+    }
+  }
+}

@@ -26,6 +26,6 @@
       "en": "The row was updated.",
       "fa": "ردیف به‌روز شد."
     },
-    "redirect": "/EquipmentFunctionalLocationAssignment/Review?batchId={batchId}&page={page}&status={status}"
+    "redirect": "/p/efla-review?batchId={batchId}"
   }
 }
