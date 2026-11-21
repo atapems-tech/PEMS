@@ -754,7 +754,7 @@
         <pems-text class="small text-muted mt-2 mb-0">
             @foreach (var b in handoverBacklinks)
             {
-                <span>Included in <pems-link asp-controller="ShiftHandover" asp-action="Details" asp-route-id="@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</pems-link> (@b.Status)</span>
+                <span>Included in <pems-link href="/p/shift-handover-details?id=@b.ShiftHandoverId">Handover #@b.ShiftHandoverId</pems-link> (@b.Status)</span>
                 <br />
             }
         </pems-text>

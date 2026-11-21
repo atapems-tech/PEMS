@@ -539,7 +539,7 @@
                آیتم اکنون مجوزمحور است (Resource "ShiftHandover")، نه فقط گیت سطح‌بخش. *@
             @if (navVisibility.IsCmmsItemVisible("ShiftHandover"))
             {
-                <pems-nav-link item="false" active="@(IsActive("ShiftHandover"))" asp-controller="ShiftHandover" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("ShiftHandover"))" href="/p/shift-handovers">
                     <pems-icon name="bi-arrow-left-right" /> @Localizer["Shift Handovers"]
                 </pems-nav-link>
             }
