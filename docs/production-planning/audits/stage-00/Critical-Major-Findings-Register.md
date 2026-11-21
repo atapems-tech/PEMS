@@ -1,0 +1,48 @@
+# Critical and Major findings register (PPC Stage 0, 2026-11-14)
+
+> **Historical register:** this is the evidence and disposition view as at 2026-11-14. Its open findings and gate-blocking labels describe the pre-authorisation state; they are not a revocation of the Stage 1 authorisation recorded in `Owner-Decisions-2026-11-16.md`. Implementation, tests and release evidence remain open until completed and verified.
+
+**Rule of this register:** severity describes the finding itself. **Gate effect** describes what it does to the Stage 0 gate. The two are recorded separately, as the owner asked.
+
+**Gate effect values:**
+- **Blocks Stage 0 gate:** the governing document (section 16) forbids passing the gate while the finding is open, unless the owner dispositions a Major finding.
+- **Blocks Stage 3 design only:** the finding blocks design of one later stage, not the Stage 0 gate.
+
+**Verification values:** CONFIRMED (evidence read in repo), CONFIRMED-PARTLY, NOT VERIFIED.
+
+| Finding | Title | Severity | Gate effect | Verification (this pass) | Evidence (path, class, method) | Pass 2 | Pass 3 | Owner decision | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| **PPC-S0-P1-F1** | No BOM, formula or manufacturing routing | **Major** | Blocks Stage 0 gate (owner, 2026-11-14) | CONFIRMED for BOM, formula and manufacturing routing. RoutingRule assessed: not a manufacturing routing (see RoutingRule-Assessment.md) | `PEMS.Domain/Entities`: no BOM, recipe or formula type; `ProductionRunService.RecordInputAsync` accepts any active material; `RoutingRule.cs` is a document routing table | Did not assess BOM; A11 (routing) was not read; now resolved by this pass | X5 CONFIRMED (no BOM, recipe or formula); X10 NOT VERIFIED (now resolved) | OD-02, OD-03 | OPEN |
+| **PPC-S0-P1-F2** | No production MRP; procurement net demand uses CMMS work orders only | **Major** | **Blocks Stage 0 gate** | CONFIRMED | `NetDemandCalculator.cs` Calculate (lines 20–159); `NetDemandCollector.cs` L18–20, L50 (CMMS WorkOrderMaterial only); `MaterialItem.cs` has no lead-time field | A1: no MRP class found (Major) | X1, X4, X5 CONFIRMED | OD-06 | OPEN |
+| **PPC-S0-P1-F3** | No capacity model (RCCP, CRP) | **Major** | **Blocks Stage 0 gate** | CONFIRMED | `ProductionWorkCenter.cs` (no capacity, hours or calendar); `ShiftDefinition.cs` (StartTime, EndTime only) | A1: no capacity class found (Major) | X9 CONFIRMED | OD-05, OD-07 | OPEN |
+| **PPC-S0-P1-F4a** | No APP and MPS layer | **Major** | Blocks Stage 0 gate (owner instruction, 2026-11-14) | **CONFIRMED absent** by word search across repo: 0 matches for APP, MPS, MPP, MRP, RCCP, CRP, APS (see APP-MPS-Assessment.md) | Nearest items (`ProductionOrder`, `ProductionTarget`) are not APP or MPS | Not specifically assessed | X26 NOT VERIFIED (proposal text not in repo; the owner definitions are now recorded in ADR-001) | OD-04 | OPEN |
+| **PPC-S0-P1-F4b** | No plan versioning; posted plans can be overwritten (approved plan history not kept) | **Major** | MPP Design Blocking (owner instruction, 2026-11-14): blocks MPP design, not the Stage 0 gate | CONFIRMED | `PEMS.Persistence/Servises/ProductionOrderService.cs`: no update method for plans; `ProductionOrder.cs`: no version field | A1 notes no version class | X14 CONFIRMED | OD-04 | OPEN |
+| PPC-S0-P1-F5 | Plan and release are status changes only | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ProductionOrderService.PlanAsync`, `ReleaseAsync` check transitions only | A2 (Major) | X17 partly | OD-06, OD-15 | OPEN |
+| PPC-S0-P1-F6 | No scheduling and no calendar | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ShiftDefinition.cs` (clock only); no calendar entity | — | X9, X20 | OD-07 | OPEN |
+| PPC-S0-P1-F7 | No quantity closure at order completion | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ProductionOrderService.CompleteAsync` checks unfinished runs only; no actual-quantity field | — | X15 (related) | OD-10 | OPEN |
+| PPC-S0-P1-F8 | Hold and cancel do not propagate to runs | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `HoldAsync`, `CancelAsync` change the order only | — | X15 | OD-10 | OPEN |
+| PPC-S0-P1-F9 | Over-production and multiple concurrent runs allowed | Major | Blocks Stage 0 gate until disposition | CONFIRMED (multiple runs); no cap against PlannedQuantity | `RecordOutputAsync` no cap; `CreateAsync` allows several runs | — | X8 (partly) | OD-10 | OPEN |
+| PPC-S0-P1-F10 | Output added to a batch already decided by QC | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `RecordOutputAsync` increases batch quantity without checking QualityStatus | — | — | OD-08 | OPEN |
+| PPC-S0-P1-F11 | Inputs not gated by batch quality | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `RecordInputAsync` checks existence only | — | — | OD-08 | OPEN |
+| PPC-S0-P1-F12 | No quarantine or recall after release | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `BatchQualityTransitions` has no edge out of Released; posted output cannot be reversed | — | X15 | OD-08 | OPEN |
+| PPC-S0-P1-F13 | Stock has no batch dimension (**refined**) | Major (kept) | Blocks Stage 0 gate until disposition | CONFIRMED-PARTLY. Batch identity is kept on ledger rows and batch balances are derived from them (`InventoryBatchTraceabilityTests`, 9 tests). Stock records themselves have no batch dimension | `MaterialStock.cs` per material and warehouse; `InventoryTransaction` carries batch link | — | X13 (refuted as absent; one-level only) | OD-09 | OPEN |
+| PPC-S0-P1-F14 | No discrete traceability (serial, multi-level genealogy) | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ProductionBatch.Quantity` decimal; `SourceProductionBatchId` one level; `ConsumedAsSourceIn` hook only | — | X24 CONFIRMED | OD-09 | OPEN |
+| PPC-S0-P1-F15 | Reconciliation sums across materials | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ProductionRunService.BuildReconciliation` sums all inputs, outputs and losses | — | X2 (related) | OD-10 | OPEN |
+| PPC-S0-P1-F16 | Operations variance mixes units and materials | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `OperationsReportService.GetSummaryAsync` sums across UoM | — | X2 | OD-11 | OPEN |
+| PPC-S0-P2-A1 | No planning engine or run model; Hangfire used only for other jobs | Major | Blocks Stage 0 gate until disposition | CONFIRMED | Hangfire recurring job list: licensing only (`LicensingExtensions.cs` L56) | A1 | X19 | OD-16 | OPEN |
+| PPC-S0-P2-A2 | Release bypasses WorkflowPlatform; creator may approve | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ProductionOrderService.ReleaseAsync` (L290); no creator-is-approver check | A2 | X17 partly | OD-15 | OPEN |
+| PPC-S0-P2-A3 | Data and audit saved in two steps | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `PEMSDbContext.cs` SaveChanges (L582–600), SaveChangesAsync (L605–622) | A3 | X18 | OD-17 | OPEN |
+| PPC-S0-P2-A4 | No RowVersion on order, stock, transaction | Major | Blocks Stage 0 gate until disposition | CONFIRMED | No RowVersion or concurrency token on those entities | A4 | X16 | OD-18 | OPEN |
+| PPC-S0-P2-A5 | No external keys for ERP or MES | Major | Blocks Stage 0 gate until disposition | CONFIRMED | No external key on order, transaction, material | A5 | — | OD-19 | OPEN |
+| PPC-S0-X2 (pass 3) | Unit conversion not implemented; UOM nullable (rated Moderate in pass 1, Major here) | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `MaterialUOM.cs` ConversionFactor unused; production UOM fields nullable | A9 (Moderate) | X2 | OD-11, OD-21 | OPEN |
+| PPC-S0-X12 (pass 3) | Yield, scrap and co-product not modelled; free-text classes | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ProductionOutput.OutputClassification` free string; `ProductionLoss.LossCategory` free string | — | X12 | OD-02 | OPEN |
+| PPC-S0-X15 (pass 3) | No reversal of posted production stock on cancel | Major | Blocks Stage 0 gate until disposition | CONFIRMED | `ProductionRunService.CancelAsync` status only; no reversing transaction | — | X15 | OD-10 | OPEN |
+| PPC-S0-X21 (pass 3) | No regression tests for the planning design (no MRP, RCCP, CRP, MPS, APP, BOM, scheduling tests) | Major | Blocks Stage 0 gate until disposition | CONFIRMED (Test-Inventory.md) | 0 planning-capability tests of 168 planning-adjacent | — | X21 | — | OPEN |
+
+
+## Historical summary (corrected 2026-11-14 after the owner's disposition instruction)
+- **Critical: 0.** F1 (BOM, formula and manufacturing routing) is reclassified from Critical to **Major, Gate Blocking**, as the owner instructed. Critical is not used for future-scope planning gaps; no current risk with critical consequence is proven in this pass.
+- **Major: 26 rows.** F1, F2, F3, F4a, F4b (5); F5 to F16 (12); A1 to A5 (5); X2, X12, X15, X21 (4). The earlier count of 25 excluded F1, which was Critical at that time. With F1 as Major the table has 26 rows. Each row is reviewed individually in `Major-Decision-Register.md`.
+- **Gate effect:** 25 rows block the Stage 0 gate until an owner disposition; F4b (plan versioning) is MPP Design Blocking.
+- **Owner direction (2026-11-14):** 9 APPROVED (principle), 3 MODIFIED with open conditions, 14 DEPENDENT on open OD items. Per row in `Owner-Decisions-2026-11-14.md`. None is finally closed.
+- **Historical gate status (2026-11-14):** NOT PASSED while any of the 26 rows was not finally closed. The owner subsequently passed the Stage 0 gate and authorised Stage 1 on 2026-11-16; this did not close the implementation and verification work.

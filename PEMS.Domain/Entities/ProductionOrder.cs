@@ -44,6 +44,16 @@ public class ProductionOrder : BaseEntity
     public int? EquipmentId { get; set; }
     public Equipment? Equipment { get; set; }
 
+    // ارجاعات اختیاری فاز برنامه‌ریزی تولید (PPC Stage 1) - کاملاً افزایشی بدون شکست کدهای پیشین
+    public int? ProcessFormulaId { get; set; }
+    public ProcessFormula? ProcessFormula { get; set; }
+
+    public int? ProcessRouteId { get; set; }
+    public ProcessRoute? ProcessRoute { get; set; }
+
+    public int? PlanItemId { get; set; }
+    public PlanItem? PlanItem { get; set; }
+
     public int? ResponsibleEmployeeId { get; set; }
     public Employee? ResponsibleEmployee { get; set; }
 

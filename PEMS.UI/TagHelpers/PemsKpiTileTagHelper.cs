@@ -1,6 +1,7 @@
 using PEMS.UI.Rendering;
 using PEMS.UI.Components;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using PEMS.UI.Abstractions;
 
 namespace PEMS.UI.TagHelpers;
 
@@ -55,7 +56,7 @@ public sealed class PemsKpiTileTagHelper(IPemsComponentRenderer renderer) : TagH
         var value = empty && Model != null ? System.Net.WebUtility.HtmlEncode(Model.DisplayCount) : content.GetContent();
         var options = new KpiTileOptions
         {
-            Label = Label, Icon = string.IsNullOrEmpty(Icon) ? null : Icon, IconClass = ColorClass(Color), Sub = Sub, Href = Href, Hint = Hint, Compact = Compact, Tone = Tone,
+            Label = TranslatableText.Literal(Label), Icon = string.IsNullOrEmpty(Icon) ? null : Icon, IconClass = ColorClass(Color), Sub = Sub, Href = Href, Hint = Hint, Compact = Compact, Tone = Tone,
             CssClass = BlockTagHelper.PageClass(output), Attributes = BlockTagHelper.PageAttributes(output, "class", string.IsNullOrEmpty(Href) ? "" : "href", string.IsNullOrEmpty(Hint) ? "" : "title")
         };
         output.Attributes.Clear();

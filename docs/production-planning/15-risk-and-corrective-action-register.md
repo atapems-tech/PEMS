@@ -1,0 +1,42 @@
+# 15 Final risk register (PPC Stage 0, 2026-11-14)
+
+**Severity and gate effect are separate columns.** Status is OPEN unless closed by verified implementation evidence. The owner dispositioned all 26 Major findings and authorised Stage 1 on 2026-11-16; that decision does not close their corrective actions or make PPC release-ready. The table's historical "Blocks Stage 0" wording describes the pre-decision gate and is superseded by `audits/stage-00/Owner-Decisions-2026-11-16.md`. Finding details: `audits/stage-00/Critical-Major-Findings-Register.md`.
+
+| Risk ID | Risk | Severity | Gate effect | Source IDs | Impact if unmitigated | Corrective action (proposed) | Owner decision | Status |
+|---|---|---|---|---|---|---|---|---|
+| R01 | No BOM, formula or manufacturing routing; material use typed per run | **Major** | Blocks Stage 0 gate (owner, 2026-11-14) | F1, X5 | Wrong standard usage, yield and cost; MRP impossible | Model process formula and process routing contract (AD-09) | OD-02, OD-03 | OPEN |
+| R02 | No production MRP; production demand cannot drive procurement; no lead times | Major | Blocks Stage 0 gate until disposition | F2, X1, X4, X5 | Wrong purchase proposals; shortages missed | Extend `NetDemandCalculator` with production demand and lead times; recommendations only | OD-06 | OPEN |
+| R03 | No capacity model (RCCP, CRP) | Major | Blocks Stage 0 gate until disposition | F3, X9 | Overbooking; plans not feasible | Capacity per work centre and calendar | OD-05, OD-07 | OPEN |
+| R04 | No APP and MPS layer (absence confirmed by search) | Major | Blocks Stage 0 gate (owner, 2026-11-14) | F4a | No aggregate or detailed plan can be produced | Design APP process and MPS after ADR-001 | OD-04 | OPEN |
+| R05 | No plan versioning; approved plans can be overwritten | Major | MPP Design Blocking (owner, 2026-11-14) | F4b, X14 | Plan history cannot be reproduced | MPP versions immutable (ADR-001, AD-10) | OD-04 | OPEN |
+| R06 | Release and plan changes are status changes only | Major | Blocks Stage 0 gate until disposition | F5, A2 | Release without material or capacity check; no maker-checker | Release gate; WorkflowPlatform (AD-02) | OD-06, OD-15 | OPEN |
+| R07 | No scheduling or calendar | Major | Blocks Stage 0 gate until disposition | F6, X20 | Schedules ignore shifts and holidays | Calendar and scheduling rule (later stage) | OD-07 | OPEN |
+| R08 | No quantity closure; over-production and multiple runs allowed | Major | Blocks Stage 0 gate until disposition | F7, F9, X8 | Actual against plan unclear; cost errors | Tolerance per material; closure rule | OD-10 | OPEN |
+| R09 | Hold and cancel do not reach runs | Major | Blocks Stage 0 gate until disposition | F8 | Runs continue on held or cancelled orders | Propagate status | OD-10 | OPEN |
+| R10 | Output added to, and inputs taken from, batches without QC check; no recall path | Major | Blocks Stage 0 gate until disposition | F10, F11, F12 | Quality gate bypassed; no recall | Gate inputs and outputs by QC status; recall path | OD-08 | OPEN |
+| R11 | Stock has no batch dimension (batch balances derived from ledger); no serial or multi-level genealogy | Major | Blocks Stage 0 gate until disposition | F13 (refined), F14, X13, X24 | Recall traceability limited to one level; discrete traceability absent | Choose lot-first model and genealogy depth | OD-09 | OPEN |
+| R12 | Reconciliation sums across materials; operations variance mixes units | Major | Blocks Stage 0 gate until disposition | F15, F16 | Mass balance and KPI wrong | Per-material balance; unit-safe sums | OD-10, OD-11 | OPEN |
+| R13 | Unit conversion not implemented; UOM nullable | Major | Blocks Stage 0 gate until disposition | X2, A9, F17 | Silent quantity errors | Conversion policy; UOM required (AD-07) | OD-11, OD-21 | OPEN |
+| R14 | Yield, scrap and co-products not modelled; free-text classes | Major | Blocks Stage 0 gate until disposition | X12 | Yield and cost errors | Typed classes; yield standard | OD-02 | OPEN |
+| R15 | No reversal of posted production stock on cancel | Major | Blocks Stage 0 gate until disposition | X15 | Stock wrong after cancellation | Reversing transactions (AD-10) | OD-10 | OPEN |
+| R16 | Data and audit saved in two steps | Major | Blocks Stage 0 gate until disposition | A3 | Data without audit row | One transaction (AD-03) | OD-17 | OPEN |
+| R17 | No row versions on stock and order tables | Major | Blocks Stage 0 gate until disposition | A4 | Lost updates under concurrency | Row versions (AD-04) | OD-18 | OPEN |
+| R18 | No external keys for ERP or MES | Major | Blocks Stage 0 gate until disposition | A5 | Duplicates on re-import | External keys (AD-05) | OD-19 | OPEN |
+| R19 | No planning engine or run model | Major | Blocks Stage 0 gate until disposition | A1, X19 | Planning runs cannot be scheduled or traced | Hangfire run model (AD-01) | OD-16 | OPEN |
+| R20 | No planning tests (MRP, RCCP, CRP, MPS, APP, BOM, scheduling) | Major | Blocks Stage 0 gate until disposition | X21, Test-Inventory | Defects in planning maths undetected | Oracle tests on SQL Server (document 14) | — | OPEN |
+| R21 | Production services tested only in memory; SQL Server lock tested in two tests | Moderate | Blocks Stage 3 design | X7 | Concurrency defects undetected | Add SQL Server concurrency tests | — | OPEN |
+| R22 | Shared inventory transactions carry both work order and batch | Moderate | Blocks Stage 0 gate until disposition | A7 | Double attribution of material use | Attribution rule (AD-06) | OD-20 | OPEN |
+| R23 | Status stored as text without check constraint | Moderate | None | A8 | Invalid status values | Check constraint in migration | — | OPEN |
+| R24 | Services have no permission checks (controllers only) | Moderate | None | X17 | Bypass if service called from another path | Service-level check (AD-11) | — | OPEN |
+| R25 | Production events written, but no AuditLog rows | Moderate | None | X18 | Incomplete audit view | Write AuditLog for production actions | — | OPEN |
+| R26 | Local time (`DateTime.Now`) in production code | Minor | None | X20 | Wrong times around DST | UTC storage (AD-08) | OD-05 | OPEN |
+| R27 | Row 0250 marked Done while its acceptance tests have not run | Moderate | None | X22 | Overstated status | Re-verify row 0250 (owner decides) | — | OPEN |
+| R28 | Standards editions not verified from official sources (IEC 61512, ISO 22400, EPCIS, 62443) | Major | Blocks Stage 0 gate until disposition | Standards register S3–S5, S8–S11 | Unsupported standards statements | Verify from official or licensed copy | OD-23 | OPEN |
+| R29 | "Routing" used for four different concepts | Moderate | Naming resolved for Stage 1: use `ProcessRoute`; implementation remains open | RoutingRule-Assessment | Confusion in requirements | Apply the confirmed naming consistently | OD-03 | OPEN |
+| R30 | Stray project `WebApplication1` in solution tree | Minor | None | Baseline | Build noise | Covered by SCRUM-462 | — | OPEN (tracked elsewhere) |
+| R31 | No OT connection (positive); any future connector is a new risk | Observation | Watch at integration gate | A6 | Future unsafe write path | Keep OT read-only; 62443 review | — | OPEN (watch) |
+| R32 | Standards statement risk: publication of ISO 9001:2026 and ISO 19011:2026 does not show PEMS compliance | Observation | None | Standards register section 3 | Misreading of compliance | Keep state NOT ASSESSED; no claim | OD-23 | OPEN (watch) |
+| R33 | Co-product circular netting loop in MRP | Moderate | Blocks W6 design | REQ-46, Petrochemical study | Over-generation of dependent co-product orders | Enforce single-pass netting with scheduled receipt damping | — | OPEN |
+| R34 | Hangfire job timeout or thread pool starvation during massive MRP explosion | Moderate | Blocks W3/W6 scale testing | REQ-22, NFR-19 | UI unresponsive or incomplete planning run | Chunked batch calculation with progress checkpointing | — | OPEN |
+| R35 | Disconnect between CMMS maintenance schedule (Row 0227) and PPC Turnaround calendar | Major | Blocks W3/W5 integration | REQ-27, REQ-45 | Production planned on equipment under active overhaul | Enforce shared ProductionCalendar with WorkOrderId link | OD-28 | OPEN |
+| R36 | Unverified secondary standards (ISA-88, ISO 22400-2, ISA-95 Parts 2-5) | Moderate | Governance watch | REQ-25, Standards index | Assumptions about clauses diverge from official text | Procure official copies before W2/W3 commencement | OD-23 | OPEN (watch) |

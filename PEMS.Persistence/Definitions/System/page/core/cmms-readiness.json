@@ -54,11 +54,13 @@
           "id": "total",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Total active equipment",
               "fa": "کل تجهیزات فعال"
             },
             "icon": "bi-box-seam"
+            }
           },
           "bindings": {
             "record": {
@@ -74,11 +76,13 @@
           "id": "classified",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Classified",
               "fa": "طبقه‌بندی‌شده"
             },
             "icon": "bi-diagram-3"
+            }
           },
           "bindings": {
             "record": {
@@ -94,12 +98,14 @@
           "id": "unclassified",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Unclassified",
               "fa": "طبقه‌بندی‌نشده"
             },
             "icon": "bi-question-diamond",
             "tone": "warning"
+            }
           },
           "bindings": {
             "record": {
@@ -115,11 +121,13 @@
           "id": "criticality",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Criticality ready",
               "fa": "آماده از نظر بحرانیت"
             },
             "icon": "bi-shield-exclamation"
+            }
           },
           "bindings": {
             "record": {
@@ -135,11 +143,13 @@
           "id": "strategy",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Strategy ready",
               "fa": "آماده از نظر راهبرد"
             },
             "icon": "bi-signpost-split"
+            }
           },
           "bindings": {
             "record": {
@@ -155,11 +165,13 @@
           "id": "pm",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "PM plan ready",
               "fa": "آماده از نظر برنامه PM"
             },
             "icon": "bi-calendar-check"
+            }
           },
           "bindings": {
             "record": {
@@ -175,11 +187,13 @@
           "id": "jobplan",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Job plan ready",
               "fa": "آماده از نظر طرح کار"
             },
             "icon": "bi-list-check"
+            }
           },
           "bindings": {
             "record": {
@@ -195,11 +209,13 @@
           "id": "safety",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Safety ready",
               "fa": "آماده از نظر ایمنی"
             },
             "icon": "bi-shield-check"
+            }
           },
           "bindings": {
             "record": {
@@ -215,12 +231,14 @@
           "id": "execution",
           "component": "kpi-tile",
           "options": {
+            "options": {
             "label": {
               "en": "Execution ready",
               "fa": "آماده اجرا"
             },
             "icon": "bi-check2-circle",
             "tone": "success"
+            }
           },
           "bindings": {
             "record": {
@@ -327,6 +345,15 @@
                 "width": 420
               }
             ],
+            "texts": {
+              "search": { "en": "Search", "fa": "جستجو" }, "columns": { "en": "Columns", "fa": "ستون‌ها" }, "density": { "en": "Density", "fa": "تراکم" },
+              "compact": { "en": "Compact", "fa": "فشرده" }, "comfortable": { "en": "Comfortable", "fa": "راحت" }, "export": { "en": "Export", "fa": "خروجی" },
+              "views": { "en": "Views", "fa": "نماها" }, "saveView": { "en": "Save view", "fa": "ذخیره نما" }, "viewName": { "en": "View name", "fa": "نام نما" },
+              "loading": { "en": "Loading", "fa": "در حال بارگذاری" }, "empty": { "en": "No rows", "fa": "ردیفی نیست" }, "error": { "en": "Could not load", "fa": "بارگذاری نشد" },
+              "rows": { "en": "{0} rows", "fa": "{0} ردیف" }, "selected": { "en": "{0} selected", "fa": "{0} انتخاب شده" },
+              "selectAllMatching": { "en": "Select all {0}", "fa": "انتخاب همه {0}" }, "clearSelection": { "en": "Clear", "fa": "پاک کردن" },
+              "filter": { "en": "Filter", "fa": "فیلتر" }, "delete": { "en": "Delete", "fa": "حذف" }
+            },
             "pageSize": 20,
             "height": 420
           }

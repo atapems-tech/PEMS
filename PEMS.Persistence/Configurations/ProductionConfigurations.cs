@@ -170,6 +170,35 @@ public class ProductionBatchConfiguration : IEntityTypeConfiguration<ProductionB
     }
 }
 
+public class ProductionBatchGenealogyConfiguration : IEntityTypeConfiguration<ProductionBatchGenealogy>
+{
+    public void Configure(EntityTypeBuilder<ProductionBatchGenealogy> builder)
+    {
+        builder.ToTable("ProductionBatchGenealogies");
+        builder.HasKey(x => x.ProductionBatchGenealogyId);
+
+        builder.HasOne(x => x.OutputBatch)
+            .WithMany(x => x.ParentGenealogies)
+            .HasForeignKey(x => x.OutputBatchId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.InputBatch)
+            .WithMany(x => x.ChildGenealogies)
+            .HasForeignKey(x => x.InputBatchId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.ProductionRun)
+            .WithMany()
+            .HasForeignKey(x => x.ProductionRunId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.Uom)
+            .WithMany()
+            .HasForeignKey(x => x.UomId)
+            .OnDelete(DeleteBehavior.Restrict);
+    }
+}
+
 public class ProductionInputConfiguration : IEntityTypeConfiguration<ProductionInput>
 {
     public void Configure(EntityTypeBuilder<ProductionInput> builder)

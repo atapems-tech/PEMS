@@ -61,4 +61,8 @@ public class ProductionBatch : BaseEntity
     // ورودی‌هایی که این بچ به‌عنوان مادهٔ منبع مصرف کرده‌اند (Batch Genealogy). فاز ۱ فقط
     // این رابطه را برقرار می‌کند - موتور ژنالوژی کامل ساخته نمی‌شود.
     public ICollection<ProductionInput> ConsumedAsSourceIn { get; set; } = new List<ProductionInput>();
+
+    // زنجیره ردیابی ژنولوژی کامل (PPC Stage 1 - OD-09): ردیابی بچ‌های ورودی و خروجی
+    public ICollection<ProductionBatchGenealogy> ParentGenealogies { get; set; } = new List<ProductionBatchGenealogy>();
+    public ICollection<ProductionBatchGenealogy> ChildGenealogies { get; set; } = new List<ProductionBatchGenealogy>();
 }
