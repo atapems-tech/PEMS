@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "rcm-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject RCM",
+    "fa": "رد RCM"
+  },
+  "description": {
+    "en": "Reject RCM",
+    "fa": "رد RCM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "RejectRcm",
+      "args": {
+        "rcmAnalysisId": "field:rcmAnalysisId"
+      }
+    },
+    "success": {
+      "en": "Returned to DRAFT.",
+      "fa": "به DRAFT بازگشت داده شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

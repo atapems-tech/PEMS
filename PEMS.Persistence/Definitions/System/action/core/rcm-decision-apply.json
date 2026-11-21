@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "rcm-decision-apply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Apply RCM decision",
+    "fa": "اعمال تصمیم RCM"
+  },
+  "description": {
+    "en": "Apply RCM decision",
+    "fa": "اعمال تصمیم RCM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "ApplyRcmDecision",
+      "args": {
+        "rcmDecisionId": "field:rcmDecisionId",
+        "equipmentId": "field:equipmentId"
+      }
+    },
+    "success": {
+      "en": "The maintenance strategy was created or updated.",
+      "fa": "Maintenance Strategy ساخته یا به‌روزرسانی شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

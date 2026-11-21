@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "rcm-fmea-create-draft",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create FMEA draft",
+    "fa": "ایجاد پیش‌نویس FMEA"
+  },
+  "description": {
+    "en": "Create FMEA draft",
+    "fa": "ایجاد پیش‌نویس FMEA"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "CreateFmeaDraft",
+      "args": {
+        "equipmentClassId": "field:equipmentClassId",
+        "title": "field:title",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "FMEA draft created.",
+      "fa": "پیش‌نویس FMEA ساخته شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}
