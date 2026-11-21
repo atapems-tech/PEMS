@@ -23,7 +23,7 @@ public class ProcurementWarehouseListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/Tender", "Views/Contract",
+        "Views/Tender",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
 
@@ -72,20 +72,6 @@ public class ProcurementWarehouseListPagesTests
         Assert.Contains("lp-compose", filtered);                                          // New starts a tender in this package
         Assert.DoesNotContain("lp-compose", all);                                         // without a package there is no New
         Assert.Contains("vs-pill vs-pill--info", all);
-    }
-
-    [Fact]
-    public async Task MaterialRequisitions_Vendors_Contracts_AndPackages_KeepTheirModalsAndPaging()
-    {
-        // Contract and Procurement Package keep their create modals (opened by New); the modals call the numbering view
-        // component, so these two are checked in the view files here and in the app.
-        foreach (var (view, modal) in new[] { ("Contract", "createContractModal") })
-        {
-            var text = File.ReadAllText(Path.Combine(RepoWeb(), "Views", view, "Index.cshtml"));
-            Assert.Contains($"<pems-list-new modal=\"{modal}\"", text);
-            Assert.Contains($"id=\"{modal}\"", text);
-            Assert.Contains($"grid-key=\"{view}\"", text);
-        }
     }
 
     // ---------- warehouse ----------

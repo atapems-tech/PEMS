@@ -106,7 +106,7 @@ public static class NavigationMenuDefaults
         Link("proc.tender", "proc.sub.purchasing", 30, "Tender", "bi-clipboard-check", "Tender", rule: "Module:EngineeringManagement&Perm:Tender.View"),
         new("proc.po", "proc.sub.purchasing", L, 40, "Purchase Orders", "bi-receipt", "Module:ContractManagement&Perm:PurchaseOrder.View", ExternalPath: "/p/purchase-orders"),   // SCRUM-741: a definition page (/p/...)
         Sub("proc.sub.contracts", "sec.procurement", 30, "Contracts"),
-        Link("proc.contracts", "proc.sub.contracts", 10, "Contracts", "bi-file-earmark-ruled", "Contract", rule: "Module:ContractManagement&Perm:Contracts.View"),
+        new("proc.contracts", "proc.sub.contracts", L, 10, "Contracts", "bi-file-earmark-ruled", "Module:ContractManagement&Perm:Contracts.View", ExternalPath: "/p/contracts"),   // SCRUM-676: a definition page (/p/...)
         ComingSoon("proc.milestones", "proc.sub.contracts", 20, "Contract Milestones", "bi-flag", "Contract Milestones", "Contract Management", "Module:ContractManagement"),
         ComingSoon("proc.claims", "proc.sub.contracts", 30, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management", "Module:ContractManagement"),
         Sub("proc.sub.warehouse", "sec.procurement", 40, "Warehouse"),

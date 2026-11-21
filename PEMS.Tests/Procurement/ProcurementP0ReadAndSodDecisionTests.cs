@@ -45,13 +45,11 @@ public class ProcurementP0ReadAndSodDecisionTests
     // ==============================================================================
 
     [Fact]
-    public async Task Contract_Index_Details_CreateForm_WithoutPermission_AreForbidden()
+    public async Task Contract_CreateForm_WithoutPermission_IsForbidden()
     {
-        var (ctx, permissions, access) = await CreateAsync(nameof(Contract_Index_Details_CreateForm_WithoutPermission_AreForbidden));
+        var (ctx, permissions, access) = await CreateAsync(nameof(Contract_CreateForm_WithoutPermission_IsForbidden));
         var c = new ContractController(null!, null!, null!, access, permissions, User(SystemRoles.Viewer), ctx).WithTempData();
 
-        Assert.IsType<ForbidResult>(await c.Index());
-        Assert.IsType<ForbidResult>(await c.Details(1));
         Assert.IsType<ForbidResult>(await c.Create());
     }
 

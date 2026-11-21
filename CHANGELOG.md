@@ -75,6 +75,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-676: contracts as definitions
+
+### Changed
+- IContractOperations (list, details with the originating tender, discipline reviews, revisions, documents, NTPs, kick-off meetings, ITPs; add document with the editor event, issue NTP, schedule kick-off); pages /p/contracts and /p/contract-details; forms and actions for the commands and for the existing workflow actions. The create form (creator event, uncertain commit recovery, SoD) stays on ContractController (2 actions). Gaps: the workflow history of the instance is not shown; ids typed on forms; the change-status action was replaced by the existing submit-for-review action and its two tests, the list/details forbid assertions and the Contract list view tests were removed.
+
 ## 2026-11-21 - SCRUM-724: maintenance plans as definitions
 
 ### Changed
