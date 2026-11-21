@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "calendar-my-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My work (calendar) (old address)",
+    "fa": "My work (calendar) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "My work (calendar) (old address)",
+    "fa": "My work (calendar) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceCalendar/MyWork",
+    "target": "/p/calendar-my-work",
+    "permanent": false
+  }
+}

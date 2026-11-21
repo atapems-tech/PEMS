@@ -85,6 +85,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-721: calendar My Work page and drag and drop reschedule as definitions
+
+### Changed
+- The My Work day list is a page definition (/p/calendar-my-work, old address MaintenanceCalendar/MyWork) over ICalendarOperations. The calendar drag and drop reschedules through the existing action definition work-order-set-schedule (same permission, work order section guard and audit as the work order page) and no longer needs MaintenanceCalendar/Reschedule. The month, week and day grid (Index) stays on MaintenanceCalendarController (1 action) until the engine has a calendar component (SCRUM-818).
+
 ## 2026-11-21 - SCRUM-756: task manager commands as definitions
 
 ### Changed

@@ -1,6 +1,6 @@
 // PEMS — Maintenance Scheduling Calendar: Drag & Drop reschedule (Week view only).
 // طبق سند بند ۱۶: Drag فقط روز را در همان ردیف تیم جابه‌جا می‌کند (ساعت/مدت‌زمان حفظ می‌شود) -
-// هر جابه‌جایی از همان Action دامنه‌ای (MaintenanceCalendar/Reschedule -> ScheduleWorkOrderAsync)
+// هر جابه‌جایی از همان Action دامنه‌ای (/a/work-order-set-schedule -> ScheduleWorkOrderAsync)
 // عبور می‌کند که مجوز/دیسیپلین/مرحله را دقیقاً مثل فرم غیر-Drag بررسی می‌کند. جایگزین بدون
 // Drag همان فرم "Planned Start/Planned Finish" در WorkOrder/Details است (طبق بند ۱۶: باید یک
 // جایگزین قابل‌دسترس وجود داشته باشد).
@@ -20,15 +20,16 @@
     }
 
     async function reschedule(workOrderId, plannedStart, plannedFinish) {
+        // SCRUM-721: the same action definition the work order page uses (permission, work order section guard, audit); the JSON answer is { ok, error }
         var body = new URLSearchParams();
-        body.append('workOrderId', workOrderId);
+        body.append('id', workOrderId);
         body.append('plannedStart', plannedStart);
         body.append('plannedFinish', plannedFinish);
         body.append('__RequestVerificationToken', antiForgeryToken());
 
-        var res = await fetch('/MaintenanceCalendar/Reschedule', { method: 'POST', body: body });
-        var data = await res.json();
-        if (data.success) {
+        var res = await fetch('/a/work-order-set-schedule', { method: 'POST', headers: { 'Accept': 'application/json' }, body: body });
+        var data = await res.json().catch(function () { return { ok: false, error: null }; });
+        if (data.ok) {
             window.location.reload();
         } else {
             showError(data.error || 'Reschedule failed.');

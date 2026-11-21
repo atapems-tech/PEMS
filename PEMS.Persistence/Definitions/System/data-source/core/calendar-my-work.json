@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "calendar-my-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My work of a day",
+    "fa": "کار من در یک روز"
+  },
+  "description": {
+    "en": "My work of a day",
+    "fa": "کار من در یک روز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CalendarPage",
+      "action": "MyWork",
+      "args": {
+        "employeeId": "context:employeeId",
+        "date": "param:date"
+      }
+    }
+  }
+}

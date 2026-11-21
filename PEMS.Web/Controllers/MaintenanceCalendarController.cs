@@ -18,16 +18,14 @@ namespace PEMS.Web.Controllers;
 public class MaintenanceCalendarController : Controller
 {
     private readonly ICmmsCalendarService _calendarService;
-    private readonly IWorkOrderLifecycleService _lifecycleService;
     private readonly ICurrentUserService _currentUser;
     private readonly IPermissionService _permissionService;
     private readonly PEMSDbContext _context;
 
-    public MaintenanceCalendarController(ICmmsCalendarService calendarService, IWorkOrderLifecycleService lifecycleService,
+    public MaintenanceCalendarController(ICmmsCalendarService calendarService,
         ICurrentUserService currentUser, IPermissionService permissionService, PEMSDbContext context)
     {
         _calendarService = calendarService;
-        _lifecycleService = lifecycleService;
         _currentUser = currentUser;
         _permissionService = permissionService;
         _context = context;
@@ -70,46 +68,6 @@ public class MaintenanceCalendarController : Controller
         ViewBag.EquipmentId = equipmentId;
 
         return View(result);
-    }
-
-    /// <summary>طبق بند ۱۳ درخواست: نمای «کار من» - کار برنامه‌ریزی‌شده‌ی امروزِ کارمندِ کاربر جاری.</summary>
-    public async Task<IActionResult> MyWork(DateTime? date = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-
-        ViewData["Title"] = "My Work";
-        ViewData["Section"] = "CMMS Integration";
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        var day = (date ?? DateTime.Today).Date;
-        ViewBag.Day = day;
-
-        if (!employeeId.HasValue)
-            return View(new List<WorkOrderCalendarItemDto>());
-
-        var items = await _calendarService.GetMyWorkAsync(employeeId.Value, day);
-        return View(items);
-    }
-
-    /// <summary>
-    /// طبق بند ۱۶ درخواست: Drag&amp;Drop از همین مسیر عبور می‌کند (نه یک مسیر جدا با اعتبارسنجی
-    /// جدا) - JSON فقط برای فراخوانی Ajax؛ خودِ WorkOrder/Details.SetSchedule جایگزین بدون
-    /// Drag&amp;Drop همین Action دامنه‌ای است (نه یک منطق موازی).
-    /// </summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Reschedule(int workOrderId, DateTime plannedStart, DateTime plannedFinish)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "View")) return Forbid();
-        var actor = new WorkOrderActor(await GetCurrentEmployeeIdAsync(), _currentUser.Roles);
-        var (success, error) = await _lifecycleService.ScheduleWorkOrderAsync(workOrderId, plannedStart, plannedFinish, actor);
-        return Json(new { success, error });
-    }
-
-    private async Task<int?> GetCurrentEmployeeIdAsync()
-    {
-        if (!_currentUser.UserId.HasValue) return null;
-        return await _context.Users.Where(u => u.Id == _currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync();
     }
 
     private static (DateTime Start, DateTime End) WeekRange(DateTime anchor)
