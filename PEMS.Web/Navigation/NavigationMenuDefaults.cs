@@ -137,7 +137,7 @@ public static class NavigationMenuDefaults
         Link("cmms.asset", "sec.cmms", 30, "Assets", "bi-diagram-2", "Asset", rule: "CmmsItem:Asset"),
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),
         Link("cmms.strategy", "cmms.sub.planning", 10, "Maintenance Strategy", "bi-diagram-2", "MaintenanceStrategy", rule: "CmmsItem:MaintenanceStrategy"),
-        Link("cmms.plan", "cmms.sub.planning", 20, "Maintenance Plan", "bi-calendar-check", "MaintenancePlan", rule: "CmmsItem:MaintenancePlan"),
+        new("cmms.plan", "cmms.sub.planning", L, 20, "Maintenance Plan", "bi-calendar-check", "CmmsItem:MaintenancePlan", ExternalPath: "/p/maintenance-plans"),   // SCRUM-724: a definition page (/p/...)
         new("cmms.backlog", "cmms.sub.planning", L, 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsItem:CmmsOperations", ExternalPath: "/p/maintenance-backlog"),   // SCRUM-673: a definition page (/p/...)
         Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),
         new("cmms.jobplan", "sec.cmms", L, 50, "Job Plans", "bi-list-check", "CmmsItem:JobPlan", ExternalPath: "/p/job-plans"),   // SCRUM-711: a definition page (/p/...)

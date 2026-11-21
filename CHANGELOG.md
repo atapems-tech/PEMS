@@ -74,6 +74,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-724: maintenance plans as definitions
+
+### Changed
+- IMaintenancePlanOperations (list, record a meter reading, generate one work order or every due one with the work order governance, deactivate); page /p/maintenance-plans and forms/actions; the create form (it needs the strategy assignment context) stays on MaintenancePlanController (2 actions). Gaps: a generated work order is not opened (the list is shown); ids typed on forms; the plan controller permission tests for the converted actions and the list render tests were removed.
+
 ## 2026-11-21 - SCRUM-711: job plans as definitions
 
 ### Changed

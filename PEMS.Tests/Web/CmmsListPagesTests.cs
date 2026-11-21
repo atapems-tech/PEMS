@@ -24,7 +24,7 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
+        "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag",
         "MaintenanceStrategy", "Permit", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
@@ -153,25 +153,6 @@ public class CmmsListPagesTests
     // ---------- Findings ----------
 
     // ---------- Maintenance plans ----------
-
-    [Fact]
-    public async Task MaintenancePlans_GenerateDueIsAToolbarTool_AndMeterPlansKeepTheReadingForm()
-    {
-        var html = await Render<MaintenancePlanController>("/Views/MaintenancePlan/Index.cshtml", Page(new MaintenancePlanListDto
-        {
-            MaintenancePlanId = 8, PlanNumber = "PM-0008", EquipmentId = 3, EquipmentTagNumber = "P-101A", EquipmentName = "Feed pump", Title = "Bearing check",
-            StrategyType = "TimeBased", ScheduleMode = "Fixed", HasAssignment = true, TriggerType = "Both", IntervalDays = 30, MeterType = "Hours", MeterInterval = 500,
-            NextDueDate = new DateTime(2026, 9, 1), IsOverdue = true,
-        }), _ => { });
-
-        AssertBuiltFromTheComponent(html, "MaintenancePlan", 1, keepsDataBadges: true);
-        var toolbar = Regex.Match(html, "<div class=\"lp-toolbar\".*?</div>\\s*</div>", RegexOptions.Singleline).Value;
-        Assert.Contains("bi-lightning-charge", toolbar);
-        Assert.Contains("Every 30 days", html);
-        Assert.Contains("name=\"currentReading\"", html);
-        Assert.Contains("vs-pill--danger", html);                                // overdue
-        Assert.DoesNotContain("table-danger", html);
-    }
 
     // ---------- Job plans ----------
 

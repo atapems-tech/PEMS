@@ -469,7 +469,7 @@
                 <pems-heading level="6" class="mb-0"><pems-icon name="bi-diagram-2" /> @Localizer["Cm_StrategyPm"]</pems-heading>
                 <pems-flex as="span" gap="2">
                     @if (ViewBag.CanViewStrategy == true) { <pems-link asp-controller="MaintenanceStrategy" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId" class="vs-btn vs-btn--sm">@Localizer["Cm_Strategies"]</pems-link> }
-                    @if (ViewBag.CanViewPlan == true) { <pems-link asp-controller="MaintenancePlan" asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Cm_PmPlans"]</pems-link> }
+                    @if (ViewBag.CanViewPlan == true) { <pems-link href="/p/maintenance-plans" class="vs-btn vs-btn--sm">@Localizer["Cm_PmPlans"]</pems-link> }
                 </pems-flex>
             </pems-flex>
             @if (!Model.Strategies.Any() && !Model.Plans.Any())

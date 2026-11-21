@@ -470,7 +470,7 @@
 
                 @if (navVisibility.IsCmmsItemVisible("MaintenancePlan"))
                 {
-                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenancePlan"))" asp-controller="MaintenancePlan" asp-action="Index" asp-area="">
+                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenancePlan"))" href="/p/maintenance-plans">
                         <pems-icon name="bi-calendar-check" /> @Localizer["Maintenance Plan"]
                     </pems-nav-link>
                 }
