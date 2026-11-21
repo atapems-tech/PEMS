@@ -27,7 +27,7 @@ public class CmmsListPagesTests
         "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
         "MaintenanceStrategy", "JobPlan", "Permit", "Asset",
         // wave 2b
-        "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "ShiftHandover", "RcmFmea",
+        "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
         "EquipmentFunctionalLocationAssignment",
     };
 

@@ -72,6 +72,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-749: shift handovers as definitions
+
+### Changed
+- IShiftHandoverOperations reads (list with a status filter, head, items, history, people) and attributes on the create, prepare, acknowledge and complete service methods; pages /p/shift-handovers and /p/shift-handover-details and one form and action per command. Gaps: the prepare/acknowledge/complete links are always shown (the service enforces who may act); ids are typed on the command forms; the navigation exposure controller tests were removed.
+
 ## 2026-11-21 - SCRUM-675, 722: condition reading and maintenance history imports as definitions
 
 ### Changed

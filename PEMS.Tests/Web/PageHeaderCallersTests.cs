@@ -16,7 +16,6 @@ public class PageHeaderCallersTests
 {
     public static readonly string[] Callers =
     [
-        "ShiftHandover/Create.cshtml",
         "CriticalityAssessment/Create.cshtml"
     ];
 
