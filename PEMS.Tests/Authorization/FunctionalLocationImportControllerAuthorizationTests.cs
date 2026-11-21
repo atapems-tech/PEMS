@@ -1,76 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PEMS.Application.Interfaces;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Authorization;
 
 /// <summary>
-/// طبق «Functional Location Master Data Import» بند ۱۵: همان الگوی EquipmentImportController -
-/// Upload/Review با Create/View؛ ToggleRow، Commit (Approve) و Discard (Delete) عملیات تعریف‌محور هستند (SCRUM-698).
+/// طبق «Functional Location Master Data Import» بند ۱۵: همان الگوی EquipmentImportController - خواندن/Review با View،
+/// Upload/ToggleRow با Create، Commit (پرریسک‌ترین) با Approve، Discard با Delete. SCRUM-701: کنترلر حذف شد؛ همه عملیات
+/// تعریف‌محور هستند و گیت، مجوز عملیات است (action host پیش از صدا زدن عملیات آن را می‌سنجد).
 /// </summary>
 public class FunctionalLocationImportControllerAuthorizationTests
 {
-    private static async Task<(FunctionalLocationImportController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
-        string dbName, string? role)
-    {
-        var ctx = PemsDbContextFactory.CreateInMemory($"FLImportAuth_{dbName}");
-        foreach (var roleName in SystemRoles.All)
-            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
-        await ctx.SaveChangesAsync();
-
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
-        await permissionService.SeedDefaultsAsync();
-
-        var services = new ServiceCollection();
-        services.AddSingleton(ctx);
-        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
-        var importService = new FunctionalLocationImportService(ctx);
-
-        var controller = new FunctionalLocationImportController(importService, ctx, currentUser, permissionService).WithTempData();
-        return (controller, ctx);
-    }
-
-    [Fact]
-    public async Task Index_NoPermission_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(Index_NoPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Index_ViewerRole_CanView()
-    {
-        var (controller, _) = await CreateController(nameof(Index_ViewerRole_CanView), role: SystemRoles.Viewer);
-
-        var result = await controller.Index();
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public async Task Upload_ViewerRole_CannotUpload_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(Upload_ViewerRole_CannotUpload_ReturnsForbid), role: SystemRoles.Viewer);
-
-        var result = await controller.Upload(null!);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    // SCRUM-698: commit, discard and the row toggle are operations; the gate is the operation permission the host checks.
-    private static string? PermissionOf(string method)
-        => ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IFunctionalLocationImportOperations).GetMethod(method)!
-            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission;
+    private static string PermissionOf(string method)
+        => ((PEMS.Application.Common.PemsOperationAttribute)typeof(IFunctionalLocationImportOperations).GetMethod(method)!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission!;
 
     private static async Task<bool> MayAsync(string dbName, string? role, string method)
     {
@@ -80,45 +26,65 @@ public class FunctionalLocationImportControllerAuthorizationTests
         await ctx.SaveChangesAsync();
         var permissionService = new PermissionService(ctx, new AccessControlService(ctx));
         await permissionService.SeedDefaultsAsync();
-        var parts = PermissionOf(method)!.Split('.');
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
+        var parts = PermissionOf(method).Split('.');
         return await permissionService.HasPermissionAsync(role != null ? new List<string> { role } : new List<string>(), parts[0], parts[1]);
     }
 
+    private static PEMS.Web.Services.FunctionalLocationImportOperations Ops(string dbName)
+        => new(new FunctionalLocationImportService(PemsDbContextFactory.CreateInMemory($"FLImportOpsRun_{dbName}")));
+
     [Fact]
-    public async Task Commit_RoleWithoutApprove_IsNotAllowedByTheOperationPermission()
-        => Assert.False(await MayAsync(nameof(Commit_RoleWithoutApprove_IsNotAllowedByTheOperationPermission), SystemRoles.QAManager, "CommitAsync"));
+    public async Task Batches_NoPermission_IsNotAllowed()
+        => Assert.False(await MayAsync(nameof(Batches_NoPermission_IsNotAllowed), null, "BatchesAsync"));
+
+    [Fact]
+    public async Task Batches_ViewerRole_CanView_AndNoBatchesYet()
+    {
+        Assert.True(await MayAsync(nameof(Batches_ViewerRole_CanView_AndNoBatchesYet), SystemRoles.Viewer, "BatchesAsync"));
+        Assert.Empty(await Ops("batches").BatchesAsync());
+    }
+
+    [Fact]
+    public async Task Upload_ViewerRole_IsNotAllowed_AndAnEmptyFileIsRefused()
+    {
+        Assert.False(await MayAsync(nameof(Upload_ViewerRole_IsNotAllowed_AndAnEmptyFileIsRefused), SystemRoles.Viewer, "UploadAsync"));
+        var result = await Ops("upload").UploadAsync(null, [], "x.xlsx");
+        Assert.False(result.Success);
+    }
+
+    [Fact]
+    public async Task Rows_NoPermission_IsNotAllowed_AndAMissingBatchHasNoRows()
+    {
+        Assert.False(await MayAsync(nameof(Rows_NoPermission_IsNotAllowed_AndAMissingBatchHasNoRows), null, "RowsAsync"));
+        Assert.Empty(await Ops("rows").RowsAsync(99999));
+    }
+
+    [Fact]
+    public async Task Commit_QAManagerWithoutApprove_IsNotAllowed()
+        => Assert.False(await MayAsync(nameof(Commit_QAManagerWithoutApprove_IsNotAllowed), SystemRoles.QAManager, "CommitAsync"));
 
     [Fact]
     public async Task Commit_MaintenanceEngineer_HasApprove_AndMissingBatchStillThrows()
     {
         Assert.True(await MayAsync(nameof(Commit_MaintenanceEngineer_HasApprove_AndMissingBatchStillThrows), SystemRoles.MaintenanceEngineer, "CommitAsync"));
-        var ops = new PEMS.Web.Services.FunctionalLocationImportOperations(new FunctionalLocationImportService(PemsDbContextFactory.CreateInMemory("FLImportOps_commit")));
-        await Assert.ThrowsAsync<InvalidOperationException>(() => ops.CommitAsync(99999));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => Ops("commit").CommitAsync(99999));
     }
 
     [Fact]
-    public async Task Discard_ViewerRole_IsNotAllowedByTheOperationPermission()
-        => Assert.False(await MayAsync(nameof(Discard_ViewerRole_IsNotAllowedByTheOperationPermission), SystemRoles.Viewer, "DiscardAsync"));
+    public async Task Discard_ViewerRole_IsNotAllowed()
+        => Assert.False(await MayAsync(nameof(Discard_ViewerRole_IsNotAllowed), SystemRoles.Viewer, "DiscardAsync"));
 
     [Fact]
     public async Task Discard_EngineeringManager_IsAllowed_AndMissingBatchIsSilent()
     {
         Assert.True(await MayAsync(nameof(Discard_EngineeringManager_IsAllowed_AndMissingBatchIsSilent), SystemRoles.EngineeringManager, "DiscardAsync"));
-        var ops = new PEMS.Web.Services.FunctionalLocationImportOperations(new FunctionalLocationImportService(PemsDbContextFactory.CreateInMemory("FLImportOps_discard")));
-        Assert.True((await ops.DiscardAsync(99999)).Success);
+        Assert.True((await Ops("discard").DiscardAsync(99999)).Success);
     }
 
     [Fact]
-    public async Task ToggleRow_ViewerRole_IsNotAllowedByTheOperationPermission()
-        => Assert.False(await MayAsync(nameof(ToggleRow_ViewerRole_IsNotAllowedByTheOperationPermission), SystemRoles.Viewer, "ToggleRowAsync"));
-
-    [Fact]
-    public async Task Review_NoPermission_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(Review_NoPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Review(1);
-
-        Assert.IsType<ForbidResult>(result);
-    }
+    public async Task ToggleRow_ViewerRole_IsNotAllowed()
+        => Assert.False(await MayAsync(nameof(ToggleRow_ViewerRole_IsNotAllowed), SystemRoles.Viewer, "ToggleRowAsync"));
 }
