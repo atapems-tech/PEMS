@@ -434,7 +434,7 @@
             }
             @if (l.RelatedMRId.HasValue)
             {
-                <pems-link asp-controller="MaterialRequisition" asp-action="Details" asp-route-id="@l.RelatedMRId"><pems-icon name="bi-cart" /> @l.RelatedMRNumber</pems-link>
+                <pems-link href="/p/mr-details?id=@l.RelatedMRId"><pems-icon name="bi-cart" /> @l.RelatedMRNumber</pems-link>
             }
         </pems-flex>
     </pems-content-card>

@@ -54,6 +54,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Material requisitions as definition pages (SCRUM-726)
+
+### Changed
+- /p/material-requisitions, /p/mr-details and /p/mr-quotations (with the create, status, quotation and evaluation forms) replace MaterialRequisitionController over MaterialRequisition.* operations (same service calls; reaching Approved still needs MaterialRequisition.Approve; an MR issued to procurement still enters the procurement queue). The item lines are typed one per line (description | part number | quantity | unit); the part lookup is the operation MaterialRequisition.PartLookup. The old routes redirect.
+
 ## 2026-11-21 - Vendors as definition pages (SCRUM-763)
 
 ### Changed

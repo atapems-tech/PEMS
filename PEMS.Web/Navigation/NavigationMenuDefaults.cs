@@ -101,7 +101,7 @@ public static class NavigationMenuDefaults
         Sub("proc.sub.purchasing", "sec.procurement", 20, "Nav_Proc_Purchasing"),
         // SCRUM-471: the procurement cartable (pre-procurement queue), first under Purchasing
         new("proc.preprocurement", "proc.sub.purchasing", L, 5, "Ppr_Title", "bi-inbox", "Perm:PreProcurement.View", ExternalPath: "/p/pre-procurement"),   // SCRUM-735: a definition page (/p/...)
-        Link("proc.mr", "proc.sub.purchasing", 10, "Material Requisition", "bi-cart-check", "MaterialRequisition", rule: "Module:EngineeringManagement&Perm:MaterialRequisition.View"),
+        new("proc.mr", "proc.sub.purchasing", L, 10, "Material Requisition", "bi-cart-check", "Module:EngineeringManagement&Perm:MaterialRequisition.View", ExternalPath: "/p/material-requisitions"),   // SCRUM-726: a definition page (/p/...)
         Link("proc.package", "proc.sub.purchasing", 20, "ProcurementPackage", "bi-folder2-open", "ProcurementPackage", rule: "Module:EngineeringManagement&Perm:ProcurementPackage.View"),
         Link("proc.tender", "proc.sub.purchasing", 30, "Tender", "bi-clipboard-check", "Tender", rule: "Module:EngineeringManagement&Perm:Tender.View"),
         Link("proc.po", "proc.sub.purchasing", 40, "Purchase Orders", "bi-receipt", "PurchaseOrder", rule: "Module:ContractManagement&Perm:PurchaseOrder.View"),

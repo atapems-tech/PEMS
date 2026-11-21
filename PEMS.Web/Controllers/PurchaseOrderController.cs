@@ -90,7 +90,7 @@ public class PurchaseOrderController : Controller
         if (!r.Success)
         {
             TempData["Error"] = Text(r.Error!);
-            return RedirectToAction("Details", "MaterialRequisition", new { id = mrId });
+            return Redirect("/p/mr-details?id=" + mrId);
         }
         if (_currentUser.UserId.HasValue)   // creator row for the existing SoD policy (Create <-> Approve), as in Create
             await _accessControlService.AuthorizeAsync(new AccessControlRequest

@@ -297,7 +297,7 @@
             }
             @if (engProcurementVisible)
             {
-                <pems-nav-link item="false" active="@(IsActive("MaterialRequisition"))" asp-controller="MaterialRequisition" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/material-requisitions" active="@(IsActive("MaterialRequisition") || Context.Request.Path.StartsWithSegments("/p/material-requisition") || Context.Request.Path.StartsWithSegments("/p/mr-"))">
                     <pems-icon name="bi-cart-check" /> @Localizer["Material Requisition"]
                 </pems-nav-link>
 

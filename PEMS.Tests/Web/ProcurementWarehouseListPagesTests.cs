@@ -23,7 +23,7 @@ public class ProcurementWarehouseListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Contract", "Views/ProcurementPackage",
+        "Views/PurchaseOrder", "Views/Tender", "Views/Contract", "Views/ProcurementPackage",
         "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
@@ -90,11 +90,6 @@ public class ProcurementWarehouseListPagesTests
     [Fact]
     public async Task MaterialRequisitions_Vendors_Contracts_AndPackages_KeepTheirModalsAndPaging()
     {
-        var mr = await Render<MaterialRequisitionController>("/Views/MaterialRequisition/Index.cshtml",
-            Page(new MRDto { MRId = 1, MRNumber = "MR-1", Status = "Sent", QuotationsCount = 2 }));
-        AssertBuiltFromTheComponent(mr, "MaterialRequisition", 1);
-        Assert.Contains("class=\"lp-footer\"", mr);
-
         // Contract and Procurement Package keep their create modals (opened by New); the modals call the numbering view
         // component, so these two are checked in the view files here and in the app.
         foreach (var (view, modal) in new[] { ("Contract", "createContractModal"), ("ProcurementPackage", "createPackageModal") })
