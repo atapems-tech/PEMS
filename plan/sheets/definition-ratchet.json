@@ -3,8 +3,6 @@
   "views": [
     "PEMS.Web/Areas/Admin/Views/_ViewImports.cshtml",
     "PEMS.Web/Areas/Admin/Views/_ViewStart.cshtml",
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueAdmin/Index.cshtml",
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueAdmin/_ResolutionPreview.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Index.cshtml",
@@ -229,7 +227,6 @@
     "PEMS.Web.Api.V1.DefinitionsApiController": 16,
     "PEMS.Web.Api.V1.DisciplinesApiController": 6,
     "PEMS.Web.Areas.Admin.Controllers.EmployeeController": 1,
-    "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueAdminController": 17,
     "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController": 17,
     "PEMS.Web.Controllers.AccountController": 9,
     "PEMS.Web.Controllers.AccountRecoveryController": 2,

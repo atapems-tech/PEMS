@@ -120,7 +120,7 @@ public static class NavigationMenuDefaults
         Link("proc.wh.partcatalogue", "proc.sub.warehouse", 80, "Pc_Menu", "bi-journal-plus", "PartCatalogueRequest", area: "Warehouse", rule: "Flag:PartCatalogue", badge: NavigationBadges.MyWorkPartCatalogue),
         // SCRUM-478: Part Catalogue reports
         new("proc.wh.partcatalogue.reports", "proc.sub.warehouse", L, 85, "PcRpt_Menu", "bi-bar-chart-line", "Flag:PartCatalogueReports", ExternalPath: "/p/pc-report"),   // SCRUM-661: a definition page (/p/...)
-        Link("proc.wh.partcatalogue.admin", "proc.sub.warehouse", 90, "Pc_Title_Admin", "bi-sliders", "PartCatalogueAdmin", area: "Warehouse", rule: "Flag:PartCatalogueAdmin"),
+        new("proc.wh.partcatalogue.admin", "proc.sub.warehouse", L, 90, "Pc_Title_Admin", "bi-sliders", "Flag:PartCatalogueAdmin", ExternalPath: "/p/pc-admin"),   // SCRUM-658: a definition page (/p/...)
 
         // ---- کنترل پروژه
         Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,TaskManager,Tag,Report,Meeting"),

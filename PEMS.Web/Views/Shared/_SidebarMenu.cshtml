@@ -381,7 +381,7 @@
             }
             @if (canAdminPartCatalogue)
             {
-                <pems-nav-link item="false" active="@(IsActive("PartCatalogueAdmin", "Warehouse"))" asp-controller="PartCatalogueAdmin" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueAdmin", "Warehouse"))" href="/p/pc-admin">
                     <pems-icon name="bi-sliders" /> @Localizer["Pc_Title_Admin"]
                 </pems-nav-link>
             }

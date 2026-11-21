@@ -61,6 +61,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-658: Part Catalogue administration as definitions
+
+### Changed
+- The Part Catalogue administration controller and view are replaced by IPartCatalogueAdminOperations (model PartCatalogueAdmin), the page pc-admin with read data sources, one form and action per command (settings, reference import with upload, sections, group maps, steps, approvers, responsibilities, commodity responsibles), file sources for the preview and the two lookups, and routes from every old address. The preview is now JSON (the old partial is gone); ids are typed numbers instead of search selects.
+
 ## 2026-11-21 - Part Catalogue lookups, duplicate checks and reports as file-host sources and a page (SCRUM-659, 660, 661)
 
 ### Changed
