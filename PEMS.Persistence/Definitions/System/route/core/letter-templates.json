@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-templates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter templates (old address)",
+    "fa": "Letter templates (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter templates (old address)",
+    "fa": "Letter templates (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "LetterTemplate",
+    "target": "/p/letter-templates",
+    "permanent": false
+  }
+}

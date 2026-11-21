@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "letter-template-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the letter template",
+    "fa": "ذخیره‌ی قالب نامه"
+  },
+  "description": {
+    "en": "Save the letter template",
+    "fa": "ذخیره‌ی قالب نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "LetterTemplatePage",
+      "action": "Save",
+      "args": {
+        "id": "field:id",
+        "name": "field:name",
+        "letterType": "field:letterType",
+        "subject": "field:subject",
+        "body": "field:body",
+        "priority": "field:priority",
+        "confidentialityLevel": "field:confidentialityLevel"
+      }
+    },
+    "success": {
+      "en": "Template saved.",
+      "fa": "قالب ذخیره شد."
+    },
+    "redirect": "/p/letter-templates"
+  }
+}

@@ -413,7 +413,7 @@
                         <pems-bullet><pems-link class="dropdown-item" asp-controller="LetterCartable" asp-action="Report"><pems-icon name="bi-bar-chart-line" aria-hidden="true" /> @Localizer["Ct_ReportTitle"]</pems-link></pems-bullet>
                         @if (ViewBag.CanManageTemplates == true)
                         {
-                            <pems-bullet><pems-link class="dropdown-item" asp-controller="LetterTemplate" asp-action="Index"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_Manage"]</pems-link></pems-bullet>
+                            <pems-bullet><pems-link class="dropdown-item" href="/p/letter-templates"><pems-icon name="bi-file-earmark-text" aria-hidden="true" /> @Localizer["LtT_Manage"]</pems-link></pems-bullet>
                         }
                         <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#lxMenu" aria-controls="lxMenu"><pems-icon name="bi-folder2-open" aria-hidden="true" /> @Localizer["Lp_AllFolders"]</pems-button></pems-bullet>
                         <pems-bullet><pems-divider class="dropdown-divider" /></pems-bullet>

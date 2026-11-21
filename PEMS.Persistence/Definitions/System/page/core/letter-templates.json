@@ -1,0 +1,165 @@
+{
+  "kind": "page",
+  "key": "letter-templates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter Templates",
+    "fa": "قالب‌های نامه"
+  },
+  "description": {
+    "en": "The templates that pre-fill a letter (page definition)",
+    "fa": "قالب‌هایی که نامه را پیش‌پر می‌کنند (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "letter-templates",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/letter-template-edit",
+                "text": {
+                  "en": "New template",
+                  "fa": "قالب جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/Letter",
+                "text": {
+                  "en": "Correspondence",
+                  "fa": "مکاتبات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "templates",
+          "component": "data-grid",
+          "options": {
+            "id": "templates",
+            "url": "/d/letter-templates",
+            "idField": "letterTemplateId",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Template",
+                  "fa": "قالب"
+                },
+                "width": 220
+              },
+              {
+                "key": "letterType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 110
+              },
+              {
+                "key": "subject",
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "width": 300
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              },
+              {
+                "key": "confidentialityLevel",
+                "header": {
+                  "en": "Confidentiality",
+                  "fa": "محرمانگی"
+                },
+                "width": 150
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 320,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "preview",
+                    "label": {
+                      "en": "Preview",
+                      "fa": "پیش‌نمایش"
+                    },
+                    "url": "/LetterTemplate/Preview/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/letter-template-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "activate",
+                    "label": {
+                      "en": "Activate",
+                      "fa": "فعال‌سازی"
+                    },
+                    "url": "/a/letter-template-activate",
+                    "method": "post",
+                    "showWhen": "row.isActive == false"
+                  },
+                  {
+                    "key": "deactivate",
+                    "label": {
+                      "en": "Deactivate",
+                      "fa": "غیرفعال‌سازی"
+                    },
+                    "url": "/a/letter-template-deactivate",
+                    "method": "post",
+                    "tone": "danger",
+                    "showWhen": "row.isActive == true",
+                    "confirm": {
+                      "en": "Deactivate this template?",
+                      "fa": "این قالب غیرفعال شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.Approve"
+  }
+}

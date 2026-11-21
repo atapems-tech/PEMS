@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-template-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter template (edit) (old address)",
+    "fa": "Letter template (edit) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter template (edit) (old address)",
+    "fa": "Letter template (edit) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "LetterTemplate/Edit/{id}",
+    "target": "/f/letter-template-edit/{id}",
+    "permanent": false
+  }
+}
