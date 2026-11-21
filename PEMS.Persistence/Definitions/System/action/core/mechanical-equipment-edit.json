@@ -4,36 +4,38 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Update mechanical equipment",
+    "en": "Edit mechanical equipment",
     "fa": "ویرایش تجهیز مکانیکی"
   },
   "description": {
-    "en": "Update mechanical equipment",
+    "en": "Edit mechanical equipment",
     "fa": "ویرایش تجهیز مکانیکی"
   },
   "payload": {
     "kind": "handler",
-    "handler": "operation.invoke",
+    "handler": "entity.update",
     "parameters": {
-      "model": "MechanicalEquipment",
-      "action": "Edit",
-      "args": {
-        "mechanicalEquipmentId": "field:mechanicalEquipmentId",
-        "equipmentType": "field:EquipmentType",
-        "designPressure": "field:DesignPressure",
-        "designTemperature": "field:DesignTemperature",
-        "operatingPressure": "field:OperatingPressure",
-        "operatingTemperature": "field:OperatingTemperature",
-        "material": "field:Material",
-        "manufacturer": "field:Manufacturer",
-        "model": "field:Model",
-        "description": "field:Description"
-      }
+      "entity": "MechanicalEquipment",
+      "map": {
+        "equipmentType": "EquipmentType",
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "material": "Material",
+        "designPressure": "DesignPressure",
+        "designTemperature": "DesignTemperature",
+        "operatingPressure": "OperatingPressure",
+        "operatingTemperature": "OperatingTemperature",
+        "description": "Description"
+      },
+      "required": [
+        "EquipmentType"
+      ],
+      "unique": []
     },
     "success": {
       "en": "Mechanical equipment updated.",
       "fa": "Mechanical Equipment به‌روزرسانی شد."
     },
-    "redirect": "/MechanicalEquipment/Passport/{mechanicalEquipmentId}"
+    "redirect": "/p/mechanical-equipments"
   }
 }

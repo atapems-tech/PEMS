@@ -27,7 +27,7 @@ public class CmmsListPagesTests
         "WorkOrder", "Equipment", "FunctionalLocation", "Instrument",
         "MaintenanceStrategy", "Asset",
         // wave 2b
-        "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
+        "EquipmentCriticality", "FailureModeCatalog", "RcmFmea",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary> data) where TController : Controller
@@ -234,28 +234,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Mechanical equipment ----------
-
-    [Fact]
-    public async Task MechanicalEquipment_KeepsSearchSubTypeFilterAndRowActions()
-    {
-        var html = await Render<MechanicalEquipmentController>("/Views/MechanicalEquipment/Index.cshtml", Page(
-            new MechanicalEquipmentListDto { MechanicalEquipmentId = 5, TagNumber = "C-201", Manufacturer = "Atlas", Model = "GA90", EquipmentType = "Compressor", SubType = "Rotating" }),
-            v =>
-            {
-                v["Equipments"] = new List<object>(); v["SearchTerm"] = "atlas"; v["SelectedSubType"] = "Rotating";
-                v["TotalCount"] = 1; v["RotatingCount"] = 1; v["StaticCount"] = 0; v["UnclassifiedCount"] = 0;
-            });
-
-        AssertBuiltFromTheComponent(html, "MechanicalEquipment", 1);
-        Assert.Contains("id=\"meSearchForm\"", html);
-        Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);   // search + sub-type
-        Assert.Contains("bi-card-text", html);                                         // passport
-        Assert.Contains("bi-pencil", html);                                            // edit
-        Assert.Matches("<button[^>]*data-bs-target=\"#createMechanicalModal\"", html);
-        Assert.Equal(4, Regex.Matches(Kpis(html, "meKpis"), "class=\"vs-chip").Count);
-    }
-
-    // ---------- Failure mode catalogue ----------
 
     [Fact]
     public async Task FailureModeCatalog_EditAndDeactivateOnlyForEditors()

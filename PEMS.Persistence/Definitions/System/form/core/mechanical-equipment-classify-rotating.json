@@ -1,0 +1,122 @@
+{
+  "kind": "form",
+  "key": "mechanical-equipment-classify-rotating",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Classify as rotating equipment",
+    "fa": "ثبت زیررده Rotating"
+  },
+  "description": {
+    "en": "Classify as rotating equipment",
+    "fa": "ثبت زیررده Rotating"
+  },
+  "payload": {
+    "id": "mechanical-equipment-classify-rotating",
+    "title": {
+      "en": "Classify as rotating equipment",
+      "fa": "ثبت زیررده Rotating"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "mechanical-equipment-classify-rotating",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "mechanicalEquipmentId",
+        "label": {
+          "en": "Mechanical equipment id",
+          "fa": "شناسه تجهیز مکانیکی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "equipmentType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "flowRate",
+        "label": {
+          "en": "Flow rate",
+          "fa": "دبی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "head",
+        "label": {
+          "en": "Head",
+          "fa": "هد"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "speedRPM",
+        "label": {
+          "en": "Speed (RPM)",
+          "fa": "دور (RPM)"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "powerKW",
+        "label": {
+          "en": "Power (kW)",
+          "fa": "توان (kW)"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "driverType",
+        "label": {
+          "en": "Driver type",
+          "fa": "نوع محرک"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "bearingType",
+        "label": {
+          "en": "Bearing type",
+          "fa": "نوع یاتاقان"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "lubricationType",
+        "label": {
+          "en": "Lubrication type",
+          "fa": "نوع روانکاری"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

@@ -1,0 +1,338 @@
+{
+  "kind": "page",
+  "key": "mechanical-equipment-passport",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mechanical equipment passport",
+    "fa": "شناسنامه تجهیز مکانیکی"
+  },
+  "description": {
+    "en": "Mechanical equipment passport",
+    "fa": "شناسنامه تجهیز مکانیکی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mechanical-equipment-passport",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "mechanical-equipment-record",
+            "fields": [
+              {
+                "key": "tagNumber",
+                "label": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
+              },
+              {
+                "key": "equipmentType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "subType",
+                "label": {
+                  "en": "Sub-class",
+                  "fa": "زیررده"
+                }
+              },
+              {
+                "key": "equipmentTag",
+                "label": {
+                  "en": "Equipment record",
+                  "fa": "رکورد تجهیز"
+                }
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "manufacturer",
+                "label": {
+                  "en": "Manufacturer",
+                  "fa": "سازنده"
+                }
+              },
+              {
+                "key": "model",
+                "label": {
+                  "en": "Model",
+                  "fa": "مدل"
+                }
+              },
+              {
+                "key": "material",
+                "label": {
+                  "en": "Material",
+                  "fa": "جنس"
+                }
+              },
+              {
+                "key": "designPressure",
+                "label": {
+                  "en": "Design pressure",
+                  "fa": "فشار طراحی"
+                }
+              },
+              {
+                "key": "designTemperature",
+                "label": {
+                  "en": "Design temperature",
+                  "fa": "دمای طراحی"
+                }
+              },
+              {
+                "key": "operatingPressure",
+                "label": {
+                  "en": "Operating pressure",
+                  "fa": "فشار عملیاتی"
+                }
+              },
+              {
+                "key": "operatingTemperature",
+                "label": {
+                  "en": "Operating temperature",
+                  "fa": "دمای عملیاتی"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mechanical-equipment-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mechanical-equipment-edit/{{params.id}}",
+                "text": {
+                  "en": "Edit",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mechanical-equipment-classify-rotating?mechanicalEquipmentId={{params.id}}",
+                "text": {
+                  "en": "Classify as rotating",
+                  "fa": "ثبت زیررده Rotating"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/mechanical-equipment-classify-static?mechanicalEquipmentId={{params.id}}",
+                "text": {
+                  "en": "Classify as static",
+                  "fa": "ثبت زیررده Static"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/mechanical-equipments",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "rotating",
+          "component": "def:related-table",
+          "options": {
+            "id": "rotating",
+            "title": {
+              "en": "Rotating equipment",
+              "fa": "تجهیز دوار"
+            },
+            "url": "/d/mechanical-equipment-rotating?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 140
+              },
+              {
+                "key": "flowRate",
+                "header": {
+                  "en": "Flow rate",
+                  "fa": "دبی"
+                },
+                "width": 100
+              },
+              {
+                "key": "head",
+                "header": {
+                  "en": "Head",
+                  "fa": "هد"
+                },
+                "width": 90
+              },
+              {
+                "key": "speedRPM",
+                "header": {
+                  "en": "Speed (RPM)",
+                  "fa": "دور (RPM)"
+                },
+                "width": 110
+              },
+              {
+                "key": "powerKW",
+                "header": {
+                  "en": "Power (kW)",
+                  "fa": "توان (kW)"
+                },
+                "width": 100
+              },
+              {
+                "key": "driverType",
+                "header": {
+                  "en": "Driver",
+                  "fa": "محرک"
+                },
+                "width": 120
+              },
+              {
+                "key": "bearingType",
+                "header": {
+                  "en": "Bearing",
+                  "fa": "یاتاقان"
+                },
+                "width": 120
+              },
+              {
+                "key": "lubricationType",
+                "header": {
+                  "en": "Lubrication",
+                  "fa": "روانکاری"
+                },
+                "width": 120
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 220
+              }
+            ]
+          }
+        },
+        {
+          "id": "static",
+          "component": "def:related-table",
+          "options": {
+            "id": "static",
+            "title": {
+              "en": "Static equipment",
+              "fa": "تجهیز ثابت"
+            },
+            "url": "/d/mechanical-equipment-static?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 140
+              },
+              {
+                "key": "volume",
+                "header": {
+                  "en": "Volume",
+                  "fa": "حجم"
+                },
+                "width": 100
+              },
+              {
+                "key": "designPressure",
+                "header": {
+                  "en": "Design pressure",
+                  "fa": "فشار طراحی"
+                },
+                "width": 120
+              },
+              {
+                "key": "designTemperature",
+                "header": {
+                  "en": "Design temperature",
+                  "fa": "دمای طراحی"
+                },
+                "width": 130
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "جنس"
+                },
+                "width": 120
+              },
+              {
+                "key": "orientation",
+                "header": {
+                  "en": "Orientation",
+                  "fa": "جهت"
+                },
+                "width": 110
+              },
+              {
+                "key": "codeStandard",
+                "header": {
+                  "en": "Code / standard",
+                  "fa": "کد / استاندارد"
+                },
+                "width": 150
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 220
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

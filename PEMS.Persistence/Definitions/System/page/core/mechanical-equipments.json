@@ -1,0 +1,135 @@
+{
+  "kind": "page",
+  "key": "mechanical-equipments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mechanical equipment",
+    "fa": "تجهیزات مکانیکی"
+  },
+  "description": {
+    "en": "Mechanical equipment",
+    "fa": "تجهیزات مکانیکی"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "mechanical-equipments",
+    "template": "entity-list",
+    "args": {
+      "id": "mechanical-equipments",
+      "url": "/d/mechanical-equipment-grid",
+      "idField": "mechanicalEquipmentId",
+      "viewsKey": "mechanical-equipments",
+      "columns": [
+        {
+          "key": "tagNumber",
+          "header": {
+            "en": "Tag",
+            "fa": "تگ"
+          },
+          "width": 160
+        },
+        {
+          "key": "equipmentType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 180
+        },
+        {
+          "key": "manufacturer",
+          "header": {
+            "en": "Manufacturer",
+            "fa": "سازنده"
+          },
+          "width": 180
+        },
+        {
+          "key": "model",
+          "header": {
+            "en": "Model",
+            "fa": "مدل"
+          },
+          "width": 160
+        },
+        {
+          "key": "rotating",
+          "header": {
+            "en": "Rotating",
+            "fa": "دوار"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "staticCount",
+          "header": {
+            "en": "Static",
+            "fa": "ثابت"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 90,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 300,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "passport",
+              "label": {
+                "en": "Passport",
+                "fa": "شناسنامه"
+              },
+              "url": "/p/mechanical-equipment-passport?id={id}",
+              "method": "get"
+            },
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/mechanical-equipment-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "toggle",
+              "label": {
+                "en": "Activate / deactivate",
+                "fa": "فعال / غیرفعال"
+              },
+              "url": "/a/mechanical-equipment-toggle-active",
+              "method": "post",
+              "confirm": {
+                "en": "Change the status?",
+                "fa": "وضعیت تغییر کند؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/mechanical-equipment-create",
+      "newLabel": {
+        "en": "New mechanical equipment",
+        "fa": "تجهیز مکانیکی جدید"
+      }
+    }
+  }
+}
