@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "equipment-criticality-assess",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assess criticality",
+    "fa": "ثبت تحلیل بحرانی‌بودن"
+  },
+  "description": {
+    "en": "Assess criticality",
+    "fa": "ثبت تحلیل بحرانی‌بودن"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentCriticality",
+      "action": "Assess",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "criticalityClass": "field:criticalityClass",
+        "riskLevel": "field:riskLevel",
+        "safetyImpact": "field:safetyImpact",
+        "productionImpact": "field:productionImpact",
+        "environmentImpact": "field:environmentImpact",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "تحلیل بحرانی‌بودن ثبت شد.",
+      "fa": "تحلیل بحرانی‌بودن ثبت شد."
+    },
+    "redirect": "/EquipmentCriticality/Index",
+    "redirectBack": true
+  }
+}

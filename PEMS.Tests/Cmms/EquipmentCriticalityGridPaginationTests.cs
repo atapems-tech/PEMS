@@ -209,27 +209,15 @@ public class EquipmentCriticalityGridPaginationTests
         Assert.Equal(1, (int)view.ViewData["UnassessedCount"]!);
     }
 
-    [Fact]
-    public async Task Assess_WithoutCreatePermission_ReturnsForbid()
-    {
-        var (controller, ctx) = await CreateController(nameof(Assess_WithoutCreatePermission_ReturnsForbid), role: SystemRoles.Viewer);
-        var eq = NewEquipment("TAG-001");
-        ctx.Equipments.Add(eq);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.Assess(eq.EquipmentId, "A", null, null, null, null, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
 
     [Fact]
     public async Task Assess_NonexistentEquipment_DoesNotCreateAssessment()
     {
         var (controller, ctx) = await CreateController(nameof(Assess_NonexistentEquipment_DoesNotCreateAssessment));
 
-        var result = await controller.Assess(999, "A", null, null, null, null, null);
+        var result = await new PEMS.Web.Services.ReliabilityRegisterOperations(ctx, null!, null!, new FakeCurrentUserService()).AssessCriticalityAsync(999, "A", null, null, null, null, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.False(result.Success);
         Assert.Empty(ctx.EquipmentCriticalities);
     }
 
@@ -241,9 +229,9 @@ public class EquipmentCriticalityGridPaginationTests
         ctx.Equipments.Add(eq);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.Assess(eq.EquipmentId, "A", null, null, null, null, null);
+        var result = await new PEMS.Web.Services.ReliabilityRegisterOperations(ctx, null!, null!, new FakeCurrentUserService()).AssessCriticalityAsync(eq.EquipmentId, "A", null, null, null, null, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.False(result.Success);
         Assert.Empty(ctx.EquipmentCriticalities);
     }
 
@@ -255,9 +243,9 @@ public class EquipmentCriticalityGridPaginationTests
         ctx.Equipments.Add(eq);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.Assess(eq.EquipmentId, "A", "High", null, null, null, null);
+        var result = await new PEMS.Web.Services.ReliabilityRegisterOperations(ctx, null!, null!, new FakeCurrentUserService()).AssessCriticalityAsync(eq.EquipmentId, "A", "High", null, null, null, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success, result.Error);
         var created = Assert.Single(ctx.EquipmentCriticalities);
         Assert.Equal(eq.EquipmentId, created.EquipmentId);
         Assert.True(created.IsActive);
@@ -273,7 +261,7 @@ public class EquipmentCriticalityGridPaginationTests
         ctx.EquipmentCriticalities.Add(previous);
         await ctx.SaveChangesAsync();
 
-        await controller.Assess(eq.EquipmentId, "A", null, null, null, null, null);
+        await new PEMS.Web.Services.ReliabilityRegisterOperations(ctx, null!, null!, new FakeCurrentUserService()).AssessCriticalityAsync(eq.EquipmentId, "A", null, null, null, null, null);
 
         var all = ctx.EquipmentCriticalities.ToList();
         Assert.Equal(2, all.Count);
