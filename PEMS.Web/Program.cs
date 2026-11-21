@@ -225,6 +225,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IQcOperations, PEMS.Web.S
 builder.Services.AddScoped<PEMS.Application.Interfaces.IInstrumentOperations, PEMS.Web.Services.InstrumentOperations>();   // SCRUM-695, 752
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMechanicalEquipmentOperations, PEMS.Web.Services.MechanicalEquipmentOperations>();   // SCRUM-727
 builder.Services.AddScoped<PEMS.Application.Interfaces.IEquipmentImportOperations, PEMS.Web.Services.EquipmentImportOperations>();   // SCRUM-742
+builder.Services.AddScoped<PEMS.Application.Interfaces.IEquipmentFunctionalLocationAssignmentOperations, PEMS.Web.Services.EquipmentFunctionalLocationAssignmentOperations>();   // SCRUM-694
 builder.Services.AddScoped<PEMS.Application.Interfaces.IAssetRegisterOperations, PEMS.Web.Services.AssetRegisterOperations>();   // SCRUM-670, 691, 700
 builder.Services.AddScoped<PEMS.Application.Interfaces.IReliabilityRegisterOperations, PEMS.Web.Services.ReliabilityRegisterOperations>();   // SCRUM-692, 693, 745
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskManagerOperations, PEMS.Web.Services.TaskManagerOperations>();   // SCRUM-756
