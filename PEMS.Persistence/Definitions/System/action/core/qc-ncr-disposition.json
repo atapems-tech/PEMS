@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "qc-ncr-disposition",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record NCR disposition",
+    "fa": "ثبت تعیین تکلیف NCR"
+  },
+  "description": {
+    "en": "Record NCR disposition",
+    "fa": "ثبت تعیین تکلیف NCR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Qc",
+      "action": "NcrDisposition",
+      "args": {
+        "id": "field:id",
+        "disposition": "field:disposition",
+        "rootCause": "field:rootCause",
+        "correctiveAction": "field:correctiveAction",
+        "preventiveAction": "field:preventiveAction"
+      }
+    },
+    "success": {
+      "en": "Disposition recorded; a critical NCR waits for the QA manager approval.",
+      "fa": "تعیین تکلیف ثبت شد؛ NCR بحرانی در انتظار تایید مدیر QA است."
+    },
+    "redirect": "/QC/NcrDetails/{id}"
+  }
+}
