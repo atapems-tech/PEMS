@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "instrument-add-calibration",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record calibration",
+    "fa": "ثبت کالیبراسیون"
+  },
+  "description": {
+    "en": "Record calibration",
+    "fa": "ثبت کالیبراسیون"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "AddCalibration",
+      "args": {
+        "instrumentId": "field:instrumentId",
+        "calibrationDate": "field:calibrationDate",
+        "calibrationType": "field:calibrationType",
+        "standardReference": "field:standardReference",
+        "asFound": "field:asFound",
+        "asLeft": "field:asLeft",
+        "result": "field:result",
+        "technicianEmployeeId": "field:technicianEmployeeId",
+        "certificateNo": "field:certificateNo",
+        "remarks": "field:remarks"
+      }
+    },
+    "success": {
+      "en": "Calibration recorded.",
+      "fa": "کالیبراسیون ثبت شد."
+    },
+    "redirect": "/Instrument/Passport/{instrumentId}"
+  }
+}
