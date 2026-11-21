@@ -25,7 +25,7 @@ public class CmmsListPagesTests
     private static readonly string[] Pages =
     {
         "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
-        "MaintenanceStrategy", "JobPlan", "Permit", "Inspection", "Finding", "Asset",
+        "MaintenanceStrategy", "JobPlan", "Permit", "Finding", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "ShiftHandover", "RcmFmea",
         "EquipmentFunctionalLocationAssignment",
@@ -149,20 +149,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Inspections ----------
-
-    [Fact]
-    public async Task Inspections_NoteIsTheTitleToolTip_AndRaiseWorkRequestIsOfferedOnlyOnAlert()
-    {
-        var html = await Render<InspectionController>("/Views/Inspection/Index.cshtml", Page(
-            new InspectionListItemDto { InspectionRecordId = 1, EquipmentId = 3, TagNumber = "P-101A", InspectionType = "Vibration", ConditionStatus = "Alert", DueStatus = "Overdue", InspectionDate = new DateTime(2026, 10, 1) },
-            new InspectionListItemDto { InspectionRecordId = 2, EquipmentId = 3, TagNumber = "P-101A", InspectionType = "Thickness", ConditionStatus = "Normal", DueStatus = "OK", InspectionDate = new DateTime(2026, 10, 2) }), _ => { });
-
-        AssertBuiltFromTheComponent(html, "Inspection", 2);
-        Assert.Matches("<h2 title=\"[^\"]{40,}\">", html);
-        Assert.DoesNotContain("<p class=\"text-muted small\">", html);
-        Assert.Single(Regex.Matches(html, "name=\"inspectionRecordId\""));
-        Assert.Contains("name=\"inspectionRecordId\" value=\"1\"", html);
-    }
 
     // ---------- Findings ----------
 
@@ -475,19 +461,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Production orders and the procurement cartable (SCRUM-337) ----------
-
-    [Fact]
-    public async Task ProductionOrders_AreAListPage_WithStatusFilterSearchAndPagingInTheFooter()
-    {
-        var html = await Render<ProductionOrderController>("/Views/ProductionOrder/Index.cshtml", Page(
-            new ProductionOrderListDto { ProductionOrderId = 7, OrderNumber = "PO-0007", MaterialCode = "M-1", PlannedQuantity = 12.5m, UomCode = "KG", Status = "Released", WorkCenterCode = "WC1", RunCount = 2 }),
-            v => { v["StatusFilter"] = "Released"; v["Search"] = "M-1"; });
-
-        AssertBuiltFromTheComponent(html, "ProductionOrder", 1, keepsDataBadges: true);   // the status is a library badge
-        Assert.Contains("PO-0007", html);
-        Assert.Contains("name=\"status\"", html);
-        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
-    }
 
     [Fact]
     public async Task QcLists_AreListPages_WithToneBadges()

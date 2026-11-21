@@ -16,6 +16,7 @@ public interface IProductionOrderService
 
     Task<ProductionDashboardDto> GetDashboardAsync();
 
+    [PEMS.Application.Common.PemsOperation("ProductionOrder", "Create", "Production.Create")]
     Task<(bool Success, string? Error, int? ProductionOrderId)> CreateAsync(
         int materialItemId, decimal plannedQuantity, int? uomId, int productionWorkCenterId,
         DateTime? plannedStartDate, DateTime? plannedFinishDate, int? equipmentId,

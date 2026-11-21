@@ -660,11 +660,11 @@
         </div>
         <div class="@SectionClass(active)" id="sec-operations">
 
-            <pems-nav-link item="false" active="@(IsActive("Production"))" asp-controller="Production" asp-action="Dashboard" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("Production"))" href="/p/production-dashboard">
                 <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("ProductionOrder"))" asp-controller="ProductionOrder" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("ProductionOrder"))" href="/p/production-orders">
                 <pems-icon name="bi-clipboard-data" /> @Localizer["Production Orders"]
             </pems-nav-link>
         </div>
