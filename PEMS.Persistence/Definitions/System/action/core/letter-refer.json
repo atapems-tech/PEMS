@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "letter-refer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Refer the letter",
+    "fa": "ارجاع نامه"
+  },
+  "description": {
+    "en": "Refer the letter",
+    "fa": "ارجاع نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Refer",
+      "args": {
+        "letterId": "field:letterId",
+        "referredToEmployeeId": "field:referredToEmployeeId",
+        "referredToDepartmentId": "field:referredToDepartmentId",
+        "instructions": "field:instructions",
+        "dueDate": "field:dueDate"
+      }
+    },
+    "success": {
+      "en": "Letter referred.",
+      "fa": "نامه ارجاع شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

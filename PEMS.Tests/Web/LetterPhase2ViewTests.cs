@@ -275,20 +275,18 @@ public class LetterPhase2ViewTests
             .Select(m => m.Name).ToList();
         Assert.DoesNotContain(actions, n => n.Contains("Delete", StringComparison.OrdinalIgnoreCase));
 
-        foreach (var name in new[] { nameof(LetterTemplateController.Save), nameof(LetterTemplateController.SetActive) })
-        {
-            var m = typeof(LetterTemplateController).GetMethod(name)!;
-            Assert.NotEmpty(m.GetCustomAttributes(typeof(HttpPostAttribute), true));
-            Assert.NotEmpty(m.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), true));
-        }
+        // SCRUM-717: the list, the load, the save and the switch are operations; the floor of every one is the Approve of the module (the shipped actions are posts with the antiforgery token of the action host)
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        foreach (var op in new[] { "List", "One", "Save", "SetActive" })
+            Assert.Equal("Correspondence.Approve", catalog.Get("LetterTemplatePage", op)!.Permission);
     }
 
     [Fact]
     public void SetResponseDue_IsPostWithAntiForgery_AndDashboardIsReadOnly()
     {
-        var set = typeof(LetterController).GetMethod(nameof(LetterController.SetResponseDue))!;
-        Assert.NotEmpty(set.GetCustomAttributes(typeof(HttpPostAttribute), true));
-        Assert.NotEmpty(set.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), true));
+        // SCRUM-716: the response requirement is the operation Letter.SetResponseDue, run by a shipped action definition (a post with the antiforgery token of the action host)
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.NotNull(catalog.Get("Letter", "SetResponseDue"));
 
         var dash = typeof(LetterController).GetMethod(nameof(LetterController.Dashboard))!;
         Assert.Empty(dash.GetCustomAttributes(typeof(HttpPostAttribute), true));

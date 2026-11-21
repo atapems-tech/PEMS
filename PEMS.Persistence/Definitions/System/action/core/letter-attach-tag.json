@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "letter-attach-tag",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Attach a tag",
+    "fa": "افزودن برچسب"
+  },
+  "description": {
+    "en": "Attach a tag",
+    "fa": "افزودن برچسب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "AttachTag",
+      "args": {
+        "letterId": "field:letterId",
+        "tagId": "field:tagId",
+        "newTagName": "field:newTagName",
+        "newTagColor": "field:newTagColor"
+      }
+    },
+    "success": {
+      "en": "Tag attached.",
+      "fa": "برچسب افزوده شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

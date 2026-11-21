@@ -89,6 +89,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-716, 715: letter commands as definitions
+
+### Changed
+- The letter details commands are definitions (/a/letter-*) over ILetterOperations: the response requirement, star, recipients, tags, the review steps, issue, close, the draft edits, referrals, signature, and the send, archive, approver change and draft discard of the compose workspace. Every action on a letter still asks first whether the user may see it; a refusal is the 403 page. The list, the details page, create, reply, the composer's own JSON endpoints, the bulk bar and the files stay on LetterController (17 actions) and LetterComposeController (10). The controller tests of the review steps and of the compose lifecycle were ported to the operations, and the template permission test now reads the operation catalog.
+
 ## 2026-11-21 - SCRUM-717: letter templates as definitions
 
 ### Changed

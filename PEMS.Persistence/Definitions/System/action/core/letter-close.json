@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "letter-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close the letter",
+    "fa": "بستن نامه"
+  },
+  "description": {
+    "en": "Close the letter",
+    "fa": "بستن نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Close",
+      "args": {
+        "letterId": "field:letterId"
+      }
+    },
+    "success": {
+      "en": "Letter closed.",
+      "fa": "نامه بسته شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "letter-complete-referral",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete a referral",
+    "fa": "تکمیل ارجاع"
+  },
+  "description": {
+    "en": "Complete a referral",
+    "fa": "تکمیل ارجاع"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "CompleteReferral",
+      "args": {
+        "letterId": "field:letterId",
+        "referralId": "field:referralId",
+        "responseNote": "field:responseNote"
+      }
+    },
+    "success": {
+      "en": "Referral marked as completed.",
+      "fa": "ارجاع تکمیل شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

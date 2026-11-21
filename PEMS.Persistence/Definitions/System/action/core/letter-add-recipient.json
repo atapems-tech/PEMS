@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "letter-add-recipient",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a recipient",
+    "fa": "افزودن گیرنده"
+  },
+  "description": {
+    "en": "Add a recipient",
+    "fa": "افزودن گیرنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "AddRecipient",
+      "args": {
+        "letterId": "field:letterId",
+        "recipientType": "field:recipientType",
+        "employeeId": "field:employeeId",
+        "departmentId": "field:departmentId",
+        "externalName": "field:externalName"
+      }
+    },
+    "success": {
+      "en": "Recipient added.",
+      "fa": "گیرنده افزوده شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-detach-tag",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a tag",
+    "fa": "حذف برچسب"
+  },
+  "description": {
+    "en": "Remove a tag",
+    "fa": "حذف برچسب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "DetachTag",
+      "args": {
+        "letterId": "field:letterId",
+        "tagId": "field:tagId"
+      }
+    },
+    "success": {
+      "en": "Tag removed.",
+      "fa": "برچسب حذف شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "letter-sign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sign the letter",
+    "fa": "امضای نامه"
+  },
+  "description": {
+    "en": "Sign the letter",
+    "fa": "امضای نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Sign",
+      "args": {
+        "letterId": "field:letterId",
+        "signedByName": "field:signedByName"
+      }
+    },
+    "success": {
+      "en": "Letter signed.",
+      "fa": "نامه امضا شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

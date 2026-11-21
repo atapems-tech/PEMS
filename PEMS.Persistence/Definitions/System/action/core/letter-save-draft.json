@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "letter-save-draft",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the draft",
+    "fa": "ذخیره‌ی پیش‌نویس"
+  },
+  "description": {
+    "en": "Save the draft",
+    "fa": "ذخیره‌ی پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "SaveDraft",
+      "args": {
+        "letterId": "field:letterId",
+        "subject": "field:subject",
+        "body": "field:body",
+        "rowVersion": "field:rowVersion"
+      }
+    },
+    "success": {
+      "en": "Draft saved.",
+      "fa": "پیش‌نویس ذخیره شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}
