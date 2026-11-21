@@ -87,6 +87,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-818: a form loads its saved values from a read operation
+
+### Changed
+- A form definition may name a read operation in load (model, action, args). /f/{key}/{id} runs it and fills the fields of the same name from the first row, answers 404 when the id gives no row, and the definition is checked like a data source (the operation, its arguments and their sources). Tests: FormLoadTests. This unlocks the edit forms of the converted screens (letter templates, job plans, meeting minutes, part catalogue requests) and the large letter and document controllers.
+
 ## 2026-11-21 - Login screen branding
 
 ### Changed
