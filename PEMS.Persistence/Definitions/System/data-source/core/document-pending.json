@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "document-pending",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents waiting for the check or the approval",
+    "fa": "مدارک در انتظار بررسی یا تأیید"
+  },
+  "description": {
+    "en": "Documents waiting for the check or the approval",
+    "fa": "مدارک در انتظار بررسی یا تأیید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentWorkflowPage",
+      "action": "Pending",
+      "args": {
+        "status": "param:status"
+      }
+    }
+  }
+}

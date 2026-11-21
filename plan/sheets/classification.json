@@ -105,19 +105,7 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.DocumentRevisionsController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.DocumentUploadController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.DocumentWorkflowController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -198,12 +186,6 @@
       "type": "PEMS.Web.Controllers.FunctionalLocationController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.FunctionalLocationImportController",
-      "status": "converted",
-      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -297,12 +279,6 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.OCRProcessingController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.PageHostController",
       "status": "host",
       "reason": "generic host, sign-in or infrastructure controller: code by decision"
@@ -360,12 +336,6 @@
       "type": "PEMS.Web.Controllers.TableExtractionController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.TagController",
-      "status": "converted",
-      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -456,6 +426,36 @@
       "type": "PEMS.Web.Hubs.NotificationHub",
       "status": "host",
       "reason": "SignalR hub: real-time transport, code by decision"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.DocumentRevisionsController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.DocumentWorkflowController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.FunctionalLocationImportController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.OCRProcessingController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.TagController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",

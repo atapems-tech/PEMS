@@ -148,11 +148,11 @@
                 <pems-icon name="bi-journal-bookmark" /> @Localizer["DocumentRegister"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("DocumentRevisions"))" asp-controller="DocumentRevisions" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("DocumentRevisions"))" href="/p/document-revisions">
                 <pems-icon name="bi-clock-history" /> @Localizer["Document Revision"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("DocumentWorkflow"))" asp-controller="DocumentWorkflow" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("DocumentWorkflow"))" href="/p/document-workflow">
                 <pems-icon name="bi-diagram-2" /> @Localizer["Document Workflow"]
             </pems-nav-link>
 
@@ -775,7 +775,7 @@
                     <pems-icon name="bi-inboxes" /> @Localizer["AIIntakeQueue"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("OCRProcessing"))" asp-controller="OCRProcessing" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" active="@(IsActive("OCRProcessing"))" href="/p/ocr-processing">
                     <pems-icon name="bi-badge-ad" /> @Localizer["OCR Processing"]
                 </pems-nav-link>
 

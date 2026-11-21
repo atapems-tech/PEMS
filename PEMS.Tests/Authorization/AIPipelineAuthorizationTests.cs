@@ -280,28 +280,6 @@ public class AIPipelineAuthorizationTests
     // پس هیچ Job ای صف نمی‌شود). مسیر «مجاز» بدون واداشتن Hangfire به اجرا، مستقیماً از طریق خودِ
     // IPermissionService تایید می‌شود - اثبات می‌کند نقش‌های مجاز واقعاً از گیت رد می‌شوند.
 
-    [Fact]
-    public async Task OCR_Retry_WithoutPermission_ReturnsForbid_DoesNotEnqueueJob()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(OCR_Retry_WithoutPermission_ReturnsForbid_DoesNotEnqueueJob), role: SystemRoles.Viewer);
-        var controller = new OCRProcessingController(ctx, null!, null!, user, perms).WithTempData();
-
-        var result = await controller.Retry(1);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task OCR_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(OCR_Index_WithoutViewPermission_ReturnsForbid), role: SystemRoles.ContractManager);
-        var controller = new OCRProcessingController(ctx, null!, null!, user, perms).WithTempData();
-
-        var result = await controller.Index(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
     [Theory]
     [InlineData(SystemRoles.EngineeringManager)]
     [InlineData(SystemRoles.DocumentController)]

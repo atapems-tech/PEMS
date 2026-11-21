@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "document-revisions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document revisions",
+    "fa": "Revision های مدارک"
+  },
+  "description": {
+    "en": "Document revisions",
+    "fa": "Revision های مدارک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentRevisionPage",
+      "action": "List",
+      "args": {
+        "documentId": "param:documentId"
+      }
+    }
+  }
+}

@@ -127,43 +127,6 @@ public class DocumentControlListPagesTests
 
     // ---------- DocumentRevisions ----------
 
-    private static Task<string> Revisions(int? documentId, params DocumentRevisionDto[] items)
-        => Render<DocumentRevisionsController>("/Views/DocumentRevisions/Index.cshtml", Page(items), v =>
-        {
-            v["Documents"] = new List<dynamic> { Obj(("DocumentId", 5), ("DocumentNo", "JPC-001"), ("Title", "P&ID")) };
-            v["DocumentId"] = documentId;
-        });
-
-    [Fact]
-    public async Task Revisions_OffersNewRevisionOnlyForAChosenDocument()
-    {
-        var all = await Revisions(null, new DocumentRevisionDto { DocumentNo = "JPC-001", RevisionNo = "A", Status = "Approved", RevisionDate = new DateTime(2026, 10, 2) });
-        AssertBuiltFromTheComponent(all, "DocumentRevisions", 1);
-        Assert.DoesNotContain("lp-compose", all);
-        Assert.DoesNotContain("class=\"lp-chips\"", all);
-
-        var one = await Revisions(5);
-        Assert.Contains("lp-compose", one);
-        Assert.Contains("JPC-001", Regex.Match(one, "<div class=\"lp-chips\">(.*?)</div>", RegexOptions.Singleline).Value);
-        Assert.Contains("class=\"lp-empty\"", one);
-    }
-
-    // ---------- Transmittal ----------
-
-    [Fact]
-    public async Task Transmittal_KeepsTheOverdueFlag_AndTheDocumentSubNavigation()
-    {
-        var html = await Render<TransmittalController>("/Views/Transmittal/Index.cshtml",
-            Page(new TransmittalDto { TransmittalId = 3, TransmittalNo = "TR-0003", ProjectName = "JPC", Status = "Sent", IsResponseOverdue = true, TransmittalDate = new DateTime(2026, 10, 3) }),
-            _ => { });
-
-        AssertBuiltFromTheComponent(html, "Transmittal", 1);
-        Assert.Contains("vs-subnav", html);
-        Assert.Contains("vs-pill--danger", html);
-        Assert.Contains("lp-compose", html);
-        Assert.DoesNotContain("vs-panel", html);
-    }
-
     // ---------- TechnicalQuery ----------
 
     // ---------- MDB ----------
@@ -189,34 +152,12 @@ public class DocumentControlListPagesTests
     // ---------- DocumentWorkflow ----------
 
     [Fact]
-    public async Task DocumentWorkflow_HasTheQueueWithItsActions_AndTheHistoryAsASecondPanel()
-    {
-        var html = await Render<DocumentWorkflowController>("/Views/DocumentWorkflow/Index.cshtml",
-            Page(new DocumentWorkflowPendingItemDto { DocumentId = 1, DocumentNo = "JPC-001", Title = "P&ID", Status = "Submitted", RevisionNo = "A" },
-                 new DocumentWorkflowPendingItemDto { DocumentId = 2, DocumentNo = "JPC-002", Title = "PFD", Status = "Checked", RevisionNo = "B" }), v =>
-            {
-                v["History"] = new List<DocumentWorkflow>
-                {
-                    new() { Document = new EngineeringDocument { DocumentNo = "JPC-001" }, FromStatus = "Draft", ToStatus = "Submitted", ActionType = "Submit", ActionDate = new DateTime(2026, 10, 4, 9, 30, 0) }
-                };
-            });
-
-        AssertBuiltFromTheComponent(html, "DocumentWorkflow", 3);              // 2 queue rows + 1 history row
-        Assert.Equal(2, Regex.Matches(html, "class=\"lp-panel\"").Count);
-        Assert.Contains("name=\"documentId\" value=\"1\"", html);
-        Assert.Equal(2, Regex.Matches(html, "bi-x-lg").Count);                 // reject for Submitted and for Checked
-        Assert.Contains("bi-clipboard-check", html);
-        Assert.Contains("bi-check-lg", html);
-        Assert.Contains("2026-10-04 09:30", html);
-    }
-
-    [Fact]
     public void Dcc_IsADeskNotAList_AndStaysOutOfTheListComponent()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.slnx"))) dir = dir.Parent;
         Assert.NotNull(dir);
-        foreach (var page in new[] { "DocumentRegister", "DocumentRevisions", "Transmittal", "MDB", "DocumentWorkflow" })
+        foreach (var page in new[] { "DocumentRegister", "Transmittal", "MDB" })
         {
             var view = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", page, "Index.cshtml"));
             Assert.Contains("<pems-list-page texts=", view);

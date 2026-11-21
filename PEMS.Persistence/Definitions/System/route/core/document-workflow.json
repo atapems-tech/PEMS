@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "document-workflow",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document workflow (old address)",
+    "fa": "Document workflow (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document workflow (old address)",
+    "fa": "Document workflow (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "DocumentWorkflow",
+    "target": "/p/document-workflow",
+    "permanent": false
+  }
+}

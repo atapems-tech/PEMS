@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "document-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent workflow history",
+    "fa": "تاریخچه‌ی اخیر گردش‌کار"
+  },
+  "description": {
+    "en": "Recent workflow history",
+    "fa": "تاریخچه‌ی اخیر گردش‌کار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentWorkflowPage",
+      "action": "History"
+    }
+  }
+}

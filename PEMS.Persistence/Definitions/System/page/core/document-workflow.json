@@ -1,0 +1,302 @@
+{
+  "kind": "page",
+  "key": "document-workflow",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document Workflow",
+    "fa": "گردش‌کار مدارک"
+  },
+  "description": {
+    "en": "The documents waiting for the check or the approval, and the recent workflow history (page definition)",
+    "fa": "مدارک در انتظار بررسی یا تأیید و تاریخچه‌ی اخیر گردش‌کار (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "document-workflow",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "document-workflow-filters",
+            "resetUrl": "/p/document-workflow",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status (empty = waiting)",
+                  "fa": "وضعیت (خالی = در انتظار)"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Submitted",
+                    "label": {
+                      "en": "Submitted",
+                      "fa": "ارسال‌شده"
+                    }
+                  },
+                  {
+                    "value": "Checked",
+                    "label": {
+                      "en": "Checked",
+                      "fa": "بررسی‌شده"
+                    }
+                  },
+                  {
+                    "value": "Approved",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "تأییدشده"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  },
+                  {
+                    "value": "Issued",
+                    "label": {
+                      "en": "Issued",
+                      "fa": "صادرشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "queue-heading",
+          "component": "content-blocks",
+          "options": {
+            "id": "queue-heading",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Approval queue",
+                  "fa": "صف تأیید"
+                },
+                "level": 5
+              }
+            ]
+          }
+        },
+        {
+          "id": "pending",
+          "component": "data-grid",
+          "options": {
+            "id": "pending",
+            "url": "/d/document-pending?f.status={{params.status|url}}",
+            "idField": "documentId",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "مدرک"
+                },
+                "width": 150
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "project",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 160
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 140
+              },
+              {
+                "key": "revisionNo",
+                "header": {
+                  "en": "Revision",
+                  "fa": "Revision"
+                },
+                "width": 90
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 330,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "check",
+                    "label": {
+                      "en": "Check",
+                      "fa": "بررسی"
+                    },
+                    "url": "/a/document-check",
+                    "method": "post",
+                    "tone": "primary",
+                    "showWhen": "row.status == 'Submitted'"
+                  },
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/a/document-approve",
+                    "method": "post",
+                    "tone": "success",
+                    "showWhen": "row.status == 'Checked'"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    },
+                    "url": "/a/document-reject",
+                    "method": "post",
+                    "tone": "danger",
+                    "showWhen": "row.status == 'Submitted' || row.status == 'Checked'",
+                    "confirm": {
+                      "en": "Reject this document?",
+                      "fa": "این مدرک رد شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 460
+          }
+        },
+        {
+          "id": "history-heading",
+          "component": "content-blocks",
+          "options": {
+            "id": "history-heading",
+            "blocks": [
+              {
+                "type": "heading",
+                "text": {
+                  "en": "Recent workflow history",
+                  "fa": "تاریخچه‌ی اخیر گردش‌کار"
+                },
+                "level": 5
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "data-grid",
+          "options": {
+            "id": "history",
+            "url": "/d/document-history",
+            "idField": "workflowId",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "مدرک"
+                },
+                "width": 150
+              },
+              {
+                "key": "fromStatus",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 110
+              },
+              {
+                "key": "toStatus",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 110
+              },
+              {
+                "key": "actionType",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 130
+              },
+              {
+                "key": "actionBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "comment",
+                "header": {
+                  "en": "Comment",
+                  "fa": "توضیح"
+                },
+                "width": 240
+              },
+              {
+                "key": "actionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 150,
+                "type": "datetime"
+              }
+            ],
+            "pageSize": 30,
+            "height": 420
+          }
+        }
+      ]
+    }
+  }
+}

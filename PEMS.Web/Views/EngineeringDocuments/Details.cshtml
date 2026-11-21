@@ -575,7 +575,8 @@
                                             <pems-button tone="warning" size="small" outline="true" as="a" href="@("/p/ai-extraction-review?id=" + file.AttachmentId)">AI Data</pems-button>
                                             <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EngineeringDocumentIntelligence" asp-action="Review" asp-route-id="@Model.DocumentId">Intelligence</pems-button>
                                         }
-                                        <pems-form asp-controller="OCRProcessing" asp-action="Retry" asp-route-id="@file.AttachmentId" method="post" class="d-inline">
+                                        <pems-form action="/a/ocr-retry" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@file.AttachmentId" />
                                             <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><pems-icon name="bi-arrow-repeat" /></pems-button>
                                         </pems-form>
                                         <pems-form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" data-pems-confirm="Delete file?">

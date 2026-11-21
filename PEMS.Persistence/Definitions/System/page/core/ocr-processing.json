@@ -1,0 +1,258 @@
+{
+  "kind": "page",
+  "key": "ocr-processing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "OCR Processing",
+    "fa": "پردازش OCR"
+  },
+  "description": {
+    "en": "The OCR and AI queue of the attachments with the retry of a failed one (page definition)",
+    "fa": "صف OCR و AI پیوست‌ها با امکان تحلیل مجدد (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "ocr-processing",
+    "regions": {
+      "content": [
+        {
+          "id": "k-pending",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Pending",
+              "fa": "در انتظار"
+            },
+            "icon": "bi-hourglass"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ocr-counts",
+              "first": true,
+              "map": {
+                "value": "pending"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-processing",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Processing",
+              "fa": "در حال پردازش"
+            },
+            "icon": "bi-arrow-repeat",
+            "tone": "info"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ocr-counts",
+              "first": true,
+              "map": {
+                "value": "processing"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-completed",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Completed",
+              "fa": "تکمیل‌شده"
+            },
+            "icon": "bi-check-circle",
+            "tone": "success"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ocr-counts",
+              "first": true,
+              "map": {
+                "value": "completed"
+              }
+            }
+          }
+        },
+        {
+          "id": "k-failed",
+          "component": "kpi-tile",
+          "options": {
+            "label": {
+              "en": "Failed",
+              "fa": "ناموفق"
+            },
+            "icon": "bi-x-circle",
+            "tone": "danger"
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/ocr-counts",
+              "first": true,
+              "map": {
+                "value": "failed"
+              }
+            }
+          }
+        },
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "ocr-filters",
+            "resetUrl": "/p/ocr-processing",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Pending",
+                    "label": {
+                      "en": "Pending",
+                      "fa": "Pending"
+                    }
+                  },
+                  {
+                    "value": "Processing",
+                    "label": {
+                      "en": "Processing",
+                      "fa": "Processing"
+                    }
+                  },
+                  {
+                    "value": "Completed",
+                    "label": {
+                      "en": "Completed",
+                      "fa": "Completed"
+                    }
+                  },
+                  {
+                    "value": "Failed",
+                    "label": {
+                      "en": "Failed",
+                      "fa": "Failed"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "attachments",
+          "component": "data-grid",
+          "options": {
+            "id": "attachments",
+            "url": "/d/ocr-queue?f.status={{params.status|url}}",
+            "idField": "attachmentId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 240
+              },
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "مدرک"
+                },
+                "width": 140
+              },
+              {
+                "key": "fileExtension",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 80
+              },
+              {
+                "key": "fileSize",
+                "header": {
+                  "en": "Size",
+                  "fa": "حجم"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "aiStatus",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "aiSummary",
+                "header": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                },
+                "width": 260
+              },
+              {
+                "key": "aiError",
+                "header": {
+                  "en": "Error",
+                  "fa": "خطا"
+                },
+                "width": 220
+              },
+              {
+                "key": "uploadDate",
+                "header": {
+                  "en": "Uploaded",
+                  "fa": "بارگذاری"
+                },
+                "width": 150,
+                "type": "datetime"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "retry",
+                    "label": {
+                      "en": "Analyse again",
+                      "fa": "تحلیل مجدد"
+                    },
+                    "url": "/a/ocr-retry",
+                    "method": "post",
+                    "tone": "secondary",
+                    "showWhen": "row.aiStatus == 'Failed' || row.aiStatus == 'Completed'"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "OCRProcessing.View"
+  }
+}

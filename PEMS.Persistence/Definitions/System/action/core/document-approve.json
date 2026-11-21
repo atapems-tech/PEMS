@@ -1,0 +1,41 @@
+{
+  "kind": "action",
+  "key": "document-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve the document",
+    "fa": "تأیید مدرک"
+  },
+  "description": {
+    "en": "Approve the document",
+    "fa": "تأیید مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DocumentWorkflow",
+      "action": "Approve",
+      "args": {
+        "actionByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent",
+        "documentId": "field:id",
+        "comment": "field:comment"
+      },
+      "guard": {
+        "resource": "EngineeringDocuments",
+        "action": "Approve",
+        "resourceId": "field:id",
+        "mode": "sod"
+      }
+    },
+    "success": {
+      "en": "Document approved.",
+      "fa": "مدرک تأیید شد."
+    },
+    "redirect": "/p/document-workflow"
+  }
+}

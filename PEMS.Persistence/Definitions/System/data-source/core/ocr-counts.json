@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "ocr-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "OCR and AI queue counts",
+    "fa": "شمارنده‌های صف OCR و AI"
+  },
+  "description": {
+    "en": "OCR and AI queue counts",
+    "fa": "شمارنده‌های صف OCR و AI"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "OcrPage",
+      "action": "Counts"
+    }
+  }
+}

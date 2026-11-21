@@ -27,9 +27,7 @@ Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,prop
 ,LetterTemplate,Correspondence,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,DCC,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,DocumentRegister,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
-,DocumentRevisions,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,page-definition,proposed,view-only pages: page definitions
 ,DocumentUpload,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-,DocumentWorkflow,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,EngineeringDocumentIntelligence,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,EngineeringDocuments,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,MDB,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
@@ -38,7 +36,6 @@ Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,prop
 ,VDRImport,Engineering documents,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,StrategyImport,Maintenance and reliability,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MDRImport,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-,OCRProcessing,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,Relationship,Platform and shell,"W3 engineering documents, letters, import, AI",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Contract,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions

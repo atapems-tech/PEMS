@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "document-check",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Check the document",
+    "fa": "بررسی مدرک"
+  },
+  "description": {
+    "en": "Check the document",
+    "fa": "بررسی مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DocumentWorkflow",
+      "action": "Check",
+      "args": {
+        "actionByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent",
+        "documentId": "field:id",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "Document checked - ready for approval.",
+      "fa": "مدرک بررسی شد؛ آماده‌ی تأیید."
+    },
+    "redirect": "/p/document-workflow"
+  }
+}
