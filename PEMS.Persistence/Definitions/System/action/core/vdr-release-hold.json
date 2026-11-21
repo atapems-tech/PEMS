@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "vdr-release-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the hold",
+    "fa": "رفع Hold"
+  },
+  "description": {
+    "en": "Release the hold",
+    "fa": "رفع Hold"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrItem",
+      "action": "ReleaseHold",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The hold is released.",
+      "fa": "Hold رفع شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

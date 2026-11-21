@@ -237,7 +237,20 @@ public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess acc
         }
 
         var outcome = await handler.ExecuteAsync(invocation with { Parameters = root["parameters"] as JsonObject }, ct);
-        if (!outcome.Ok) return new ActionResult(ActionStatus.Refused, outcome, null, null);
+        if (!outcome.Ok)
+        {
+            // an error brings the user back to the address the action goes to, when every {name} of it is a value that was posted (the page the form came from), not to the home page
+            var errorTarget = DataSourceDefinitionKind.Str(root["redirect"]);
+            var resolvable = errorTarget is not null;
+            if (errorTarget is not null)
+                errorTarget = System.Text.RegularExpressions.Regex.Replace(errorTarget, @"\{([\w.]+)\}", m =>
+                {
+                    var v = invocation.Values.GetValueOrDefault(m.Groups[1].Value);
+                    if (string.IsNullOrEmpty(v)) resolvable = false;
+                    return Uri.EscapeDataString(v ?? "");
+                });
+            return new ActionResult(ActionStatus.Refused, outcome, null, resolvable ? errorTarget : null);
+        }
         var success = root["success"]?.Deserialize<TranslatableText>(PemsJson.Options);
         var redirect = outcome.Redirect ?? DataSourceDefinitionKind.Str(root["redirect"]);
         // {name} in a redirect is a value the action returned (the id it created, {step.id} of action.steps) or a value of the request (the id of the record it ran on), so "to the new record" is data, not code

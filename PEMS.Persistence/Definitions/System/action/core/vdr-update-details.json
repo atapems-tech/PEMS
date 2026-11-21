@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "vdr-update-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the details of the document",
+    "fa": "ذخیره‌ی مشخصات مدرک"
+  },
+  "description": {
+    "en": "Save the details of the document",
+    "fa": "ذخیره‌ی مشخصات مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrItem",
+      "action": "UpdateDetails",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "documentDescription": "field:documentDescription",
+        "documentClass": "field:documentClass",
+        "plannedFirstIssueDate": "field:plannedFirstIssueDate",
+        "equipmentTag": "field:equipmentTag",
+        "disciplineCodeRaw": "field:disciplineCodeRaw",
+        "vendorFormatDocumentNumber": "field:vendorFormatDocumentNumber",
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

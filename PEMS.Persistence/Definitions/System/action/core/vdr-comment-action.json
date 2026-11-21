@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "vdr-comment-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the action status of a comment",
+    "fa": "وضعیت اقدام نظر"
+  },
+  "description": {
+    "en": "Set the action status of a comment",
+    "fa": "وضعیت اقدام نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrItem",
+      "action": "SetCommentAction",
+      "args": {
+        "commentId": "field:commentId",
+        "actionStatus": "field:actionStatus"
+      }
+    },
+    "success": {
+      "en": "The comment was updated.",
+      "fa": "نظر به‌روز شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

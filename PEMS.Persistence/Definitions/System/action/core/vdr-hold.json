@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "vdr-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Put the document on hold",
+    "fa": "Hold مدرک"
+  },
+  "description": {
+    "en": "Put the document on hold",
+    "fa": "Hold مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrItem",
+      "action": "Hold",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The document is on hold.",
+      "fa": "مدرک در وضعیت Hold قرار گرفت."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

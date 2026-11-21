@@ -533,7 +533,7 @@
                             };
                         }
                         <span class="vs-pill @VdrUi.CommentActionTone(c.ActionStatus)">@VdrUi.Loc(Localizer, "St_", c.ActionStatus)</span>
-                        <pems-form asp-action="SetCommentAction" method="post" class="d-inline">
+                        <pems-form action="/a/vdr-comment-action" method="post" class="d-inline">
                             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                             <input type="hidden" name="commentId" value="@c.VDRCommentId" />
                             <pems-select class="pems-w-170" scale="small" css="mt-1" name="actionStatus" data-pems-change="submit-form">
@@ -670,7 +670,7 @@
     var allDisciplinesForStart = ((IEnumerable<PEMS.Domain.Entities.Discipline>)ViewBag.AllDisciplines).ToList();
 
     @* طبق «VENDOR DOCUMENTATION MANAGEMENT PROCEDURE» بخش ۴.۶.۱ - همین لیست POI در EngineeringDocuments/Edit.cshtml (فیلد IssuePurpose) هم تکرار شده؛ اگر این‌جا تغییر کرد آن‌جا را هم به‌روزرسانی کنید. *@
-    <pems-form asp-action="SubmitForReview" method="post" id="vdrStartForm">
+    <pems-form action="/a/vdr-submit-review" method="post" id="vdrStartForm">
         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
         <input type="hidden" name="revisionNo" value="@nextRevisionNo" />
         <pems-row gap="3" css="align-items-start">
@@ -787,7 +787,7 @@ else
         @if (myPending != null)
         {
             <pems-flex gap="2">
-                <pems-form asp-action="DisciplineRespond" method="post" class="d-inline">
+                <pems-form action="/a/vdr-discipline-respond" method="post" class="d-inline">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="decision" value="Approve" />
                     <pems-button tone="success" size="small">@Localizer["Vd_Approve"]</pems-button>
@@ -797,7 +797,7 @@ else
             </pems-flex>
 
             <pems-modal id="vdrCommentModal" tabindex="-1">
-                    <pems-form asp-action="DisciplineRespond" method="post">
+                    <pems-form action="/a/vdr-discipline-respond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Comment" />
                         <pems-modal-header>@Localizer["Vd_RecordComment"]</pems-modal-header>
@@ -809,7 +809,7 @@ else
                     </pems-form>
                 </pems-modal>
             <pems-modal id="vdrRejectModal" tabindex="-1">
-                    <pems-form asp-action="DisciplineRespond" method="post">
+                    <pems-form action="/a/vdr-discipline-respond" method="post">
                         <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                         <input type="hidden" name="decision" value="Reject" />
                         <pems-modal-header>@Localizer["Vd_RejectTitle"]</pems-modal-header>
@@ -829,7 +829,7 @@ else
     else if (currentStageName == "LeadReview")
     {
         <pems-heading level="6" class="small fw-bold">@Localizer["Vd_FinalDecision"]</pems-heading>
-        <pems-form asp-action="LeadReview" method="post"><pems-row gap="2">
+        <pems-form action="/a/vdr-lead-review" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="3">
                 <pems-label css="small">@Localizer["Vd_ReviewCategory"]</pems-label>
@@ -852,7 +852,7 @@ else
     {
         <pems-heading level="6" class="small fw-bold">@Localizer["Vd_FormalReturn"]</pems-heading>
         <pems-text class="text-muted small">@Localizer["Vd_ReturnHint"]</pems-text>
-        <pems-form asp-action="ReturnToVendor" method="post"><pems-row gap="2">
+        <pems-form action="/a/vdr-return-to-vendor" method="post"><pems-row gap="2">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-col md="4"><pems-label css="small">@Localizer["Vd_ReplySheetNo"]</pems-label><pems-input scale="small" name="replySheetNo" /></pems-col>
             <pems-col md="4"><pems-label css="small">@Localizer["Vd_ClientTransmittalNo"]</pems-label><pems-input scale="small" name="clientTransmittalNo" /></pems-col>
@@ -916,7 +916,7 @@ else
 @if (Model.IsActive && ViewBag.CanEditItem is true)
 {
     <pems-modal id="vdrEditModal" tabindex="-1">
-        <pems-form asp-action="UpdateDetails" method="post">
+        <pems-form action="/a/vdr-update-details" method="post">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-modal-header><pems-icon name="bi-pencil" /> @Localizer["Vdr_EditDetails"]</pems-modal-header>
             <pems-modal-body>
@@ -939,14 +939,14 @@ else
 }
 @foreach (var (modalId, action, icon, title, hint, tone, show) in new[]
 {
-    ("vdrHoldModal", "Hold", "bi-pause-circle", "Vdr_Hold", "Vdr_HoldHint", "dark", Model.IsActive && !Model.IsOnHold && ViewBag.CanHold is true),
-    ("vdrReleaseModal", "ReleaseHold", "bi-play-circle", "Vdr_ReleaseHold", "Vdr_ReleaseHint", "primary", Model.IsOnHold && ViewBag.CanReleaseHold is true),
-    ("vdrDeactivateModal", "Deactivate", "bi-archive", "Vdr_Deactivate", "Vdr_DeactivateHint", "danger", Model.IsActive && ViewBag.CanDeactivate is true),
+    ("vdrHoldModal", "vdr-hold", "bi-pause-circle", "Vdr_Hold", "Vdr_HoldHint", "dark", Model.IsActive && !Model.IsOnHold && ViewBag.CanHold is true),
+    ("vdrReleaseModal", "vdr-release-hold", "bi-play-circle", "Vdr_ReleaseHold", "Vdr_ReleaseHint", "primary", Model.IsOnHold && ViewBag.CanReleaseHold is true),
+    ("vdrDeactivateModal", "vdr-deactivate", "bi-archive", "Vdr_Deactivate", "Vdr_DeactivateHint", "danger", Model.IsActive && ViewBag.CanDeactivate is true),
 })
 {
     if (!show) { continue; }
     <pems-modal id="@modalId" tabindex="-1">
-        <pems-form asp-action="@action" method="post">
+        <pems-form action="/a/@action" method="post">
             <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
             <pems-modal-header><pems-icon name="@icon" /> @Localizer[title]</pems-modal-header>
             <pems-modal-body>
