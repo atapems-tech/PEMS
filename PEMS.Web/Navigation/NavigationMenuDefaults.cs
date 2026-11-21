@@ -97,7 +97,7 @@ public static class NavigationMenuDefaults
         // دیده می‌شود که کاربر یکی از آن ماژول‌ها را ببیند.
         Section("sec.procurement", 500, "Nav_ProcurementSupplyChain", "bi-cart3", "Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue|Flag:PartCatalogueReports",
             "ProcurementPackage,Tender,MaterialRequisition,Contract,Vendor,PurchaseOrder,Inventory,MaterialItem,IrnReceipt,InventoryMasterData,InventoryTransaction,StoreRequisition,Replenishment,PartCatalogueRequest,PartCatalogueReport,PartCatalogueAdmin"),
-        Link("proc.vendors", "sec.procurement", 10, "Vendors", "bi-building", "Vendor", rule: "Module:ContractManagement&Perm:Vendors.View"),
+        new("proc.vendors", "sec.procurement", L, 10, "Vendors", "bi-building", "Module:ContractManagement&Perm:Vendors.View", ExternalPath: "/p/vendors"),   // SCRUM-763: a definition page (/p/...)
         Sub("proc.sub.purchasing", "sec.procurement", 20, "Nav_Proc_Purchasing"),
         // SCRUM-471: the procurement cartable (pre-procurement queue), first under Purchasing
         new("proc.preprocurement", "proc.sub.purchasing", L, 5, "Ppr_Title", "bi-inbox", "Perm:PreProcurement.View", ExternalPath: "/p/pre-procurement"),   // SCRUM-735: a definition page (/p/...)

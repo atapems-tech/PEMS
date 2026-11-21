@@ -22,18 +22,14 @@ public class ProcurementDecisionPagesTests
     [Fact]
     public void SCRUM544_Vendor_details_posts_the_qualification_form_to_SetQualification_with_the_action_parameter_names()
     {
-        var view = Read("PEMS.Web", "Views", "Vendor", "Details.cshtml");
-
-        var form = view[view.IndexOf("@if (canEditVendor)", StringComparison.Ordinal)..];
-        Assert.Contains("Url.Action(\"SetQualification\")", form);
-        Assert.Contains("parent-name=\"id\"", form);
+        // SCRUM-763: the vendor page is a definition; its qualification form carries the parameter names of the SetQualification operation
+        var form = System.Text.Json.Nodes.JsonNode.Parse(Read("PEMS.Persistence", "Definitions", "System", "form", "core", "vendor-qualification.json"))!;
+        var names = form["payload"]!["fields"]!.AsArray().Select(f => (string)f!["name"]!).ToList();
         foreach (var name in new[] { "newStatus", "category", "effectiveDate", "expiryDate", "evidenceReference", "reason" })
-            Assert.Contains($"name=\"{name}\"", form);
-        Assert.Contains("q.History", view);   // history for every viewer
-
-        var controller = Read("PEMS.Web", "Controllers", "VendorController.cs");
-        Assert.Contains("ViewBag.Qualification = await _qualificationService.GetAsync(id)", controller);
-        Assert.Contains("ViewBag.CanEditVendor = await _permissionService.HasPermissionAsync(_currentUser.Roles, \"Vendors\", \"Edit\")", controller);
+            Assert.Contains(name, names);
+        var action = System.Text.Json.Nodes.JsonNode.Parse(Read("PEMS.Persistence", "Definitions", "System", "action", "core", "vendor-qualification.json"))!;
+        Assert.Equal("SetQualification", (string)action["payload"]!["parameters"]!["action"]!);
+        Assert.Contains("vendor-qualification-history", Read("PEMS.Persistence", "Definitions", "System", "page", "core", "vendor-details.json"));   // history for every viewer
     }
 
     private static PEMSDbContext NewDb() => new(new DbContextOptionsBuilder<PEMSDbContext>()

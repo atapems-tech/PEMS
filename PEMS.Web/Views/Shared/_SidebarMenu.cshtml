@@ -280,7 +280,7 @@
 
             @if (contractVisible)
             {
-                <pems-nav-link item="false" active="@(IsActive("Vendor"))" asp-controller="Vendor" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/vendors" active="@(IsActive("Vendor") || Context.Request.Path.StartsWithSegments("/p/vendor"))">
                     <pems-icon name="bi-building" /> @Localizer["Vendors"]
                 </pems-nav-link>
             }

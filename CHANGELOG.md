@@ -53,6 +53,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Vendors as definition pages (SCRUM-763)
+
+### Changed
+- /p/vendors and /p/vendor-details (with their forms and actions) replace VendorController: create, edit and activate / deactivate are the generic entity actions on a new Vendor registration (permissions Vendors.Create and Vendors.Edit as before), recalculating the risk and setting the qualification are the operations marked on IVendorRiskService and IVendorQualificationService, the reads are Vendor.* operations. The old routes redirect.
+
 ## 2026-11-21 - Spare parts controller removed (SCRUM-751)
 
 ### Changed
