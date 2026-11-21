@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.Interfaces;
@@ -61,6 +61,31 @@ public class RcmFmeaAuthorizationTests
         new RcmFmeaController(new RcmFmeaReadinessService(ctx), new FMEAService(ctx), new RCMService(ctx),
             new RcmOperationalBridgeService(ctx, new FakeNumberingService()), ctx, user, perms).WithTempData();
 
+    // SCRUM-744: the write commands are operations. The action host checks the operation permission first (Allowed false = refused, nothing runs), then calls the operation.
+    private sealed record Outcome(bool Allowed, bool Success, string? Error);
+
+    private sealed class OpsHost(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms)
+    {
+        private readonly PEMS.Web.Services.RcmFmeaOperations _ops = new(ctx, new FMEAService(ctx), new RCMService(ctx), new RcmOperationalBridgeService(ctx, new FakeNumberingService()), user);
+
+        private async Task<Outcome> Run(string action, Func<PEMS.Web.Services.RcmFmeaOperations, Task<(bool Success, string? Error)>> call)
+        {
+            var permission = ((PEMS.Application.Common.PemsOperationAttribute)typeof(IRcmFmeaOperations).GetMethod(action + "Async")!
+                .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission!.Split('.');
+            if (!await perms.HasPermissionAsync(user.Roles, permission[0], permission[1])) return new(false, false, null);
+            var r = await call(_ops);
+            return new(true, r.Success, r.Error);
+        }
+
+        public Task<Outcome> CreateFmeaDraft(int classId, string title, string? description) => Run("CreateFmeaDraft", o => o.CreateFmeaDraftAsync(classId, title, description));
+        public Task<Outcome> SubmitFmea(int fmeaId) => Run("SubmitFmea", o => o.SubmitFmeaAsync(fmeaId));
+        public Task<Outcome> ApproveFmea(int fmeaId) => Run("ApproveFmea", o => o.ApproveFmeaAsync(fmeaId));
+        public Task<Outcome> ApproveRcmDecision(int decisionId) => Run("ApproveRcmDecision", o => o.ApproveRcmDecisionAsync(decisionId));
+        public Task<Outcome> ApplyRcmDecision(int decisionId, int equipmentId) => Run("ApplyRcmDecision", o => o.ApplyRcmDecisionAsync(decisionId, equipmentId));
+    }
+
+    private static OpsHost CreateHost(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms) => new(ctx, user, perms);
+
     [Fact]
     public async Task Index_NoPermission_ReturnsForbid()
     {
@@ -88,15 +113,15 @@ public class RcmFmeaAuthorizationTests
     {
         var (ctx, perms, user) = await CreateInfra(nameof(CreateFmeaDraft_MaintenanceEngineer_CanCreate_ButCannotApprove), role: SystemRoles.MaintenanceEngineer);
         var classId = await SeedEquipmentClassAsync(ctx);
-        var controller = CreateController(ctx, user, perms);
+        var host = CreateHost(ctx, user, perms);
 
-        var createResult = await controller.CreateFmeaDraft(classId, "Test FMEA", null);
-        Assert.IsType<RedirectToActionResult>(createResult);
+        var createResult = await host.CreateFmeaDraft(classId, "Test FMEA", null);
+        Assert.True(createResult.Allowed && createResult.Success);
 
         var fmea = await ctx.FMEAAnalyses.SingleAsync();
-        var approveResult = await controller.ApproveFmea(classId, fmea.FMEAAnalysisId);
+        var approveResult = await host.ApproveFmea(fmea.FMEAAnalysisId);
 
-        Assert.IsType<ForbidResult>(approveResult); // Editor - نه Approver
+        Assert.False(approveResult.Allowed); // Editor - نه Approver
     }
 
     [Fact]
@@ -105,17 +130,17 @@ public class RcmFmeaAuthorizationTests
         var (ctx, perms, editorUser) = await CreateInfra(nameof(ApproveFmea_EngineeringSupervisor_CanApprove), role: SystemRoles.MaintenanceEngineer);
         var classId = await SeedEquipmentClassAsync(ctx);
 
-        var editorController = CreateController(ctx, editorUser, perms);
-        await editorController.CreateFmeaDraft(classId, "Test FMEA", null);
+        var editorHost = CreateHost(ctx, editorUser, perms);
+        await editorHost.CreateFmeaDraft(classId, "Test FMEA", null);
         var fmea = await ctx.FMEAAnalyses.SingleAsync();
-        await editorController.SubmitFmea(classId, fmea.FMEAAnalysisId);
+        await editorHost.SubmitFmea(fmea.FMEAAnalysisId);
 
         var (_, _, supervisorUser) = await CreateInfra(nameof(ApproveFmea_EngineeringSupervisor_CanApprove) + "_sup", role: SystemRoles.EngineeringSupervisor);
-        var supervisorController = CreateController(ctx, supervisorUser, perms);
+        var supervisorHost = CreateHost(ctx, supervisorUser, perms);
 
-        var approveResult = await supervisorController.ApproveFmea(classId, fmea.FMEAAnalysisId);
+        var approveResult = await supervisorHost.ApproveFmea(fmea.FMEAAnalysisId);
 
-        Assert.IsType<RedirectToActionResult>(approveResult);
+        Assert.True(approveResult.Allowed && approveResult.Success);
         var reloaded = await ctx.FMEAAnalyses.AsNoTracking().SingleAsync();
         Assert.Equal("APPROVED", reloaded.Status);
     }
@@ -125,11 +150,11 @@ public class RcmFmeaAuthorizationTests
     {
         var (ctx, perms, user) = await CreateInfra(nameof(CreateFmeaDraft_ViewerRole_CannotCreate), role: SystemRoles.Viewer);
         var classId = await SeedEquipmentClassAsync(ctx);
-        var controller = CreateController(ctx, user, perms);
+        var host = CreateHost(ctx, user, perms);
 
-        var result = await controller.CreateFmeaDraft(classId, "Test FMEA", null);
+        var result = await host.CreateFmeaDraft(classId, "Test FMEA", null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Allowed);
         Assert.Equal(0, await ctx.FMEAAnalyses.CountAsync());
     }
 
@@ -157,10 +182,10 @@ public class RcmFmeaAuthorizationTests
         var rcmId = await rcmService.CreateDraftAsync(classId, fmeaId, "engineer1");
         var decisionId = await rcmService.AddDecisionAsync(rcmId, itemId, "PREDICTIVE", null, null, null, "Operational");
 
-        var controller = CreateController(ctx, editorUser, perms);
-        var result = await controller.ApproveRcmDecision(classId, decisionId);
+        var host = CreateHost(ctx, editorUser, perms);
+        var result = await host.ApproveRcmDecision(decisionId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Allowed);
         var decision = await ctx.RCMDecisions.AsNoTracking().SingleAsync();
         Assert.Equal("DRAFT", decision.Status);
     }
@@ -194,10 +219,10 @@ public class RcmFmeaAuthorizationTests
         var decisionId = await rcmService.AddDecisionAsync(rcmId, itemId, "PREDICTIVE", null, null, null, "Operational");
         await rcmService.ApproveDecisionAsync(decisionId, "manager1");
 
-        var controller = CreateController(ctx, editorUser, perms);
-        var result = await controller.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+        var host = CreateHost(ctx, editorUser, perms);
+        var result = await host.ApplyRcmDecision(decisionId, equipment.EquipmentId);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Allowed);
         Assert.Empty(ctx.MaintenanceStrategies);
     }
 
@@ -229,11 +254,11 @@ public class RcmFmeaAuthorizationTests
         await rcmService.ApproveDecisionAsync(decisionId, "manager1");
 
         var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_EngineeringSupervisor_CanApply) + "_sup", role: SystemRoles.EngineeringSupervisor);
-        var supervisorController = CreateController(ctx, supervisorUser, perms);
+        var supervisorHost = CreateHost(ctx, supervisorUser, perms);
 
-        var result = await supervisorController.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+        var result = await supervisorHost.ApplyRcmDecision(decisionId, equipment.EquipmentId);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Allowed && result.Success);
         Assert.Single(ctx.MaintenanceStrategies);
     }
 
@@ -280,12 +305,13 @@ public class RcmFmeaAuthorizationTests
             nameof(ApplyRcmDecision_NonApprovedDecision_Rejected_NoOperationalDataCreated), approve: false);
 
         var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_NonApprovedDecision_Rejected_NoOperationalDataCreated) + "_sup", role: SystemRoles.EngineeringSupervisor);
-        var controller = CreateController(ctx, supervisorUser, perms);
+        var host = CreateHost(ctx, supervisorUser, perms);
 
-        var result = await controller.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+        var result = await host.ApplyRcmDecision(decisionId, equipment.EquipmentId);
 
-        Assert.IsType<RedirectToActionResult>(result); // نه Forbid - این یک رد کسب‌وکاری است، نه مجوزی
-        Assert.NotNull(controller.TempData["Error"]);
+        Assert.True(result.Allowed); // نه Forbid - این یک رد کسب‌وکاری است، نه مجوزی
+        Assert.False(result.Success);
+        Assert.NotNull(result.Error);
         Assert.Empty(ctx.MaintenanceStrategies);
         Assert.Empty(ctx.MaintenancePlans);
     }
@@ -302,12 +328,13 @@ public class RcmFmeaAuthorizationTests
         await ctx.SaveChangesAsync();
 
         var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_WrongEquipmentClass_Rejected_NoOperationalDataCreated) + "_sup", role: SystemRoles.EngineeringSupervisor);
-        var controller = CreateController(ctx, supervisorUser, perms);
+        var host = CreateHost(ctx, supervisorUser, perms);
 
-        var result = await controller.ApplyRcmDecision(classId, decisionId, wrongClassEquipment.EquipmentId);
+        var result = await host.ApplyRcmDecision(decisionId, wrongClassEquipment.EquipmentId);
 
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.NotNull(controller.TempData["Error"]);
+        Assert.True(result.Allowed);
+        Assert.False(result.Success);
+        Assert.NotNull(result.Error);
         Assert.Empty(ctx.MaintenanceStrategies);
     }
 
@@ -319,27 +346,23 @@ public class RcmFmeaAuthorizationTests
 
         var (_, _, supervisorUser) = await CreateInfra(nameof(ApplyRcmDecision_AppliedTwice_NoDuplicateStrategyOrPlan) + "_sup", role: SystemRoles.EngineeringSupervisor);
 
-        var firstController = CreateController(ctx, supervisorUser, perms);
-        var firstResult = await firstController.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
-        var secondController = CreateController(ctx, supervisorUser, perms);
-        var secondResult = await secondController.ApplyRcmDecision(classId, decisionId, equipment.EquipmentId);
+        var firstResult = await CreateHost(ctx, supervisorUser, perms).ApplyRcmDecision(decisionId, equipment.EquipmentId);
+        var secondResult = await CreateHost(ctx, supervisorUser, perms).ApplyRcmDecision(decisionId, equipment.EquipmentId);
 
-        Assert.IsType<RedirectToActionResult>(firstResult);
-        Assert.IsType<RedirectToActionResult>(secondResult);
-        Assert.Null(secondController.TempData["Error"]); // اعمال دوباره خطا نیست - بازاستفاده‌ی امن است
+        Assert.True(firstResult.Allowed && firstResult.Success);
+        Assert.True(secondResult.Allowed && secondResult.Success);
+        Assert.Null(secondResult.Error); // اعمال دوباره خطا نیست - بازاستفاده‌ی امن است
         Assert.Single(ctx.MaintenanceStrategies); // هرگز رکورد تکراری ساخته نشد
         Assert.Empty(ctx.MaintenancePlans); // این تصمیم PMTemplate توصیه نکرده بود
     }
 
     [Fact]
-    public void ApplyRcmDecision_Action_IsAntiForgeryProtected()
+    public void ApplyRcmDecision_Operation_NeedsTheApprovePermission()
     {
-        // طبق «PEMS Phase 6.1» بند ۱۱/۲۲: این Action یک POST با تاثیر واقعی روی داده‌ی عملیاتی
-        // است - باید دقیقاً مثل بقیه‌ی Action های POST این کنترلر، توسط ValidateAntiForgeryToken
-        // محافظت شود.
-        var method = typeof(RcmFmeaController).GetMethod(nameof(RcmFmeaController.ApplyRcmDecision));
+        // SCRUM-744: the antiforgery check is the action host's for every action definition; what stays here is the gate of the bridge.
+        var method = typeof(IRcmFmeaOperations).GetMethod(nameof(IRcmFmeaOperations.ApplyRcmDecisionAsync));
         Assert.NotNull(method);
-        Assert.True(method!.GetCustomAttributes(typeof(Microsoft.AspNetCore.Mvc.ValidateAntiForgeryTokenAttribute), inherit: true).Any());
-        Assert.True(method.GetCustomAttributes(typeof(Microsoft.AspNetCore.Mvc.HttpPostAttribute), inherit: true).Any());
+        var attribute = (PEMS.Application.Common.PemsOperationAttribute)method!.GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0];
+        Assert.Equal("RCMFMEA.Approve", attribute.Permission);
     }
 }

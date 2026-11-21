@@ -232,7 +232,7 @@
     "PEMS.Web.Controllers.PageHostController": 1,
     "PEMS.Web.Controllers.PermitController": 1,
     "PEMS.Web.Controllers.QCController": 17,
-    "PEMS.Web.Controllers.RcmFmeaController": 16,
+    "PEMS.Web.Controllers.RcmFmeaController": 2,
     "PEMS.Web.Controllers.RecoveryCodesController": 2,
     "PEMS.Web.Controllers.RelationshipController": 10,
     "PEMS.Web.Controllers.ReliabilityController": 26,

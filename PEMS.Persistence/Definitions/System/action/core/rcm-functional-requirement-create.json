@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "rcm-functional-requirement-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create functional requirement",
+    "fa": "ایجاد نیازمندی عملکردی"
+  },
+  "description": {
+    "en": "Create functional requirement",
+    "fa": "ایجاد نیازمندی عملکردی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "CreateFunctionalRequirement",
+      "args": {
+        "equipmentClassId": "field:equipmentClassId",
+        "code": "field:code",
+        "title": "field:title",
+        "description": "field:description",
+        "requiredFunction": "field:requiredFunction"
+      }
+    },
+    "success": {
+      "en": "Functional requirement created.",
+      "fa": "Functional Requirement ساخته شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

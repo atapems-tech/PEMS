@@ -1,4 +1,4 @@
-@using Microsoft.Extensions.Localization
+﻿@using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
 @using PEMS.Application.DTOs
@@ -104,7 +104,7 @@
         @if (canEdit)
         {
             <pems-content-card css="mb-3">
-                <pems-form asp-action="CreateFmeaDraft" method="post"><pems-row gap="2">
+                <pems-form action="/a/rcm-fmea-create-draft" method="post"><pems-row gap="2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <pems-col md="4"><pems-input scale="small" name="title" placeholder="Analysis title" required /></pems-col>
                     <pems-col md="6"><pems-input scale="small" name="description" placeholder="@Localizer["Description"]" /></pems-col>
@@ -121,7 +121,7 @@
                     <div>
                         @if (fmea.Status == "DRAFT" && canEdit)
                         {
-                            <pems-form asp-action="SubmitFmea" method="post" class="d-inline">
+                            <pems-form action="/a/rcm-fmea-submit" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
                                 <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
@@ -129,12 +129,12 @@
                         }
                         @if (fmea.Status == "UNDER_REVIEW" && canApprove)
                         {
-                            <pems-form asp-action="ApproveFmea" method="post" class="d-inline">
+                            <pems-form action="/a/rcm-fmea-approve" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
                             </pems-form>
-                            <pems-form asp-action="RejectFmea" method="post" class="d-inline">
+                            <pems-form action="/a/rcm-fmea-reject" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
@@ -164,7 +164,7 @@
 
                 @if (fmea.Status == "DRAFT" && canEdit)
                 {
-                    <pems-form asp-action="AddFmeaItem" method="post"><pems-row gap="2" css="mt-1">
+                    <pems-form action="/a/rcm-fmea-add-item" method="post"><pems-row gap="2" css="mt-1">
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="fmeaAnalysisId" value="@fmea.FMEAAnalysisId" />
                         <pems-col md="3">
@@ -202,7 +202,7 @@
         @if (canEdit && fmeaAnalyses.Any(x => x.Status == "APPROVED"))
         {
             <pems-content-card css="mb-3">
-                <pems-form asp-action="CreateRcmDraft" method="post"><pems-row gap="2">
+                <pems-form action="/a/rcm-create-draft" method="post"><pems-row gap="2">
                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                     <pems-col md="8">
                         <pems-select scale="small" name="fmeaAnalysisId" required>
@@ -229,7 +229,7 @@
                     <div>
                         @if (rcm.Status == "DRAFT" && canEdit)
                         {
-                            <pems-form asp-action="SubmitRcm" method="post" class="d-inline">
+                            <pems-form action="/a/rcm-submit" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
                                 <pems-button tone="primary" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
@@ -237,12 +237,12 @@
                         }
                         @if (rcm.Status == "UNDER_REVIEW" && canApprove)
                         {
-                            <pems-form asp-action="ApproveRcm" method="post" class="d-inline">
+                            <pems-form action="/a/rcm-approve" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
                                 <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
                             </pems-form>
-                            <pems-form asp-action="RejectRcm" method="post" class="d-inline">
+                            <pems-form action="/a/rcm-reject" method="post" class="d-inline">
                                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                 <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
@@ -266,7 +266,7 @@
                                 <pems-table-cell>
                                     @if (d.Status == "DRAFT" && canApprove)
                                     {
-                                        <pems-form asp-action="ApproveRcmDecision" method="post" class="d-inline">
+                                        <pems-form action="/a/rcm-decision-approve" method="post" class="d-inline">
                                             <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                             <input type="hidden" name="rcmDecisionId" value="@d.RCMDecisionId" />
                                             <pems-button tone="success" size="small" outline="true" type="submit">@Localizer["Approve"]</pems-button>
@@ -296,7 +296,7 @@
                     @if (rcm.Decisions.Any(x => x.Status == "APPROVED"))
 {
     <pems-modal id="applyRcmModal" tabindex="-1">
-                                <pems-form asp-action="ApplyRcmDecision" method="post">
+                                <pems-form action="/a/rcm-decision-apply" method="post">
                                     <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                                     <input type="hidden" name="rcmDecisionId" value="" />
                                     <pems-modal-header>Apply RCM Decision — <span data-fill-text="failuremodename"></span></pems-modal-header>
@@ -342,7 +342,7 @@
 
                 @if (rcm.Status == "DRAFT" && canEdit && sourceFmea != null)
                 {
-                    <pems-form asp-action="AddRcmDecision" method="post"><pems-row gap="2" css="mt-1">
+                    <pems-form action="/a/rcm-add-decision" method="post"><pems-row gap="2" css="mt-1">
                         <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                         <input type="hidden" name="rcmAnalysisId" value="@rcm.RCMAnalysisId" />
                         <pems-col md="3">
@@ -398,7 +398,7 @@
 @if (canEdit)
 {
     <pems-modal id="createFrModal" tabindex="-1">
-            <pems-form asp-action="CreateFunctionalRequirement" method="post">
+            <pems-form action="/a/rcm-functional-requirement-create" method="post">
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                 <pems-modal-header>@Localizer["Functional Requirement جدید"]</pems-modal-header>
                 <pems-modal-body>
@@ -415,7 +415,7 @@
         </pems-modal>
 
     <pems-modal id="createFfModal" tabindex="-1">
-            <pems-form asp-action="CreateFunctionalFailure" method="post">
+            <pems-form action="/a/rcm-functional-failure-create" method="post">
                 <input type="hidden" name="equipmentClassId" value="@equipmentClass.EquipmentClassId" />
                 <pems-modal-header>@Localizer["Functional Failure جدید"]</pems-modal-header>
                 <pems-modal-body>

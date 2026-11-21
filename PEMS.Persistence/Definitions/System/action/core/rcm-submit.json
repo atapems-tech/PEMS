@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "rcm-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit RCM for review",
+    "fa": "ارسال RCM برای بازبینی"
+  },
+  "description": {
+    "en": "Submit RCM for review",
+    "fa": "ارسال RCM برای بازبینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "SubmitRcm",
+      "args": {
+        "rcmAnalysisId": "field:rcmAnalysisId"
+      }
+    },
+    "success": {
+      "en": "Submitted for review.",
+      "fa": "برای بازبینی ارسال شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}
