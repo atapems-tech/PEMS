@@ -26,6 +26,6 @@
       "en": "The row was updated.",
       "fa": "ردیف به‌روز شد."
     },
-    "redirect": "/FunctionalLocationImport/Review?batchId={batchId}"
+    "redirect": "/p/fl-import-review?batchId={batchId}"
   }
 }

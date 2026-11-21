@@ -61,7 +61,7 @@ public static class ImportCatalog
         new("Equipment", Category.Cmms, "EquipmentImport", "Index", LaunchMode.Page, ".xlsx, .pdf (tag scan)", null, true, Workflow.StagedReview, "EquipmentImport",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up"),
         new("FunctionalLocation", Category.Cmms, "FunctionalLocationImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "FunctionalLocationImport",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up", Url: "/p/fl-import"),   // converted: a definition page
         new("EquipmentFlAssignment", Category.Cmms, "EquipmentFunctionalLocationAssignment", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "EquipmentFunctionalLocationAssignment",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-signpost-split"),
         new("MaintenanceHistory", Category.Cmms, "MaintenanceHistoryImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MaintenanceHistoryImport",

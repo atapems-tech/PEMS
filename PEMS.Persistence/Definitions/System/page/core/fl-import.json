@@ -1,0 +1,162 @@
+{
+  "kind": "page",
+  "key": "fl-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional location import",
+    "fa": "ورود مکان‌های عملیاتی"
+  },
+  "description": {
+    "en": "Functional location import",
+    "fa": "ورود مکان‌های عملیاتی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "fl-import",
+    "regions": {
+      "content": [
+        {
+          "id": "new",
+          "component": "content-blocks",
+          "options": {
+            "id": "new",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/fl-import-upload",
+                "text": {
+                  "en": "Upload a workbook",
+                  "fa": "بارگذاری فایل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batches",
+          "component": "data-grid",
+          "options": {
+            "id": "batches",
+            "url": "/d/fl-import-batches",
+            "idField": "batchId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 260
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "importedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "sourceRows",
+                "header": {
+                  "en": "Source rows",
+                  "fa": "ردیف منبع"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "expandedLocations",
+                "header": {
+                  "en": "Expanded",
+                  "fa": "گسترش‌یافته"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "newCount",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "existingCount",
+                "header": {
+                  "en": "Existing",
+                  "fa": "موجود"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "conflictCount",
+                "header": {
+                  "en": "Conflicts",
+                  "fa": "متعارض"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "invalidCount",
+                "header": {
+                  "en": "Invalid",
+                  "fa": "نامعتبر"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بررسی"
+                    },
+                    "url": "/p/fl-import-review?batchId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 480
+          }
+        }
+      ]
+    },
+    "permission": "FunctionalLocationImport.View"
+  }
+}

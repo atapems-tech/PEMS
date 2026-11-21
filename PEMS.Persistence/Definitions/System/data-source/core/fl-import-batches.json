@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "fl-import-batches",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional location import batches",
+    "fa": "ورود مکان‌های عملیاتی Batches"
+  },
+  "description": {
+    "en": "Functional location import batches",
+    "fa": "ورود مکان‌های عملیاتی Batches"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "FunctionalLocationImport",
+      "action": "Batches"
+    }
+  }
+}

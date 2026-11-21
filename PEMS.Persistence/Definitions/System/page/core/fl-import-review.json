@@ -1,0 +1,315 @@
+{
+  "kind": "page",
+  "key": "fl-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional location import review",
+    "fa": "ورود مکان‌های عملیاتی بررسی"
+  },
+  "description": {
+    "en": "Functional location import review",
+    "fa": "ورود مکان‌های عملیاتی بررسی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "fl-import-review",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "fl-import-filters",
+            "resetUrl": "/p/fl-import-review?batchId={{params.batchId}}",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Row status",
+                  "fa": "وضعیت ردیف"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "New",
+                    "label": {
+                      "en": "New",
+                      "fa": "جدید"
+                    }
+                  },
+                  {
+                    "value": "Existing",
+                    "label": {
+                      "en": "Existing",
+                      "fa": "موجود"
+                    }
+                  },
+                  {
+                    "value": "Conflict",
+                    "label": {
+                      "en": "Conflict",
+                      "fa": "متعارض"
+                    }
+                  },
+                  {
+                    "value": "Invalid",
+                    "label": {
+                      "en": "Invalid",
+                      "fa": "نامعتبر"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/fl-import-commit?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Commit the batch",
+                  "fa": "تأیید دسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/fl-import-discard?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Discard the batch",
+                  "fa": "دور ریختن دسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/fl-import",
+                "text": {
+                  "en": "Back to the batches",
+                  "fa": "بازگشت به دسته‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batch",
+          "component": "data-grid",
+          "options": {
+            "id": "batch",
+            "url": "/d/fl-import-batch?f.batchId={{params.batchId}}",
+            "idField": "batchId",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 260
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Imported",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "importedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160
+              },
+              {
+                "key": "sourceRows",
+                "header": {
+                  "en": "Source rows",
+                  "fa": "ردیف منبع"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "expandedLocations",
+                "header": {
+                  "en": "Expanded",
+                  "fa": "گسترش‌یافته"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "newCount",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "existingCount",
+                "header": {
+                  "en": "Existing",
+                  "fa": "موجود"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "conflictCount",
+                "header": {
+                  "en": "Conflicts",
+                  "fa": "متعارض"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "invalidCount",
+                "header": {
+                  "en": "Invalid",
+                  "fa": "نامعتبر"
+                },
+                "width": 90,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 160
+          }
+        },
+        {
+          "id": "rows",
+          "component": "data-grid",
+          "options": {
+            "id": "rows",
+            "url": "/d/fl-import-rows?f.batchId={{params.batchId}}&f.status={{params.status|url}}",
+            "idField": "rowId",
+            "columns": [
+              {
+                "key": "rowNumber",
+                "header": {
+                  "en": "Row",
+                  "fa": "ردیف"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "sourceRowNumber",
+                "header": {
+                  "en": "Source row",
+                  "fa": "ردیف منبع"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 120
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 220
+              },
+              {
+                "key": "parentArea",
+                "header": {
+                  "en": "Parent / area",
+                  "fa": "والد / ناحیه"
+                },
+                "width": 200
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 100
+              },
+              {
+                "key": "includeInCommit",
+                "header": {
+                  "en": "Included",
+                  "fa": "شامل"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "validationMessage",
+                "header": {
+                  "en": "Note",
+                  "fa": "یادداشت"
+                },
+                "width": 280
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Include / exclude",
+                      "fa": "شمول / حذف"
+                    },
+                    "url": "/f/fl-import-toggle-row?rowId={id}&batchId={{params.batchId}}&include={raw.includeInCommit}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "FunctionalLocationImport.View"
+  }
+}
