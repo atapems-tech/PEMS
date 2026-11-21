@@ -32,6 +32,15 @@ public class ProcurementDecisionPagesTests
         Assert.Contains("vendor-qualification-history", Read("PEMS.Persistence", "Definitions", "System", "page", "core", "vendor-details.json"));   // history for every viewer
     }
 
+    [Fact]
+    public void SCRUM547_The_IRN_QA_decision_needs_IRN_Approve_as_an_operation_floor()
+    {
+        // SCRUM-655: the QA decision is the operation Irn.Approve; a definition can only add to the floor
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Equal("IRN.Approve", catalog.Get("Irn", "Approve")!.Permission);
+        Assert.Equal("IRN.Edit", catalog.Get("Irn", "Disposition")!.Permission);
+    }
+
     private static PEMSDbContext NewDb() => new(new DbContextOptionsBuilder<PEMSDbContext>()
         .UseInMemoryDatabase("vq_" + Guid.NewGuid().ToString("N")).Options);
 
@@ -91,16 +100,4 @@ public class ProcurementDecisionPagesTests
 
     // ------------------------------------------------------------ SCRUM-547
 
-    [Fact]
-    public void SCRUM547_The_IRN_QA_buttons_show_only_with_IRN_Approve()
-    {
-        var view = Read("PEMS.Web", "Areas", "Warehouse", "Views", "IrnReceipt", "Details.cshtml");
-        var gate = view.IndexOf("@if (Model.Status == \"PendingApproval\" && canApproveQa)", StringComparison.Ordinal);
-        Assert.True(gate > 0);
-        Assert.Equal(gate, view.IndexOf("asp-action=\"Approve\"", StringComparison.Ordinal) is var first and > 0
-            ? view.LastIndexOf("@if (", first, StringComparison.Ordinal) : -1);
-
-        var controller = Read("PEMS.Web", "Areas", "Warehouse", "Controllers", "IrnReceiptController.cs");
-        Assert.Contains("ViewBag.CanApproveQa = await _permissionService.HasPermissionAsync(_currentUser.Roles, \"IRN\", \"Approve\")", controller);
-    }
 }

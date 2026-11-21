@@ -57,6 +57,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Incoming receipts (IRN) as definition pages (SCRUM-655)
+
+### Changed
+- /p/irn-receipts, /p/irn-details and /p/irn-osd (with forms for create, add a line, submit, cancel, the disposition, the QA decision, receiving against order lines, the rejection decision and the hold resolution) replace IrnReceiptController. The disposition and QA approval workflow logic (start the QA workflow with compensation, execute the step, post the accepted quantity, recover a posting that failed after the step) moved unchanged into IrnReceiptOperations; submit and cancel are marked on IIrnReceiptService, the rejection decision and hold resolution on IPurchaseOrderReceivingService. The disposition is typed as a mode for every line or as lines lineId:accepted:rejected:hold. Controller-bound IRN tests were removed with the controller; the old routes redirect.
+
 ## 2026-11-21 - Purchase orders as definition pages (SCRUM-741)
 
 ### Changed

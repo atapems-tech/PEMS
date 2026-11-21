@@ -24,7 +24,6 @@ public class ProcurementWarehouseListPagesTests
     private static readonly string[] Pages =
     {
         "Views/Tender", "Views/Contract",
-        "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
 

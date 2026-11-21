@@ -88,12 +88,14 @@ public interface IPurchaseOrderReceivingService
     Task<PoReceivingResult> ReceiveAgainstPoAsync(int irnReceiptId, IReadOnlyList<IrnPoLineInput> lines, PoReceivingActor actor);
 
     /// <summary>D6b: the buyer chooses Replace (the PO line reopens) or CloseShort for the rejected quantity of an IRN line.</summary>
+    [PEMS.Application.Common.PemsOperation("Irn", "DecideRejection", "PurchaseOrder.Edit")]
     Task<PoReceivingResult> DecideRejectionAsync(int irnReceiptLineId, string action, PoReceivingActor actor);
 
     /// <summary>D7: after the disposition is approved, an IRN with Hold quantity becomes a task for the Warehouse Manager.</summary>
     Task<PoReceivingResult> StartHoldResolutionAsync(int irnReceiptId, int? employeeId);
 
     /// <summary>D7: the Warehouse Manager splits the Hold quantity into accepted (posted to stock) and rejected (D6b).</summary>
+    [PEMS.Application.Common.PemsOperation("Irn", "ResolveHold", "IRN.Edit")]
     Task<PoReceivingResult> ResolveHoldAsync(int irnReceiptLineId, decimal accepted, decimal rejected, string? notes, PoReceivingActor actor);
 
     /// <summary>Inspection release before shipment (optionally against an ITP), where the package requires inspection.</summary>

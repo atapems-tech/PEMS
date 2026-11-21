@@ -3,9 +3,6 @@
   "views": [
     "PEMS.Web/Areas/Admin/Views/_ViewImports.cshtml",
     "PEMS.Web/Areas/Admin/Views/_ViewStart.cshtml",
-    "PEMS.Web/Areas/Warehouse/Views/IrnReceipt/Details.cshtml",
-    "PEMS.Web/Areas/Warehouse/Views/IrnReceipt/Index.cshtml",
-    "PEMS.Web/Areas/Warehouse/Views/IrnReceipt/Osd.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/MrsImport/Index.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/MrsImport/Review.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/PartCatalogueAdmin/Index.cshtml",
@@ -239,7 +236,6 @@
     "PEMS.Web.Api.V1.DefinitionsApiController": 16,
     "PEMS.Web.Api.V1.DisciplinesApiController": 6,
     "PEMS.Web.Areas.Admin.Controllers.EmployeeController": 1,
-    "PEMS.Web.Areas.Warehouse.Controllers.IrnReceiptController": 12,
     "PEMS.Web.Areas.Warehouse.Controllers.MrsImportController": 7,
     "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueAdminController": 17,
     "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueDedupController": 2,
