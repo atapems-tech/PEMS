@@ -187,7 +187,8 @@
                       "fa": "تأیید"
                     },
                     "url": "/f/ai-tag-approve?extractedTagId={id}&attachmentId={raw.attachmentId}",
-                    "method": "get"
+                    "method": "get",
+                    "showWhen": "row.status == 'Draft'"
                   },
                   {
                     "key": "reject",
@@ -200,7 +201,8 @@
                     "confirm": {
                       "en": "Reject this tag?",
                       "fa": "این تگ رد شود؟"
-                    }
+                    },
+                    "showWhen": "row.status == 'Draft'"
                   }
                 ]
               }
@@ -292,7 +294,8 @@
                       "fa": "تأیید"
                     },
                     "url": "/a/ai-spec-approve",
-                    "method": "post"
+                    "method": "post",
+                    "showWhen": "row.status == 'Draft'"
                   },
                   {
                     "key": "reject",
@@ -305,7 +308,8 @@
                     "confirm": {
                       "en": "Reject this specification?",
                       "fa": "این مشخصه رد شود؟"
-                    }
+                    },
+                    "showWhen": "row.status == 'Draft'"
                   }
                 ]
               }
