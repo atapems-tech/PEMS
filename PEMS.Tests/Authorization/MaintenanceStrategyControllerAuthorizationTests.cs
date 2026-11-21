@@ -162,20 +162,6 @@ public class MaintenanceStrategyControllerAuthorizationTests
         Assert.Equal(e2.EquipmentId, forSecond[0].EquipmentId);
     }
 
-    [Fact]
-    public async Task Deactivate_ViewerRole_ReturnsForbid()
-    {
-        var env = await Env(nameof(Deactivate_ViewerRole_ReturnsForbid), SystemRoles.Viewer);
-        var strategy = new MaintenanceStrategy { StrategyType = "Preventive", Status = "Active", IsActive = true };
-        env.Ctx.MaintenanceStrategies.Add(strategy);
-        await env.Ctx.SaveChangesAsync();
-
-        var result = await env.StrategyController().Deactivate(strategy.MaintenanceStrategyId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.True(env.Ctx.MaintenanceStrategies.Single().IsActive);
-    }
-
     // ==================== مجوز هر Endpoint (فراخوانی مستقیم بدون مجوز) ====================
 
     [Fact]
@@ -186,33 +172,7 @@ public class MaintenanceStrategyControllerAuthorizationTests
 
         Assert.IsType<ForbidResult>(await c.Create(new StrategyInputDto()));
         Assert.IsType<ForbidResult>(await c.Edit(1, new StrategyInputDto()));
-        Assert.IsType<ForbidResult>(await c.Submit(1));
-        Assert.IsType<ForbidResult>(await c.Review(1, true, null));
-        Assert.IsType<ForbidResult>(await c.Activate(1));
-        Assert.IsType<ForbidResult>(await c.Retire(1, null));
-        Assert.IsType<ForbidResult>(await c.Assign(1, new List<int> { 1 }));
-        Assert.IsType<ForbidResult>(await c.Unassign(1, 1, null));
-        Assert.IsType<ForbidResult>(await c.RequestOverride(1, 1, 10, null, "x"));
-        Assert.IsType<ForbidResult>(await c.DecideOverride(1, 1, true, null));
         Assert.IsType<ForbidResult>(await c.BulkCreate(new List<int> { 1 }, 1));
-    }
-
-    [Fact]
-    public async Task ApprovalEndpoints_ForMaintenanceEngineer_ReturnForbid_ButEditEndpointsAreAllowed()
-    {
-        var env = await Env(nameof(ApprovalEndpoints_ForMaintenanceEngineer_ReturnForbid_ButEditEndpointsAreAllowed));
-        var c = env.StrategyController();
-
-        Assert.IsType<ForbidResult>(await c.Review(1, true, null));
-        Assert.IsType<ForbidResult>(await c.Activate(1));
-        Assert.IsType<ForbidResult>(await c.Retire(1, null));
-        Assert.IsType<ForbidResult>(await c.Assign(1, new List<int> { 1 }));
-        Assert.IsType<ForbidResult>(await c.Unassign(1, 1, null));
-        Assert.IsType<ForbidResult>(await c.DecideOverride(1, 1, true, null));
-
-        // Edit-level endpoints pass the permission gate (they then answer 404 for a missing record, not Forbid)
-        Assert.IsNotType<ForbidResult>(await c.Submit(999));
-        Assert.IsNotType<ForbidResult>(await c.RequestOverride(999, 1, 10, null, "x"));
     }
 
     [Fact]

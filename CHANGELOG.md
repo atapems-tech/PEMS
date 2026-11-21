@@ -80,6 +80,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-725: maintenance strategy lifecycle and assignment commands as definitions
+
+### Changed
+- Submit, review, activate, retire, assign a tag, unassign, request and decide an override are now definitions (/a/strategy-*) over IMaintenanceStrategyOperations (the actor is the current user, rule errors are translated). The strategy Details view posts to them. The list, details, create, edit, bulk assign, tag view and reports stay on MaintenanceStrategyController (12 actions). The legacy Deactivate action is removed. The permission-only controller tests of the removed actions are removed (the operation catalog holds the Edit/Approve floors).
+
 ## 2026-11-21 - SCRUM-723: maintenance master data as definitions
 
 ### Changed
