@@ -67,6 +67,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-699: findings as definitions
+
+### Changed
+- IFindingOperations (the inline context logic of FindingController moved into an operations service: list, choices, create from reading or inspection, close, raise a work request with the configured priority mapping), page /p/findings, forms and actions finding-*; the equipment and reliability pages link or post to the definitions. Gap: ids are typed numbers on the close and raise forms; the old list view test was removed.
+
 ## 2026-11-21 - SCRUM-737, 738, 739: production dashboard, orders, runs and batches as definitions
 
 ### Changed

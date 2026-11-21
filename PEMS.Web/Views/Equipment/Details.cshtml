@@ -336,7 +336,7 @@
                 <pems-flex justify="between" align="center" css="mb-3">
                     <pems-heading level="6" class="mb-0">@Localizer["Condition Monitoring"]</pems-heading>
                     <pems-flex gap="2">
-                        <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@eq.EquipmentId">
+                        <pems-button tone="danger" size="small" outline="true" as="a" href="/p/findings?equipmentId=@eq.EquipmentId">
                             <pems-icon name="bi-flag" /> @Localizer["Findings"] @(cm.OpenFindingCount > 0 ? $"({cm.OpenFindingCount})" : "")
                         </pems-button>
                         <pems-button tone="primary" size="small" as="a" asp-controller="Reliability" asp-action="ConditionMonitoring" asp-route-equipmentId="@eq.EquipmentId">

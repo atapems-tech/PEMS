@@ -25,7 +25,7 @@ public class CmmsListPagesTests
     private static readonly string[] Pages =
     {
         "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
-        "MaintenanceStrategy", "JobPlan", "Permit", "Finding", "Asset",
+        "MaintenanceStrategy", "JobPlan", "Permit", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "ShiftHandover", "RcmFmea",
         "EquipmentFunctionalLocationAssignment",
@@ -151,24 +151,6 @@ public class CmmsListPagesTests
     // ---------- Inspections ----------
 
     // ---------- Findings ----------
-
-    [Fact]
-    public async Task Findings_KeepTheirFilters_AndOfferRaiseAndCloseByStatus()
-    {
-        var html = await Render<FindingController>("/Views/Finding/Index.cshtml", new List<Finding>
-        {
-            new() { FindingId = 1, EquipmentId = 3, Condition = "Alarm", Description = "High vibration", Status = "Open", ObservedAt = new DateTime(2026, 10, 3), InspectionRecordId = 5 },
-            new() { FindingId = 2, EquipmentId = 3, Condition = "Warning", Description = "Hot bearing", Status = "Closed", ObservedAt = new DateTime(2026, 10, 4) },
-        }, v => { v["SelectedEquipmentId"] = 3; v["SelectedStatus"] = null; });
-
-        AssertBuiltFromTheComponent(html, null, 2);
-        Assert.Matches("<h2[^>]*>(Findings|Fn_Title)</h2>", html);              // the toolbar heading replaces _PageHeader
-        Assert.Matches("<span class=\"lp-badge\">1<", html);
-        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
-        Assert.Single(Regex.Matches(html, "name=\"findingId\""));                // raise only for the open finding
-        Assert.Single(Regex.Matches(html, "name=\"id\" value=\""));              // close only for the one not closed
-        Assert.Contains("vs-pill--danger", html);                                // alarm condition
-    }
 
     // ---------- Maintenance plans ----------
 

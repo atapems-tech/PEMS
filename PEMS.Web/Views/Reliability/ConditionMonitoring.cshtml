@@ -32,7 +32,7 @@
 }
 
 <pems-flex justify="end" align="center" gap="2" css="mb-2">
-    <pems-button tone="danger" size="small" outline="true" as="a" asp-controller="Finding" asp-action="Index" asp-route-equipmentId="@equipmentId"><pems-icon name="bi-flag" /> @Localizer["Findings"]</pems-button>
+    <pems-button tone="danger" size="small" outline="true" as="a" href="/p/findings?equipmentId=@equipmentId"><pems-icon name="bi-flag" /> @Localizer["Findings"]</pems-button>
     <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["← Reliability"]</pems-button>
 </pems-flex>
 <pems-text class="text-muted small">
@@ -211,7 +211,8 @@
 }
 
 <pems-modal size="large" id="raiseFindingModal" tabindex="-1">
-        <pems-form asp-controller="Finding" asp-action="CreateFromReading" method="post">
+        <pems-form action="/a/finding-create-from-reading" method="post">
+            <input type="hidden" name="equipmentId" value="@equipmentId" />
             <input type="hidden" name="conditionReadingId" id="raiseFindingReadingId" />
             <pems-modal-header>@Localizer["Raise Finding"] — <span id="raiseFindingPointLabel"></span></pems-modal-header>
             <pems-modal-body>
