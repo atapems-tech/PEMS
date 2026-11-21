@@ -112,7 +112,7 @@ public static class NavigationMenuDefaults
         Sub("proc.sub.warehouse", "sec.procurement", 40, "Warehouse"),
         new("proc.wh.dashboard", "proc.sub.warehouse", L, 10, "Dashboard", "bi-speedometer2", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/inventory"),   // SCRUM-652: a definition page (/p/...)
         new("proc.wh.material", "proc.sub.warehouse", L, 20, "Material Master", "bi-box-seam", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/material-items"),   // SCRUM-656: a definition page (/p/...)
-        Link("proc.wh.irn", "proc.sub.warehouse", 30, "Incoming Receipts (IRN)", "bi-truck", "IrnReceipt", area: "Warehouse", rule: "Module:Inventory&Perm:IRN.View"),
+        new("proc.wh.irn", "proc.sub.warehouse", L, 30, "Incoming Receipts (IRN)", "bi-truck", "Module:Inventory&Perm:IRN.View", ExternalPath: "/p/irn-receipts"),   // SCRUM-655: a definition page (/p/...)
         new("proc.wh.ledger", "proc.sub.warehouse", L, 40, "Transaction Ledger", "bi-list-ul", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/inventory-ledger"),   // SCRUM-654: a definition page (/p/...)
         new("proc.wh.sr", "proc.sub.warehouse", L, 50, "Store Requisitions", "bi-clipboard-check", "Module:Inventory&Perm:StoreRequisition.View", BadgeKey: NavigationBadges.StoreRequisitionsAwaitingApproval, ExternalPath: "/p/store-requisitions"),   // SCRUM-664: a definition page (/p/...)
         new("proc.wh.replenishment", "proc.sub.warehouse", L, 60, "Repl_Menu", "bi-cart-plus", "Module:Inventory&Flag:Replenishment", ExternalPath: "/p/replenishment"),   // SCRUM-663: a definition page (/p/...)

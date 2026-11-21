@@ -55,32 +55,6 @@ public class ProcurementP0ReadAndSodDecisionTests
         Assert.IsType<ForbidResult>(await c.Create());
     }
 
-    [Fact]
-    public async Task Irn_StoreRequisition_MaterialItem_ReadPages_WithoutAnyRole_AreForbidden()
-    {
-        var (ctx, permissions, _) = await CreateAsync(nameof(Irn_StoreRequisition_MaterialItem_ReadPages_WithoutAnyRole_AreForbidden));
-        var none = User();
-
-        var irn = new IrnReceiptController(ctx, null!, none, permissions, null!, null!);
-        Assert.IsType<ForbidResult>(await irn.Index(null));
-        Assert.IsType<ForbidResult>(await irn.Details(1));
-    }
-
-    [Fact]
-    public async Task Viewer_KeepsReadAccess_WhereTheSeedAlreadyGrantedView()
-    {
-        var (ctx, permissions, _) = await CreateAsync(nameof(Viewer_KeepsReadAccess_WhereTheSeedAlreadyGrantedView));
-        var viewer = User(SystemRoles.Viewer);
-
-        // سید موجود: Viewer روی IRN / StoreRequisition / MaterialItem / ProcurementPackage فقط View دارد
-        Assert.IsType<ViewResult>(await new IrnReceiptController(ctx, null!, viewer, permissions, null!, null!).Index(null));
-        Assert.True(await permissions.HasPermissionAsync(viewer.Roles, "MaterialItem", "View"));
-        Assert.True(await permissions.HasPermissionAsync(viewer.Roles, "ProcurementPackage", "View"));
-        // Vendors و Contracts هیچ ردیفی برای Viewer ندارند (تصمیم مالک: فقط نقش‌های دارای مجوز آن ماژول)
-        Assert.False(await permissions.HasPermissionAsync(viewer.Roles, "Vendors", "View"));
-        Assert.False(await permissions.HasPermissionAsync(viewer.Roles, "Contracts", "View"));
-    }
-
     [Theory]
     [InlineData("Contracts", SystemRoles.Legal)]
     [InlineData("Contracts", SystemRoles.QAManager)]

@@ -79,7 +79,7 @@ public static class ImportCatalog
 
         // ---- Inventory
         new("Mrs", Category.Inventory, "MrsImport", "Index", LaunchMode.Page, ".xlsx, .xlsm", null, true, Workflow.StagedReview, "MrsImport",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-excel", "Warehouse"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-excel", "Warehouse", Url: "/p/mrs-import"),   // SCRUM-657: a definition page
 
         // ---- Organization: direct imports (existing POST Department/Import, Employee/Import); controllers carry
         // [Authorize(Roles=SystemAdmin,EngineeringManager)], the card keeps the narrower legacy sidebar exposure (SystemAdmin).

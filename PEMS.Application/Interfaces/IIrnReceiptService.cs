@@ -10,8 +10,10 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface IIrnReceiptService
 {
+    [PEMS.Application.Common.PemsOperation("Irn", "Submit", "IRN.Create")]
     Task<(bool Success, string? Error)> SubmitAsync(int irnReceiptId, string? reason, int? changedByEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("Irn", "Cancel", "IRN.Create")]
     Task<(bool Success, string? Error)> CancelAsync(int irnReceiptId, string? reason, int? changedByEmployeeId);
 
     Task<(bool Success, string? Error, int? DispositionRecordId)> RecordDispositionAsync(

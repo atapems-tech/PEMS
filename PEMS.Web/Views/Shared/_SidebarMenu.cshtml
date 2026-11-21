@@ -344,7 +344,7 @@
                     <pems-icon name="bi-box-seam" /> @Localizer["Material Master"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("IrnReceipt", "Warehouse"))" asp-controller="IrnReceipt" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/irn-receipts" active="@(IsActive("IrnReceipt", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/irn-"))">
                     <pems-icon name="bi-truck" /> @Localizer["Incoming Receipts (IRN)"]
                 </pems-nav-link>
 
