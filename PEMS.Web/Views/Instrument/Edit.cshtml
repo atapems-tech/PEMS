@@ -1,4 +1,4 @@
-@model PEMS.Domain.Entities.Instrument
+﻿@model PEMS.Domain.Entities.Instrument
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -15,7 +15,7 @@
 </pems-content-card>
 
 <pems-content-card>
-    <pems-form asp-action="Edit" method="post">
+    <pems-form action="/a/instrument-edit" method="post">
         <input type="hidden" name="instrumentId" value="@Model.InstrumentId" />
 
         <pems-heading level="6" class="mb-2">General</pems-heading>

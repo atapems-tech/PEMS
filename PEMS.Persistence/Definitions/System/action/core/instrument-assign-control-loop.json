@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "instrument-assign-control-loop",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign control loop",
+    "fa": "تخصیص حلقه کنترل"
+  },
+  "description": {
+    "en": "Assign control loop",
+    "fa": "تخصیص حلقه کنترل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "AssignControlLoop",
+      "args": {
+        "instrumentId": "field:instrumentId",
+        "loopNumber": "field:loopNumber",
+        "description": "field:description",
+        "processArea": "field:processArea",
+        "controllerType": "field:controllerType",
+        "controllerSystem": "field:controllerSystem"
+      }
+    },
+    "success": {
+      "en": "Control loop recorded.",
+      "fa": "Control Loop ثبت شد."
+    },
+    "redirect": "/Instrument/Passport/{instrumentId}"
+  }
+}

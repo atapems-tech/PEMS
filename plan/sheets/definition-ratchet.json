@@ -216,7 +216,7 @@
     "PEMS.Web.Controllers.FunctionalLocationImportController": 3,
     "PEMS.Web.Controllers.HelpController": 3,
     "PEMS.Web.Controllers.HomeController": 4,
-    "PEMS.Web.Controllers.InstrumentController": 13,
+    "PEMS.Web.Controllers.InstrumentController": 7,
     "PEMS.Web.Controllers.LetterCartableController": 21,
     "PEMS.Web.Controllers.LetterComposeController": 14,
     "PEMS.Web.Controllers.LetterController": 35,
