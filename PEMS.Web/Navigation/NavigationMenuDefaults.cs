@@ -159,7 +159,7 @@ public static class NavigationMenuDefaults
         new("cmms.kpi", "sec.cmms", L, 210, "KPI Dashboard", "bi-speedometer2", "CmmsItem:Kpi", ExternalPath: "/p/kpi"),   // SCRUM-713: a definition page (/p/...)
         Link("cmms.permit", "sec.cmms", 220, "Permits", "bi-shield-check", "Permit", rule: "CmmsItem:Permit"),
         Link("cmms.fl", "sec.cmms", 230, "Functional Locations", "bi-diagram-3", "FunctionalLocation", rule: "CmmsItem:FunctionalLocation"),
-        Link("cmms.barcode", "sec.cmms", 240, "Barcode", "bi-upc-scan", "Barcode", rule: "CmmsItem:Barcode"),
+        new("cmms.barcode", "sec.cmms", L, 240, "Barcode", "bi-upc-scan", "CmmsItem:Barcode", ExternalPath: "/p/barcodes"),   // SCRUM-671: a definition page (/p/...)
 
         // ---- عملیات و تولید
         Section("sec.operations", 800, "Operations & Production", "bi-diagram-3-fill", "Module:Operations", "Production,ProductionOrder,ProductionRun"),

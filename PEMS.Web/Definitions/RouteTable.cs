@@ -20,7 +20,7 @@ namespace PEMS.Web.Definitions;
 public sealed class RouteDefinitionKind : IDefinitionKind
 {
     private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "pattern", "target", "permanent" };
-    public static readonly string[] HostPrefixes = ["/p/", "/f/", "/d/"];
+    public static readonly string[] HostPrefixes = ["/p/", "/f/", "/d/", "/x/"];
     private static readonly Regex Placeholder = new(@"\{([A-Za-z_][A-Za-z0-9_]*)\}", RegexOptions.Compiled);
 
     public string Key => "route";

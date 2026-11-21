@@ -59,6 +59,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Barcode as definition pages and a generic file host (SCRUM-671, 6b)
+
+### Changed
+- New generic input: a data source with the provider operation-file names a read operation whose answer is a file (Bytes, FileName, ContentType) or any object, and GET /x/{key} (FileHostController) serves it under the permission of the operation and the definition; OperationReader.InvokeAsync is the one place a read answer is produced for rows, choices and files; the route table accepts /x/ targets. /p/barcodes, /p/barcode-scan, /p/barcode-verify and /p/barcode-bulk with their forms replace BarcodeController: the SVG, PNG, label PDF, label sheet and the scan JSON are file sources, print and bulk generation are actions that download the label, the shared barcode panel links to the definition forms. The old routes redirect.
+
 ## 2026-11-21 - MRS import as definition pages (SCRUM-657)
 
 ### Changed

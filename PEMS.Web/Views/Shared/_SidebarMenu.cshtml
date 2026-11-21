@@ -633,7 +633,7 @@
                CmmsIntegration قرار گرفت (دقیقاً هم‌الگو با بقیه‌ی آیتم‌های این بخش). *@
             @if (navVisibility.IsCmmsItemVisible("Barcode"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Barcode"))" asp-controller="Barcode" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/barcodes" active="@(IsActive("Barcode") || Context.Request.Path.StartsWithSegments("/p/barcode"))">
                     <pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]
                 </pems-nav-link>
             }
