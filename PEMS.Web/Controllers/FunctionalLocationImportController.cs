@@ -78,45 +78,6 @@ public class FunctionalLocationImportController : Controller
         return View(batch);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ToggleRow(int rowId, bool include, int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocationImport", "Create"))
-            return Forbid();
-
-        await _importService.SetRowIncludeAsync(rowId, include);
-        return RedirectToAction(nameof(Review), new { batchId });
-    }
-
-    // پرریسک‌ترین اکشن این Pipeline - رکورد معتبر FunctionalLocation را می‌سازد/تغییر می‌دهد.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Commit(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocationImport", "Approve"))
-            return Forbid();
-
-        var result = await _importService.CommitBatchAsync(batchId);
-
-        TempData["Message"] = $"Functional Location Import committed: {result.Created} created, {result.Updated} updated, " +
-                               $"{result.Skipped} skipped, {result.Conflicts} conflicts, {result.Rejected} rejected.";
-
-        return RedirectToAction("Index", "FunctionalLocation");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Discard(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocationImport", "Delete"))
-            return Forbid();
-
-        await _importService.DiscardBatchAsync(batchId);
-        TempData["Message"] = "Functional Location import batch discarded.";
-        return RedirectToAction(nameof(Index));
-    }
-
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {
         if (!_currentUser.UserId.HasValue) return null;

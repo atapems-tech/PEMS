@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "fl-import-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit the batch",
+    "fa": "تأیید دسته"
+  },
+  "description": {
+    "en": "Commit the batch",
+    "fa": "تأیید دسته"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "FunctionalLocationImport",
+      "action": "Commit",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "Functional location import committed.",
+      "fa": "ورود مکان‌های عملیاتی تأیید شد."
+    },
+    "redirect": "/FunctionalLocation/Index"
+  }
+}

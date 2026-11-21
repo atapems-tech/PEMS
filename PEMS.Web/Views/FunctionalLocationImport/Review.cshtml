@@ -1,4 +1,4 @@
-@model PEMS.Application.DTOs.FunctionalLocationImportBatchDto
+﻿@model PEMS.Application.DTOs.FunctionalLocationImportBatchDto
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -26,13 +26,13 @@
     @if (Model.Status == "Staging")
     {
         <div class="pems-command-bar">
-            <pems-form asp-action="Commit" method="post">
+            <pems-form action="/a/fl-import-commit" method="post">
                 <input type="hidden" name="batchId" value="@Model.FunctionalLocationImportBatchId" />
                 <pems-button tone="primary" type="submit" data-pems-confirm="Commit the selected rows into the live Functional Locations register?">
                     <pems-icon name="bi-check-circle" /> Commit Selected Rows
                 </pems-button>
             </pems-form>
-            <pems-form asp-action="Discard" method="post">
+            <pems-form action="/a/fl-import-discard" method="post">
                 <input type="hidden" name="batchId" value="@Model.FunctionalLocationImportBatchId" />
                 <pems-button tone="danger" outline="true" type="submit" data-pems-confirm="Discard this entire import batch?">
                     <pems-icon name="bi-trash" /> Discard Batch
@@ -49,7 +49,7 @@
             var cell_40_0 = DataCell.Template(rows_40, @<text>@{ var r = item; }
                             @if (Model.Status == "Staging")
                             {
-                                <pems-form asp-action="ToggleRow" method="post">
+                                <pems-form action="/a/fl-import-toggle-row" method="post">
                                     <input type="hidden" name="rowId" value="@r.FunctionalLocationImportRowId" />
                                     <input type="hidden" name="batchId" value="@Model.FunctionalLocationImportBatchId" />
                                     <input type="hidden" name="include" value="@(!r.IncludeInCommit)" />
