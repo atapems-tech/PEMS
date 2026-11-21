@@ -97,7 +97,7 @@
     <pems-related-list id="tenderInvitations" icon="bi-envelope-paper" title="@Localizer["Tinv_Title"]" count="@invitationLog.Count">
         @if (canSend && emailEnabled)
         {
-            <pems-form asp-action="SendInvitations" method="post" class="px-3 pt-2">
+            <pems-form action="/a/tender-send-invitations" method="post" class="px-3 pt-2">
                 <input type="hidden" name="tenderId" value="@Model.TenderId" />
                 <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-envelope-paper" aria-hidden="true" /> @Localizer["Tinv_SendAll"]</pems-button>
             </pems-form>
@@ -144,7 +144,7 @@
                                 <pems-table-cell>
                                     @if (canSend && emailEnabled && d.Status is "Failed" or "Skipped")
                                     {
-                                        <pems-form asp-action="SendInvitations" method="post" class="d-inline">
+                                        <pems-form action="/a/tender-send-invitations" method="post" class="d-inline">
                                             <input type="hidden" name="tenderId" value="@Model.TenderId" />
                                             <input type="hidden" name="vendorIds" value="@d.VendorId" />
                                             <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Tinv_Resend"]</pems-button>
@@ -269,7 +269,7 @@
             }
             @if (c.ActionStatus != "Closed")
             {
-                <pems-form class="mt-2" asp-action="RespondClarification" method="post"><pems-flex gap="1">
+                <pems-form class="mt-2" action="/a/tender-respond-clarification" method="post"><pems-flex gap="1">
                     <input type="hidden" name="tenderId" value="@Model.TenderId" />
                     <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
                     <input type="hidden" name="communicationId" value="@c.ProcurementCommunicationId" />
@@ -279,7 +279,7 @@
             }
         </div>
     }
-    <pems-form asp-action="RaiseClarification" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
+    <pems-form action="/a/tender-raise-clarification" method="post"><pems-row gap="2" css="m-0 px-2 py-2 lp-rel-add">
         <input type="hidden" name="tenderId" value="@Model.TenderId" />
         <input type="hidden" name="procurementPackageId" value="@Model.ProcurementPackageId" />
         <pems-col md="2">

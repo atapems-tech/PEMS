@@ -35,23 +35,6 @@ public class TenderController : Controller
         _accessControl = accessControl;
     }
 
-    public async Task<IActionResult> Index(int? procurementPackageId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "View"))
-            return Forbid();
-
-        ViewData["Title"] = "Tenders";
-        ViewData["Section"] = "Engineering Management";
-
-        var query = _context.Tenders.Include(x => x.ProcurementPackage).AsQueryable();
-        if (procurementPackageId.HasValue)
-            query = query.Where(x => x.ProcurementPackageId == procurementPackageId.Value);
-
-        var tenders = await query.OrderByDescending(x => x.TenderId).ToListAsync();
-        ViewBag.ProcurementPackageId = procurementPackageId;
-        return View(tenders);
-    }
-
     public async Task<IActionResult> Details(int id, [FromServices] ITenderInvitationService invitations)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "View"))
@@ -96,85 +79,6 @@ public class TenderController : Controller
     /// The text comes from the resources in the sender's language; sending runs in the background (Hangfire) with retry.
     /// Same permission as managing the tender.
     /// </summary>
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SendInvitations(int tenderId, int[]? vendorIds,
-        [FromServices] ITenderInvitationService invitations, [FromServices] IBackgroundJobClient jobs,
-        [FromServices] Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource> localizer,
-        [FromServices] IConfiguration configuration)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Edit"))
-            return Forbid();
-
-        var template = new TenderInvitationTemplate(localizer["Tinv_MailSubject"].Value, localizer["Tinv_MailBody"].Value,
-            System.Globalization.CultureInfo.CurrentUICulture, configuration["Letterhead:CompanyName"]);
-        var result = await invitations.QueueAsync(tenderId, template, _currentUser.UserName,
-            vendorIds is { Length: > 0 } ? vendorIds : null);
-        if (result.Error != null)
-        {
-            TempData["Error"] = localizer[result.Error].Value;
-            return RedirectToAction(nameof(Details), new { id = tenderId });
-        }
-
-        foreach (var dispatchId in result.QueuedDispatchIds)
-            jobs.Enqueue<ITenderInvitationService>(s => s.SendAsync(dispatchId));
-        TempData["Message"] = string.Format(localizer["Tinv_Queued"].Value, result.QueuedDispatchIds.Count, result.SkippedWithoutEmail);
-        return RedirectToAction(nameof(Details), new { id = tenderId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RaiseClarification(int tenderId, int procurementPackageId, string type, string subject, string body, int? vendorId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Edit"))
-            return Forbid();
-
-        await _packageService.AddCommunicationAsync(procurementPackageId, type, subject, body, vendorId, _currentUser.FullName, null, tenderId);
-        TempData["Message"] = "Clarification raised";
-        return RedirectToAction(nameof(Details), new { id = tenderId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RespondClarification(int tenderId, int procurementPackageId, int communicationId, string responseText)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Edit"))
-            return Forbid();
-
-        await _packageService.RespondToCommunicationAsync(procurementPackageId, communicationId, responseText, _currentUser.FullName);
-        TempData["Message"] = "Response recorded";
-        return RedirectToAction(nameof(Details), new { id = tenderId });
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Create(int procurementPackageId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Create"))
-            return Forbid();
-
-        ViewData["Title"] = "New Tender";
-        ViewData["Section"] = "Engineering Management";
-        ViewBag.ProcurementPackageId = procurementPackageId;
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(int procurementPackageId, string title, DateTime? issueDate,
-        DateTime? responseDeadline, bool requiresVendorQualification, string? technicalRequirements,
-        string? commercialRequirements, string? inspectionRequirements, string? contractualRequirements)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Tender", "Create"))
-            return Forbid();
-
-        var id = await _service.CreateAsync(procurementPackageId, title, issueDate, responseDeadline,
-            requiresVendorQualification, technicalRequirements, commercialRequirements,
-            inspectionRequirements, contractualRequirements);
-
-        TempData["Message"] = "Tender created";
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
     // SCRUM-437: InviteVendor, OpenForBidding, CloseBidding, SubmitBid, RecordEvaluation and RequestNegotiation are action definitions (tender-*) over the Tender operations.
     // ApproveNegotiation, SelectWinner and CreateContract stay here: they carry separation-of-duties guards that are not yet a generic guard of an action definition.
 

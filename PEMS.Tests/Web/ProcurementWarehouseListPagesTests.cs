@@ -21,11 +21,6 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class ProcurementWarehouseListPagesTests
 {
-    private static readonly string[] Pages =
-    {
-        "Views/Tender",
-        "Areas/Warehouse/Views/PartCatalogueRequest",
-    };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
     {
@@ -60,20 +55,6 @@ public class ProcurementWarehouseListPagesTests
 
     // ---------- procurement ----------
 
-    [Fact]
-    public async Task Tenders_FromAPackage_ShowThePackageChip_AndOfferNewForThatPackage()
-    {
-        var tender = new Tender { TenderId = 5, TenderNumber = "TND-5", Title = "Pumps", Status = "Open", ProcurementPackage = new ProcurementPackage { PackageNumber = "PKG-9" } };
-        var filtered = await Render<TenderController>("/Views/Tender/Index.cshtml", new List<Tender> { tender }, v => v["ProcurementPackageId"] = 9);
-        var all = await Render<TenderController>("/Views/Tender/Index.cshtml", new List<Tender> { tender }, v => v["ProcurementPackageId"] = null);
-
-        AssertBuiltFromTheComponent(filtered, "Tender", 1);
-        Assert.Contains("PKG-9", Chips(filtered));
-        Assert.Contains("lp-compose", filtered);                                          // New starts a tender in this package
-        Assert.DoesNotContain("lp-compose", all);                                         // without a package there is no New
-        Assert.Contains("vs-pill vs-pill--info", all);
-    }
-
     // ---------- warehouse ----------
 
     private static string RepoWeb()
@@ -84,17 +65,4 @@ public class ProcurementWarehouseListPagesTests
         return Path.Combine(dir!.FullName, "PEMS.Web");
     }
 
-    [Fact]
-    public void EveryWave3Page_UsesTheComponentAndItsAssets()
-    {
-        foreach (var page in Pages)
-        {
-            var view = File.ReadAllText(Path.Combine(RepoWeb(), page.Replace('/', Path.DirectorySeparatorChar), "Index.cshtml"));
-            Assert.Contains("<pems-list-page", view);
-            Assert.Contains("_content/PEMS.UI/pems-list.css", view);
-            Assert.Contains("_content/PEMS.UI/pems-list.js", view);
-            Assert.DoesNotContain("PemsDataGrid.initColumnResize", view);
-            Assert.DoesNotContain("class=\"alert alert-", view);
-        }
-    }
 }

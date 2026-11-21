@@ -103,7 +103,7 @@ public static class NavigationMenuDefaults
         new("proc.preprocurement", "proc.sub.purchasing", L, 5, "Ppr_Title", "bi-inbox", "Perm:PreProcurement.View", ExternalPath: "/p/pre-procurement"),   // SCRUM-735: a definition page (/p/...)
         new("proc.mr", "proc.sub.purchasing", L, 10, "Material Requisition", "bi-cart-check", "Module:EngineeringManagement&Perm:MaterialRequisition.View", ExternalPath: "/p/material-requisitions"),   // SCRUM-726: a definition page (/p/...)
         new("proc.package", "proc.sub.purchasing", L, 20, "ProcurementPackage", "bi-folder2-open", "Module:EngineeringManagement&Perm:ProcurementPackage.View", ExternalPath: "/p/procurement-packages"),   // SCRUM-736: a definition page (/p/...)
-        Link("proc.tender", "proc.sub.purchasing", 30, "Tender", "bi-clipboard-check", "Tender", rule: "Module:EngineeringManagement&Perm:Tender.View"),
+        new("proc.tender", "proc.sub.purchasing", L, 30, "Tender", "bi-clipboard-check", "Module:EngineeringManagement&Perm:Tender.View", ExternalPath: "/p/tenders"),   // SCRUM-759: a definition page (/p/...)
         new("proc.po", "proc.sub.purchasing", L, 40, "Purchase Orders", "bi-receipt", "Module:ContractManagement&Perm:PurchaseOrder.View", ExternalPath: "/p/purchase-orders"),   // SCRUM-741: a definition page (/p/...)
         Sub("proc.sub.contracts", "sec.procurement", 30, "Contracts"),
         new("proc.contracts", "proc.sub.contracts", L, 10, "Contracts", "bi-file-earmark-ruled", "Module:ContractManagement&Perm:Contracts.View", ExternalPath: "/p/contracts"),   // SCRUM-676: a definition page (/p/...)
