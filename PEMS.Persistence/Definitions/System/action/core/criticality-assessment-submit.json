@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "criticality-assessment-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit for review",
+    "fa": "ارسال برای بازبینی"
+  },
+  "description": {
+    "en": "Submit for review",
+    "fa": "ارسال برای بازبینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "SubmitForReview",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Submitted for review.",
+      "fa": "برای بازبینی ارسال شد."
+    },
+    "redirect": "/CriticalityAssessment/Details/{id}"
+  }
+}

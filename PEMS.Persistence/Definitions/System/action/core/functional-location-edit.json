@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "functional-location-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit functional location",
+    "fa": "ویرایش محل عملکردی"
+  },
+  "description": {
+    "en": "Edit functional location",
+    "fa": "ویرایش محل عملکردی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "FunctionalLocation",
+      "action": "Edit",
+      "args": {
+        "id": "field:id",
+        "code": "field:code",
+        "name": "field:name",
+        "parentId": "field:parentId",
+        "plant": "field:plant",
+        "area": "field:area",
+        "unit": "field:unit",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Functional Location updated",
+      "fa": "محل عملکردی به‌روز شد"
+    },
+    "redirect": "/FunctionalLocation/Index",
+    "redirectBack": true
+  }
+}

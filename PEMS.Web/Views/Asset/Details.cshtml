@@ -106,7 +106,7 @@
 </pems-row>
 
 <pems-modal id="editAssetModal" tabindex="-1">
-            <pems-form asp-action="Edit" method="post">
+            <pems-form action="/a/asset-edit" method="post">
                 <input type="hidden" name="assetId" value="@Model.AssetId" />
                 <pems-modal-header>@Localizer["Edit Asset"]</pems-modal-header>
                 <pems-modal-body>

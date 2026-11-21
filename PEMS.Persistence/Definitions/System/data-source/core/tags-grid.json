@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "tags-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tags",
+    "fa": "برچسب‌ها"
+  },
+  "description": {
+    "en": "Tags",
+    "fa": "برچسب‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Tag",
+      "action": "List",
+      "args": {}
+    }
+  }
+}

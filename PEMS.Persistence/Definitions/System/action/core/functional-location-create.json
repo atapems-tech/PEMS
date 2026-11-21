@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "functional-location-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New functional location",
+    "fa": "محل عملکردی جدید"
+  },
+  "description": {
+    "en": "New functional location",
+    "fa": "محل عملکردی جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "FunctionalLocation",
+      "action": "Create",
+      "args": {
+        "code": "field:code",
+        "name": "field:name",
+        "parentId": "field:parentId",
+        "plant": "field:plant",
+        "area": "field:area",
+        "unit": "field:unit",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Functional Location created",
+      "fa": "محل عملکردی ایجاد شد"
+    },
+    "redirect": "/FunctionalLocation/Index",
+    "redirectBack": true
+  }
+}

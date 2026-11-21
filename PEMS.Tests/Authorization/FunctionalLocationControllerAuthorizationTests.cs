@@ -60,52 +60,36 @@ public class FunctionalLocationControllerAuthorizationTests
         Assert.IsType<PagedResult<FunctionalLocationListDto>>(view.Model);
     }
 
-    [Fact]
-    public async Task Create_WithoutCreatePermission_ReturnsForbid()
+    // Create and Edit are the operations FunctionalLocation.Create / Edit (permissions FunctionalLocation.Create / Edit, SCRUM-700); the operation host refuses a role without them.
+    private static (PEMS.Web.Services.AssetRegisterOperations Ops, PEMS.Persistence.Context.PEMSDbContext Ctx) Operations(string name)
     {
-        var (controller, _) = await CreateController(nameof(Create_WithoutCreatePermission_ReturnsForbid), role: SystemRoles.Viewer);
-
-        var result = await controller.Create("FL-001", "Test", null, null, null, null, null);
-
-        Assert.IsType<ForbidResult>(result);
+        var ctx = PemsDbContextFactory.CreateInMemory($"FLOps_{name}");
+        var ops = new PEMS.Web.Services.AssetRegisterOperations(null!, new FunctionalLocationService(ctx), null!, new FakeCurrentUserService { UserName = "tester" });
+        return (ops, ctx);
     }
 
     [Fact]
-    public async Task Create_WithCreatePermission_CreatesFunctionalLocation()
+    public async Task CreateOperation_CreatesFunctionalLocation()
     {
-        var (controller, ctx) = await CreateController(nameof(Create_WithCreatePermission_CreatesFunctionalLocation));
+        var (ops, ctx) = Operations(nameof(CreateOperation_CreatesFunctionalLocation));
 
-        var result = await controller.Create("FL-001", "Test", null, null, null, null, null);
+        var result = await ops.CreateLocationAsync("FL-001", "Test");
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success, result.Error);
         Assert.Single(ctx.FunctionalLocations);
     }
 
     [Fact]
-    public async Task Edit_WithoutEditPermission_ReturnsForbid()
+    public async Task EditOperation_UpdatesFunctionalLocation()
     {
-        var (controller, ctx) = await CreateController(nameof(Edit_WithoutEditPermission_ReturnsForbid), role: SystemRoles.Viewer);
+        var (ops, ctx) = Operations(nameof(EditOperation_UpdatesFunctionalLocation));
         var fl = new FunctionalLocation { FunctionalLocationId = 1, Code = "FL-001", Name = "Test", IsActive = true };
         ctx.FunctionalLocations.Add(fl);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.Edit(fl.FunctionalLocationId, "FL-001", "Renamed", null, null, null, null, null);
+        var result = await ops.EditLocationAsync(fl.FunctionalLocationId, "FL-001", "Renamed");
 
-        Assert.IsType<ForbidResult>(result);
-        Assert.Equal("Test", ctx.FunctionalLocations.Single().Name);
-    }
-
-    [Fact]
-    public async Task Edit_WithEditPermission_UpdatesFunctionalLocation()
-    {
-        var (controller, ctx) = await CreateController(nameof(Edit_WithEditPermission_UpdatesFunctionalLocation));
-        var fl = new FunctionalLocation { FunctionalLocationId = 1, Code = "FL-001", Name = "Test", IsActive = true };
-        ctx.FunctionalLocations.Add(fl);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.Edit(fl.FunctionalLocationId, "FL-001", "Renamed", null, null, null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success, result.Error);
         Assert.Equal("Renamed", ctx.FunctionalLocations.Single().Name);
     }
 }

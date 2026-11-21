@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "qc-itp-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve and activate ITP",
+    "fa": "تأیید و فعال‌سازی ITP"
+  },
+  "description": {
+    "en": "Approve and activate ITP",
+    "fa": "تأیید و فعال‌سازی ITP"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Qc",
+      "action": "ItpApprove",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "ITP approved and activated.",
+      "fa": "ITP تایید و فعال شد."
+    },
+    "redirect": "/QC/ItpDetails/{id}"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mechanical-equipment-toggle-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate or deactivate mechanical equipment",
+    "fa": "فعال یا غیرفعال کردن تجهیز مکانیکی"
+  },
+  "description": {
+    "en": "Activate or deactivate mechanical equipment",
+    "fa": "فعال یا غیرفعال کردن تجهیز مکانیکی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MechanicalEquipment",
+      "action": "ToggleActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Mechanical equipment updated.",
+      "fa": "وضعیت Mechanical Equipment به‌روزرسانی شد."
+    },
+    "redirect": "/MechanicalEquipment/Index"
+  }
+}

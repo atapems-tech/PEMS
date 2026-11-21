@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "reliability-cm-reading-record",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record reading",
+    "fa": "ثبت قرائت"
+  },
+  "description": {
+    "en": "Record reading",
+    "fa": "ثبت قرائت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "RecordConditionReading",
+      "args": {
+        "pointId": "field:pointId",
+        "readingDate": "field:readingDate",
+        "value": "field:value",
+        "source": "field:source",
+        "notes": "field:notes",
+        "instrumentId": "field:instrumentId"
+      }
+    },
+    "success": {
+      "en": "Reading recorded.",
+      "fa": "قرائت ثبت شد."
+    },
+    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+  }
+}

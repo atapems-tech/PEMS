@@ -57,26 +57,6 @@ public class AssetController : Controller
         return View(result);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        int equipmentId, string assetNumber, string? functionalLocation, string? maintenanceClass,
-        DateTime? commissioningDate, string status, string? description, int? functionalLocationId)
-    {
-        var (success, error, assetId) = await _assetService.CreateAsync(
-            equipmentId, assetNumber, functionalLocation, maintenanceClass, commissioningDate,
-            status, description, _currentUser.UserName, functionalLocationId);
-
-        if (!success)
-        {
-            TempData["Error"] = error;
-            return RedirectToAction(nameof(Index));
-        }
-
-        TempData["Message"] = "Asset created";
-        return RedirectToAction(nameof(Details), new { id = assetId });
-    }
-
     public async Task<IActionResult> Details(int id)
     {
         ViewData["Title"] = "Asset Details";
@@ -88,28 +68,5 @@ public class AssetController : Controller
         ViewBag.FunctionalLocations = await _functionalLocationService.GetPickerListAsync();
 
         return View(asset);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(
-        int assetId, string assetNumber, string? functionalLocation, string? maintenanceClass,
-        DateTime? commissioningDate, string status, string? description, int? functionalLocationId)
-    {
-        var (success, error) = await _assetService.UpdateAsync(
-            assetId, assetNumber, functionalLocation, maintenanceClass, commissioningDate,
-            status, description, _currentUser.UserName, functionalLocationId);
-
-        TempData[success ? "Message" : "Error"] = success ? "Asset updated" : error;
-        return RedirectToAction(nameof(Details), new { id = assetId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ToggleActive(int id)
-    {
-        await _assetService.ToggleActiveAsync(id, _currentUser.UserName);
-        TempData["Message"] = "Asset status updated";
-        return RedirectToAction(nameof(Index));
     }
 }

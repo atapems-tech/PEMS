@@ -57,34 +57,4 @@ public class FunctionalLocationController : Controller
             hasMore = result.HasMore
         });
     }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        string code, string name, int? parentId, string? plant, string? area, string? unit, string? description)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "Create"))
-            return Forbid();
-
-        var (success, error, _) = await _service.CreateAsync(
-            code, name, parentId, plant, area, unit, description, _currentUser.UserName);
-
-        TempData[success ? "Message" : "Error"] = success ? "Functional Location created" : error;
-        return RedirectToAction(nameof(Index));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(
-        int id, string code, string name, int? parentId, string? plant, string? area, string? unit, string? description)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "Edit"))
-            return Forbid();
-
-        var (success, error) = await _service.UpdateAsync(
-            id, code, name, parentId, plant, area, unit, description, _currentUser.UserName);
-
-        TempData[success ? "Message" : "Error"] = success ? "Functional Location updated" : error;
-        return RedirectToAction(nameof(Index));
-    }
 }

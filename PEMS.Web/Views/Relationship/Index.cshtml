@@ -30,7 +30,7 @@
         <pems-text class="text-danger mb-2"><pems-icon name="bi-exclamation-triangle" /> @TempData["Error"]</pems-text>
         @if (TempData["ConflictEquipmentId"] != null)
         {
-            <pems-form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+            <pems-form action="/a/relationship-confirm-link" method="post" class="d-inline">
                 <input type="hidden" name="equipmentId" value="@TempData["ConflictEquipmentId"]" />
                 <input type="hidden" name="targetType" value="@TempData["ConflictTargetType"]" />
                 <input type="hidden" name="targetId" value="@TempData["ConflictTargetId"]" />
@@ -96,7 +96,7 @@ else
                             @suggestion.Label
                             <span class="text-muted small">@suggestion.SubLabel</span>
                         </span>
-                        <pems-form asp-action="ConfirmSuggestedLink" method="post" class="d-inline">
+                        <pems-form action="/a/relationship-confirm-link" method="post" class="d-inline">
                             <input type="hidden" name="equipmentId" value="@Model.RootId" />
                             <input type="hidden" name="targetType" value="@suggestion.NodeType" />
                             <input type="hidden" name="targetId" value="@suggestion.NodeId" />

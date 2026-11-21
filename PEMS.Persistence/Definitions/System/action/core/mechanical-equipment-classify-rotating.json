@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "mechanical-equipment-classify-rotating",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Classify as rotating",
+    "fa": "ثبت زیررده Rotating"
+  },
+  "description": {
+    "en": "Classify as rotating",
+    "fa": "ثبت زیررده Rotating"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MechanicalEquipment",
+      "action": "ClassifyRotating",
+      "args": {
+        "mechanicalEquipmentId": "field:mechanicalEquipmentId",
+        "equipmentType": "field:equipmentType",
+        "flowRate": "field:flowRate",
+        "head": "field:head",
+        "speedRPM": "field:speedRPM",
+        "powerKW": "field:powerKW",
+        "driverType": "field:driverType",
+        "bearingType": "field:bearingType",
+        "lubricationType": "field:lubricationType",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Rotating sub-class recorded.",
+      "fa": "زیررده‌ی Rotating Equipment ثبت شد."
+    },
+    "redirect": "/MechanicalEquipment/Passport/{mechanicalEquipmentId}"
+  }
+}

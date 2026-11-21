@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "rcm-fmea-add-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add FMEA item",
+    "fa": "افزودن ردیف FMEA"
+  },
+  "description": {
+    "en": "Add FMEA item",
+    "fa": "افزودن ردیف FMEA"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "AddFmeaItem",
+      "args": {
+        "fmeaAnalysisId": "field:fmeaAnalysisId",
+        "failureModeId": "field:failureModeId",
+        "functionalFailureId": "field:functionalFailureId",
+        "detectionMethod": "field:detectionMethod",
+        "existingControl": "field:existingControl",
+        "recommendedAction": "field:recommendedAction",
+        "severity": "field:severity",
+        "occurrence": "field:occurrence",
+        "detectability": "field:detectability",
+        "maintenanceStrategyTypeId": "field:maintenanceStrategyTypeId",
+        "standardReferenceId": "field:standardReferenceId"
+      }
+    },
+    "success": {
+      "en": "FMEA item added.",
+      "fa": "ردیف FMEA اضافه شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "reliability-cm-reading-mark-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark for engineering review",
+    "fa": "علامت‌گذاری برای بازبینی مهندسی"
+  },
+  "description": {
+    "en": "Mark for engineering review",
+    "fa": "علامت‌گذاری برای بازبینی مهندسی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "MarkRequiresEngineeringReview",
+      "args": {
+        "readingId": "field:readingId"
+      }
+    },
+    "success": {
+      "en": "Reading marked for engineering review.",
+      "fa": "قرائت برای بازبینی مهندسی علامت‌گذاری شد."
+    },
+    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+  }
+}

@@ -22,13 +22,8 @@ public class EquipmentCriticalityConcurrencyTests
 {
     private const string IsolatedDbName = "PEMSDB_ConcurrencyTest";
 
-    private static EquipmentCriticalityController CreateController(PEMS.Persistence.Context.PEMSDbContext ctx)
-    {
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
-        var currentUser = new FakeCurrentUserService { Roles = new List<string> { SystemRoles.SystemAdmin } };
-        return new EquipmentCriticalityController(ctx, permissionService, currentUser).WithTempData();
-    }
+    private static PEMS.Web.Services.ReliabilityRegisterOperations CreateOperations(PEMS.Persistence.Context.PEMSDbContext ctx)
+        => new(ctx, null!, null!, new FakeCurrentUserService { Roles = new List<string> { SystemRoles.SystemAdmin } });
 
     [Fact]
     public async Task Assess_TenConcurrentRequestsSameEquipment_ExactlyOneActiveRecordPersisted()
@@ -180,10 +175,8 @@ public class EquipmentCriticalityConcurrencyTests
             // یک رکورد فعال (C) - باید مجاز باشد
             await using (var ctx = PemsDbContextFactory.CreateIsolatedSqlServerOrThrow(IsolatedDbName))
             {
-                var controller = CreateController(ctx);
-                var result = await controller.Assess(equipmentId, "A", null, null, null, null, null);
-                Assert.IsType<RedirectToActionResult>(result);
-                Assert.Null(controller.TempData["Error"]);
+                var result = await CreateOperations(ctx).AssessCriticalityAsync(equipmentId, "A");
+                Assert.True(result.Success, result.Error);
             }
 
             await using var verifyCtx = PemsDbContextFactory.CreateIsolatedSqlServerOrThrow(IsolatedDbName);

@@ -12,7 +12,7 @@
         <pems-badge tone="none" css="@(Model.Status == "Active" ? "bg-success" : Model.Status == "Draft" ? "bg-secondary" : "bg-info") fs-6">@Model.Status</pems-badge>
         @if (Model.Status == "Draft")
         {
-            <pems-form asp-action="ItpApprove" method="post">
+            <pems-form action="/a/qc-itp-approve" method="post">
                 <input type="hidden" name="id" value="@Model.InspectionTestPlanId" />
                 <pems-button tone="success" size="small"><pems-icon name="bi-check-lg" /> Approve &amp; Activate</pems-button>
             </pems-form>
@@ -50,7 +50,7 @@
         var cell_70_7 = DataCell.Template(rows_70, @<text>@{ var li = item; }<pems-flex dir="column" gap="1">
                         @if (li.InspectionCategory == "H" && li.Status == "Pending")
                         {
-                            <pems-form asp-action="ItpNotifyHoldPoint" method="post">
+                            <pems-form action="/a/qc-itp-notify-hold-point" method="post">
                                 <input type="hidden" name="lineItemId" value="@li.ITPLineItemId" />
                                 <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
                                 <pems-button tone="warning" size="small" css="w-100"><pems-icon name="bi-bell" /> Notify Hold Point</pems-button>
@@ -69,7 +69,7 @@
 
 <pems-content-card>
     <pems-heading level="6" class="mb-3"><pems-icon name="bi-plus-lg" /> Add Line Item</pems-heading>
-    <pems-form asp-action="ItpAddLineItem" method="post">
+    <pems-form action="/a/qc-itp-add-line-item" method="post">
         <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
         <pems-row gap="3">
             <pems-col md="6"><pems-label css="small">@Localizer["Activity"]</pems-label><pems-input scale="small" name="activity" required /></pems-col>
@@ -108,7 +108,7 @@
 </pems-content-card>
 
     <pems-modal id="inspectModal" tabindex="-1">
-    <pems-form asp-action="ItpPerformInspection" method="post">
+    <pems-form action="/a/qc-itp-perform-inspection" method="post">
     <input type="hidden" name="lineItemId" value="" />
     <input type="hidden" name="itpId" value="@Model.InspectionTestPlanId" />
     <pems-modal-header>Perform Inspection - <span data-fill-text="activity"></span></pems-modal-header>

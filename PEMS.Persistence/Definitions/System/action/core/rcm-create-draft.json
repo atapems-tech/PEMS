@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "rcm-create-draft",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create RCM draft",
+    "fa": "ایجاد پیش‌نویس RCM"
+  },
+  "description": {
+    "en": "Create RCM draft",
+    "fa": "ایجاد پیش‌نویس RCM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "CreateRcmDraft",
+      "args": {
+        "equipmentClassId": "field:equipmentClassId",
+        "fmeaAnalysisId": "field:fmeaAnalysisId"
+      }
+    },
+    "success": {
+      "en": "RCM draft created.",
+      "fa": "پیش‌نویس RCM ساخته شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

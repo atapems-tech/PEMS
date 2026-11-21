@@ -35,7 +35,7 @@
 {
     <pems-content-card css="mb-3">
         <pems-heading level="6" class="mb-3">@Localizer["Disposition"]</pems-heading>
-        <pems-form asp-action="NcrDisposition" method="post">
+        <pems-form action="/a/qc-ncr-disposition" method="post">
             <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
             <pems-row gap="3">
                 <pems-col md="4">
@@ -68,7 +68,7 @@ else if (Model.Status == "PendingApproval")
         <pems-heading level="6" class="mb-3"><pems-icon name="bi-hourglass-split" /> در انتظار تایید مدیر QA</pems-heading>
         <pems-text class="text-muted small">این NCR بحرانه و Disposition آن باید توسط مدیر QA تایید بشه قبل از بسته شدن.</pems-text>
         <pems-flex gap="2">
-            <pems-form asp-action="NcrApprove" method="post" class="d-inline">
+            <pems-form action="/a/qc-ncr-approve" method="post" class="d-inline">
                 <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
                 <input type="hidden" name="decision" value="Approve" />
                 <pems-button tone="success" size="small"><pems-icon name="bi-check-lg" /> تایید Disposition</pems-button>
@@ -78,7 +78,7 @@ else if (Model.Status == "PendingApproval")
     </pems-content-card>
 
     <pems-modal id="rejectDispositionModal" tabindex="-1">
-                <pems-form asp-action="NcrApprove" method="post">
+                <pems-form action="/a/qc-ncr-approve" method="post">
                     <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
                     <input type="hidden" name="decision" value="Reject" />
                     <pems-modal-header>رد Disposition</pems-modal-header>
@@ -94,7 +94,7 @@ else if (Model.Status == "PendingApproval")
 }
 else if (Model.Status == "Dispositioned")
 {
-    <pems-form asp-action="NcrClose" method="post">
+    <pems-form action="/a/qc-ncr-close" method="post">
         <input type="hidden" name="id" value="@Model.NonConformanceReportId" />
         <pems-button tone="success" size="small" type="submit"><pems-icon name="bi-check-lg" /> Close NCR</pems-button>
     </pems-form>

@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "asset-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New asset",
+    "fa": "دارایی جدید"
+  },
+  "description": {
+    "en": "New asset",
+    "fa": "دارایی جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Asset",
+      "action": "Create",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "assetNumber": "field:assetNumber",
+        "status": "field:status",
+        "functionalLocation": "field:functionalLocation",
+        "maintenanceClass": "field:maintenanceClass",
+        "commissioningDate": "field:commissioningDate",
+        "description": "field:description",
+        "functionalLocationId": "field:functionalLocationId"
+      }
+    },
+    "success": {
+      "en": "Asset created",
+      "fa": "دارایی ایجاد شد"
+    },
+    "redirect": "/Asset/Index",
+    "redirectBack": true
+  }
+}

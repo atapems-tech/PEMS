@@ -1,0 +1,63 @@
+{
+  "kind": "action",
+  "key": "instrument-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Update instrument",
+    "fa": "ویرایش ابزار"
+  },
+  "description": {
+    "en": "Update instrument",
+    "fa": "ویرایش ابزار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "Edit",
+      "args": {
+        "instrumentId": "field:instrumentId",
+        "instrumentType": "field:InstrumentType",
+        "loopNumber": "field:LoopNumber",
+        "system": "field:System",
+        "signalClass": "field:SignalClass",
+        "rangeMin": "field:RangeMin",
+        "rangeMax": "field:RangeMax",
+        "unit": "field:Unit",
+        "signalType": "field:SignalType",
+        "processVariable": "field:ProcessVariable",
+        "accuracy": "field:Accuracy",
+        "outputSignal": "field:OutputSignal",
+        "powerSupply": "field:PowerSupply",
+        "communication": "field:Communication",
+        "ipRating": "field:IPRating",
+        "processConnection": "field:ProcessConnection",
+        "electricalConnection": "field:ElectricalConnection",
+        "hazardousArea": "field:HazardousArea",
+        "exProtection": "field:ExProtection",
+        "zone": "field:Zone",
+        "gasGroup": "field:GasGroup",
+        "tempClass": "field:TempClass",
+        "failAction": "field:FailAction",
+        "alarmSetpoint": "field:AlarmSetpoint",
+        "tripSetpoint": "field:TripSetpoint",
+        "sil": "field:SIL",
+        "junctionBox": "field:JunctionBox",
+        "marshallingCabinet": "field:MarshallingCabinet",
+        "cableNumber": "field:CableNumber",
+        "barrierRelay": "field:BarrierRelay",
+        "ioCardChannel": "field:IOCardChannel",
+        "systemCabinet": "field:SystemCabinet",
+        "calibrationInterval": "field:CalibrationInterval",
+        "currentStatus": "field:CurrentStatus"
+      }
+    },
+    "success": {
+      "en": "Instrument updated.",
+      "fa": "ابزار به‌روزرسانی شد."
+    },
+    "redirect": "/Instrument/Passport/{instrumentId}"
+  }
+}

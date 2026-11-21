@@ -116,32 +116,10 @@ public class EquipmentClassificationAuthorizationTests
 
         var viewResult = await controller.ReviewQueue();
         Assert.IsType<ViewResult>(viewResult);
-
-        var acceptResult = await controller.Accept(1, null);
-        Assert.IsType<ForbidResult>(acceptResult);
+        // Accept and Reject are the operations EquipmentClassification.Accept / Reject (MaintenanceMasterData.Edit, SCRUM-691): the operation host refuses a role without Edit
     }
 
-    [Fact]
-    public async Task Accept_RoleWithEditPermission_Succeeds()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Accept_RoleWithEditPermission_Succeeds), role: SystemRoles.MaintenanceEngineer);
-        var controller = CreateController(new FakeClassificationService(), user, perms);
 
-        var result = await controller.Accept(1, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-    }
-
-    [Fact]
-    public async Task Reject_NoEditPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Reject_NoEditPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(new FakeClassificationService(), user, perms);
-
-        var result = await controller.Reject(1, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
 
     [Fact]
     public async Task Coverage_NoPermission_ReturnsForbid()

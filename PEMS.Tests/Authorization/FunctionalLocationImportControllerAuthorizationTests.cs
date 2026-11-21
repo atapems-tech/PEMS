@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
@@ -10,7 +10,7 @@ namespace PEMS.Tests.Authorization;
 
 /// <summary>
 /// طبق «Functional Location Master Data Import» بند ۱۵: همان الگوی EquipmentImportController -
-/// Upload/Review/ToggleRow با Create، Commit (پرریسک‌ترین) با Approve، Discard با Delete.
+/// Upload/Review با Create/View؛ ToggleRow، Commit (Approve) و Discard (Delete) عملیات تعریف‌محور هستند (SCRUM-698).
 /// </summary>
 public class FunctionalLocationImportControllerAuthorizationTests
 {
@@ -67,58 +67,50 @@ public class FunctionalLocationImportControllerAuthorizationTests
         Assert.IsType<ForbidResult>(result);
     }
 
-    [Fact]
-    public async Task Commit_MaintenanceEngineerWithoutApprove_Fails_Forbidden()
+    // SCRUM-698: commit, discard and the row toggle are operations; the gate is the operation permission the host checks.
+    private static string? PermissionOf(string method)
+        => ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IFunctionalLocationImportOperations).GetMethod(method)!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission;
+
+    private static async Task<bool> MayAsync(string dbName, string? role, string method)
     {
-        // طبق سند مستر: Commit پرریسک‌ترین اکشن است و باید Approve بخواهد - نه فقط Create/Edit.
-        // MaintenanceEngineer طبق seed این ماژول واقعاً Approve هم دارد؛ برای اثبات گیت واقعی
-        // بودن، یک نقشی که اصلاً روی این ماژول مجوزی ندارد استفاده می‌شود.
-        var (controller, _) = await CreateController(nameof(Commit_MaintenanceEngineerWithoutApprove_Fails_Forbidden), role: SystemRoles.QAManager);
-
-        var result = await controller.Commit(99999);
-
-        Assert.IsType<ForbidResult>(result);
+        var ctx = PemsDbContextFactory.CreateInMemory($"FLImportOps_{dbName}");
+        foreach (var roleName in SystemRoles.All)
+            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
+        await ctx.SaveChangesAsync();
+        var permissionService = new PermissionService(ctx, new AccessControlService(ctx));
+        await permissionService.SeedDefaultsAsync();
+        var parts = PermissionOf(method)!.Split('.');
+        return await permissionService.HasPermissionAsync(role != null ? new List<string> { role } : new List<string>(), parts[0], parts[1]);
     }
 
     [Fact]
-    public async Task Commit_MaintenanceEngineer_HasApprove_GateAllowsThrough()
-    {
-        var (controller, _) = await CreateController(nameof(Commit_MaintenanceEngineer_HasApprove_GateAllowsThrough), role: SystemRoles.MaintenanceEngineer);
+    public async Task Commit_RoleWithoutApprove_IsNotAllowedByTheOperationPermission()
+        => Assert.False(await MayAsync(nameof(Commit_RoleWithoutApprove_IsNotAllowedByTheOperationPermission), SystemRoles.QAManager, "CommitAsync"));
 
-        // Batch ناموجود عمداً استفاده شد - هدف فقط اثبات عبور از گیت مجوز است
-        await Assert.ThrowsAsync<InvalidOperationException>(() => controller.Commit(99999));
+    [Fact]
+    public async Task Commit_MaintenanceEngineer_HasApprove_AndMissingBatchStillThrows()
+    {
+        Assert.True(await MayAsync(nameof(Commit_MaintenanceEngineer_HasApprove_AndMissingBatchStillThrows), SystemRoles.MaintenanceEngineer, "CommitAsync"));
+        var ops = new PEMS.Web.Services.FunctionalLocationImportOperations(new FunctionalLocationImportService(PemsDbContextFactory.CreateInMemory("FLImportOps_commit")));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => ops.CommitAsync(99999));
     }
 
     [Fact]
-    public async Task Discard_ViewerRole_CannotDiscard_ReturnsForbid()
+    public async Task Discard_ViewerRole_IsNotAllowedByTheOperationPermission()
+        => Assert.False(await MayAsync(nameof(Discard_ViewerRole_IsNotAllowedByTheOperationPermission), SystemRoles.Viewer, "DiscardAsync"));
+
+    [Fact]
+    public async Task Discard_EngineeringManager_IsAllowed_AndMissingBatchIsSilent()
     {
-        var (controller, _) = await CreateController(nameof(Discard_ViewerRole_CannotDiscard_ReturnsForbid), role: SystemRoles.Viewer);
-
-        var result = await controller.Discard(99999);
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.True(await MayAsync(nameof(Discard_EngineeringManager_IsAllowed_AndMissingBatchIsSilent), SystemRoles.EngineeringManager, "DiscardAsync"));
+        var ops = new PEMS.Web.Services.FunctionalLocationImportOperations(new FunctionalLocationImportService(PemsDbContextFactory.CreateInMemory("FLImportOps_discard")));
+        Assert.True((await ops.DiscardAsync(99999)).Success);
     }
 
     [Fact]
-    public async Task Discard_EngineeringManager_GateAllowsThrough()
-    {
-        var (controller, _) = await CreateController(nameof(Discard_EngineeringManager_GateAllowsThrough), role: SystemRoles.EngineeringManager);
-
-        var result = await controller.Discard(99999);
-
-        // Batch ناموجود => DiscardBatchAsync بی‌صدا برمی‌گردد - نتیجه فقط اثبات عبور از گیت است
-        Assert.IsType<RedirectToActionResult>(result);
-    }
-
-    [Fact]
-    public async Task ToggleRow_ViewerRole_CannotToggle_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(ToggleRow_ViewerRole_CannotToggle_ReturnsForbid), role: SystemRoles.Viewer);
-
-        var result = await controller.ToggleRow(1, true, 1);
-
-        Assert.IsType<ForbidResult>(result);
-    }
+    public async Task ToggleRow_ViewerRole_IsNotAllowedByTheOperationPermission()
+        => Assert.False(await MayAsync(nameof(ToggleRow_ViewerRole_IsNotAllowedByTheOperationPermission), SystemRoles.Viewer, "ToggleRowAsync"));
 
     [Fact]
     public async Task Review_NoPermission_ReturnsForbid()

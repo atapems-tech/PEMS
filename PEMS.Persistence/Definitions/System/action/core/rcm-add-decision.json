@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "rcm-add-decision",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add RCM decision",
+    "fa": "افزودن تصمیم RCM"
+  },
+  "description": {
+    "en": "Add RCM decision",
+    "fa": "افزودن تصمیم RCM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "AddRcmDecision",
+      "args": {
+        "rcmAnalysisId": "field:rcmAnalysisId",
+        "fmeaItemId": "field:fmeaItemId",
+        "decisionType": "field:decisionType",
+        "consequenceCategory": "field:consequenceCategory",
+        "maintenanceStrategyTypeId": "field:maintenanceStrategyTypeId",
+        "recommendedPMTemplateId": "field:recommendedPMTemplateId",
+        "rationale": "field:rationale"
+      }
+    },
+    "success": {
+      "en": "RCM decision added.",
+      "fa": "تصمیم RCM اضافه شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}
