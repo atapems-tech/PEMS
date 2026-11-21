@@ -163,8 +163,8 @@ public static class NavigationMenuDefaults
 
         // ---- عملیات و تولید
         Section("sec.operations", 800, "Operations & Production", "bi-diagram-3-fill", "Module:Operations", "Production,ProductionOrder,ProductionRun"),
-        Link("ops.dashboard", "sec.operations", 10, "Dashboard", "bi-speedometer2", "Production", "Dashboard", rule: "Perm:Production.View"),
-        Link("ops.orders", "sec.operations", 20, "Production Orders", "bi-clipboard-data", "ProductionOrder", rule: "Perm:Production.View"),
+        new("ops.dashboard", "sec.operations", L, 10, "Dashboard", "bi-speedometer2", "Perm:Production.View", ExternalPath: "/p/production-dashboard"),   // SCRUM-737: a definition page (/p/...)
+        new("ops.orders", "sec.operations", L, 20, "Production Orders", "bi-clipboard-data", "Perm:Production.View", ExternalPath: "/p/production-orders"),   // SCRUM-738: a definition page (/p/...)
 
         // ---- مدیریت سیستم (برای دارنده‌ی DisciplineMaster بدون Administration فقط زیرگروه سازمان/دیسیپلین دیده می‌شود)
         Section("sec.admin", 1000, "Administration", "bi-gear", "Module:Administration|Flag:DisciplineMaster",
