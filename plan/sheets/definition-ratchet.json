@@ -207,7 +207,7 @@
     "PEMS.Web.Controllers.EquipmentClassificationController": 3,
     "PEMS.Web.Controllers.EquipmentController": 4,
     "PEMS.Web.Controllers.EquipmentCriticalityController": 1,
-    "PEMS.Web.Controllers.EquipmentFunctionalLocationAssignmentController": 7,
+    "PEMS.Web.Controllers.EquipmentFunctionalLocationAssignmentController": 3,
     "PEMS.Web.Controllers.EquipmentImportController": 5,
     "PEMS.Web.Controllers.ExecutiveDashboardController": 1,
     "PEMS.Web.Controllers.FailureModeCatalogController": 2,

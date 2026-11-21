@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
@@ -78,77 +78,63 @@ public class EquipmentFunctionalLocationAssignmentControllerAuthorizationTests
         Assert.IsType<ForbidResult>(result);
     }
 
-    [Fact]
-    public async Task ToggleRow_ViewerRole_CannotToggle_ReturnsForbid()
+    // SCRUM-694: toggle, replace-existing, commit and discard are operations; the action host refuses a caller without the operation permission, else it calls the operation.
+    private static async Task<bool> MayAsync(string dbName, string? role, string method)
     {
-        var (controller, _) = await CreateController(nameof(ToggleRow_ViewerRole_CannotToggle_ReturnsForbid), role: SystemRoles.Viewer);
+        var ctx = PemsDbContextFactory.CreateInMemory($"EqFlAssignOps_{dbName}");
+        foreach (var roleName in SystemRoles.All)
+            ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
+        await ctx.SaveChangesAsync();
+        var permissionService = new PermissionService(ctx, new AccessControlService(ctx));
+        await permissionService.SeedDefaultsAsync();
+        var services = new ServiceCollection();
+        services.AddSingleton(ctx);
+        await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
+        var permission = ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IEquipmentFunctionalLocationAssignmentOperations).GetMethod(method)!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission!.Split('.');
+        return await permissionService.HasPermissionAsync(role != null ? new List<string> { role } : new List<string>(), permission[0], permission[1]);
+    }
 
-        var result = await controller.ToggleRow(1, true, 1);
+    private static PEMS.Web.Services.EquipmentFunctionalLocationAssignmentOperations Ops(string dbName)
+        => new(new EquipmentFunctionalLocationAssignmentService(PemsDbContextFactory.CreateInMemory($"EqFlAssignOpsRun_{dbName}")));
 
-        Assert.IsType<ForbidResult>(result);
+    [Fact]
+    public async Task ToggleRow_ViewerRole_IsNotAllowedByTheOperationPermission()
+        => Assert.False(await MayAsync(nameof(ToggleRow_ViewerRole_IsNotAllowedByTheOperationPermission), SystemRoles.Viewer, "ToggleRowAsync"));
+
+    [Fact]
+    public async Task ReplaceExisting_ViewerRole_IsNotAllowed_AndNeedsApprove()
+    {
+        // existing assignment protection: replacing an existing assignment needs Approve, not just Create
+        Assert.False(await MayAsync(nameof(ReplaceExisting_ViewerRole_IsNotAllowed_AndNeedsApprove), SystemRoles.Viewer, "ReplaceExistingAsync"));
     }
 
     [Fact]
-    public async Task ReplaceExisting_ViewerRole_CannotReplace_ReturnsForbid()
+    public async Task ReplaceExisting_MaintenanceEngineer_HasApprove_AndMissingRowIsSilent()
     {
-        // طبق «Existing Assignment Protection»: جایگزینی یک تخصیص موجود باید Approve بخواهد -
-        // نه فقط Create.
-        var (controller, _) = await CreateController(nameof(ReplaceExisting_ViewerRole_CannotReplace_ReturnsForbid), role: SystemRoles.Viewer);
-
-        var result = await controller.ReplaceExisting(1, true, 1);
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.True(await MayAsync(nameof(ReplaceExisting_MaintenanceEngineer_HasApprove_AndMissingRowIsSilent), SystemRoles.MaintenanceEngineer, "ReplaceExistingAsync"));
+        Assert.True((await Ops("replace").ReplaceExistingAsync(99999, true)).Success);
     }
 
     [Fact]
-    public async Task ReplaceExisting_MaintenanceEngineer_HasApprove_GateAllowsThrough()
+    public async Task Commit_QAManagerWithoutModulePermission_IsNotAllowed()
+        => Assert.False(await MayAsync(nameof(Commit_QAManagerWithoutModulePermission_IsNotAllowed), SystemRoles.QAManager, "CommitAsync"));
+
+    [Fact]
+    public async Task Commit_MaintenanceEngineer_HasApprove_AndMissingBatchStillThrows()
     {
-        var (controller, _) = await CreateController(nameof(ReplaceExisting_MaintenanceEngineer_HasApprove_GateAllowsThrough), role: SystemRoles.MaintenanceEngineer);
-
-        var result = await controller.ReplaceExisting(99999, true, 1);
-
-        // ردیف ناموجود => بی‌صدا برمی‌گردد - نتیجه فقط اثبات عبور از گیت مجوز است
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(await MayAsync(nameof(Commit_MaintenanceEngineer_HasApprove_AndMissingBatchStillThrows), SystemRoles.MaintenanceEngineer, "CommitAsync"));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => Ops("commit").CommitAsync(99999));
     }
 
     [Fact]
-    public async Task Commit_QAManagerWithoutModulePermission_Forbidden()
-    {
-        // طبق سند مستر: Commit پرریسک‌ترین اکشن است و باید Approve بخواهد - نه فقط Create/Edit.
-        // MaintenanceEngineer طبق Seed این ماژول واقعاً Approve هم دارد؛ برای اثبات گیت واقعی
-        // بودن، یک نقشی که اصلاً روی این ماژول مجوزی ندارد استفاده می‌شود.
-        var (controller, _) = await CreateController(nameof(Commit_QAManagerWithoutModulePermission_Forbidden), role: SystemRoles.QAManager);
-
-        var result = await controller.Commit(99999);
-
-        Assert.IsType<ForbidResult>(result);
-    }
+    public async Task Discard_ViewerRole_IsNotAllowedByTheOperationPermission()
+        => Assert.False(await MayAsync(nameof(Discard_ViewerRole_IsNotAllowedByTheOperationPermission), SystemRoles.Viewer, "DiscardAsync"));
 
     [Fact]
-    public async Task Commit_MaintenanceEngineer_HasApprove_GateAllowsThrough()
+    public async Task Discard_EngineeringManager_IsAllowed_AndMissingBatchIsSilent()
     {
-        var (controller, _) = await CreateController(nameof(Commit_MaintenanceEngineer_HasApprove_GateAllowsThrough), role: SystemRoles.MaintenanceEngineer);
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => controller.Commit(99999));
-    }
-
-    [Fact]
-    public async Task Discard_ViewerRole_CannotDiscard_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(Discard_ViewerRole_CannotDiscard_ReturnsForbid), role: SystemRoles.Viewer);
-
-        var result = await controller.Discard(99999);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Discard_EngineeringManager_GateAllowsThrough()
-    {
-        var (controller, _) = await CreateController(nameof(Discard_EngineeringManager_GateAllowsThrough), role: SystemRoles.EngineeringManager);
-
-        var result = await controller.Discard(99999);
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(await MayAsync(nameof(Discard_EngineeringManager_IsAllowed_AndMissingBatchIsSilent), SystemRoles.EngineeringManager, "DiscardAsync"));
+        Assert.True((await Ops("discard").DiscardAsync(99999)).Success);
     }
 }

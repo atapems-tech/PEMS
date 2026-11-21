@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "efla-replace-existing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Allow replacing the existing assignment",
+    "fa": "اجازه جایگزینی تخصیص موجود"
+  },
+  "description": {
+    "en": "Allow replacing the existing assignment",
+    "fa": "اجازه جایگزینی تخصیص موجود"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentFunctionalLocationAssignment",
+      "action": "ReplaceExisting",
+      "args": {
+        "rowId": "field:rowId",
+        "replace": "field:replace"
+      }
+    },
+    "success": {
+      "en": "The row was updated.",
+      "fa": "ردیف به‌روز شد."
+    },
+    "redirect": "/EquipmentFunctionalLocationAssignment/Review?batchId={batchId}&page={page}&status={status}"
+  }
+}

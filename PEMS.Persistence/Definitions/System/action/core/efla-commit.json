@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "efla-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit the batch",
+    "fa": "تأیید دسته"
+  },
+  "description": {
+    "en": "Commit the batch",
+    "fa": "تأیید دسته"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentFunctionalLocationAssignment",
+      "action": "Commit",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "The assignment batch was committed; the review shows the counts.",
+      "fa": "دسته‌ی تخصیص تأیید شد؛ شمارش‌ها در بررسی دیده می‌شود."
+    },
+    "redirect": "/EquipmentFunctionalLocationAssignment/Review?batchId={batchId}"
+  }
+}

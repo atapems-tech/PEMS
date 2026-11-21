@@ -84,59 +84,6 @@ public class EquipmentFunctionalLocationAssignmentController : Controller
         return View(batch);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ToggleRow(int rowId, bool include, int batchId, int page = 1, string? status = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, Module, "Create"))
-            return Forbid();
-
-        await _service.SetRowIncludeAsync(rowId, include);
-        return RedirectToAction(nameof(Review), new { batchId, page, status });
-    }
-
-    // طبق بند «Existing Assignment Protection» سند وظیفه: تنها مسیر صریح برای اجازه‌دادن به
-    // جایگزینی یک تخصیص موجود - جدا از ToggleRow معمولی تا هیچ‌وقت به‌طور تصادفی فعال نشود.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReplaceExisting(int rowId, bool replace, int batchId, int page = 1, string? status = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, Module, "Approve"))
-            return Forbid();
-
-        await _service.SetReplaceExistingAssignmentAsync(rowId, replace);
-        return RedirectToAction(nameof(Review), new { batchId, page, status });
-    }
-
-    // پرریسک‌ترین اکشن این Pipeline - رابطه‌ی Equipment.FunctionalLocationId واقعی را تغییر می‌دهد.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Commit(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, Module, "Approve"))
-            return Forbid();
-
-        var result = await _service.CommitBatchAsync(batchId);
-
-        TempData["Message"] = $"Equipment ↔ Functional Location assignment committed: {result.Assigned} assigned, " +
-                               $"{result.Skipped} skipped, {result.Unresolved} unresolved, {result.Conflicts} conflicts, " +
-                               $"{result.ValidationErrors} validation errors.";
-
-        return RedirectToAction(nameof(Review), new { batchId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Discard(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, Module, "Delete"))
-            return Forbid();
-
-        await _service.DiscardBatchAsync(batchId);
-        TempData["Message"] = "Equipment ↔ Functional Location assignment batch discarded.";
-        return RedirectToAction(nameof(Index));
-    }
-
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {
         if (!_currentUser.UserId.HasValue) return null;
