@@ -82,6 +82,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-755: personal task create and status step as definitions
+
+### Changed
+- A new personal task and the status step are now definitions (/a/task-create, /a/task-update-status) over ITaskItemOperations (the actor is the current user; the task manager's object-level rules and error keys are unchanged; a task the user may not touch is refused). The list and the details page stay on TaskController (2 actions). The permission-only controller tests were replaced by operation tests.
+
 ## 2026-11-21 - SCRUM-764: work order task, labor, supply code and warehouse request as definitions
 
 ### Changed

@@ -34,7 +34,6 @@ public class TaskController : Controller
 
     private Task<TaskActor> ActorAsync() => _manager.ResolveActorAsync(_currentUser.UserId, _currentUser.Roles, _currentUser.FullName);
 
-    private string Text(string key) => _l != null ? _l[key].Value : key;
 
     // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل جدول فیلترشده با
     // ToListAsync (بدون Skip/Take) بارگذاری می‌شد.
@@ -68,49 +67,6 @@ public class TaskController : Controller
         ViewBag.Employees = (await _manager.GetEligibleAssigneesAsync(null, await ActorAsync())).Candidates;
 
         return View(tasks);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(string title, string? description, int? assignedToEmployeeId,
-        DateTime? dueDate, string priority)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Create"))
-            return Forbid();
-
-        var result = await _manager.CreateAsync(new WorkItemCreateInput
-        {
-            Title = title ?? "",
-            Description = description,
-            AssigneeEmployeeId = assignedToEmployeeId,
-            DueDate = dueDate,
-            Priority = string.IsNullOrWhiteSpace(priority) ? null : priority
-        }, await ActorAsync());
-
-        if (result.Success) TempData["Message"] = Text("Tm_Msg_Created");
-        else TempData["Error"] = Text(result.ErrorKey!);
-        return RedirectToAction(nameof(Index));
-    }
-
-    // طبق ممیزی مستقل فاز ۶B Wave A (P0): تغییر وضعیت یک رکورد موجود است - طبق الگوی پروژه
-    // (مثلاً MaterialRequisitionController.ChangeStatus) نیازمند مجوز "Edit" است، نه یک مجوز
-    // اختصاصیِ جدید. Task Manager فاز ۰: به‌علاوه‌ی کنترل سطح-شیء و اعتبارسنجی گذار (قبلاً هر کاربر Edit هر شناسه‌ای را
-    // به هر رشته‌ای تغییر می‌داد).
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> UpdateStatus(int taskItemId, string status, string? completionNote, string tab = "action", string? rowVersion = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "Edit"))
-            return Forbid();
-
-        var result = await _manager.TransitionAsync(taskItemId, null, status, completionNote, rowVersion, await ActorAsync());
-        if (!result.Success)
-        {
-            if (result.ErrorKey == "Tm_Err_NotFound") return NotFound();
-            if (result.ErrorKey == "Tm_Err_NotAuthorized") return Forbid();
-            TempData["Error"] = Text(result.ErrorKey!);
-        }
-        return RedirectToAction(nameof(Index), new { tab = tab == "followup" ? "followup" : "action" });
     }
 
     /// <summary>صفحه‌ی جزئیات وظیفه (شخصی یا فضا). وظیفه‌ی غیرقابل‌دید = 404 (وجودش افشا نمی‌شود).</summary>

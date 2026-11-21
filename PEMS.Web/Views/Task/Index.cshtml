@@ -35,7 +35,7 @@
                 @if (!followup && canCreate)
                 {
                     <pems-list-popover id="taskNew" icon="bi-plus-lg" label="@Localizer["Tm_NewPersonalTask"]" primary="true">
-                        <pems-form asp-action="Create" method="post">
+                        <pems-form action="/a/task-create" method="post">
                             <label class="lp-lbl" for="nt-title">@Localizer["Title"]</label>
                             <pems-input scale="small" id="nt-title" name="title" placeholder="@Localizer["Title"]" required maxlength="300" />
                             <label class="lp-lbl mt-2" for="nt-assignee">@Localizer["Assigned To"]</label>
@@ -117,7 +117,7 @@
                                 }
                                 else if (canEdit && TaskItemStatuses.Transitions.TryGetValue(t.Status, out var targets) && targets.Length > 0)
                                 {
-                                    <pems-form asp-action="UpdateStatus" method="post"><pems-flex gap="1">
+                                    <pems-form action="/a/task-update-status" method="post"><pems-flex gap="1">
                                         <input type="hidden" name="taskItemId" value="@t.TaskItemId" />
                                         <input type="hidden" name="tab" value="@tab" />
                                         <label class="visually-hidden" for="st-@t.TaskItemId">@Localizer["Tm_MoveTo"]</label>
