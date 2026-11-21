@@ -64,8 +64,8 @@ public static class NavigationMenuDefaults
         new("eng.projects", "sec.eng", L, 20, "Projects", "bi-kanban", Always, ExternalPath: "/p/projects"),   // SCRUM-740: a definition page (/p/...), not a controller
         Link("eng.documents", "sec.eng", 30, "EngineeringDocuments", "bi-file-earmark-text", "EngineeringDocuments"),
         Link("eng.register", "sec.eng", 40, "DocumentRegister", "bi-journal-bookmark", "DocumentRegister"),
-        Link("eng.revisions", "sec.eng", 50, "Document Revision", "bi-clock-history", "DocumentRevisions"),
-        Link("eng.docworkflow", "sec.eng", 60, "Document Workflow", "bi-diagram-2", "DocumentWorkflow"),
+        new("eng.revisions", "sec.eng", L, 50, "Document Revision", "bi-clock-history", Always, ExternalPath: "/p/document-revisions"),   // SCRUM-684: a definition page (/p/...)
+        new("eng.docworkflow", "sec.eng", L, 60, "Document Workflow", "bi-diagram-2", Always, ExternalPath: "/p/document-workflow"),   // SCRUM-686: a definition page (/p/...)
         Link("eng.vdr", "sec.eng", 70, "VDR", "bi-journal-check", "VDR"),
         Link("eng.transmittal", "sec.eng", 80, "Transmittal", "bi-send", "Transmittal"),
         Link("eng.mdb", "sec.eng", 90, "MDB", "bi-collection", "MDB"),
@@ -193,7 +193,7 @@ public static class NavigationMenuDefaults
         new("admin.org", "admin.sub.org", L, 50, "Org_Title", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/organization-chart"),
         Sub("admin.sub.ai", "sec.admin", 40, "AI Administration"),
         new("admin.intake", "admin.sub.ai", L, 10, "AIIntakeQueue", "bi-inboxes", "Module:Administration", ExternalPath: "/p/intake"),   // SCRUM-709: a definition page (/p/...)
-        Link("admin.ocr", "admin.sub.ai", 20, "OCR Processing", "bi-badge-ad", "OCRProcessing", rule: "Module:Administration&Perm:OCRProcessing.View"),
+        new("admin.ocr", "admin.sub.ai", L, 20, "OCR Processing", "bi-badge-ad", "Module:Administration&Perm:OCRProcessing.View", ExternalPath: "/p/ocr-processing"),   // SCRUM-732: a definition page (/p/...)
         new("admin.aiextraction", "admin.sub.ai", L, 30, "AI Extraction", "bi-cpu", "Module:Administration&Perm:AIExtraction.View", ExternalPath: "/p/ai-extraction"),   // SCRUM-667: a definition page (/p/...)
         Link("admin.tables", "admin.sub.ai", 40, "Table Extraction", "bi-table", "TableExtraction", rule: "Module:Administration&Perm:TableExtraction.View"),
         Link("admin.relationship", "admin.sub.ai", 50, "RelationshipExplorer", "bi-diagram-3", "Relationship", rule: "Module:Administration&Perm:Relationship.View"),

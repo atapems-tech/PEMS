@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "ocr-processing",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "OCR processing (old address)",
+    "fa": "OCR processing (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "OCR processing (old address)",
+    "fa": "OCR processing (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "OCRProcessing",
+    "target": "/p/ocr-processing",
+    "permanent": false
+  }
+}

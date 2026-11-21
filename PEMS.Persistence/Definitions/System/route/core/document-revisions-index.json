@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "document-revisions-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document revisions (index) (old address)",
+    "fa": "Document revisions (index) (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document revisions (index) (old address)",
+    "fa": "Document revisions (index) (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "DocumentRevisions/Index",
+    "target": "/p/document-revisions",
+    "permanent": false
+  }
+}

@@ -355,19 +355,6 @@ public class CmmsListPagesTests
     }
 
     [Fact]
-    public async Task OcrProcessing_IsAListPage_AndKeepsItsCountTiles()
-    {
-        var html = await Render<OCRProcessingController>("/Views/OCRProcessing/Index.cshtml", Page(
-            new OCRProcessingAttachmentListDto { AttachmentId = 3, FileName = "scan.pdf", FileExtension = ".pdf", FileSize = 2048, AIStatus = "Failed", AIError = "unreadable", UploadDate = new DateTime(2026, 11, 1, 9, 0, 0) }),
-            v => { v["Counts"] = new Dictionary<string, int> { ["Failed"] = 1 }; v["SelectedStatus"] = "Failed"; });
-
-        AssertBuiltFromTheComponent(html, "OCRProcessing", 1, keepsDataBadges: true);
-        Assert.Contains("unreadable", html);
-        Assert.Equal(4, Regex.Matches(html, "class=\"kpi-card").Count);
-        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
-    }
-
-    [Fact]
     public async Task ClassificationReviewQueue_IsAListPage_WithItsStatusFilterAndActions()
     {
         var html = await Render<EquipmentClassificationController>("/Views/EquipmentClassification/ReviewQueue.cshtml", new ReviewQueuePageDto

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "ocr-queue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "OCR and AI queue",
+    "fa": "صف OCR و AI"
+  },
+  "description": {
+    "en": "OCR and AI queue",
+    "fa": "صف OCR و AI"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "OcrPage",
+      "action": "Queue",
+      "args": {
+        "status": "param:status"
+      }
+    }
+  }
+}

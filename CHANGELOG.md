@@ -88,6 +88,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-684, 686, 732: document revisions, document workflow and OCR processing as definitions
+
+### Changed
+- The three screens are page definitions (/p/document-revisions, /p/document-workflow, /p/ocr-processing; the old addresses are routed) over IDocumentFlowOperations. The check, approve and reject of a document are the operations of IDocumentWorkflowService itself (actions document-check, document-approve with the separation-of-duties guard and the Approve floor, document-reject); the OCR retry is the action ocr-retry (floor OCRProcessing.Create), also used by the document details page. The queue rows show Check, Approve or Reject by their status. The orphan Create redirect of DocumentRevisions is gone (nothing linked to it). The three controllers and views are deleted; their controller tests are replaced by operation and definition tests (DocumentFlowOperationsTests).
+
 ## 2026-11-21 - SCRUM-723: fixes found by the end-of-batch build and test run of batches 6 and 7
 
 ### Changed

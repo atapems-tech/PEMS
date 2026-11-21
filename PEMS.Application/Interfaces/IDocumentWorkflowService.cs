@@ -18,6 +18,7 @@ public interface IDocumentWorkflowService
 
     // طبق بررسی چرخه‌ی مدرک: مرحله‌ی Check مستقل قبل از Approve (Prepared/Checked/Approved
     // واقعی، نه یک تایید یک‌مرحله‌ای)
+    [PEMS.Application.Common.PemsOperation("DocumentWorkflow", "Check")]
     Task CheckAsync(
         int documentId,
         string? comment,
@@ -27,6 +28,7 @@ public interface IDocumentWorkflowService
         string? userAgent = null);
 
 
+    [PEMS.Application.Common.PemsOperation("DocumentWorkflow", "Approve", "EngineeringDocuments.Approve")]
     Task ApproveAsync(
         int documentId,
         string? comment,
@@ -36,6 +38,7 @@ public interface IDocumentWorkflowService
         string? userAgent = null);
 
 
+    [PEMS.Application.Common.PemsOperation("DocumentWorkflow", "Reject")]
     Task RejectAsync(
         int documentId,
         string? comment,

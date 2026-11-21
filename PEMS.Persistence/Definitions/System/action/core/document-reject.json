@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "document-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the document",
+    "fa": "رد مدرک"
+  },
+  "description": {
+    "en": "Reject the document",
+    "fa": "رد مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DocumentWorkflow",
+      "action": "Reject",
+      "args": {
+        "actionByEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent",
+        "documentId": "field:id",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "Document rejected.",
+      "fa": "مدرک رد شد."
+    },
+    "redirect": "/p/document-workflow"
+  }
+}
