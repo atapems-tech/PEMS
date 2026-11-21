@@ -114,7 +114,6 @@ public class InfoGridComponentTests
 
     [Theory]
     [InlineData("Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml", 3)]
-    [InlineData("Views/PurchaseOrder/Details.cshtml", 1)]
     [InlineData("Views/Task/Details.cshtml", 1)]
     public void WaveI2_TheDescriptionListPagesUseTheRowsLayout(string view, int grids)
     {
@@ -125,7 +124,6 @@ public class InfoGridComponentTests
     }
 
     [Theory]
-    [InlineData("Views/PurchaseOrder/Details.cshtml", 2, 11)]
     [InlineData("Views/Contract/Details.cshtml", 2, 12)]
     [InlineData("Views/Tender/Details.cshtml", 1, 7)]
     public void WaveI3_ProcurementHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)

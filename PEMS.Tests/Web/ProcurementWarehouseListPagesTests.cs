@@ -23,7 +23,7 @@ public class ProcurementWarehouseListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/PurchaseOrder", "Views/Tender", "Views/Contract",
+        "Views/Tender", "Views/Contract",
         "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
@@ -60,18 +60,6 @@ public class ProcurementWarehouseListPagesTests
     private static string Chips(string html) => Regex.Match(html, "<div class=\"lp-chips\">(.*?)</div>", RegexOptions.Singleline).Value;
 
     // ---------- procurement ----------
-
-    [Fact]
-    public async Task PurchaseOrders_StatusIsALocalisedPill_AndNewOpensTheCreatePage()
-    {
-        var html = await Render<PurchaseOrderController>("/Views/PurchaseOrder/Index.cshtml",
-            new List<PurchaseOrderDto> { new() { PoId = 3, PoNumber = "PO-0003", VendorName = "ACME", Value = 1200, Status = "Submitted" } });
-
-        AssertBuiltFromTheComponent(html, "PurchaseOrder", 1);
-        Assert.Contains("vs-pill vs-pill--warning", html);
-        Assert.Contains("class=\"lp-subject\" title=\"PO-0003\"", html);
-        Assert.Contains("lp-compose", html);
-    }
 
     [Fact]
     public async Task Tenders_FromAPackage_ShowThePackageChip_AndOfferNewForThatPackage()

@@ -311,7 +311,7 @@
             }
             @if (contractVisible)
             {
-                <pems-nav-link item="false" active="@(IsActive("PurchaseOrder"))" asp-controller="PurchaseOrder" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/purchase-orders" active="@(IsActive("PurchaseOrder") || Context.Request.Path.StartsWithSegments("/p/purchase-order") || Context.Request.Path.StartsWithSegments("/p/po-"))">
                     <pems-icon name="bi-receipt" /> @Localizer["Purchase Orders"]
                 </pems-nav-link>
 

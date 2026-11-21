@@ -27,7 +27,7 @@ public static class WorkflowTaskLinks
             "WorkRequest" => $"/WorkRequest/Details/{id}",
             "WorkOrderMaterialIntake" => $"/p/warehouse-intake?id={id}",   // SCRUM-472: id = work order
             "ProcurementDemand" => $"/p/pre-procurement-details?id={id}",                      // SCRUM-471
-            "PurchaseOrder" => $"/PurchaseOrder/Details/{id}",                          // SCRUM-470
+            "PurchaseOrder" => $"/p/purchase-order-details?id={id}",                          // SCRUM-470
             _ => null
         };
     }
