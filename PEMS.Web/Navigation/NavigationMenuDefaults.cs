@@ -143,7 +143,7 @@ public static class NavigationMenuDefaults
         Link("cmms.jobplan", "sec.cmms", 50, "Job Plans", "bi-list-check", "JobPlan", rule: "CmmsItem:JobPlan"),
         Link("cmms.workrequest", "sec.cmms", 60, "Work Requests", "bi-clipboard-plus", "WorkRequest", rule: "CmmsItem:WorkRequest"),
         Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
-        Link("cmms.sparepart", "sec.cmms", 80, "Spare Parts", "bi-tools", "SparePart", rule: "CmmsItem:SparePart"),
+        new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)
         new("cmms.team", "sec.cmms", L, 90, "Teams", "bi-people", "CmmsItem:Team", ExternalPath: "/p/teams"),   // SCRUM-757: a definition page (/p/...)
         Link("cmms.crew", "sec.cmms", 100, "Crews", "bi-people-fill", "Crew", rule: "CmmsItem:Crew"),
         Link("cmms.shifthandover", "sec.cmms", 110, "Shift Handovers", "bi-arrow-left-right", "ShiftHandover", rule: "CmmsItem:ShiftHandover"),

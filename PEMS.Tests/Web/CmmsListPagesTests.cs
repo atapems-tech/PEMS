@@ -25,7 +25,7 @@ public class CmmsListPagesTests
     private static readonly string[] Pages =
     {
         "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
-        "MaintenanceStrategy", "JobPlan", "SparePart", "Permit", "Inspection", "Finding", "Asset",
+        "MaintenanceStrategy", "JobPlan", "Permit", "Inspection", "Finding", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "ShiftHandover", "RcmFmea",
         "EquipmentFunctionalLocationAssignment",
@@ -343,24 +343,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Spare parts ----------
-
-    [Fact]
-    public async Task SpareParts_LowStockIsAKpiAndAFilter_AndALowPartIsADangerPill()
-    {
-        var html = await Render<SparePartController>("/Views/SparePart/Index.cshtml",
-            Page(new SparePartListDto { SparePartId = 1, PartNumber = "SP-1", PartName = "Mechanical seal", QuantityOnHand = 1, Unit = "PCS", IsLowStock = true }), v =>
-            {
-                v["SearchTerm"] = null; v["LowStockOnly"] = true; v["LowStockCount"] = 3;
-            });
-
-        AssertBuiltFromTheComponent(html, "SparePart", 1);
-        Assert.Contains("vs-chip--danger", Kpis(html, "spKpis"));
-        Assert.Contains("Low stock only", Chips(html));
-        Assert.Contains("vs-pill vs-pill--icon vs-pill--danger", html);
-        Assert.Contains("id=\"editPartModal\"", html);                                  // one shared edit modal, SCRUM-500
-        Assert.Matches("<button[^>]*data-bs-target=\"#editPartModal\"[^>]*data-fill-sparepartid=\"1\"", html);
-        Assert.Contains("id=\"createPartModal\"", html);
-    }
 
     // ---------- Assets ----------
 

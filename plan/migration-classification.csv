@@ -92,7 +92,6 @@ Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, invent
 ,RcmFmea,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,RecoveryCodes,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,SearchApi,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-,SparePart,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,converted-partly,"converted (generic entity layer): /p/spare-parts and /p/spare-parts-low-stock with create, edit and deactivate; the low-stock counter banner of the old page is not reproduced"
 ,TableExtraction,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Tag,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Tender,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions

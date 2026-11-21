@@ -52,6 +52,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Spare parts controller removed (SCRUM-751)
+
+### Changed
+- SparePartController and its view are gone: /p/spare-parts, /p/spare-parts-low-stock and the create, edit and deactivate commands were already generic entity definitions; /SparePart redirects to /p/spare-parts and the menu and sidebar point to it.
+
 ## 2026-11-21 - AI intake queue as definition pages (SCRUM-709)
 
 ### Changed
