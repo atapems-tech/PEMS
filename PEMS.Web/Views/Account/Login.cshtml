@@ -1,50 +1,117 @@
 ﻿@model PEMS.Web.Models.Account.LoginViewModel
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
+@using System.Globalization
 @inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["Login_Title"];
+    ViewData["AuthPage"] = "login";
     Layout = "_AuthLayout";
+    var isRtl = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa";
+    var loginUrl = Url.Action("Login", "Account", new { returnUrl = Model.ReturnUrl });
+    var persianLoginUrl = Url.Action("SetCulture", "Culture", new { culture = "fa", returnUrl = loginUrl });
+    var englishLoginUrl = Url.Action("SetCulture", "Culture", new { culture = "en", returnUrl = loginUrl });
 }
 
-<pems-heading level="2">@Localizer["Login_Welcome"]</pems-heading>
-<pems-text class="subtitle">@Localizer["Login_Subtitle"]</pems-text>
-
-<pems-validation-summary css="py-2 px-3 small" asp-validation-summary="All" hidden="@(ViewData.ModelState.IsValid)"></pems-validation-summary>
-
-<pems-form asp-controller="Account" asp-action="Login" method="post">
-    <input type="hidden" asp-for="ReturnUrl" />
-
-    <pems-form-group css="mb-3">
-        <pems-label asp-for="UserName">@Localizer["Login_UserName"]</pems-label>
-        <pems-input asp-for="UserName" placeholder="@Localizer["Login_UserNamePlaceholder"]" autofocus />
-        <span asp-validation-for="UserName" class="text-danger small"></span>
-    </pems-form-group>
-
-    <pems-form-group css="mb-2">
-        <pems-label asp-for="Password">@Localizer["Login_Password"]</pems-label>
-        <pems-input asp-for="Password" placeholder="@Localizer["Login_PasswordPlaceholder"]" />
-        <span asp-validation-for="Password" class="text-danger small"></span>
-    </pems-form-group>
-
-    <pems-check-row css="mb-3 mt-2">
-        <pems-input kind="check" asp-for="RememberMe" />
-        <label asp-for="RememberMe" class="form-check-label small">@Localizer["Login_RememberMe"]</label>
-    </pems-check-row>
-
-    <pems-button tone="none" css="btn-pems" type="submit" id="loginSubmitBtn">
-        <span id="loginSubmitLabel" data-signing-in="@Localizer["Login_SigningIn"]">@Localizer["Login_SignIn"]</span>
-    </pems-button>
-
-    <div class="auth-links">
-        <pems-link asp-action="ForgotPassword">@Localizer["Login_ForgotPassword"]</pems-link>
-        <pems-link asp-controller="AccountRecovery" asp-action="Index">@Localizer["Use a recovery code"]</pems-link>
-        <span class="text-muted">PEMS v1.0</span>
+<div class="auth-card-content">
+    <div class="login-squircle-badge">
+        <img src="~/images/pems-icon-512.png" alt="PEMS" class="login-squircle-img" />
     </div>
-</pems-form>
+
+    <h2 class="login-card-title">@Localizer["Login_Welcome"]</h2>
+    <p class="login-card-subtitle">@Localizer["Login_Subtitle"]</p>
+
+    <div asp-validation-summary="All" class="alert alert-danger py-2 px-3 small @(ViewData.ModelState.IsValid ? "d-none" : "")"></div>
+
+    <form asp-controller="Account" asp-action="Login" method="post" id="accountLoginForm">
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <div class="auth-field-wrapper mb-3">
+            <input asp-for="UserName" class="form-control auth-input-styled" placeholder="@Localizer["Login_UserNamePlaceholder"]" autofocus />
+            <i class="bi bi-person auth-field-icon"></i>
+            <span asp-validation-for="UserName" class="text-danger small d-block mt-1"></span>
+        </div>
+
+        <div class="auth-field-wrapper mb-3">
+            <input asp-for="Password" id="passwordInput" type="password" class="form-control auth-input-styled" placeholder="@Localizer["Login_PasswordPlaceholder"]" />
+            <i class="bi bi-lock auth-field-icon"></i>
+            <button type="button" class="auth-eye-btn" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                <i class="bi bi-eye" id="togglePasswordIcon"></i>
+            </button>
+            <span asp-validation-for="Password" class="text-danger small d-block mt-1"></span>
+        </div>
+
+        <div class="auth-options-row mb-4">
+            <div class="auth-remember-wrap">
+                <input type="checkbox" asp-for="RememberMe" id="rememberMeCheck" class="auth-custom-check" />
+                <label for="rememberMeCheck" class="auth-check-label">@Localizer["Login_RememberMe"]</label>
+            </div>
+            <a asp-action="ForgotPassword" class="auth-forgot-link">@Localizer["Login_ForgotPassword"]</a>
+        </div>
+
+        <button type="submit" class="btn btn-pems-submit" id="loginSubmitBtn">
+            <span id="loginSubmitLabel" data-signing-in="@Localizer["Login_SigningIn"]">
+                <span>@Localizer["Login_SignIn"]</span>
+                <i class="bi @(isRtl ? "bi-box-arrow-in-left" : "bi-box-arrow-in-right") auth-submit-arrow"></i>
+            </span>
+        </button>
+
+        <div class="auth-lang-row mt-4">
+            <span class="auth-lang-label">
+                <i class="bi bi-globe me-1"></i> Language / زبان
+            </span>
+            <div class="auth-lang-pills">
+                <a href="@persianLoginUrl" class="lang-pill @(isRtl ? "active" : "")" aria-label="@Localizer["Auth_SwitchToPersian"]">FA</a>
+                <a href="@englishLoginUrl" class="lang-pill @(!isRtl ? "active" : "")" aria-label="@Localizer["Auth_SwitchToEnglish"]">EN</a>
+            </div>
+        </div>
+
+        <div class="auth-trust-row mt-4">
+            <div class="trust-item">
+                <i class="bi bi-shield-check trust-icon"></i>
+                <div class="trust-labels">
+                    <span class="trust-title">@Localizer["Auth_SSLBadge"]</span>
+                    <span class="trust-sub">@Localizer["Auth_SSLBadgeEn"]</span>
+                </div>
+            </div>
+            <div class="trust-sep"></div>
+            <div class="trust-item">
+                <i class="bi bi-headset trust-icon"></i>
+                <div class="trust-labels">
+                    <span class="trust-title">@Localizer["Auth_SupportBadge"]</span>
+                    <span class="trust-sub">@Localizer["Auth_SupportBadgeEn"]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-recovery-row mt-3 text-center">
+            <a asp-controller="AccountRecovery" asp-action="Index" class="recovery-text-link">@Localizer["Use a recovery code"]</a>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <pems-script-templates set="account-login"></pems-script-templates>
     <script src="~/js/views/account-login.js" asp-append-version="true"></script>
+    <script>
+        (function () {
+            var toggleBtn = document.getElementById('togglePasswordBtn');
+            var pwdInput = document.getElementById('passwordInput');
+            var eyeIcon = document.getElementById('togglePasswordIcon');
+            if (toggleBtn && pwdInput && eyeIcon) {
+                toggleBtn.addEventListener('click', function () {
+                    if (pwdInput.type === 'password') {
+                        pwdInput.type = 'text';
+                        eyeIcon.classList.remove('bi-eye');
+                        eyeIcon.classList.add('bi-eye-slash');
+                    } else {
+                        pwdInput.type = 'password';
+                        eyeIcon.classList.remove('bi-eye-slash');
+                        eyeIcon.classList.add('bi-eye');
+                    }
+                });
+            }
+        })();
+    </script>
 }

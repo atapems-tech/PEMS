@@ -87,6 +87,16 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+## 2026-11-21 - System definition startup fixes
+
+### Changed
+- Added definition-driven date/time fields with the shared Gregorian/Jalali picker and validation; allowed action-only forms and corrected invalid single-column spans in shipped forms.
+
+## 2026-11-21 - Login screen branding
+
+### Changed
+- Redesigned the login page as a responsive bilingual industrial-style showcase using the local PEMS icon, reusable PEMS components, and the existing authentication flow.
+
 ## 2026-11-21 - SCRUM-817 to 819: plan rows of the batch 7 gap issues and batch 6 and 7 status
 
 ### Changed

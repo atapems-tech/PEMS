@@ -55,7 +55,7 @@ public sealed class DefinitionsGridProvider(IServiceScopeFactory scopes) : IGrid
 /// One row per registered definition kind (SCRUM-451, 455): <c>kind</c>, <c>owner</c> (where the kind lives), <c>definitions</c>, <c>published</c>, <c>drafts</c>, <c>versions</c>, <c>payloadBytes</c> (published payloads). The list of
 /// kinds, their counts and their size on disk are one data source: the kind catalog and the storage report.
 /// </summary>
-public sealed class DefinitionKindsGridProvider(IServiceScopeFactory scopes, IEnumerable<IDefinitionKind> kinds, DefinitionOwnership ownership) : IGridDataProvider
+public sealed class DefinitionKindsGridProvider(IServiceScopeFactory scopes, DefinitionOwnership ownership) : IGridDataProvider
 {
     public string Key => "definition-kinds";
     public IReadOnlyCollection<string>? AllowedRoles => null;
@@ -64,6 +64,7 @@ public sealed class DefinitionKindsGridProvider(IServiceScopeFactory scopes, IEn
     {
         using var scope = scopes.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<PEMSDbContext>();
+        var kinds = scope.ServiceProvider.GetServices<IDefinitionKind>();
         var perKind = await db.Definitions.AsNoTracking().GroupBy(d => d.Kind)
             .Select(g => new { Kind = g.Key, Definitions = g.Count(), Published = g.Count(d => d.PublishedVersionId != null) }).ToListAsync(ct);
         var versions = await db.DefinitionVersions.AsNoTracking().GroupBy(v => v.Definition!.Kind)

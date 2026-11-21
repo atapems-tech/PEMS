@@ -62,7 +62,7 @@ public sealed class FormDefinitionKind : IDefinitionKind
         if (form is null) return new[] { new DefinitionFieldError("", "invalid-form", "Def_Err_Form", "The form is empty.") };
 
         var errors = new List<DefinitionFieldError>();
-        if (form.Fields.Count == 0) errors.Add(new("/fields", "required", "Def_Err_FormFields", "A form needs at least one field."));
+        if (form.Fields.Count == 0 && string.IsNullOrWhiteSpace(form.ActionKey)) errors.Add(new("/fields", "required", "Def_Err_FormFields", "A form needs at least one field."));
         var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         for (var i = 0; i < form.Fields.Count; i++)
             if (!seen.Add(form.Fields[i].Name))

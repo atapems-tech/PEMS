@@ -1,4 +1,5 @@
 using System.Text.Json;
+using PEMS.Application.Definitions;
 using PEMS.UI.Abstractions;
 using PEMS.Web.Definitions;
 
@@ -81,6 +82,15 @@ public sealed class FormEngineTests
     }
 
     [Fact]
+    public void Date_time_fields_use_the_shared_validator()
+    {
+        var form = Form(F("meetingDate", FieldKind.DateTime));
+
+        Assert.True(FormEngine.Validate(form, V(("meetingDate", "2026-10-27T13:45")), Ctx).IsValid);
+        Assert.Contains("meetingDate", FormEngine.Validate(form, V(("meetingDate", "not-a-date-time")), Ctx).Errors.Keys);
+    }
+
+    [Fact]
     public void A_number_typed_with_persian_digits_is_the_same_number()
     {
         var form = Form(F("n", FieldKind.Number) with { Min = 10 });
@@ -157,6 +167,17 @@ public sealed class FormEngineTests
         Assert.Contains("overlap@/fields/0/optionsFrom", Codes(overlap));
         Assert.Contains("required@/fields/0/options", Codes(Form(F("s", FieldKind.Select))));
         Assert.DoesNotContain(Codes(Form(F("s", FieldKind.Select) with { OptionsFrom = "x" })), c => c.Contains("options"));
+    }
+
+    [Fact]
+    public void A_form_without_fields_is_valid_only_when_it_has_an_action()
+    {
+        var kind = new FormDefinitionKind();
+        var withAction = JsonSerializer.Serialize(Form() with { ActionKey = "generate" }, PemsJson.Options);
+        var withoutAction = JsonSerializer.Serialize(Form(), PemsJson.Options);
+
+        Assert.Empty(kind.Validate(withAction, new DefinitionLimits()));
+        Assert.Contains(kind.Validate(withoutAction, new DefinitionLimits()), e => e.Pointer == "/fields" && e.Code == "required");
     }
 
     [Fact]

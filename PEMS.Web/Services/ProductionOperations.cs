@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
-using PEMS.Persistence.Servises;
+using PEMS.Persistence.Services;
 
 namespace PEMS.Web.Services;
 

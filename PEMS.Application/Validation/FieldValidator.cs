@@ -9,7 +9,7 @@ namespace PEMS.Application.Validation;
 /// <summary>create: every required field must be present; update: only the keys that are present are checked, an omitted key never clears a stored value.</summary>
 public enum ValidationMode { Create, Update }
 
-public enum FieldType { Text, TextArea, RichText, Password, Number, Money, Date, Time, Select, Radio, Checkbox, Switch, Tags, File }
+public enum FieldType { Text, TextArea, RichText, Password, Number, Money, Date, Time, Select, Radio, Checkbox, Switch, Tags, File, DateTime }
 
 /// <summary>What a field accepts, independent of how it is shown. Built from a form field, an entity column or an import column.</summary>
 public sealed record FieldConstraints
@@ -63,6 +63,7 @@ public static class ConstraintCodes
     public const string Max = "max";
     public const string Scale = "scale";
     public const string NotADate = "not-a-date";
+    public const string NotADateTime = "not-a-date-time";
     public const string DateBefore = "date-before";
     public const string DateAfter = "date-after";
     public const string NotATime = "not-a-time";
@@ -77,7 +78,7 @@ public static class ConstraintCodes
 
     public static readonly IReadOnlyList<string> All =
     [
-        Required, MaxLength, MinLength, NotANumber, Min, Max, Scale, NotADate, DateBefore, DateAfter, NotATime, NotAllowed, Pattern, MinItems, MaxItems, FileTooLarge, FileType, FileCount,
+        Required, MaxLength, MinLength, NotANumber, Min, Max, Scale, NotADate, NotADateTime, DateBefore, DateAfter, NotATime, NotAllowed, Pattern, MinItems, MaxItems, FileTooLarge, FileType, FileCount,
     ];
 
     public static string MessageKey(string code) => "Val_" + string.Concat(code.Split('-').Select(p => char.ToUpperInvariant(p[0]) + p[1..]));
@@ -134,6 +135,13 @@ public static class FieldValidator
                 if (!DateTime.TryParseExact(day, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out _)) { found.Add(V(f.Name, ConstraintCodes.NotADate, a)); break; }
                 if (f.MinDate is { } from && string.CompareOrdinal(day, from) < 0) found.Add(V(f.Name, ConstraintCodes.DateBefore, a, ("min", from)));
                 if (f.MaxDate is { } to && string.CompareOrdinal(day, to) > 0) found.Add(V(f.Name, ConstraintCodes.DateAfter, a, ("max", to)));
+                break;
+            case FieldType.DateTime:
+                var timestamp = NormalizeDigits(value);
+                if (!DateTime.TryParseExact(timestamp, "yyyy-MM-dd'T'HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out _)) { found.Add(V(f.Name, ConstraintCodes.NotADateTime, a)); break; }
+                var timestampDay = timestamp[..10];
+                if (f.MinDate is { } minDate && string.CompareOrdinal(timestampDay, minDate) < 0) found.Add(V(f.Name, ConstraintCodes.DateBefore, a, ("min", minDate)));
+                if (f.MaxDate is { } maxDate && string.CompareOrdinal(timestampDay, maxDate) > 0) found.Add(V(f.Name, ConstraintCodes.DateAfter, a, ("max", maxDate)));
                 break;
             case FieldType.Time:
                 if (!TimeSpan.TryParseExact(NormalizeDigits(value), ["hh\\:mm", "hh\\:mm\\:ss"], CultureInfo.InvariantCulture, out _)) found.Add(V(f.Name, ConstraintCodes.NotATime, a));

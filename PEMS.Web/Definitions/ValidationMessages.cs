@@ -21,6 +21,7 @@ public static class ValidationMessages
         [ConstraintCodes.Max] = ("The largest allowed value is {max}.", "بیشترین مقدار مجاز {max} است."),
         [ConstraintCodes.Scale] = ("At most {scale} digits after the decimal point.", "حداکثر {scale} رقم اعشار مجاز است."),
         [ConstraintCodes.NotADate] = ("Enter a valid date.", "یک تاریخ معتبر وارد کنید."),
+        [ConstraintCodes.NotADateTime] = ("Enter a valid date and time.", "تاریخ و ساعت معتبر وارد کنید."),
         [ConstraintCodes.DateBefore] = ("The date cannot be before {min}.", "تاریخ نمی‌تواند پیش از {min} باشد."),
         [ConstraintCodes.DateAfter] = ("The date cannot be after {max}.", "تاریخ نمی‌تواند پس از {max} باشد."),
         [ConstraintCodes.NotATime] = ("Enter a valid time.", "یک ساعت معتبر وارد کنید."),

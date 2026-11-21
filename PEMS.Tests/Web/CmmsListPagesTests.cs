@@ -401,7 +401,7 @@ public class CmmsListPagesTests
     [Fact]
     public async Task Meetings_AreAListPage_AndScheduleOpensTheirOwnModal()
     {
-        var html = await Render<MeetingController>("/Views/Meeting/Index.cshtml", Page(
+        var html = await Render<Controller>("/Views/Meeting/Index.cshtml", Page(
             new MeetingDto { MeetingId = 5, Title = "Weekly review", MeetingDate = new DateTime(2026, 11, 2, 9, 0, 0), Status = "Scheduled", AttendeeCount = 3, ActionItemCount = 1 }),
             v => v["Projects"] = new List<dynamic>());
 

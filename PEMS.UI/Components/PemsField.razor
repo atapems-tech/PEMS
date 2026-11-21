@@ -67,6 +67,10 @@
             </table>
         </fieldset>
     }
+    else if (Descriptor.Kind == FieldKind.DateTime)
+    {
+        <PemsDate Options="@DateTimeOptions" />
+    }
     else
     {
         <label class="pems-field__label" for="@state.Id">
@@ -128,6 +132,50 @@
     [Parameter] public IReadOnlyList<string>? Values { get; set; }
 
     private bool IsChecked(string row, string column) => Values?.Contains(row + "|" + column) == true;
+
+    private DateOptions DateTimeOptions
+    {
+        get
+        {
+            var state = FieldState.From(Descriptor, Error is { IsEmpty: false });
+            var jalali = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.Equals("fa", StringComparison.OrdinalIgnoreCase);
+            var iso = PEMS.UI.TagHelpers.PemsDateTagHelper.ToIsoDateTimeText(Value);
+            var attributes = new Dictionary<string, object>
+            {
+                ["class"] = state.InputCss,
+                ["id"] = state.Id,
+                ["aria-describedby"] = state.DescribedBy
+            };
+            if (state.Invalid) attributes["aria-invalid"] = "true";
+            if (Descriptor.Required) attributes["required"] = "required";
+            if (Descriptor.ReadOnly) attributes["readonly"] = "readonly";
+
+            if (!jalali)
+            {
+                attributes["type"] = "datetime-local";
+                attributes["name"] = Descriptor.Name;
+                if (iso.Length > 0) attributes["value"] = iso;
+                return new DateOptions { Attributes = attributes };
+            }
+
+            var hiddenId = state.Id + "-iso";
+            attributes["type"] = "text";
+            attributes["dir"] = "ltr";
+            attributes["autocomplete"] = "off";
+            attributes["placeholder"] = "1403/01/01 08:00";
+            attributes["data-jdp"] = "";
+            attributes["data-pems-date-time"] = "";
+            attributes["data-pems-date-target"] = "#" + hiddenId;
+            var jalaliValue = PEMS.UI.TagHelpers.PemsDateTagHelper.ToJalaliDateTimeText(iso);
+            if (jalaliValue.Length > 0) attributes["value"] = jalaliValue;
+
+            return new DateOptions
+            {
+                Attributes = attributes,
+                Hidden = new DateHidden { Id = hiddenId, Name = Descriptor.Name, Value = iso }
+            };
+        }
+    }
 
     private string InputType => Descriptor.Kind switch
     {

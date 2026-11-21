@@ -120,7 +120,7 @@ public class RelatedListComponentTests
             Tasks = new() { new MaintenanceTaskDto { MaintenanceTaskId = 11, TaskNumber = 10, Title = "Isolate" } },
             RequiredMaterials = new(),
         };
-        var html = await Render<JobPlanController>("/Views/JobPlan/Details.cshtml", plan, v =>
+        var html = await Render<Controller>("/Views/JobPlan/Details.cshtml", plan, v =>
         {
             v["AllSkills"] = new List<dynamic>();
             v["MaterialItems"] = new List<dynamic> { Obj(("MaterialItemId", 3), ("MaterialCode", "M-3"), ("Description", "Bearing")) };

@@ -107,10 +107,18 @@ public sealed class DataEntryUnaffectedTests(SpikeHost host, ITestOutputHelper o
     {
         var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
         var renderer = provider.CreateScope().ServiceProvider.GetRequiredService<IPemsComponentRenderer>();
-        async Task<string> Field(FieldKind kind, string value) => await renderer.RenderAsync("field", new Dictionary<string, object?>
-            { ["Descriptor"] = new FieldDescriptor { Name = "x", Label = "X", Kind = kind }, ["Value"] = value }, new CultureInfo("fa"));
+        async Task<string> Field(FieldKind kind, string value, CultureInfo? culture = null) => await renderer.RenderAsync("field", new Dictionary<string, object?>
+            { ["Descriptor"] = new FieldDescriptor { Name = "x", Label = "X", Kind = kind }, ["Value"] = value }, culture ?? new CultureInfo("fa"));
         Has("value=\"1234.5\"", await Field(FieldKind.Number, "1234.5"));
         Has("value=\"2026-10-27\"", await Field(FieldKind.Date, "2026-10-27"));
+        var dateTimeFa = Plain(await Field(FieldKind.DateTime, "2026-10-27T13:45"));
+        Has("data-pems-date-time", dateTimeFa);
+        Has("value=\"1405/08/05 13:45\"", dateTimeFa);
+        Has("value=\"2026-10-27T13:45\"", dateTimeFa);
+        Assert.Single(Regex.Matches(dateTimeFa, "name=\"x\""));
+        var dateTimeEn = await Field(FieldKind.DateTime, "2026-10-27T13:45", new CultureInfo("en"));
+        Has("type=\"datetime-local\"", dateTimeEn);
+        Has("value=\"2026-10-27T13:45\"", dateTimeEn);
         Has("value=\"PT-0001\"", await Field(FieldKind.Text, "PT-0001"));
     }
 

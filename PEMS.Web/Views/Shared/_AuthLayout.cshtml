@@ -10,12 +10,16 @@
     // ثابت (گرادیان navy) داشت. همان Cookie/منطق ThemeController موجود این‌جا هم خوانده می‌شود -
     // بدون مکانیزم موازی تازه.
     var currentTheme = PEMS.Web.Controllers.ThemeController.Normalize(Context.Request.Cookies[PEMS.Web.Controllers.ThemeController.CookieName]);
+    var isLoginPage = ViewData["AuthPage"] as string == "login";
 }
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@(isRtl ? "rtl" : "ltr")" data-theme="@currentTheme" data-bs-theme="@(currentTheme is "turquoise" or "dark" ? "dark" : null)">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/pems-icon-32.png" />
+    <link rel="apple-touch-icon" href="~/images/pems-icon-180.png" />
     @* SCRUM-540: the title is a resource key like in _Layout (a title without a key is shown as written) *@
     <title>@(string.IsNullOrWhiteSpace(ViewData["Title"]?.ToString()) ? "" : Localizer[ViewData["Title"]!.ToString()!].Value) - PEMS</title>
     @if (isRtl)
@@ -38,25 +42,82 @@
     <link rel="stylesheet" href="~/css/pems-glass.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
 </head>
-<body class="auth-body">
+<body class="auth-body @(isLoginPage ? "auth-body-login" : "")">
 
-    <div class="auth-wrapper">
+    <div class="auth-wrapper @(isLoginPage ? "auth-wrapper-login" : "")">
 
-        <div class="auth-brand">
-            <div class="auth-brand-icon">
-                <pems-icon name="bi-diagram-3-fill" />
-            </div>
-            <div class="auth-brand-text">
-                <pems-heading level="1">@Localizer["PEMS"]</pems-heading>
-                <span>@Localizer["Auth_BrandName"]</span>
-            </div>
+        <div class="auth-brand @(isLoginPage ? "auth-brand-login" : "")">
+            @if (isLoginPage)
+            {
+                <div class="auth-hero-header">
+                    <div class="auth-brand-logo-wrap">
+                        <img src="~/images/pems-logo-transparent.png" alt="PEMS" class="auth-hero-logo" />
+                        <div class="auth-brand-title-group">
+                            <div class="auth-brand-pems">PEMS</div>
+                            <div class="auth-brand-full">Parmis Enterprise Management System</div>
+                            <div class="auth-brand-glow-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-hero-banner">
+                    <h2 class="auth-story-title">
+                        <span class="title-fa">@Localizer["Auth_HeroTitle"]</span>
+                        <span class="title-sep">|</span>
+                        <span class="title-en">@Localizer["Auth_HeroTitleEn"]</span>
+                    </h2>
+                    <p class="auth-story-description">@Localizer["Auth_HeroDescription"]</p>
+                </div>
+
+                <div class="auth-features-row">
+                    <div class="auth-feature-card">
+                        <div class="feature-icon"><i class="bi bi-gear-fill"></i></div>
+                        <div class="feature-name">@Localizer["Auth_FeatureOperations"]</div>
+                        <div class="feature-sub">Operations</div>
+                    </div>
+                    <div class="auth-feature-card">
+                        <div class="feature-icon"><i class="bi bi-boxes"></i></div>
+                        <div class="feature-name">@Localizer["Auth_FeatureResources"]</div>
+                        <div class="feature-sub">Resources</div>
+                    </div>
+                    <div class="auth-feature-card">
+                        <div class="feature-icon"><i class="bi bi-people-fill"></i></div>
+                        <div class="feature-name">@Localizer["Auth_FeaturePeople"]</div>
+                        <div class="feature-sub">HR Management</div>
+                    </div>
+                    <div class="auth-feature-card">
+                        <div class="feature-icon"><i class="bi bi-database-fill"></i></div>
+                        <div class="feature-name">@Localizer["Auth_FeatureFinance"]</div>
+                        <div class="feature-sub">Finance</div>
+                    </div>
+                    <div class="auth-feature-card">
+                        <div class="feature-icon"><i class="bi bi-graph-up-arrow"></i></div>
+                        <div class="feature-name">@Localizer["Auth_FeatureReports"]</div>
+                        <div class="feature-sub">Reports &amp; Analytics</div>
+                    </div>
+                </div>
+
+                <div class="auth-hero-graphic-wrap">
+                    <img src="~/images/pems-refinery-hud-hd.png" alt="PEMS Industrial HUD" class="auth-refinery-hud-img" />
+                </div>
+            }
+            else
+            {
+                <div class="auth-brand-icon" aria-hidden="true">
+                    <pems-icon name="bi-diagram-3-fill" aria-hidden="true" />
+                </div>
+                <div class="auth-brand-text">
+                    <pems-heading level="1">@Localizer["PEMS"]</pems-heading>
+                    <span>@Localizer["Auth_BrandName"]</span>
+                </div>
+            }
         </div>
 
-        <div class="auth-card">
+        <div class="auth-card @(isLoginPage ? "auth-card-login" : "")">
             @RenderBody()
         </div>
 
-        <div class="auth-footer">
+        <div class="auth-footer @(isLoginPage ? "auth-footer-login" : "")">
             &copy; @DateTime.Now.Year PEMS &mdash; @Localizer["Auth_Footer"]
         </div>
 

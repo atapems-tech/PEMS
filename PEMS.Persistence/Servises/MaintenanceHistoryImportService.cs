@@ -98,7 +98,7 @@ public class MaintenanceHistoryImportService : IMaintenanceHistoryImportService
 
             var resolved = Resolve(payload, raw.ParsedDate, equipmentByTag, workOrderByNumber, existingKeys, seenInBatch);
 
-            await _context.MaintenanceHistoryImportRows.AddAsync(new MaintenanceHistoryImportRow
+            await _context.MaintenanceHistoryImportRows.AddAsync(new PEMS.Domain.Entities.MaintenanceHistoryImportRow
             {
                 MaintenanceHistoryImportBatchId = batch.MaintenanceHistoryImportBatchId,
                 RowNumber = stagingRowNumber,
@@ -531,7 +531,7 @@ public class MaintenanceHistoryImportService : IMaintenanceHistoryImportService
         // (تا شناسه‌ی Identity تولید شود)، یکی برای ثبت CommittedMaintenanceHistoryId روی
         // ردیف‌های Staging - دقیقاً همون قید کارایی، نه یک استثنا برایش.
         var committableRows = batch.Rows.Where(x => x.IncludeInCommit).ToList();
-        var createdPairs = new List<(MaintenanceHistoryImportRow Row, MaintenanceHistory History)>();
+        var createdPairs = new List<(PEMS.Domain.Entities.MaintenanceHistoryImportRow Row, MaintenanceHistory History)>();
 
         if (committableRows.Count > 0)
         {
@@ -619,7 +619,7 @@ public class MaintenanceHistoryImportService : IMaintenanceHistoryImportService
         return result;
     }
 
-    private static void CountRejected(MaintenanceHistoryImportRow row, MaintenanceHistoryImportCommitResultDto result)
+    private static void CountRejected(PEMS.Domain.Entities.MaintenanceHistoryImportRow row, MaintenanceHistoryImportCommitResultDto result)
     {
         switch (row.Status)
         {

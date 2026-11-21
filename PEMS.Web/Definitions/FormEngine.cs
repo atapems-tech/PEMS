@@ -155,7 +155,7 @@ public static class FormEngine
         {
             ConstraintCodes.MaxLength => m?.MaxLength,
             ConstraintCodes.MinLength => m?.MinLength,
-            ConstraintCodes.NotANumber or ConstraintCodes.NotADate or ConstraintCodes.NotATime => m?.Invalid,
+            ConstraintCodes.NotANumber or ConstraintCodes.NotADate or ConstraintCodes.NotADateTime or ConstraintCodes.NotATime => m?.Invalid,
             ConstraintCodes.Min => m?.Min,
             ConstraintCodes.Max => m?.Max,
             ConstraintCodes.NotAllowed => m?.NotAllowed,
@@ -171,7 +171,7 @@ public static class FormEngine
         Name = f.Name,
         Type = f.Kind switch
         {
-            FieldKind.TextArea => FieldType.TextArea, FieldKind.Number => FieldType.Number, FieldKind.Date => FieldType.Date, FieldKind.Select => FieldType.Select, FieldKind.Checkbox => FieldType.Checkbox,
+            FieldKind.TextArea => FieldType.TextArea, FieldKind.Number => FieldType.Number, FieldKind.Date => FieldType.Date, FieldKind.DateTime => FieldType.DateTime, FieldKind.Select => FieldType.Select, FieldKind.Checkbox => FieldType.Checkbox,
             FieldKind.File => FieldType.File, FieldKind.RichText => FieldType.RichText, FieldKind.Password => FieldType.Password, FieldKind.Money => FieldType.Money, FieldKind.Time => FieldType.Time,
             FieldKind.Radio => FieldType.Radio, FieldKind.Switch => FieldType.Switch, FieldKind.Tags => FieldType.Tags, _ => FieldType.Text,
         },

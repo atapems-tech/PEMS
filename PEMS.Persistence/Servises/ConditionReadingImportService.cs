@@ -92,7 +92,7 @@ public class ConditionReadingImportService : IConditionReadingImportService
 
             var resolved = Resolve(payload, raw.ParsedDate, pointsByKey, existingKeys, seenInBatch);
 
-            await _context.ConditionReadingImportRows.AddAsync(new ConditionReadingImportRow
+            await _context.ConditionReadingImportRows.AddAsync(new PEMS.Domain.Entities.ConditionReadingImportRow
             {
                 ConditionReadingImportBatchId = batch.ConditionReadingImportBatchId,
                 RowNumber = stagingRowNumber,
@@ -453,7 +453,7 @@ public class ConditionReadingImportService : IConditionReadingImportService
         var result = new ConditionReadingImportCommitResultDto();
 
         var committableRows = batch.Rows.Where(x => x.IncludeInCommit).ToList();
-        var createdPairs = new List<(ConditionReadingImportRow Row, ConditionReading Reading)>();
+        var createdPairs = new List<(PEMS.Domain.Entities.ConditionReadingImportRow Row, ConditionReading Reading)>();
 
         if (committableRows.Count > 0)
         {
@@ -544,7 +544,7 @@ public class ConditionReadingImportService : IConditionReadingImportService
         return result;
     }
 
-    private static void CountRejected(ConditionReadingImportRow row, ConditionReadingImportCommitResultDto result)
+    private static void CountRejected(PEMS.Domain.Entities.ConditionReadingImportRow row, ConditionReadingImportCommitResultDto result)
     {
         switch (row.Status)
         {
