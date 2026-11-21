@@ -170,7 +170,7 @@
     <pems-flex wrap="true" gap="2">
         @if (nextStatus != null && nextStatus != "Active")
         {
-            <pems-form asp-action="AdvanceStatus" method="post"><pems-flex gap="2">
+            <pems-form action="/a/permit-advance" method="post"><pems-flex gap="2">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-button tone="primary" size="small" type="submit">Advance to @nextStatus</pems-button>
             </pems-flex></pems-form>
@@ -189,7 +189,7 @@
                 <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="reason" placeholder="Suspend reason" />
                 <pems-button tone="warning" size="small" outline="true" type="submit">Suspend</pems-button>
             </pems-flex></pems-form>
-            <pems-form asp-action="Close" method="post">
+            <pems-form action="/a/permit-close" method="post">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-button tone="neutral" size="small" outline="true" type="button" disabled="@(closeElig != null && closeElig.Result != "Eligible")" data-pems-confirm="این Permit بسته شود؟" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">Close</pems-button>
             </pems-form>
@@ -365,7 +365,7 @@
                     }
                 </div>
             }
-            <pems-form class="@(approveElig == null && rejectElig == null ? "border-top pt-3" : "")" asp-action="RespondApproval" method="post"><pems-flex wrap="true" gap="2" align="center">
+            <pems-form class="@(approveElig == null && rejectElig == null ? "border-top pt-3" : "")" action="/a/permit-respond-approval" method="post"><pems-flex wrap="true" gap="2" align="center">
                 <input type="hidden" name="id" value="@Model.PermitId" />
                 <pems-input class="pems-minw-160 pems-maxw-280" scale="small" css="flex-grow-1" type="text" name="comment" placeholder="@Localizer["Comment (optional)"]" />
                 <pems-button tone="success" size="small" type="button" disabled="@(approveElig != null && approveElig.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this" data-pems-args='["decision", "Approve"]'>Approve</pems-button>

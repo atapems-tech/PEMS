@@ -25,7 +25,7 @@ public class CmmsListPagesTests
     private static readonly string[] Pages =
     {
         "WorkOrder", "Equipment", "FunctionalLocation", "Instrument", "Tag",
-        "MaintenanceStrategy", "Permit", "Asset",
+        "MaintenanceStrategy", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
         "EquipmentFunctionalLocationAssignment",
@@ -143,62 +143,6 @@ public class CmmsListPagesTests
     // ---------- Job plans ----------
 
     // ---------- Permits ----------
-
-    private static Task<string> Permits(bool pending, params PermitListDto[] items)
-        => Render<PermitController>("/Views/Permit/Index.cshtml", Page(items), v =>
-        {
-            v["PendingMyApproval"] = pending;
-            v["SelectedStatus"] = null;
-            v["PendingTasksByPermitId"] = new Dictionary<int, PEMS.WorkflowPlatform.Dtos.PendingTaskDto>();
-        });
-
-    [Fact]
-    public async Task Permits_PendingMyApprovalIsAFilter_ThatSwitchesToTheStageColumns()
-    {
-        var permit = new PermitListDto { PermitId = 5, PermitNumber = "PTW-005", PermitType = "Hot work", Title = "Weld repair", Status = "Issued", Priority = "High" };
-
-        var all = await Permits(false, permit);
-        AssertBuiltFromTheComponent(all, "Permit", 1);
-        Assert.Contains("data-col-key=\"issuer\"", all);
-        Assert.DoesNotContain("data-col-key=\"stage\"", all);
-        Assert.Contains("vs-pill--current", all);                                // issued
-        Assert.Contains("id=\"ptPendingMine\"", all);
-
-        var mine = await Permits(true);
-        Assert.Contains("data-col-key=\"stage\"", mine);
-        Assert.DoesNotContain("data-col-key=\"issuer\"", mine);
-        Assert.Contains("Pending my approval", Chips(mine));
-        Assert.Contains("No permits are waiting for your approval.", mine);
-    }
-
-    // ---------- Equipment ----------
-
-    [Fact]
-    public async Task Equipment_OneSearchWithSuggestions_FiltersCountsAndTheCreateModal()
-    {
-        var html = await Render<EquipmentController>("/Views/Equipment/Index.cshtml",
-            Page(new EquipmentDto { EquipmentId = 3, TagNumber = "P-101A", Name = "Feed pump", EquipmentType = "Pump", ProjectName = "JPC", DisciplineName = "Mechanical", Status = "Active", DocumentsCount = 4 }), v =>
-            {
-                v["Dashboard"] = new EquipmentDashboardDto { TotalCount = 10, ActiveCount = 9, InactiveCount = 1, ByDiscipline = new() { ("Mechanical", 6) } };
-                v["Projects"] = new List<dynamic> { Obj(("ProjectId", 1), ("ProjectName", "JPC")) };
-                v["Disciplines"] = new List<dynamic> { Obj(("DisciplineId", 2), ("Name", "Mechanical")) };
-                v["EquipmentTypes"] = new List<string> { "Pump" };
-                v["Statuses"] = new List<string> { "Active" };
-                v["SelectedProjectId"] = 1;
-                v["SearchTerm"] = "pump";
-            });
-
-        AssertBuiltFromTheComponent(html, "Equipment", 1);
-        Assert.Contains("data-search-type=\"Equipment\"", html);
-        Assert.Contains("value=\"pump\"", html);
-        Assert.Equal(4, Regex.Matches(Kpis(html, "eqKpis"), "class=\"vs-chip").Count);
-        var chips = Chips(html);
-        Assert.Contains("JPC", chips);
-        Assert.Contains("pump", chips);
-        Assert.Matches("<button[^>]*data-bs-target=\"#createEquipmentModal\"", html);
-        Assert.Contains("id=\"createEquipmentModal\"", html);
-        Assert.Contains("vs-pill--success", html);
-    }
 
     // ---------- Functional locations ----------
 

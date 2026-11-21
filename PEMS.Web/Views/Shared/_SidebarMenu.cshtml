@@ -616,7 +616,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Permit"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Permit"))" asp-controller="Permit" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Permit"))" href="/p/permits">
                     <pems-icon name="bi-shield-check" /> @Localizer["Permits"]
                 </pems-nav-link>
             }
