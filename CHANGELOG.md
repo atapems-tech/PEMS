@@ -71,6 +71,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-675, 722: condition reading and maintenance history imports as definitions
+
+### Changed
+- IWorkImportOperations (batches, one batch, rows with a status filter, upload staged into a batch, row include toggle, commit, discard) for both staged CMMS imports; pages reading-import, history-import and their review pages, forms and actions; the Import Center cards link the pages by Url. Gaps: the upload opens the batch list, not the new batch; the file name comes from a field; the commit counts are shown on the batch page, not in a message; the history import controller permission tests were removed (the operation permission floors replace them).
+
 ## 2026-11-21 - SCRUM-720: management of change as definitions
 
 ### Changed
