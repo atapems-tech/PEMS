@@ -45,7 +45,7 @@ public static class DefinitionKindExtensions
 }
 
 /// <summary>A form is the <see cref="FormDefinition"/> record as JSON; unknown properties are rejected.</summary>
-public sealed class FormDefinitionKind : IDefinitionKind
+public sealed class FormDefinitionKind(OperationReader? reader = null) : IDefinitionKind
 {
     private static readonly JsonSerializerOptions Strict = new(PemsJson.Options) { UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow };
 
@@ -68,6 +68,17 @@ public sealed class FormDefinitionKind : IDefinitionKind
             if (!seen.Add(form.Fields[i].Name))
                 errors.Add(new($"/fields/{i}/name", "duplicate", "Def_Err_FormFieldDuplicate", $"The field name '{form.Fields[i].Name}' is used twice."));
         errors.AddRange(FormEngine.CheckDefinition(form));   // SCRUM-578: conditions, rules, messages and options are checked when the definition is loaded
+        if (form.Load is { } load)
+        {
+            if (string.IsNullOrWhiteSpace(load.Model) || string.IsNullOrWhiteSpace(load.Action)) errors.Add(new("/load", "required", "Def_Err_Required", "load names the model and the action of a read operation."));
+            else if (reader is not null)
+            {
+                // the same check a data source gets: the operation exists, its arguments are its parameters, their sources are param:, literal: or context:
+                var parameters = new System.Text.Json.Nodes.JsonObject { ["model"] = load.Model, ["action"] = load.Action, ["args"] = new System.Text.Json.Nodes.JsonObject() };
+                foreach (var (name, source) in load.Args ?? new Dictionary<string, string> { ["id"] = "param:id" }) ((System.Text.Json.Nodes.JsonObject)parameters["args"]!)[name] = source;
+                errors.AddRange(reader.Validate(parameters).Select(e => e with { Pointer = "/load" + e.Pointer }));
+            }
+        }
         return errors;
     }
 

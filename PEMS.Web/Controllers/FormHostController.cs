@@ -17,7 +17,7 @@ namespace PEMS.Web.Controllers;
 /// in code: a changed definition is a changed form.
 /// </summary>
 [Route("f/{key}")]
-public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log, EntityRecordLoader? records = null, PEMS.Application.Definitions.PipelineBudgets? budgets = null) : Controller
+public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecutor actions, ICurrentUserService currentUser, IAntiforgery antiforgery, IPemsComponentRenderer renderer, ILogger<FormHostController> log, EntityRecordLoader? records = null, PEMS.Application.Definitions.PipelineBudgets? budgets = null, OperationReader? reader = null) : Controller
 {
     private static readonly Regex KeyShape = new("^[a-z0-9][a-z0-9._-]{0,80}$", RegexOptions.Compiled);
     private static readonly JsonSerializerOptions Strict = new(PemsJson.Options);
@@ -29,15 +29,39 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         var loaded = await LoadAsync(key, id, ct);
         if (loaded.Early is not null) return loaded.Early;
         var values = loaded.Form!.Fields.Where(f => !string.IsNullOrEmpty(f.Name)).ToDictionary(f => f.Name, f => (string?)null, StringComparer.Ordinal);
-        if (id is not null)
+        if (id is not null && loaded.Form.Load is null)      // a form with its own load (SCRUM-818) does not read an entity of the catalog
         {
             var current = loaded.Form.ActionKey is null || records is null ? null : await records.LoadAsync(await actions.ParametersAsync(loaded.Form.ActionKey, "core", ct), id, loaded.Context.Roles, ct);
             if (current is null) return NotFound();
             foreach (var (name, v) in current) if (values.ContainsKey(name)) values[name] = v;
         }
+        if (loaded.Form.Load is { } load && reader is not null)
+        {
+            // SCRUM-818: the saved values come from a read operation (with the rights of the user); the first row fills the fields of the same name
+            var query = Request.Query.ToDictionary(q => q.Key, q => (string?)q.Value.ToString(), StringComparer.Ordinal);
+            if (id is not null) query["id"] = id;
+            var parameters = new Dictionary<string, string?>
+            {
+                ["model"] = load.Model, ["action"] = load.Action,
+                ["args"] = JsonSerializer.Serialize(load.Args ?? new Dictionary<string, string> { ["id"] = "param:id" })
+            };
+            var rows = await reader.ReadAsync(parameters, loaded.Context.Culture, loaded.Context.Roles, loaded.Context.UserName, ct, query);
+            if (rows is null) return Forbid();
+            if (rows.Count == 0 && id is not null) return NotFound();   // an id that gives no row is no record (without an id the form is a new one)
+            if (rows.Count > 0) foreach (var (name, v) in rows[0]) if (values.ContainsKey(name)) values[name] = ShowLoaded(v, loaded.Form.Fields.First(f => f.Name == name).Kind);
+        }
         foreach (var (name, v) in Request.Query) if (values.ContainsKey(name)) values[name] = v.ToString();   // a link may pre-fill a field
         return await Show(key, loaded, values, new Dictionary<string, TranslatableText>(), []);
     }
+
+    /// <summary>A loaded value as the text of a field: a date field takes the date only; a text field keeps the time of a date and time.</summary>
+    private static string? ShowLoaded(object? v, FieldKind kind) => v switch
+    {
+        null => null,
+        DateTime d when kind == FieldKind.Date || d.TimeOfDay == TimeSpan.Zero => d.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+        DateTime d => d.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture),
+        _ => EntityJson.Show(v)
+    };
 
     [HttpPost("{id?}")]
     [PEMS.Web.Security.Uploads.DefinitionUploadPolicy]   // SCRUM-596: a file field of a form is checked by the file.upload action with the profile the definition names
