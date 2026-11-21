@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-doc-unfreeze",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unfreeze the document",
+    "fa": "رفع انجماد مدرک"
+  },
+  "description": {
+    "en": "Unfreeze the document",
+    "fa": "رفع انجماد مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Unfreeze",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The document is unfrozen.",
+      "fa": "انجماد مدرک برداشته شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

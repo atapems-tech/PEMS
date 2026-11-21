@@ -1,0 +1,42 @@
+{
+  "kind": "action",
+  "key": "eng-doc-issue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue the document",
+    "fa": "صدور مدرک"
+  },
+  "description": {
+    "en": "Issue the document",
+    "fa": "صدور مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Issue",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment",
+        "deliveryUnitType": "field:deliveryUnitType",
+        "deliveryDepartmentId": "field:deliveryDepartmentId",
+        "externalReceiverName": "field:externalReceiverName",
+        "letterNumber": "field:letterNumber",
+        "letterSubject": "field:letterSubject",
+        "letterBody": "field:letterBody",
+        "issuePurpose": "field:issuePurpose",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Document issued.",
+      "fa": "مدرک صادر شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

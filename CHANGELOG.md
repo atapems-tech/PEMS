@@ -88,6 +88,10 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+## 2026-11-21 - SCRUM-690: engineering document lifecycle commands as definitions
+
+### Changed
+- Freeze, unfreeze, hold, release hold, submit, check, inter-discipline answer, approve, reject, issue, return for revision, client response, comment action status and the relationship analysis are definitions (/a/eng-doc-*) over IEngineeringDocumentOperations. They keep the status rules and messages of EngineeringDocumentsController, the module permission floors, the own-discipline rule of the approval and its separation-of-duties guard. The details page posts to them. The list, details, create, edit, delete, attachments, the new revision and the comments with files stay on the controller (15 actions).
 
 ## 2026-11-21 - SCRUM-761: VDR review, hold and details commands as definitions
 

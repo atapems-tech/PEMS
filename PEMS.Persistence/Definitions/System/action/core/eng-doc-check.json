@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "eng-doc-check",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Check the document",
+    "fa": "بررسی مدرک"
+  },
+  "description": {
+    "en": "Check the document",
+    "fa": "بررسی مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Check",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Document checked - ready for approval.",
+      "fa": "مدرک بررسی شد؛ آماده‌ی تأیید."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}
