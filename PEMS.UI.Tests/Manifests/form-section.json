@@ -78,7 +78,8 @@
                     "radio",
                     "switch",
                     "tags",
-                    "checkboxMatrix"
+                    "checkboxMatrix",
+                    "dateTime"
                   ]
                 },
                 "required": {

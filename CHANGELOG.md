@@ -87,6 +87,10 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+## 2026-11-21 - Login screen branding
+
+### Changed
+- Redesigned the login page as a responsive bilingual industrial-style showcase using the local PEMS icon, reusable PEMS components, and the existing authentication flow.
 
 ## 2026-11-21 - SCRUM-723: fixes found by the end-of-batch build and test run of batches 6 and 7
 

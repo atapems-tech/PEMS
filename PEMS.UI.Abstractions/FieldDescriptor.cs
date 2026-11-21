@@ -27,7 +27,8 @@ public enum FieldKind
     /// <summary>Free tags typed as one comma separated text; works without script and posts one value.</summary>
     Tags,
     /// <summary>A grid of checkboxes: <see cref="FieldDescriptor.Options"/> are the rows and <see cref="FieldDescriptor.Columns"/> the columns; it posts one list of "row|column" values.</summary>
-    CheckboxMatrix
+    CheckboxMatrix,
+    DateTime
 }
 
 /// <summary>

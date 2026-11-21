@@ -61,6 +61,7 @@ public sealed class PemsFieldTagHelper(IPemsComponentRenderer renderer) : TagHel
     private static string? FormatValue(object? model, FieldKind kind) => model switch
     {
         null => null,
+        DateTime d when kind == FieldKind.DateTime => d.ToString("yyyy-MM-dd'T'HH:mm", System.Globalization.CultureInfo.InvariantCulture),
         DateTime d => d.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
         DateOnly d => d.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture),
         bool b => b ? "true" : "false",

@@ -33,8 +33,9 @@ Codes are stable: a client, a test or a translation may depend on them. Message 
 | `max` | number, money | `max` | hard | none | - |
 | `scale` | number, money | `scale` | hard | none | column scale = the constraint (decimal(p,s)) |
 | `not-a-date` | date | - | hard | `yyyy-MM-dd` | date column |
-| `date-before` | date | `min` (day) | hard | none | - |
-| `date-after` | date | `max` (day) | hard | none | - |
+| `not-a-date-time` | date and time | - | hard | `yyyy-MM-ddTHH:mm` | timestamp column |
+| `date-before` | date, date and time | `min` (day) | hard | none | - |
+| `date-after` | date, date and time | `max` (day) | hard | none | - |
 | `not-a-time` | time | - | hard | `hh:mm` or `hh:mm:ss` | time column |
 | `not-allowed` | select, radio | - | hard | when options are given | FK or check constraint |
 | `pattern` | any text-like type | - | hard | none | - |

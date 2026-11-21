@@ -34,6 +34,7 @@ public sealed class FieldValidatorTests
         }
         Assert.Equal("Val_MaxLength", ConstraintCodes.MessageKey(ConstraintCodes.MaxLength));
         Assert.Equal("Val_NotANumber", ConstraintCodes.MessageKey(ConstraintCodes.NotANumber));
+        Assert.Equal("Val_NotADateTime", ConstraintCodes.MessageKey(ConstraintCodes.NotADateTime));
     }
 
     // ---- per type and constraint
@@ -46,8 +47,11 @@ public sealed class FieldValidatorTests
     [InlineData(FieldType.Number, "11", ConstraintCodes.Max)]
     [InlineData(FieldType.Money, "5.123", ConstraintCodes.Scale)]
     [InlineData(FieldType.Date, "2026-13-40", ConstraintCodes.NotADate)]
+    [InlineData(FieldType.DateTime, "2026-13-40T12:00", ConstraintCodes.NotADateTime)]
     [InlineData(FieldType.Date, "2020-01-01", ConstraintCodes.DateBefore)]
+    [InlineData(FieldType.DateTime, "2020-01-01T10:00", ConstraintCodes.DateBefore)]
     [InlineData(FieldType.Date, "2030-01-01", ConstraintCodes.DateAfter)]
+    [InlineData(FieldType.DateTime, "2030-01-01T10:00", ConstraintCodes.DateAfter)]
     [InlineData(FieldType.Time, "25:61", ConstraintCodes.NotATime)]
     [InlineData(FieldType.Select, "z", ConstraintCodes.NotAllowed)]
     [InlineData(FieldType.Tags, "a,b,c,d", ConstraintCodes.MaxItems)]
@@ -71,6 +75,7 @@ public sealed class FieldValidatorTests
     [InlineData(FieldType.Number, "1,234.5")]        // thousands separator
     [InlineData(FieldType.Money, "10.50")]
     [InlineData(FieldType.Date, "۲۰۲۶-۰۱-۱۵")]
+    [InlineData(FieldType.DateTime, "۲۰۲۶-۰۱-۱۵T08:30")]
     [InlineData(FieldType.Time, "08:30")]
     [InlineData(FieldType.Select, "a")]
     [InlineData(FieldType.Tags, "x, y")]

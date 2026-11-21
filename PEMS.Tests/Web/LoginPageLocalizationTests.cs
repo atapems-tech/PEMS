@@ -28,6 +28,7 @@ public class LoginPageLocalizationTests
         markup = Regex.Replace(markup, @"@\*.*?\*@", " ", RegexOptions.Singleline);
         markup = Regex.Replace(markup, @"^@(model|using|inject)\b.*$", " ", RegexOptions.Multiline);
         markup = Regex.Replace(markup, @"@\{.*?\n\}", " ", RegexOptions.Singleline);
+        markup = Regex.Replace(markup, @"@if\s*\([^)]*\)", " ");
         markup = Regex.Replace(markup, @"@section\b.*", " ", RegexOptions.Singleline);
         markup = Regex.Replace(markup, @"@await\s+[\w.]+\([^)]*\)", " ");
         markup = Regex.Replace(markup, @"<script\b.*?</script>", " ", RegexOptions.Singleline | RegexOptions.IgnoreCase);
@@ -73,6 +74,26 @@ public class LoginPageLocalizationTests
         Assert.DoesNotContain("<html lang=\"en\"", layout);
         Assert.Contains("dir=\"@(isRtl ? \"rtl\" : \"ltr\")\"", layout);
         Assert.Contains("bootstrap.rtl.min.css", layout);
+    }
+
+    [Fact]
+    public void Login_showcase_uses_local_branding_and_collapses_on_small_screens()
+    {
+        var login = Read(LoginView);
+        var layout = Read(AuthLayout);
+        var css = Read("wwwroot/css/auth.css");
+        var icon = Path.Combine(Web(), "wwwroot", "images", "pems-icon-256.png");
+
+        Assert.Contains("ViewData[\"AuthPage\"] = \"login\"", login);
+        Assert.Contains("auth-wrapper-login", layout);
+        Assert.Contains("Auth_HeroTitle", layout);
+        Assert.Contains("<pems-card css=\"auth-feature\">", layout);
+        Assert.Contains("../images/pems-icon-256.png", css);
+        Assert.Contains("@media (max-width: 1100px)", css);
+        Assert.Contains("culture = \"fa\"", login);
+        Assert.Contains("culture = \"en\"", login);
+        Assert.Contains("returnUrl = loginUrl", login);
+        Assert.True(File.Exists(icon), "The login brand icon must be served from the local static assets.");
     }
 
     [Fact]
