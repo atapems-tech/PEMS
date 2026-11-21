@@ -83,6 +83,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-818: redirectBack and a list of numbers for operations
+
+### Changed
+- Engine inputs for the controllers that could not be converted: an action setting redirectBack (go to the local returnUrl the form posted, the fixed redirect is the fallback) and operation parameters of type List<int>, IReadOnlyList<int> or int[] bound from a repeated form field. Tests: OperationIdListTests. Still open in SCRUM-818: load a form from an operation, a calendar component.
+
 ## 2026-11-21 - SCRUM-755: personal task create and status step as definitions
 
 ### Changed
