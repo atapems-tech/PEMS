@@ -104,7 +104,7 @@
                         <option value="">@Localizer["Rcm_SelectPlaceholder"]</option>
                         @foreach (var jp in Model.JobPlans) { <option value="@jp.Id" selected="@(i.JobPlanId == jp.Id)">@jp.Code &mdash; @jp.Text</option> }
                     </pems-select>
-                    <pems-help-text>@Localizer["Rcm_JobPlanHint"] <pems-link asp-controller="JobPlan" asp-action="Index" target="_blank">@Localizer["Rcm_ManageJobPlans"]</pems-link></pems-help-text>
+                    <pems-help-text>@Localizer["Rcm_JobPlanHint"] <pems-link href="/p/job-plans" target="_blank">@Localizer["Rcm_ManageJobPlans"]</pems-link></pems-help-text>
                     <span class="text-danger small">@Html.ValidationMessage("jobPlanId")</span>
                 </pems-col>
 

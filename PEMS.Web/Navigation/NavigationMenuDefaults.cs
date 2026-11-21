@@ -140,7 +140,7 @@ public static class NavigationMenuDefaults
         Link("cmms.plan", "cmms.sub.planning", 20, "Maintenance Plan", "bi-calendar-check", "MaintenancePlan", rule: "CmmsItem:MaintenancePlan"),
         new("cmms.backlog", "cmms.sub.planning", L, 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsItem:CmmsOperations", ExternalPath: "/p/maintenance-backlog"),   // SCRUM-673: a definition page (/p/...)
         Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),
-        Link("cmms.jobplan", "sec.cmms", 50, "Job Plans", "bi-list-check", "JobPlan", rule: "CmmsItem:JobPlan"),
+        new("cmms.jobplan", "sec.cmms", L, 50, "Job Plans", "bi-list-check", "CmmsItem:JobPlan", ExternalPath: "/p/job-plans"),   // SCRUM-711: a definition page (/p/...)
         Link("cmms.workrequest", "sec.cmms", 60, "Work Requests", "bi-clipboard-plus", "WorkRequest", rule: "CmmsItem:WorkRequest"),
         Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
         new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)

@@ -25,7 +25,7 @@ public class CmmsListPagesTests
     private static readonly string[] Pages =
     {
         "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
-        "MaintenanceStrategy", "JobPlan", "Permit", "Asset",
+        "MaintenanceStrategy", "Permit", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
         "EquipmentFunctionalLocationAssignment",
@@ -174,20 +174,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Job plans ----------
-
-    [Fact]
-    public async Task JobPlans_NewOpensTheCreateModal_AndSafetyNeedsArePills()
-    {
-        var html = await Render<JobPlanController>("/Views/JobPlan/Index.cshtml",
-            Page(new JobPlanListDto { JobPlanId = 1, JobPlanNumber = "JP-001", Title = "Pump overhaul", EstimatedDurationHours = 6, TaskCount = 12, PermitRequired = true, LOTORequired = true }),
-            v => v["EquipmentClasses"] = new List<dynamic>());
-
-        AssertBuiltFromTheComponent(html, "JobPlan", 1);
-        Assert.Matches("<button[^>]*data-bs-target=\"#createJobPlanModal\"", html);
-        Assert.Contains("id=\"createJobPlanModal\"", html);
-        Assert.Equal(2, Regex.Matches(html, "vs-pill vs-pill--warning").Count);   // permit + LOTO
-        Assert.Contains("6 h", html);
-    }
 
     // ---------- Permits ----------
 

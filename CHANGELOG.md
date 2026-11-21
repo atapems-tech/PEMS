@@ -73,6 +73,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-711: job plans as definitions
+
+### Changed
+- IJobPlanOperations reads (list, head, tasks, skills, materials, choices) and attributes on the eight IJobPlanService commands; pages /p/job-plans and /p/job-plan-details and one form and action per command. Gaps: the edit form does not preload the saved values (retype every field); ids typed on remove forms; the controller authorization tests and the list view test were removed (operation floors replace them).
+
 ## 2026-11-21 - SCRUM-749: shift handovers as definitions
 
 ### Changed
