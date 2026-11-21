@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-doc-release-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the hold of the document",
+    "fa": "رفع Hold مدرک"
+  },
+  "description": {
+    "en": "Release the hold of the document",
+    "fa": "رفع Hold مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "ReleaseHold",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The hold of the document is released.",
+      "fa": "Hold مدرک رفع شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

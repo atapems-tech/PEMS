@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "eng-doc-client-response",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the client response",
+    "fa": "ثبت پاسخ کارفرما"
+  },
+  "description": {
+    "en": "Record the client response",
+    "fa": "ثبت پاسخ کارفرما"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "RecordClientResponse",
+      "args": {
+        "id": "field:id",
+        "clientStatus": "field:clientStatus",
+        "incomingLetterId": "field:incomingLetterId",
+        "clientComment": "field:clientComment",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Client response recorded.",
+      "fa": "پاسخ کارفرما ثبت شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

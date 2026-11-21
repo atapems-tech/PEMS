@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "eng-doc-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Put the document on hold",
+    "fa": "Hold مدرک"
+  },
+  "description": {
+    "en": "Put the document on hold",
+    "fa": "Hold مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Hold",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason",
+        "responsibleDisciplineId": "field:responsibleDisciplineId",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The document is on hold.",
+      "fa": "مدرک در وضعیت Hold قرار گرفت."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

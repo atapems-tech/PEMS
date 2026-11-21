@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "eng-doc-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the document",
+    "fa": "رد مدرک"
+  },
+  "description": {
+    "en": "Reject the document",
+    "fa": "رد مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Reject",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Document rejected.",
+      "fa": "مدرک رد شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

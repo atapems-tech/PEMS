@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "eng-doc-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit the document for review",
+    "fa": "ارسال مدرک برای بازبینی"
+  },
+  "description": {
+    "en": "Submit the document for review",
+    "fa": "ارسال مدرک برای بازبینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Submit",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment",
+        "idcDisciplineIds": "field:idcDisciplineIds",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "The document was submitted for review.",
+      "fa": "مدرک برای بازبینی ارسال شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}
