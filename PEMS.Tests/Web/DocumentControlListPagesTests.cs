@@ -216,7 +216,7 @@ public class DocumentControlListPagesTests
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.slnx"))) dir = dir.Parent;
         Assert.NotNull(dir);
-        foreach (var page in new[] { "DocumentRegister", "DocumentRevisions", "Transmittal", "MDB", "MOC", "DocumentWorkflow" })
+        foreach (var page in new[] { "DocumentRegister", "DocumentRevisions", "Transmittal", "MDB", "DocumentWorkflow" })
         {
             var view = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", page, "Index.cshtml"));
             Assert.Contains("<pems-list-page texts=", view);

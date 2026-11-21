@@ -14,7 +14,7 @@ public static class WorkflowTaskLinks
         return businessObjectType switch
         {
             "Permit" => $"/Permit/Details/{id}",
-            "MOC" => $"/MOC/Details/{id}",
+            "MOC" => $"/p/moc-details?id={id}",
             "TechnicalQuery" => $"/p/technical-query-details?id={id}",
             "VDRItem" => $"/VDR/Details/{id}",
             "Document" => $"/EngineeringDocuments/Details/{id}",

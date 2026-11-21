@@ -2,6 +2,7 @@ namespace PEMS.Application.Interfaces;
 
 public interface IMOCService
 {
+    [PEMS.Application.Common.PemsOperation("MOC", "Raise")]
     Task<int> RaiseAsync(
         string title, string description, string? reason, string changeType, string riskLevel,
         int projectId, int disciplineId, int? relatedDocumentId, int? relatedEquipmentId,

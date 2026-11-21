@@ -654,7 +654,7 @@
                         @foreach (var m in Model.MOCs)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
-                                <pems-link asp-controller="MOC" asp-action="Details" asp-route-id="@m.NodeId">@m.Label</pems-link>
+                                <pems-link href="/p/moc-details?id=@m.NodeId">@m.Label</pems-link>
                                 <pems-badge tone="@(m.Priority == "Urgent" ? "danger" : "neutral")">@m.SubLabel</pems-badge>
                             </pems-flex>
                         }

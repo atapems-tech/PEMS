@@ -70,6 +70,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-720: management of change as definitions
+
+### Changed
+- IMocOperations (list, counts, details with workflow stage, attachments, choices, attachment upload) and the Raise service attribute; pages /p/mocs and /p/moc-details, forms moc-raise, moc-upload-attachment and one form per workflow action. Gaps: the workflow links are always shown (the service enforces the rule); the upload takes the file name from a field; a new MOC returns to the list.
+
 ## 2026-11-21 - SCRUM-758: technical queries as definitions
 
 ### Changed
