@@ -232,7 +232,7 @@
                 <pems-icon name="bi-building-gear" /> @Localizer["DCC"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("TechnicalQuery"))" asp-controller="TechnicalQuery" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("TechnicalQuery"))" href="/p/technical-queries">
                 <pems-icon name="bi-question-circle" /> @Localizer["TQ / TSR / RFI"]
             </pems-nav-link>
         </div>
@@ -253,7 +253,7 @@
                 <pems-icon name="bi-patch-check" /> @Localizer["QC / QA"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("MOC"))" asp-controller="MOC" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" active="@(IsActive("MOC"))" href="/p/mocs">
                 <pems-icon name="bi-arrow-repeat" /> @Localizer["MOC"]
             </pems-nav-link>
         </div>
@@ -527,7 +527,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Crew"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Crew"))" asp-controller="Crew" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Crew"))" href="/p/crews">
                     <pems-icon name="bi-people-fill" /> @Localizer["Crews"]
                 </pems-nav-link>
             }

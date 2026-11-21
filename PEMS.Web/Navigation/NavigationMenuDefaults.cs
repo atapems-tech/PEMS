@@ -85,12 +85,12 @@ public static class NavigationMenuDefaults
         Link("corr.letters", "sec.correspondence", 10, "Correspondence", "bi-envelope-paper", "Letter", isDefault: true),
         Link("corr.referrals", "sec.correspondence", 20, "MyReferrals", "bi-person-check", "Letter", "MyReferrals"),
         Link("corr.dcc", "sec.correspondence", 30, "DCC", "bi-building-gear", "DCC"),
-        Link("corr.tq", "sec.correspondence", 40, "TQ / TSR / RFI", "bi-question-circle", "TechnicalQuery"),
+        new("corr.tq", "sec.correspondence", L, 40, "TQ / TSR / RFI", "bi-question-circle", Always, ExternalPath: "/p/technical-queries"),   // SCRUM-758: a definition page (/p/...)
 
         // ---- کنترل کیفیت
         Section("sec.quality", 400, "QualityControl", "bi-patch-check", "Module:QualityControl", "QC,MOC"),
         Link("quality.qc", "sec.quality", 10, "QC / QA", "bi-patch-check", "QC"),
-        Link("quality.moc", "sec.quality", 20, "MOC", "bi-arrow-repeat", "MOC"),
+        new("quality.moc", "sec.quality", L, 20, "MOC", "bi-arrow-repeat", Always, ExternalPath: "/p/mocs"),   // SCRUM-720: a definition page (/p/...)
 
         // ---- تدارکات و زنجیره‌ی تأمین (SCRUM-423): خرید، قرارداد، فروشنده و انبار در یک بخش، مثل CMMS. هر پیوند همان دروازه‌ی
         // قبلی‌اش را دارد به‌اضافه‌ی ماژولِ بخشِ قبلی‌اش (مهندسی/قرارداد/انبار)، پس هیچ نقشی پیوندی بیشتر یا کمتر نمی‌بیند؛ بخش وقتی
@@ -145,7 +145,7 @@ public static class NavigationMenuDefaults
         Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
         new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)
         new("cmms.team", "sec.cmms", L, 90, "Teams", "bi-people", "CmmsItem:Team", ExternalPath: "/p/teams"),   // SCRUM-757: a definition page (/p/...)
-        Link("cmms.crew", "sec.cmms", 100, "Crews", "bi-people-fill", "Crew", rule: "CmmsItem:Crew"),
+        new("cmms.crew", "sec.cmms", L, 100, "Crews", "bi-people-fill", "CmmsItem:Crew", ExternalPath: "/p/crews"),   // SCRUM-677: a definition page (/p/...)
         Link("cmms.shifthandover", "sec.cmms", 110, "Shift Handovers", "bi-arrow-left-right", "ShiftHandover", rule: "CmmsItem:ShiftHandover"),
         Link("cmms.masterdata", "sec.cmms", 120, "Maintenance Master Data", "bi-collection", "MaintenanceMasterData", rule: "CmmsItem:MaintenanceMasterData"),
         Link("cmms.classification", "sec.cmms", 130, "Equipment Classification", "bi-diagram-3-fill", "EquipmentClassification", rule: "CmmsItem:EquipmentClassification"),

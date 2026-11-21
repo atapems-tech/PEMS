@@ -395,7 +395,7 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
     }
 
     [Fact]
-    public async Task Crew_on_a_closed_work_order_fails_through_the_crew_controller_too()
+    public async Task Crew_on_a_closed_work_order_fails_through_the_crew_operations_too()
     {
         var closed = await CreateAsync("Corrective"); await RunToVerificationAsync(closed); await Do(closed, "Approve", Verifier); await Do(closed, "Approve", Approver);
         var open = await CreateAsync();
@@ -405,33 +405,32 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
         await Ctx.SaveChangesAsync();
 
         // SystemAdmin: بایپس سراسری مجوز ماژول Crew؛ ماتریس Work Order (فاز) برای او هم اعمال می‌شود - همین نکته‌ی تست است
-        var permissions = new PermissionService(Ctx, AccessControl);
-        var controller = new CrewController(Ctx, new CrewService(Ctx), new FakeCurrentUserService { Roles = new List<string> { SystemRoles.SystemAdmin } }, permissions, _guard).WithTempData();
+                var ops = new PEMS.Web.Services.CrewOperations(Ctx, new CrewService(Ctx), _guard);
+        var roles = new List<string> { SystemRoles.SystemAdmin };
+        int? uid = null; var uname = "tester";
 
         // ایجاد Crew جدید روی WO بسته → رد
-        var created = await controller.CreateCrew("AUDITCREW", "Audit", closed);
-        Assert.IsType<RedirectToActionResult>(created);
+        var created = await ops.CreateCrewAsync(uid, uname, Executor.EmployeeId, roles, null, "AUDITCREW", "Audit", closed);
+        Assert.False(created.Success);
         Assert.Empty(Ctx.Crews.Where(x => x.Code == "AUDITCREW"));
-        Assert.Equal("WorkOrderImmutable", controller.TempData["PolicyCode"]);
 
         // افزودن عضو به Crew وصل به WO بسته → رد؛ در WO باز (Created) → مجاز
         var emp = Executor.EmployeeId!.Value;
         var memberRole = new MaintenanceRole { Name = "Fitter", IsActive = true }; Ctx.MaintenanceRoles.Add(memberRole); await Ctx.SaveChangesAsync();
-        await controller.AddMember(crewOnClosed.CrewId, emp, memberRole.MaintenanceRoleId);
+        await ops.AddMemberAsync(uid, uname, Executor.EmployeeId, roles, null, crewOnClosed.CrewId, emp, memberRole.MaintenanceRoleId);
         Assert.Empty(Ctx.CrewMembers.Where(m => m.CrewId == crewOnClosed.CrewId));
 
-        controller.TempData.Clear();
-        await controller.AddMember(crewOnOpen.CrewId, emp, memberRole.MaintenanceRoleId);
+        await ops.AddMemberAsync(uid, uname, Executor.EmployeeId, roles, null, crewOnOpen.CrewId, emp, memberRole.MaintenanceRoleId);
         Assert.Single(Ctx.CrewMembers.Where(m => m.CrewId == crewOnOpen.CrewId));
 
         // خروج عضو از Crew وصل به WO بسته → رد (و Crew مستقل بدون WO همچنان آزاد است)
         var oldMember = new CrewMember { CrewId = crewOnClosed.CrewId, EmployeeId = emp, RoleId = memberRole.MaintenanceRoleId, IsActive = true, JoinedDate = DateTime.Now };
         Ctx.CrewMembers.Add(oldMember); await Ctx.SaveChangesAsync();
-        await controller.RemoveMember(oldMember.CrewMemberId);
+        await ops.RemoveMemberAsync(uid, uname, Executor.EmployeeId, roles, null, oldMember.CrewMemberId);
         Assert.True(Ctx.CrewMembers.AsNoTracking().Single(m => m.CrewMemberId == oldMember.CrewMemberId).IsActive);
 
-        var standalone = await controller.CreateCrew("STANDALONE", "no work order", null);
-        Assert.IsType<RedirectToActionResult>(standalone);
+        var standalone = await ops.CreateCrewAsync(uid, uname, Executor.EmployeeId, roles, null, "STANDALONE", "no work order", null);
+        Assert.True(standalone.Success);
         Assert.Single(Ctx.Crews.Where(x => x.Code == "STANDALONE"));
     }
 

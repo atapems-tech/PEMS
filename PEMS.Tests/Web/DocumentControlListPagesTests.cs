@@ -166,60 +166,6 @@ public class DocumentControlListPagesTests
 
     // ---------- TechnicalQuery ----------
 
-    private static Task<string> Tq(string? status, params TechnicalQueryListItemDto[] items)
-        => Render<TechnicalQueryController>("/Views/TechnicalQuery/Index.cshtml", Page(items), v =>
-        {
-            v["Projects"] = Projects();
-            v["SelectedStatus"] = status;
-            v["OpenCount"] = 4;
-            v["OverdueCount"] = 2;
-        });
-
-    [Fact]
-    public async Task TechnicalQuery_CountsAreHiddenKpiChips_AndStatusesAreLocalisedPills()
-    {
-        var html = await Tq(null, new TechnicalQueryListItemDto { TechnicalQueryId = 1, QueryNumber = "TQ-001", QueryType = "TQ", Subject = "Flange rating", Priority = "High", Status = "PendingConfirmation", IsOverdue = true });
-
-        AssertBuiltFromTheComponent(html, "TechnicalQuery", 1);
-        var kpis = Regex.Match(html, "id=\"tqKpis\" hidden(?:=\"hidden\")?>(.*?)</div>", RegexOptions.Singleline).Groups[1].Value;
-        Assert.Equal(3, Regex.Matches(kpis, "class=\"vs-chip").Count);
-        Assert.Contains("<strong>4</strong>", kpis);
-        Assert.Contains("vs-chip--danger", kpis);                              // overdue count above zero
-        Assert.Contains("vs-pill--info", html);                                // PendingConfirmation
-        Assert.Contains("name=\"queryType\"", html);
-        Assert.Contains("name=\"projectId\"", html);
-    }
-
-    [Fact]
-    public async Task TechnicalQuery_AFilteredEmptyList_ShowsAChipAndClearAll()
-    {
-        var html = await Tq("Closed");
-        Assert.Matches("<span class=\"lp-badge\">1<", html);
-        Assert.Contains("class=\"pems-filter-chip\"", html);
-        Assert.Contains("btn btn-sm btn-outline-secondary mt-2", html);
-    }
-
-    // ---------- MOC ----------
-
-    [Fact]
-    public async Task Moc_KeepsRiskAndStatus_WithHighRiskCount()
-    {
-        var html = await Render<MOCController>("/Views/MOC/Index.cshtml",
-            Page(new MOCListItemDto { MOCId = 9, MOCNumber = "MOC-009", Title = "Bypass", RiskLevel = "High", Status = "Rejected" }), v =>
-            {
-                v["Projects"] = Projects();
-                v["SelectedRiskLevel"] = "High";
-                v["OpenCount"] = 1;
-                v["HighRiskOpenCount"] = 1;
-            });
-
-        AssertBuiltFromTheComponent(html, "MOC", 1);
-        Assert.Contains("id=\"mocKpis\"", html);
-        Assert.Matches("<span class=\"lp-badge\">1<", html);
-        Assert.Equal(2, Regex.Matches(html, "vs-pill vs-pill--danger").Count);   // high risk + rejected
-        Assert.Contains("name=\"riskLevel\"", html);
-    }
-
     // ---------- MDB ----------
 
     [Fact]
@@ -270,7 +216,7 @@ public class DocumentControlListPagesTests
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.slnx"))) dir = dir.Parent;
         Assert.NotNull(dir);
-        foreach (var page in new[] { "DocumentRegister", "DocumentRevisions", "Transmittal", "TechnicalQuery", "MDB", "MOC", "DocumentWorkflow" })
+        foreach (var page in new[] { "DocumentRegister", "DocumentRevisions", "Transmittal", "MDB", "DocumentWorkflow" })
         {
             var view = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", page, "Index.cshtml"));
             Assert.Contains("<pems-list-page texts=", view);

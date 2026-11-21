@@ -654,7 +654,7 @@
                         @foreach (var m in Model.MOCs)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
-                                <pems-link asp-controller="MOC" asp-action="Details" asp-route-id="@m.NodeId">@m.Label</pems-link>
+                                <pems-link href="/p/moc-details?id=@m.NodeId">@m.Label</pems-link>
                                 <pems-badge tone="@(m.Priority == "Urgent" ? "danger" : "neutral")">@m.SubLabel</pems-badge>
                             </pems-flex>
                         }
@@ -669,7 +669,7 @@
                         @foreach (var t in Model.TechnicalQueries)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
-                                <pems-link asp-controller="TechnicalQuery" asp-action="Details" asp-route-id="@t.NodeId">@t.Label</pems-link>
+                                <pems-link href="/p/technical-query-details?id=@t.NodeId">@t.Label</pems-link>
                                 <pems-badge tone="@(t.Priority == "Urgent" ? "danger" : "neutral")">@t.SubLabel</pems-badge>
                             </pems-flex>
                         }

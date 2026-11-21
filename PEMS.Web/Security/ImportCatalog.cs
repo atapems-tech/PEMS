@@ -65,10 +65,10 @@ public static class ImportCatalog
         new("EquipmentFlAssignment", Category.Cmms, "EquipmentFunctionalLocationAssignment", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "EquipmentFunctionalLocationAssignment",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-signpost-split"),
         new("MaintenanceHistory", Category.Cmms, "MaintenanceHistoryImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MaintenanceHistoryImport",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-clock-history"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-clock-history", Url: "/p/history-import"),   // SCRUM-722: a definition page
         // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹
         new("ConditionReading", Category.Cmms, "ConditionReadingImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "ConditionReadingImport",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-graph-up-arrow"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-graph-up-arrow", Url: "/p/reading-import"),   // SCRUM-675: a definition page
         // RCM کلاس‌محور: الگوهای استراتژی و تخصیص تگ‌ها (Preview → Commit صریح؛ استراتژی‌ها Draft ساخته می‌شوند)
         new("RcmStrategy", Category.Cmms, "StrategyImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MaintenanceStrategy",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-diagram-3"),

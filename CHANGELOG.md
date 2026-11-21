@@ -68,6 +68,30 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+
+## 2026-11-21 - SCRUM-675, 722: condition reading and maintenance history imports as definitions
+
+### Changed
+- IWorkImportOperations (batches, one batch, rows with a status filter, upload staged into a batch, row include toggle, commit, discard) for both staged CMMS imports; pages reading-import, history-import and their review pages, forms and actions; the Import Center cards link the pages by Url. Gaps: the upload opens the batch list, not the new batch; the file name comes from a field; the commit counts are shown on the batch page, not in a message; the history import controller permission tests were removed (the operation permission floors replace them).
+
+## 2026-11-21 - SCRUM-720: management of change as definitions
+
+### Changed
+- IMocOperations (list, counts, details with workflow stage, attachments, choices, attachment upload) and the Raise service attribute; pages /p/mocs and /p/moc-details, forms moc-raise, moc-upload-attachment and one form per workflow action. Gaps: the workflow links are always shown (the service enforces the rule); the upload takes the file name from a field; a new MOC returns to the list.
+
+## 2026-11-21 - SCRUM-758: technical queries as definitions
+
+### Changed
+- ITechnicalQueryOperations (list, counts, details with workflow stage, attachments, choices, attachment upload) and the Raise service attribute; pages /p/technical-queries and /p/technical-query-details, forms tq-raise, tq-upload-attachment, technical-query-respond/confirm/reopen. Gaps: respond, confirm and reopen links are always shown (the service enforces the rule); the upload takes the file name from a field; a new TQ returns to the list; the two list-page render tests were removed.
+
+## 2026-11-21 - SCRUM-677: crews as definitions
+
+### Changed
+- ICrewOperations (crew list, members, choices, create crew, add and remove member with the work order section guard and its change record inside the operation); page /p/crews and crew-* forms and actions. The section-guard test now runs against the operations; the six permission-only controller tests were removed (the operation permission floors replace them). Gap: ids are typed on the add member form.
+
 ## 2026-11-21 - SCRUM-699: findings as definitions
 
 ### Changed
