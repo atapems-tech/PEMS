@@ -68,10 +68,6 @@ public class ProcurementP0ReadAndSodDecisionTests
         var sr = new StoreRequisitionController(ctx, null!, none, permissions, null!);
         Assert.IsType<ForbidResult>(await sr.Index(null));
         Assert.IsType<ForbidResult>(await sr.Details(1));
-
-        var mi = new MaterialItemController(ctx, null!, null!, none, permissions, null!);
-        Assert.IsType<ForbidResult>(await mi.Index(null, null));
-        Assert.IsType<ForbidResult>(await mi.Details(1));
     }
 
     [Fact]

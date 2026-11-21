@@ -429,7 +429,6 @@ public class DynamicSidebarTests
     [Theory]
     [InlineData("Letter", "MyReferrals", null, "corr.referrals", "corr.letters")]
     [InlineData("Letter", "Details", null, "corr.letters", "corr.referrals")]
-    [InlineData("MaterialItem", "Details", "Warehouse", "proc.wh.material", "proc.wh.dashboard")]
     [InlineData("Tender", "Details", null, "proc.tender", "proc.package")]
     public async Task ActiveLink_FollowsControllerActionAndDefaultRules(string controller, string action, string? area, string active, string inactive)
     {

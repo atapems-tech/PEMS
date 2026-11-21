@@ -25,7 +25,7 @@ public class ProcurementWarehouseListPagesTests
     {
         "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Vendor", "Views/Contract", "Views/ProcurementPackage",
         "Areas/Warehouse/Views/StoreRequisition", "Areas/Warehouse/Views/IrnReceipt",
-        "Areas/Warehouse/Views/Replenishment", "Areas/Warehouse/Views/MaterialItem", "Areas/Warehouse/Views/PartCatalogueRequest",
+        "Areas/Warehouse/Views/Replenishment", "Areas/Warehouse/Views/PartCatalogueRequest",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
@@ -153,30 +153,6 @@ public class ProcurementWarehouseListPagesTests
         Assert.Contains("alert-warning", html);                                           // attribution note
         Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);  // search + status
         Assert.DoesNotContain("bi-calculator", await Run(false));
-    }
-
-    [Fact]
-    public async Task MaterialItems_CountCardsAreKpis_AndPagingKeepsLowStockAndCritical()
-    {
-        var page = new PagedResult<MaterialItemListDto>
-        {
-            Items = new List<MaterialItemListDto> { new() { MaterialItemId = 1, MaterialCode = "M-1", Description = "Bearing", IsLowStock = true, IsCritical = true } },
-            Page = 1, PageSize = 25, TotalCount = 60
-        };
-        var html = await Render<MaterialItemController>("/Areas/Warehouse/Views/MaterialItem/Index.cshtml", page, v =>
-        {
-            v["Categories"] = new List<dynamic> { Obj(("MaterialCategoryId", 2), ("Name", "Bearings")) };
-            v["Disciplines"] = new List<dynamic>(); v["Uoms"] = new List<dynamic>(); v["Vendors"] = new List<dynamic>();
-            v["SearchTerm"] = null; v["CategoryId"] = 2; v["LowStockOnly"] = true; v["CriticalOnly"] = true;
-        });
-
-        AssertBuiltFromTheComponent(html, "MaterialItem", 1);
-        Assert.Contains("id=\"miKpis\"", html);
-        Assert.Equal(3, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);
-        Assert.Contains("lowStockOnly=true", html);
-        Assert.Contains("criticalOnly=true", html);
-        Assert.Contains("id=\"createMaterialModal\"", html);
-        Assert.DoesNotContain("class=\"pagination pagination-sm justify-content-center\"", html);   // the old pager that lost the filters
     }
 
     [Fact]

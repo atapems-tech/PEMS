@@ -111,7 +111,7 @@ public static class NavigationMenuDefaults
         ComingSoon("proc.claims", "proc.sub.contracts", 30, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management", "Module:ContractManagement"),
         Sub("proc.sub.warehouse", "sec.procurement", 40, "Warehouse"),
         new("proc.wh.dashboard", "proc.sub.warehouse", L, 10, "Dashboard", "bi-speedometer2", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/inventory"),   // SCRUM-652: a definition page (/p/...)
-        Link("proc.wh.material", "proc.sub.warehouse", 20, "Material Master", "bi-box-seam", "MaterialItem", area: "Warehouse", rule: "Module:Inventory&Perm:MaterialItem.View"),
+        new("proc.wh.material", "proc.sub.warehouse", L, 20, "Material Master", "bi-box-seam", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/material-items"),   // SCRUM-656: a definition page (/p/...)
         Link("proc.wh.irn", "proc.sub.warehouse", 30, "Incoming Receipts (IRN)", "bi-truck", "IrnReceipt", area: "Warehouse", rule: "Module:Inventory&Perm:IRN.View"),
         new("proc.wh.ledger", "proc.sub.warehouse", L, 40, "Transaction Ledger", "bi-list-ul", "Module:Inventory&Perm:MaterialItem.View", ExternalPath: "/p/inventory-ledger"),   // SCRUM-654: a definition page (/p/...)
         Link("proc.wh.sr", "proc.sub.warehouse", 50, "Store Requisitions", "bi-clipboard-check", "StoreRequisition", area: "Warehouse", rule: "Module:Inventory&Perm:StoreRequisition.View", badge: NavigationBadges.StoreRequisitionsAwaitingApproval),

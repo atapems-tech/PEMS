@@ -60,7 +60,7 @@
     var laborEntries = (List<PEMS.Domain.Entities.WorkOrderLabor>)ViewBag.LaborEntries;
     var totalLaborCost = (decimal)ViewBag.TotalLaborCost;
     var spareCost = (decimal)ViewBag.SpareCost;
-    var materialMasterUrl = Url.Action("Index", "MaterialItem", new { area = "Warehouse" });
+    var materialMasterUrl = "/p/material-items";
 }
 
 @if (wf != null)

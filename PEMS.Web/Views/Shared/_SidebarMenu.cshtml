@@ -340,7 +340,7 @@
                     <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("MaterialItem", "Warehouse"))" asp-controller="MaterialItem" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/material-items" active="@(IsActive("MaterialItem", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/material-item"))">
                     <pems-icon name="bi-box-seam" /> @Localizer["Material Master"]
                 </pems-nav-link>
 

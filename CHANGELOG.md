@@ -48,6 +48,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Material Master as definition pages (SCRUM-656)
+
+### Changed
+- /p/material-items, /p/material-item-details and their forms replace MaterialItemController: create, edit and activate / deactivate are the generic entity actions on a new MaterialItem registration (same permissions as before), receive, adjust and transfer stock are the operations MaterialStock.Receive, Adjust and Transfer marked on IMaterialStockService (permissions kept), the reads are MaterialItem.* operations over IMaterialItemService. The barcode panel of the old details page moves with the Barcode controller (SCRUM-671). /Warehouse/MaterialItem redirects.
+
 ## 2026-11-21 - Inventory master data landing page (SCRUM-653)
 
 ### Changed
