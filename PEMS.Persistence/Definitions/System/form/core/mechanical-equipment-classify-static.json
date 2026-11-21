@@ -1,0 +1,114 @@
+{
+  "kind": "form",
+  "key": "mechanical-equipment-classify-static",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Classify as static equipment",
+    "fa": "ثبت زیررده Static"
+  },
+  "description": {
+    "en": "Classify as static equipment",
+    "fa": "ثبت زیررده Static"
+  },
+  "payload": {
+    "id": "mechanical-equipment-classify-static",
+    "title": {
+      "en": "Classify as static equipment",
+      "fa": "ثبت زیررده Static"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "mechanical-equipment-classify-static",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "mechanicalEquipmentId",
+        "label": {
+          "en": "Mechanical equipment id",
+          "fa": "شناسه تجهیز مکانیکی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "equipmentType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "volume",
+        "label": {
+          "en": "Volume",
+          "fa": "حجم"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "designPressure",
+        "label": {
+          "en": "Design pressure",
+          "fa": "فشار طراحی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "designTemperature",
+        "label": {
+          "en": "Design temperature",
+          "fa": "دمای طراحی"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "material",
+        "label": {
+          "en": "Material",
+          "fa": "جنس"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "orientation",
+        "label": {
+          "en": "Orientation",
+          "fa": "جهت"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "codeStandard",
+        "label": {
+          "en": "Code / standard",
+          "fa": "کد / استاندارد"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

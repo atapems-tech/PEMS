@@ -1,0 +1,56 @@
+{
+  "kind": "data-source",
+  "key": "mechanical-equipment-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mechanical equipment",
+    "fa": "تجهیزات مکانیکی"
+  },
+  "description": {
+    "en": "Mechanical equipment",
+    "fa": "تجهیزات مکانیکی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "parameters": {
+      "entity": "MechanicalEquipment",
+      "fields": [
+        "MechanicalEquipmentId",
+        "TagNumber",
+        "EquipmentType",
+        "Manufacturer",
+        "Model",
+        "IsActive"
+      ],
+      "search": [
+        "TagNumber",
+        "EquipmentType",
+        "Manufacturer",
+        "Model"
+      ],
+      "sort": [
+        "TagNumber"
+      ],
+      "counts": [
+        {
+          "name": "rotating",
+          "entity": "RotatingEquipment",
+          "foreignKey": "MechanicalEquipmentId",
+          "where": {
+            "IsActive": true
+          }
+        },
+        {
+          "name": "staticCount",
+          "entity": "StaticEquipment",
+          "foreignKey": "MechanicalEquipmentId",
+          "where": {
+            "IsActive": true
+          }
+        }
+      ]
+    }
+  }
+}

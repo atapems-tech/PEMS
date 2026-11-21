@@ -295,7 +295,7 @@
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
                     <pems-heading level="6" class="mb-0">@Localizer["Mechanical Passport"]</pems-heading>
-                    <pems-button tone="primary" size="small" as="a" asp-controller="MechanicalEquipment" asp-action="Passport" asp-route-id="@mech.MechanicalEquipmentId">
+                    <pems-button tone="primary" size="small" as="a" href="/p/mechanical-equipment-passport?id=@mech.MechanicalEquipmentId">
                         <pems-icon name="bi-gear-wide-connected" /> @Localizer["Full Mechanical Passport"]
                     </pems-button>
                 </pems-flex>
