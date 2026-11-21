@@ -216,6 +216,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenanceStrategyOpera
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkOrderTaskOperations, PEMS.Web.Services.WorkOrderTaskOperations>();   // SCRUM-764
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskItemOperations, PEMS.Web.Services.TaskItemOperations>();   // SCRUM-755
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITagOperations, PEMS.Web.Services.TagOperations>();   // SCRUM-754
+builder.Services.AddScoped<PEMS.Application.Interfaces.IFailureModeCatalogOperations, PEMS.Web.Services.FailureModeCatalogOperations>();   // SCRUM-695
 builder.Services.AddScoped<PEMS.Application.Interfaces.IAssetRegisterOperations, PEMS.Web.Services.AssetRegisterOperations>();   // SCRUM-670, 691, 700
 builder.Services.AddScoped<PEMS.Application.Interfaces.IReliabilityRegisterOperations, PEMS.Web.Services.ReliabilityRegisterOperations>();   // SCRUM-692, 693, 745
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskManagerOperations, PEMS.Web.Services.TaskManagerOperations>();   // SCRUM-756

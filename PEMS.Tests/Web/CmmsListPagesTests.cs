@@ -300,6 +300,7 @@ public class CmmsListPagesTests
         Assert.Contains("Misalignment", editor);
         Assert.Single(Regex.Matches(Chips(editor), "class=\"pems-filter-chip\""));
         Assert.Contains("name=\"active\" value=\"false\"", editor);
+        Assert.Contains("/a/failure-mode-toggle", editor);   // SCRUM-695: the switch posts to the action definition
         Assert.Contains("lp-compose", editor);
 
         var reader = await Catalog(false);

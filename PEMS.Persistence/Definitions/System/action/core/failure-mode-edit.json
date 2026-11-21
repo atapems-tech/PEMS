@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "failure-mode-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit failure mode",
+    "fa": "ویرایش حالت خرابی"
+  },
+  "description": {
+    "en": "Edit failure mode",
+    "fa": "ویرایش حالت خرابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "FailureMode",
+      "action": "Edit",
+      "args": {
+        "failureModeId": "field:failureModeId",
+        "code": "field:code",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "description": "field:description",
+        "equipmentClassId": "field:equipmentClassId",
+        "causeIds": "field:causeIds",
+        "isActive": "field:isActive"
+      }
+    },
+    "success": {
+      "en": "Catalogue saved.",
+      "fa": "کاتالوگ ذخیره شد."
+    },
+    "redirect": "/FailureModeCatalog/Index",
+    "redirectBack": false
+  }
+}
