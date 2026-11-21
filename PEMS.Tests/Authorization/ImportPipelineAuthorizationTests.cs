@@ -1,4 +1,4 @@
-using PEMS.Web.Areas.Warehouse.Controllers;
+﻿using PEMS.Web.Areas.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
@@ -142,11 +142,9 @@ public class ImportPipelineAuthorizationTests
     {
         var (ctx, perms, user) = await CreateInfra(nameof(Equipment_Commit_WithoutPermission_ReturnsForbid_DoesNotCommit), role: SystemRoles.Viewer);
         var service = new FakeEquipmentImportService();
-        var controller = new EquipmentImportController(service, new FakeEquipmentPdfScanService(), ctx, user, perms).WithTempData();
 
-        var result = await controller.Commit(1);
-
-        Assert.IsType<ForbidResult>(result);
+        // SCRUM-742: the commit is an operation; the action host refuses a caller without EquipmentImport.Approve before it calls it
+        Assert.False(await perms.HasPermissionAsync(user.Roles, "EquipmentImport", "Approve"));
         Assert.False(service.CommitCalled);
     }
 
@@ -155,11 +153,11 @@ public class ImportPipelineAuthorizationTests
     {
         var (ctx, perms, user) = await CreateInfra(nameof(Equipment_Commit_WithPermission_Commits), role: SystemRoles.MaintenanceEngineer);
         var service = new FakeEquipmentImportService();
-        var controller = new EquipmentImportController(service, new FakeEquipmentPdfScanService(), ctx, user, perms).WithTempData();
 
-        var result = await controller.Commit(1);
+        Assert.True(await perms.HasPermissionAsync(user.Roles, "EquipmentImport", "Approve"));
+        var result = await new PEMS.Web.Services.EquipmentImportOperations(service).CommitAsync(1);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.True(service.CommitCalled);
     }
 

@@ -90,45 +90,6 @@ public class EquipmentImportController : Controller
         return View(batch);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ToggleRow(int rowId, bool include, int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Create"))
-            return Forbid();
-
-        await _importService.SetRowIncludeAsync(rowId, include);
-        return RedirectToAction(nameof(Review), new { batchId });
-    }
-
-    // طبق بند ۱۱ ممیزی: پرریسک‌ترین اکشن این Pipeline - رجیستر معتبر Equipment را می‌سازد/تغییر
-    // می‌دهد.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Commit(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Approve"))
-            return Forbid();
-
-        var (created, updated, skipped) = await _importService.CommitBatchAsync(batchId);
-
-        TempData["Message"] = $"Equipment Import committed: {created} created, {updated} updated, {skipped} skipped.";
-
-        return RedirectToAction("Index", "Equipment");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Discard(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Delete"))
-            return Forbid();
-
-        await _importService.DiscardBatchAsync(batchId);
-        TempData["Message"] = "Equipment import batch discarded.";
-        return RedirectToAction(nameof(Index));
-    }
-
     // طبق درخواست: تشخیص تجهیزات از فایل PDF - یک تشخیص «بهترین تلاش» شماره‌تگ است (نه
     // استخراج کامل جدول مثل اکسل)؛ نتیجه برای بازبینی و انتخاب کاربر نشان داده می‌شود
     [HttpPost]
