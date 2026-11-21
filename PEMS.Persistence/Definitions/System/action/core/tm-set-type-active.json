@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "tm-set-type-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Enable or disable a task type",
+    "fa": "فعال یا غیرفعال‌کردن نوع وظیفه"
+  },
+  "description": {
+    "en": "Enable or disable a task type",
+    "fa": "فعال یا غیرفعال‌کردن نوع وظیفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "SetTypeActive",
+      "args": {
+        "typeId": "field:typeId",
+        "isActive": "field:isActive"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/AdminSpace/{workSpaceId}"
+  }
+}

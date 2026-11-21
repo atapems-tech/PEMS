@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "tm-delete-comment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a comment",
+    "fa": "حذف نظر"
+  },
+  "description": {
+    "en": "Delete a comment",
+    "fa": "حذف نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "DeleteComment",
+      "args": {
+        "commentId": "field:commentId"
+      }
+    },
+    "success": {
+      "en": "The comment was deleted.",
+      "fa": "نظر حذف شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "tm-update-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit a sprint",
+    "fa": "ویرایش اسپرینت"
+  },
+  "description": {
+    "en": "Edit a sprint",
+    "fa": "ویرایش اسپرینت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "UpdateSprint",
+      "args": {
+        "sprintId": "field:sprintId",
+        "name": "field:name",
+        "goal": "field:goal",
+        "startDate": "field:startDate",
+        "endDate": "field:endDate"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

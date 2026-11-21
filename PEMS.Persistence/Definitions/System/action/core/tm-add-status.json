@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "tm-add-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a status",
+    "fa": "افزودن وضعیت"
+  },
+  "description": {
+    "en": "Add a status",
+    "fa": "افزودن وضعیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "AddStatus",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "category": "field:category"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/AdminSpace/{workSpaceId}"
+  }
+}

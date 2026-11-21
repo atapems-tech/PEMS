@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-set-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a task to a sprint",
+    "fa": "انتقال وظیفه به اسپرینت"
+  },
+  "description": {
+    "en": "Move a task to a sprint",
+    "fa": "انتقال وظیفه به اسپرینت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "SetSprint",
+      "args": {
+        "id": "field:id",
+        "sprintId": "field:sprintId"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

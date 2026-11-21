@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-rank",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move a task up or down",
+    "fa": "جابه‌جایی وظیفه"
+  },
+  "description": {
+    "en": "Move a task up or down",
+    "fa": "جابه‌جایی وظیفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Rank",
+      "args": {
+        "id": "field:id",
+        "up": "field:up"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

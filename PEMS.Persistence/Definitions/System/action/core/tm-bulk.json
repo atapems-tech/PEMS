@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "tm-bulk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the selected tasks",
+    "fa": "تغییر وظایف انتخاب‌شده"
+  },
+  "description": {
+    "en": "Change the selected tasks",
+    "fa": "تغییر وظایف انتخاب‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Bulk",
+      "args": {
+        "ids": "field:ids",
+        "bulkAction": "field:bulkAction",
+        "value": "field:value"
+      }
+    },
+    "success": {
+      "en": "The selected tasks were changed.",
+      "fa": "وظایف انتخاب‌شده تغییر کرد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

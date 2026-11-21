@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-comment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "description": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Comment",
+      "args": {
+        "id": "field:id",
+        "body": "field:body"
+      }
+    },
+    "success": {
+      "en": "The comment was added.",
+      "fa": "نظر افزوده شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

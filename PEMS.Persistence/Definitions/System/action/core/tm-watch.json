@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-watch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Watch or unwatch a task",
+    "fa": "دنبال‌کردن وظیفه"
+  },
+  "description": {
+    "en": "Watch or unwatch a task",
+    "fa": "دنبال‌کردن وظیفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Watch",
+      "args": {
+        "id": "field:id",
+        "watch": "field:watch"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

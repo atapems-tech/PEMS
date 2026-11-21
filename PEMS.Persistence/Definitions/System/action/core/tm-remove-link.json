@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "tm-remove-link",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a link",
+    "fa": "حذف پیوند"
+  },
+  "description": {
+    "en": "Remove a link",
+    "fa": "حذف پیوند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "RemoveLink",
+      "args": {
+        "linkId": "field:linkId"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

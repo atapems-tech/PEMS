@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "tm-create-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a sprint",
+    "fa": "ساخت اسپرینت"
+  },
+  "description": {
+    "en": "Create a sprint",
+    "fa": "ساخت اسپرینت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "CreateSprint",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "name": "field:name",
+        "goal": "field:goal",
+        "startDate": "field:startDate",
+        "endDate": "field:endDate"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

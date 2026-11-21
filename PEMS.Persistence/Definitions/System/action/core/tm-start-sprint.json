@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "tm-start-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start a sprint",
+    "fa": "شروع اسپرینت"
+  },
+  "description": {
+    "en": "Start a sprint",
+    "fa": "شروع اسپرینت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "StartSprint",
+      "args": {
+        "sprintId": "field:sprintId"
+      }
+    },
+    "success": {
+      "en": "The sprint was started.",
+      "fa": "اسپرینت شروع شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

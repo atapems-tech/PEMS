@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-complete-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete a sprint",
+    "fa": "پایان اسپرینت"
+  },
+  "description": {
+    "en": "Complete a sprint",
+    "fa": "پایان اسپرینت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "CompleteSprint",
+      "args": {
+        "sprintId": "field:sprintId",
+        "moveTo": "field:moveTo"
+      }
+    },
+    "success": {
+      "en": "The sprint was completed.",
+      "fa": "اسپرینت پایان یافت."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

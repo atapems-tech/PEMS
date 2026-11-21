@@ -84,6 +84,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-756: task manager commands as definitions
+
+### Changed
+- The scalar commands of the task manager (assign, status, archive, rank, reorder, sprint, bulk, comments, links, watch, sprint create/edit/start/complete, space members, statuses, transitions, types) are definitions (/a/tm-*) over ITaskManagerOperations. They go back to the page the form came from (redirectBack); the board and backlog drag and drop call them with Accept: application/json. The create and update of a task, the save of a space and the pages stay on TaskManagerController (8 actions). The hidden false next to a checkbox was removed from the admin forms (an unchecked box is a missing field).
+
 ## 2026-11-21 - SCRUM-818: redirectBack and a list of numbers for operations
 
 ### Changed

@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "tm-transition",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the status of a task",
+    "fa": "تغییر وضعیت وظیفه"
+  },
+  "description": {
+    "en": "Change the status of a task",
+    "fa": "تغییر وضعیت وظیفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Transition",
+      "args": {
+        "id": "field:id",
+        "statusId": "field:statusId",
+        "legacyStatus": "field:legacyStatus",
+        "note": "field:note",
+        "rowVersion": "field:rowVersion"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

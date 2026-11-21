@@ -215,6 +215,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IPermitOperations, PEMS.W
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenanceStrategyOperations, PEMS.Web.Services.MaintenanceStrategyOperations>();   // SCRUM-725
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkOrderTaskOperations, PEMS.Web.Services.WorkOrderTaskOperations>();   // SCRUM-764
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskItemOperations, PEMS.Web.Services.TaskItemOperations>();   // SCRUM-755
+builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskManagerOperations, PEMS.Web.Services.TaskManagerOperations>();   // SCRUM-756
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkRequestOperations, PEMS.Web.Services.WorkRequestOperations>();   // SCRUM-765
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITenderOperations, PEMS.Web.Services.TenderOperations>();   // SCRUM-759
 builder.Services.AddScoped<PEMS.Application.Interfaces.IContractOperations, PEMS.Web.Services.ContractOperations>();   // SCRUM-676

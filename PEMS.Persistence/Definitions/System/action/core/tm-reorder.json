@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "tm-reorder",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reorder the tasks",
+    "fa": "ترتیب وظایف"
+  },
+  "description": {
+    "en": "Reorder the tasks",
+    "fa": "ترتیب وظایف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Reorder",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "sprintId": "field:sprintId",
+        "ids": "field:ids"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}
