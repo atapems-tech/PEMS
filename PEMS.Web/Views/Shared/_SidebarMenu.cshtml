@@ -369,7 +369,7 @@
             }
             @if (canSeePartCatalogue)
             {
-                <pems-nav-link item="false" active="@(IsActive("PartCatalogueRequest", "Warehouse"))" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueRequest", "Warehouse"))" href="/p/pc-requests">
                     <pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]
                 </pems-nav-link>
             }

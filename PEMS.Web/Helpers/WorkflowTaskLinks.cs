@@ -18,7 +18,7 @@ public static class WorkflowTaskLinks
             "TechnicalQuery" => $"/TechnicalQuery/Details/{id}",
             "VDRItem" => $"/VDR/Details/{id}",
             "Document" => $"/EngineeringDocuments/Details/{id}",
-            "PartCatalogueRequest" => $"/Warehouse/PartCatalogueRequest/Details/{id}",
+            "PartCatalogueRequest" => $"/p/pc-request-details?id={id}",
             "NonConformanceReport" => $"/QC/NcrDetails/{id}",
             "Contract" => $"/Contract/Details/{id}",
             "IrnReceiptDisposition" => $"/Warehouse/IrnReceipt/Details/{id}",

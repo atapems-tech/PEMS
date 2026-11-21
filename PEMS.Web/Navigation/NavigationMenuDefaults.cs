@@ -117,7 +117,7 @@ public static class NavigationMenuDefaults
         new("proc.wh.sr", "proc.sub.warehouse", L, 50, "Store Requisitions", "bi-clipboard-check", "Module:Inventory&Perm:StoreRequisition.View", BadgeKey: NavigationBadges.StoreRequisitionsAwaitingApproval, ExternalPath: "/p/store-requisitions"),   // SCRUM-664: a definition page (/p/...)
         new("proc.wh.replenishment", "proc.sub.warehouse", L, 60, "Repl_Menu", "bi-cart-plus", "Module:Inventory&Flag:Replenishment", ExternalPath: "/p/replenishment"),   // SCRUM-663: a definition page (/p/...)
         new("proc.wh.masterdata", "proc.sub.warehouse", L, 70, "Master Data", "bi-collection", "Module:Inventory&Perm:InventoryMasterData.View", ExternalPath: "/p/inventory-master-data"),   // SCRUM-653: a definition page (/p/...)
-        Link("proc.wh.partcatalogue", "proc.sub.warehouse", 80, "Pc_Menu", "bi-journal-plus", "PartCatalogueRequest", area: "Warehouse", rule: "Flag:PartCatalogue", badge: NavigationBadges.MyWorkPartCatalogue),
+        new("proc.wh.partcatalogue", "proc.sub.warehouse", L, 80, "Pc_Menu", "bi-journal-plus", "Flag:PartCatalogue", ExternalPath: "/p/pc-requests", BadgeKey: NavigationBadges.MyWorkPartCatalogue),   // SCRUM-662: a definition page (/p/...)
         // SCRUM-478: Part Catalogue reports
         new("proc.wh.partcatalogue.reports", "proc.sub.warehouse", L, 85, "PcRpt_Menu", "bi-bar-chart-line", "Flag:PartCatalogueReports", ExternalPath: "/p/pc-report"),   // SCRUM-661: a definition page (/p/...)
         new("proc.wh.partcatalogue.admin", "proc.sub.warehouse", L, 90, "Pc_Title_Admin", "bi-sliders", "Flag:PartCatalogueAdmin", ExternalPath: "/p/pc-admin"),   // SCRUM-658: a definition page (/p/...)

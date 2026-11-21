@@ -62,6 +62,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-662: Part Catalogue requests as definitions (list, details, workflow, files)
+
+### Changed
+- The list, the details, the new draft, approve/return/cancel/register, retry routing, notes, the attachment download and the INWH-PLA-FO-001 Excel and PDF are now IPartCatalogueRequestOperations (model PartCatalogueRequest), the pages pc-requests and pc-request-details, forms/actions pc-request-*, file sources and routes. The long edit form with its scripts, equipment and attachment upload stays on PartCatalogueRequestController (10 actions) until a form can be loaded from an operation.
+
 ## 2026-11-21 - SCRUM-658: Part Catalogue administration as definitions
 
 ### Changed

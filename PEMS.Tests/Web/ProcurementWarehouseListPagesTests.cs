@@ -90,28 +90,6 @@ public class ProcurementWarehouseListPagesTests
 
     // ---------- warehouse ----------
 
-    [Fact]
-    public async Task PartCatalogueRequests_ViewAndSidePanelFiltersAreInTheDropdown_AndTheCountsShowFirst()
-    {
-        var vm = new PcIndexViewModel
-        {
-            Page = Page(new PartCatalogueListItemDto { Id = 1, RequestNumber = "PCR-1", RequestType = "Add", Status = "InApproval", Urgent = true, CreatedDate = new DateTime(2026, 10, 4) }),
-            Filter = new PartCatalogueListFilter { View = "awaiting", Status = "InApproval" },
-            Summary = new PartCatalogueSummaryDto { Total = 1, InApproval = 1, Urgent = 1, AwaitingMe = 1 },
-            CanCreate = true
-        };
-        var html = await Render<PartCatalogueRequestController>("/Areas/Warehouse/Views/PartCatalogueRequest/Index.cshtml", vm);
-
-        AssertBuiltFromTheComponent(html, "PartCatalogueRequests", 1);
-        Assert.DoesNotContain("offcanvas", html);
-        Assert.DoesNotContain("nav-pills", html);
-        Assert.Contains("id=\"pcKpis\"", html);
-        Assert.DoesNotMatch("id=\"pcKpis\" hidden", html);                                 // shown first
-        Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);  // view + status
-        Assert.Contains("vs-subnav", html);
-        Assert.Contains("pc-urgent-row", html);
-    }
-
     private static string RepoWeb()
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);

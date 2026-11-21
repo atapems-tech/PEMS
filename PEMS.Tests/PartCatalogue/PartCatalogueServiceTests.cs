@@ -344,36 +344,6 @@ public class PartCatalogueServiceTests
     }
 
     [Fact]
-    public async Task Details_ShowsTheTechnicalClassDefinition_OnlyWhileTheRequestIsDraft()
-    {
-        const string definition = "A circular or moderately noncircular shaped sealing material";
-        var e = await NewEnvAsync();
-        (await e.Db.PartCatalogueTechnicalClasses.FindAsync(e.Tc))!.LongDescription = definition;
-        await e.Db.SaveChangesAsync();
-
-        var id = await e.Svc.CreateDraftAsync("Add", e.Actor(Requester));
-        Assert.True((await e.Svc.SaveAsync(Form(e, id), e.Actor(Requester))).Success);
-        Assert.True((await e.Svc.GenerateNumberAsync(id, null, e.Actor(Requester))).Success);
-
-        var host = new PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueAdminController(null!, null!, null!, null!, null!, null!);
-        async Task<string> RenderAsync()
-        {
-            var dto = (await e.Svc.GetDetailsAsync(id, e.Actor(Requester)))!;
-            var result = new Microsoft.AspNetCore.Mvc.ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(host.ViewData) { Model = dto } };
-            return await RazorViewRenderer.RenderAsync(host, result, "~/Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml");
-        }
-
-        Assert.Equal("Draft", await StatusAsync(e, id));
-        Assert.Contains(definition, await RenderAsync());
-
-        Assert.True((await e.Svc.SubmitAsync(id, null, e.Actor(Requester))).Success);
-        Assert.Equal("InApproval", await StatusAsync(e, id));
-        var submitted = await RenderAsync();
-        Assert.DoesNotContain(definition, submitted);
-        Assert.Contains("V-1", submitted);   // the class itself is still shown; only its long definition is hidden
-    }
-
-    [Fact]
     public async Task MissingDirectManager_IsReceivedAsOrganizationResolutionRequired_ThenRepairedRetriedAndApproved()
     {
         var e = await NewEnvAsync();

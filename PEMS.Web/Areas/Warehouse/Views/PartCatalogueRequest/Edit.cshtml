@@ -73,14 +73,10 @@
             <span class="small text-muted">@Localizer["Pc_Hint_NumberFirst"]</span>
         }
         <div class="vs-toolbar__end">
-            <pems-link asp-action="Index" class="vs-btn vs-btn--sm">@Localizer["Pc_Btn_Back"]</pems-link>
+            <a href="/p/pc-requests" class="vs-btn vs-btn--sm">@Localizer["Pc_Btn_Back"]</a>
             @if (a.CanCancel)
             {
-                <pems-form asp-action="Execute" method="post" class="d-inline" data-pems-confirm="@Localizer["Pc_Confirm_Cancel"]">
-                    <input type="hidden" name="id" value="@d.Id" />
-                    <input type="hidden" name="action" value="Cancel" />
-                    <pems-button plain="true" type="submit" css="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</pems-button>
-                </pems-form>
+                <a href="/f/pc-request-execute?id=@d.Id&action=Cancel" class="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</a>
             }
         </div>
     </div>
