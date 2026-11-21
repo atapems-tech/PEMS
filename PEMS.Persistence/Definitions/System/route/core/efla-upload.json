@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "efla-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment functional location assignment (old address)",
+    "fa": "تخصیص مکان عملیاتی به تجهیز (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Equipment functional location assignment (old address)",
+    "fa": "تخصیص مکان عملیاتی به تجهیز (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "EquipmentFunctionalLocationAssignment/Upload",
+    "target": "/p/efla",
+    "permanent": false
+  }
+}

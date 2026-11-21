@@ -63,7 +63,7 @@ public static class ImportCatalog
         new("FunctionalLocation", Category.Cmms, "FunctionalLocationImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "FunctionalLocationImport",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up", Url: "/p/fl-import"),   // converted: a definition page
         new("EquipmentFlAssignment", Category.Cmms, "EquipmentFunctionalLocationAssignment", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "EquipmentFunctionalLocationAssignment",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-signpost-split"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-signpost-split", Url: "/p/efla"),   // converted: a definition page
         new("MaintenanceHistory", Category.Cmms, "MaintenanceHistoryImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MaintenanceHistoryImport",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-clock-history", Url: "/p/history-import"),   // SCRUM-722: a definition page
         // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۹
