@@ -31,7 +31,7 @@
         }
         @if (Model.Contract != null)
         {
-            <pems-col md="4" css="mt-2"><strong>@Localizer["Contract"]:</strong> <pems-link asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.Contract.ContractNo</pems-link></pems-col>
+            <pems-col md="4" css="mt-2"><strong>@Localizer["Contract"]:</strong> <pems-link href="/p/contract-details?id=@Model.ContractId">@Model.Contract.ContractNo</pems-link></pems-col>
         }
     </pems-row>
     @if (!string.IsNullOrWhiteSpace(Model.Description))

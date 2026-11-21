@@ -86,33 +86,6 @@ public class ContractControllerAuthorizationTests
         Assert.Equal("Draft", ctx.Contracts.Single().Status);
     }
 
-    [Fact]
-    public async Task ChangeStatus_WithArbitraryFreeTextStatus_IsRejected_DoesNotMutateContract()
-    {
-        // طبق §D (Phase 2.2): این دقیقاً همان آسیب‌پذیری‌ای است که ممیزی پیدا کرد -
-        // ChangeStatus دیگر هر رشته‌ی آزاد را نمی‌پذیرد
-        var (controller, ctx, _) = await CreateController(nameof(ChangeStatus_WithArbitraryFreeTextStatus_IsRejected_DoesNotMutateContract), role: SystemRoles.ContractManager);
-        var contract = SeedDraftContract(ctx);
-
-        var result = await controller.ChangeStatus(contract.ContractId, "Effective");
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Draft", ctx.Contracts.Single().Status);
-    }
-
-    [Fact]
-    public async Task ChangeStatus_ToUnderReview_DelegatesToWorkflowService()
-    {
-        var (controller, ctx, _) = await CreateController(nameof(ChangeStatus_ToUnderReview_DelegatesToWorkflowService), role: SystemRoles.ContractManager);
-        var contract = SeedDraftContract(ctx);
-
-        var result = await controller.ChangeStatus(contract.ContractId, "UnderReview");
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("UnderReview", ctx.Contracts.Single().Status);
-        Assert.Equal(6, ctx.ContractDisciplineReviews.Count(x => x.ContractId == contract.ContractId));
-    }
-
     // SCRUM-437: Approve, Sign, Complete (and the other workflow steps) are action definitions over Contract operations. Their permission is declared on the service
     // method and checked by the operation catalog before the service is called (OperationTests proves the check); the transition rules stay in ContractWorkflowService.
     [Theory]

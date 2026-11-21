@@ -61,26 +61,6 @@ public class MaintenancePlanControllerAuthorizationTests
         return (controller, ctx);
     }
 
-    [Fact]
-    public async Task Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(Index_WithoutViewPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Index_WithViewPermission_ReturnsView()
-    {
-        var (controller, _) = await CreateController(nameof(Index_WithViewPermission_ReturnsView), role: SystemRoles.Viewer);
-
-        var result = await controller.Index();
-
-        Assert.IsType<ViewResult>(result);
-    }
-
     private static async Task<int> SeedAssignmentAsync(PEMS.Persistence.Context.PEMSDbContext ctx)
     {
         var eq = new Equipment { EquipmentId = 1, TagNumber = "EQ-001", Name = "EQ-001", EquipmentType = "Pump", IsActive = true };
@@ -129,74 +109,4 @@ public class MaintenancePlanControllerAuthorizationTests
         Assert.Equal(1, plan.EquipmentId); // تجهیز از تخصیص مشتق شد، نه از کلاینت
     }
 
-    [Fact]
-    public async Task RecordMeterReading_WithoutEditPermission_ReturnsForbid()
-    {
-        var (controller, ctx) = await CreateController(nameof(RecordMeterReading_WithoutEditPermission_ReturnsForbid), role: SystemRoles.Viewer);
-        var plan = new MaintenancePlan { MaintenancePlanId = 1, EquipmentId = 1, MaintenanceStrategyId = 1, PlanNumber = "MP-001", Title = "T", TriggerType = "Meter", MeterInterval = 100, IsActive = true };
-        ctx.MaintenancePlans.Add(plan);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.RecordMeterReading(plan.MaintenancePlanId, 500);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Null(ctx.MaintenancePlans.Single().LastExecutionMeterReading);
-    }
-
-    [Fact]
-    public async Task RecordMeterReading_WithEditPermission_UpdatesReading()
-    {
-        var (controller, ctx) = await CreateController(nameof(RecordMeterReading_WithEditPermission_UpdatesReading));
-        var plan = new MaintenancePlan { MaintenancePlanId = 1, EquipmentId = 1, MaintenanceStrategyId = 1, PlanNumber = "MP-001", Title = "T", TriggerType = "Meter", MeterInterval = 100, IsActive = true };
-        ctx.MaintenancePlans.Add(plan);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.RecordMeterReading(plan.MaintenancePlanId, 500);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal(500, ctx.MaintenancePlans.Single().LastExecutionMeterReading);
-    }
-
-    [Fact]
-    public async Task Deactivate_WithoutEditPermission_ReturnsForbid()
-    {
-        var (controller, ctx) = await CreateController(nameof(Deactivate_WithoutEditPermission_ReturnsForbid), role: SystemRoles.Viewer);
-        var plan = new MaintenancePlan { MaintenancePlanId = 1, EquipmentId = 1, MaintenanceStrategyId = 1, PlanNumber = "MP-001", Title = "T", TriggerType = "Calendar", IsActive = true };
-        ctx.MaintenancePlans.Add(plan);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.Deactivate(plan.MaintenancePlanId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.True(ctx.MaintenancePlans.Single().IsActive);
-    }
-
-    [Fact]
-    public async Task Deactivate_WithEditPermission_DeactivatesPlan()
-    {
-        var (controller, ctx) = await CreateController(nameof(Deactivate_WithEditPermission_DeactivatesPlan));
-        var plan = new MaintenancePlan { MaintenancePlanId = 1, EquipmentId = 1, MaintenanceStrategyId = 1, PlanNumber = "MP-001", Title = "T", TriggerType = "Calendar", IsActive = true };
-        ctx.MaintenancePlans.Add(plan);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.Deactivate(plan.MaintenancePlanId);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(ctx.MaintenancePlans.Single().IsActive);
-    }
-
-    [Fact]
-    public async Task GenerateWorkOrder_WithoutEditPermission_ReturnsForbid()
-    {
-        var (controller, ctx) = await CreateController(nameof(GenerateWorkOrder_WithoutEditPermission_ReturnsForbid), role: SystemRoles.Viewer);
-        ctx.Equipments.Add(new Equipment { EquipmentId = 1, TagNumber = "EQ-001", Name = "EQ-001", EquipmentType = "Pump", IsActive = true });
-        var plan = new MaintenancePlan { MaintenancePlanId = 1, EquipmentId = 1, MaintenanceStrategyId = 1, PlanNumber = "MP-001", Title = "T", TriggerType = "Calendar", IsActive = true };
-        ctx.MaintenancePlans.Add(plan);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.GenerateWorkOrder(plan.MaintenancePlanId);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.WorkOrders);
-    }
 }

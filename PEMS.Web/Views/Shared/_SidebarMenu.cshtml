@@ -317,7 +317,7 @@
 
                 <div class="nav-subheading">@Localizer["Contracts"]</div>
 
-                <pems-nav-link item="false" active="@(IsActive("Contract"))" asp-controller="Contract" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("Contract"))" href="/p/contracts">
                     <pems-icon name="bi-file-earmark-ruled" /> @Localizer["Contracts"]
                 </pems-nav-link>
 
@@ -470,7 +470,7 @@
 
                 @if (navVisibility.IsCmmsItemVisible("MaintenancePlan"))
                 {
-                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenancePlan"))" asp-controller="MaintenancePlan" asp-action="Index" asp-area="">
+                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenancePlan"))" href="/p/maintenance-plans">
                         <pems-icon name="bi-calendar-check" /> @Localizer["Maintenance Plan"]
                     </pems-nav-link>
                 }
@@ -492,7 +492,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("JobPlan"))
             {
-                <pems-nav-link item="false" active="@(IsActive("JobPlan"))" asp-controller="JobPlan" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" active="@(IsActive("JobPlan"))" href="/p/job-plans">
                     <pems-icon name="bi-list-check" /> @Localizer["Job Plans"]
                 </pems-nav-link>
             }

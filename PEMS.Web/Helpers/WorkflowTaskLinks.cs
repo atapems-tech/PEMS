@@ -20,7 +20,7 @@ public static class WorkflowTaskLinks
             "Document" => $"/EngineeringDocuments/Details/{id}",
             "PartCatalogueRequest" => $"/p/pc-request-details?id={id}",
             "NonConformanceReport" => $"/QC/NcrDetails/{id}",
-            "Contract" => $"/Contract/Details/{id}",
+            "Contract" => $"/p/contract-details?id={id}",
             "IrnReceiptDisposition" => $"/Warehouse/IrnReceipt/Details/{id}",
             "IrnHold" => $"/Warehouse/IrnReceipt/Details/{id}",   // SCRUM-473: id = IRN
             "WorkOrder" or "WorkOrderLifecycle" or "WorkOrderMultiDisciplineReview" => $"/WorkOrder/Details/{id}",

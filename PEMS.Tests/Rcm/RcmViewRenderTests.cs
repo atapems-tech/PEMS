@@ -159,26 +159,6 @@ public class RcmViewRenderTests
     }
 
     [Fact]
-    public async Task PlanIndex_ShowsEquipmentIdentity_Criticality_AndStrategyVersion()
-    {
-        var f = await BuildAsync(nameof(PlanIndex_ShowsEquipmentIdentity_Criticality_AndStrategyVersion));
-        var jp = await RcmTestFactory.AddJobPlanAsync(f.Env.Ctx);
-        await f.Env.Plans().CreateAsync(new PlanInputDto
-        {
-            MaintenanceStrategyAssignmentId = f.AssignmentId, Title = "Quarterly lubrication", TriggerType = "Calendar",
-            IntervalDays = 30, NextDueDate = DateTime.Today.AddDays(2), JobPlanId = jp.JobPlanId
-        }, RcmTestFactory.Actor(5));
-        var c = f.Env.PlanController();
-
-        var html = await Render(c, await c.Index(), "/Views/MaintenancePlan/Index.cshtml");
-
-        Assert.Contains("80-FT-6001", html);
-        Assert.Contains("Test PUMP_T", html);
-        Assert.Contains("A – critical", html);
-        Assert.Contains("Fixed schedule", html);
-    }
-
-    [Fact]
     public async Task TagCoverageAndCatalogPages_RenderWithoutErrors()
     {
         var f = await BuildAsync(nameof(TagCoverageAndCatalogPages_RenderWithoutErrors));

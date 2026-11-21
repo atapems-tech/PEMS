@@ -423,7 +423,7 @@
                 </pems-info-item>
                 <pems-info-item label="@Localizer["Ed_RelatedContract"]">
                         @if (Model.ContractId.HasValue)
-                        { <pems-link asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Model.ContractNo</pems-link> }
+                        { <pems-link href="/p/contract-details?id=@Model.ContractId">@Model.ContractNo</pems-link> }
                         else { <span class="text-muted">—</span> }
                 </pems-info-item>
             </pems-info-grid>

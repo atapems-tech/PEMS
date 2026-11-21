@@ -61,7 +61,7 @@
         }
         @if (Model.ContractId != null)
         {
-            <pems-button tone="success" size="small" outline="true" as="a" asp-controller="Contract" asp-action="Details" asp-route-id="@Model.ContractId">@Localizer["View Contract"]</pems-button>
+            <pems-button tone="success" size="small" outline="true" as="a" href="/p/contract-details?id=@Model.ContractId">@Localizer["View Contract"]</pems-button>
         }
     </pems-flex>
 </pems-content-card>

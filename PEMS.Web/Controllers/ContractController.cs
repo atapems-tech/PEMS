@@ -41,86 +41,6 @@ public class ContractController : Controller
     // P0-09 (D-OPEN-02، تصمیم مالک): صفحات فقط-خواندنی هم مجوز View می‌خواهند.
     private Task<bool> HasAsync(string action) => _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", action);
 
-    // طبق «PEMS — Global Grid Hardening» P1: این Grid فیلتری نداشت؛ فقط صفحه‌بندی واقعی اضافه شد.
-    public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
-    {
-        if (!await HasAsync("View")) return Forbid();
-
-        ViewData["Title"] = "Contracts";
-        ViewData["Section"] = "Contract Management";
-        ViewData["HelpKey"] = "Contract.Index";
-
-        var normalizedPageSize = DataGridPageSize.Normalize(pageSize);
-        var result = await _service.GetPagedAsync(page, normalizedPageSize);
-
-        ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
-            .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
-
-        ViewBag.Vendors = await _context.Vendors.Where(x => x.IsActive)
-            .Select(x => new { x.VendorId, x.Name }).ToListAsync();
-
-        return View(result);
-    }
-
-    public async Task<IActionResult> Details(int id)
-    {
-        if (!await HasAsync("View")) return Forbid();
-
-        ViewData["Title"] = "Contract Details";
-        ViewData["Section"] = "Contract Management";
-
-        var contract = await _service.GetByIdAsync(id);
-        if (contract == null) return NotFound();
-
-        ViewBag.DisciplineReviews = await _context.ContractDisciplineReviews
-            .Include(x => x.Reviewer)
-            .Where(x => x.ContractId == id)
-            .ToListAsync();
-
-        ViewBag.Revisions = await _context.ContractRevisions
-            .Include(x => x.RequestedBy)
-            .Include(x => x.ApprovedBy)
-            .Where(x => x.ContractId == id)
-            .OrderByDescending(x => x.RevisionNo)
-            .ToListAsync();
-
-        ViewBag.ContractDocuments = await _context.ContractDocuments
-            .Where(x => x.ContractId == id)
-            .OrderByDescending(x => x.CreatedDate)
-            .ToListAsync();
-
-        var instance = await _runtime.GetInstanceAsync(Persistence.Seed.ContractWorkflowSeeder.BusinessObjectType, id);
-        ViewBag.WorkflowInstance = instance;
-        ViewBag.WorkflowHistory = instance != null ? await _runtime.GetHistoryAsync(instance.WorkflowInstanceId) : null;
-
-        ViewBag.RequiredDisciplines = ContractWorkflowService.RequiredDisciplines;
-
-        // طبق ممیزی نهایی Ownership/Traceability (§2/§6): Contract هیچ FK مستقیمی به سمت
-        // ProcurementPackage/Tender ندارد - Tender.ContractId تنها منبع حقیقت این رابطه است
-        // (طبق Phase 3). این‌جا فقط همان رابطه‌ی موجود را در جهت معکوس می‌خوانیم تا در UI دیده
-        // شود - نه یک FK تازه‌ی افزونه که با Tender.ContractId ناسازگار می‌شد.
-        ViewBag.OriginatingTender = await _context.Tenders
-            .Include(x => x.ProcurementPackage)
-            .Include(x => x.AwardedBid)
-            .FirstOrDefaultAsync(x => x.ContractId == id);
-
-        ViewBag.ContractNTPs = await _context.ContractNTPs
-            .Where(x => x.ContractId == id)
-            .OrderByDescending(x => x.IssuedDate)
-            .ToListAsync();
-
-        ViewBag.KickoffMeetings = await _context.Meetings
-            .Where(x => x.ContractId == id && x.MeetingType == "KickOff")
-            .OrderByDescending(x => x.MeetingDate)
-            .ToListAsync();
-
-        ViewBag.LinkedItps = await _context.InspectionTestPlans
-            .Where(x => x.ContractId == id)
-            .ToListAsync();
-
-        return View(contract);
-    }
-
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -179,7 +99,7 @@ public class ContractController : Controller
         {
             // Commit نامطمئن بود و بررسی بعدی هم وضعیت را روشن نکرد: هرگز «ساخته نشد» نمی‌گوییم
             TempData["Error"] = result.Error;
-            return RedirectToAction(nameof(Index));
+            return Redirect("/p/contracts");
         }
 
         if (!result.Success)
@@ -196,106 +116,7 @@ public class ContractController : Controller
         else
             TempData["Message"] = "Contract created successfully";
 
-        return RedirectToAction(nameof(Details), new { id = result.ContractId });
-    }
-
-    // طبق §D (Phase 2.2): جایگزین رشته‌ی آزاد قدیمی - فقط همین چند گذار مشخص و اعتبارسنجی‌شده
-    // مجازند؛ هر ورودی دیگر رد می‌شود. ChangeStatusAsync قدیمی (رشته‌ی آزاد) دیگر از این‌جا صدا
-    // زده نمی‌شود.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangeStatus(int contractId, string status)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Edit"))
-            return Forbid();
-
-        (bool Success, string? Error) result = status switch
-        {
-            "UnderReview" => await SubmitForReviewInternalAsync(contractId),
-            _ => (false, $"گذار مستقیم به وضعیت «{status}» مجاز نیست. از اکشن‌های Approve/Reject/Sign/MarkEffective استفاده کنید.")
-        };
-
-        if (!result.Success)
-            TempData["Error"] = result.Error;
-        else
-            TempData["Message"] = "وضعیت قرارداد به‌روزرسانی شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    // SCRUM-437: the workflow steps (submit, discipline review, approve, reject, sign, effective, complete, terminate, revision request and approval) are action definitions (contract-*) over the Contract operations.
-
-    private const string WorkflowDenialMessage = "نقش شما در این مرحله‌ی گردش‌کار قرارداد مجاز نیست.";
-
-    private async Task<(bool Success, string? Error)> SubmitForReviewInternalAsync(int contractId)
-    {
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        // P0-10: ارسال‌کننده «ویرایشگر» قرارداد است و نباید همان را تأیید کند (رویداد Contracts.Edit در همان ذخیره)
-        return await _workflowService.SubmitForReviewAsync(contractId, null, employeeId, _currentUser.Roles,
-            _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString());
-    }
-
-    // طبق §D/§G (Phase 4.6): ContractDocument از قبل به‌عنوان یک نوع مدرک اسکلتی وجود داشت
-    // (ToTable/EF config کامل) ولی هیچ Controller/Service ای واقعاً یک ردیف در آن نمی‌ساخت -
-    // این اکشن همان اتصال گمشده است، نه یک معماری موازی جدید.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddDocument(int contractId, string documentNo, string title, string documentType, string? clauseReference)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Edit"))
-            return Forbid();
-
-        var contract = await _context.Contracts.FirstOrDefaultAsync(x => x.ContractId == contractId);
-        if (contract == null) return NotFound();
-
-        _context.ContractDocuments.Add(new PEMS.Domain.Entities.ContractDocument
-        {
-            DocumentKind = "Contract",
-            DocumentNo = documentNo,
-            Title = title,
-            DocumentType = documentType,
-            ProjectId = contract.ProjectId,
-            ContractId = contractId,
-            ClauseReference = clauseReference,
-            Status = "Draft"
-        });
-        // P0-10: افزودن سند ویرایش محتوای قرارداد است (رویداد Contracts.Edit با همان ذخیره)
-        ContractEditorEvents.Add(_context, contractId, _currentUser.UserId, HttpContext?.Connection.RemoteIpAddress?.ToString(), "Added a contract document");
-        await _context.SaveChangesAsync();
-
-        TempData["Message"] = "سند قرارداد ثبت شد.";
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> IssueNtp(int contractId, string? reference, DateTime? effectiveStartDate)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Approve"))
-            return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        var result = await _workflowService.IssueNtpAsync(contractId, reference, effectiveStartDate, employeeId);
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "NTP صادر شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ScheduleKickoff(int contractId, DateTime meetingDate, string? location, string? agenda)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Contracts", "Edit"))
-            return Forbid();
-
-        var result = await _workflowService.ScheduleKickoffMeetingAsync(contractId, meetingDate, location, _currentUser.FullName, agenda);
-
-        if (!result.Success) TempData["Error"] = result.Error;
-        else TempData["Message"] = "جلسه‌ی Kick-off برنامه‌ریزی شد.";
-
-        return RedirectToAction(nameof(Details), new { id = contractId });
+        return Redirect($"/p/contract-details?id={result.ContractId}");
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()

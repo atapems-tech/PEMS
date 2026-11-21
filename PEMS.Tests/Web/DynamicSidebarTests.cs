@@ -337,7 +337,7 @@ public class DynamicSidebarTests
         foreach (var c in new[] { "ProcurementPackage", "Tender", "MaterialRequisition" })
             Assert.DoesNotContain($"asp-controller=\"{c}\"", eng);
         var proc = src[src.IndexOf("id=\"sec-procurement\"", StringComparison.Ordinal)..src.IndexOf("IsModuleVisible(\"ProjectControls\")", StringComparison.Ordinal)];
-        foreach (var c in new[] { "Tender", "Contract", "PartCatalogueRequest" })
+        foreach (var c in new[] { "Tender" })
             Assert.Contains($"asp-controller=\"{c}\"", proc);
     }
 

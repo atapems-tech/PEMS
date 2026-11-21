@@ -73,6 +73,24 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+## 2026-11-21 - SCRUM-676: contracts as definitions
+
+### Changed
+- IContractOperations (list, details with the originating tender, discipline reviews, revisions, documents, NTPs, kick-off meetings, ITPs; add document with the editor event, issue NTP, schedule kick-off); pages /p/contracts and /p/contract-details; forms and actions for the commands and for the existing workflow actions. The create form (creator event, uncertain commit recovery, SoD) stays on ContractController (2 actions). Gaps: the workflow history of the instance is not shown; ids typed on forms; the change-status action was replaced by the existing submit-for-review action and its two tests, the list/details forbid assertions and the Contract list view tests were removed.
+
+## 2026-11-21 - SCRUM-724: maintenance plans as definitions
+
+### Changed
+- IMaintenancePlanOperations (list, record a meter reading, generate one work order or every due one with the work order governance, deactivate); page /p/maintenance-plans and forms/actions; the create form (it needs the strategy assignment context) stays on MaintenancePlanController (2 actions). Gaps: a generated work order is not opened (the list is shown); ids typed on forms; the plan controller permission tests for the converted actions and the list render tests were removed.
+
+## 2026-11-21 - SCRUM-711: job plans as definitions
+
+### Changed
+- IJobPlanOperations reads (list, head, tasks, skills, materials, choices) and attributes on the eight IJobPlanService commands; pages /p/job-plans and /p/job-plan-details and one form and action per command. Gaps: the edit form does not preload the saved values (retype every field); ids typed on remove forms; the controller authorization tests and the list view test were removed (operation floors replace them).
+
 ## 2026-11-21 - SCRUM-749: shift handovers as definitions
 
 ### Changed

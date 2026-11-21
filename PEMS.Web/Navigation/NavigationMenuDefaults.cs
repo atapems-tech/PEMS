@@ -106,7 +106,7 @@ public static class NavigationMenuDefaults
         Link("proc.tender", "proc.sub.purchasing", 30, "Tender", "bi-clipboard-check", "Tender", rule: "Module:EngineeringManagement&Perm:Tender.View"),
         new("proc.po", "proc.sub.purchasing", L, 40, "Purchase Orders", "bi-receipt", "Module:ContractManagement&Perm:PurchaseOrder.View", ExternalPath: "/p/purchase-orders"),   // SCRUM-741: a definition page (/p/...)
         Sub("proc.sub.contracts", "sec.procurement", 30, "Contracts"),
-        Link("proc.contracts", "proc.sub.contracts", 10, "Contracts", "bi-file-earmark-ruled", "Contract", rule: "Module:ContractManagement&Perm:Contracts.View"),
+        new("proc.contracts", "proc.sub.contracts", L, 10, "Contracts", "bi-file-earmark-ruled", "Module:ContractManagement&Perm:Contracts.View", ExternalPath: "/p/contracts"),   // SCRUM-676: a definition page (/p/...)
         ComingSoon("proc.milestones", "proc.sub.contracts", 20, "Contract Milestones", "bi-flag", "Contract Milestones", "Contract Management", "Module:ContractManagement"),
         ComingSoon("proc.claims", "proc.sub.contracts", 30, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management", "Module:ContractManagement"),
         Sub("proc.sub.warehouse", "sec.procurement", 40, "Warehouse"),
@@ -137,10 +137,10 @@ public static class NavigationMenuDefaults
         Link("cmms.asset", "sec.cmms", 30, "Assets", "bi-diagram-2", "Asset", rule: "CmmsItem:Asset"),
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),
         Link("cmms.strategy", "cmms.sub.planning", 10, "Maintenance Strategy", "bi-diagram-2", "MaintenanceStrategy", rule: "CmmsItem:MaintenanceStrategy"),
-        Link("cmms.plan", "cmms.sub.planning", 20, "Maintenance Plan", "bi-calendar-check", "MaintenancePlan", rule: "CmmsItem:MaintenancePlan"),
+        new("cmms.plan", "cmms.sub.planning", L, 20, "Maintenance Plan", "bi-calendar-check", "CmmsItem:MaintenancePlan", ExternalPath: "/p/maintenance-plans"),   // SCRUM-724: a definition page (/p/...)
         new("cmms.backlog", "cmms.sub.planning", L, 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsItem:CmmsOperations", ExternalPath: "/p/maintenance-backlog"),   // SCRUM-673: a definition page (/p/...)
         Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),
-        Link("cmms.jobplan", "sec.cmms", 50, "Job Plans", "bi-list-check", "JobPlan", rule: "CmmsItem:JobPlan"),
+        new("cmms.jobplan", "sec.cmms", L, 50, "Job Plans", "bi-list-check", "CmmsItem:JobPlan", ExternalPath: "/p/job-plans"),   // SCRUM-711: a definition page (/p/...)
         Link("cmms.workrequest", "sec.cmms", 60, "Work Requests", "bi-clipboard-plus", "WorkRequest", rule: "CmmsItem:WorkRequest"),
         Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
         new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)

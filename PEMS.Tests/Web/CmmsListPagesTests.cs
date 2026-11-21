@@ -24,8 +24,8 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag", "MaintenancePlan",
-        "MaintenanceStrategy", "JobPlan", "Permit", "Asset",
+        "WorkOrder", "WorkRequest", "Equipment", "FunctionalLocation", "Instrument", "Tag",
+        "MaintenanceStrategy", "Permit", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
         "EquipmentFunctionalLocationAssignment",
@@ -154,40 +154,7 @@ public class CmmsListPagesTests
 
     // ---------- Maintenance plans ----------
 
-    [Fact]
-    public async Task MaintenancePlans_GenerateDueIsAToolbarTool_AndMeterPlansKeepTheReadingForm()
-    {
-        var html = await Render<MaintenancePlanController>("/Views/MaintenancePlan/Index.cshtml", Page(new MaintenancePlanListDto
-        {
-            MaintenancePlanId = 8, PlanNumber = "PM-0008", EquipmentId = 3, EquipmentTagNumber = "P-101A", EquipmentName = "Feed pump", Title = "Bearing check",
-            StrategyType = "TimeBased", ScheduleMode = "Fixed", HasAssignment = true, TriggerType = "Both", IntervalDays = 30, MeterType = "Hours", MeterInterval = 500,
-            NextDueDate = new DateTime(2026, 9, 1), IsOverdue = true,
-        }), _ => { });
-
-        AssertBuiltFromTheComponent(html, "MaintenancePlan", 1, keepsDataBadges: true);
-        var toolbar = Regex.Match(html, "<div class=\"lp-toolbar\".*?</div>\\s*</div>", RegexOptions.Singleline).Value;
-        Assert.Contains("bi-lightning-charge", toolbar);
-        Assert.Contains("Every 30 days", html);
-        Assert.Contains("name=\"currentReading\"", html);
-        Assert.Contains("vs-pill--danger", html);                                // overdue
-        Assert.DoesNotContain("table-danger", html);
-    }
-
     // ---------- Job plans ----------
-
-    [Fact]
-    public async Task JobPlans_NewOpensTheCreateModal_AndSafetyNeedsArePills()
-    {
-        var html = await Render<JobPlanController>("/Views/JobPlan/Index.cshtml",
-            Page(new JobPlanListDto { JobPlanId = 1, JobPlanNumber = "JP-001", Title = "Pump overhaul", EstimatedDurationHours = 6, TaskCount = 12, PermitRequired = true, LOTORequired = true }),
-            v => v["EquipmentClasses"] = new List<dynamic>());
-
-        AssertBuiltFromTheComponent(html, "JobPlan", 1);
-        Assert.Matches("<button[^>]*data-bs-target=\"#createJobPlanModal\"", html);
-        Assert.Contains("id=\"createJobPlanModal\"", html);
-        Assert.Equal(2, Regex.Matches(html, "vs-pill vs-pill--warning").Count);   // permit + LOTO
-        Assert.Contains("6 h", html);
-    }
 
     // ---------- Permits ----------
 
