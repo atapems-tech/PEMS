@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "classification-accept",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Accept classification",
+    "fa": "تأیید طبقه‌بندی"
+  },
+  "description": {
+    "en": "Accept classification",
+    "fa": "تأیید طبقه‌بندی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentClassification",
+      "action": "Accept",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "طبقه‌بندی تایید و اعمال شد.",
+      "fa": "طبقه‌بندی تایید و اعمال شد."
+    },
+    "redirect": "/EquipmentClassification/ReviewQueue",
+    "redirectBack": true
+  }
+}

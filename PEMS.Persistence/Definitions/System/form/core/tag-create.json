@@ -1,0 +1,105 @@
+{
+  "kind": "form",
+  "key": "tag-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New tag",
+    "fa": "برچسب جدید"
+  },
+  "description": {
+    "en": "New tag",
+    "fa": "برچسب جدید"
+  },
+  "payload": {
+    "id": "tag-create",
+    "title": {
+      "en": "New tag",
+      "fa": "برچسب جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "tag-create",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Name is required.",
+            "fa": "نام الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "color",
+        "label": {
+          "en": "Colour",
+          "fa": "رنگ"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "secondary",
+            "label": {
+              "en": "secondary",
+              "fa": "secondary"
+            }
+          },
+          {
+            "value": "primary",
+            "label": {
+              "en": "primary",
+              "fa": "primary"
+            }
+          },
+          {
+            "value": "success",
+            "label": {
+              "en": "success",
+              "fa": "success"
+            }
+          },
+          {
+            "value": "danger",
+            "label": {
+              "en": "danger",
+              "fa": "danger"
+            }
+          },
+          {
+            "value": "warning",
+            "label": {
+              "en": "warning",
+              "fa": "warning"
+            }
+          },
+          {
+            "value": "info",
+            "label": {
+              "en": "info",
+              "fa": "info"
+            }
+          },
+          {
+            "value": "dark",
+            "label": {
+              "en": "dark",
+              "fa": "dark"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

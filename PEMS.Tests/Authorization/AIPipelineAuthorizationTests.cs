@@ -167,29 +167,18 @@ public class AIPipelineAuthorizationTests
 
     // ================= Relationship =================
 
+
+
+    // ConfirmSuggestedLink is the operation Relationship.ConfirmSuggestedLink (permission Relationship.Approve, SCRUM-745): the operation host refuses a role without it; the operation calls the service.
     [Fact]
-    public async Task Relationship_ConfirmSuggestedLink_WithoutPermission_ReturnsForbid_DoesNotConfirm()
+    public async Task Relationship_ConfirmSuggestedLinkOperation_Confirms()
     {
-        var (ctx, perms, user) = await CreateInfra(nameof(Relationship_ConfirmSuggestedLink_WithoutPermission_ReturnsForbid_DoesNotConfirm), role: SystemRoles.Viewer);
         var service = new FakeRelationshipService();
-        var controller = new RelationshipController(service, user, perms).WithTempData();
+        var ops = new PEMS.Web.Services.ReliabilityRegisterOperations(null!, null!, service, new FakeCurrentUserService { UserName = "tester" });
 
-        var result = await controller.ConfirmSuggestedLink(1, "MR", 1);
+        var result = await ops.ConfirmSuggestedLinkAsync(1, "MR", 1);
 
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.ConfirmSuggestedLinkCalled);
-    }
-
-    [Fact]
-    public async Task Relationship_ConfirmSuggestedLink_WithPermission_Confirms()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Relationship_ConfirmSuggestedLink_WithPermission_Confirms), role: SystemRoles.EngineeringManager);
-        var service = new FakeRelationshipService();
-        var controller = new RelationshipController(service, user, perms).WithTempData();
-
-        var result = await controller.ConfirmSuggestedLink(1, "MR", 1);
-
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.True(service.ConfirmSuggestedLinkCalled);
     }
 

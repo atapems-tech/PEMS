@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "relationship-confirm-link",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm suggested link",
+    "fa": "تأیید اتصال پیشنهادی"
+  },
+  "description": {
+    "en": "Confirm suggested link",
+    "fa": "تأیید اتصال پیشنهادی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Relationship",
+      "action": "ConfirmSuggestedLink",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "targetType": "field:targetType",
+        "targetId": "field:targetId",
+        "force": "field:force"
+      }
+    },
+    "success": {
+      "en": "اتصال تایید و برقرار شد.",
+      "fa": "اتصال تایید و برقرار شد."
+    },
+    "redirect": "/Relationship/Index",
+    "redirectBack": true
+  }
+}

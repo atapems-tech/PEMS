@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "tag-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete tag",
+    "fa": "حذف برچسب"
+  },
+  "description": {
+    "en": "Delete tag",
+    "fa": "حذف برچسب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tag",
+      "action": "Delete",
+      "args": {
+        "tagId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The tag was deleted.",
+      "fa": "برچسب حذف شد."
+    },
+    "redirect": "/p/tags"
+  }
+}

@@ -174,27 +174,7 @@ public class EquipmentControllerAuthorizationTests
     // AssignFoundation — طبق سید موجود، عملیات "Edit"
     // ==============================================================================
 
-    [Fact]
-    public async Task AssignFoundation_ViewerRole_Denied_ServiceNeverInvoked()
-    {
-        var (controller, equipment) = await CreateController(nameof(AssignFoundation_ViewerRole_Denied_ServiceNeverInvoked), SystemRoles.Viewer);
 
-        var result = await controller.AssignFoundation(1, null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(equipment.AssignFoundationCalled);
-    }
-
-    [Fact]
-    public async Task AssignFoundation_MaintenanceEngineer_Authorized_ServiceInvoked()
-    {
-        var (controller, equipment) = await CreateController(nameof(AssignFoundation_MaintenanceEngineer_Authorized_ServiceInvoked), SystemRoles.MaintenanceEngineer);
-
-        var result = await controller.AssignFoundation(1, null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(equipment.AssignFoundationCalled);
-    }
 
     // ==============================================================================
     // Index — طبق تصمیم صریح کاربر: عمداً دست‌نخورده، برای همه‌ی نقش‌ها در دسترس
@@ -210,5 +190,18 @@ public class EquipmentControllerAuthorizationTests
         var result = await controller.Index(null, null, null, null, null);
 
         Assert.IsType<ViewResult>(result);
+    }
+
+    // AssignFoundation is the operation Equipment.AssignFoundation (permission Equipment.Edit, SCRUM-692): the operation host refuses a role without it; the operation calls the service.
+    [Fact]
+    public async Task AssignFoundationOperation_CallsTheService()
+    {
+        var spy = new SpyEquipmentService();
+        var ops = new PEMS.Web.Services.ReliabilityRegisterOperations(null!, spy, null!, new FakeCurrentUserService { UserName = "tester" });
+
+        var result = await ops.AssignFoundationAsync(1);
+
+        Assert.True(result.Success);
+        Assert.True(spy.AssignFoundationCalled);
     }
 }

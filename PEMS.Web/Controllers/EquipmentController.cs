@@ -131,20 +131,6 @@ public class EquipmentController : Controller
         return View(passport);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AssignFoundation(int equipmentId, int? functionalLocationId, int? parentEquipmentId, DateTime? installationDate)
-    {
-        if (!await EnsurePermissionAsync("Edit", "شما مجاز به ویرایش محل استقرار/تجهیز والد این تجهیز نیستید."))
-            return RedirectToAction(nameof(Details), new { id = equipmentId });
-
-        var (success, error) = await _service.AssignFoundationAsync(
-            equipmentId, functionalLocationId, parentEquipmentId, installationDate, _currentUser.UserName);
-
-        TempData[success ? "Message" : "Error"] = success ? "Functional Location / Parent Equipment updated" : error;
-        return RedirectToAction(nameof(Details), new { id = equipmentId });
-    }
-
     [HttpGet]
     public async Task<IActionResult> Create()
     {

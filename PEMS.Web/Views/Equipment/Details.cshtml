@@ -94,7 +94,7 @@
 </div>
 
 <pems-modal id="assignFoundationModal" tabindex="-1">
-        <pems-form asp-action="AssignFoundation" method="post">
+        <pems-form action="/a/equipment-assign-foundation" method="post">
             <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
             <pems-modal-header>@Localizer["Cm_AssignTitle"]</pems-modal-header>
             <pems-modal-body>
@@ -390,7 +390,7 @@
             else
             {
                 <pems-text class="text-muted small">@Localizer["Cm_NoAsset"]</pems-text>
-                <pems-form asp-controller="Asset" asp-action="Create" method="post"><pems-row gap="2" css="align-items-end">
+                <pems-form action="/a/asset-create" method="post"><pems-row gap="2" css="align-items-end">
                     <input type="hidden" name="equipmentId" value="@eq.EquipmentId" />
                     <pems-col md="4">
                         <pems-label css="small">@Localizer["Asset Number"]</pems-label>

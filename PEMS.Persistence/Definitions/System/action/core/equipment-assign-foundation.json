@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "equipment-assign-foundation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment placement",
+    "fa": "محل استقرار تجهیز"
+  },
+  "description": {
+    "en": "Equipment placement",
+    "fa": "محل استقرار تجهیز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Equipment",
+      "action": "AssignFoundation",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "functionalLocationId": "field:functionalLocationId",
+        "parentEquipmentId": "field:parentEquipmentId",
+        "installationDate": "field:installationDate"
+      }
+    },
+    "success": {
+      "en": "Functional Location / Parent Equipment updated",
+      "fa": "محل استقرار و تجهیز والد به‌روز شد"
+    },
+    "redirect": "/Equipment/Index",
+    "redirectBack": true
+  }
+}

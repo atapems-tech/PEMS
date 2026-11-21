@@ -131,31 +131,6 @@ public class RelationshipController : Controller
     }
 
 
-    // طبق ممیزی: پرریسک‌ترین اکشن این Controller - رابطه‌ی واقعی/FK بین Equipment و MR/VDR
-    // برقرار می‌کند. نیازمند "Approve".
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ConfirmSuggestedLink(int equipmentId, string targetType, int targetId, bool force = false)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Relationship", "Approve"))
-            return Forbid();
-
-        try
-        {
-            await _service.ConfirmSuggestedLinkAsync(equipmentId, targetType, targetId, force);
-            TempData["Message"] = "اتصال تایید و برقرار شد.";
-        }
-        catch (Exception ex)
-        {
-            // طبق ممیزی بند ۱.۴: پیام خطا شامل راهنمایی برای تایید مجدد با force=true است
-            TempData["Error"] = ex.Message;
-            TempData["ConflictEquipmentId"] = equipmentId;
-            TempData["ConflictTargetType"] = targetType;
-            TempData["ConflictTargetId"] = targetId;
-        }
-
-        return RedirectToAction(nameof(Equipment), new { id = equipmentId });
-    }
 
     // طبق ممیزی بند ۲.۱: گزارش تحلیل شکاف برای برنامه‌ریزی
     public async Task<IActionResult> GapReport(int? projectId)
