@@ -87,7 +87,7 @@ public interface IActionHandler
 /// <summary><see cref="StepUpRequired"/> (SCRUM-595): the action needs a security-key confirmation first; <see cref="ActionResult.StepUpOptionsJson"/> is the challenge to run in the browser.</summary>
 public enum ActionStatus { Ok, NotFound, Forbidden, Refused, StepUpRequired }
 
-public sealed record ActionResult(ActionStatus Status, ActionOutcome? Outcome, TranslatableText? Message, string? Redirect, string? StepUpOptionsJson = null);
+public sealed record ActionResult(ActionStatus Status, ActionOutcome? Outcome, TranslatableText? Message, string? Redirect, string? StepUpOptionsJson = null, bool RedirectBack = false);
 
 /// <summary>The data source definition kind: <c>{ "kind": "static", "items": [...] }</c> or <c>{ "kind": "provider", "provider": "departments", "parameters": {...}, "permission": "Module.Action" }</c>.</summary>
 public sealed class DataSourceDefinitionKind(IEnumerable<IDataSourceProvider> providers, IEnumerable<IGridDataProvider>? grids = null) : IDefinitionKind
@@ -157,7 +157,7 @@ public sealed class DataSourceDefinitionKind(IEnumerable<IDataSourceProvider> pr
 /// <summary>The action definition kind: <c>{ "kind": "handler", "handler": "department.create", "permission": "Module.Action", "success": {fa,en}, "redirect": "/Department" }</c>.</summary>
 public sealed class ActionDefinitionKind(IEnumerable<IActionHandler> handlers) : IDefinitionKind
 {
-    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "kind", "handler", "permission", "success", "redirect", "confirm", "parameters", "stepUp" };
+    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "kind", "handler", "permission", "success", "redirect", "redirectBack", "confirm", "parameters", "stepUp" };
     private readonly Dictionary<string, IActionHandler> _handlers = handlers.ToDictionary(h => h.Key, StringComparer.Ordinal);
 
     public string Key => "action";
@@ -188,6 +188,7 @@ public sealed class ActionDefinitionKind(IEnumerable<IActionHandler> handlers) :
         }
         if (root["success"] is { } success) DataSourceDefinitionKind.CheckLabel(success, "/success", errors);
         if (root["confirm"] is { } confirm) DataSourceDefinitionKind.CheckLabel(confirm, "/confirm", errors);
+        if (root["redirectBack"] is { } back && !(back is JsonValue bv && bv.TryGetValue<bool>(out _))) errors.Add(new("/redirectBack", "wrong-type", "Def_Err_Type", "redirectBack is true or false: go back to the local address the form posted as returnUrl (else to redirect)."));
         var redirect = DataSourceDefinitionKind.Str(root["redirect"]);
         if (redirect is not null && (!redirect.StartsWith('/') || redirect.StartsWith("//") || redirect.Contains('\\'))) errors.Add(new("/redirect", "invalid-redirect", "Def_Err_Redirect", "redirect is a path of this site (starts with one /)."));
         return errors;
@@ -247,7 +248,7 @@ public sealed class ActionExecutor(IDefinitionStore store, IDefinitionAccess acc
                 var v = outcome.Returned is not null && outcome.Returned.TryGetValue(name, out var r) ? r : invocation.Values.GetValueOrDefault(name);
                 return Uri.EscapeDataString(v ?? "");
             });
-        return new ActionResult(ActionStatus.Ok, outcome, outcome.Message ?? success, redirect);
+        return new ActionResult(ActionStatus.Ok, outcome, outcome.Message ?? success, redirect, null, root["redirectBack"] is JsonValue back && back.TryGetValue<bool>(out var goBack) && goBack);
     }
 }
 

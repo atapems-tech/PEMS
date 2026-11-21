@@ -162,7 +162,8 @@ public sealed class ActionHostController(ActionExecutor actions, ICurrentUserSer
                 if (result.Message is { IsEmpty: false } m) TempData["Message"] = m.Resolve(CultureInfo.CurrentUICulture);
                 break;
         }
-        var target = result.Redirect ?? returnUrl;
+        // redirectBack: the page the form came from (a local returnUrl) wins over the fixed redirect, which is then the fallback; the error path goes there too
+        var target = result.RedirectBack && !string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl) ? returnUrl : result.Redirect ?? returnUrl;
         return !string.IsNullOrEmpty(target) && Url.IsLocalUrl(target) ? LocalRedirect(target) : Redirect("~/");
     }
 

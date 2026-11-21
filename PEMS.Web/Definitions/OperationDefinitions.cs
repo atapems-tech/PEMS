@@ -87,7 +87,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
 
     /// <summary>A plain options object (settable simple properties, no constructor arguments), such as a completion-data record: its properties are bound from the form values of the same name (first letter lower-case), or from the sources the definition lists for them.</summary>
     /// <summary>A record whose constructor takes only simple values (a positional "input" record): built from the sources the definition lists for each constructor parameter (default: the form field of the same name).</summary>
-    private static bool IsInput(Type t) => t.IsClass && t != typeof(string) && !IsTextList(t) && t.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault() is { } c
+    private static bool IsInput(Type t) => t.IsClass && t != typeof(string) && !IsTextList(t) && !IsIdList(t) && t.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault() is { } c
         && c.GetParameters().Length > 0 && c.GetParameters().All(cp => IsSimple(cp.ParameterType)) && !c.GetParameters().All(cp => ContextNames.Contains(cp.Name!));
 
     private static bool IsBag(Type t) => t.IsClass && t != typeof(string) && t.GetConstructor(Type.EmptyTypes) is not null
@@ -96,6 +96,9 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     private static string CamelCase(string name) => char.ToLowerInvariant(name[0]) + name[1..];
 
     private static bool IsSource(string s) => s.StartsWith("field:") && s.Length > 6 || s.StartsWith("file:") && s.Length > 5 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]);
+
+    /// <summary>SCRUM-818: a list of numbers (List&lt;int&gt;, IReadOnlyList&lt;int&gt;, int[]) is bound from the repeated form field of the source field:name (the values arrive as one comma separated text; a checkbox group).</summary>
+    private static bool IsIdList(Type t) => t == typeof(int[]) || t.IsGenericType && t.GetGenericArguments() is [var a] && a == typeof(int) && typeof(IEnumerable<int>).IsAssignableFrom(t) && t.IsAssignableFrom(typeof(List<int>));
 
     private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
 
@@ -167,6 +170,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 if (parameters["upload"] is not JsonObject up || !UploadProfiles.ContainsKey(EntityJson.Str(up["profile"]) ?? "")) errors.Add(new("/upload", "required", "Def_Err_Required", $"upload: {{ profile, maxFileMb }} is required for a file parameter; profile is one of: {string.Join(", ", UploadProfiles.Keys)}."));
                 continue;
             }
+            if (IsIdList(p.ParameterType)) continue;      // field:name, a comma separated list of numbers
             if (IsTextList(p.ParameterType))
             {
                 if (!IsRoles(p)) { if (args.ContainsKey(p.Name!)) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list '{p.Name}' of {op.Name} cannot be set from a definition; leave it out.")); continue; }
@@ -338,6 +342,17 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
                 using var buffer = new MemoryStream();
                 await stream.CopyToAsync(buffer, ct);
                 values.Add(buffer.ToArray());
+                continue;
+            }
+            if (IsIdList(p.ParameterType))
+            {
+                var listSource = EntityJson.Str(args[p.Name!]) ?? "field:" + p.Name;
+                var listText = listSource.StartsWith("literal:") ? listSource[8..] : invocation.Values.GetValueOrDefault(listSource.StartsWith("field:") ? listSource[6..] : p.Name!);
+                var ids = new List<int>();
+                foreach (var part in (listText ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                    if (int.TryParse(FormEngine.NormalizeDigits(part), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var id)) ids.Add(id);
+                    else return ActionOutcome.Refused(TranslatableText.Of(("en", $"The value of '{p.Name}' is not valid."), ("fa", $"مقدار «{p.Name}» معتبر نیست.")));
+                values.Add(p.ParameterType == typeof(int[]) ? ids.ToArray() : ids);
                 continue;
             }
             if (IsTextList(p.ParameterType))
