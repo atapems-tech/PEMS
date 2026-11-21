@@ -4,7 +4,7 @@ using PEMS.Application.Interfaces;
 namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-696, 702, 710: the commands of the execution gate, gas test and isolation verification controllers, over the same services.</summary>
-public sealed class PermitSafetyOperations(IExecutionGateService gate, IGasTestService gasTests, IIsolationService isolations, IPermitAuthorityService authority) : IPermitSafetyOperations
+public sealed class PermitSafetyOperations(IExecutionGateService gate, IGasTestService gasTests, IIsolationService isolations, ISimopsService simops, IPermitAuthorityService authority) : IPermitSafetyOperations
 {
     // the eligibility (role, competency, certification) is the server-side rule the controllers ran before the service; the security key itself is the stepUp of the action definition
     private async Task<string?> EligibilityErrorAsync(List<string> roles, int? userId, int? employeeId, int permitId, string module, string action)
@@ -31,6 +31,24 @@ public sealed class PermitSafetyOperations(IExecutionGateService gate, IGasTestS
     {
         var refused = await EligibilityErrorAsync(userRoles, userId, employeeId, permitId, "LOTO", "Verify");
         return refused is null ? await isolations.AdvanceStatusAsync(isolationPointId, "Verified", reason, employeeId) : (false, refused);
+    }
+
+    public async Task<(bool Success, string? Error)> ConfirmSimopsAsync(List<string> userRoles, int? userId, int? employeeId, int conflictId, int permitId, string? reason = null)
+    {
+        var refused = await EligibilityErrorAsync(userRoles, userId, employeeId, permitId, "Simops", "Confirm");
+        return refused is null ? await simops.ConfirmAsync(conflictId, permitId, reason, employeeId) : (false, refused);
+    }
+
+    public async Task<(bool Success, string? Error)> ResolveSimopsAsync(List<string> userRoles, int? userId, int? employeeId, int conflictId, int permitId, string resolutionNotes)
+    {
+        var refused = await EligibilityErrorAsync(userRoles, userId, employeeId, permitId, "Simops", "Resolve");
+        return refused is null ? await simops.ResolveAsync(conflictId, permitId, resolutionNotes, employeeId) : (false, refused);
+    }
+
+    public async Task<(bool Success, string? Error)> AcceptSimopsRiskAsync(List<string> userRoles, int? userId, int? employeeId, int conflictId, int permitId, string justification)
+    {
+        var refused = await EligibilityErrorAsync(userRoles, userId, employeeId, permitId, "Simops", "AcceptRisk");
+        return refused is null ? await simops.AcceptRiskAsync(conflictId, permitId, justification, employeeId) : (false, refused);
     }
 
     public async Task<(bool Success, string? Error)> CreateGasTestAsync(int? employeeId, int permitId, string location, DateTime testedAt, string? instrumentTag = null, DateTime? instrumentCalibrationDueDate = null,

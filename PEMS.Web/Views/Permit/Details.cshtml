@@ -678,7 +678,7 @@
                         <pems-table-cell class="text-nowrap">
                             @if (c.Status == "Potential")
                             {
-                                <pems-form asp-controller="Simops" asp-action="Confirm" method="post" class="d-inline">
+                                <pems-form action="/a/simops-confirm" method="post" class="d-inline">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                                     <pems-button tone="warning" size="small" outline="true" type="button" disabled="@(simopsConfirmElig != null && simopsConfirmElig.Result != "Eligible")" data-pems-click="call" data-pems-fn="pemsSubmitWithStepUp" data-pems-arg="this">Confirm</pems-button>
@@ -686,7 +686,7 @@
                             }
                             @if (c.Status is "Potential" or "Confirmed")
                             {
-                                <pems-form asp-controller="Simops" asp-action="AcceptRisk" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
+                                <pems-form action="/a/simops-accept-risk" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                                     <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="justification" placeholder="Justification" required />
@@ -695,7 +695,7 @@
                             }
                             @if (c.Status == "Confirmed")
                             {
-                                <pems-form asp-controller="Simops" asp-action="Resolve" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
+                                <pems-form action="/a/simops-resolve" method="post"><pems-flex inline="true" wrap="true" gap="1" align="center">
                                     <input type="hidden" name="id" value="@c.SimopsConflictId" />
                                     <input type="hidden" name="permitId" value="@Model.PermitId" />
                                     <pems-input class="pems-minw-110 pems-maxw-180" scale="small" type="text" name="resolutionNotes" placeholder="Resolution notes" required />
@@ -723,7 +723,7 @@
                         <pems-table-cell class="small">@cand.MatchBasis</pems-table-cell>
                         <pems-table-cell class="small">@(!cand.TimeWindowKnown ? "Unknown" : cand.TimeOverlapConfirmed ? "Yes" : "No")</pems-table-cell>
                         <pems-table-cell>
-                            <pems-form asp-controller="Simops" asp-action="Create" method="post" class="d-inline">
+                            <pems-form action="/a/simops-create" method="post" class="d-inline">
                                 <input type="hidden" name="permitId" value="@Model.PermitId" />
                                 <input type="hidden" name="otherPermitId" value="@cand.PermitId" />
                                 <pems-button tone="danger" size="small" outline="true" type="submit">Raise Conflict</pems-button>

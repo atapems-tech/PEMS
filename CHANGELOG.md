@@ -64,6 +64,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-750: SIMOPS as definitions
+
+### Changed
+- Create is an action over ISimopsService; Confirm, Resolve and AcceptRisk are stepUp actions over IPermitSafetyOperations (permit authority eligibility first). SimopsController deleted; the permit page posts to /a/simops-*.
+
 ## 2026-11-21 - SCRUM-696, 702, 710: execution gate, gas test and isolation verify as definitions
 
 ### Changed
