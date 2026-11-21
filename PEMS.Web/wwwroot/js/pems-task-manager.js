@@ -23,7 +23,7 @@
         body.append('__RequestVerificationToken', token());
         return fetch(url, {
             method: 'POST',
-            headers: { 'X-Requested-With': 'fetch', 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: { 'X-Requested-With': 'fetch', 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
             body: body,
             credentials: 'same-origin'
         }).then(function (r) {

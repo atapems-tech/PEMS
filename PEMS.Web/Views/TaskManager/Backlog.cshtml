@@ -16,7 +16,7 @@
 @section Styles { <link rel="stylesheet" href="~/css/pems-task-manager.css" asp-append-version="true" /> }
 
 <partial name="_SpaceHeader" model="view" />
-@if (canRank) { <div hidden data-tm-reorder-url="@Url.Action("Reorder", "TaskManager")"></div> }
+@if (canRank) { <div hidden data-tm-reorder-url="/a/tm-reorder"></div> }
 
 <div class="vs-panel mb-2 py-2">
     <partial name="_BulkBar" />
@@ -44,14 +44,14 @@
                 <pems-flex wrap="true" gap="2" align="center">
                     @if (!isActive && !hasActive)
                     {
-                        <pems-form asp-action="StartSprint" method="post">
+                        <pems-form action="/a/tm-start-sprint" method="post">
                             <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                             <pems-button tone="primary" size="small"><pems-icon name="bi-play-fill" aria-hidden="true" /> @Localizer["Tm_StartSprint"]</pems-button>
                         </pems-form>
                     }
                     @if (isActive)
                     {
-                        <pems-form asp-action="CompleteSprint" method="post"><pems-flex gap="1" align="center">
+                        <pems-form action="/a/tm-complete-sprint" method="post"><pems-flex gap="1" align="center">
                             <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                             <label class="small text-nowrap" for="moveTo-@sprint.Id">@Localizer["Tm_MoveUnfinishedTo"]</label>
                             <pems-select scale="small" css="w-auto" id="moveTo-@sprint.Id" name="moveTo">
@@ -67,7 +67,7 @@
         </pems-flex>
         @if (view.CanManageSprints)
         {
-            <pems-form id="editSprint-@sprint.Id" asp-action="UpdateSprint" method="post"><pems-row gap="2" css="collapse mb-2">
+            <pems-form id="editSprint-@sprint.Id" action="/a/tm-update-sprint" method="post"><pems-row gap="2" css="collapse mb-2">
                 <input type="hidden" name="sprintId" value="@sprint.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
                 <pems-col md="3"><pems-label css="small" for="sn-@sprint.Id">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="sn-@sprint.Id" name="name" value="@sprint.Name" required maxlength="150" /></pems-col>
                 <pems-col md="4"><pems-label css="small" for="sg-@sprint.Id">@Localizer["Tm_Field_Goal"]</pems-label><pems-input scale="small" id="sg-@sprint.Id" name="goal" value="@sprint.Goal" maxlength="1000" /></pems-col>
@@ -91,7 +91,7 @@
     </pems-flex>
     @if (view.CanManageSprints)
     {
-        <pems-form id="newSprint" asp-action="CreateSprint" method="post"><pems-row gap="2" css="collapse mb-2">
+        <pems-form id="newSprint" action="/a/tm-create-sprint" method="post"><pems-row gap="2" css="collapse mb-2">
             <input type="hidden" name="workSpaceId" value="@view.Space.Id" /><input type="hidden" name="returnUrl" value="@returnUrl" />
             <pems-col md="3"><pems-label css="small" for="ns-name">@Localizer["Tm_Field_Name"]</pems-label><pems-input scale="small" id="ns-name" name="name" required maxlength="150" /></pems-col>
             <pems-col md="4"><pems-label css="small" for="ns-goal">@Localizer["Tm_Field_Goal"]</pems-label><pems-input scale="small" id="ns-goal" name="goal" maxlength="1000" /></pems-col>

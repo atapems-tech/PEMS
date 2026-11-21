@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-add-member",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a space member",
+    "fa": "افزودن عضو فضا"
+  },
+  "description": {
+    "en": "Add a space member",
+    "fa": "افزودن عضو فضا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "AddMember",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "employeeId": "field:employeeId",
+        "role": "field:role"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/AdminSpace/{workSpaceId}"
+  }
+}

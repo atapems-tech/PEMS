@@ -29,7 +29,7 @@
 
 @Html.AntiForgeryToken()
 <div class="tm-board" data-tm-board data-tm-transitions="@transitionsJson"
-     data-tm-transition-url="@Url.Action("Transition", "TaskManager")"
+     data-tm-transition-url="/a/tm-transition"
      data-tm-msg-invalid="@Localizer["Tm_Err_InvalidTransition"]" data-tm-msg-failed="@Localizer["Tm_Err_SaveFailed"]">
     @foreach (var col in Model.Columns)
     {
@@ -61,7 +61,7 @@
                         @if (i.CanTransition && targets.Count > 0)
                         {
                             @* جایگزین صفحه‌کلید/بدون JS برای کشیدن‌ورها کردن (WCAG 2.5.7) *@
-                            <pems-form class="mt-2 tm-card__move" asp-action="Transition" method="post"><pems-flex gap="1">
+                            <pems-form class="mt-2 tm-card__move" action="/a/tm-transition" method="post"><pems-flex gap="1">
                                 <input type="hidden" name="id" value="@i.Id" />
                                 <input type="hidden" name="rowVersion" value="@i.RowVersion" />
                                 <input type="hidden" name="returnUrl" value="@returnUrl" />

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "tm-add-type",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a task type",
+    "fa": "افزودن نوع وظیفه"
+  },
+  "description": {
+    "en": "Add a task type",
+    "fa": "افزودن نوع وظیفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "AddType",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "icon": "field:icon",
+        "isSubtask": "field:isSubtask"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/AdminSpace/{workSpaceId}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "tm-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign a task",
+    "fa": "ارجاع وظیفه"
+  },
+  "description": {
+    "en": "Assign a task",
+    "fa": "ارجاع وظیفه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Assign",
+      "args": {
+        "id": "field:id",
+        "assigneeEmployeeId": "field:assigneeEmployeeId",
+        "rowVersion": "field:rowVersion"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}

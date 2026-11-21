@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "tm-set-transition",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Allow or forbid a status step",
+    "fa": "مجاز یا ممنوع‌کردن گذار وضعیت"
+  },
+  "description": {
+    "en": "Allow or forbid a status step",
+    "fa": "مجاز یا ممنوع‌کردن گذار وضعیت"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "SetTransition",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "fromStatusId": "field:fromStatusId",
+        "toStatusId": "field:toStatusId",
+        "allowed": "field:allowed"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/AdminSpace/{workSpaceId}"
+  }
+}

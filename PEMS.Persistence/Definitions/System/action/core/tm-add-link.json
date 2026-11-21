@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "tm-add-link",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a link",
+    "fa": "افزودن پیوند"
+  },
+  "description": {
+    "en": "Add a link",
+    "fa": "افزودن پیوند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "AddLink",
+      "args": {
+        "id": "field:id",
+        "linkType": "field:linkType",
+        "target": "field:target"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index",
+    "redirectBack": true
+  }
+}
