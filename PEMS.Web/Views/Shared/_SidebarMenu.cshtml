@@ -369,19 +369,19 @@
             }
             @if (canSeePartCatalogue)
             {
-                <pems-nav-link item="false" active="@(IsActive("PartCatalogueRequest", "Warehouse"))" asp-controller="PartCatalogueRequest" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueRequest", "Warehouse"))" href="/p/pc-requests">
                     <pems-icon name="bi-journal-plus" /> @Localizer["Pc_Menu"]
                 </pems-nav-link>
             }
             @if (canSeePartCatalogueReports)
             {
-                <pems-nav-link item="false" active="@(IsActive("PartCatalogueReport", "Warehouse"))" asp-controller="PartCatalogueReport" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueReport", "Warehouse"))" href="/p/pc-report">
                     <pems-icon name="bi-bar-chart-line" /> @Localizer["PcRpt_Menu"]
                 </pems-nav-link>
             }
             @if (canAdminPartCatalogue)
             {
-                <pems-nav-link item="false" active="@(IsActive("PartCatalogueAdmin", "Warehouse"))" asp-controller="PartCatalogueAdmin" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" active="@(IsActive("PartCatalogueAdmin", "Warehouse"))" href="/p/pc-admin">
                     <pems-icon name="bi-sliders" /> @Localizer["Pc_Title_Admin"]
                 </pems-nav-link>
             }
@@ -633,7 +633,7 @@
                CmmsIntegration قرار گرفت (دقیقاً هم‌الگو با بقیه‌ی آیتم‌های این بخش). *@
             @if (navVisibility.IsCmmsItemVisible("Barcode"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Barcode"))" asp-controller="Barcode" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/barcodes" active="@(IsActive("Barcode") || Context.Request.Path.StartsWithSegments("/p/barcode"))">
                     <pems-icon name="bi-upc-scan" /> @Localizer["Barcode"]
                 </pems-nav-link>
             }

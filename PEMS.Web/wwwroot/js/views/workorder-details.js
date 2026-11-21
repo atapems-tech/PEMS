@@ -7,7 +7,7 @@
         if (!code) return;
 
         try {
-            const res = await fetch('/Barcode/ResolveJson?code=' + encodeURIComponent(code));
+            const res = await fetch('/x/barcode-resolve-json?code=' + encodeURIComponent(code));
             const data = await res.json();
 
             if (!data.success) {

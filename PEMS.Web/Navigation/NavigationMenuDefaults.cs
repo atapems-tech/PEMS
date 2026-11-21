@@ -117,10 +117,10 @@ public static class NavigationMenuDefaults
         new("proc.wh.sr", "proc.sub.warehouse", L, 50, "Store Requisitions", "bi-clipboard-check", "Module:Inventory&Perm:StoreRequisition.View", BadgeKey: NavigationBadges.StoreRequisitionsAwaitingApproval, ExternalPath: "/p/store-requisitions"),   // SCRUM-664: a definition page (/p/...)
         new("proc.wh.replenishment", "proc.sub.warehouse", L, 60, "Repl_Menu", "bi-cart-plus", "Module:Inventory&Flag:Replenishment", ExternalPath: "/p/replenishment"),   // SCRUM-663: a definition page (/p/...)
         new("proc.wh.masterdata", "proc.sub.warehouse", L, 70, "Master Data", "bi-collection", "Module:Inventory&Perm:InventoryMasterData.View", ExternalPath: "/p/inventory-master-data"),   // SCRUM-653: a definition page (/p/...)
-        Link("proc.wh.partcatalogue", "proc.sub.warehouse", 80, "Pc_Menu", "bi-journal-plus", "PartCatalogueRequest", area: "Warehouse", rule: "Flag:PartCatalogue", badge: NavigationBadges.MyWorkPartCatalogue),
+        new("proc.wh.partcatalogue", "proc.sub.warehouse", L, 80, "Pc_Menu", "bi-journal-plus", "Flag:PartCatalogue", ExternalPath: "/p/pc-requests", BadgeKey: NavigationBadges.MyWorkPartCatalogue),   // SCRUM-662: a definition page (/p/...)
         // SCRUM-478: Part Catalogue reports
-        Link("proc.wh.partcatalogue.reports", "proc.sub.warehouse", 85, "PcRpt_Menu", "bi-bar-chart-line", "PartCatalogueReport", area: "Warehouse", rule: "Flag:PartCatalogueReports"),
-        Link("proc.wh.partcatalogue.admin", "proc.sub.warehouse", 90, "Pc_Title_Admin", "bi-sliders", "PartCatalogueAdmin", area: "Warehouse", rule: "Flag:PartCatalogueAdmin"),
+        new("proc.wh.partcatalogue.reports", "proc.sub.warehouse", L, 85, "PcRpt_Menu", "bi-bar-chart-line", "Flag:PartCatalogueReports", ExternalPath: "/p/pc-report"),   // SCRUM-661: a definition page (/p/...)
+        new("proc.wh.partcatalogue.admin", "proc.sub.warehouse", L, 90, "Pc_Title_Admin", "bi-sliders", "Flag:PartCatalogueAdmin", ExternalPath: "/p/pc-admin"),   // SCRUM-658: a definition page (/p/...)
 
         // ---- کنترل پروژه
         Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,TaskManager,Tag,Report,Meeting"),
@@ -159,7 +159,7 @@ public static class NavigationMenuDefaults
         new("cmms.kpi", "sec.cmms", L, 210, "KPI Dashboard", "bi-speedometer2", "CmmsItem:Kpi", ExternalPath: "/p/kpi"),   // SCRUM-713: a definition page (/p/...)
         Link("cmms.permit", "sec.cmms", 220, "Permits", "bi-shield-check", "Permit", rule: "CmmsItem:Permit"),
         Link("cmms.fl", "sec.cmms", 230, "Functional Locations", "bi-diagram-3", "FunctionalLocation", rule: "CmmsItem:FunctionalLocation"),
-        Link("cmms.barcode", "sec.cmms", 240, "Barcode", "bi-upc-scan", "Barcode", rule: "CmmsItem:Barcode"),
+        new("cmms.barcode", "sec.cmms", L, 240, "Barcode", "bi-upc-scan", "CmmsItem:Barcode", ExternalPath: "/p/barcodes"),   // SCRUM-671: a definition page (/p/...)
 
         // ---- عملیات و تولید
         Section("sec.operations", 800, "Operations & Production", "bi-diagram-3-fill", "Module:Operations", "Production,ProductionOrder,ProductionRun"),

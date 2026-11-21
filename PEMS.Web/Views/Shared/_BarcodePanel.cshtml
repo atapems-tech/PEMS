@@ -11,18 +11,7 @@
         <pems-text class="text-muted small">No active barcode for this record yet.</pems-text>
         @if (Model.CanManage)
         {
-            <pems-form asp-controller="Barcode" asp-action="Generate" asp-area="" method="post"><pems-flex gap="2" align="end">
-                <input type="hidden" name="targetType" value="@Model.TargetType" />
-                <input type="hidden" name="targetId" value="@Model.TargetId" />
-                <div>
-                    <pems-label css="small mb-0">@Localizer["Symbology"]</pems-label>
-                    <pems-select scale="small" name="symbology">
-                        <option value="Code128">@Localizer["Code128"]</option>
-                        <option value="QR">QR</option>
-                    </pems-select>
-                </div>
-                <pems-button tone="primary" size="small" type="submit"><pems-icon name="bi-upc-scan" /> Generate Barcode</pems-button>
-            </pems-flex></pems-form>
+            <pems-button as="a" tone="primary" size="small" href="/f/barcode-generate?targetType=@Model.TargetType&targetId=@Model.TargetId"><pems-icon name="bi-upc-scan" /> Generate Barcode</pems-button>
         }
     }
     else
@@ -30,7 +19,7 @@
         var b = Model.ActiveBarcode;
         <pems-row gap="3" css="align-items-center">
             <pems-col md="3" css="text-center">
-                <img class="pems-maxw-100pct" src="@Url.Action("Svg", "Barcode", new { area = "", id = b.BarcodeIdentityId })" alt="barcode" />
+                <img class="pems-maxw-100pct" src="/x/barcode-svg?id=@b.BarcodeIdentityId" alt="barcode" />
                 <div class="small mt-1" dir="ltr"><code>@b.Code</code></div>
             </pems-col>
             <pems-col md="9">
@@ -44,24 +33,10 @@
                 @if (Model.CanManage)
                 {
                     <pems-flex wrap="true" gap="2">
-                        <pems-form asp-controller="Barcode" asp-action="Print" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <pems-button tone="primary" size="small" outline="true" type="submit"><pems-icon name="bi-printer" /> Print Label</pems-button>
-                        </pems-form>
-                        <pems-form asp-controller="Barcode" asp-action="Disable" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <input type="hidden" name="targetType" value="@Model.TargetType" />
-                            <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <pems-button tone="neutral" size="small" outline="true" type="submit" data-pems-confirm="Disable this barcode?">Disable</pems-button>
-                        </pems-form>
-                        <pems-form asp-controller="Barcode" asp-action="Revoke" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <input type="hidden" name="targetType" value="@Model.TargetType" />
-                            <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <pems-button tone="danger" size="small" outline="true" type="submit" data-pems-confirm="Revoke this barcode? It can never be reactivated.">@Localizer["Revoke"]</pems-button>
-                        </pems-form>
-                        <pems-form asp-controller="Barcode" asp-action="Replace" asp-area="" asp-route-id="@b.BarcodeIdentityId" method="post">
-                            <input type="hidden" name="targetType" value="@Model.TargetType" />
-                            <input type="hidden" name="targetId" value="@Model.TargetId" />
-                            <pems-button tone="warning" size="small" outline="true" type="submit" data-pems-confirm="Revoke this barcode and generate a new one for the same record?">Replace</pems-button>
-                        </pems-form>
+                        <pems-button as="a" tone="primary" size="small" outline="true" href="/f/barcode-print?id=@b.BarcodeIdentityId"><pems-icon name="bi-printer" /> Print Label</pems-button>
+                        <pems-button as="a" tone="neutral" size="small" outline="true" href="/f/barcode-disable?id=@b.BarcodeIdentityId">Disable</pems-button>
+                        <pems-button as="a" tone="danger" size="small" outline="true" href="/f/barcode-revoke?id=@b.BarcodeIdentityId">@Localizer["Revoke"]</pems-button>
+                        <pems-button as="a" tone="warning" size="small" outline="true" href="/f/barcode-replace?id=@b.BarcodeIdentityId">Replace</pems-button>
                     </pems-flex>
                 }
             </pems-col>

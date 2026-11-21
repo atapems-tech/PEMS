@@ -17,7 +17,7 @@ public class PageHeaderCallersTests
     public static readonly string[] Callers =
     [
         "ShiftHandover/Create.cshtml",
-        "CriticalityAssessment/Create.cshtml", "Barcode/Verify.cshtml"
+        "CriticalityAssessment/Create.cshtml"
     ];
 
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));

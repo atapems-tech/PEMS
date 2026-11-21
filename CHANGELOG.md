@@ -59,6 +59,30 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+
+## 2026-11-21 - SCRUM-662: Part Catalogue requests as definitions (list, details, workflow, files)
+
+### Changed
+- The list, the details, the new draft, approve/return/cancel/register, retry routing, notes, the attachment download and the INWH-PLA-FO-001 Excel and PDF are now IPartCatalogueRequestOperations (model PartCatalogueRequest), the pages pc-requests and pc-request-details, forms/actions pc-request-*, file sources and routes. The long edit form with its scripts, equipment and attachment upload stays on PartCatalogueRequestController (10 actions) until a form can be loaded from an operation.
+
+## 2026-11-21 - SCRUM-658: Part Catalogue administration as definitions
+
+### Changed
+- The Part Catalogue administration controller and view are replaced by IPartCatalogueAdminOperations (model PartCatalogueAdmin), the page pc-admin with read data sources, one form and action per command (settings, reference import with upload, sections, group maps, steps, approvers, responsibilities, commodity responsibles), file sources for the preview and the two lookups, and routes from every old address. The preview is now JSON (the old partial is gone); ids are typed numbers instead of search selects.
+
+## 2026-11-21 - Part Catalogue lookups, duplicate checks and reports as file-host sources and a page (SCRUM-659, 660, 661)
+
+### Changed
+- The lookup and duplicate-check endpoints of the request form (SCRUM-660, 659) are file sources served by GET /x/pc-... over PartCatalogueLookup.* and PartCatalogueDedup.* operations (the same services and JSON; each is allowed to the users the old controllers allowed); the old addresses redirect to them with the query so the form scripts keep working. /p/pc-report replaces PartCatalogueReportController (SCRUM-661): filters, tiles and grids over PartCatalogueReport.* operations and the workbook (whole or one sheet) as a file source.
+
+## 2026-11-21 - Barcode as definition pages and a generic file host (SCRUM-671, 6b)
+
+### Changed
+- New generic input: a data source with the provider operation-file names a read operation whose answer is a file (Bytes, FileName, ContentType) or any object, and GET /x/{key} (FileHostController) serves it under the permission of the operation and the definition; OperationReader.InvokeAsync is the one place a read answer is produced for rows, choices and files; the route table accepts /x/ targets. /p/barcodes, /p/barcode-scan, /p/barcode-verify and /p/barcode-bulk with their forms replace BarcodeController: the SVG, PNG, label PDF, label sheet and the scan JSON are file sources, print and bulk generation are actions that download the label, the shared barcode panel links to the definition forms. The old routes redirect.
+
 ## 2026-11-21 - MRS import as definition pages (SCRUM-657)
 
 ### Changed

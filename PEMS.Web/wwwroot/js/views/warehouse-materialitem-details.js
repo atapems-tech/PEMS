@@ -24,7 +24,7 @@ document.getElementById('receiveWarehouseScanBtn')?.addEventListener('click', as
     if (!code) return;
 
     try {
-        var res = await fetch('/Barcode/ResolveJson?code=' + encodeURIComponent(code));
+        var res = await fetch('/x/barcode-resolve-json?code=' + encodeURIComponent(code));
         var data = await res.json();
 
         if (!data.success) { showLiveToast(input.dataset.resolveFailed, true); return; }

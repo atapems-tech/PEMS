@@ -40,13 +40,16 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
     private static bool IsRoles(ParameterInfo p) => p.Name!.EndsWith("Roles", StringComparison.OrdinalIgnoreCase) && p.ParameterType != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(p.ParameterType);
     private static bool IsSource(string s) => s.StartsWith("literal:") || s.StartsWith("param:") && s.Length > 6 || s.StartsWith("context:") && s[8..] is "employeeId" or "roles" or "userName" or "culture";
 
-    /// <summary>The rows of the answer: one dictionary per item (properties by name, first letter lower-case); a text list becomes rows with a "value" column. Null when the user may not run the operation.</summary>
-    public async Task<IReadOnlyList<IDictionary<string, object?>>?> ReadAsync(IReadOnlyDictionary<string, string?> parameters, string culture, IReadOnlyCollection<string> roles, string? userName, CancellationToken ct, IReadOnlyDictionary<string, string?>? query = null)
+    /// <summary>What a call of a read operation answered: Allowed false when the user may not run it, NoInput when a required argument was not given (the service is not called), else the raw answer.</summary>
+    public sealed record Invoked(bool Allowed, bool NoInput, object? Answer);
+
+    /// <summary>Calls the operation (permission, roles, arguments from the context, the literals and the query) and gives back the raw answer: the one place a read answer is produced for rows, choices and files.</summary>
+    public async Task<Invoked> InvokeAsync(IReadOnlyDictionary<string, string?> parameters, string culture, IReadOnlyCollection<string> roles, string? userName, CancellationToken ct, IReadOnlyDictionary<string, string?>? query = null)
     {
         var op = catalog.Get(parameters.GetValueOrDefault("model"), parameters.GetValueOrDefault("action")) ?? throw new InvalidOperationException("unknown operation");
         using var scope = scopes.CreateScope();
         if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(op.Permission, roles, ct)
-            || op.Roles.Count > 0 && !roles.Any(r => op.Roles.Contains(r, StringComparer.OrdinalIgnoreCase))) return null;
+            || op.Roles.Count > 0 && !roles.Any(r => op.Roles.Contains(r, StringComparer.OrdinalIgnoreCase))) return new(false, false, null);
 
         var args = parameters.GetValueOrDefault("args") is { } json ? JsonNode.Parse(json) as JsonObject ?? [] : [];
         var values = new List<object?>();
@@ -56,7 +59,7 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
             var source = EntityJson.Str(args[p.Name!]);
             if (IsRoles(p)) { values.Add(roles.ToList()); continue; }
             if (source is null) { values.Add(p.HasDefaultValue ? p.DefaultValue : p.ParameterType.IsValueType && Nullable.GetUnderlyingType(p.ParameterType) is null ? Activator.CreateInstance(p.ParameterType) : null); continue; }
-            if (source.StartsWith("param:") && !p.IsOptional && string.IsNullOrWhiteSpace(query?.GetValueOrDefault(source[6..]))) return [];      // nothing typed yet: no rows, the service is not called
+            if (source.StartsWith("param:") && !p.IsOptional && string.IsNullOrWhiteSpace(query?.GetValueOrDefault(source[6..]))) return new(true, true, null);      // nothing typed yet: no rows, the service is not called
             var text = source.StartsWith("literal:") ? source[8..] : source.StartsWith("param:") ? query?.GetValueOrDefault(source[6..]) : source[8..] switch { "userName" => userName, "culture" => culture, "roles" => string.Join(",", roles), _ => null };
             values.Add(EntityJson.Convert(p.ParameterType, text) is var c && c is EntityJson.NotConvertible ? throw new InvalidOperationException($"'{p.Name}' is not valid.") : c);
         }
@@ -68,6 +71,16 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
             await t;
             answer = t.GetType().IsGenericType ? t.GetType().GetProperty("Result")!.GetValue(t) : null;
         }
+        return new(true, false, answer);
+    }
+
+    /// <summary>The rows of the answer: one dictionary per item (properties by name, first letter lower-case); a text list becomes rows with a "value" column. Null when the user may not run the operation.</summary>
+    public async Task<IReadOnlyList<IDictionary<string, object?>>?> ReadAsync(IReadOnlyDictionary<string, string?> parameters, string culture, IReadOnlyCollection<string> roles, string? userName, CancellationToken ct, IReadOnlyDictionary<string, string?>? query = null)
+    {
+        var invoked = await InvokeAsync(parameters, culture, roles, userName, ct, query);
+        if (!invoked.Allowed) return null;
+        if (invoked.NoInput) return [];
+        var answer = invoked.Answer;
         foreach (var step in (parameters.GetValueOrDefault("path") ?? "").Split('.', StringSplitOptions.RemoveEmptyEntries))
             answer = answer?.GetType().GetProperty(step)?.GetValue(answer);
         if (answer is null) return [];
@@ -157,4 +170,21 @@ public sealed class OperationOptionsProvider(OperationReader reader) : IDataSour
         string Show(IDictionary<string, object?> r, string name) => r.TryGetValue(name, out var v) ? Convert.ToString(v, CultureInfo.InvariantCulture) ?? "" : "";
         return rows.Select(r => new FieldOption { Value = Show(r, value), Label = TranslatableText.Literal(Show(r, label)) }).ToList();
     }
+}
+
+/// <summary>
+/// SCRUM-6b: the file source of a definition (a data source of kind provider with the provider <c>operation-file</c>; parameters: model, action, args with param:x from the query, disposition inline or attachment). It names a read
+/// operation whose answer is a file (an object with Bytes, FileName and ContentType: a label image, a PDF, a workbook) or any object (answered as JSON, for the scripts of a page); it is served by <c>GET /x/{key}</c>
+/// (FileHostController). The operation keeps its permission and roles; the data source may name a permission too. No controller per file.
+/// </summary>
+public sealed class OperationFileProvider(OperationReader reader) : IDataSourceProvider
+{
+    public string Key => "operation-file";
+    public IReadOnlyCollection<string>? AllowedRoles => null;
+
+    public IReadOnlyList<DefinitionFieldError> ValidateParameters(JsonObject? parameters)
+        => reader.Validate(parameters).Concat(EntityJson.Str(parameters?["disposition"]) is null or "inline" or "attachment" ? [] : [new DefinitionFieldError("/disposition", "wrong-value", "Def_Err_Type", "disposition is inline or attachment.")]).ToList();
+
+    /// <summary>A file source has no choices; it is read through <c>GET /x/{key}</c>.</summary>
+    public Task<IReadOnlyList<FieldOption>> LoadAsync(DataSourceRequest request, CancellationToken ct) => Task.FromResult<IReadOnlyList<FieldOption>>([]);
 }

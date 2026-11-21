@@ -293,11 +293,12 @@ public class PartCatalogueReportServiceTests
     }
 
     [Fact]
-    public async Task Controller_RefusesAUserWithoutPartCatalogueView()
+    public async Task Operations_RefuseAUserWithoutPartCatalogueView()
     {
+        // SCRUM-661: the report is an operation now; a user without any Part Catalogue action is refused, the page and the workbook alike
         var env = await SeedAsync();
-        var noRights = new PartCatalogueReportController(env.Svc, null!, new FakeActions(), new User { Roles = new[] { "Other" } }, new KeyLocalizer());
-        Assert.IsType<ForbidResult>(await noRights.Index(new PartCatalogueReportFilter()));
-        Assert.IsType<ForbidResult>(await noRights.ExportXlsx(new PartCatalogueReportFilter(), null));
+        var operations = new PEMS.Web.Services.PartCatalogueOperations(null!, null!, env.Svc, new FakeActions(), new KeyLocalizer(), env.Db);
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => operations.ReportSummaryAsync(new List<string> { "Other" }, "nobody"));
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => operations.ReportExportAsync(new List<string> { "Other" }, "nobody", "en"));
     }
 }
