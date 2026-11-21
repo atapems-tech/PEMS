@@ -1,4 +1,4 @@
-@model List<PEMS.Application.DTOs.ConditionMonitoringPointDto>
+﻿@model List<PEMS.Application.DTOs.ConditionMonitoringPointDto>
 @using PEMS.Application.DTOs
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
@@ -104,7 +104,7 @@
                             }
                             else
                             {
-                                <pems-form method="post" asp-action="AssignEvaluationProfile"><pems-flex gap="1">
+                                <pems-form action="/a/reliability-cm-profile-assign" method="post"><pems-flex gap="1">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="pointId" value="@p.ConditionMonitoringPointId" />
@@ -120,7 +120,7 @@
                             }
                             @if (p.LastReadingId.HasValue && p.LastReadingEvaluationStatus != "RequiresEngineeringReview")
                             {
-                                <pems-form method="post" asp-action="MarkRequiresEngineeringReview" class="d-inline">
+                                <pems-form action="/a/reliability-cm-reading-mark-review" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="readingId" value="@p.LastReadingId" />
@@ -137,7 +137,7 @@
                             }
                             else
                             {
-                                <pems-form method="post" asp-action="CreateCbmStrategy" class="d-inline">
+                                <pems-form action="/a/reliability-cbm-strategy-create" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                                     <input type="hidden" name="conditionMonitoringPointId" value="@p.ConditionMonitoringPointId" />
@@ -156,7 +156,7 @@
         <pems-col md="6">
             <pems-content-card>
                 <pems-heading level="6" class="mb-2">Add Monitoring Point</pems-heading>
-                <pems-form method="post" asp-action="CreateConditionMonitoringPoint">
+                <pems-form action="/a/reliability-cm-point-create" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                     <pems-form-group css="mb-2">
@@ -178,7 +178,7 @@
         <pems-col md="6">
             <pems-content-card>
                 <pems-heading level="6" class="mb-2">Record Reading (Manual)</pems-heading>
-                <pems-form method="post" asp-action="RecordConditionReading">
+                <pems-form action="/a/reliability-cm-reading-record" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="equipmentId" value="@equipmentId" />
                     <pems-form-group css="mb-2">

@@ -1,0 +1,28 @@
+{
+  "kind": "action",
+  "key": "reliability-rcm-evidence-generate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate RCM evidence",
+    "fa": "تولید شواهد RCM"
+  },
+  "description": {
+    "en": "Generate RCM evidence",
+    "fa": "تولید شواهد RCM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "GenerateRcmEvidence",
+      "args": {}
+    },
+    "success": {
+      "en": "RCM evidence generated.",
+      "fa": "شواهد RCM تولید شد."
+    },
+    "redirect": "/Reliability/RcmFeedback"
+  }
+}
