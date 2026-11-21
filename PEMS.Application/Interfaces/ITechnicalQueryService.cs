@@ -2,6 +2,7 @@ namespace PEMS.Application.Interfaces;
 
 public interface ITechnicalQueryService
 {
+    [PEMS.Application.Common.PemsOperation("TechnicalQuery", "Raise")]
     Task<int> RaiseAsync(
         string queryType, string subject, string? description, int projectId, int disciplineId,
         int? relatedDocumentId, int? relatedEquipmentId, DateTime? requiredResponseDate, string priority,

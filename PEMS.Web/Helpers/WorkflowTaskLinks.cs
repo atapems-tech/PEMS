@@ -15,7 +15,7 @@ public static class WorkflowTaskLinks
         {
             "Permit" => $"/Permit/Details/{id}",
             "MOC" => $"/MOC/Details/{id}",
-            "TechnicalQuery" => $"/TechnicalQuery/Details/{id}",
+            "TechnicalQuery" => $"/p/technical-query-details?id={id}",
             "VDRItem" => $"/VDR/Details/{id}",
             "Document" => $"/EngineeringDocuments/Details/{id}",
             "PartCatalogueRequest" => $"/p/pc-request-details?id={id}",

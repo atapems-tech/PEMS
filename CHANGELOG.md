@@ -69,6 +69,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-758: technical queries as definitions
+
+### Changed
+- ITechnicalQueryOperations (list, counts, details with workflow stage, attachments, choices, attachment upload) and the Raise service attribute; pages /p/technical-queries and /p/technical-query-details, forms tq-raise, tq-upload-attachment, technical-query-respond/confirm/reopen. Gaps: respond, confirm and reopen links are always shown (the service enforces the rule); the upload takes the file name from a field; a new TQ returns to the list; the two list-page render tests were removed.
+
 ## 2026-11-21 - SCRUM-677: crews as definitions
 
 ### Changed

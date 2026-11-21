@@ -85,7 +85,7 @@ public static class NavigationMenuDefaults
         Link("corr.letters", "sec.correspondence", 10, "Correspondence", "bi-envelope-paper", "Letter", isDefault: true),
         Link("corr.referrals", "sec.correspondence", 20, "MyReferrals", "bi-person-check", "Letter", "MyReferrals"),
         Link("corr.dcc", "sec.correspondence", 30, "DCC", "bi-building-gear", "DCC"),
-        Link("corr.tq", "sec.correspondence", 40, "TQ / TSR / RFI", "bi-question-circle", "TechnicalQuery"),
+        new("corr.tq", "sec.correspondence", L, 40, "TQ / TSR / RFI", "bi-question-circle", Always, ExternalPath: "/p/technical-queries"),   // SCRUM-758: a definition page (/p/...)
 
         // ---- کنترل کیفیت
         Section("sec.quality", 400, "QualityControl", "bi-patch-check", "Module:QualityControl", "QC,MOC"),
