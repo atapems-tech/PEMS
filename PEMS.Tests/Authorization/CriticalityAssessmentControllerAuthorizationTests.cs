@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
@@ -36,6 +36,17 @@ public class CriticalityAssessmentControllerAuthorizationTests
         var assessmentService = new CriticalityAssessmentService(ctx);
         var controller = new CriticalityAssessmentController(assessmentService, ctx, currentUser, permissionService).WithTempData();
         return (controller, ctx);
+    }
+
+    // SCRUM-701: the workflow commands are operations; the host refuses a caller without the operation permission, then calls the operation.
+    private static async Task<(bool Allowed, (bool Success, string? Error) Outcome)> RunAsync(string dbName, string role, string permission,
+        Func<PEMS.Web.Services.CriticalityAssessmentOperations, Task<(bool Success, string? Error)>> call, PEMS.Persistence.Context.PEMSDbContext ctx)
+    {
+        var permissionService = new PermissionService(ctx, new AccessControlService(ctx));
+        var parts = permission.Split('.');
+        if (!await permissionService.HasPermissionAsync(new List<string> { role }, parts[0], parts[1])) return (false, default);
+        var ops = new PEMS.Web.Services.CriticalityAssessmentOperations(new CriticalityAssessmentService(ctx), new FakeCurrentUserService { Roles = new List<string> { role }, UserName = "tester" });
+        return (true, await call(ops));
     }
 
     [Fact]
@@ -112,9 +123,9 @@ public class CriticalityAssessmentControllerAuthorizationTests
         ctx.CriticalityAssessments.Add(assessment);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.Approve(assessment.CriticalityAssessmentId);
+        var result = await RunAsync("approve-eng", SystemRoles.MaintenanceEngineer, "CriticalityAssessment.Approve", o => o.ApproveAsync(assessment.CriticalityAssessmentId), ctx);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Allowed);
         Assert.Equal("UNDER_REVIEW", ctx.CriticalityAssessments.Single().Status);
         Assert.Empty(ctx.EquipmentCriticalities);
     }
@@ -134,9 +145,10 @@ public class CriticalityAssessmentControllerAuthorizationTests
         ctx.CriticalityAssessments.Add(assessment);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.Approve(assessment.CriticalityAssessmentId);
+        var result = await RunAsync("approve-sup", SystemRoles.EngineeringSupervisor, "CriticalityAssessment.Approve", o => o.ApproveAsync(assessment.CriticalityAssessmentId), ctx);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Allowed);
+        Assert.True(result.Outcome.Success);
         Assert.Equal("APPROVED", ctx.CriticalityAssessments.Single().Status);
         Assert.Single(ctx.EquipmentCriticalities);
     }
@@ -152,9 +164,9 @@ public class CriticalityAssessmentControllerAuthorizationTests
         ctx.CriticalityAssessments.Add(assessment);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.Reject(assessment.CriticalityAssessmentId);
+        var result = await RunAsync("reject-eng", SystemRoles.MaintenanceEngineer, "CriticalityAssessment.Approve", o => o.RejectAsync(assessment.CriticalityAssessmentId), ctx);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Allowed);
     }
 
     [Fact]
@@ -168,9 +180,9 @@ public class CriticalityAssessmentControllerAuthorizationTests
         ctx.CriticalityAssessments.Add(assessment);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.SetScores(assessment.CriticalityAssessmentId, 3, 3, 3, null);
+        var result = await RunAsync("scores-viewer", SystemRoles.Viewer, "CriticalityAssessment.Edit", o => o.SetScoresAsync(assessment.CriticalityAssessmentId, 3, 3, 3, null), ctx);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Allowed);
         Assert.Null(ctx.CriticalityAssessments.Single().SafetyScore);
     }
 }

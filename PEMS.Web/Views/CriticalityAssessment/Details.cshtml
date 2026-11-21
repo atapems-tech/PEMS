@@ -1,4 +1,4 @@
-@model PEMS.Application.DTOs.CriticalityAssessmentDetailDto
+﻿@model PEMS.Application.DTOs.CriticalityAssessmentDetailDto
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -56,7 +56,7 @@
         @if (Model.Status == "DRAFT" && canEdit)
         {
             <pems-col span="auto">
-                <pems-form asp-action="SubmitForReview" method="post">
+                <pems-form action="/a/criticality-assessment-submit" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                     <pems-button tone="warning" size="small" outline="true" type="submit">@Localizer["Submit for Review"]</pems-button>
                 </pems-form>
@@ -65,13 +65,13 @@
         @if (Model.Status == "UNDER_REVIEW" && canApprove)
         {
             <pems-col span="auto">
-                <pems-form asp-action="Approve" method="post" data-pems-confirm="تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟">
+                <pems-form action="/a/criticality-assessment-approve" method="post" data-pems-confirm="تایید این ارزیابی، نتیجه را بلافاصله در EquipmentCriticality منتشر می‌کند. ادامه می‌دهید؟">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                     <pems-button tone="success" size="small" type="submit">Approve &amp; Publish</pems-button>
                 </pems-form>
             </pems-col>
             <pems-col span="auto">
-                <pems-form asp-action="Reject" method="post">
+                <pems-form action="/a/criticality-assessment-reject" method="post">
                     <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                     <pems-button tone="danger" size="small" outline="true" type="submit">@Localizer["Reject → Draft"]</pems-button>
                 </pems-form>
@@ -129,7 +129,7 @@
 @if (canEdit)
 {
     <pems-modal id="scoresModal" tabindex="-1">
-            <pems-form asp-action="SetScores" method="post">
+            <pems-form action="/a/criticality-assessment-set-scores" method="post">
                 <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                 <pems-modal-header>@Localizer["Set Dimension Scores"]</pems-modal-header>
                 <pems-modal-body>
@@ -165,7 +165,7 @@
         </pems-modal>
 
     <pems-modal id="evidenceModal" tabindex="-1">
-            <pems-form asp-action="AddEvidence" method="post">
+            <pems-form action="/a/criticality-assessment-add-evidence" method="post">
                 <input type="hidden" name="id" value="@Model.CriticalityAssessmentId" />
                 <pems-modal-header>@Localizer["Add Evidence"]</pems-modal-header>
                 <pems-modal-body>

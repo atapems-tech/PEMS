@@ -193,7 +193,7 @@
     "PEMS.Web.Controllers.BreakGlassController": 2,
     "PEMS.Web.Controllers.ComingSoonController": 1,
     "PEMS.Web.Controllers.ContractController": 2,
-    "PEMS.Web.Controllers.CriticalityAssessmentController": 10,
+    "PEMS.Web.Controllers.CriticalityAssessmentController": 5,
     "PEMS.Web.Controllers.CultureController": 1,
     "PEMS.Web.Controllers.DCCController": 10,
     "PEMS.Web.Controllers.DataHostController": 1,
