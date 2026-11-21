@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "eng-doc-analyze",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Analyse the relationships",
+    "fa": "تحلیل روابط"
+  },
+  "description": {
+    "en": "Analyse the relationships",
+    "fa": "تحلیل روابط"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "AnalyzeRelationships",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The relationship analysis finished; see the Relationship Explorer.",
+      "fa": "تحلیل روابط انجام شد؛ در Relationship Explorer ببینید."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

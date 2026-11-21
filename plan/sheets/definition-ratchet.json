@@ -188,7 +188,7 @@
     "PEMS.Web.Controllers.DocumentRegisterController": 6,
     "PEMS.Web.Controllers.DocumentUploadController": 2,
     "PEMS.Web.Controllers.EngineeringDocumentIntelligenceController": 10,
-    "PEMS.Web.Controllers.EngineeringDocumentsController": 29,
+    "PEMS.Web.Controllers.EngineeringDocumentsController": 15,
     "PEMS.Web.Controllers.EquipmentClassificationController": 3,
     "PEMS.Web.Controllers.EquipmentController": 4,
     "PEMS.Web.Controllers.EquipmentCriticalityController": 1,

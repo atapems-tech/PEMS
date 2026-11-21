@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "eng-doc-revise-resubmit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Return the document for revision",
+    "fa": "بازگرداندن مدرک برای اصلاح"
+  },
+  "description": {
+    "en": "Return the document for revision",
+    "fa": "بازگرداندن مدرک برای اصلاح"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "ReviseAndResubmit",
+      "args": {
+        "id": "field:id",
+        "comment": "field:comment",
+        "actorEmployeeId": "context:employeeId",
+        "actorRoles": "context:roles",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Document returned for revision.",
+      "fa": "مدرک برای اصلاح بازگردانده شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

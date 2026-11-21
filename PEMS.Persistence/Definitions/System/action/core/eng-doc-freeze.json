@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-doc-freeze",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Freeze the document",
+    "fa": "انجماد مدرک"
+  },
+  "description": {
+    "en": "Freeze the document",
+    "fa": "انجماد مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Freeze",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The document is frozen.",
+      "fa": "مدرک منجمد (Frozen) شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

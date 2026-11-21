@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "eng-doc-idc-respond",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Answer the inter-discipline check",
+    "fa": "پاسخ به بازبینی بین‌دیسیپلینی"
+  },
+  "description": {
+    "en": "Answer the inter-discipline check",
+    "fa": "پاسخ به بازبینی بین‌دیسیپلینی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "IdcRespond",
+      "args": {
+        "id": "field:id",
+        "decision": "field:decision",
+        "comment": "field:comment",
+        "actorEmployeeId": "context:employeeId",
+        "actorDisciplineId": "context:disciplineId",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      }
+    },
+    "success": {
+      "en": "Your review answer was recorded.",
+      "fa": "پاسخ بازبینی شما ثبت شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}
