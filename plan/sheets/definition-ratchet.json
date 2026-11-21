@@ -242,7 +242,7 @@
     "PEMS.Web.Controllers.StrategyImportController": 5,
     "PEMS.Web.Controllers.TableExtractionController": 9,
     "PEMS.Web.Controllers.TagController": 3,
-    "PEMS.Web.Controllers.TaskController": 4,
+    "PEMS.Web.Controllers.TaskController": 2,
     "PEMS.Web.Controllers.TaskManagerController": 31,
     "PEMS.Web.Controllers.TeamController": 4,
     "PEMS.Web.Controllers.TenderController": 4,
