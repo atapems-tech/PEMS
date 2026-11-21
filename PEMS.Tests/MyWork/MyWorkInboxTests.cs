@@ -288,7 +288,7 @@ public class MyWorkInboxTests : WorkflowPlatformTestBase
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", "_SidebarMenu.cshtml"));
         var dash = text.IndexOf("asp-controller=\"Home\" asp-action=\"Index\"", StringComparison.Ordinal);
-        var mine = text.IndexOf("asp-controller=\"MyWork\" asp-action=\"Index\"", StringComparison.Ordinal);
+        var mine = text.IndexOf("href=\"/p/my-work\"", StringComparison.Ordinal);   // and so is My Work (SCRUM-730)
 
         Assert.True(dash >= 0 && mine > dash, "My Work link must follow the Dashboard link");
         var between = text.Substring(dash, mine - dash);
@@ -300,13 +300,13 @@ public class MyWorkInboxTests : WorkflowPlatformTestBase
 
     [Theory]
     [InlineData("Permit", "Permit", 7, "/Permit/Details/7")]
-    [InlineData("MOC", "MOC", 8, "/MOC/Details/8")]
-    [InlineData("TechnicalQuery", "TechnicalQuery", 9, "/TechnicalQuery/Details/9")]
+    [InlineData("MOC", "MOC", 8, "/p/moc-details?id=8")]
+    [InlineData("TechnicalQuery", "TechnicalQuery", 9, "/p/technical-query-details?id=9")]
     [InlineData("VendorDocument", "VDRItem", 10, "/VDR/Details/10")]
     [InlineData("EngineeringDocument", "Document", 11, "/EngineeringDocuments/Details/11")]
-    [InlineData("PartCatalogue", "PartCatalogueRequest", 12, "/Warehouse/PartCatalogueRequest/Details/12")]
+    [InlineData("PartCatalogue", "PartCatalogueRequest", 12, "/p/pc-request-details?id=12")]
     [InlineData("NCR", "NonConformanceReport", 13, "/QC/NcrDetails/13")]
-    [InlineData("Contract", "Contract", 14, "/Contract/Details/14")]
+    [InlineData("Contract", "Contract", 14, "/p/contract-details?id=14")]
     [InlineData("IRN", "IrnReceiptDisposition", 15, "/Warehouse/IrnReceipt/Details/15")]
     [InlineData("WorkOrder", "WorkOrderLifecycle", 16, "/WorkOrder/Details/16")]
     [InlineData("WorkOrder", "WorkOrder", 17, "/WorkOrder/Details/17")]

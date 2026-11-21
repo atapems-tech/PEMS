@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "reliability-cm-profile-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign evaluation profile",
+    "fa": "تخصیص پروفایل ارزیابی"
+  },
+  "description": {
+    "en": "Assign evaluation profile",
+    "fa": "تخصیص پروفایل ارزیابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "AssignEvaluationProfile",
+      "args": {
+        "pointId": "field:pointId",
+        "evaluationProfileId": "field:evaluationProfileId"
+      }
+    },
+    "success": {
+      "en": "Evaluation profile updated.",
+      "fa": "پروفایل ارزیابی به‌روزرسانی شد."
+    },
+    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+  }
+}

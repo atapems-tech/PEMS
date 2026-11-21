@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "fl-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional location import (old address)",
+    "fa": "ورود مکان‌های عملیاتی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Functional location import (old address)",
+    "fa": "ورود مکان‌های عملیاتی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "FunctionalLocationImport/Upload",
+    "target": "/p/fl-import",
+    "permanent": false
+  }
+}

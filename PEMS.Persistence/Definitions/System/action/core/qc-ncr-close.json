@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "qc-ncr-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close NCR",
+    "fa": "بستن NCR"
+  },
+  "description": {
+    "en": "Close NCR",
+    "fa": "بستن NCR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Qc",
+      "action": "NcrClose",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "NCR closed.",
+      "fa": "NCR بسته شد."
+    },
+    "redirect": "/QC/NcrDetails/{id}"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "rcm-functional-failure-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create functional failure",
+    "fa": "ایجاد شکست عملکردی"
+  },
+  "description": {
+    "en": "Create functional failure",
+    "fa": "ایجاد شکست عملکردی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "CreateFunctionalFailure",
+      "args": {
+        "functionalRequirementId": "field:functionalRequirementId",
+        "code": "field:code",
+        "title": "field:title",
+        "failureDefinition": "field:failureDefinition"
+      }
+    },
+    "success": {
+      "en": "Functional failure created.",
+      "fa": "Functional Failure ساخته شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

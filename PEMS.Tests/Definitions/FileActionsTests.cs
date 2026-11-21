@@ -226,7 +226,7 @@ public sealed class FileActionsTests
 
     [Theory]
     [InlineData("""{ "format": "csv", "columns": [ { "field": "a", "header": { "en": "A", "fa": "آ" } } ] }""", "/dataSource")]
-    [InlineData("""{ "dataSource": "d", "format": "pdf", "columns": [ { "field": "a", "header": { "en": "A", "fa": "آ" } } ] }""", "/format")]
+    [InlineData("""{ "dataSource": "d", "format": "docx", "columns": [ { "field": "a", "header": { "en": "A", "fa": "آ" } } ] }""", "/format")]   // pdf is a format since SCRUM-800
     [InlineData("""{ "dataSource": "d", "format": "csv", "columns": [] }""", "/columns")]
     [InlineData("""{ "dataSource": "d", "format": "csv", "columns": [ { "header": { "en": "A", "fa": "آ" } } ] }""", "/columns/0/field")]
     [InlineData("""{ "dataSource": "d", "format": "csv", "columns": [ { "field": "a", "header": { "en": "A" } } ] }""", "/columns/0/header")]

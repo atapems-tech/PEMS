@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "rcm-decision-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve RCM decision",
+    "fa": "تأیید تصمیم RCM"
+  },
+  "description": {
+    "en": "Approve RCM decision",
+    "fa": "تأیید تصمیم RCM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "ApproveRcmDecision",
+      "args": {
+        "rcmDecisionId": "field:rcmDecisionId"
+      }
+    },
+    "success": {
+      "en": "RCM decision approved.",
+      "fa": "تصمیم RCM تایید شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

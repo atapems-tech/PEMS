@@ -240,9 +240,9 @@ public class ManualContractCreationTests
 
         var result = await r.Controller.Create("CT-M8", r.ProjectId, r.VendorId, null, null, null, null);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Details", redirect.ActionName);
-        var id = (int)redirect.RouteValues!["id"]!;
+        var redirect = Assert.IsType<RedirectResult>(result);   // the details page is a definition page (SCRUM-676)
+        Assert.StartsWith("/p/contract-details?id=", redirect.Url);
+        var id = int.Parse(redirect.Url["/p/contract-details?id=".Length..]);
         Assert.Contains(await CreateRowsAsync(r.Ctx), x => x.ResourceId == id.ToString() && x.UserId == r.ManagerId && x.Decision == "Allow");
         Assert.Equal("Contract created successfully", r.Controller.TempData["Message"]);
     }
@@ -328,7 +328,7 @@ public class ManualContractCreationTests
 
         var result = await controller.Create("CT-M12", 1, 1, null, null, null, null);
 
-        Assert.Equal("Index", Assert.IsType<RedirectToActionResult>(result).ActionName);
+        Assert.Equal("/p/contracts", Assert.IsType<RedirectResult>(result).Url);   // the list is a definition page (SCRUM-676)
         var message = Assert.IsType<string>(controller.TempData["Error"]);
         Assert.Contains("نامطمئن", message);
         Assert.DoesNotContain("هیچ تغییری ذخیره نشد", message);
@@ -343,9 +343,8 @@ public class ManualContractCreationTests
 
         var result = await controller.Create("CT-M13", 1, 1, null, null, null, null);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Details", redirect.ActionName);
-        Assert.Equal(77, redirect.RouteValues!["id"]);
+        var redirect = Assert.IsType<RedirectResult>(result);
+        Assert.Equal("/p/contract-details?id=77", redirect.Url);
         Assert.Contains("uncertain", Assert.IsType<string>(controller.TempData["Message"]));
     }
 

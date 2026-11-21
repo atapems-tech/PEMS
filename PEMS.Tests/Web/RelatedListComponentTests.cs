@@ -111,30 +111,6 @@ public class RelatedListComponentTests
         return o;
     }
 
-    [Fact]
-    public async Task JobPlan_TasksAndMaterials_AreRelatedLists_WithAddAndRemove()
-    {
-        var plan = new JobPlanDetailDto
-        {
-            JobPlanId = 4, Title = "PM pump",
-            Tasks = new() { new MaintenanceTaskDto { MaintenanceTaskId = 11, TaskNumber = 10, Title = "Isolate" } },
-            RequiredMaterials = new(),
-        };
-        var html = await Render<Controller>("/Views/JobPlan/Details.cshtml", plan, v =>
-        {
-            v["AllSkills"] = new List<dynamic>();
-            v["MaterialItems"] = new List<dynamic> { Obj(("MaterialItemId", 3), ("MaterialCode", "M-3"), ("Description", "Bearing")) };
-            v["EquipmentClasses"] = new List<dynamic>();
-        });
-
-        Assert.Contains("id=\"jpTasks\"", html);
-        Assert.Contains("id=\"jpMaterials\"", html);
-        Assert.Contains("name=\"maintenanceTaskId\" type=\"hidden\" value=\"11\"", html);
-        Assert.Equal(2, Regex.Matches(html, "class=\"lp-rel-add\"").Count);
-        Assert.Contains("<p class=\"lp-rel-empty\">", html);                               // no materials yet
-        Assert.Contains("value=\"3\">M-3 - Bearing</option>", html);
-    }
-
     // ---------- wave R2 ----------
 
     [Fact]

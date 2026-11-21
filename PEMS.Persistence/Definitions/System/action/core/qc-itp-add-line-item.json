@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "qc-itp-add-line-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add ITP line item",
+    "fa": "افزودن ردیف ITP"
+  },
+  "description": {
+    "en": "Add ITP line item",
+    "fa": "افزودن ردیف ITP"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Qc",
+      "action": "ItpAddLineItem",
+      "args": {
+        "itpId": "field:itpId",
+        "activity": "field:activity",
+        "qcDisciplineId": "field:qcDisciplineId",
+        "inspectionCategory": "field:inspectionCategory",
+        "acceptanceCriteria": "field:acceptanceCriteria",
+        "referenceCodeStandard": "field:referenceCodeStandard",
+        "responsibleParty": "field:responsibleParty"
+      }
+    },
+    "success": {
+      "en": "Line item added.",
+      "fa": "ردیف اضافه شد."
+    },
+    "redirect": "/QC/ItpDetails/{itpId}"
+  }
+}

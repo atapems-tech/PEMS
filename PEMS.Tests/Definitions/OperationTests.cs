@@ -10,7 +10,6 @@ using PEMS.Web.Definitions;
 namespace PEMS.Tests.Definitions;
 
 public sealed class OpTestData { public string? Code { get; set; } public decimal? Hours { get; set; } public int? By { get; set; } }
-public sealed record OpTestContextRow(int? EmployeeId, int? UserId);
 
 public sealed record OpTestActor(int? EmployeeId, IReadOnlyList<string> Roles);
 
@@ -31,9 +30,6 @@ public interface IOpTestService
     [PemsOperation("Test", "Bag")]
     Task<bool> BagAsync(int id, OpTestData? data = null);
 
-    [PemsOperation("Test", "Context")]
-    Task<List<OpTestContextRow>> ContextAsync(int? employeeId, int? userId);
-
     [PemsOperation("Test", "Boom")]
     Task BoomAsync();
 }
@@ -51,7 +47,6 @@ public sealed class OpTestService : IOpTestService
     public Task<(bool Success, string? Error)> TraceAsync(int id, IReadOnlyList<string> roles, string? ipAddress, string? userAgent)
     { Last = $"trace {id}|{string.Join(",", roles)}|{ipAddress}|{userAgent}"; return Task.FromResult((true, (string?)null)); }
     public Task<bool> BagAsync(int id, OpTestData? data = null) { Last = data is null ? "bag none" : $"bag {id}|{data.Code}|{data.Hours}|{data.By}"; return Task.FromResult(true); }
-    public Task<List<OpTestContextRow>> ContextAsync(int? employeeId, int? userId) => Task.FromResult(new List<OpTestContextRow> { new(employeeId, userId) });
     public Task BoomAsync() => throw new InvalidOperationException("Segregation of duties.");
 }
 
@@ -72,18 +67,13 @@ public sealed class OperationTests
         public Task<PEMS.Application.DTOs.AccessDecision> AuthorizeForRolesAsync(IEnumerable<string> roles, string resourceName, string actionName) => Task.FromResult(decision);
     }
 
-    private static IServiceScopeFactory ScopeFactory(Func<string?, bool>? allow = null, FakeAccess? access = null)
+    private static OperationInvokeAction Handler(Func<string?, bool>? allow = null, FakeAccess? access = null)
     {
         var db = "op-" + Guid.NewGuid();
         using (var ctx = PemsDbContextFactory.CreateInMemory(db)) { ctx.Users.Add(new ApplicationUser { UserName = "hamid", NormalizedUserName = "HAMID", EmployeeId = 7 }); ctx.SaveChanges(); }
-        var user = new FakeCurrentUserContext { UserId = 42, EmployeeId = 7, Roles = ["Reviewer"] };
-        var sp = new ServiceCollection().AddScoped(_ => PemsDbContextFactory.CreateInMemory(db)).AddSingleton<IDefinitionAccess>(new Access(allow ?? (_ => true)))
-            .AddSingleton<PEMS.Application.Interfaces.ICurrentUserContext>(user).AddScoped<IOpTestService, OpTestService>()
-            .AddSingleton<PEMS.Application.Interfaces.IAccessControlService>(access ?? new FakeAccess(PEMS.Application.DTOs.AccessDecision.Allow())).BuildServiceProvider();
-        return sp.GetRequiredService<IServiceScopeFactory>();
+        var sp = new ServiceCollection().AddScoped(_ => PemsDbContextFactory.CreateInMemory(db)).AddSingleton<IDefinitionAccess>(new Access(allow ?? (_ => true))).AddScoped<IOpTestService, OpTestService>().AddSingleton<PEMS.Application.Interfaces.IAccessControlService>(access ?? new FakeAccess(PEMS.Application.DTOs.AccessDecision.Allow())).BuildServiceProvider();
+        return new OperationInvokeAction(sp.GetRequiredService<IServiceScopeFactory>(), Catalog);
     }
-
-    private static OperationInvokeAction Handler(Func<string?, bool>? allow = null, FakeAccess? access = null) => new(ScopeFactory(allow, access), Catalog);
 
     private static ActionInvocation Invoke(string parameters, params (string, string?)[] values)
         => new(values.ToDictionary(v => v.Item1, v => v.Item2), "en", ["Reviewer"], "hamid", JsonNode.Parse(parameters)!.AsObject());
@@ -94,8 +84,8 @@ public sealed class OperationTests
         var product = OperationCatalog.Scan(typeof(PemsOperationAttribute).Assembly);
         Assert.Contains("WorkRequest", product.Models);
         Assert.Equal(["Submit", "WorkflowAction"], product.Actions("WorkRequest"));
-        Assert.Equal(["RolesTest", "Test"], Catalog.Models);   // RolesTest: the operations of OperationRolesAndValidationTests (SCRUM-773, 774)
-        Assert.Equal(["Bag", "Boom", "Context", "Flag", "Run", "Trace", "Void"], Catalog.Actions("Test"));
+        Assert.Equal(["IdListTest", "ReadContextTest", "RolesTest", "Test"], Catalog.Models);   // ReadContextTest: OperationReadContextTests; IdListTest: OperationIdListTests (SCRUM-818); RolesTest: the operations of OperationRolesAndValidationTests (SCRUM-773, 774)
+        Assert.Equal(["Bag", "Boom", "Flag", "Run", "Trace", "Void"], Catalog.Actions("Test"));
         Assert.Equal("Test.Run", Catalog.Get("Test", "Run")!.Permission);
         Assert.Null(Catalog.Get("Test", "Flag")!.Permission);
         Assert.Null(Catalog.Get("Test", "Nope"));
@@ -159,25 +149,6 @@ public sealed class OperationTests
         Assert.True((await handler.ExecuteAsync(invocation, CancellationToken.None)).Ok);
         Assert.Equal("trace 4|Reviewer,Admin|10.0.0.5|UA/1", OpTestService.Last);
         Assert.Contains("wrong-source", handler.ValidateParameters(JsonNode.Parse("""{"model":"Test","action":"Trace","args":{"roles":"literal:Admin"}}""")!.AsObject()).Select(e => e.Code));
-    }
-
-    [Fact]
-    public async Task A_read_operation_resolves_employee_and_user_ids_from_the_authenticated_context()
-    {
-        var reader = new OperationReader(ScopeFactory(), Catalog);
-        var args = """{"model":"Test","action":"Context","args":{"employeeId":"context:employeeId","userId":"context:userId"}}""";
-        Assert.Empty(reader.Validate(JsonNode.Parse(args)!.AsObject()));
-
-        var rows = await reader.ReadAsync(new Dictionary<string, string?>
-        {
-            ["model"] = "Test",
-            ["action"] = "Context",
-            ["args"] = """{"employeeId":"context:employeeId","userId":"context:userId"}"""
-        }, "en", ["Reviewer"], "hamid", CancellationToken.None);
-
-        Assert.NotNull(rows);
-        Assert.Equal(7, rows![0]["employeeId"]);
-        Assert.Equal(42, rows[0]["userId"]);
     }
 
     [Fact]

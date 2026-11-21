@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "instrument-toggle-active",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate or deactivate instrument",
+    "fa": "فعال یا غیرفعال کردن ابزار"
+  },
+  "description": {
+    "en": "Activate or deactivate instrument",
+    "fa": "فعال یا غیرفعال کردن ابزار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "ToggleActive",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Instrument updated.",
+      "fa": "ابزار به‌روزرسانی شد."
+    },
+    "redirect": "/Instrument/Index"
+  }
+}

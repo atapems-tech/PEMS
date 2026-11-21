@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "instrument-add-cause-effect",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add cause and effect",
+    "fa": "ثبت علت و معلول"
+  },
+  "description": {
+    "en": "Add cause and effect",
+    "fa": "ثبت علت و معلول"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "AddCauseEffect",
+      "args": {
+        "alarmId": "field:alarmId",
+        "cause": "field:cause",
+        "effect": "field:effect",
+        "actionType": "field:actionType",
+        "tripSignal": "field:tripSignal",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Cause and effect recorded.",
+      "fa": "Cause & Effect ثبت شد."
+    },
+    "redirect": "/Instrument/Passport/{instrumentId}"
+  }
+}

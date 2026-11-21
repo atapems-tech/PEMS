@@ -218,6 +218,14 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskItemOperations, PEMS
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITagOperations, PEMS.Web.Services.TagOperations>();   // SCRUM-754
 builder.Services.AddScoped<PEMS.Application.Interfaces.IFailureModeCatalogOperations, PEMS.Web.Services.FailureModeCatalogOperations>();   // SCRUM-695
 builder.Services.AddScoped<PEMS.Application.Interfaces.IFunctionalLocationImportOperations, PEMS.Web.Services.FunctionalLocationImportOperations>();   // SCRUM-698
+builder.Services.AddScoped<PEMS.Application.Interfaces.ICriticalityAssessmentOperations, PEMS.Web.Services.CriticalityAssessmentOperations>();   // SCRUM-701
+builder.Services.AddScoped<PEMS.Application.Interfaces.IRcmFmeaOperations, PEMS.Web.Services.RcmFmeaOperations>();   // SCRUM-744
+builder.Services.AddScoped<PEMS.Application.Interfaces.IReliabilityOperations, PEMS.Web.Services.ReliabilityOperations>();   // SCRUM-678
+builder.Services.AddScoped<PEMS.Application.Interfaces.IQcOperations, PEMS.Web.Services.QcOperations>();   // SCRUM-694
+builder.Services.AddScoped<PEMS.Application.Interfaces.IInstrumentOperations, PEMS.Web.Services.InstrumentOperations>();   // SCRUM-695, 752
+builder.Services.AddScoped<PEMS.Application.Interfaces.IMechanicalEquipmentOperations, PEMS.Web.Services.MechanicalEquipmentOperations>();   // SCRUM-727
+builder.Services.AddScoped<PEMS.Application.Interfaces.IEquipmentImportOperations, PEMS.Web.Services.EquipmentImportOperations>();   // SCRUM-742
+builder.Services.AddScoped<PEMS.Application.Interfaces.IEquipmentFunctionalLocationAssignmentOperations, PEMS.Web.Services.EquipmentFunctionalLocationAssignmentOperations>();   // SCRUM-694
 builder.Services.AddScoped<PEMS.Application.Interfaces.IAssetRegisterOperations, PEMS.Web.Services.AssetRegisterOperations>();   // SCRUM-670, 691, 700
 builder.Services.AddScoped<PEMS.Application.Interfaces.IReliabilityRegisterOperations, PEMS.Web.Services.ReliabilityRegisterOperations>();   // SCRUM-692, 693, 745
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskManagerOperations, PEMS.Web.Services.TaskManagerOperations>();   // SCRUM-756

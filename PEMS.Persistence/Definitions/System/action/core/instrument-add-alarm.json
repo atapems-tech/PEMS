@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "instrument-add-alarm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add alarm",
+    "fa": "ثبت آلارم"
+  },
+  "description": {
+    "en": "Add alarm",
+    "fa": "ثبت آلارم"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "AddAlarm",
+      "args": {
+        "instrumentId": "field:instrumentId",
+        "alarmTag": "field:alarmTag",
+        "alarmType": "field:alarmType",
+        "priority": "field:priority",
+        "setPoint": "field:setPoint",
+        "unit": "field:unit",
+        "description": "field:description",
+        "action": "field:action"
+      }
+    },
+    "success": {
+      "en": "Alarm recorded.",
+      "fa": "آلارم ثبت شد."
+    },
+    "redirect": "/Instrument/Passport/{instrumentId}"
+  }
+}

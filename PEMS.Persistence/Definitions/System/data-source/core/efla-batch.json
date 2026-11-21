@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "efla-batch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment functional location assignment batch",
+    "fa": "تخصیص مکان عملیاتی به تجهیز Batch"
+  },
+  "description": {
+    "en": "Equipment functional location assignment batch",
+    "fa": "تخصیص مکان عملیاتی به تجهیز Batch"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentFunctionalLocationAssignment",
+      "action": "Batch",
+      "args": {
+        "batchId": "param:batchId"
+      }
+    }
+  }
+}

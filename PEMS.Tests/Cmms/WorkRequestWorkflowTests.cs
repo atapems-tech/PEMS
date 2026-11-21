@@ -468,11 +468,7 @@ public class WorkRequestWorkflowTests : IDisposable
         var html = File.ReadAllText(path!);
         foreach (var stageName in new[] { "Reliability Review", "Technical Review", "Under Review", "Supervisor Approval", "Reliability" })
             Assert.DoesNotContain(stageName, html);
-        // لیست هم نباید زنجیره‌ی ثابت گردش‌کار را متن‌نویسی کند (با نسخه‌ی جدید کهنه می‌شد)
-        var indexPath = Path.Combine(Path.GetDirectoryName(path!)!, "Index.cshtml");
-        var indexHtml = File.ReadAllText(indexPath);
-        Assert.DoesNotContain("Submitted → UnderReview", indexHtml);
-        Assert.DoesNotContain("→ Planned", indexHtml);
+        // the list is a page definition now (SCRUM-765); the work request list view no longer exists
         Assert.Contains("wf.Stages", html);
         Assert.Contains("wf?.AvailableActions", html);
     }

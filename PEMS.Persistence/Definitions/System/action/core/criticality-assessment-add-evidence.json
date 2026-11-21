@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "criticality-assessment-add-evidence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add evidence",
+    "fa": "افزودن شاهد"
+  },
+  "description": {
+    "en": "Add evidence",
+    "fa": "افزودن شاهد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "AddEvidence",
+      "args": {
+        "id": "field:id",
+        "sourceType": "field:sourceType",
+        "description": "field:description",
+        "sourceIdentifier": "field:sourceIdentifier",
+        "reference": "field:reference"
+      }
+    },
+    "success": {
+      "en": "Evidence added.",
+      "fa": "شاهد اضافه شد."
+    },
+    "redirect": "/CriticalityAssessment/Details/{id}"
+  }
+}

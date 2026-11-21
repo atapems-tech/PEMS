@@ -772,6 +772,306 @@
         }
       }
     },
+    "/api/v1/definitions/{id}/used-by": {
+      "get": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Which published definitions use this one",
+        "description": "The published definitions whose published version points at this definition (a page that renders a component definition, a form that uses a data source, an action a form submits to). Read only.",
+        "operationId": "Definitions_UsedBy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionUsedByResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionUsedByResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionUsedByResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/references": {
+      "get": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "What this definition points at",
+        "description": "The definitions the published version points at, each with whether it exists and is published. A target that does not exist stops a publish of a draft that points at it. Read only.",
+        "operationId": "Definitions_References",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionReferencesResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionReferencesResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DefinitionReferencesResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/precheck-publish": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "What publishing the draft would do",
+        "description": "The verdict (allowed, warnings or blocked) and the findings of publishing the open draft: missing or unpublished references and changes that would drop stored data. Changes nothing.",
+        "operationId": "Definitions_PrecheckPublish",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReportResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReportResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReportResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/definitions/{id}/actions/precheck-rollback": {
+      "post": {
+        "tags": [
+          "Definitions"
+        ],
+        "summary": "Whether an older version can be published again",
+        "description": "The verdict and the findings of publishing the version toVersion again, against today\u0027s definitions: allowed, warnings or blocked with the reasons. Changes nothing.",
+        "operationId": "Definitions_PrecheckRollback",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Optional; a replay with the same key and body returns the first response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            },
+            "application/*\u002Bjson": {
+              "schema": {
+                "$ref": "#/components/schemas/RollbackInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReportResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReportResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactReportResource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem\u002Bjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          },
+          "403": {
+            "description": "Not allowed.",
+            "content": {
+              "application/problem\u002Bjson": {}
+            }
+          }
+        }
+      }
+    },
     "/api/v1/definitions/{id}/actions/create-draft": {
       "post": {
         "tags": [
@@ -978,7 +1278,7 @@
           "Definitions"
         ],
         "summary": "Publish the draft",
-        "description": "Validates and publishes the draft as the current version; the previous version is retired. Needs permission Approve and If-Match with the draft ETag.",
+        "description": "Checks the references first (a missing or unpublished target answers 422 with the pointer), then validates and publishes the draft as the current version; the previous version is retired. A change that only warns (a field changes type, a field becomes required) needs ?acknowledge=true and answers 409 without it. After the publish a smoke check runs; when it fails the previous version is published again automatically (409 auto-rolled-back, change summary \u0027auto-rollback: reason\u0027). Needs permission Approve and If-Match with the draft ETag.",
         "operationId": "Definitions_Publish",
         "parameters": [
           {
@@ -989,6 +1289,13 @@
               "pattern": "^-?(?:0|[1-9]\\d*)$",
               "type": "integer",
               "format": "int32"
+            }
+          },
+          {
+            "name": "acknowledge",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -2205,6 +2512,20 @@
           }
         }
       },
+      "DefinitionReferencesResource": {
+        "required": [
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefinitionTargetResource"
+            }
+          }
+        }
+      },
       "DefinitionResource": {
         "required": [
           "id",
@@ -2292,6 +2613,29 @@
           }
         }
       },
+      "DefinitionTargetResource": {
+        "required": [
+          "kind",
+          "key",
+          "role",
+          "exists"
+        ],
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "exists": {
+            "type": "boolean"
+          }
+        }
+      },
       "DefinitionUpstreamResource": {
         "required": [
           "customized",
@@ -2345,6 +2689,39 @@
           },
           "truncated": {
             "type": "boolean"
+          }
+        }
+      },
+      "DefinitionUsageResource": {
+        "required": [
+          "kind",
+          "key",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "DefinitionUsedByResource": {
+        "required": [
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DefinitionUsageResource"
+            }
           }
         }
       },
@@ -2546,6 +2923,43 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "ImpactItemResource": {
+        "required": [
+          "severity",
+          "path",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "severity": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ImpactReportResource": {
+        "required": [
+          "verdict",
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "verdict": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImpactItemResource"
             }
           }
         }

@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "criticality-assessment-set-scores",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set dimension scores",
+    "fa": "ثبت امتیازها"
+  },
+  "description": {
+    "en": "Set dimension scores",
+    "fa": "ثبت امتیازها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "SetScores",
+      "args": {
+        "id": "field:id",
+        "safetyScore": "field:safetyScore",
+        "productionScore": "field:productionScore",
+        "environmentScore": "field:environmentScore",
+        "rationale": "field:rationale"
+      }
+    },
+    "success": {
+      "en": "Scores saved.",
+      "fa": "امتیازها ثبت شد."
+    },
+    "redirect": "/CriticalityAssessment/Details/{id}"
+  }
+}

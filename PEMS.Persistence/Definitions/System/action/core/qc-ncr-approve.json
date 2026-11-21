@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "qc-ncr-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve or reject NCR disposition",
+    "fa": "تأیید یا رد تعیین تکلیف NCR"
+  },
+  "description": {
+    "en": "Approve or reject NCR disposition",
+    "fa": "تأیید یا رد تعیین تکلیف NCR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Qc",
+      "action": "NcrApprove",
+      "args": {
+        "id": "field:id",
+        "decision": "field:decision",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The decision was recorded.",
+      "fa": "تصمیم ثبت شد."
+    },
+    "redirect": "/QC/NcrDetails/{id}"
+  }
+}

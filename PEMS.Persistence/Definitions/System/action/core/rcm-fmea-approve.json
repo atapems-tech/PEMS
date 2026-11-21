@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "rcm-fmea-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve FMEA",
+    "fa": "تأیید FMEA"
+  },
+  "description": {
+    "en": "Approve FMEA",
+    "fa": "تأیید FMEA"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "ApproveFmea",
+      "args": {
+        "fmeaAnalysisId": "field:fmeaAnalysisId"
+      }
+    },
+    "success": {
+      "en": "FMEA approved.",
+      "fa": "FMEA تایید شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

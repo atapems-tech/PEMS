@@ -169,33 +169,6 @@ public class ReliabilityController : Controller
         return View(recommendations);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> GenerateRcmEvidence()
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
-            return Forbid();
-
-        var result = await _rcmFeedbackService.GenerateEvidenceAsync();
-        TempData["Message"] = $"{result.RecommendationsGenerated} توصیه‌ی جدید تولید شد (از {result.StrategiesEvaluated} استراتژی بررسی‌شده)؛ {result.StrategiesSkippedAlreadyPending} مورد به‌دلیل داشتن توصیه‌ی PENDING از قبل، رد شد.";
-        return RedirectToAction(nameof(RcmFeedback));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReviewRcmRecommendation(int recommendationId, bool accept, string? notes)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Approve"))
-            return Forbid();
-
-        var (success, error) = await _rcmFeedbackService.ReviewRecommendationAsync(recommendationId, accept, _currentUser.UserName ?? "Unknown", notes);
-        TempData[success ? "Message" : "Error"] = success
-            ? (accept ? "توصیه پذیرفته شد." : "توصیه رد شد.")
-            : error;
-
-        return RedirectToAction(nameof(RcmFeedback));
-    }
-
     // ==============================================================================
     // طبق «PEMS Phase 9 — Enterprise Reliability, RAM & Predictive Maintenance Intelligence»:
     // همان ماژول مجوز "Reliability" موجود بازاستفاده شد (بند ۲۳: هیچ ماژول مجوز جدیدی برای
@@ -362,65 +335,7 @@ public class ReliabilityController : Controller
         return View(points);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateConditionMonitoringPoint(int equipmentId, string variableType, string tag,
-        string? unit, decimal? alarmLow, decimal? alarmHigh, string? description)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
-            return Forbid();
 
-        var (success, error, _) = await _conditionMonitoringService.CreatePointAsync(
-            equipmentId, variableType, tag, unit, alarmLow, alarmHigh, description, _currentUser.UserName);
-        TempData[success ? "Message" : "Error"] = success ? "نقطه‌ی پایش ساخته شد." : error;
-
-        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RecordConditionReading(int pointId, int equipmentId, DateTime readingDate,
-        decimal value, string source, string? notes, int? instrumentId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
-            return Forbid();
-
-        var (success, error) = await _conditionMonitoringService.RecordReadingAsync(
-            pointId, readingDate, value, source, notes, _currentUser.UserName, instrumentId);
-        TempData[success ? "Message" : "Error"] = success ? "قرائت ثبت شد." : error;
-
-        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
-    }
-
-    // طبق «PEMS — Equipment Passport Audit & CBM» فاز ۱ ممیزی §3.6: علامت‌گذاری دستی یک قرائت
-    // برای بازبینی مهندسی - یک‌طرفه، دقیقاً مثل Raise Finding، هرگز Un-mark نمی‌شود.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkRequiresEngineeringReview(int readingId, int equipmentId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
-            return Forbid();
-
-        var (success, error) = await _conditionMonitoringService.MarkRequiresEngineeringReviewAsync(readingId, _currentUser.UserName);
-        TempData[success ? "Message" : "Error"] = success ? "قرائت برای بازبینی مهندسی علامت‌گذاری شد." : error;
-
-        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
-    }
-
-    // طبق فاز ۵: پیوند/تغییر پروفایل ارزیابی یک نقطه‌ی پایش - بعد از این، قرائت‌های تازه
-    // به‌جای فقط IsAlarm دو-سطحی، ارزیابی چندسطحی (Normal/Warning/Alarm/Critical) می‌گیرند.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AssignEvaluationProfile(int equipmentId, int pointId, int? evaluationProfileId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
-            return Forbid();
-
-        var (success, error) = await _conditionMonitoringService.AssignEvaluationProfileAsync(pointId, evaluationProfileId);
-        TempData[success ? "Message" : "Error"] = success ? "پروفایل ارزیابی به‌روزرسانی شد." : error;
-
-        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
-    }
 
     // طبق فاز ۸/بند ۳۱: بازه‌ی زمانی همیشه محدود - Preset (7/30/90/365 روز) یا Custom با سقف
     // ۲ سال، هرگز «همه‌ی تاریخچه» بدون محدودیت.
@@ -498,44 +413,6 @@ public class ReliabilityController : Controller
         return (to2.AddDays(-days), to2);
     }
 
-    // ==============================================================================
-    // طبق «PEMS — Standards-Based Mechanical Equipment Passport & Condition Monitoring» فاز ۴:
-    // دقیقاً همون الگوی MaintenanceStrategyController.Create (Equipment+FailureModeCode تشخیص
-    // تکراری) - این‌جا کلید تکراری Equipment+ConditionMonitoringPointId است. هیچ Entity/Plan
-    // تازه‌ای ساخته نمی‌شود؛ فقط یک MaintenanceStrategy با StrategyType="CBM" که به این نقطه‌ی
-    // پایش وصل است - بعداً از همان مسیر موجود MaintenancePlanController به MaintenancePlan تبدیل می‌شود.
-    // ==============================================================================
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateCbmStrategy(int equipmentId, int conditionMonitoringPointId, string? justification)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
-            return Forbid();
-
-        var duplicate = await _context.MaintenanceStrategies.AnyAsync(x =>
-            x.EquipmentId == equipmentId && x.IsActive && x.ConditionMonitoringPointId == conditionMonitoringPointId);
-        if (duplicate)
-        {
-            TempData["Error"] = "یک استراتژی CBM فعال از قبل برای این نقطه‌ی پایش وجود دارد.";
-            return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
-        }
-
-        await _context.MaintenanceStrategies.AddAsync(new Domain.Entities.MaintenanceStrategy
-        {
-            EquipmentId = equipmentId,
-            StrategyType = "CBM",
-            ConditionMonitoringPointId = conditionMonitoringPointId,
-            ConsequenceCategory = "Operational",
-            Justification = justification,
-            RecommendedTriggerType = "Calendar",
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        });
-
-        await _context.SaveChangesAsync();
-        TempData["Message"] = "استراتژی CBM ساخته شد - برای زمان‌بندی واقعی، از Maintenance Strategies یک Plan بسازید.";
-        return RedirectToAction(nameof(ConditionMonitoring), new { equipmentId });
-    }
 
     public async Task<IActionResult> PredictiveMaintenance()
     {
@@ -564,37 +441,6 @@ public class ReliabilityController : Controller
 
         var insights = await _aiInsightService.GetInsightsAsync(status);
         return View(insights);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> GenerateAiInsights(int? equipmentClassId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Edit"))
-            return Forbid();
-
-        var result = await _aiInsightService.GenerateInsightsAsync(equipmentClassId, _currentUser.UserName);
-        TempData[result.Success ? "Message" : "Error"] = result.Success
-            ? $"{result.InsightsGenerated} بینش جدید (Draft) تولید شد - نیازمند بازبینی مهندس است."
-            : result.Error;
-
-        return RedirectToAction(nameof(AiInsights));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReviewAiInsight(int insightId, bool approve, string? notes)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Reliability", "Approve"))
-            return Forbid();
-
-        var employeeId = await GetCurrentEmployeeIdAsync();
-        var (success, error) = await _aiInsightService.ReviewInsightAsync(insightId, approve, employeeId, notes);
-        TempData[success ? "Message" : "Error"] = success
-            ? (approve ? "بینش تایید شد." : "بینش رد شد.")
-            : error;
-
-        return RedirectToAction(nameof(AiInsights));
     }
 
     private async Task<int?> GetCurrentEmployeeIdAsync()

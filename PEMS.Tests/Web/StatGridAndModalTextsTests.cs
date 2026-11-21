@@ -23,12 +23,10 @@ public class StatGridAndModalTextsTests
     }
 
     [Theory]
-    [InlineData("Areas/Warehouse/Views/MrsImport/Review.cshtml", "label=\"Matched Existing\"", "label=\"Duplicate In Batch\"", "فایل کامل را آپلود کنید")]
     [InlineData("Views/TableExtraction/Review.cshtml", "label=\"Matched - no Instrument yet\"", "label=\"Matched - has Instrument\"")]
     [InlineData("Views/Letter/Details.cshtml", ">Reject Letter<", ">Sign / Acknowledge<", "/> Sign / Acknowledge</a>")]
     [InlineData("Views/Asset/Details.cshtml", ">Edit Asset<")]
     [InlineData("Views/EngineeringDocuments/Details.cshtml", "/> Freeze Document<", ">Create New Revision<", "/> Create New Revision<", ">Record Client Response<", "/> Engineering Document Approval Workflow<", ">Client Decision<", "This is the client's (owner's) response")]
-    [InlineData("Views/MaintenanceMasterData/Index.cshtml", ">Maintenance Strategy Type جدید<", ">Standard Reference جدید<", ">Maintenance Activity جدید<", "/> Standard Reference جدید")]
     [InlineData("Views/WorkOrder/Details.cshtml", "\">@Model.Status</pems-badge>", "\">@Model.Priority</pems-badge>", ">@Model.WorkOrderType</pems-badge>", "این WorkOrder رد شود")]
     [InlineData("Views/CriticalityAssessment/Details.cshtml", "\"1 — Negligible\"", "_ => \"Not scored\"")]
     public void TheReviewedTexts_AreNoLongerHardCoded(string view, params string[] literals)

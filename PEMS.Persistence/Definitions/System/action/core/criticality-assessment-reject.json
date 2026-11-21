@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "criticality-assessment-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject to draft",
+    "fa": "بازگشت به پیش‌نویس"
+  },
+  "description": {
+    "en": "Reject to draft",
+    "fa": "بازگشت به پیش‌نویس"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "Reject",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Returned to DRAFT.",
+      "fa": "به DRAFT بازگشت داده شد."
+    },
+    "redirect": "/CriticalityAssessment/Details/{id}"
+  }
+}

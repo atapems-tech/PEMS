@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "reliability-cm-point-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create monitoring point",
+    "fa": "ایجاد نقطه پایش"
+  },
+  "description": {
+    "en": "Create monitoring point",
+    "fa": "ایجاد نقطه پایش"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "CreateConditionMonitoringPoint",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "variableType": "field:variableType",
+        "tag": "field:tag",
+        "unit": "field:unit",
+        "alarmLow": "field:alarmLow",
+        "alarmHigh": "field:alarmHigh",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Monitoring point created.",
+      "fa": "نقطه‌ی پایش ساخته شد."
+    },
+    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+  }
+}

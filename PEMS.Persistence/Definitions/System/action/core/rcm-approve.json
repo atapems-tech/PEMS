@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "rcm-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve RCM",
+    "fa": "تأیید RCM"
+  },
+  "description": {
+    "en": "Approve RCM",
+    "fa": "تأیید RCM"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RcmFmea",
+      "action": "ApproveRcm",
+      "args": {
+        "rcmAnalysisId": "field:rcmAnalysisId"
+      }
+    },
+    "success": {
+      "en": "RCM approved.",
+      "fa": "RCM تایید شد."
+    },
+    "redirect": "/RcmFmea/ClassDetail/{equipmentClassId}"
+  }
+}

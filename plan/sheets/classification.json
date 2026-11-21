@@ -21,85 +21,7 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.InventoryController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.InventoryMasterDataController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.InventoryTransactionController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.IrnReceiptController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.MaterialItemController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.MrsImportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueAdminController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueDedupController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueLookupController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueReportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.ReplenishmentController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.StoreRequisitionController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Areas.Warehouse.Controllers.WarehouseIntakeController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -129,12 +51,6 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.BarcodeController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.BreakGlassController",
       "status": "host",
       "reason": "generic host, sign-in or infrastructure controller: code by decision"
@@ -147,19 +63,7 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.ConditionReadingImportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.ContractController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.CrewController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -183,15 +87,15 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.DefinitionPreviewHostController",
-      "status": "host",
-      "reason": "generic preview host of the definition workbench (SCRUM-792, 787): renders a component sample or a page version in a language, direction and theme"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.DataHostController",
       "status": "host",
       "reason": "generic host, sign-in or infrastructure controller: code by decision"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.DefinitionPreviewHostController",
+      "status": "host",
+      "reason": "generic preview host of the definition workbench (SCRUM-792, 787): renders a component sample or a page version in a language, direction and theme"
     },
     {
       "kind": "controller",
@@ -250,18 +154,12 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.EquipmentFunctionalLocationAssignmentController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.EquipmentImportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.ExecutionGateController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -279,15 +177,15 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.FilesController",
+      "type": "PEMS.Web.Controllers.FileHostController",
       "status": "host",
       "reason": "generic host, sign-in or infrastructure controller: code by decision"
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.FindingController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "type": "PEMS.Web.Controllers.FilesController",
+      "status": "host",
+      "reason": "generic host, sign-in or infrastructure controller: code by decision"
     },
     {
       "kind": "controller",
@@ -304,14 +202,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.FunctionalLocationImportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.GasTestController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -327,31 +219,7 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.InspectionController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.InstrumentController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.IntakeController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.IsolationController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.JobPlanController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -393,25 +261,7 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.MOCController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.MaintenanceCalendarController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.MaintenanceHistoryImportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.MaintenanceMasterDataController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -429,19 +279,7 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.MaterialRequisitionController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.MechanicalEquipmentController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.MeetingController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -472,42 +310,6 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.PermitController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.PreProcurementController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.ProcurementPackageController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.ProductionController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.ProductionOrderController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.ProductionRunController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.PurchaseOrderController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -549,24 +351,6 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.ShiftHandoverController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.SimopsController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.SparePartController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.StrategyImportController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
@@ -603,12 +387,6 @@
     },
     {
       "kind": "controller",
-      "type": "PEMS.Web.Controllers.TechnicalQueryController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
       "type": "PEMS.Web.Controllers.TenderController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
@@ -634,12 +412,6 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.VDRImportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
-    },
-    {
-      "kind": "controller",
-      "type": "PEMS.Web.Controllers.VendorController",
       "status": "pending",
       "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
     },
@@ -684,6 +456,240 @@
       "type": "PEMS.Web.Hubs.NotificationHub",
       "status": "host",
       "reason": "SignalR hub: real-time transport, code by decision"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.InventoryController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.InventoryMasterDataController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.InventoryTransactionController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.IrnReceiptController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.MaterialItemController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.MrsImportController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueAdminController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueDedupController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueLookupController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueReportController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.ReplenishmentController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.StoreRequisitionController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Areas.Warehouse.Controllers.WarehouseIntakeController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.BarcodeController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.ConditionReadingImportController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.CrewController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.ExecutionGateController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.FindingController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.GasTestController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.InspectionController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.IntakeController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.IsolationController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.JobPlanController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.MOCController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.MaintenanceHistoryImportController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.MaintenanceMasterDataController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.MaterialRequisitionController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.MeetingController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.PreProcurementController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.ProcurementPackageController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.ProductionController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.ProductionOrderController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.ProductionRunController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.PurchaseOrderController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.ShiftHandoverController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.SimopsController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.SparePartController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.TechnicalQueryController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
+    },
+    {
+      "kind": "controller",
+      "type": "PEMS.Web.Controllers.VendorController",
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",

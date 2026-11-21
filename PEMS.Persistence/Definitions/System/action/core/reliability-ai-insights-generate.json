@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "reliability-ai-insights-generate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate AI insights",
+    "fa": "تولید بینش هوشمند"
+  },
+  "description": {
+    "en": "Generate AI insights",
+    "fa": "تولید بینش هوشمند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "GenerateAiInsights",
+      "args": {
+        "equipmentClassId": "field:equipmentClassId"
+      }
+    },
+    "success": {
+      "en": "New draft insights were generated; an engineer must review them.",
+      "fa": "بینش‌های جدید (Draft) تولید شد - نیازمند بازبینی مهندس است."
+    },
+    "redirect": "/Reliability/AiInsights"
+  }
+}
