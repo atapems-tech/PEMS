@@ -24,7 +24,7 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "Equipment", "FunctionalLocation", "Instrument", "Tag",
+        "WorkOrder", "Equipment", "FunctionalLocation", "Instrument",
         "MaintenanceStrategy", "Asset",
         // wave 2b
         "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
@@ -117,22 +117,7 @@ public class CmmsListPagesTests
 
     // ---------- Work requests ----------
 
-    // ---------- Letter tags ----------
-
-    [Fact]
-    public async Task Tags_CreateMovedIntoAModal_AndEachTagKeepsItsColourAndDeleteForm()
-    {
-        var html = await Render<TagController>("/Views/Tag/Index.cshtml",
-            new List<TagDto> { new() { TagId = 1, Name = "Urgent", Color = "danger", LetterCount = 4 } }, _ => { });
-
-        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
-        Assert.Contains("data-bs-target=\"#createTagModal\"", html);
-        Assert.Contains("id=\"createTagModal\"", html);
-        Assert.Contains("class=\"badge bg-danger\"", html);
-        Assert.Contains("4 letters", html);
-        Assert.Contains("name=\"tagId\" value=\"1\"", html);
-        Assert.Contains("data-pems-confirm=", html);
-    }
+    // ---------- Letter tags: the page is a definition since SCRUM-754 (tags, tag-create, tag-delete) ----------
 
     // ---------- Inspections ----------
 

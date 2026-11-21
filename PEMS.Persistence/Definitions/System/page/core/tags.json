@@ -1,0 +1,83 @@
+{
+  "kind": "page",
+  "key": "tags",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tags",
+    "fa": "برچسب‌ها"
+  },
+  "description": {
+    "en": "Tags",
+    "fa": "برچسب‌ها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "tags",
+    "template": "entity-list",
+    "args": {
+      "id": "tags",
+      "url": "/d/tags-grid",
+      "idField": "tagId",
+      "columns": [
+        {
+          "key": "name",
+          "header": {
+            "en": "Tag",
+            "fa": "برچسب"
+          },
+          "width": 220
+        },
+        {
+          "key": "color",
+          "header": {
+            "en": "Colour",
+            "fa": "رنگ"
+          },
+          "width": 120
+        },
+        {
+          "key": "letterCount",
+          "header": {
+            "en": "Letters",
+            "fa": "نامه‌ها"
+          },
+          "width": 110,
+          "type": "number"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 120,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "delete",
+              "label": {
+                "en": "Delete",
+                "fa": "حذف"
+              },
+              "url": "/a/tag-delete",
+              "method": "post",
+              "confirm": {
+                "en": "Delete this tag?",
+                "fa": "این برچسب حذف شود؟"
+              },
+              "tone": "danger"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/tag-create",
+      "newLabel": {
+        "en": "New tag",
+        "fa": "برچسب جدید"
+      }
+    }
+  }
+}

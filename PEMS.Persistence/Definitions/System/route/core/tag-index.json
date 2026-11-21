@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "tag-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tags (old address)",
+    "fa": "Tags (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Tags (old address)",
+    "fa": "Tags (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Tag/{*rest}",
+    "target": "/p/tags",
+    "permanent": false
+  }
+}

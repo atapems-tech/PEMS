@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "tag-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create tag",
+    "fa": "ایجاد برچسب"
+  },
+  "description": {
+    "en": "Create tag",
+    "fa": "ایجاد برچسب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Tag",
+      "action": "Create",
+      "args": {
+        "name": "field:name",
+        "color": "field:color"
+      }
+    },
+    "success": {
+      "en": "The tag was created.",
+      "fa": "برچسب ساخته شد."
+    },
+    "redirect": "/p/tags"
+  }
+}

@@ -4,7 +4,7 @@ using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Web;
 
@@ -48,18 +48,18 @@ public class TagDeleteOutcomeTests
     }
 
     [Fact]
-    public async Task ThePage_ShowsTheReason_AsAnError_AndADeleteAsAMessage()
+    public async Task TheOperation_SaysTheReason_AsAnError_AndADeleteAsSuccess()
     {
         var (db, parent, _, free, _) = Seed();
         using var _db = db;
-        var ctl = new TagController(new TagService(db), new FakeCurrentUserService { UserId = 1 }).WithTempData();
+        var ops = new TagOperations(new TagService(db), new FakeCurrentUserService { UserId = 1 }, new PEMS.Tests.Api.KeyLocalizer());
 
-        Assert.IsType<RedirectToActionResult>(await ctl.Delete(parent.TagId));
-        Assert.Equal("Tg_Err_HasSubTags", ctl.TempData["Error"]);
+        var refused = await ops.DeleteAsync(parent.TagId);
+        Assert.False(refused.Success);
+        Assert.Equal("Tg_Err_HasSubTags", refused.Error);
 
-        ctl.TempData.Clear();
-        await ctl.Delete(free.TagId);
-        Assert.Equal("Tg_Deleted", ctl.TempData["Message"]);
-        Assert.Null(ctl.TempData["Error"]);
+        var deleted = await ops.DeleteAsync(free.TagId);
+        Assert.True(deleted.Success);
+        Assert.Null(deleted.Error);
     }
 }
