@@ -364,8 +364,8 @@
             if (server.loaded) {
                 var picker = tpl('dg-view-scope');
                 scopeBox = slot(picker, 'scope');
-                var me = document.createElement('option'); me.value = 'user'; me.textContent = T.viewScopeMe || 'Only me'; scopeBox.appendChild(me);
-                server.roles.forEach(function (r) { var o = document.createElement('option'); o.value = r.scope; o.textContent = r.name; scopeBox.appendChild(o); });
+                scopeBox.appendChild(tpl('dg-view-option', { option: { text: T.viewScopeMe || 'Only me', attrs: { value: 'user' } } }));
+                server.roles.forEach(function (r) { scopeBox.appendChild(tpl('dg-view-option', { option: { text: r.name, attrs: { value: r.scope } } })); });
                 panel.appendChild(picker);
             }
             slot(form, 'button').addEventListener('click', function () {

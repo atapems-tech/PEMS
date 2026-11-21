@@ -16,7 +16,7 @@
     "provider": "operation",
     "parameters": {
       "model": "ContractPage",
-      "action": "Contracts"
+      "action": "List"
     }
   }
 }

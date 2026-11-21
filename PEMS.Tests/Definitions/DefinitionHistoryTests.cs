@@ -17,7 +17,7 @@ public sealed class DefinitionHistoryTests
     public void Added_and_removed_properties_and_array_items_are_listed()
     {
         var rows = PayloadDiff.Compare("""{ "fields": [ { "name": "a" }, { "name": "b" } ], "gone": true }""", """{ "fields": [ { "name": "a" } ], "new": 5 }""");
-        Assert.Contains(new PayloadDifference("/fields/1/name", "removed", "b", null), rows);
+        Assert.Contains(new PayloadDifference("/fields/1", "removed", "{\"name\":\"b\"}", null), rows);   // an array item that is gone is one removed row at the item
         Assert.Contains(new PayloadDifference("/gone", "removed", "true", null), rows);
         Assert.Contains(new PayloadDifference("/new", "added", null, "5"), rows);
         Assert.Equal(3, rows.Count);

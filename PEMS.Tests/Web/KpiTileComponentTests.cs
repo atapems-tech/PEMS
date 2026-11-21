@@ -99,8 +99,6 @@ public class KpiTileComponentTests
     [Theory]
     [InlineData("Views/EngineeringDocumentIntelligence/Index.cshtml", 4)]
     [InlineData("Views/OCRProcessing/Index.cshtml", 4)]
-    [InlineData("Views/Production/Dashboard.cshtml", 1)]
-    [InlineData("Areas/Warehouse/Views/PartCatalogueReport/Index.cshtml", 6)]
     public void WaveK2_TakesItsTilesFromTheComponent_AndThePartialIsGone(string view, int tags)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
@@ -124,7 +122,6 @@ public class KpiTileComponentTests
     [Theory]
     [InlineData("Views/Asset/Details.cshtml", 4)]
     [InlineData("Views/Reliability/Details.cshtml", 4)]
-    [InlineData("Views/ProductionRun/Details.cshtml", 7)]
     public void WaveK3_DetailPages_UseCompactTiles(string view, int tiles)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
@@ -135,7 +132,6 @@ public class KpiTileComponentTests
 
     // ---- K4: dashboards with their own large-number tiles
     [Theory]
-    [InlineData("Areas/Warehouse/Views/Inventory/Index.cshtml", 6)]
     [InlineData("Views/DCC/Index.cshtml", 2)]
     [InlineData("Views/EquipmentClassification/Index.cshtml", 5)]
     [InlineData("Views/QC/Index.cshtml", 2)]

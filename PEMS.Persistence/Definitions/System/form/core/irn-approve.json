@@ -77,8 +77,7 @@
           "fa": "توضیح"
         },
         "kind": "textArea",
-        "maxLength": 1000,
-        "span": 2
+        "maxLength": 1000
       }
     ]
   }

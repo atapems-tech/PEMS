@@ -188,7 +188,8 @@ public abstract class WorkOrderGovernanceTestBase : IDisposable
     /// </summary>
     public async Task<Microsoft.AspNetCore.Mvc.IActionResult> RunSectionActionAsync(Microsoft.AspNetCore.Mvc.Controller toast, WorkOrderActor who, string key, params (string Name, string? Value)[] values)
     {
-        var userName = "section-" + who.EmployeeId;
+        // the user the test created for this employee (so the change log names the same user as before); else a user of its own
+        var userName = await Ctx.Users.Where(u => u.EmployeeId == who.EmployeeId && u.UserName != null).Select(u => u.UserName!).FirstOrDefaultAsync() ?? "section-" + who.EmployeeId;
         if (!await Ctx.Users.AnyAsync(u => u.UserName == userName))
         {
             Ctx.Users.Add(new ApplicationUser { UserName = userName, NormalizedUserName = userName.ToUpperInvariant(), EmployeeId = who.EmployeeId });

@@ -103,10 +103,10 @@ public static class NavigationMenuDefaults
         new("proc.preprocurement", "proc.sub.purchasing", L, 5, "Ppr_Title", "bi-inbox", "Perm:PreProcurement.View", ExternalPath: "/p/pre-procurement"),   // SCRUM-735: a definition page (/p/...)
         new("proc.mr", "proc.sub.purchasing", L, 10, "Material Requisition", "bi-cart-check", "Module:EngineeringManagement&Perm:MaterialRequisition.View", ExternalPath: "/p/material-requisitions"),   // SCRUM-726: a definition page (/p/...)
         new("proc.package", "proc.sub.purchasing", L, 20, "ProcurementPackage", "bi-folder2-open", "Module:EngineeringManagement&Perm:ProcurementPackage.View", ExternalPath: "/p/procurement-packages"),   // SCRUM-736: a definition page (/p/...)
-        new("proc.tender", "proc.sub.purchasing", L, 30, "Tender", "bi-clipboard-check", "Module:EngineeringManagement&Perm:Tender.View", ExternalPath: "/p/tenders"),   // SCRUM-759: a definition page (/p/...)
+        new("proc.tender", "proc.sub.purchasing", L, 30, "Tender", "bi-clipboard-check", "Module:EngineeringManagement&Perm:Tender.View", ExternalPath: "/p/tenders", ExtraActiveControllers: "Tender"),   // SCRUM-759: a definition page (/p/...)
         new("proc.po", "proc.sub.purchasing", L, 40, "Purchase Orders", "bi-receipt", "Module:ContractManagement&Perm:PurchaseOrder.View", ExternalPath: "/p/purchase-orders"),   // SCRUM-741: a definition page (/p/...)
         Sub("proc.sub.contracts", "sec.procurement", 30, "Contracts"),
-        new("proc.contracts", "proc.sub.contracts", L, 10, "Contracts", "bi-file-earmark-ruled", "Module:ContractManagement&Perm:Contracts.View", ExternalPath: "/p/contracts"),   // SCRUM-676: a definition page (/p/...)
+        new("proc.contracts", "proc.sub.contracts", L, 10, "Contracts", "bi-file-earmark-ruled", "Module:ContractManagement&Perm:Contracts.View", ExternalPath: "/p/contracts", ExtraActiveControllers: "Contract"),   // SCRUM-676: a definition page (/p/...)
         ComingSoon("proc.milestones", "proc.sub.contracts", 20, "Contract Milestones", "bi-flag", "Contract Milestones", "Contract Management", "Module:ContractManagement"),
         ComingSoon("proc.claims", "proc.sub.contracts", 30, "Claims", "bi-exclamation-diamond", "Claims", "Contract Management", "Module:ContractManagement"),
         Sub("proc.sub.warehouse", "sec.procurement", 40, "Warehouse"),
@@ -117,7 +117,7 @@ public static class NavigationMenuDefaults
         new("proc.wh.sr", "proc.sub.warehouse", L, 50, "Store Requisitions", "bi-clipboard-check", "Module:Inventory&Perm:StoreRequisition.View", BadgeKey: NavigationBadges.StoreRequisitionsAwaitingApproval, ExternalPath: "/p/store-requisitions"),   // SCRUM-664: a definition page (/p/...)
         new("proc.wh.replenishment", "proc.sub.warehouse", L, 60, "Repl_Menu", "bi-cart-plus", "Module:Inventory&Flag:Replenishment", ExternalPath: "/p/replenishment"),   // SCRUM-663: a definition page (/p/...)
         new("proc.wh.masterdata", "proc.sub.warehouse", L, 70, "Master Data", "bi-collection", "Module:Inventory&Perm:InventoryMasterData.View", ExternalPath: "/p/inventory-master-data"),   // SCRUM-653: a definition page (/p/...)
-        new("proc.wh.partcatalogue", "proc.sub.warehouse", L, 80, "Pc_Menu", "bi-journal-plus", "Flag:PartCatalogue", ExternalPath: "/p/pc-requests", BadgeKey: NavigationBadges.MyWorkPartCatalogue),   // SCRUM-662: a definition page (/p/...)
+        new("proc.wh.partcatalogue", "proc.sub.warehouse", L, 80, "Pc_Menu", "bi-journal-plus", "Flag:PartCatalogue", ExternalPath: "/p/pc-requests", ExtraActiveControllers: "PartCatalogueRequest", BadgeKey: NavigationBadges.MyWorkPartCatalogue),   // SCRUM-662: a definition page (/p/...)
         // SCRUM-478: Part Catalogue reports
         new("proc.wh.partcatalogue.reports", "proc.sub.warehouse", L, 85, "PcRpt_Menu", "bi-bar-chart-line", "Flag:PartCatalogueReports", ExternalPath: "/p/pc-report"),   // SCRUM-661: a definition page (/p/...)
         new("proc.wh.partcatalogue.admin", "proc.sub.warehouse", L, 90, "Pc_Title_Admin", "bi-sliders", "Flag:PartCatalogueAdmin", ExternalPath: "/p/pc-admin"),   // SCRUM-658: a definition page (/p/...)
@@ -137,11 +137,11 @@ public static class NavigationMenuDefaults
         Link("cmms.asset", "sec.cmms", 30, "Assets", "bi-diagram-2", "Asset", rule: "CmmsItem:Asset"),
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),
         Link("cmms.strategy", "cmms.sub.planning", 10, "Maintenance Strategy", "bi-diagram-2", "MaintenanceStrategy", rule: "CmmsItem:MaintenanceStrategy"),
-        new("cmms.plan", "cmms.sub.planning", L, 20, "Maintenance Plan", "bi-calendar-check", "CmmsItem:MaintenancePlan", ExternalPath: "/p/maintenance-plans"),   // SCRUM-724: a definition page (/p/...)
+        new("cmms.plan", "cmms.sub.planning", L, 20, "Maintenance Plan", "bi-calendar-check", "CmmsItem:MaintenancePlan", ExternalPath: "/p/maintenance-plans", ExtraActiveControllers: "MaintenancePlan"),   // SCRUM-724: a definition page (/p/...)
         new("cmms.backlog", "cmms.sub.planning", L, 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsItem:CmmsOperations", ExternalPath: "/p/maintenance-backlog"),   // SCRUM-673: a definition page (/p/...)
         Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),
         new("cmms.jobplan", "sec.cmms", L, 50, "Job Plans", "bi-list-check", "CmmsItem:JobPlan", ExternalPath: "/p/job-plans"),   // SCRUM-711: a definition page (/p/...)
-        new("cmms.workrequest", "sec.cmms", L, 60, "Work Requests", "bi-clipboard-plus", "CmmsItem:WorkRequest", ExternalPath: "/p/work-requests"),   // SCRUM-765: a definition page (/p/...)
+        new("cmms.workrequest", "sec.cmms", L, 60, "Work Requests", "bi-clipboard-plus", "CmmsItem:WorkRequest", ExternalPath: "/p/work-requests", ExtraActiveControllers: "WorkRequest"),   // SCRUM-765: a definition page (/p/...)
         Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
         new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)
         new("cmms.team", "sec.cmms", L, 90, "Teams", "bi-people", "CmmsItem:Team", ExternalPath: "/p/teams"),   // SCRUM-757: a definition page (/p/...)
@@ -157,7 +157,7 @@ public static class NavigationMenuDefaults
         Link("cmms.reliability", "sec.cmms", 190, "Reliability", "bi-graph-up-arrow", "Reliability", "Dashboard", rule: "CmmsItem:Reliability"),
         new("cmms.inspection", "sec.cmms", L, 200, "Inspections", "bi-clipboard-pulse", "CmmsItem:Inspection", ExternalPath: "/p/inspections"),   // SCRUM-707: a definition page (/p/...)
         new("cmms.kpi", "sec.cmms", L, 210, "KPI Dashboard", "bi-speedometer2", "CmmsItem:Kpi", ExternalPath: "/p/kpi"),   // SCRUM-713: a definition page (/p/...)
-        new("cmms.permit", "sec.cmms", L, 220, "Permits", "bi-shield-check", "CmmsItem:Permit", ExternalPath: "/p/permits"),   // SCRUM-734: a definition page (/p/...)
+        new("cmms.permit", "sec.cmms", L, 220, "Permits", "bi-shield-check", "CmmsItem:Permit", ExternalPath: "/p/permits", ExtraActiveControllers: "Permit"),   // SCRUM-734: a definition page (/p/...)
         Link("cmms.fl", "sec.cmms", 230, "Functional Locations", "bi-diagram-3", "FunctionalLocation", rule: "CmmsItem:FunctionalLocation"),
         new("cmms.barcode", "sec.cmms", L, 240, "Barcode", "bi-upc-scan", "CmmsItem:Barcode", ExternalPath: "/p/barcodes"),   // SCRUM-671: a definition page (/p/...)
 

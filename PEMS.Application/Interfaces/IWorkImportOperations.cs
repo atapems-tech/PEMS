@@ -1,8 +1,8 @@
 namespace PEMS.Application.Interfaces;
 
 public sealed record WorkImportBatchRow(int BatchId, string FileName, DateTime ImportDate, string Status, string ImportedBy, int TotalRows, int NewCount, int DuplicateCount, int UnresolvedCount, int ConflictCount, int ValidationErrorCount);
-public sealed record ConditionReadingImportRow(int RowId, int RowNumber, string EquipmentTag, string PointTag, string VariableType, DateTime? ReadingDate, decimal? Value, string Source, string ValidationStatus, string ValidationMessage, bool IncludeInCommit, string Status);
-public sealed record MaintenanceHistoryImportRow(int RowId, int RowNumber, string EquipmentTag, string EquipmentDescription, DateTime? ExecutionDate, string WorkOrderNumber, string ActionTaken, string Technician, string ValidationStatus, string ValidationMessage, bool IncludeInCommit, string Status);
+public sealed record ConditionReadingImportRowItem(int RowId, int RowNumber, string EquipmentTag, string PointTag, string VariableType, DateTime? ReadingDate, decimal? Value, string Source, string ValidationStatus, string ValidationMessage, bool IncludeInCommit, string Status);
+public sealed record MaintenanceHistoryImportRowItem(int RowId, int RowNumber, string EquipmentTag, string EquipmentDescription, DateTime? ExecutionDate, string WorkOrderNumber, string ActionTaken, string Technician, string ValidationStatus, string ValidationMessage, bool IncludeInCommit, string Status);
 
 /// <summary>
 /// The two staged CMMS workbook imports (SCRUM-675 condition readings, SCRUM-722 maintenance history) as operations, the same shape as the MRS import: the recent batches, one batch, its rows (a status filter), the upload (staged into a
@@ -18,7 +18,7 @@ public interface IWorkImportOperations
     Task<List<WorkImportBatchRow>> ReadingBatchAsync(int batchId);
 
     [PEMS.Application.Common.PemsOperation("ConditionReadingImport", "Rows", "ConditionReadingImport.View")]
-    Task<List<ConditionReadingImportRow>> ReadingRowsAsync(int batchId, string? status = null);
+    Task<List<ConditionReadingImportRowItem>> ReadingRowsAsync(int batchId, string? status = null);
 
     [PEMS.Application.Common.PemsOperation("ConditionReadingImport", "Upload", "ConditionReadingImport.Create")]
     Task<(bool Success, string? Error)> ReadingUploadAsync(int? employeeId, byte[] file, string? fileName = null);
@@ -40,7 +40,7 @@ public interface IWorkImportOperations
     Task<List<WorkImportBatchRow>> HistoryBatchAsync(int batchId);
 
     [PEMS.Application.Common.PemsOperation("MaintenanceHistoryImport", "Rows", "MaintenanceHistoryImport.View")]
-    Task<List<MaintenanceHistoryImportRow>> HistoryRowsAsync(int batchId, string? status = null);
+    Task<List<MaintenanceHistoryImportRowItem>> HistoryRowsAsync(int batchId, string? status = null);
 
     [PEMS.Application.Common.PemsOperation("MaintenanceHistoryImport", "Upload", "MaintenanceHistoryImport.Create")]
     Task<(bool Success, string? Error)> HistoryUploadAsync(int? employeeId, byte[] file, string? fileName = null);

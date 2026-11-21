@@ -87,6 +87,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-723: fixes found by the end-of-batch build and test run of batches 6 and 7
+
+### Changed
+- Build: the import row records of IWorkImportOperations were renamed (they clashed with the domain entities) and a wrong namespace in ProductionOperations was fixed. Real bugs found by the tests: read operations got no employee from context:employeeId (it was silently null) and refused context:userId, so the My Work style reads were empty: both are resolved from the signed-in user now (OperationReadContextTests); one data source named a missing operation (contract-list); one action input map used camelCase for an options object (pc-admin-save-responsibility); nine forms were invalid (datetime is not a field kind, a span wider than the form, a form without a field); six sidebar items keep their highlight on pages that stay on controllers (ExtraActiveControllers). Tests: stale tests of deleted controllers and views were removed or ported to the definitions, old redirect and link expectations updated, the OpenAPI snapshot, the data-grid manifest, the definition ratchet, the adoption baseline and the classification sheet recorded.
+
 ## 2026-11-21 - SCRUM-817 to 819: plan rows of the batch 7 gap issues and batch 6 and 7 status
 
 ### Changed

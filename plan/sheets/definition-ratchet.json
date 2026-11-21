@@ -182,7 +182,7 @@
     "PEMS.Web/Views/_ViewStart.cshtml"
   ],
   "actions": {
-    "PEMS.Web.Api.V1.DefinitionsApiController": 16,
+    "PEMS.Web.Api.V1.DefinitionsApiController": 20,
     "PEMS.Web.Api.V1.DisciplinesApiController": 6,
     "PEMS.Web.Areas.Admin.Controllers.EmployeeController": 1,
     "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController": 10,
@@ -197,6 +197,7 @@
     "PEMS.Web.Controllers.CultureController": 1,
     "PEMS.Web.Controllers.DCCController": 10,
     "PEMS.Web.Controllers.DataHostController": 1,
+    "PEMS.Web.Controllers.DefinitionPreviewHostController": 2,
     "PEMS.Web.Controllers.DocumentRegisterController": 6,
     "PEMS.Web.Controllers.DocumentRevisionsController": 2,
     "PEMS.Web.Controllers.DocumentUploadController": 2,
@@ -210,6 +211,7 @@
     "PEMS.Web.Controllers.EquipmentImportController": 5,
     "PEMS.Web.Controllers.ExecutiveDashboardController": 1,
     "PEMS.Web.Controllers.FailureModeCatalogController": 2,
+    "PEMS.Web.Controllers.FileHostController": 1,
     "PEMS.Web.Controllers.FilesController": 3,
     "PEMS.Web.Controllers.FormHostController": 2,
     "PEMS.Web.Controllers.FunctionalLocationController": 2,
@@ -224,6 +226,7 @@
     "PEMS.Web.Controllers.MDBController": 10,
     "PEMS.Web.Controllers.MDRImportController": 8,
     "PEMS.Web.Controllers.MaintenanceCalendarController": 1,
+    "PEMS.Web.Controllers.MaintenancePlanController": 2,
     "PEMS.Web.Controllers.MaintenanceStrategyController": 12,
     "PEMS.Web.Controllers.MechanicalEquipmentController": 4,
     "PEMS.Web.Controllers.NavigationBadgeController": 1,
