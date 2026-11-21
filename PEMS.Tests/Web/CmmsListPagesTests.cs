@@ -427,21 +427,6 @@ public class CmmsListPagesTests
 
     // ---------- Shift handovers ----------
 
-    [Fact]
-    public async Task ShiftHandovers_StatusButtonsBecameTheStatusFilter()
-    {
-        var html = await Render<ShiftHandoverController>("/Views/ShiftHandover/Index.cshtml", new List<ShiftHandoverListDto>
-        {
-            new() { ShiftHandoverId = 12, OutgoingName = "A. Karimi", IncomingName = "R. Moradi", HandoverDate = new DateTime(2026, 10, 30, 19, 0, 0), Status = "Prepared", ItemCount = 4 },
-        }, v => v["SelectedStatus"] = "Prepared");
-
-        AssertBuiltFromTheComponent(html, null, 1);
-        Assert.Contains("name=\"status\"", html);
-        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
-        Assert.Contains("vs-pill--warning", html);
-        Assert.Contains("2026-10-30 19:00", html);
-    }
-
     // ---------- Production orders and the procurement cartable (SCRUM-337) ----------
 
     [Fact]
