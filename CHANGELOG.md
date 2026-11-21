@@ -58,6 +58,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - MRS import as definition pages (SCRUM-657)
+
+### Changed
+- /p/mrs-import and /p/mrs-import-review (with the upload, commit and reject forms) replace MrsImportController over MrsImport.* operations (same IMrsImportService calls; View, Create and Approve permissions kept). The upload stores the file as a document attachment like before, saved as mrs-import.xlsx; rows are committed or rejected by typed ids or by a whole match status; the Import Center card links the page. The old routes redirect; the controller authorization tests were removed.
+
 ## 2026-11-21 - Incoming receipts (IRN) as definition pages (SCRUM-655)
 
 ### Changed
