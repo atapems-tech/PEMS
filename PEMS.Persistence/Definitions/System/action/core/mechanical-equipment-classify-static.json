@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "mechanical-equipment-classify-static",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Classify as static",
+    "fa": "ثبت زیررده Static"
+  },
+  "description": {
+    "en": "Classify as static",
+    "fa": "ثبت زیررده Static"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MechanicalEquipment",
+      "action": "ClassifyStatic",
+      "args": {
+        "mechanicalEquipmentId": "field:mechanicalEquipmentId",
+        "equipmentType": "field:equipmentType",
+        "volume": "field:volume",
+        "designPressure": "field:designPressure",
+        "designTemperature": "field:designTemperature",
+        "material": "field:material",
+        "orientation": "field:orientation",
+        "codeStandard": "field:codeStandard",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Static sub-class recorded.",
+      "fa": "زیررده‌ی Static Equipment ثبت شد."
+    },
+    "redirect": "/MechanicalEquipment/Passport/{mechanicalEquipmentId}"
+  }
+}

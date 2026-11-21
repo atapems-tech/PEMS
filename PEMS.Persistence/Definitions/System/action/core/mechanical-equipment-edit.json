@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "mechanical-equipment-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Update mechanical equipment",
+    "fa": "ویرایش تجهیز مکانیکی"
+  },
+  "description": {
+    "en": "Update mechanical equipment",
+    "fa": "ویرایش تجهیز مکانیکی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MechanicalEquipment",
+      "action": "Edit",
+      "args": {
+        "mechanicalEquipmentId": "field:mechanicalEquipmentId",
+        "equipmentType": "field:EquipmentType",
+        "designPressure": "field:DesignPressure",
+        "designTemperature": "field:DesignTemperature",
+        "operatingPressure": "field:OperatingPressure",
+        "operatingTemperature": "field:OperatingTemperature",
+        "material": "field:Material",
+        "manufacturer": "field:Manufacturer",
+        "model": "field:Model",
+        "description": "field:Description"
+      }
+    },
+    "success": {
+      "en": "Mechanical equipment updated.",
+      "fa": "Mechanical Equipment به‌روزرسانی شد."
+    },
+    "redirect": "/MechanicalEquipment/Passport/{mechanicalEquipmentId}"
+  }
+}

@@ -1,4 +1,4 @@
-@model PEMS.Domain.Entities.MechanicalEquipment
+﻿@model PEMS.Domain.Entities.MechanicalEquipment
 @using Microsoft.Extensions.Localization
 @using PEMS.Web.Resources
 @inject IStringLocalizer<SharedResource> Localizer
@@ -105,7 +105,7 @@
 </pems-content-card>
 
 <pems-modal size="large" id="classifyRotatingModal" tabindex="-1">
-        <pems-form asp-action="ClassifyRotating" method="post">
+        <pems-form action="/a/mechanical-equipment-classify-rotating" method="post">
             <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
             <pems-modal-header>@Localizer["Classify as Rotating Equipment"]</pems-modal-header>
             <pems-modal-body>
@@ -133,7 +133,7 @@
     </pems-modal>
 
 <pems-modal size="large" id="classifyStaticModal" tabindex="-1">
-        <pems-form asp-action="ClassifyStatic" method="post">
+        <pems-form action="/a/mechanical-equipment-classify-static" method="post">
             <input type="hidden" name="mechanicalEquipmentId" value="@Model.MechanicalEquipmentId" />
             <pems-modal-header>@Localizer["Classify as Static Equipment"]</pems-modal-header>
             <pems-modal-body>
