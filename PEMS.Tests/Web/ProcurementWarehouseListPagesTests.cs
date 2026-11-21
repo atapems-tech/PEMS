@@ -23,7 +23,7 @@ public class ProcurementWarehouseListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Vendor", "Views/Contract", "Views/ProcurementPackage",
+        "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Contract", "Views/ProcurementPackage",
         "Areas/Warehouse/Views/IrnReceipt",
         "Areas/Warehouse/Views/PartCatalogueRequest",
     };
@@ -94,12 +94,6 @@ public class ProcurementWarehouseListPagesTests
             Page(new MRDto { MRId = 1, MRNumber = "MR-1", Status = "Sent", QuotationsCount = 2 }));
         AssertBuiltFromTheComponent(mr, "MaterialRequisition", 1);
         Assert.Contains("class=\"lp-footer\"", mr);
-
-        var vendors = await Render<VendorController>("/Views/Vendor/Index.cshtml",
-            Page(new VendorDto { VendorId = 2, Name = "ACME", VendorCode = "V-2", OverdueVDRItemsCount = 1, RiskLevel = "High" }));
-        AssertBuiltFromTheComponent(vendors, "Vendor", 1);
-        Assert.Matches("<button[^>]*data-bs-target=\"#createVendorModal\"", vendors);
-        Assert.Contains("id=\"createVendorModal\"", vendors);
 
         // Contract and Procurement Package keep their create modals (opened by New); the modals call the numbering view
         // component, so these two are checked in the view files here and in the app.

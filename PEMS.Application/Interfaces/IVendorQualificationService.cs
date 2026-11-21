@@ -15,6 +15,7 @@ public interface IVendorQualificationService
     Task<VendorQualificationView?> GetAsync(int vendorId);
 
     /// <summary>Error is a resource key (Vq_Err_*).</summary>
+    [PEMS.Application.Common.PemsOperation("Vendor", "SetQualification", "Vendors.Edit")]
     Task<(bool Success, string? Error)> SetQualificationAsync(
         int vendorId, string newStatus, string? category, DateTime? effectiveDate, DateTime? expiryDate,
         string? evidenceReference, string? reason, int? actorEmployeeId);

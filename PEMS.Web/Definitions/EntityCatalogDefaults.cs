@@ -71,6 +71,9 @@ internal static class EntityCatalogDefaults
         .Add<MaterialItem>("MaterialItemId", e => e.Read("MaterialItem.View").Create("MaterialItem.Create").Edit("MaterialItem.Edit")
             .Readable("MaterialCode", "MaterialType", "Description", "LongDescription", "CategoryId", "DisciplineId", "UomId", "VendorId", "Manufacturer", "ManufacturerPartNumber", "Model", "Size", "MaterialGrade", "Specification", "IsStockItem", "IsCritical", "IsActive", "CreatedDate")
             .Writable("MaterialCode", "MaterialType", "Description", "LongDescription", "CategoryId", "DisciplineId", "UomId", "VendorId", "Manufacturer", "ManufacturerPartNumber", "Model", "Size", "MaterialGrade", "Specification", "IsStockItem", "IsCritical", "IsActive", "CreatedDate"))
+        // Vendors (SCRUM-763): create, edit and activate / deactivate are the generic entity actions (the qualification and the risk stay on the vendor services)
+        .Add<Vendor>("VendorId", e => e.Read("Vendors.View").Create("Vendors.Create").Edit("Vendors.Edit")
+            .Readable("Name", "VendorCode", "Country", "ContactName", "ContactEmail", "ContactPhone", "IsActive", "CreatedDate").Writable("Name", "VendorCode", "Country", "ContactName", "ContactEmail", "ContactPhone", "IsActive", "CreatedDate"))
         // Spare parts (W2): the controller has no permission check beyond signing in
         .Add<SparePart>("SparePartId", e => e.Readable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate")
             .Writable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate"))

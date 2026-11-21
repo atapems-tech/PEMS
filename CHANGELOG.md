@@ -51,6 +51,24 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+## 2026-11-21 - Vendors as definition pages (SCRUM-763)
+
+### Changed
+- /p/vendors and /p/vendor-details (with their forms and actions) replace VendorController: create, edit and activate / deactivate are the generic entity actions on a new Vendor registration (permissions Vendors.Create and Vendors.Edit as before), recalculating the risk and setting the qualification are the operations marked on IVendorRiskService and IVendorQualificationService, the reads are Vendor.* operations. The old routes redirect.
+
+## 2026-11-21 - Spare parts controller removed (SCRUM-751)
+
+### Changed
+- SparePartController and its view are gone: /p/spare-parts, /p/spare-parts-low-stock and the create, edit and deactivate commands were already generic entity definitions; /SparePart redirects to /p/spare-parts and the menu and sidebar point to it.
+
+## 2026-11-21 - AI intake queue as definition pages (SCRUM-709)
+
+### Changed
+- /p/intake and /p/intake-review (with the route and reject forms) replace IntakeController: the reads and the two decisions are Intake.* operations over the same IIntakeService calls (route with the reviewer's corrections, reject). The review form no longer pre-fills the AI suggestion (it is shown above it). /Intake redirects.
+
 ## 2026-11-21 - Store requisition as definition pages (SCRUM-664)
 
 ### Changed

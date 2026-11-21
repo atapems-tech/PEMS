@@ -280,7 +280,7 @@
 
             @if (contractVisible)
             {
-                <pems-nav-link item="false" active="@(IsActive("Vendor"))" asp-controller="Vendor" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/vendors" active="@(IsActive("Vendor") || Context.Request.Path.StartsWithSegments("/p/vendor"))">
                     <pems-icon name="bi-building" /> @Localizer["Vendors"]
                 </pems-nav-link>
             }
@@ -513,7 +513,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("SparePart"))
             {
-                <pems-nav-link item="false" active="@(IsActive("SparePart"))" asp-controller="SparePart" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/spare-parts" active="@(IsActive("SparePart") || Context.Request.Path.StartsWithSegments("/p/spare-parts"))">
                     <pems-icon name="bi-tools" /> @Localizer["Spare Parts"]
                 </pems-nav-link>
             }
@@ -771,7 +771,7 @@
             {
                 <div class="nav-subheading">@Localizer["AI Administration"]</div>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("Intake"))" asp-controller="Intake" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" href="/p/intake" active="@(IsActive("Intake") || Context.Request.Path.StartsWithSegments("/p/intake"))">
                     <pems-icon name="bi-inboxes" /> @Localizer["AIIntakeQueue"]
                 </pems-nav-link>
 

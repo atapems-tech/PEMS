@@ -97,7 +97,7 @@ public static class NavigationMenuDefaults
         // دیده می‌شود که کاربر یکی از آن ماژول‌ها را ببیند.
         Section("sec.procurement", 500, "Nav_ProcurementSupplyChain", "bi-cart3", "Module:EngineeringManagement|Module:ContractManagement|Module:Inventory|Flag:PartCatalogue|Flag:PartCatalogueReports",
             "ProcurementPackage,Tender,MaterialRequisition,Contract,Vendor,PurchaseOrder,Inventory,MaterialItem,IrnReceipt,InventoryMasterData,InventoryTransaction,StoreRequisition,Replenishment,PartCatalogueRequest,PartCatalogueReport,PartCatalogueAdmin"),
-        Link("proc.vendors", "sec.procurement", 10, "Vendors", "bi-building", "Vendor", rule: "Module:ContractManagement&Perm:Vendors.View"),
+        new("proc.vendors", "sec.procurement", L, 10, "Vendors", "bi-building", "Module:ContractManagement&Perm:Vendors.View", ExternalPath: "/p/vendors"),   // SCRUM-763: a definition page (/p/...)
         Sub("proc.sub.purchasing", "sec.procurement", 20, "Nav_Proc_Purchasing"),
         // SCRUM-471: the procurement cartable (pre-procurement queue), first under Purchasing
         new("proc.preprocurement", "proc.sub.purchasing", L, 5, "Ppr_Title", "bi-inbox", "Perm:PreProcurement.View", ExternalPath: "/p/pre-procurement"),   // SCRUM-735: a definition page (/p/...)
@@ -143,7 +143,7 @@ public static class NavigationMenuDefaults
         Link("cmms.jobplan", "sec.cmms", 50, "Job Plans", "bi-list-check", "JobPlan", rule: "CmmsItem:JobPlan"),
         Link("cmms.workrequest", "sec.cmms", 60, "Work Requests", "bi-clipboard-plus", "WorkRequest", rule: "CmmsItem:WorkRequest"),
         Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
-        Link("cmms.sparepart", "sec.cmms", 80, "Spare Parts", "bi-tools", "SparePart", rule: "CmmsItem:SparePart"),
+        new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)
         new("cmms.team", "sec.cmms", L, 90, "Teams", "bi-people", "CmmsItem:Team", ExternalPath: "/p/teams"),   // SCRUM-757: a definition page (/p/...)
         Link("cmms.crew", "sec.cmms", 100, "Crews", "bi-people-fill", "Crew", rule: "CmmsItem:Crew"),
         Link("cmms.shifthandover", "sec.cmms", 110, "Shift Handovers", "bi-arrow-left-right", "ShiftHandover", rule: "CmmsItem:ShiftHandover"),
@@ -192,7 +192,7 @@ public static class NavigationMenuDefaults
         new("admin.positions", "admin.sub.org", L, 40, "Org_Positions_Nav", "bi-person-badge", "Module:Administration", ExternalPath: "/p/organization-positions"),
         new("admin.org", "admin.sub.org", L, 50, "Org_Title", "bi-diagram-3", "Module:Administration", ExternalPath: "/p/organization-chart"),
         Sub("admin.sub.ai", "sec.admin", 40, "AI Administration"),
-        Link("admin.intake", "admin.sub.ai", 10, "AIIntakeQueue", "bi-inboxes", "Intake", rule: "Module:Administration"),
+        new("admin.intake", "admin.sub.ai", L, 10, "AIIntakeQueue", "bi-inboxes", "Module:Administration", ExternalPath: "/p/intake"),   // SCRUM-709: a definition page (/p/...)
         Link("admin.ocr", "admin.sub.ai", 20, "OCR Processing", "bi-badge-ad", "OCRProcessing", rule: "Module:Administration&Perm:OCRProcessing.View"),
         new("admin.aiextraction", "admin.sub.ai", L, 30, "AI Extraction", "bi-cpu", "Module:Administration&Perm:AIExtraction.View", ExternalPath: "/p/ai-extraction"),   // SCRUM-667: a definition page (/p/...)
         Link("admin.tables", "admin.sub.ai", 40, "Table Extraction", "bi-table", "TableExtraction", rule: "Module:Administration&Perm:TableExtraction.View"),

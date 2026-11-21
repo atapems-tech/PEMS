@@ -81,7 +81,7 @@
 <pems-page-shell kind="workspace">
 
 <nav aria-label="@Localizer["Vd_Breadcrumb"]" class="small text-muted mb-2">
-    <pems-link asp-action="Index">VDR</pems-link> / <pems-link asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</pems-link> / <span>@Model.DocumentNumber</span>
+    <pems-link asp-action="Index">VDR</pems-link> / <pems-link href="/p/vendor-details?id=@Model.VendorId">@Model.VendorName</pems-link> / <span>@Model.DocumentNumber</span>
 </nav>
 
 <div class="vs-doc-head">
@@ -92,7 +92,7 @@
             @if (Model.IsOverdue) { <span class="vs-pill vs-pill--danger">@Localizer["Vs_Overdue"]</span> }
             <span class="vs-pill vs-pill--current">@Localizer["Vd_Rev"] <span class="vs-num">@(Model.LatestRevisionNo ?? 0)</span></span>
         </pems-flex>
-        <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <pems-link asp-controller="Vendor" asp-action="Details" asp-route-id="@Model.VendorId">@Model.VendorName</pems-link> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
+        <div class="vs-doc-meta">@Localizer["Vd_VendorLabel"] <pems-link href="/p/vendor-details?id=@Model.VendorId">@Model.VendorName</pems-link> &middot; @Model.ProjectName@(string.IsNullOrEmpty(Model.DisciplineCodeRaw) ? "" : " · " + Model.DisciplineCodeRaw)</div>
     </div>
     <div class="vs-doc-actions">
         <pems-link asp-action="Index" class="vs-btn"><pems-icon name="bi-arrow-left" aria-hidden="true" /> @Localizer["Vs_Back"]</pems-link>

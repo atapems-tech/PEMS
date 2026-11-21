@@ -55,7 +55,6 @@ Warehouse,MrsImport,Procurement and warehouse,"W3 engineering documents, letters
 ,Contract,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,MaterialRequisition,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,ProcurementPackage,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
-,Vendor,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Warehouse,IrnReceipt,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Warehouse,PartCatalogueAdmin,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 Warehouse,PartCatalogueDedup,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
@@ -81,7 +80,6 @@ Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, invent
 ,FormHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
 ,Help,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,Home,Platform and shell,"W5 operations, production, organization, other",Hamid,page-definition,proposed,view-only pages: page definitions
-,Intake,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,JobPlan,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Meeting,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,NavigationBadge,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
@@ -93,7 +91,6 @@ Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, invent
 ,RcmFmea,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,RecoveryCodes,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,SearchApi,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-,SparePart,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,converted-partly,"converted (generic entity layer): /p/spare-parts and /p/spare-parts-low-stock with create, edit and deactivate; the low-stock counter banner of the old page is not reproduced"
 ,TableExtraction,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Tag,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Tender,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
