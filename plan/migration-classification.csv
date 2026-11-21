@@ -53,8 +53,6 @@ Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,prop
 ,Contract,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, inventory, warehouse",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,TechnicalQuery,Engineering documents,"W5 operations, production, organization, other",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
-,GasTest,Permit to work and safety,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
-,Isolation,Permit to work and safety,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
 ,MOC,Permit to work and safety,"W5 operations, production, organization, other",Hamid,workflow-hybrid,proposed,own approval or routing tables; decide per module whether it moves to IWorkflowRuntime
 ,Simops,Permit to work and safety,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
 ,Account,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
@@ -65,7 +63,6 @@ Warehouse,PartCatalogueRequest,Procurement and warehouse,"W4 procurement, invent
 ,Culture,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
 ,DataHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
 ,Discipline,Platform and shell,"W5 operations, production, organization, other",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
-,ExecutionGate,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,no page actions
 ,ExecutiveDashboard,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,Files,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,FormHost,Platform and shell,"W5 operations, production, organization, other",Hamid,code-only,confirmed,the generic host of the definition engines (code by design)
