@@ -10,6 +10,7 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public interface ITenderService
 {
+    [PEMS.Application.Common.PemsOperation("Tender", "Create", "Tender.Create")]
     Task<int> CreateAsync(int procurementPackageId, string title, DateTime? issueDate, DateTime? responseDeadline,
         bool requiresVendorQualification, string? technicalRequirements, string? commercialRequirements,
         string? inspectionRequirements, string? contractualRequirements);
