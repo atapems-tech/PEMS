@@ -1,0 +1,197 @@
+{
+  "kind": "page",
+  "key": "criticality-assessments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment queue",
+    "fa": "صف ارزیابی بحرانی‌بودن"
+  },
+  "description": {
+    "en": "Criticality assessment queue",
+    "fa": "صف ارزیابی بحرانی‌بودن"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "criticality-assessments",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "criticality-assessment-filters",
+            "resetUrl": "/p/criticality-assessments",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "DRAFT",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "پیش‌نویس"
+                    }
+                  },
+                  {
+                    "value": "UNDER_REVIEW",
+                    "label": {
+                      "en": "Under review",
+                      "fa": "در حال بازبینی"
+                    }
+                  },
+                  {
+                    "value": "APPROVED",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "تأییدشده"
+                    }
+                  },
+                  {
+                    "value": "SUPERSEDED",
+                    "label": {
+                      "en": "Superseded",
+                      "fa": "جایگزین‌شده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/criticality-assessment-create",
+                "text": {
+                  "en": "New assessment",
+                  "fa": "ارزیابی جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/criticality-assessment-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "queue",
+          "component": "data-grid",
+          "options": {
+            "id": "queue",
+            "url": "/d/criticality-assessment-queue?f.status={{params.status|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "equipmentTag",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 160
+              },
+              {
+                "key": "equipmentClass",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 180
+              },
+              {
+                "key": "frameworkVersion",
+                "header": {
+                  "en": "Framework",
+                  "fa": "چارچوب"
+                },
+                "width": 110
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "proposedClass",
+                "header": {
+                  "en": "Proposed class",
+                  "fa": "کلاس پیشنهادی"
+                },
+                "width": 130
+              },
+              {
+                "key": "preparedBy",
+                "header": {
+                  "en": "Prepared by",
+                  "fa": "تهیه‌کننده"
+                },
+                "width": 150
+              },
+              {
+                "key": "approvedBy",
+                "header": {
+                  "en": "Approved by",
+                  "fa": "تأییدکننده"
+                },
+                "width": 150
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/criticality-assessment-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "CriticalityAssessment.View"
+  }
+}

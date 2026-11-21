@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "criticality-assessment-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment dashboard",
+    "fa": "ارزیابی بحرانی‌بودن Dashboard"
+  },
+  "description": {
+    "en": "Criticality assessment dashboard",
+    "fa": "ارزیابی بحرانی‌بودن Dashboard"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "Dashboard"
+    }
+  }
+}

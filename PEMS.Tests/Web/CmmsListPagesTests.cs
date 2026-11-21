@@ -27,7 +27,7 @@ public class CmmsListPagesTests
         "WorkOrder", "Equipment", "FunctionalLocation", "Instrument",
         "MaintenanceStrategy", "Asset",
         // wave 2b
-        "CriticalityAssessment", "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
+        "EquipmentCriticality", "MechanicalEquipment", "FailureModeCatalog", "RcmFmea",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary> data) where TController : Controller
@@ -214,33 +214,6 @@ public class CmmsListPagesTests
     }
 
     // ================= wave 2b: the remaining CMMS lists =================
-
-    // ---------- Criticality assessments ----------
-
-    [Fact]
-    public async Task CriticalityAssessments_KeepStatusAndClassFilters_AndNewOnlyForEditors()
-    {
-        static Task<string> Queue(bool canEdit, string? status, int? classId) => Render<CriticalityAssessmentController>(
-            "/Views/CriticalityAssessment/Index.cshtml",
-            Page(new CriticalityAssessmentListDto { CriticalityAssessmentId = 4, EquipmentTagNumber = "P-101A", EquipmentClassName = "Pump", FrameworkVersion = "v1", Status = "UNDER_REVIEW", CreatedDate = new DateTime(2026, 10, 1) }),
-            v =>
-            {
-                v["StatusFilter"] = status; v["EquipmentClassId"] = classId; v["CanEdit"] = canEdit;
-                v["EquipmentClasses"] = new List<object> { Obj(("EquipmentClassId", 2), ("Name", "Pump"), ("Code", "PU")) };
-            });
-
-        var editor = await Queue(true, "UNDER_REVIEW", 2);
-        AssertBuiltFromTheComponent(editor, "CriticalityAssessmentQueue", 1);
-        Assert.Matches("<span class=\"lp-badge\">2<", editor);                       // status + class
-        Assert.Equal(2, Regex.Matches(Chips(editor), "class=\"pems-filter-chip\"").Count);
-        Assert.Contains("vs-pill--warning", editor);                                  // under review
-        Assert.Contains("bi-speedometer2", editor);                                   // the dashboard tool
-        Assert.Contains("lp-compose", editor);
-
-        var reader = await Queue(false, null, null);
-        Assert.DoesNotContain("lp-compose", reader);
-        Assert.Equal("", Chips(reader));
-    }
 
     // ---------- Equipment criticality ----------
 

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "criticality-assessment-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment history",
+    "fa": "ارزیابی بحرانی‌بودن History"
+  },
+  "description": {
+    "en": "Criticality assessment history",
+    "fa": "ارزیابی بحرانی‌بودن History"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "History",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

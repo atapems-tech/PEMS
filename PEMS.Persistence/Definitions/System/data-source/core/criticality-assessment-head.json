@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "criticality-assessment-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment head",
+    "fa": "ارزیابی بحرانی‌بودن Head"
+  },
+  "description": {
+    "en": "Criticality assessment head",
+    "fa": "ارزیابی بحرانی‌بودن Head"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "Head",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

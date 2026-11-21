@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "criticality-assessment-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create criticality assessment draft",
+    "fa": "ایجاد پیش‌نویس ارزیابی"
+  },
+  "description": {
+    "en": "Create criticality assessment draft",
+    "fa": "ایجاد پیش‌نویس ارزیابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "CreateDraft",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "rationale": "field:rationale"
+      }
+    },
+    "success": {
+      "en": "The draft was created; open it from the queue.",
+      "fa": "پیش‌نویس ساخته شد؛ آن را از صف باز کنید."
+    },
+    "redirect": "/p/criticality-assessments"
+  }
+}

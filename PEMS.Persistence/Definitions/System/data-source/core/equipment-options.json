@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "equipment-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment options",
+    "fa": "گزینه‌های تجهیز"
+  },
+  "description": {
+    "en": "Equipment options",
+    "fa": "گزینه‌های تجهیز"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "entity-options",
+    "parameters": {
+      "entity": "Equipment",
+      "value": "EquipmentId",
+      "label": "TagNumber"
+    }
+  }
+}

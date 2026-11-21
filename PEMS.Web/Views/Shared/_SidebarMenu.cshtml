@@ -588,7 +588,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("CriticalityAssessment"))
             {
-                <pems-nav-link item="false" active="@(IsActive("CriticalityAssessment"))" asp-controller="CriticalityAssessment" asp-action="Dashboard" asp-area="">
+                <pems-nav-link item="false" href="/p/criticality-assessment-dashboard" active="@(IsActive("CriticalityAssessment") || Context.Request.Path.StartsWithSegments("/p/criticality-assessment"))">
                     <pems-icon name="bi-clipboard2-check" /> @Localizer["Criticality Assessment"]
                 </pems-nav-link>
             }

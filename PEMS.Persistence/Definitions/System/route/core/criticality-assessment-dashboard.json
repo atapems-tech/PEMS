@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "criticality-assessment-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Criticality assessment (old address)",
+    "fa": "ارزیابی بحرانی‌بودن (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Criticality assessment (old address)",
+    "fa": "ارزیابی بحرانی‌بودن (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "CriticalityAssessment/Dashboard",
+    "target": "/p/criticality-assessment-dashboard",
+    "permanent": false
+  }
+}

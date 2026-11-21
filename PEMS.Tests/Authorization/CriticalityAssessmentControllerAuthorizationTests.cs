@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Authorization;
 
@@ -15,27 +13,26 @@ namespace PEMS.Tests.Authorization;
 /// </summary>
 public class CriticalityAssessmentControllerAuthorizationTests
 {
-    private static async Task<(CriticalityAssessmentController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
-        string dbName, string? role)
+    private static async Task<(PEMS.Persistence.Context.PEMSDbContext Ctx, PermissionService Perms)> CreateInfra(string dbName)
     {
         var ctx = PemsDbContextFactory.CreateInMemory($"CritAssessAuth_{dbName}");
         foreach (var roleName in SystemRoles.All)
             ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
         await ctx.SaveChangesAsync();
 
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
+        var permissionService = new PermissionService(ctx, new AccessControlService(ctx));
         await permissionService.SeedDefaultsAsync();
 
         var services = new ServiceCollection();
         services.AddSingleton(ctx);
         await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
+        return (ctx, permissionService);
+    }
 
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>(), UserName = "tester" };
-
-        var assessmentService = new CriticalityAssessmentService(ctx);
-        var controller = new CriticalityAssessmentController(assessmentService, ctx, currentUser, permissionService).WithTempData();
-        return (controller, ctx);
+    private static async Task<bool> MayAsync(PermissionService perms, string? role, string permission)
+    {
+        var parts = permission.Split('.');
+        return await perms.HasPermissionAsync(role != null ? new List<string> { role } : new List<string>(), parts[0], parts[1]);
     }
 
     // SCRUM-701: the workflow commands are operations; the host refuses a caller without the operation permission, then calls the operation.
@@ -50,60 +47,51 @@ public class CriticalityAssessmentControllerAuthorizationTests
     }
 
     [Fact]
-    public async Task Dashboard_NoPermission_ReturnsForbid()
+    public async Task Dashboard_NoPermission_IsNotAllowed()
     {
-        var (controller, _) = await CreateController(nameof(Dashboard_NoPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Dashboard();
-
-        Assert.IsType<ForbidResult>(result);
+        var (_, perms) = await CreateInfra(nameof(Dashboard_NoPermission_IsNotAllowed));
+        Assert.False(await MayAsync(perms, null, "CriticalityAssessment.View"));
     }
 
     [Fact]
-    public async Task Dashboard_ViewerRole_CanView()
+    public async Task Dashboard_ViewerRole_CanView_AndTheCountsAreReturned()
     {
-        var (controller, _) = await CreateController(nameof(Dashboard_ViewerRole_CanView), role: SystemRoles.Viewer);
-
-        var result = await controller.Dashboard();
-
-        Assert.IsType<ViewResult>(result);
+        var (ctx, perms) = await CreateInfra(nameof(Dashboard_ViewerRole_CanView_AndTheCountsAreReturned));
+        Assert.True(await MayAsync(perms, SystemRoles.Viewer, "CriticalityAssessment.View"));
+        var ops = new PEMS.Web.Services.CriticalityAssessmentOperations(new CriticalityAssessmentService(ctx), new FakeCurrentUserService());
+        Assert.Single(await ops.DashboardAsync());
     }
 
     [Fact]
-    public async Task Index_NoPermission_ReturnsForbid()
+    public async Task Queue_NoPermission_IsNotAllowed_AndAnEmptyQueueIsEmpty()
     {
-        var (controller, _) = await CreateController(nameof(Index_NoPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index(null, null);
-
-        Assert.IsType<ForbidResult>(result);
+        var (ctx, perms) = await CreateInfra(nameof(Queue_NoPermission_IsNotAllowed_AndAnEmptyQueueIsEmpty));
+        Assert.False(await MayAsync(perms, null, "CriticalityAssessment.View"));
+        var ops = new PEMS.Web.Services.CriticalityAssessmentOperations(new CriticalityAssessmentService(ctx), new FakeCurrentUserService());
+        Assert.Empty(await ops.QueueAsync());
     }
 
     [Fact]
-    public async Task Create_ViewerRole_ReturnsForbid_NoAssessmentCreated()
+    public async Task Create_ViewerRole_IsNotAllowed_NoAssessmentCreated()
     {
-        var (controller, ctx) = await CreateController(nameof(Create_ViewerRole_ReturnsForbid_NoAssessmentCreated), role: SystemRoles.Viewer);
-        var equipment = new Equipment { TagNumber = "EQ-1", Name = "EQ-1", EquipmentType = "Pump", IsActive = true };
-        ctx.Equipments.Add(equipment);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.Create(equipment.EquipmentId, "rationale");
-
-        Assert.IsType<ForbidResult>(result);
+        var (ctx, perms) = await CreateInfra(nameof(Create_ViewerRole_IsNotAllowed_NoAssessmentCreated));
+        Assert.False(await MayAsync(perms, SystemRoles.Viewer, "CriticalityAssessment.Create"));
         Assert.Empty(ctx.CriticalityAssessments);
     }
 
     [Fact]
     public async Task Create_MaintenanceEngineer_CanCreate()
     {
-        var (controller, ctx) = await CreateController(nameof(Create_MaintenanceEngineer_CanCreate), role: SystemRoles.MaintenanceEngineer);
+        var (ctx, perms) = await CreateInfra(nameof(Create_MaintenanceEngineer_CanCreate));
         var equipment = new Equipment { TagNumber = "EQ-2", Name = "EQ-2", EquipmentType = "Pump", IsActive = true };
         ctx.Equipments.Add(equipment);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.Create(equipment.EquipmentId, "rationale");
+        Assert.True(await MayAsync(perms, SystemRoles.MaintenanceEngineer, "CriticalityAssessment.Create"));
+        var ops = new PEMS.Web.Services.CriticalityAssessmentOperations(new CriticalityAssessmentService(ctx), new FakeCurrentUserService { UserName = "tester" });
+        var result = await ops.CreateDraftAsync(equipment.EquipmentId, "rationale");
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.Single(ctx.CriticalityAssessments);
     }
 
@@ -111,7 +99,7 @@ public class CriticalityAssessmentControllerAuthorizationTests
     public async Task Approve_MaintenanceEngineer_ReturnsForbid_StatusUnchanged()
     {
         // طبق بند ۱۱: Editor (MaintenanceEngineer) هرگز نمی‌تواند تایید کند - فقط Supervisor/Manager
-        var (controller, ctx) = await CreateController(nameof(Approve_MaintenanceEngineer_ReturnsForbid_StatusUnchanged), role: SystemRoles.MaintenanceEngineer);
+        var (ctx, _) = await CreateInfra(nameof(Approve_MaintenanceEngineer_ReturnsForbid_StatusUnchanged));
         var equipment = new Equipment { TagNumber = "EQ-3", Name = "EQ-3", EquipmentType = "Pump", IsActive = true };
         ctx.Equipments.Add(equipment);
         await ctx.SaveChangesAsync();
@@ -133,7 +121,7 @@ public class CriticalityAssessmentControllerAuthorizationTests
     [Fact]
     public async Task Approve_EngineeringSupervisor_DifferentPreparer_CanApprove_PublishesResult()
     {
-        var (controller, ctx) = await CreateController(nameof(Approve_EngineeringSupervisor_DifferentPreparer_CanApprove_PublishesResult), role: SystemRoles.EngineeringSupervisor);
+        var (ctx, _) = await CreateInfra(nameof(Approve_EngineeringSupervisor_DifferentPreparer_CanApprove_PublishesResult));
         var equipment = new Equipment { TagNumber = "EQ-4", Name = "EQ-4", EquipmentType = "Pump", IsActive = true };
         ctx.Equipments.Add(equipment);
         await ctx.SaveChangesAsync();
@@ -156,7 +144,7 @@ public class CriticalityAssessmentControllerAuthorizationTests
     [Fact]
     public async Task Reject_MaintenanceEngineer_ReturnsForbid()
     {
-        var (controller, ctx) = await CreateController(nameof(Reject_MaintenanceEngineer_ReturnsForbid), role: SystemRoles.MaintenanceEngineer);
+        var (ctx, _) = await CreateInfra(nameof(Reject_MaintenanceEngineer_ReturnsForbid));
         var equipment = new Equipment { TagNumber = "EQ-5", Name = "EQ-5", EquipmentType = "Pump", IsActive = true };
         ctx.Equipments.Add(equipment);
         await ctx.SaveChangesAsync();
@@ -172,7 +160,7 @@ public class CriticalityAssessmentControllerAuthorizationTests
     [Fact]
     public async Task SetScores_ViewerRole_ReturnsForbid()
     {
-        var (controller, ctx) = await CreateController(nameof(SetScores_ViewerRole_ReturnsForbid), role: SystemRoles.Viewer);
+        var (ctx, _) = await CreateInfra(nameof(SetScores_ViewerRole_ReturnsForbid));
         var equipment = new Equipment { TagNumber = "EQ-6", Name = "EQ-6", EquipmentType = "Pump", IsActive = true };
         ctx.Equipments.Add(equipment);
         await ctx.SaveChangesAsync();

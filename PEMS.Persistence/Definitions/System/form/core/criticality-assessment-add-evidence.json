@@ -1,0 +1,123 @@
+{
+  "kind": "form",
+  "key": "criticality-assessment-add-evidence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add evidence",
+    "fa": "افزودن شاهد"
+  },
+  "description": {
+    "en": "Add evidence",
+    "fa": "افزودن شاهد"
+  },
+  "payload": {
+    "id": "criticality-assessment-add-evidence",
+    "title": {
+      "en": "Add evidence",
+      "fa": "افزودن شاهد"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "criticality-assessment-add-evidence",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Assessment id",
+          "fa": "شناسه‌ی ارزیابی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "sourceType",
+        "label": {
+          "en": "Source type",
+          "fa": "نوع منبع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Equipment",
+            "label": {
+              "en": "Equipment record",
+              "fa": "رکورد تجهیز"
+            }
+          },
+          {
+            "value": "EquipmentClass",
+            "label": {
+              "en": "Equipment class",
+              "fa": "کلاس تجهیز"
+            }
+          },
+          {
+            "value": "Document",
+            "label": {
+              "en": "Document",
+              "fa": "سند"
+            }
+          },
+          {
+            "value": "Other",
+            "label": {
+              "en": "Other",
+              "fa": "سایر"
+            }
+          }
+        ]
+      },
+      {
+        "name": "sourceIdentifier",
+        "label": {
+          "en": "Source identifier",
+          "fa": "شناسه‌ی منبع"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "reference",
+        "label": {
+          "en": "Reference",
+          "fa": "مرجع"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000
+      }
+    ]
+  }
+}
