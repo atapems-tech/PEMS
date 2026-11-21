@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "criticality-assessment-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve and publish",
+    "fa": "تأیید و انتشار"
+  },
+  "description": {
+    "en": "Approve and publish",
+    "fa": "تأیید و انتشار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "CriticalityAssessment",
+      "action": "Approve",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The assessment was approved and published to EquipmentCriticality.",
+      "fa": "ارزیابی تایید و در EquipmentCriticality منتشر شد."
+    },
+    "redirect": "/CriticalityAssessment/Details/{id}"
+  }
+}
