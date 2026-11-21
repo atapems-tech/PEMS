@@ -25,7 +25,7 @@ public static class WorkflowTaskLinks
             "IrnHold" => $"/Warehouse/IrnReceipt/Details/{id}",   // SCRUM-473: id = IRN
             "WorkOrder" or "WorkOrderLifecycle" or "WorkOrderMultiDisciplineReview" => $"/WorkOrder/Details/{id}",
             "WorkRequest" => $"/WorkRequest/Details/{id}",
-            "WorkOrderMaterialIntake" => $"/Warehouse/WarehouseIntake/Details/{id}",   // SCRUM-472: id = work order
+            "WorkOrderMaterialIntake" => $"/p/warehouse-intake?id={id}",   // SCRUM-472: id = work order
             "ProcurementDemand" => $"/PreProcurement/Details/{id}",                      // SCRUM-471
             "PurchaseOrder" => $"/PurchaseOrder/Details/{id}",                          // SCRUM-470
             _ => null

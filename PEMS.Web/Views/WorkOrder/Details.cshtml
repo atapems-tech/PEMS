@@ -954,7 +954,7 @@ else
             @if (intake.IsOpen)
             {
                 <span class="vs-pill vs-pill--warning">@Localizer["Whi_State_Open"]</span>
-                <pems-link href="/Warehouse/WarehouseIntake/Details/@Model.WorkOrderId">@Localizer["Whi_Open"]</pems-link>
+                <pems-link href="/p/warehouse-intake?id=@Model.WorkOrderId">@Localizer["Whi_Open"]</pems-link>
             }
             else if (unsourced.Count == 0 && !hasDirectPurchase)
             {

@@ -46,6 +46,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - Inventory dashboard, ledger and warehouse intake as definition pages (SCRUM-652, 654, 665)
+
+### Changed
+- /p/inventory, /p/inventory-ledger and /p/warehouse-intake (with the two source forms) replace InventoryController, InventoryTransactionController and WarehouseIntakeController; the reads and the sourcing are the operations Inventory.* and WarehouseIntake.* over the same services. The old per-line quantity form became two commands: source every open line, or one line with its quantity. /Warehouse/Inventory, /Warehouse/InventoryTransaction and /Warehouse/WarehouseIntake/Details/{id} redirect.
+
 ## 2026-11-20 - Executive dashboard host as a definition page (SCRUM-697)
 
 ### Changed

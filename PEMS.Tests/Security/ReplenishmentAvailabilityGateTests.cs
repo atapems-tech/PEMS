@@ -261,7 +261,7 @@ public class ReplenishmentAvailabilityGateTests
         Assert.Equal(Normalize(disabled), Normalize(link.Replace(enabled, "")));
         // سایر لینک‌های انبار/موجودی/مواد برای همین نقش بدون تغییر هستند
         Assert.Contains("/Warehouse/StoreRequisition", disabled);
-        Assert.Contains("/Warehouse/InventoryTransaction", disabled);
+        Assert.Contains("/p/inventory-ledger", disabled);
     }
 
     private static async Task<string> RenderSidebarAsync(GateHost host, string role)
