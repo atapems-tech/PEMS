@@ -104,7 +104,7 @@ public class MaintenancePlanControllerAuthorizationTests
             MaintenanceStrategyAssignmentId = assignmentId, Title = "Test Plan", TriggerType = "Calendar", IntervalDays = 30, JobPlanId = 1
         });
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);   // to the plan list page (a definition page, SCRUM-724)
         var plan = Assert.Single(ctx.MaintenancePlans);
         Assert.Equal(1, plan.EquipmentId); // تجهیز از تخصیص مشتق شد، نه از کلاینت
     }

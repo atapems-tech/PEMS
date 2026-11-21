@@ -33,7 +33,7 @@ public sealed class OperationIdListTests
     }
 
     private static IServiceScopeFactory Scopes()
-        => new ServiceCollection().AddSingleton<IDefinitionAccess>(new Access()).AddScoped<IIdListTestService, IdListTestService>().AddSingleton(Operations).BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
+        => new ServiceCollection().AddScoped(_ => PEMS.Tests.TestSupport.PemsDbContextFactory.CreateInMemory("idlist-" + Guid.NewGuid())).AddSingleton<IDefinitionAccess>(new Access()).AddScoped<IIdListTestService, IdListTestService>().AddSingleton(Operations).BuildServiceProvider().GetRequiredService<IServiceScopeFactory>();
 
     private static Task<ActionOutcome> Run(string action, JsonObject args, params (string, string?)[] values)
         => new OperationInvokeAction(Scopes(), Operations).ExecuteAsync(new ActionInvocation(values.ToDictionary(v => v.Item1, v => v.Item2), "en", ["Planner"], "hamid",

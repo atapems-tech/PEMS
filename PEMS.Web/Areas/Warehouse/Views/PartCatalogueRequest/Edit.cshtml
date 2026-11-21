@@ -73,10 +73,10 @@
             <span class="small text-muted">@Localizer["Pc_Hint_NumberFirst"]</span>
         }
         <div class="vs-toolbar__end">
-            <a href="/p/pc-requests" class="vs-btn vs-btn--sm">@Localizer["Pc_Btn_Back"]</a>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/pc-requests">@Localizer["Pc_Btn_Back"]</pems-button>
             @if (a.CanCancel)
             {
-                <a href="/f/pc-request-execute?id=@d.Id&action=Cancel" class="vs-btn vs-btn--sm vs-btn--danger"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</a>
+                <pems-button tone="danger" size="small" outline="true" as="a" href="/f/pc-request-execute?id=@d.Id&amp;action=Cancel"><pems-icon name="bi-x-circle" /> @Localizer["Pc_Btn_Cancel"]</pems-button>
             }
         </div>
     </div>

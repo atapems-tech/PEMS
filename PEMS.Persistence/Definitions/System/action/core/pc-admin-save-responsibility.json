@@ -22,16 +22,16 @@
         "employeeId": "context:employeeId",
         "userId": "context:userId",
         "input": {
-          "id": "field:id",
-          "kind": "field:kind",
-          "requiredAction": "field:requiredAction",
-          "roleName": "field:roleName",
-          "scopeType": "field:scopeType",
-          "scopeValue": "field:scopeValue",
-          "managerLevel": "field:managerLevel",
-          "selectionStrategy": "field:selectionStrategy",
-          "isActive": "field:isActive",
-          "positionIds": "field:positionIds"
+          "Id": "field:id",
+          "Kind": "field:kind",
+          "RequiredAction": "field:requiredAction",
+          "RoleName": "field:roleName",
+          "ScopeType": "field:scopeType",
+          "ScopeValue": "field:scopeValue",
+          "ManagerLevel": "field:managerLevel",
+          "SelectionStrategy": "field:selectionStrategy",
+          "IsActive": "field:isActive",
+          "PositionIds": "field:positionIds"
         }
       }
     },

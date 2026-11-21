@@ -71,14 +71,23 @@
           "en": "Handover date",
           "fa": "تاریخ تحویل"
         },
-        "kind": "datetime",
+        "kind": "text",
         "required": true,
         "messages": {
           "required": {
             "en": "This field is required.",
             "fa": "این فیلد الزامی است."
+          },
+          "pattern": {
+            "en": "Type the date and the time as YYYY-MM-DD HH:mm.",
+            "fa": "تاریخ و ساعت را به شکل YYYY-MM-DD HH:mm بنویسید."
           }
-        }
+        },
+        "placeholder": {
+          "en": "YYYY-MM-DD HH:mm",
+          "fa": "YYYY-MM-DD HH:mm"
+        },
+        "pattern": "[0-9۰-۹]{4}-[0-9۰-۹]{2}-[0-9۰-۹]{2}[ T][0-9۰-۹]{2}:[0-9۰-۹]{2}(:[0-9۰-۹]{2})?"
       },
       {
         "name": "notes",

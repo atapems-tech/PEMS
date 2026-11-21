@@ -17,9 +17,9 @@ public sealed class WorkImportOperations(IConditionReadingImportService readings
     public async Task<List<WorkImportBatchRow>> ReadingBatchesAsync() => (await readings.GetRecentBatchesAsync()).Select(Row).ToList();
     public async Task<List<WorkImportBatchRow>> ReadingBatchAsync(int batchId) => await readings.GetBatchSummaryAsync(batchId) is { } b ? [Row(b)] : [];
 
-    public async Task<List<ConditionReadingImportRow>> ReadingRowsAsync(int batchId, string? status = null)
+    public async Task<List<ConditionReadingImportRowItem>> ReadingRowsAsync(int batchId, string? status = null)
         => (await readings.GetBatchAsync(batchId, 1, RowLimit, string.IsNullOrWhiteSpace(status) ? null : status))?.Rows.Items
-            .Select(r => new ConditionReadingImportRow(r.ConditionReadingImportRowId, r.RowNumber, r.EquipmentTag, r.PointTag, r.VariableType ?? "", r.ReadingDate, r.Value, r.Source ?? "", r.ValidationStatus, r.ValidationMessage ?? "", r.IncludeInCommit, r.Status)).ToList() ?? [];
+            .Select(r => new ConditionReadingImportRowItem(r.ConditionReadingImportRowId, r.RowNumber, r.EquipmentTag, r.PointTag, r.VariableType ?? "", r.ReadingDate, r.Value, r.Source ?? "", r.ValidationStatus, r.ValidationMessage ?? "", r.IncludeInCommit, r.Status)).ToList() ?? [];
 
     public async Task<(bool Success, string? Error)> ReadingUploadAsync(int? employeeId, byte[] file, string? fileName = null)
     {
@@ -37,9 +37,9 @@ public sealed class WorkImportOperations(IConditionReadingImportService readings
     public async Task<List<WorkImportBatchRow>> HistoryBatchesAsync() => (await history.GetRecentBatchesAsync()).Select(Row).ToList();
     public async Task<List<WorkImportBatchRow>> HistoryBatchAsync(int batchId) => await history.GetBatchSummaryAsync(batchId) is { } b ? [Row(b)] : [];
 
-    public async Task<List<MaintenanceHistoryImportRow>> HistoryRowsAsync(int batchId, string? status = null)
+    public async Task<List<MaintenanceHistoryImportRowItem>> HistoryRowsAsync(int batchId, string? status = null)
         => (await history.GetBatchAsync(batchId, 1, RowLimit, string.IsNullOrWhiteSpace(status) ? null : status))?.Rows.Items
-            .Select(r => new MaintenanceHistoryImportRow(r.MaintenanceHistoryImportRowId, r.RowNumber, r.EquipmentTag, r.EquipmentDescription ?? "", r.ExecutionDate, r.WorkOrderNumber ?? "", r.ActionTaken ?? "", r.Technician ?? "", r.ValidationStatus, r.ValidationMessage ?? "", r.IncludeInCommit, r.Status)).ToList() ?? [];
+            .Select(r => new MaintenanceHistoryImportRowItem(r.MaintenanceHistoryImportRowId, r.RowNumber, r.EquipmentTag, r.EquipmentDescription ?? "", r.ExecutionDate, r.WorkOrderNumber ?? "", r.ActionTaken ?? "", r.Technician ?? "", r.ValidationStatus, r.ValidationMessage ?? "", r.IncludeInCommit, r.Status)).ToList() ?? [];
 
     public async Task<(bool Success, string? Error)> HistoryUploadAsync(int? employeeId, byte[] file, string? fileName = null)
     {

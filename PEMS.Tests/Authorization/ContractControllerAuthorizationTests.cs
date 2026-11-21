@@ -81,7 +81,7 @@ public class ContractControllerAuthorizationTests
 
         var result = await controller.Create("CT-001", ctx.Projects.Single().ProjectId, ctx.Vendors.Single().VendorId, null, null, null, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);   // to the contract details page (a definition page, SCRUM-676)
         Assert.Single(ctx.Contracts);
         Assert.Equal("Draft", ctx.Contracts.Single().Status);
     }

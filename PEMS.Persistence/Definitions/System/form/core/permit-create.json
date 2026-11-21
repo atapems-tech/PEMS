@@ -150,7 +150,18 @@
           "en": "Valid from",
           "fa": "اعتبار از"
         },
-        "kind": "datetime"
+        "kind": "text",
+        "placeholder": {
+          "en": "YYYY-MM-DD HH:mm",
+          "fa": "YYYY-MM-DD HH:mm"
+        },
+        "pattern": "[0-9۰-۹]{4}-[0-9۰-۹]{2}-[0-9۰-۹]{2}[ T][0-9۰-۹]{2}:[0-9۰-۹]{2}(:[0-9۰-۹]{2})?",
+        "messages": {
+          "pattern": {
+            "en": "Type the date and the time as YYYY-MM-DD HH:mm.",
+            "fa": "تاریخ و ساعت را به شکل YYYY-MM-DD HH:mm بنویسید."
+          }
+        }
       },
       {
         "name": "validTo",
@@ -158,7 +169,18 @@
           "en": "Valid to",
           "fa": "اعتبار تا"
         },
-        "kind": "datetime"
+        "kind": "text",
+        "placeholder": {
+          "en": "YYYY-MM-DD HH:mm",
+          "fa": "YYYY-MM-DD HH:mm"
+        },
+        "pattern": "[0-9۰-۹]{4}-[0-9۰-۹]{2}-[0-9۰-۹]{2}[ T][0-9۰-۹]{2}:[0-9۰-۹]{2}(:[0-9۰-۹]{2})?",
+        "messages": {
+          "pattern": {
+            "en": "Type the date and the time as YYYY-MM-DD HH:mm.",
+            "fa": "تاریخ و ساعت را به شکل YYYY-MM-DD HH:mm بنویسید."
+          }
+        }
       }
     ]
   }

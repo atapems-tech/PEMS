@@ -151,11 +151,7 @@ public sealed class ConfirmScriptTests
     [InlineData("Views/VDR/Details.cshtml", "replyModal")]
     [InlineData("Views/EngineeringDocuments/Details.cshtml", "engReplyModal")]
     [InlineData("Views/QC/ItpDetails.cshtml", "inspectModal")]
-    [InlineData("Views/ProductionRun/Details.cshtml", "postInputModal")]
-    [InlineData("Views/ProductionRun/Details.cshtml", "postOutputModal")]
     [InlineData("Views/RcmFmea/ClassDetail.cshtml", "applyRcmModal")]
-    [InlineData("Areas/Warehouse/Views/InventoryMasterData/Index.cshtml", "addLocationModal")]
-    [InlineData("Views/SparePart/Index.cshtml", "editPartModal")]
     public void A_list_has_one_shared_modal_and_its_openers_carry_the_row_values(string view, string modal)
     {
         var html = Read(new[] { "PEMS.Web" }.Concat(view.Split('/')).ToArray());

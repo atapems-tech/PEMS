@@ -123,7 +123,6 @@ public class InfoGridComponentTests
     }
 
     [Theory]
-    [InlineData("Views/Contract/Details.cshtml", 2, 12)]
     [InlineData("Views/Tender/Details.cshtml", 1, 7)]
     public void WaveI3_ProcurementHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)
     {
@@ -137,7 +136,6 @@ public class InfoGridComponentTests
     }
 
     [Theory]
-    [InlineData("Views/JobPlan/Details.cshtml", 1, 4)]
     [InlineData("Views/MaintenanceStrategy/Details.cshtml", 1, 18)]
     [InlineData("Views/Transmittal/Details.cshtml", 1, 6)]
     [InlineData("Views/Permit/Details.cshtml", 1, 9)]

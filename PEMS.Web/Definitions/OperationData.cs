@@ -2,7 +2,9 @@ using System.Collections;
 using System.Globalization;
 using System.Reflection;
 using System.Text.Json.Nodes;
+using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Definitions;
+using PEMS.Persistence.Context;
 using PEMS.UI.Abstractions;
 
 namespace PEMS.Web.Definitions;
@@ -24,7 +26,7 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
         var names = op.Method.GetParameters().Select(p => p.Name!).ToHashSet(StringComparer.Ordinal);
         foreach (var (name, source) in args)
             if (!names.Contains(name)) errors.Add(new("/args/" + name, "unknown-parameter", "Def_Err_UnknownField", $"'{name}' is not a parameter of {op.Name}."));
-            else if (!IsSource(EntityJson.Str(source) ?? "")) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", "A source of a read operation is literal:text, param:name (a value typed in a column filter of the grid) or context:employeeId|roles|userName|culture."));
+            else if (!IsSource(EntityJson.Str(source) ?? "")) errors.Add(new("/args/" + name, "wrong-source", "Def_Err_Type", "A source of a read operation is literal:text, param:name (a value typed in a column filter of the grid) or context:employeeId|userId|roles|userName|culture."));
         foreach (var p in op.Method.GetParameters())
             if (p.ParameterType != typeof(CancellationToken) && !Simple(p.ParameterType) && !(IsRoles(p) && EntityJson.Str(args[p.Name!]) == "context:roles"))
                 errors.Add(new("/operation", "unsupported-parameter", "Def_Err_Type", $"The parameter '{p.Name}' of {op.Name} must be a simple value (give it a literal or a context source) or the roles of the user (context:roles)."));
@@ -38,7 +40,7 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
     }
 
     private static bool IsRoles(ParameterInfo p) => p.Name!.EndsWith("Roles", StringComparison.OrdinalIgnoreCase) && p.ParameterType != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(p.ParameterType);
-    private static bool IsSource(string s) => s.StartsWith("literal:") || s.StartsWith("param:") && s.Length > 6 || s.StartsWith("context:") && s[8..] is "employeeId" or "roles" or "userName" or "culture";
+    private static bool IsSource(string s) => s.StartsWith("literal:") || s.StartsWith("param:") && s.Length > 6 || s.StartsWith("context:") && s[8..] is "employeeId" or "roles" or "userName" or "culture" or "userId";
 
     /// <summary>What a call of a read operation answered: Allowed false when the user may not run it, NoInput when a required argument was not given (the service is not called), else the raw answer.</summary>
     public sealed record Invoked(bool Allowed, bool NoInput, object? Answer);
@@ -51,7 +53,15 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
         if (!await scope.ServiceProvider.GetRequiredService<IDefinitionAccess>().CanOpenAsync(op.Permission, roles, ct)
             || op.Roles.Count > 0 && !roles.Any(r => op.Roles.Contains(r, StringComparer.OrdinalIgnoreCase))) return new(false, false, null);
 
-        var args = parameters.GetValueOrDefault("args") is { } json ? JsonNode.Parse(json) as JsonObject ?? [] : [];
+        var argsJson = parameters.GetValueOrDefault("args");
+        var args = argsJson is { } json ? JsonNode.Parse(json) as JsonObject ?? [] : [];
+        // context:employeeId and context:userId are the signed-in user's employee and user id (the same context a write has); looked up only when an argument asks for them
+        int? employeeId = null, userId = null;
+        if (userName is not null && argsJson is not null && (argsJson.Contains("context:employeeId", StringComparison.Ordinal) || argsJson.Contains("context:userId", StringComparison.Ordinal)))
+        {
+            var identity = await scope.ServiceProvider.GetRequiredService<PEMSDbContext>().Users.AsNoTracking().Where(u => u.UserName == userName).Select(u => new { u.Id, u.EmployeeId }).FirstOrDefaultAsync(ct);
+            employeeId = identity?.EmployeeId; userId = identity?.Id;
+        }
         var values = new List<object?>();
         foreach (var p in op.Method.GetParameters())
         {
@@ -60,7 +70,7 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
             if (IsRoles(p)) { values.Add(roles.ToList()); continue; }
             if (source is null) { values.Add(p.HasDefaultValue ? p.DefaultValue : p.ParameterType.IsValueType && Nullable.GetUnderlyingType(p.ParameterType) is null ? Activator.CreateInstance(p.ParameterType) : null); continue; }
             if (source.StartsWith("param:") && !p.IsOptional && string.IsNullOrWhiteSpace(query?.GetValueOrDefault(source[6..]))) return new(true, true, null);      // nothing typed yet: no rows, the service is not called
-            var text = source.StartsWith("literal:") ? source[8..] : source.StartsWith("param:") ? query?.GetValueOrDefault(source[6..]) : source[8..] switch { "userName" => userName, "culture" => culture, "roles" => string.Join(",", roles), _ => null };
+            var text = source.StartsWith("literal:") ? source[8..] : source.StartsWith("param:") ? query?.GetValueOrDefault(source[6..]) : source[8..] switch { "userName" => userName, "culture" => culture, "roles" => string.Join(",", roles), "employeeId" => employeeId?.ToString(CultureInfo.InvariantCulture), "userId" => userId?.ToString(CultureInfo.InvariantCulture), _ => null };
             values.Add(EntityJson.Convert(p.ParameterType, text) is var c && c is EntityJson.NotConvertible ? throw new InvalidOperationException($"'{p.Name}' is not valid.") : c);
         }
         var service = scope.ServiceProvider.GetRequiredService(op.ServiceType);

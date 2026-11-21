@@ -200,7 +200,7 @@ public class PositionManagementUiTests
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web/Views/Shared/_SidebarMenu.cshtml"))) dir = dir.Parent;
         var side = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web/Views/Shared/_SidebarMenu.cshtml"));
         // Discipline Master Data: once in the full Administration section (admin) and once in the limited, permission-only section
-        Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(side, "asp-controller=\"Discipline\" asp-action=\"Manage\"").Count);
+        Assert.Equal(2, System.Text.RegularExpressions.Regex.Matches(side, "href=\"/p/disciplines\"").Count);   // the discipline master data is a definition page
         var limitedStart = side.IndexOf("sec-admin-org", StringComparison.Ordinal);
         var limited = side.Substring(limitedStart, side.IndexOf("@if (canSeeAdminCore)", limitedStart, StringComparison.Ordinal) - limitedStart);
         Assert.Contains("!canSeeAdminCore && canSeeDisciplineMaster", side);

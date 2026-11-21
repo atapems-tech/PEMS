@@ -23,6 +23,22 @@
     },
     "actionKey": "maintenance-plan-generate-due",
     "columns": 1,
-    "fields": []
+    "fields": [
+      {
+        "name": "confirm",
+        "label": {
+          "en": "Generate a work order for every plan that is due",
+          "fa": "برای همه‌ی برنامه‌های سررسیده دستورکار ساخته شود"
+        },
+        "kind": "checkbox",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "Confirm to generate the work orders.",
+            "fa": "برای ساخت دستورکارها تأیید کنید."
+          }
+        }
+      }
+    ]
   }
 }

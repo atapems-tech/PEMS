@@ -63,6 +63,8 @@ public class ImportCenterNavigationTests
         var asm = typeof(ImportCatalog).Assembly;
         foreach (var e in ImportCatalog.All)
         {
+            // an import that is a definition page names its address (SCRUM-675, 722): the page is the entry, no controller is needed
+            if (!string.IsNullOrEmpty(e.Url)) { Assert.True(e.Url.StartsWith("/p/") || e.Url.StartsWith("/f/"), e.Url); continue; }
             var type = ControllerType(asm, e);
             Assert.True(type != null, $"Controller {e.Controller}Controller not found for import '{e.Key}'");
             Assert.True(type!.GetMethods(BindingFlags.Public | BindingFlags.Instance).Any(m => m.Name == e.Action),
@@ -191,9 +193,9 @@ public class ImportCenterNavigationTests
         foreach (var e in ImportCatalog.All.Where(x => x.Mode == ImportCatalog.LaunchMode.Page))
             Assert.DoesNotContain($"asp-controller=\"{e.Controller}\"", sidebar);
 
-        Assert.Single(System.Text.RegularExpressions.Regex.Matches(sidebar, "asp-controller=\"ImportCenter\""));
+        Assert.Single(System.Text.RegularExpressions.Regex.Matches(sidebar, "href=\"/p/import-center\""));   // the Import Center is a definition page
         // Barcode is not an import and must keep its original (ImportCenter-role) gate
-        Assert.Contains("asp-controller=\"Barcode\"", sidebar);
+        Assert.Contains("href=\"/p/barcodes\"", sidebar);   // the barcode pages are definitions (SCRUM-660)
     }
 
     // ---------- (7) Import Center is the ONLY place an import is initiated ----------
@@ -244,6 +246,7 @@ public class ImportCenterNavigationTests
         {
             Assert.Equal("Import", e.Action);
             Assert.False(string.IsNullOrEmpty(e.Accept));
+            if (!string.IsNullOrEmpty(e.Url)) continue;      // a definition form (an upload action) posts it: no controller
             var type = ControllerType(typeof(ImportCatalog).Assembly, e)!;
             var post = type.GetMethods().Single(m => m.Name == "Import" && m.GetCustomAttributes<HttpPostAttribute>().Any());
             Assert.Contains(post.GetParameters(), p => p.ParameterType == typeof(IFormFile));
