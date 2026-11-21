@@ -81,6 +81,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-764: work order task, labor, supply code and warehouse request as definitions
+
+### Changed
+- Complete and reopen a task, add a labor entry, set the supply code of a material and request the materials are now definitions (/a/work-order-*) over IWorkOrderTaskOperations; the section guard (section x phase x permission, denial record, change log) is the sectionGuard of each action. The details page, status steps, create and the discipline review (a list of ids) stay on WorkOrderController (6 actions). The permission-only controller tests were replaced by operation tests; the section guard tests run through the definitions. The labor-rate-missing hint id is no longer kept in TempData (the message is shown).
+
 ## 2026-11-21 - SCRUM-725: maintenance strategy lifecycle and assignment commands as definitions
 
 ### Changed

@@ -43,12 +43,11 @@ public class WorkOrderAuditFixTests : WorkOrderGovernanceTestBase
         await Ctx.SaveChangesAsync();
         var user = new FakeCurrentUserService { UserId = 77, Roles = Executor.Roles.ToList() };
         var ctl = new WorkOrderController(Ctx, null!, user, new PermissionService(Ctx, AccessControl), new WorkOrderLaborService(Ctx, AccessControl), Svc, new CrewService(Ctx), null!, null!,
-            new WorkOrderSectionGuard(Ctx, AccessControl)).WithTempData();
+            new WorkOrderSectionGuard(Ctx, AccessControl)).WithTempData().As(this, Executor);
 
         await ctl.AddLaborEntry(id, Executor.EmployeeId!.Value, null, DateTime.Today, 2, 0, null);
 
         Assert.Contains("rate", (string)ctl.TempData["Error"]!, StringComparison.OrdinalIgnoreCase);
-        Assert.Equal(Executor.EmployeeId, ctl.TempData["LaborRateEmployeeId"]);
         Assert.Empty(Ctx.WorkOrderLabors);
     }
 

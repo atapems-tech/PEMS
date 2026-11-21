@@ -311,59 +311,6 @@ public class WorkOrderController : Controller
         return View(workOrder);
     }
 
-    // طبق ممیزی مستقل فاز ۶B Wave A (P0): CompleteTask/ReopenTask هیچ بررسی مجوزی نداشتند -
-    // مثل بقیه‌ی جهش‌های این کنترلر (Hold/Resume/AddLaborEntry/...) نیازمند "WorkOrder"/"Edit"
-    // هستند، نه یک مجوز جدید.
-    // طبق ممیزی مستقل (P1-01): قبلاً فقط با WorkOrderTaskId پیدا می‌شد - بدون اثبات اینکه واقعاً
-    // به workOrderId درخواستی تعلق دارد (امکان دستکاری Task یک WorkOrder دیگر با فرستادن
-    // workOrderId دلخواه در فرم). حالا هر دو شناسه با هم Query می‌شوند.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CompleteTask(int workOrderTaskId, int workOrderId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
-            return Forbid();
-
-        var denied = await GuardChildAsync(workOrderId, WoSection.JobPlanTasks, WoSectionAction.Edit, recordRef: workOrderTaskId.ToString());
-        if (denied != null) return denied;
-
-        var task = await GetOwnedWorkOrderTaskAsync(workOrderTaskId, workOrderId);
-        if (task == null) return NotFound();
-
-        task.IsCompleted = true;
-        task.CompletedBy = _currentUser.UserName;
-        task.CompletedDate = DateTime.Now;
-        await _context.SaveChangesAsync();
-
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ReopenTask(int workOrderTaskId, int workOrderId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit"))
-            return Forbid();
-
-        var denied = await GuardChildAsync(workOrderId, WoSection.JobPlanTasks, WoSectionAction.Edit, recordRef: workOrderTaskId.ToString());
-        if (denied != null) return denied;
-
-        var task = await GetOwnedWorkOrderTaskAsync(workOrderTaskId, workOrderId);
-        if (task == null) return NotFound();
-
-        task.IsCompleted = false;
-        task.CompletedBy = null;
-        task.CompletedDate = null;
-        await _context.SaveChangesAsync();
-
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
-    }
-
-    // طبق ممیزی مستقل (P1-01): هر دو شناسه با هم Query می‌شوند - نه بارگذاری با TaskId و بررسی
-    // بعدی - تا Task یک WorkOrder دیگر هرگز حتی برای خواندن هم بازگردانده نشود.
-    private Task<WorkOrderTask?> GetOwnedWorkOrderTaskAsync(int workOrderTaskId, int workOrderId) =>
-        _context.WorkOrderTasks.FirstOrDefaultAsync(x => x.WorkOrderTaskId == workOrderTaskId && x.WorkOrderId == workOrderId);
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AdvanceStatus(int id, int? assignedTeamId, int? assignedEmployeeId,
@@ -396,65 +343,6 @@ public class WorkOrderController : Controller
     // که قبلاً اصلاً در دسترس نبودند - AdvanceStatus فقط مسیر خطی رو به جلو رو پوشش می‌ده.
     // اعتبارسنجی واقعی گذار مجاز/غیرمجاز داخل WorkOrderLifecycleService انجام می‌شه.
     // ==============================================================================
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddLaborEntry(int workOrderId, int employeeId, int? teamId, DateTime workDate,
-        decimal regularHours, decimal overtimeHours, string? notes, string? correctionReason = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        var denied = await GuardChildAsync(workOrderId, WoSection.Labor, WoSectionAction.Add, correctionReason);
-        if (denied != null) return denied;
-        try
-        {
-            var laborId = await _laborService.AddLaborEntryAsync(workOrderId, employeeId, teamId, workDate, regularHours, overtimeHours, notes, await BuildActorAsync(), isCorrection: true);
-            await RecordChildChangeAsync(workOrderId, WoSection.Labor, WoSectionAction.Add, laborId.ToString(), correctionReason, null,
-                $"EmployeeId={employeeId}; TeamId={teamId}; WorkDate={workDate:yyyy-MM-dd}; RegularHours={regularHours}; OvertimeHours={overtimeHours}");
-            TempData["Message"] = "ساعت کار ثبت شد.";
-        }
-        catch (LaborRateMissingException ex) { TempData["Error"] = ex.Message; TempData["LaborRateEmployeeId"] = ex.EmployeeId; }
-        catch (Exception ex) { TempData["Error"] = ex.Message; }
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
-    }
-
-    // SCRUM-472: supply code of a required material (Stock through the warehouse intake, or DirectPurchase to procurement).
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SetMaterialSupplyCode(int workOrderMaterialId, int workOrderId, string supplyCode, [FromServices] IWarehouseIntakeService warehouseIntake)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-        var denied = await GuardChildAsync(workOrderId, WoSection.RequiredMaterials, WoSectionAction.Edit, recordRef: workOrderMaterialId.ToString());
-        if (denied != null) return denied;
-        if (!await _context.WorkOrderMaterials.AnyAsync(x => x.WorkOrderMaterialId == workOrderMaterialId && x.WorkOrderId == workOrderId)) return NotFound();
-
-        var r = await warehouseIntake.SetSupplyCodeAsync(workOrderMaterialId, supplyCode, await IntakeActorAsync());
-        if (r.Success) TempData["Message"] = Text("Whi_SupplyCodeSaved"); else TempData["Error"] = Text(r.Error!);
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
-    }
-
-    // SCRUM-472: send the unsourced stock lines to the warehouse queue of My Work.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RequestWarehouseMaterials(int workOrderId, [FromServices] IWarehouseIntakeService warehouseIntake,
-        [FromServices] IPreProcurementService? preProcurement = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "WorkOrder", "Edit")) return Forbid();
-
-        var actor = await IntakeActorAsync();
-        // SCRUM-471: direct-purchase lines go to the procurement queue; stock lines go to the warehouse queue (SCRUM-472)
-        var purchase = preProcurement == null ? null
-            : await preProcurement.RaiseDirectPurchaseLinesAsync(workOrderId, new PreProcurementActor(actor.EmployeeId, actor.Roles, actor.UserName));
-        var stock = await warehouseIntake.RequestMaterialsAsync(workOrderId, actor);
-
-        var messages = new List<string>();
-        if (stock.Success) messages.Add(Text("Whi_Requested"));
-        if (purchase is { Success: true, Count: > 0 }) messages.Add(string.Format(Text("Ppr_DirectPurchaseRaised"), purchase.Count));
-        if (messages.Count > 0) TempData["Message"] = string.Join(" ", messages);
-        else TempData["Error"] = Text(purchase is { Success: false } ? purchase.Error! : stock.Error!);
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
-    }
-
-    private async Task<WarehouseIntakeActor> IntakeActorAsync() => new(await GetCurrentEmployeeIdAsync(), _currentUser.Roles, _currentUser.UserName);
 
     // طبق بخش ۱۴ سند: ساخت سریع یک Crew اختصاصی برای همین WorkOrder، بدون خروج از صفحه
     [HttpPost]
@@ -543,14 +431,6 @@ public class WorkOrderController : Controller
 
     private static string L(string fa, string en)
         => System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "fa" ? fa : en;
-
-    /// <summary>SCRUM-472: a localised message for TempData (the controller has no localizer field; tests build it without one).</summary>
-    private string Text(string key)
-    {
-        var localizer = HttpContext?.RequestServices?.GetService(typeof(Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>))
-            as Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>;
-        return localizer?[key].Value ?? key;
-    }
 
     private async Task<WorkOrderActor> BuildActorAsync() => new(await GetCurrentEmployeeIdAsync(), _currentUser.Roles);
 
