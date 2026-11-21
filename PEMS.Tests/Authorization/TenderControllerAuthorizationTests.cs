@@ -39,44 +39,6 @@ public class TenderControllerAuthorizationTests
     }
 
     [Fact]
-    public async Task Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(Index_WithoutViewPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Create_WithoutCreatePermission_ReturnsForbid_DoesNotCreateTender()
-    {
-        var (controller, ctx) = await CreateController(nameof(Create_WithoutCreatePermission_ReturnsForbid_DoesNotCreateTender), role: SystemRoles.Viewer);
-        var package = new ProcurementPackage { PackageNumber = "PP-001", ProjectId = 1, Title = "T", IsActive = true };
-        ctx.ProcurementPackages.Add(package);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.Create(package.ProcurementPackageId, "Pump Tender", null, null, true, null, null, null, null);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.Tenders);
-    }
-
-    [Fact]
-    public async Task Create_WithCreatePermission_CreatesTender()
-    {
-        var (controller, ctx) = await CreateController(nameof(Create_WithCreatePermission_CreatesTender), role: SystemRoles.ContractManager);
-        var package = new ProcurementPackage { PackageNumber = "PP-001", ProjectId = 1, Title = "T", IsActive = true };
-        ctx.ProcurementPackages.Add(package);
-        await ctx.SaveChangesAsync();
-
-        var result = await controller.Create(package.ProcurementPackageId, "Pump Tender", null, null, true, null, null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Single(ctx.Tenders);
-    }
-
-    [Fact]
     public async Task SelectWinner_WithoutApprovePermission_ReturnsForbid()
     {
         var (controller, ctx) = await CreateController(nameof(SelectWinner_WithoutApprovePermission_ReturnsForbid), role: SystemRoles.DisciplineEngineer);

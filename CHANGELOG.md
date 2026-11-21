@@ -76,6 +76,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-759: tenders (list, create, invitations, clarifications) as definitions
+
+### Changed
+- ITenderOperations (list with a package filter, queued email invitations, raise and answer a clarification) and the Create service attribute; page /p/tenders and forms/actions; the details page posts the converted commands to the action host. PARTIAL: the details page and the approval of a negotiation, the choice of the winner and the contract from the winning bid stay on TenderController (4 actions): they carry creator-separation and SoD guards whose controller tests are the safety net, and the details page renders their antiforgery forms. Gaps: list and create tests of the old views were removed.
+
 ## 2026-11-21 - SCRUM-676: contracts as definitions
 
 ### Changed
