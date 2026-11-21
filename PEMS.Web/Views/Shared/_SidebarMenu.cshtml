@@ -291,7 +291,7 @@
             }
             @if (canSeePreProcurement)
             {
-                <pems-nav-link item="false" active="@(IsActive("PreProcurement"))" asp-controller="PreProcurement" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/pre-procurement" active="@(IsActive("PreProcurement") || Context.Request.Path.StartsWithSegments("/p/pre-procurement"))">
                     <pems-icon name="bi-inbox" /> @Localizer["Ppr_Title"]
                 </pems-nav-link>
             }
@@ -340,7 +340,7 @@
                     <pems-icon name="bi-speedometer2" /> @Localizer["Dashboard"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("MaterialItem", "Warehouse"))" asp-controller="MaterialItem" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/material-items" active="@(IsActive("MaterialItem", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/material-item"))">
                     <pems-icon name="bi-box-seam" /> @Localizer["Material Master"]
                 </pems-nav-link>
 
@@ -352,18 +352,18 @@
                     <pems-icon name="bi-list-ul" /> @Localizer["Transaction Ledger"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" active="@(IsActive("StoreRequisition", "Warehouse"))" asp-controller="StoreRequisition" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/store-requisitions" active="@(IsActive("StoreRequisition", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/store-requisition"))">
                     <pems-icon name="bi-clipboard-check" /> @Localizer["Store Requisitions"]
                 </pems-nav-link>
 
                 @if (canSeeReplenishment)
                 {
-                    <pems-nav-link item="false" active="@(IsActive("Replenishment", "Warehouse"))" asp-controller="Replenishment" asp-action="Index" asp-area="Warehouse">
+                    <pems-nav-link item="false" href="/p/replenishment" active="@(IsActive("Replenishment", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/replenishment"))">
                         <pems-icon name="bi-cart-plus" /> @Localizer["Repl_Menu"]
                     </pems-nav-link>
                 }
 
-                <pems-nav-link item="false" active="@(IsActive("InventoryMasterData", "Warehouse"))" asp-controller="InventoryMasterData" asp-action="Index" asp-area="Warehouse">
+                <pems-nav-link item="false" href="/p/inventory-master-data" active="@(IsActive("InventoryMasterData", "Warehouse") || Context.Request.Path.StartsWithSegments("/p/inventory-master-data"))">
                     <pems-icon name="bi-collection" /> @Localizer["Master Data"]
                 </pems-nav-link>
             }

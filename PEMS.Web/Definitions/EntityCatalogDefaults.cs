@@ -67,6 +67,10 @@ internal static class EntityCatalogDefaults
             .Readable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate").Writable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate"))
         .Add<Qualification>("QualificationId", e => e.Read("MaintenanceMasterData.View").Create("MaintenanceMasterData.Create").Edit("MaintenanceMasterData.Edit")
             .Readable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate").Writable("Name", "DisciplineId", "Description", "IsActive", "CreatedDate"))
+        // Material Master (SCRUM-656): create, edit and activate / deactivate are the generic entity actions; the permissions are the ones of the old controller
+        .Add<MaterialItem>("MaterialItemId", e => e.Read("MaterialItem.View").Create("MaterialItem.Create").Edit("MaterialItem.Edit")
+            .Readable("MaterialCode", "MaterialType", "Description", "LongDescription", "CategoryId", "DisciplineId", "UomId", "VendorId", "Manufacturer", "ManufacturerPartNumber", "Model", "Size", "MaterialGrade", "Specification", "IsStockItem", "IsCritical", "IsActive", "CreatedDate")
+            .Writable("MaterialCode", "MaterialType", "Description", "LongDescription", "CategoryId", "DisciplineId", "UomId", "VendorId", "Manufacturer", "ManufacturerPartNumber", "Model", "Size", "MaterialGrade", "Specification", "IsStockItem", "IsCritical", "IsActive", "CreatedDate"))
         // Spare parts (W2): the controller has no permission check beyond signing in
         .Add<SparePart>("SparePartId", e => e.Readable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate")
             .Writable("PartNumber", "PartName", "Manufacturer", "Model", "Unit", "Description", "QuantityOnHand", "MinStockLevel", "ReorderPoint", "StorageLocation", "IsActive", "CreatedDate"))

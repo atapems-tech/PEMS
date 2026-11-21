@@ -337,7 +337,7 @@ public class DynamicSidebarTests
         foreach (var c in new[] { "ProcurementPackage", "Tender", "MaterialRequisition" })
             Assert.DoesNotContain($"asp-controller=\"{c}\"", eng);
         var proc = src[src.IndexOf("id=\"sec-procurement\"", StringComparison.Ordinal)..src.IndexOf("IsModuleVisible(\"ProjectControls\")", StringComparison.Ordinal)];
-        foreach (var c in new[] { "Vendor", "MaterialRequisition", "ProcurementPackage", "Tender", "PurchaseOrder", "Contract", "MaterialItem", "IrnReceipt", "StoreRequisition", "PartCatalogueRequest" })
+        foreach (var c in new[] { "Vendor", "MaterialRequisition", "ProcurementPackage", "Tender", "PurchaseOrder", "Contract", "MaterialItem", "IrnReceipt", "PartCatalogueRequest" })
             Assert.Contains($"asp-controller=\"{c}\"", proc);
     }
 
@@ -429,7 +429,6 @@ public class DynamicSidebarTests
     [Theory]
     [InlineData("Letter", "MyReferrals", null, "corr.referrals", "corr.letters")]
     [InlineData("Letter", "Details", null, "corr.letters", "corr.referrals")]
-    [InlineData("MaterialItem", "Details", "Warehouse", "proc.wh.material", "proc.wh.dashboard")]
     [InlineData("Tender", "Details", null, "proc.tender", "proc.package")]
     public async Task ActiveLink_FollowsControllerActionAndDefaultRules(string controller, string action, string? area, string active, string inactive)
     {

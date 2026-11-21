@@ -24,8 +24,8 @@ public class ProcurementWarehouseListPagesTests
     private static readonly string[] Pages =
     {
         "Views/PurchaseOrder", "Views/Tender", "Views/MaterialRequisition", "Views/Vendor", "Views/Contract", "Views/ProcurementPackage",
-        "Areas/Warehouse/Views/StoreRequisition", "Areas/Warehouse/Views/IrnReceipt",
-        "Areas/Warehouse/Views/Replenishment", "Areas/Warehouse/Views/MaterialItem", "Areas/Warehouse/Views/PartCatalogueRequest",
+        "Areas/Warehouse/Views/IrnReceipt",
+        "Areas/Warehouse/Views/PartCatalogueRequest",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary>? data = null) where TController : Controller
@@ -113,71 +113,6 @@ public class ProcurementWarehouseListPagesTests
     }
 
     // ---------- warehouse ----------
-
-    [Fact]
-    public async Task StoreRequisitions_And_IncomingReceipts_FilterByStatus_AndKeepTheCreateModal()
-    {
-        var warehouses = new List<dynamic> { Obj(("WarehouseId", 1), ("Code", "W1")) };
-        var sr = await Render<StoreRequisitionController>("/Areas/Warehouse/Views/StoreRequisition/Index.cshtml",
-            Page(new StoreRequisitionListDto { StoreRequisitionId = 1, RequisitionNumber = "SR-1", Status = "PartiallyIssued", RequestedDate = new DateTime(2026, 10, 2) }),
-            v => { v["Warehouses"] = warehouses; v["SelectedStatus"] = "PartiallyIssued"; });
-        AssertBuiltFromTheComponent(sr, "StoreRequisition", 1);
-        Assert.Contains("id=\"createRequisitionModal\"", sr);
-        Assert.Single(Regex.Matches(Chips(sr), "class=\"pems-filter-chip\""));
-        Assert.Contains("status=PartiallyIssued", sr);                                   // paging keeps the filter
-
-        var irn = await Render<IrnReceiptController>("/Areas/Warehouse/Views/IrnReceipt/Index.cshtml",
-            Page(new IrnReceiptListDto { IrnReceiptId = 2, IrnNumber = "IRN-2", Status = "PendingApproval", ReceivingDate = new DateTime(2026, 10, 3), LineCount = 4 }),
-            v => { v["Warehouses"] = warehouses; v["Vendors"] = new List<dynamic>(); v["SelectedStatus"] = null; });
-        AssertBuiltFromTheComponent(irn, "IrnReceipt", 1);
-        Assert.Contains("id=\"createIrnModal\"", irn);
-        Assert.Contains("vs-pill vs-pill--info", irn);
-        Assert.DoesNotContain("pems-filter-chip", irn);
-    }
-
-    [Fact]
-    public async Task Replenishment_RunIsAToolOnlyForWhoMayRun_AndTheNotesStay()
-    {
-        Task<string> Run(bool canRun) => Render<ReplenishmentController>("/Areas/Warehouse/Views/Replenishment/Index.cshtml",
-            Page(new ReplenishmentListItem { Id = 1, MaterialCode = "M-1", Status = "Open", IsCurrentlyDefinitive = false }),
-            v =>
-            {
-                v["LastRun"] = null; v["CanRun"] = canRun; v["AttributionEntries"] = new List<string> { "WO-1" };
-                v["SelectedStatus"] = "Open"; v["Search"] = "bear"; v["DefinitiveOnly"] = false; v["RequestKey"] = "k";
-            });
-
-        var html = await Run(true);
-        AssertBuiltFromTheComponent(html, "Replenishment", 1);
-        Assert.Contains("bi-calculator", html);
-        Assert.Contains("alert-info", html);                                              // stock-only note
-        Assert.Contains("alert-warning", html);                                           // attribution note
-        Assert.Equal(2, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);  // search + status
-        Assert.DoesNotContain("bi-calculator", await Run(false));
-    }
-
-    [Fact]
-    public async Task MaterialItems_CountCardsAreKpis_AndPagingKeepsLowStockAndCritical()
-    {
-        var page = new PagedResult<MaterialItemListDto>
-        {
-            Items = new List<MaterialItemListDto> { new() { MaterialItemId = 1, MaterialCode = "M-1", Description = "Bearing", IsLowStock = true, IsCritical = true } },
-            Page = 1, PageSize = 25, TotalCount = 60
-        };
-        var html = await Render<MaterialItemController>("/Areas/Warehouse/Views/MaterialItem/Index.cshtml", page, v =>
-        {
-            v["Categories"] = new List<dynamic> { Obj(("MaterialCategoryId", 2), ("Name", "Bearings")) };
-            v["Disciplines"] = new List<dynamic>(); v["Uoms"] = new List<dynamic>(); v["Vendors"] = new List<dynamic>();
-            v["SearchTerm"] = null; v["CategoryId"] = 2; v["LowStockOnly"] = true; v["CriticalOnly"] = true;
-        });
-
-        AssertBuiltFromTheComponent(html, "MaterialItem", 1);
-        Assert.Contains("id=\"miKpis\"", html);
-        Assert.Equal(3, Regex.Matches(Chips(html), "class=\"pems-filter-chip\"").Count);
-        Assert.Contains("lowStockOnly=true", html);
-        Assert.Contains("criticalOnly=true", html);
-        Assert.Contains("id=\"createMaterialModal\"", html);
-        Assert.DoesNotContain("class=\"pagination pagination-sm justify-content-center\"", html);   // the old pager that lost the filters
-    }
 
     [Fact]
     public async Task PartCatalogueRequests_ViewAndSidePanelFiltersAreInTheDropdown_AndTheCountsShowFirst()

@@ -47,6 +47,30 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+
+
+
+## 2026-11-21 - Store requisition as definition pages (SCRUM-664)
+
+### Changed
+- /p/store-requisitions and /p/store-requisition-details (with their forms and actions) replace StoreRequisitionController. The reads are StoreRequisition.* operations; the commands (create, add a line, advance, reject, cancel, close with a shortage, set an approved quantity, issue everything or one line) call IStoreRequisitionLifecycleService, which keeps the permission, separation-of-duties and transition rules. The per-line quantity form became per-line commands; the new requisition lands on the list. The old routes redirect.
+
+## 2026-11-21 - Replenishment and the procurement queue as definition pages (SCRUM-663, 735)
+
+### Changed
+- /p/replenishment, /p/replenishment-details, /p/pre-procurement and /p/pre-procurement-details (with their forms and actions) replace ReplenishmentController and PreProcurementController. The Replenishment.* operations keep the feature switch (a switched-off module answers nothing) and the commands run under the strict access guard like ProtectedActionGuard; the pre-procurement decisions are the operations marked on IPreProcurementService (convert to a new or a Draft requisition, accept, dismiss or return, send a recommendation). The row version of a recommendation is read when the command runs, not carried by the form. The old routes redirect.
+
+## 2026-11-21 - Material Master as definition pages (SCRUM-656)
+
+### Changed
+- /p/material-items, /p/material-item-details and their forms replace MaterialItemController: create, edit and activate / deactivate are the generic entity actions on a new MaterialItem registration (same permissions as before), receive, adjust and transfer stock are the operations MaterialStock.Receive, Adjust and Transfer marked on IMaterialStockService (permissions kept), the reads are MaterialItem.* operations over IMaterialItemService. The barcode panel of the old details page moves with the Barcode controller (SCRUM-671). /Warehouse/MaterialItem redirects.
+
+## 2026-11-21 - Inventory master data landing page (SCRUM-653)
+
+### Changed
+- /p/inventory-master-data replaces InventoryMasterDataController (its create and activate / deactivate commands were already the generic entity pages /p/uoms, /p/material-categories, /p/warehouses, /p/storage-locations); /Warehouse/InventoryMasterData redirects; the Barcode redirect and the Quick Setup step point to the page.
+
 ## 2026-11-21 - Inventory dashboard, ledger and warehouse intake as definition pages (SCRUM-652, 654, 665)
 
 ### Changed

@@ -115,7 +115,6 @@ public class InfoGridComponentTests
 
     [Theory]
     [InlineData("Areas/Warehouse/Views/PartCatalogueRequest/Details.cshtml", 3)]
-    [InlineData("Views/PreProcurement/Details.cshtml", 1)]
     [InlineData("Views/PurchaseOrder/Details.cshtml", 1)]
     [InlineData("Views/Task/Details.cshtml", 1)]
     public void WaveI2_TheDescriptionListPagesUseTheRowsLayout(string view, int grids)
@@ -131,7 +130,6 @@ public class InfoGridComponentTests
     [InlineData("Views/Contract/Details.cshtml", 2, 12)]
     [InlineData("Views/Tender/Details.cshtml", 1, 7)]
     [InlineData("Views/MaterialRequisition/Details.cshtml", 1, 8)]
-    [InlineData("Areas/Warehouse/Views/MaterialItem/Details.cshtml", 1, 8)]
     public void WaveI3_ProcurementHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));

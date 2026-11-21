@@ -64,14 +64,6 @@ public class ProcurementP0ReadAndSodDecisionTests
         var irn = new IrnReceiptController(ctx, null!, none, permissions, null!, null!);
         Assert.IsType<ForbidResult>(await irn.Index(null));
         Assert.IsType<ForbidResult>(await irn.Details(1));
-
-        var sr = new StoreRequisitionController(ctx, null!, none, permissions, null!);
-        Assert.IsType<ForbidResult>(await sr.Index(null));
-        Assert.IsType<ForbidResult>(await sr.Details(1));
-
-        var mi = new MaterialItemController(ctx, null!, null!, none, permissions, null!);
-        Assert.IsType<ForbidResult>(await mi.Index(null, null));
-        Assert.IsType<ForbidResult>(await mi.Details(1));
     }
 
     [Fact]
@@ -82,7 +74,6 @@ public class ProcurementP0ReadAndSodDecisionTests
 
         // سید موجود: Viewer روی IRN / StoreRequisition / MaterialItem / ProcurementPackage فقط View دارد
         Assert.IsType<ViewResult>(await new IrnReceiptController(ctx, null!, viewer, permissions, null!, null!).Index(null));
-        Assert.IsType<ViewResult>(await new StoreRequisitionController(ctx, null!, viewer, permissions, null!).Index(null));
         Assert.True(await permissions.HasPermissionAsync(viewer.Roles, "MaterialItem", "View"));
         Assert.True(await permissions.HasPermissionAsync(viewer.Roles, "ProcurementPackage", "View"));
         // Vendors و Contracts هیچ ردیفی برای Viewer ندارند (تصمیم مالک: فقط نقش‌های دارای مجوز آن ماژول)

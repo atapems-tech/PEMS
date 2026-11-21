@@ -75,8 +75,8 @@ public class BarcodeController : Controller
         return result.TargetType switch
         {
             "Equipment" => RedirectToAction("Details", "Equipment", new { id = result.TargetId }),
-            "MaterialItem" => RedirectToAction("Details", "MaterialItem", new { id = result.TargetId }),
-            "Warehouse" or "StorageLocation" => RedirectToAction("Index", "InventoryMasterData"),
+            "MaterialItem" => Redirect("/p/material-item-details?id=" + result.TargetId),
+            "Warehouse" or "StorageLocation" => Redirect("/p/inventory-master-data"),
             _ => NotFound()
         };
     }
@@ -362,8 +362,8 @@ public class BarcodeController : Controller
     private IActionResult RedirectToDetails(string targetType, int targetId) => targetType switch
     {
         "Equipment" => RedirectToAction("Details", "Equipment", new { id = targetId }),
-        "MaterialItem" => RedirectToAction("Details", "MaterialItem", new { id = targetId }),
-        "Warehouse" or "StorageLocation" => RedirectToAction("Index", "InventoryMasterData"),
+        "MaterialItem" => Redirect("/p/material-item-details?id=" + targetId),
+        "Warehouse" or "StorageLocation" => Redirect("/p/inventory-master-data"),
         // طبق «PEMS Operations & Production Architecture Spec v1» فاز ۱ بند AB
         "ProductionBatch" => RedirectToAction("BatchDetails", "ProductionRun", new { id = targetId }),
         _ => RedirectToAction(nameof(Index))

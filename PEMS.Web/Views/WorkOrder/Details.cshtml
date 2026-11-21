@@ -60,7 +60,7 @@
     var laborEntries = (List<PEMS.Domain.Entities.WorkOrderLabor>)ViewBag.LaborEntries;
     var totalLaborCost = (decimal)ViewBag.TotalLaborCost;
     var spareCost = (decimal)ViewBag.SpareCost;
-    var materialMasterUrl = Url.Action("Index", "MaterialItem", new { area = "Warehouse" });
+    var materialMasterUrl = "/p/material-items";
 }
 
 @if (wf != null)
@@ -923,7 +923,7 @@ else
                             <span dir="ltr">@il.SourcedQuantity.ToString("0.###") / @il.RequiredQuantity.ToString("0.###")</span>
                             @foreach (var r in il.Requisitions)
                             {
-                                <pems-link class="ms-1" href="/Warehouse/StoreRequisition/Details/@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber (@r.WarehouseCode)</pems-link>
+                                <pems-link class="ms-1" href="/p/store-requisition-details?id=@r.StoreRequisitionId" dir="ltr">@r.RequisitionNumber (@r.WarehouseCode)</pems-link>
                             }
                         }
                         else { <span class="text-muted">—</span> }
