@@ -33,7 +33,7 @@ public class TagDeleteOutcomeTests
     {
         var (db, parent, _, free, personal) = Seed();
         using var _db = db;
-        var svc = new TagService(db);
+        var svc = new PEMS.Persistence.Services.TagService(db);
 
         Assert.Equal(TagDeleteOutcome.HasSubTags, await svc.DeleteAsync(parent.TagId, actorUserId: 1));
         Assert.Equal(TagDeleteOutcome.NotOwner, await svc.DeleteAsync(personal.TagId, actorUserId: 1));
@@ -52,7 +52,7 @@ public class TagDeleteOutcomeTests
     {
         var (db, parent, _, free, _) = Seed();
         using var _db = db;
-        var ops = new TagOperations(new TagService(db), new FakeCurrentUserService { UserId = 1 }, new PEMS.Tests.Api.KeyLocalizer());
+        var ops = new TagOperations(new PEMS.Persistence.Services.TagService(db), new FakeCurrentUserService { UserId = 1 }, new PEMS.Tests.Api.KeyLocalizer());
 
         var refused = await ops.DeleteAsync(parent.TagId);
         Assert.False(refused.Success);
