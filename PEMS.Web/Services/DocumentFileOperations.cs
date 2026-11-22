@@ -60,6 +60,24 @@ public sealed class DocumentFileOperations(PEMSDbContext context, IFileStorageSe
         return (true, null);
     }
 
+    public async Task<(bool Success, string? Error)> UploadVdrSubmissionFileAsync(int vdrItemId, int submissionId, string kind, OperationFile? file)
+    {
+        var folder = PEMS.Web.Helpers.VdrFiles.FolderOf(kind);
+        var submission = await context.VDRSubmissions.FirstOrDefaultAsync(x => x.VDRSubmissionId == submissionId && x.VDRItemId == vdrItemId);
+        if (folder is null || submission is null) throw new InvalidOperationException("The submission was not found.");
+        if (file is null || file.Bytes.Length == 0) return (false, "فایلی انتخاب نشده.");
+        var attachmentId = await SaveAsync(file, "vdr/" + folder);
+        if (attachmentId is not int id) return (true, null);
+        switch (kind)
+        {
+            case "Main": submission.AttachmentId = id; break;
+            case "CommentSheet": submission.CommentSheetAttachmentId = id; break;
+            default: submission.ReplySheetAttachmentId = id; break;
+        }
+        await context.SaveChangesAsync();
+        return (true, $"File uploaded: {file.FileName}");
+    }
+
     public async Task<(bool Success, string? Error)> UploadVdrCommentSheetAsync(int submissionId, OperationFile file)
     {
         var attachmentId = await SaveAsync(file, "vdr/comment-sheets");

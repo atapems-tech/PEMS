@@ -111,17 +111,13 @@ public class VdrNumberingAndFilesTests
     [Fact]
     public void UploadAction_KeepsTheUploadRules_AndOnlyTouchesASubmissionOfTheItem()
     {
-        var source = Read("PEMS.Web", "Controllers", "VDRController.cs");
-        var start = source.IndexOf("public async Task<IActionResult> UploadSubmissionFile(", StringComparison.Ordinal);
-        Assert.True(start > 0);
-        var head = source[(start - 400)..start];
-        Assert.Contains("UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]", head);
-        Assert.Contains("[ValidateAntiForgeryToken]", head);
-        var body = source[start..source.IndexOf("private async Task<bool> EnsurePermissionAsync", StringComparison.Ordinal)];
-        Assert.Contains("EnsurePermissionAsync(\"Edit\", vdrItemId", body);
-        Assert.Contains("x.VDRSubmissionId == submissionId && x.VDRItemId == vdrItemId", body);
-        Assert.Contains("VdrFiles.FolderOf(kind)", body);
-        Assert.Contains("SaveVdrFileAsync(file, folder)", body);
+        // SCRUM-761: the controller action is the definition vdr-submission-file over VdrFiles.UploadSubmissionFile (VDR.Edit floor, the upload profile of the action)
+        var definition = Read("PEMS.Persistence", "Definitions", "System", "action", "core", "vdr-submission-file.json");
+        Assert.Contains("\"profile\": \"attachment\"", definition);
+        var source = Read("PEMS.Web", "Services", "DocumentFileOperations.cs");
+        Assert.Contains("x.VDRSubmissionId == submissionId && x.VDRItemId == vdrItemId", source);
+        Assert.Contains("VdrFiles.FolderOf(kind)", source);
+        Assert.Equal("VDR.Edit", PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly).Get("VdrFiles", "UploadSubmissionFile")!.Permission);
     }
 
     [Fact]
@@ -129,7 +125,7 @@ public class VdrNumberingAndFilesTests
     {
         var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
         var pane = view[view.IndexOf("id=\"tab-files\"", StringComparison.Ordinal)..];
-        Assert.Contains("<pems-form asp-action=\"UploadSubmissionFile\" method=\"post\" enctype=\"multipart/form-data\"", pane);
+        Assert.Contains("<pems-form action=\"/a/vdr-submission-file\" method=\"post\" enctype=\"multipart/form-data\"", pane);
         foreach (var field in new[] { "name=\"vdrItemId\"", "name=\"submissionId\"", "name=\"kind\"", "<pems-uploader id=\"vdrUploadFile\" name=\"file\" required" })
             Assert.Contains(field, pane);
         Assert.Contains("@foreach (var k in VdrFiles.Kinds)", pane);

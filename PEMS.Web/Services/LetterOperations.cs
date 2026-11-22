@@ -7,7 +7,7 @@ using PEMS.Web.Security;
 namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-716, 715: the letter commands of LetterController and LetterComposeController (same access rules, same services, same texts). A letter the user may not see is a refusal (the 403 page, as before).</summary>
-public sealed class LetterOperations(PEMSDbContext context, ILetterService letters, ILetterReferralService referrals, ITagService tags, ILetterComposeService compose, ICurrentUserService currentUser, IPermissionService permissions) : ILetterOperations
+public sealed class LetterOperations(PEMSDbContext context, ILetterService letters, ILetterReferralService referrals, ITagService tags, ILetterComposeService compose, ICurrentUserService currentUser, IPermissionService permissions, IFileStorageService storage) : ILetterOperations
 {
     private bool IsAdmin => currentUser.Roles.Contains("SystemAdmin");
 
@@ -130,6 +130,23 @@ public sealed class LetterOperations(PEMSDbContext context, ILetterService lette
     public async Task<(bool Success, string? Error)> ArchiveAsync(int letterId) => await letters.ArchiveAsync(letterId, currentUser.UserId, await CanSeeAllAsync());
 
     public Task<(bool Success, string? Error)> ReassignApproverAsync(int letterId, int stepOrder, int newApproverUserId) => letters.ReassignApprovalStepAsync(letterId, stepOrder, newApproverUserId, currentUser.UserId, IsAdmin);
+
+    public async Task<(bool Success, string? Error)> UploadAttachmentAsync(int letterId, PEMS.Application.Common.OperationFile? file)
+    {
+        await AccessAsync(letterId);
+        if (file is not null && file.Bytes.Length > 0)
+        {
+            string storageKey;
+            await using (var stream = new MemoryStream(file.Bytes)) storageKey = await storage.SaveAsync("letters", file.FileName, stream);
+            await context.DocumentAttachments.AddAsync(new PEMS.Domain.Entities.DocumentAttachment
+            {
+                LetterId = letterId, FileName = file.FileName, FileExtension = Path.GetExtension(file.FileName), FilePath = storageKey, FileSize = file.Bytes.Length, MimeType = file.ContentType,
+                UploadDate = DateTime.Now, IsActive = true, AIStatus = "NotApplicable"
+            });
+            await context.SaveChangesAsync();
+        }
+        return Ok();
+    }
 
     public async Task<(bool Success, string? Error)> DiscardDraftAsync(int letterId)
     {

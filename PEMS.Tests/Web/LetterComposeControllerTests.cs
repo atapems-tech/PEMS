@@ -96,7 +96,7 @@ public class LetterComposeControllerTests
 
     // SCRUM-715: discard, send, archive and the approver change are operations (the definitions run them)
     private static PEMS.Web.Services.LetterOperations Ops(Rig rig, FakeUser? user = null)
-        => new(rig.Ctx, rig.Letters, null!, null!, rig.Compose, user ?? rig.User, rig.Permissions);
+        => new(rig.Ctx, rig.Letters, null!, null!, rig.Compose, user ?? rig.User, rig.Permissions, null!);
 
     private static void Unused()
     {

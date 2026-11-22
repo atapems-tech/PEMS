@@ -20,6 +20,13 @@ public interface IImportReviewOperations
     [PemsOperation("MdrImport", "FixLegacyStatuses", "MDRImport.Approve")]
     Task<(bool Success, string? Error)> FixMdrLegacyStatusesAsync(int? projectId);
 
+    /// <summary>Stages the workbook as a batch to review; answers the id of the new batch.</summary>
+    [PemsOperation("MdrImport", "Upload", "MDRImport.Create")]
+    Task<int> UploadMdrAsync(OperationFile? file, int projectId, int? employeeId);
+
+    [PemsOperation("VdrImport", "Upload", "VDR.Create")]
+    Task<int> UploadVdrAsync(OperationFile? file, int projectId, int? employeeId);
+
     [PemsOperation("VdrImport", "ToggleRow", "VDR.Create")]
     Task<(bool Success, string? Error)> ToggleVdrRowAsync(int rowId, bool include);
 

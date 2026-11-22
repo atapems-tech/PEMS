@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "vdr-submission-file",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload the file of a submission",
+    "fa": "بارگذاری فایل ارسال"
+  },
+  "description": {
+    "en": "Upload the file of a submission",
+    "fa": "بارگذاری فایل ارسال"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrFiles",
+      "action": "UploadSubmissionFile",
+      "args": {
+        "vdrItemId": "field:vdrItemId",
+        "submissionId": "field:submissionId",
+        "kind": "field:kind",
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 50
+      }
+    },
+    "success": {
+      "en": "File uploaded.",
+      "fa": "فایل بارگذاری شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}?tab=files"
+  }
+}

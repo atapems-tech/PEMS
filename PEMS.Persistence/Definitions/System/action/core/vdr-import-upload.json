@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "vdr-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a VDR workbook",
+    "fa": "بارگذاری فایل VDR"
+  },
+  "description": {
+    "en": "Upload a VDR workbook",
+    "fa": "بارگذاری فایل VDR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrImport",
+      "action": "Upload",
+      "args": {
+        "file": "file:file",
+        "projectId": "field:projectId",
+        "employeeId": "context:employeeId"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "The workbook was staged for review.",
+      "fa": "فایل برای بازبینی مرحله‌بندی شد."
+    },
+    "redirect": "/VDRImport/Review?batchId={result}"
+  }
+}

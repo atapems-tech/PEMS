@@ -500,7 +500,7 @@
                 else
                 { <pems-text class="text-muted small">No attachments yet.</pems-text> }
 
-                <pems-form asp-action="UploadAttachment" method="post" enctype="multipart/form-data"><pems-flex gap="2">
+                <pems-form action="/a/letter-upload-attachment" method="post" enctype="multipart/form-data"><pems-flex gap="2">
                     <input type="hidden" name="letterId" value="@l.LetterId" />
                     <pems-uploader scale="small" name="file" required />
                     <pems-button tone="primary" size="small" outline="true"><pems-icon name="bi-upload" /> @Localizer["Upload"]</pems-button>
