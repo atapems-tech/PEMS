@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "maintenance-plan-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a maintenance plan",
+    "fa": "ایجاد برنامه‌ی نگهداری"
+  },
+  "description": {
+    "en": "Create a maintenance plan from an assignment",
+    "fa": "ایجاد برنامه‌ی نگهداری از یک تخصیص"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "Create",
+      "args": {
+        "input": {
+          "MaintenanceStrategyAssignmentId": "field:id"
+        },
+        "userRoles": "context:roles",
+        "employeeId": "context:employeeId",
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Maintenance plan created.",
+      "fa": "برنامه‌ی نگهداری ایجاد شد."
+    },
+    "redirect": "/p/maintenance-plans"
+  }
+}

@@ -201,7 +201,7 @@ public class MaintenanceStrategyControllerAuthorizationTests
     {
         var controllers = new[]
         {
-            typeof(MaintenanceStrategyController), typeof(MaintenancePlanController),
+            typeof(MaintenanceStrategyController),
             typeof(FailureModeCatalogController), typeof(StrategyImportController)
         };
 

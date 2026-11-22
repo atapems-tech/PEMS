@@ -57,15 +57,6 @@ public class BulkAssignViewModel
     public Dictionary<int, BulkAssignCandidateDto> Candidates { get; set; } = new();
 }
 
-public class PlanFormViewModel
-{
-    public PlanFormContextDto? Context { get; set; }
-    public PlanInputDto Input { get; set; } = new();
-    public List<LookupItem> JobPlans { get; set; } = new();
-    public List<AssignmentChoiceDto> Choices { get; set; } = new();
-    public List<string> Errors { get; set; } = new();
-}
-
 public class StrategyImportViewModel
 {
     public string Kind { get; set; } = "strategies";

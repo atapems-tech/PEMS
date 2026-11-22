@@ -1,0 +1,89 @@
+{
+  "kind": "page",
+  "key": "maintenance-plan-assignments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New maintenance plan",
+    "fa": "برنامه‌ی نگهداری جدید"
+  },
+  "description": {
+    "en": "Pick the tag and strategy for the new plan (page definition)",
+    "fa": "انتخاب تگ و استراتژی برای برنامه‌ی جدید (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "maintenance-plan-assignments",
+    "template": "entity-list",
+    "args": {
+      "id": "maintenance-plan-assignments",
+      "url": "/d/maintenance-plan-assignments",
+      "idField": "assignmentId",
+      "columns": [
+        {
+          "key": "tag",
+          "header": {
+            "en": "Tag",
+            "fa": "تگ"
+          },
+          "width": 160
+        },
+        {
+          "key": "strategyType",
+          "header": {
+            "en": "Strategy type",
+            "fa": "نوع استراتژی"
+          },
+          "width": 160
+        },
+        {
+          "key": "failureMode",
+          "header": {
+            "en": "Failure mode",
+            "fa": "حالت خرابی"
+          },
+          "width": 240
+        },
+        {
+          "key": "strategyVersion",
+          "header": {
+            "en": "Version",
+            "fa": "نسخه"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "equipmentClass",
+          "header": {
+            "en": "Equipment class",
+            "fa": "کلاس تجهیز"
+          },
+          "width": 200
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 200,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "create",
+              "label": {
+                "en": "Create a plan",
+                "fa": "ایجاد برنامه"
+              },
+              "url": "/f/maintenance-plan-create/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

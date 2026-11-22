@@ -24,7 +24,7 @@
             "blocks": [
               {
                 "type": "link",
-                "href": "/MaintenancePlan/Create",
+                "href": "/p/maintenance-plan-assignments",
                 "text": {
                   "en": "New plan",
                   "fa": "برنامه‌ی جدید"

@@ -8,6 +8,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.TestSupport;
 
@@ -31,9 +32,9 @@ public sealed class RcmEnv
         Ctx, Queries, Commands, Assignments, new FailureModeCatalogService(Ctx), new StrategyCoverageService(Ctx),
         new FunctionalLocationService(Ctx), User, Permissions).WithTempData();
 
-    public MaintenancePlanController PlanController(IPMGenerationService? pm = null) => new MaintenancePlanController(
-        Ctx, new MaintenancePlanService(Ctx), Plans(), Assignments,
-        pm ?? new PMGenerationService(Ctx, new FakeNumberingService()), User, Permissions).WithTempData();
+    /// <summary>SCRUM-817: the plan create page is operations (formerly MaintenancePlanController.Create).</summary>
+    public MaintenancePlanOperations PlanOperations(IPMGenerationService? pm = null) => new MaintenancePlanOperations(
+        new MaintenancePlanService(Ctx), pm ?? new PMGenerationService(Ctx, new FakeNumberingService()), null!, Ctx, Plans(), Assignments);
 }
 
 public static class RcmTestFactory

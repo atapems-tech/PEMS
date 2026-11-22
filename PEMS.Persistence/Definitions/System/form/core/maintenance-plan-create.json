@@ -1,0 +1,241 @@
+{
+  "kind": "form",
+  "key": "maintenance-plan-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New maintenance plan",
+    "fa": "برنامه‌ی نگهداری جدید"
+  },
+  "description": {
+    "en": "Create a maintenance plan from a strategy assignment",
+    "fa": "ایجاد برنامه‌ی نگهداری از یک تخصیص استراتژی"
+  },
+  "payload": {
+    "id": "maintenance-plan-create",
+    "title": {
+      "en": "New maintenance plan",
+      "fa": "برنامه‌ی نگهداری جدید"
+    },
+    "submitLabel": {
+      "en": "Create plan",
+      "fa": "ایجاد برنامه"
+    },
+    "actionKey": "maintenance-plan-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "permission": "MaintenancePlan.Create",
+    "load": {
+      "model": "MaintenancePlanPage",
+      "action": "FormOf",
+      "args": {
+        "id": "param:id"
+      }
+    },
+    "fields": [
+      {
+        "name": "tag",
+        "label": {
+          "en": "Tag",
+          "fa": "تگ"
+        },
+        "kind": "text",
+        "readOnly": true
+      },
+      {
+        "name": "strategy",
+        "label": {
+          "en": "Strategy",
+          "fa": "استراتژی"
+        },
+        "kind": "text",
+        "readOnly": true
+      },
+      {
+        "name": "failureMode",
+        "label": {
+          "en": "Failure mode",
+          "fa": "حالت خرابی"
+        },
+        "kind": "text",
+        "readOnly": true
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "minLength": 5,
+        "maxLength": 200,
+        "messages": {
+          "required": {
+            "en": "The title is required.",
+            "fa": "عنوان الزامی است."
+          }
+        }
+      },
+      {
+        "name": "triggerType",
+        "label": {
+          "en": "Trigger type",
+          "fa": "نوع محرک"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Calendar",
+            "label": {
+              "en": "Calendar",
+              "fa": "Calendar"
+            }
+          },
+          {
+            "value": "Meter",
+            "label": {
+              "en": "Meter",
+              "fa": "Meter"
+            }
+          },
+          {
+            "value": "Both",
+            "label": {
+              "en": "Both",
+              "fa": "Both"
+            }
+          }
+        ]
+      },
+      {
+        "name": "intervalDays",
+        "label": {
+          "en": "Interval (days)",
+          "fa": "بازه (روز)"
+        },
+        "kind": "number",
+        "min": 1,
+        "visible": "values.triggerType in ['Calendar', 'Both']"
+      },
+      {
+        "name": "suggestedInterval",
+        "label": {
+          "en": "Suggested interval for the criticality",
+          "fa": "بازه‌ی پیشنهادی بر اساس بحرانیت"
+        },
+        "kind": "text",
+        "readOnly": true
+      },
+      {
+        "name": "nextDueDate",
+        "label": {
+          "en": "Next due date",
+          "fa": "سررسید بعدی"
+        },
+        "kind": "date",
+        "visible": "values.triggerType in ['Calendar', 'Both']"
+      },
+      {
+        "name": "allowPastDueDate",
+        "label": {
+          "en": "Allow a due date in the past",
+          "fa": "اجازه‌ی سررسید گذشته"
+        },
+        "kind": "switch",
+        "visible": "values.triggerType in ['Calendar', 'Both']"
+      },
+      {
+        "name": "meterType",
+        "label": {
+          "en": "Meter type",
+          "fa": "نوع کنتور"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "RunningHours",
+            "label": {
+              "en": "RunningHours",
+              "fa": "RunningHours"
+            }
+          },
+          {
+            "value": "Cycles",
+            "label": {
+              "en": "Cycles",
+              "fa": "Cycles"
+            }
+          },
+          {
+            "value": "ProductionUnits",
+            "label": {
+              "en": "ProductionUnits",
+              "fa": "ProductionUnits"
+            }
+          }
+        ],
+        "visible": "values.triggerType in ['Meter', 'Both']"
+      },
+      {
+        "name": "meterInterval",
+        "label": {
+          "en": "Meter interval",
+          "fa": "بازه‌ی کنتور"
+        },
+        "kind": "number",
+        "min": 0.01,
+        "visible": "values.triggerType in ['Meter', 'Both']"
+      },
+      {
+        "name": "scheduleMode",
+        "label": {
+          "en": "Schedule mode",
+          "fa": "حالت زمان‌بندی"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Fixed",
+            "label": {
+              "en": "Fixed",
+              "fa": "ثابت"
+            }
+          },
+          {
+            "value": "Floating",
+            "label": {
+              "en": "Floating",
+              "fa": "شناور"
+            }
+          }
+        ]
+      },
+      {
+        "name": "jobPlanId",
+        "label": {
+          "en": "Job plan",
+          "fa": "طرح کار"
+        },
+        "kind": "select",
+        "required": true,
+        "optionsFrom": "maintenance-plan-job-plans",
+        "messages": {
+          "required": {
+            "en": "The job plan is required.",
+            "fa": "طرح کار الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

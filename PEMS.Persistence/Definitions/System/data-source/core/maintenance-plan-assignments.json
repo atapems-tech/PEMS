@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "maintenance-plan-assignments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assignments a plan can be created from",
+    "fa": "تخصیص‌هایی که برنامه از آن‌ها ساخته می‌شود"
+  },
+  "description": {
+    "en": "Assignments a plan can be created from",
+    "fa": "تخصیص‌هایی که برنامه از آن‌ها ساخته می‌شود"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "AssignmentChoices",
+      "args": {
+        "equipmentId": "param:equipmentId",
+        "strategyId": "param:strategyId"
+      }
+    }
+  }
+}

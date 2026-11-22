@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-plan-create-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New maintenance plan (old address)",
+    "fa": "برنامه‌ی نگهداری جدید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New maintenance plan (old address)",
+    "fa": "برنامه‌ی نگهداری جدید (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenancePlan/Create",
+    "target": "/p/maintenance-plan-assignments",
+    "permanent": false
+  }
+}

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.Interfaces;
 using PEMS.Domain.Entities;
@@ -6,7 +5,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Authorization;
 
@@ -15,7 +14,7 @@ namespace PEMS.Tests.Authorization;
 /// بررسی مجوزی نداشت - هر کاربر احرازهویت‌شده‌ای می‌توانست Plan بسازد، از آن WorkOrder بسازد،
 /// یا آن را غیرفعال کند.
 /// </summary>
-public class MaintenancePlanControllerAuthorizationTests
+public class MaintenancePlanOperationAuthorizationTests
 {
     // NumberingService واقعی از UPDATE...OUTPUT خام SQL Server استفاده می‌کند (با InMemory کار
     // نمی‌کند) - این Fake ساده فقط برای اثبات Forbid/موفقیت مسیر مجوز لازم است، نه خودِ منطق شماره‌گذاری.
@@ -35,7 +34,7 @@ public class MaintenancePlanControllerAuthorizationTests
         public Task<int> ReconcileFloatingSchedulesAsync() => Task.FromResult(0);
     }
 
-    private static async Task<(MaintenancePlanController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
+    private static async Task<(MaintenancePlanOperations Operations, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
         string dbName, string? role = SystemRoles.MaintenanceEngineer)
     {
         var ctx = PemsDbContextFactory.CreateInMemory($"MaintPlanAuth_{dbName}");
@@ -53,12 +52,9 @@ public class MaintenancePlanControllerAuthorizationTests
 
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
 
-        var maintenancePlanService = new MaintenancePlanService(ctx);
-        var controller = new MaintenancePlanController(ctx, maintenancePlanService,
-                new MaintenancePlanCommandService(ctx, new FakeNumberingService()), new StrategyAssignmentService(ctx),
-                new FakePMGenerationService(), currentUser, permissionService)
-            .WithTempData();
-        return (controller, ctx);
+        var operations = new MaintenancePlanOperations(new MaintenancePlanService(ctx), new FakePMGenerationService(), null!, ctx,
+            new MaintenancePlanCommandService(ctx, new FakeNumberingService()), new StrategyAssignmentService(ctx));
+        return (operations, ctx);
     }
 
     private static async Task<int> SeedAssignmentAsync(PEMS.Persistence.Context.PEMSDbContext ctx)
@@ -79,34 +75,40 @@ public class MaintenancePlanControllerAuthorizationTests
     }
 
     [Fact]
-    public async Task Create_WithoutCreatePermission_ReturnsForbid()
+    public void The_create_operations_require_the_permission_the_controller_checked_and_the_engine_checks_it_before_the_call()
     {
-        var (controller, ctx) = await CreateController(nameof(Create_WithoutCreatePermission_ReturnsForbid), role: SystemRoles.Viewer);
-        var assignmentId = await SeedAssignmentAsync(ctx);
-
-        var result = await controller.Create(new PEMS.Application.DTOs.PlanInputDto
-        {
-            MaintenanceStrategyAssignmentId = assignmentId, Title = "Test Plan", TriggerType = "Calendar", IntervalDays = 30, JobPlanId = 1
-        });
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.MaintenancePlans);
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        foreach (var action in new[] { "Create", "FormOf", "AssignmentChoices", "JobPlanChoices" })
+            Assert.Equal("MaintenancePlan.Create", catalog.Get("MaintenancePlanPage", action)!.Permission);
     }
 
     [Fact]
-    public async Task Create_WithCreatePermission_CreatesMaintenancePlan()
+    public async Task Create_WithCreatePermission_CreatesMaintenancePlan_FromTheAssignment()
     {
-        var (controller, ctx) = await CreateController(nameof(Create_WithCreatePermission_CreatesMaintenancePlan));
+        var (operations, ctx) = await CreateController(nameof(Create_WithCreatePermission_CreatesMaintenancePlan_FromTheAssignment));
         var assignmentId = await SeedAssignmentAsync(ctx);
 
-        var result = await controller.Create(new PEMS.Application.DTOs.PlanInputDto
+        var result = await operations.CreateAsync(new PEMS.Application.DTOs.PlanInputDto
         {
             MaintenanceStrategyAssignmentId = assignmentId, Title = "Test Plan", TriggerType = "Calendar", IntervalDays = 30, JobPlanId = 1
-        });
+        }, new List<string> { SystemRoles.MaintenanceEngineer }, null, "tester");
 
-        Assert.IsType<RedirectResult>(result);   // to the plan list page (a definition page, SCRUM-724)
+        Assert.True(result.Success);
         var plan = Assert.Single(ctx.MaintenancePlans);
-        Assert.Equal(1, plan.EquipmentId); // تجهیز از تخصیص مشتق شد، نه از کلاینت
+        Assert.Equal(plan.MaintenancePlanId, result.NewId);
+        Assert.Equal(1, plan.EquipmentId); // the equipment is derived from the assignment, never from the client
     }
 
+    [Fact]
+    public async Task Create_WithAnUnknownAssignment_GivesTheFirstRuleErrorAndCreatesNothing()
+    {
+        var (operations, ctx) = await CreateController(nameof(Create_WithAnUnknownAssignment_GivesTheFirstRuleErrorAndCreatesNothing));
+
+        var result = await operations.CreateAsync(new PEMS.Application.DTOs.PlanInputDto { MaintenanceStrategyAssignmentId = 424242, Title = "Test Plan", TriggerType = "Calendar", IntervalDays = 30, JobPlanId = 1 },
+            new List<string> { SystemRoles.MaintenanceEngineer }, null, "tester");
+
+        Assert.False(result.Success);
+        Assert.False(string.IsNullOrEmpty(result.Error));
+        Assert.Empty(ctx.MaintenancePlans);
+    }
 }
