@@ -25,6 +25,6 @@
       "en": "Instrument updated.",
       "fa": "ابزار به‌روزرسانی شد."
     },
-    "redirect": "/Instrument/Index"
+    "redirect": "/p/instruments"
   }
 }

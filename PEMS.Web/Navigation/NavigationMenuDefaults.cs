@@ -133,7 +133,7 @@ public static class NavigationMenuDefaults
         Section("sec.cmms", 700, "CmmsIntegration", "bi-tools", "Module:CmmsIntegration",
             "Equipment,Instrument,Asset,MaintenanceStrategy,FailureModeCatalog,StrategyImport,MaintenancePlan,MaintenanceCalendar,JobPlan,WorkRequest,WorkOrder,SparePart,Team,Crew,ShiftHandover,MaintenanceMasterData,EquipmentClassification,RcmFmea,EquipmentCriticality,CriticalityAssessment,FunctionalLocation,Barcode,Reliability,Inspection,Kpi,Permit,CmmsReadiness,CmmsOperations"),
         Link("cmms.equipment", "sec.cmms", 10, "Equipment", "bi-gear", "Equipment", rule: "CmmsItem:Equipment"),
-        Link("cmms.instrument", "sec.cmms", 20, "Instrument Passport", "bi-cpu", "Instrument", rule: "CmmsItem:Instrument"),
+        new("cmms.instrument", "sec.cmms", L, 20, "Instrument Passport", "bi-cpu", "CmmsItem:Instrument", ExternalPath: "/p/instruments", ExtraActiveControllers: "Instrument"),   // SCRUM-708: a definition page (/p/...)
         Link("cmms.asset", "sec.cmms", 30, "Assets", "bi-diagram-2", "Asset", rule: "CmmsItem:Asset"),
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),
         Link("cmms.strategy", "cmms.sub.planning", 10, "Maintenance Strategy", "bi-diagram-2", "MaintenanceStrategy", rule: "CmmsItem:MaintenanceStrategy"),

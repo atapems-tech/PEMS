@@ -34,6 +34,6 @@
       "en": "Calibration recorded.",
       "fa": "کالیبراسیون ثبت شد."
     },
-    "redirect": "/Instrument/Passport/{instrumentId}"
+    "redirect": "/p/instrument-passport?id={instrumentId}"
   }
 }

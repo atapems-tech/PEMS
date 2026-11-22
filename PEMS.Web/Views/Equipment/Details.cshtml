@@ -254,7 +254,7 @@
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-3">
                     <pems-heading level="6" class="mb-0">@Localizer["Cm_InstrumentPassport"]</pems-heading>
-                    <pems-button tone="primary" size="small" as="a" asp-controller="Instrument" asp-action="Passport" asp-route-id="@inst.InstrumentId">
+                    <pems-button tone="primary" size="small" as="a" href="/p/instrument-passport?id=@inst.InstrumentId">
                         <pems-icon name="bi-card-text" /> @Localizer["Cm_FullPassport"]
                     </pems-button>
                 </pems-flex>

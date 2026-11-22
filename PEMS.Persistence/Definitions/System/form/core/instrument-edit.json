@@ -1,0 +1,320 @@
+{
+  "kind": "form",
+  "key": "instrument-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit instrument",
+    "fa": "ویرایش ابزار"
+  },
+  "description": {
+    "en": "Edit instrument",
+    "fa": "ویرایش ابزار"
+  },
+  "payload": {
+    "id": "instrument-edit",
+    "title": {
+      "en": "Edit instrument",
+      "fa": "ویرایش ابزار"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "instrument-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "instrumentType",
+        "label": {
+          "en": "Instrument type",
+          "fa": "نوع ابزار"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "loopNumber",
+        "label": {
+          "en": "Loop number",
+          "fa": "شماره حلقه"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "system",
+        "label": {
+          "en": "System",
+          "fa": "سیستم"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "signalClass",
+        "label": {
+          "en": "Signal class",
+          "fa": "کلاس سیگنال"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "unit",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "signalType",
+        "label": {
+          "en": "Signal type",
+          "fa": "نوع سیگنال"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "rangeMin",
+        "label": {
+          "en": "Range min",
+          "fa": "حداقل محدوده"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "rangeMax",
+        "label": {
+          "en": "Range max",
+          "fa": "حداکثر محدوده"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "processVariable",
+        "label": {
+          "en": "Process variable",
+          "fa": "متغیر فرآیند"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "accuracy",
+        "label": {
+          "en": "Accuracy",
+          "fa": "دقت"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "outputSignal",
+        "label": {
+          "en": "Output signal",
+          "fa": "سیگنال خروجی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "powerSupply",
+        "label": {
+          "en": "Power supply",
+          "fa": "تغذیه"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "communication",
+        "label": {
+          "en": "Communication",
+          "fa": "ارتباط"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "ipRating",
+        "label": {
+          "en": "IP rating",
+          "fa": "درجه IP"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "processConnection",
+        "label": {
+          "en": "Process connection",
+          "fa": "اتصال فرآیند"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "electricalConnection",
+        "label": {
+          "en": "Electrical connection",
+          "fa": "اتصال الکتریکی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "hazardousArea",
+        "label": {
+          "en": "Hazardous area",
+          "fa": "منطقه خطرناک"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "exProtection",
+        "label": {
+          "en": "Ex protection",
+          "fa": "حفاظت Ex"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "zone",
+        "label": {
+          "en": "Zone",
+          "fa": "زون"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "gasGroup",
+        "label": {
+          "en": "Gas group",
+          "fa": "گروه گاز"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "tempClass",
+        "label": {
+          "en": "Temperature class",
+          "fa": "کلاس دما"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "failAction",
+        "label": {
+          "en": "Fail action",
+          "fa": "اقدام خرابی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "sil",
+        "label": {
+          "en": "SIL",
+          "fa": "SIL"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "junctionBox",
+        "label": {
+          "en": "Junction box",
+          "fa": "جانکشن باکس"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "marshallingCabinet",
+        "label": {
+          "en": "Marshalling cabinet",
+          "fa": "کابینت مارشالینگ"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "cableNumber",
+        "label": {
+          "en": "Cable number",
+          "fa": "شماره کابل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "barrierRelay",
+        "label": {
+          "en": "Barrier / relay",
+          "fa": "بریر / رله"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "ioCardChannel",
+        "label": {
+          "en": "IO card channel",
+          "fa": "کانال کارت IO"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "systemCabinet",
+        "label": {
+          "en": "System cabinet",
+          "fa": "کابینت سیستم"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "alarmSetpoint",
+        "label": {
+          "en": "Alarm setpoint",
+          "fa": "نقطه آلارم"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "tripSetpoint",
+        "label": {
+          "en": "Trip setpoint",
+          "fa": "نقطه تریپ"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "calibrationInterval",
+        "label": {
+          "en": "Calibration interval (days)",
+          "fa": "فاصله کالیبراسیون (روز)"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

@@ -4,7 +4,6 @@ Admin,OrganizationImport,Administration,"W1 admin, account, shell",Hamid,code-on
 Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Asset,Assets,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,FunctionalLocation,Assets,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
-,Instrument,Assets,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,Equipment,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,EquipmentClassification,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,EquipmentCriticality,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions

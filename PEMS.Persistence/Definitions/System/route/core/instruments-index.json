@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "instruments-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Instrument (old address)",
+    "fa": "ابزار دقیق (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Instrument (old address)",
+    "fa": "ابزار دقیق (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Instrument/Index",
+    "target": "/p/instruments",
+    "permanent": false
+  }
+}

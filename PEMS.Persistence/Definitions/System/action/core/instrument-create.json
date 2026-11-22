@@ -1,0 +1,59 @@
+{
+  "kind": "action",
+  "key": "instrument-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create instrument",
+    "fa": "ایجاد ابزار"
+  },
+  "description": {
+    "en": "Create instrument",
+    "fa": "ایجاد ابزار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Instrument",
+      "map": {
+        "equipmentId": "EquipmentId",
+        "instrumentType": "InstrumentType",
+        "loopNumber": "LoopNumber",
+        "system": "System",
+        "signalClass": "SignalClass",
+        "rangeMin": "RangeMin",
+        "rangeMax": "RangeMax",
+        "unit": "Unit",
+        "signalType": "SignalType",
+        "processVariable": "ProcessVariable",
+        "accuracy": "Accuracy",
+        "calibrationInterval": "CalibrationInterval"
+      },
+      "required": [
+        "EquipmentId",
+        "InstrumentType"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [
+        {
+          "fields": [
+            "EquipmentId"
+          ],
+          "message": {
+            "en": "This equipment already has an instrument profile.",
+            "fa": "این تجهیز از قبل پروفایل ابزار دارد."
+          }
+        }
+      ]
+    },
+    "success": {
+      "en": "Instrument created.",
+      "fa": "ابزار ایجاد شد."
+    },
+    "redirect": "/p/instruments"
+  }
+}

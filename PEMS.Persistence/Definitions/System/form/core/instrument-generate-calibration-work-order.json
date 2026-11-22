@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "instrument-generate-calibration-work-order",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate a calibration work order",
+    "fa": "ایجاد دستور کار کالیبراسیون"
+  },
+  "description": {
+    "en": "Generate a calibration work order",
+    "fa": "ایجاد دستور کار کالیبراسیون"
+  },
+  "payload": {
+    "id": "instrument-generate-calibration-work-order",
+    "title": {
+      "en": "Generate a calibration work order",
+      "fa": "ایجاد دستور کار کالیبراسیون"
+    },
+    "submitLabel": {
+      "en": "Generate",
+      "fa": "ایجاد"
+    },
+    "actionKey": "instrument-generate-calibration-work-order",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "instrumentId",
+        "label": {
+          "en": "Instrument id",
+          "fa": "شناسه ابزار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

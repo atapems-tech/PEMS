@@ -30,6 +30,6 @@
       "en": "Cause and effect recorded.",
       "fa": "Cause & Effect ثبت شد."
     },
-    "redirect": "/Instrument/Passport/{instrumentId}"
+    "redirect": "/p/instruments"
   }
 }

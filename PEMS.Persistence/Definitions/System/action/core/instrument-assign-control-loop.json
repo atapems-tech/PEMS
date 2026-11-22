@@ -30,6 +30,6 @@
       "en": "Control loop recorded.",
       "fa": "Control Loop ثبت شد."
     },
-    "redirect": "/Instrument/Passport/{instrumentId}"
+    "redirect": "/p/instrument-passport?id={instrumentId}"
   }
 }

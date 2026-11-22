@@ -1,14 +1,47 @@
 namespace PEMS.Application.Interfaces;
 
+public sealed record InstrumentListRow(int Id, string EquipmentTag, string Manufacturer, string Model, string InstrumentType, string LoopNumber, string System, DateTime? LastCalibrationDate, DateTime? NextCalibrationDue, string CalibrationStatus);
+
+public sealed record InstrumentHeadRow(int Id, string EquipmentTag, string InstrumentType, string LoopNumber, string System, string SignalClass, string ProcessVariable, string Range, string Unit, string SignalType, string Accuracy,
+    string CurrentStatus, string CalibrationStatus, int? CalibrationInterval, DateTime? LastCalibrationDate, DateTime? NextCalibrationDue, bool IsActive, DateTime? LatestMaintenanceDate, string LatestMaintenance);
+
+public sealed record InstrumentCalibrationRow(int Id, DateTime CalibrationDate, string CalibrationType, string StandardReference, string AsFound, string AsLeft, string Result, string Technician, string CertificateNo, DateTime? NextDue, string Remarks);
+
+public sealed record InstrumentAlarmRow(int Id, string AlarmTag, string AlarmType, string Priority, string SetPoint, string Unit, string Description, string Action);
+
+public sealed record InstrumentCauseEffectRow(int Id, string AlarmTag, string Cause, string Effect, string ActionType, string TripSignal);
+
+public sealed record InstrumentControlLoopRow(int Id, string LoopNumber, string Description, string ProcessArea, string ControllerType, string ControllerSystem);
+
+public sealed record InstrumentIoPointRow(int Id, string TagNumber, string IoType, string SignalType, string PlcName, string Rack, string Slot, string Channel, string Address, string Description);
+
 /// <summary>
-/// The write commands of InstrumentController as operations (SCRUM-695, 752): edit the instrument profile, record a calibration (append-only, it caches the last and next due on the instrument), add an alarm, a cause and effect,
-/// assign the control loop and switch the instrument active or inactive. InstrumentController checked no module permission, so the operations carry none (signed-in users only, as before). The create, the work request and
-/// the calibration work order, which redirect to the record they make, stay in the controller.
+/// The instrument passport as operations (SCRUM-708): the list, the passport head and its calibrations, alarms, cause and effect, control loop and IO points (reads); the calibration, alarm, cause and effect and control loop commands
+/// (append-only calibrations cache the due dates on the instrument); the active switch; and the two commands that make another record from the passport: a work request from a cause and effect and a calibration work order. The
+/// controller checked no module permission, so the operations carry none (signed-in users only, as before). Create and edit are entity definitions.
 /// </summary>
 public interface IInstrumentOperations
 {
-    [PEMS.Application.Common.PemsOperation("Instrument", "Edit")]
-    Task<(bool Success, string? Error)> EditAsync(int instrumentId, string instrumentType, string? loopNumber = null, string? system = null, string? signalClass = null, decimal? rangeMin = null, decimal? rangeMax = null, string? unit = null, string? signalType = null, string? processVariable = null, string? accuracy = null, string? outputSignal = null, string? powerSupply = null, string? communication = null, string? ipRating = null, string? processConnection = null, string? electricalConnection = null, string? hazardousArea = null, string? exProtection = null, string? zone = null, string? gasGroup = null, string? tempClass = null, string? failAction = null, decimal? alarmSetpoint = null, decimal? tripSetpoint = null, string? sil = null, string? junctionBox = null, string? marshallingCabinet = null, string? cableNumber = null, string? barrierRelay = null, string? ioCardChannel = null, string? systemCabinet = null, int? calibrationInterval = null, string? currentStatus = null);
+    [PEMS.Application.Common.PemsOperation("Instrument", "List")]
+    Task<List<InstrumentListRow>> ListAsync();
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "Head")]
+    Task<List<InstrumentHeadRow>> HeadAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "Calibrations")]
+    Task<List<InstrumentCalibrationRow>> CalibrationsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "Alarms")]
+    Task<List<InstrumentAlarmRow>> AlarmsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "CauseEffects")]
+    Task<List<InstrumentCauseEffectRow>> CauseEffectsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "ControlLoop")]
+    Task<List<InstrumentControlLoopRow>> ControlLoopAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "IoPoints")]
+    Task<List<InstrumentIoPointRow>> IoPointsAsync(int id);
 
     [PEMS.Application.Common.PemsOperation("Instrument", "AddCalibration")]
     Task<(bool Success, string? Error)> AddCalibrationAsync(int instrumentId, DateTime calibrationDate, string result, string? calibrationType = null, string? standardReference = null, string? asFound = null,
@@ -25,4 +58,10 @@ public interface IInstrumentOperations
 
     [PEMS.Application.Common.PemsOperation("Instrument", "ToggleActive")]
     Task<(bool Success, string? Error)> ToggleActiveAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "RaiseWorkRequest")]
+    Task<(bool Success, string? Error)> RaiseWorkRequestAsync(int causeEffectId);
+
+    [PEMS.Application.Common.PemsOperation("Instrument", "GenerateCalibrationWorkOrder")]
+    Task<(bool Success, string? Error)> GenerateCalibrationWorkOrderAsync(int instrumentId);
 }

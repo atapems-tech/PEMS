@@ -1,0 +1,88 @@
+{
+  "kind": "action",
+  "key": "instrument-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Export instruments",
+    "fa": "خروجی ابزار دقیق"
+  },
+  "description": {
+    "en": "Export instruments",
+    "fa": "خروجی ابزار دقیق"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "file.export",
+    "parameters": {
+      "dataSource": "instrument-grid",
+      "format": "xlsx",
+      "fileName": "Instruments",
+      "columns": [
+        {
+          "field": "equipmentTag",
+          "header": {
+            "en": "Equipment",
+            "fa": "تجهیز"
+          }
+        },
+        {
+          "field": "instrumentType",
+          "header": {
+            "en": "Instrument type",
+            "fa": "نوع ابزار"
+          }
+        },
+        {
+          "field": "loopNumber",
+          "header": {
+            "en": "Loop",
+            "fa": "حلقه"
+          }
+        },
+        {
+          "field": "system",
+          "header": {
+            "en": "System",
+            "fa": "سیستم"
+          }
+        },
+        {
+          "field": "manufacturer",
+          "header": {
+            "en": "Manufacturer",
+            "fa": "سازنده"
+          }
+        },
+        {
+          "field": "model",
+          "header": {
+            "en": "Model",
+            "fa": "مدل"
+          }
+        },
+        {
+          "field": "lastCalibrationDate",
+          "header": {
+            "en": "Last calibration",
+            "fa": "آخرین کالیبراسیون"
+          }
+        },
+        {
+          "field": "nextCalibrationDue",
+          "header": {
+            "en": "Next due",
+            "fa": "سررسید بعدی"
+          }
+        },
+        {
+          "field": "calibrationStatus",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          }
+        }
+      ]
+    }
+  }
+}

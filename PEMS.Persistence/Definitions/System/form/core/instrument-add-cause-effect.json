@@ -1,0 +1,140 @@
+{
+  "kind": "form",
+  "key": "instrument-add-cause-effect",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a cause and effect",
+    "fa": "ثبت علت و معلول"
+  },
+  "description": {
+    "en": "Add a cause and effect",
+    "fa": "ثبت علت و معلول"
+  },
+  "payload": {
+    "id": "instrument-add-cause-effect",
+    "title": {
+      "en": "Add a cause and effect",
+      "fa": "ثبت علت و معلول"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "instrument-add-cause-effect",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "alarmId",
+        "label": {
+          "en": "Alarm id (shown in the alarms table)",
+          "fa": "شناسه آلارم (در جدول آلارم‌ها)"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "cause",
+        "label": {
+          "en": "Cause",
+          "fa": "علت"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "effect",
+        "label": {
+          "en": "Effect",
+          "fa": "معلول"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "actionType",
+        "label": {
+          "en": "Action",
+          "fa": "اقدام"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Trip",
+            "label": {
+              "en": "Trip",
+              "fa": "Trip"
+            }
+          },
+          {
+            "value": "Shutdown",
+            "label": {
+              "en": "Shutdown",
+              "fa": "Shutdown"
+            }
+          },
+          {
+            "value": "Alarm",
+            "label": {
+              "en": "Alarm",
+              "fa": "Alarm"
+            }
+          },
+          {
+            "value": "Start",
+            "label": {
+              "en": "Start",
+              "fa": "Start"
+            }
+          },
+          {
+            "value": "Stop",
+            "label": {
+              "en": "Stop",
+              "fa": "Stop"
+            }
+          }
+        ]
+      },
+      {
+        "name": "tripSignal",
+        "label": {
+          "en": "Trip signal",
+          "fa": "سیگنال تریپ"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}
