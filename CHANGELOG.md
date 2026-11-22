@@ -95,6 +95,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-742: batch 9 status in the batch sheet
+
+### Changed
+- Batch 9 (documents, VDR, letters) status: 16 of 18 In Review; DCC and LetterCartable stay open; what was not compiled.
+
 ## 2026-11-21 - SCRUM-718, 761: new MDB and new VDR item forms as definitions
 
 ### Changed
