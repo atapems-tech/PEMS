@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "eng-doc-comment-reply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Answer a comment",
+    "fa": "پاسخ به نظر"
+  },
+  "description": {
+    "en": "Answer a comment",
+    "fa": "پاسخ به نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocumentFiles",
+      "action": "RecordCommentResponse",
+      "args": {
+        "commentId": "field:commentId",
+        "responseText": "field:responseText",
+        "replyAttachment": "file:replyAttachment"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 25
+      }
+    },
+    "success": {
+      "en": "Response recorded",
+      "fa": "پاسخ ثبت شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{documentId}"
+  }
+}

@@ -89,6 +89,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-685, 690, 761: files in operations (optional file, many files); comments and sheets with attachments as definitions
+
+### Changed
+- An operation may take an optional file (OperationFile?) or every file of a form field (IReadOnlyList of OperationFile); the action's upload profile checks each file, empty file parts count as no file. The comment and reply forms with attachments of the engineering document and VDR pages and the VDR comment sheet and reply sheet uploads are definitions (/a/eng-doc-comment-*, /a/vdr-comment-*, /a/vdr-*-sheet) over IDocumentFileOperations (same folders and rows). Compile and tests not run (owner instruction).
+
 ## 2026-11-21 - SCRUM-718, 760, 719, 762, 689: MDB, transmittal, MDR and VDR import review, document intelligence commands as definitions
 
 ### Changed

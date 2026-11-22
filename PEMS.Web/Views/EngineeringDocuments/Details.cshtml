@@ -1345,7 +1345,7 @@
 
 @* طبق درخواست: چرخه‌ی کامنت/ریپلای دقیقاً مثل بخش VDR - همان سرویس مشترک، همان تجربه *@
 <pems-modal size="large" id="addEngCommentModal" tabindex="-1">
-            <pems-form asp-action="AddComment" method="post" enctype="multipart/form-data">
+            <pems-form action="/a/eng-doc-comment-add" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="documentId" value="@Model.DocumentId" />
                 <input type="hidden" name="pageNumber" id="engPinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="engPinX" value="" />
@@ -1396,7 +1396,7 @@
 @if (engComments.Any())
 {
     <pems-modal id="engReplyModal" tabindex="-1">
-                <pems-form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
+                <pems-form action="/a/eng-doc-comment-reply" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="documentId" value="@Model.DocumentId" />
                     <input type="hidden" name="commentId" value="" />
                     <pems-modal-header>Reply to <span data-fill-text="commentno"></span></pems-modal-header>

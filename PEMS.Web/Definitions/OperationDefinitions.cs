@@ -87,7 +87,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
 
     /// <summary>A plain options object (settable simple properties, no constructor arguments), such as a completion-data record: its properties are bound from the form values of the same name (first letter lower-case), or from the sources the definition lists for them.</summary>
     /// <summary>A record whose constructor takes only simple values (a positional "input" record): built from the sources the definition lists for each constructor parameter (default: the form field of the same name).</summary>
-    private static bool IsInput(Type t) => t.IsClass && t != typeof(string) && !IsTextList(t) && !IsIdList(t) && t.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault() is { } c
+    private static bool IsInput(Type t) => t.IsClass && t != typeof(string) && t != typeof(OperationFile) && !IsFileList(t) && !IsTextList(t) && !IsIdList(t) && t.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault() is { } c
         && c.GetParameters().Length > 0 && c.GetParameters().All(cp => IsSimple(cp.ParameterType)) && !c.GetParameters().All(cp => ContextNames.Contains(cp.Name!));
 
     private static bool IsBag(Type t) => t.IsClass && t != typeof(string) && t.GetConstructor(Type.EmptyTypes) is not null
@@ -98,6 +98,8 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
     private static bool IsSource(string s) => s.StartsWith("field:") && s.Length > 6 || s.StartsWith("file:") && s.Length > 5 || s.StartsWith("literal:") || s.StartsWith("context:") && ContextNames.Contains(s[8..]);
 
     /// <summary>SCRUM-818: a list of numbers (List&lt;int&gt;, IReadOnlyList&lt;int&gt;, int[]) is bound from the repeated form field of the source field:name (the values arrive as one comma separated text; a checkbox group).</summary>
+    private static bool IsFileList(Type t) => t.IsGenericType && t.GetGenericArguments() is [var a] && a == typeof(OperationFile) && t.IsAssignableFrom(typeof(List<OperationFile>));
+
     private static bool IsIdList(Type t) => t == typeof(int[]) || t.IsGenericType && t.GetGenericArguments() is [var a] && a == typeof(int) && typeof(IEnumerable<int>).IsAssignableFrom(t) && t.IsAssignableFrom(typeof(List<int>));
 
     private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
@@ -163,7 +165,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             if (p.ParameterType == typeof(CancellationToken)) continue;
             if (IsSimple(p.ParameterType)) continue;
-            if (p.ParameterType == typeof(byte[]))
+            if (p.ParameterType == typeof(byte[]) || p.ParameterType == typeof(OperationFile) || IsFileList(p.ParameterType))
             {
                 // SCRUM-635: the bytes of an uploaded file: args names the form field as file:field and the action names the upload profile
                 if (!(EntityJson.Str(args[p.Name!]) ?? "").StartsWith("file:")) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The file parameter '{p.Name}' of {op.Name} takes file:field."));
@@ -324,24 +326,31 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         foreach (var p in op.Method.GetParameters())
         {
             if (p.ParameterType == typeof(CancellationToken)) { values.Add(ct); continue; }
-            if (p.ParameterType == typeof(byte[]))
+            if (p.ParameterType == typeof(byte[]) || p.ParameterType == typeof(OperationFile) || IsFileList(p.ParameterType))
             {
+                // SCRUM-685: a file is a byte[] (required, the file of the field), an OperationFile (optional: null when none is chosen) or a list of OperationFile (every file of the field, none is an empty list); source "file:<field>", else the parameter name
                 var source = EntityJson.Str(args[p.Name!]) ?? string.Empty;
                 var fileField = source.StartsWith("file:") ? source[5..] : p.Name!;
-                var file = invocation.Files?.FirstOrDefault(f => f.Field == fileField);
-                if (file is null) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", "Choose a file."), ("fa", "یک فایل انتخاب کنید.")));
+                var chosen = (invocation.Files ?? []).Where(f => f.Field == fileField && f.Length > 0).ToList();
+                if (p.ParameterType == typeof(byte[]) && chosen.Count == 0) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", "Choose a file."), ("fa", "یک فایل انتخاب کنید.")));
+                if (chosen.Count == 0) { values.Add(p.ParameterType == typeof(OperationFile) ? null : new List<OperationFile>()); continue; }
                 var upload = invocation.Parameters?["upload"] as JsonObject;
                 var uploadGuard = scope.ServiceProvider.GetService<IUploadGuard>();
                 if (uploadGuard is null || upload is null || !UploadProfiles.TryGetValue(EntityJson.Str(upload["profile"]) ?? "", out var profile))
                     return ActionOutcome.Refused(TranslatableText.Of(("en", "The action is not set up."), ("fa", "کنش درست تنظیم نشده است.")));
                 var limitMb = upload["maxFileMb"] is JsonValue lv && lv.TryGetValue<int>(out var mb) ? mb : 0;
-                if (limitMb > 0 && file.Length > limitMb * 1024L * 1024L) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} is larger than {limitMb} MB."), ("fa", $"حجم فایل {file.FileName} بیش از {limitMb} مگابایت است.")));
-                var check = await uploadGuard.CheckAsync(profile, file.FileName, file.ContentType, file.Length, file.Open, ct);
-                if (!check.Ok) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} was refused ({check.Error})."), ("fa", $"فایل {file.FileName} رد شد ({check.Error}).")));
-                await using var stream = file.Open();
-                using var buffer = new MemoryStream();
-                await stream.CopyToAsync(buffer, ct);
-                values.Add(buffer.ToArray());
+                var read = new List<OperationFile>();
+                foreach (var file in p.ParameterType == typeof(OperationFile) || p.ParameterType == typeof(byte[]) ? chosen.Take(1) : chosen)
+                {
+                    if (limitMb > 0 && file.Length > limitMb * 1024L * 1024L) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} is larger than {limitMb} MB."), ("fa", $"حجم فایل {file.FileName} بیش از {limitMb} مگابایت است.")));
+                    var check = await uploadGuard.CheckAsync(profile, file.FileName, file.ContentType, file.Length, file.Open, ct);
+                    if (!check.Ok) return ActionOutcome.Refused(fileField, TranslatableText.Of(("en", $"File {file.FileName} was refused ({check.Error})."), ("fa", $"فایل {file.FileName} رد شد ({check.Error}).")));
+                    await using var stream = file.Open();
+                    using var buffer = new MemoryStream();
+                    await stream.CopyToAsync(buffer, ct);
+                    read.Add(new OperationFile(file.FileName, file.ContentType, buffer.ToArray()));
+                }
+                values.Add(p.ParameterType == typeof(byte[]) ? read[0].Bytes : p.ParameterType == typeof(OperationFile) ? read[0] : read);
                 continue;
             }
             if (IsIdList(p.ParameterType))

@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "vdr-reply-sheet",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Attach the reply sheet",
+    "fa": "پیوست برگه‌ی پاسخ"
+  },
+  "description": {
+    "en": "Attach the reply sheet",
+    "fa": "پیوست برگه‌ی پاسخ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrFiles",
+      "action": "UploadReplySheet",
+      "args": {
+        "submissionId": "field:submissionId",
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 25
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/VDR/Details/{vdrItemId}"
+  }
+}

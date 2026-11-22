@@ -1,0 +1,48 @@
+{
+  "kind": "action",
+  "key": "eng-doc-comment-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "description": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocumentFiles",
+      "action": "AddComment",
+      "args": {
+        "documentId": "field:documentId",
+        "sheet": "field:sheet",
+        "zone": "field:zone",
+        "reference": "field:reference",
+        "category": "field:category",
+        "severity": "field:severity",
+        "requiredAction": "field:requiredAction",
+        "dueDate": "field:dueDate",
+        "pageNumber": "field:pageNumber",
+        "pinX": "field:pinX",
+        "pinY": "field:pinY",
+        "raisedByName": "field:raisedByName",
+        "commentText": "field:commentText",
+        "marksRevisionRequired": "field:marksRevisionRequired",
+        "attachment": "file:attachment"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 25
+      }
+    },
+    "success": {
+      "en": "Comment recorded",
+      "fa": "نظر ثبت شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{documentId}"
+  }
+}
