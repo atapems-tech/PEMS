@@ -120,6 +120,78 @@ public sealed class EngineeringDocumentOperations(PEMSDbContext context, IEngine
         return (true, null);
     }
 
+    public async Task<(bool Success, string? Error)> DeleteAsync(int id)
+    {
+        var document = await service.GetEntityByIdAsync(id);
+        if (document is null) return (false, NotFound);
+        await service.DeleteAsync(document);
+        return (true, null);
+    }
+
+    public async Task<(bool Success, string? Error)> DeleteAttachmentAsync(int attachmentId)
+    {
+        var attachment = await context.DocumentAttachments.FirstOrDefaultAsync(x => x.AttachmentId == attachmentId);
+        if (attachment is null) return (false, "The file was not found.");
+        attachment.IsActive = false;   // soft delete
+        await context.SaveChangesAsync();
+        return (true, null);
+    }
+
+    public async Task<(bool Success, string? Error)> CreateRevisionAsync(int id, string? reason, string? changeDescription, string? vendorComment, int? triggeringCommentId, int? actorEmployeeId)
+    {
+        var document = await context.EngineeringDocuments.Include(x => x.Revisions).FirstOrDefaultAsync(x => x.DocumentId == id);
+        if (document is null) return (false, NotFound);
+        if (document.IsFrozen) return (false, $"مدرک {document.DocumentNo} منجمد (Frozen) است و رویژن جدید نمی‌تواند بگیرد.");
+
+        var lastRevision = document.Revisions.OrderByDescending(x => x.RevisionId).FirstOrDefault();
+        // the revision number is never repeated: the highest real number plus one (not "the last inserted row", which can be wrong under a race)
+        var nextRevision = 0;
+        foreach (var rev in document.Revisions)
+            if (int.TryParse(rev.RevisionNo, out var parsed) && parsed >= nextRevision) nextRevision = parsed + 1;
+
+        var revision = new PEMS.Domain.Entities.DocumentRevision
+        {
+            DocumentId = id,
+            RevisionNo = nextRevision.ToString("00"),
+            Status = "Draft",
+            Comment = string.IsNullOrWhiteSpace(vendorComment) ? "New Revision Created" : vendorComment,
+            RevisionDate = DateTime.Now,
+            Reason = reason,
+            ChangeDescription = changeDescription,
+            VendorComment = vendorComment,
+            SupersededRevisionId = lastRevision?.RevisionId,
+            CreatedById = actorEmployeeId,
+            CreatedDate = DateTime.Now,
+            IsActive = true
+        };
+        await context.DocumentRevisions.AddAsync(revision);
+
+        // the previous revision is superseded, otherwise it shows as approved for ever
+        if (lastRevision is not null) lastRevision.Status = "Superseded";
+        document.RevisionNo = nextRevision.ToString("00");
+        document.Status = "Draft";
+        // a new revision has no client answer yet: the cache must not show the answer of the previous one (the truth stays on the previous revisions)
+        document.ClientApprovalStatus = null;
+        document.ClientComment = null;
+        document.ClientResponseDate = null;
+        document.ModifiedDate = DateTime.Now;
+
+        try { await context.SaveChangesAsync(); }
+        catch (DbUpdateException) { return (false, "This revision number was just created by someone else. Please try again."); }
+
+        // the revision made to answer a comment marked for revision is linked to it
+        if (triggeringCommentId.HasValue)
+        {
+            var comment = await context.DocumentComments.FirstOrDefaultAsync(c => c.DocumentCommentId == triggeringCommentId.Value && c.DocumentId == id);
+            if (comment is not null)
+            {
+                comment.TriggeredRevisionId = revision.RevisionId;
+                await context.SaveChangesAsync();
+            }
+        }
+        return (true, null);
+    }
+
     public async Task<(bool Success, string? Error)> AnalyzeRelationshipsAsync(int id)
     {
         await copilot.AnalyzeDocumentRelationshipsAsync(id);

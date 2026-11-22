@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "eng-doc-delete-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete an attachment",
+    "fa": "حذف پیوست"
+  },
+  "description": {
+    "en": "Delete an attachment",
+    "fa": "حذف پیوست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "DeleteAttachment",
+      "args": {
+        "attachmentId": "field:attachmentId"
+      }
+    },
+    "success": {
+      "en": "The file was deleted.",
+      "fa": "فایل حذف شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{documentId}"
+  }
+}

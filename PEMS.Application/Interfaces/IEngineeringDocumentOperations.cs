@@ -55,6 +55,18 @@ public interface IEngineeringDocumentOperations
     [PEMS.Application.Common.PemsOperation("EngineeringDocument", "SetCommentAction")]
     Task<(bool Success, string? Error)> SetCommentActionAsync(int commentId, string actionStatus);
 
+    /// <summary>Deletes a document (the delete of the list, with the rules of the document service).</summary>
+    [PEMS.Application.Common.PemsOperation("EngineeringDocument", "Delete", "EngineeringDocuments.Delete")]
+    Task<(bool Success, string? Error)> DeleteAsync(int id);
+
+    /// <summary>Soft-deletes an attachment of a document.</summary>
+    [PEMS.Application.Common.PemsOperation("EngineeringDocument", "DeleteAttachment", "EngineeringDocuments.Edit")]
+    Task<(bool Success, string? Error)> DeleteAttachmentAsync(int attachmentId);
+
+    /// <summary>Creates the next revision (the number is the highest existing plus one, the previous revision is superseded, a frozen document refuses, the comment that asked for it is linked).</summary>
+    [PEMS.Application.Common.PemsOperation("EngineeringDocument", "CreateRevision", "EngineeringDocuments.Create")]
+    Task<(bool Success, string? Error)> CreateRevisionAsync(int id, string? reason, string? changeDescription, string? vendorComment, int? triggeringCommentId, int? actorEmployeeId);
+
     /// <summary>Asks the AI copilot for semantic relationships of the document (an offline model: none found is not an error).</summary>
     [PEMS.Application.Common.PemsOperation("EngineeringDocument", "AnalyzeRelationships")]
     Task<(bool Success, string? Error)> AnalyzeRelationshipsAsync(int id);

@@ -148,7 +148,7 @@
     "PEMS.Web.Controllers.DocumentRegisterController": 4,
     "PEMS.Web.Controllers.DocumentUploadController": 1,
     "PEMS.Web.Controllers.EngineeringDocumentIntelligenceController": 10,
-    "PEMS.Web.Controllers.EngineeringDocumentsController": 13,
+    "PEMS.Web.Controllers.EngineeringDocumentsController": 10,
     "PEMS.Web.Controllers.EquipmentController": 4,
     "PEMS.Web.Controllers.EquipmentImportController": 5,
     "PEMS.Web.Controllers.ExecutiveDashboardController": 1,

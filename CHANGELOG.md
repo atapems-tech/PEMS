@@ -93,6 +93,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-690: delete document, delete attachment and new revision as definitions
+
+### Changed
+- Deleting a document from the list, deleting an attachment and creating a new revision are definitions (/a/eng-doc-delete, /a/eng-doc-delete-attachment, /a/eng-doc-create-revision) over IEngineeringDocumentOperations with the same revision rules (highest number plus one, previous revision superseded, frozen refusal, triggering comment link). Delete needs EngineeringDocuments.Delete, the attachment delete Edit, the new revision Create. Not compiled in this step (owner instruction).
+
 ## 2026-11-21 - SCRUM-716, 683: letter bulk actions, empty trash, reminders and saved filters as definitions
 
 ### Changed
