@@ -86,16 +86,30 @@ public sealed class ShippedWorkflowParityTests
     }
 
     [Fact]
-    public async Task A_changed_shipped_structure_is_stored_as_an_upstream_draft_and_the_active_version_stays()
+    public async Task An_install_made_by_the_old_seeder_with_the_same_structure_gets_no_review_draft()
     {
         var (sp, db) = Setup();
         await Seed("pre-procurement", sp);
-        var stage = await db.WorkflowStages.SingleAsync();
-        stage.StageType = "Parallel";   // the stored (customer) structure differs from the shipped document
+        (await db.WorkflowVersions.SingleAsync()).ChangeSummary = null;   // the old seeder left no shipped marker
         await db.SaveChangesAsync();
 
         await Seed("pre-procurement", sp);
 
+        Assert.Equal(1, await db.WorkflowVersions.CountAsync());
+    }
+
+    [Fact]
+    public async Task A_changed_shipped_document_is_stored_as_an_upstream_draft_with_a_diff_and_the_active_version_stays()
+    {
+        var (sp, db) = Setup();
+        await Seed("pre-procurement", sp);
+        var changed = ShippedWorkflowCatalog.Load("pre-procurement");
+        changed.Stages[0].ResponsibleRole = RoleCatalog.ProcurementManager;   // the next release ships another responsible role
+
+        var result = await new WorkflowShipper(db, new PEMS.WorkflowPlatform.Services.WorkflowDefinitionService(db)).ShipAsync(changed, ShippedWorkflowCatalog.SystemActor);
+
+        Assert.Equal(ShipOutcome.UpstreamStored, result.Outcome);
+        Assert.Single(result.Changes);
         var versions = await db.WorkflowVersions.OrderBy(v => v.VersionNumber).ToListAsync();
         Assert.Equal(new[] { ("Published", 1), ("Draft", 2) }, versions.Select(v => (v.Status, v.VersionNumber)).ToArray());
         Assert.EndsWith(WorkflowShipper.UpstreamNote, versions[1].ChangeSummary);
