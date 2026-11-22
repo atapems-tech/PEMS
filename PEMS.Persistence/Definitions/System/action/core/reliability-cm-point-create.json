@@ -31,6 +31,6 @@
       "en": "Monitoring point created.",
       "fa": "نقطه‌ی پایش ساخته شد."
     },
-    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+    "redirect": "/p/reliability-condition-monitoring?equipmentId={equipmentId}"
   }
 }

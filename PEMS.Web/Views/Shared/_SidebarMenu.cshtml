@@ -595,7 +595,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Reliability"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Reliability"))" asp-controller="Reliability" asp-action="Dashboard" asp-area="">
+                <pems-nav-link item="false" href="/p/reliability-dashboard" active="@(IsActive("Reliability") || Context.Request.Path.StartsWithSegments("/p/reliability"))">
                     <pems-icon name="bi-graph-up-arrow" /> @Localizer["Reliability"]
                 </pems-nav-link>
             }

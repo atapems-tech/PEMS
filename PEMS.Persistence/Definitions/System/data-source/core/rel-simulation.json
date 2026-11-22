@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-simulation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel simulation",
+    "fa": "rel simulation"
+  },
+  "description": {
+    "en": "rel simulation",
+    "fa": "rel simulation"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "Simulation",
+      "args": {
+        "id": "param:id",
+        "iterations": "param:iterations",
+        "horizonHours": "param:horizonHours"
+      }
+    }
+  }
+}

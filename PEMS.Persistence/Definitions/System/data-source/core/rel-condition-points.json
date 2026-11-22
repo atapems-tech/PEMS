@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-condition-points",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel condition points",
+    "fa": "rel condition points"
+  },
+  "description": {
+    "en": "rel condition points",
+    "fa": "rel condition points"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "ConditionPoints",
+      "args": {
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

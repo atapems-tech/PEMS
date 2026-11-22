@@ -26,6 +26,6 @@
       "en": "Evaluation profile updated.",
       "fa": "پروفایل ارزیابی به‌روزرسانی شد."
     },
-    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+    "redirect": "/p/reliability-cbm-dashboard"
   }
 }

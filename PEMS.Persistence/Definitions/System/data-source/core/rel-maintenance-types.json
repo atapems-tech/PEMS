@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-maintenance-types",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel maintenance types",
+    "fa": "rel maintenance types"
+  },
+  "description": {
+    "en": "rel maintenance types",
+    "fa": "rel maintenance types"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "MaintenanceTypes",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "top": "param:top"
+      }
+    }
+  }
+}

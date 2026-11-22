@@ -1,0 +1,368 @@
+{
+  "kind": "page",
+  "key": "reliability-condition-monitoring",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Condition monitoring",
+    "fa": "پایش وضعیت"
+  },
+  "description": {
+    "en": "Condition monitoring",
+    "fa": "پایش وضعیت"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-condition-monitoring",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "cm-filters",
+            "resetUrl": "/p/reliability-condition-monitoring",
+            "fields": [
+              {
+                "name": "equipmentId",
+                "label": {
+                  "en": "Equipment id",
+                  "fa": "شناسه تجهیز"
+                },
+                "kind": "text",
+                "value": "{{params.equipmentId}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "forms",
+          "component": "content-blocks",
+          "options": {
+            "id": "forms",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/reliability-cm-point-create?equipmentId={{params.equipmentId}}",
+                "text": {
+                  "en": "New monitoring point",
+                  "fa": "نقطه پایش جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/reliability-cm-reading-record?equipmentId={{params.equipmentId}}",
+                "text": {
+                  "en": "Record a reading",
+                  "fa": "ثبت قرائت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/reliability-cm-reading-mark-review",
+                "text": {
+                  "en": "Mark a reading for engineering review",
+                  "fa": "علامت‌گذاری قرائت برای بازبینی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "foundation",
+          "component": "data-grid",
+          "options": {
+            "id": "foundation",
+            "url": "/d/rel-condition-foundation",
+            "idField": "foundationStatus",
+            "columns": [
+              {
+                "key": "foundationStatus",
+                "header": {
+                  "en": "Foundation",
+                  "fa": "زیرساخت"
+                },
+                "width": 140
+              },
+              {
+                "key": "liveTelemetryStatus",
+                "header": {
+                  "en": "Live telemetry",
+                  "fa": "تله‌متری زنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "monitoringPointCount",
+                "header": {
+                  "en": "Points",
+                  "fa": "نقاط"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "readingCount",
+                "header": {
+                  "en": "Readings",
+                  "fa": "قرائت‌ها"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "points",
+          "component": "data-grid",
+          "options": {
+            "id": "points",
+            "url": "/d/rel-condition-points?f.equipmentId={{params.equipmentId|url}}",
+            "idField": "conditionMonitoringPointId",
+            "columns": [
+              {
+                "key": "conditionMonitoringPointId",
+                "header": {
+                  "en": "Point id",
+                  "fa": "شناسه نقطه"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "variableType",
+                "header": {
+                  "en": "Variable",
+                  "fa": "متغیر"
+                },
+                "width": 120
+              },
+              {
+                "key": "tag",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "alarmThresholdLow",
+                "header": {
+                  "en": "Alarm low",
+                  "fa": "آلارم پایین"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "alarmThresholdHigh",
+                "header": {
+                  "en": "Alarm high",
+                  "fa": "آلارم بالا"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "readingCount",
+                "header": {
+                  "en": "Readings",
+                  "fa": "قرائت‌ها"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "lastReadingDate",
+                "header": {
+                  "en": "Last reading",
+                  "fa": "آخرین قرائت"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "lastValue",
+                "header": {
+                  "en": "Last value",
+                  "fa": "آخرین مقدار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "lastReadingIsAlarm",
+                "header": {
+                  "en": "Alarm",
+                  "fa": "آلارم"
+                },
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "evaluationProfileCode",
+                "header": {
+                  "en": "Profile",
+                  "fa": "پروفایل"
+                },
+                "width": 110
+              },
+              {
+                "key": "lastReadingEvaluationStatus",
+                "header": {
+                  "en": "Evaluation",
+                  "fa": "ارزیابی"
+                },
+                "width": 110
+              },
+              {
+                "key": "lastReadingId",
+                "header": {
+                  "en": "Last reading id",
+                  "fa": "شناسه آخرین قرائت"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "trend",
+                    "label": {
+                      "en": "Trend",
+                      "fa": "روند"
+                    },
+                    "url": "/p/reliability-trend?pointId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "cbm",
+                    "label": {
+                      "en": "Create CBM strategy",
+                      "fa": "ایجاد استراتژی CBM"
+                    },
+                    "url": "/f/reliability-cbm-strategy-create?conditionMonitoringPointId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "profile",
+                    "label": {
+                      "en": "Assign profile",
+                      "fa": "تخصیص پروفایل"
+                    },
+                    "url": "/f/reliability-cm-profile-assign?pointId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 420
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

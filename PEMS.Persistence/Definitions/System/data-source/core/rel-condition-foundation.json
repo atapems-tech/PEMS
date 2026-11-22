@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-condition-foundation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel condition foundation",
+    "fa": "rel condition foundation"
+  },
+  "description": {
+    "en": "rel condition foundation",
+    "fa": "rel condition foundation"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "ConditionFoundation"
+    }
+  }
+}

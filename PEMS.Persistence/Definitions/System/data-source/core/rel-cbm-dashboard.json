@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-cbm-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel cbm dashboard",
+    "fa": "rel cbm dashboard"
+  },
+  "description": {
+    "en": "rel cbm dashboard",
+    "fa": "rel cbm dashboard"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "CbmDashboard"
+    }
+  }
+}

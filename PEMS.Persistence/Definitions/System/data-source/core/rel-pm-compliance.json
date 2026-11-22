@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-pm-compliance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel pm compliance",
+    "fa": "rel pm compliance"
+  },
+  "description": {
+    "en": "rel pm compliance",
+    "fa": "rel pm compliance"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "PmCompliance",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}

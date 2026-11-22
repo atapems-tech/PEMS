@@ -1,0 +1,235 @@
+{
+  "kind": "page",
+  "key": "reliability-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment reliability",
+    "fa": "قابلیت اطمینان تجهیز"
+  },
+  "description": {
+    "en": "Equipment reliability",
+    "fa": "قابلیت اطمینان تجهیز"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-equipment",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-equipment-profile?id={{params.id}}",
+                "text": {
+                  "en": "Intelligence profile",
+                  "fa": "پروفایل هوشمندی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ram?id={{params.id}}",
+                "text": {
+                  "en": "RAM / Weibull",
+                  "fa": "RAM / وایبول"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring?equipmentId={{params.id}}",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Back to the analysis",
+                  "fa": "بازگشت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "record",
+            "fields": [
+              {
+                "key": "tagNumber",
+                "label": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
+              },
+              {
+                "key": "equipmentType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "failureCount",
+                "label": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                }
+              },
+              {
+                "key": "firstFailureDate",
+                "label": {
+                  "en": "First failure",
+                  "fa": "اولین خرابی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "lastFailureDate",
+                "label": {
+                  "en": "Last failure",
+                  "fa": "آخرین خرابی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "mtbfHours",
+                "label": {
+                  "en": "MTBF (h)",
+                  "fa": "MTBF"
+                }
+              },
+              {
+                "key": "mttrHours",
+                "label": {
+                  "en": "MTTR (h)",
+                  "fa": "MTTR"
+                }
+              },
+              {
+                "key": "availabilityPercent",
+                "label": {
+                  "en": "Availability (%)",
+                  "fa": "دسترس‌پذیری"
+                }
+              },
+              {
+                "key": "totalDowntimeHours",
+                "label": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/rel-equipment",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "history",
+            "title": {
+              "en": "Failure history",
+              "fa": "تاریخچه خرابی"
+            },
+            "url": "/d/rel-failure-history?f.id={{params.id|url}}",
+            "idField": "failureRecordId",
+            "columns": [
+              {
+                "key": "failureRecordId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "failureDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "failureMode",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 170
+              },
+              {
+                "key": "failureCause",
+                "header": {
+                  "en": "Cause",
+                  "fa": "علت"
+                },
+                "width": 170
+              },
+              {
+                "key": "failureEffect",
+                "header": {
+                  "en": "Effect",
+                  "fa": "اثر"
+                },
+                "width": 150
+              },
+              {
+                "key": "rootCause",
+                "header": {
+                  "en": "Root cause",
+                  "fa": "علت ریشه‌ای"
+                },
+                "width": 170
+              },
+              {
+                "key": "correctiveAction",
+                "header": {
+                  "en": "Corrective action",
+                  "fa": "اقدام اصلاحی"
+                },
+                "width": 200
+              },
+              {
+                "key": "downtimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "workOrderNumber",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستور کار"
+                },
+                "width": 130
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

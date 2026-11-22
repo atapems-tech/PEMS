@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "reliability-rcm-recommendation-accept",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The recommendation was accepted.",
+    "fa": "توصیه پذیرفته شد."
+  },
+  "description": {
+    "en": "The recommendation was accepted.",
+    "fa": "توصیه پذیرفته شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "ReviewRcmRecommendation",
+      "args": {
+        "recommendationId": "field:id",
+        "accept": "literal:true"
+      }
+    },
+    "success": {
+      "en": "The recommendation was accepted.",
+      "fa": "توصیه پذیرفته شد."
+    },
+    "redirect": "/p/reliability-rcm-feedback"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "reliability-cm-reading-mark-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark a reading for engineering review",
+    "fa": "علامت‌گذاری قرائت برای بازبینی مهندسی"
+  },
+  "description": {
+    "en": "Mark a reading for engineering review",
+    "fa": "علامت‌گذاری قرائت برای بازبینی مهندسی"
+  },
+  "payload": {
+    "id": "reliability-cm-reading-mark-review",
+    "title": {
+      "en": "Mark a reading for engineering review",
+      "fa": "علامت‌گذاری قرائت برای بازبینی مهندسی"
+    },
+    "submitLabel": {
+      "en": "Mark",
+      "fa": "علامت‌گذاری"
+    },
+    "actionKey": "reliability-cm-reading-mark-review",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "readingId",
+        "label": {
+          "en": "Reading id (last reading id in the points table)",
+          "fa": "شناسه قرائت (آخرین قرائت در جدول نقاط)"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

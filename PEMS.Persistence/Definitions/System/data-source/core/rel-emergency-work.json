@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-emergency-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel emergency work",
+    "fa": "rel emergency work"
+  },
+  "description": {
+    "en": "rel emergency work",
+    "fa": "rel emergency work"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "EmergencyWork",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "top": "param:top"
+      }
+    }
+  }
+}

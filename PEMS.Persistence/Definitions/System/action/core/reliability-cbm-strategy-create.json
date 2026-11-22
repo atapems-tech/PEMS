@@ -27,6 +27,6 @@
       "en": "CBM strategy created; build a plan from Maintenance Strategies to schedule it.",
       "fa": "استراتژی CBM ساخته شد - برای زمان‌بندی واقعی، از Maintenance Strategies یک Plan بسازید."
     },
-    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+    "redirect": "/p/reliability-condition-monitoring?equipmentId={equipmentId}"
   }
 }

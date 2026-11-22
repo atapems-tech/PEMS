@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "reliability-old-data-quality",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reliability (old address)",
+    "fa": "قابلیت اطمینان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Reliability (old address)",
+    "fa": "قابلیت اطمینان (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Reliability/DataQuality",
+    "target": "/p/reliability-data-quality",
+    "permanent": false
+  }
+}

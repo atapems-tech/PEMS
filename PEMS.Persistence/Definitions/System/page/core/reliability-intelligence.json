@@ -1,0 +1,734 @@
+{
+  "kind": "page",
+  "key": "reliability-intelligence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance intelligence",
+    "fa": "هوشمندی نگهداری"
+  },
+  "description": {
+    "en": "Maintenance intelligence",
+    "fa": "هوشمندی نگهداری"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-intelligence",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "intel-filters",
+            "resetUrl": "/p/reliability-intelligence",
+            "fields": [
+              {
+                "name": "from",
+                "label": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "kind": "date",
+                "value": "{{params.from}}"
+              },
+              {
+                "name": "to",
+                "label": {
+                  "en": "To",
+                  "fa": "تا"
+                },
+                "kind": "date",
+                "value": "{{params.to}}"
+              },
+              {
+                "name": "equipmentClassId",
+                "label": {
+                  "en": "Equipment class id",
+                  "fa": "شناسه کلاس تجهیز"
+                },
+                "kind": "text",
+                "value": "{{params.equipmentClassId}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "pm",
+          "component": "data-grid",
+          "options": {
+            "id": "pm",
+            "url": "/d/rel-pm-compliance?f.from={{params.from|url}}&f.to={{params.to|url}}&f.equipmentClassId={{params.equipmentClassId|url}}",
+            "idField": "totalQualifyingWorkOrders",
+            "columns": [
+              {
+                "key": "totalQualifyingWorkOrders",
+                "header": {
+                  "en": "Qualifying work orders",
+                  "fa": "دستور کار واجد شرایط"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "compliantCount",
+                "header": {
+                  "en": "Compliant",
+                  "fa": "منطبق"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "completedLateCount",
+                "header": {
+                  "en": "Completed late",
+                  "fa": "تکمیل با تأخیر"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "overdueCount",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "notYetDueCount",
+                "header": {
+                  "en": "Not yet due",
+                  "fa": "سررسید نشده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "cancelledCount",
+                "header": {
+                  "en": "Cancelled",
+                  "fa": "لغوشده"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "insufficientDataCount",
+                "header": {
+                  "en": "Insufficient data",
+                  "fa": "داده ناکافی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "compliancePercent",
+                "header": {
+                  "en": "Compliance (%)",
+                  "fa": "انطباق (٪)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "dataStatus",
+                "header": {
+                  "en": "Data status",
+                  "fa": "وضعیت داده"
+                },
+                "width": 120
+              },
+              {
+                "key": "dataStatusReason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 260
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "types",
+          "component": "data-grid",
+          "options": {
+            "id": "types",
+            "url": "/d/rel-maintenance-types?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "typeName",
+            "columns": [
+              {
+                "key": "typeName",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 160
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "percent",
+                "header": {
+                  "en": "Percent",
+                  "fa": "درصد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "totalHours",
+                "header": {
+                  "en": "Hours",
+                  "fa": "ساعت"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "totalCost",
+                "header": {
+                  "en": "Cost",
+                  "fa": "هزینه"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 220
+          }
+        },
+        {
+          "id": "emergency",
+          "component": "data-grid",
+          "options": {
+            "id": "emergency",
+            "url": "/d/rel-emergency-work?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "totalWorkOrdersInPeriod",
+            "columns": [
+              {
+                "key": "totalWorkOrdersInPeriod",
+                "header": {
+                  "en": "Work orders in the period",
+                  "fa": "دستور کار در دوره"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "emergencyWorkRatioPercent",
+                "header": {
+                  "en": "Emergency ratio (%)",
+                  "fa": "نسبت اضطراری (٪)"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "emergencyWorkOrderCount",
+                "header": {
+                  "en": "Emergency work orders",
+                  "fa": "دستور کار اضطراری"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "dataStatus",
+                "header": {
+                  "en": "Data status",
+                  "fa": "وضعیت داده"
+                },
+                "width": 120
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "repeat",
+          "component": "data-grid",
+          "options": {
+            "id": "repeat",
+            "url": "/d/rel-repeat-failures?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "tagNumber",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "failureModeKey",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 200
+              },
+              {
+                "key": "occurrenceCount",
+                "header": {
+                  "en": "Occurrences",
+                  "fa": "تکرار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "firstOccurrence",
+                "header": {
+                  "en": "First",
+                  "fa": "اولین"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "lastOccurrence",
+                "header": {
+                  "en": "Last",
+                  "fa": "آخرین"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "windowDays",
+                "header": {
+                  "en": "Window (days)",
+                  "fa": "پنجره (روز)"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 300
+          }
+        },
+        {
+          "id": "effectiveness",
+          "component": "data-grid",
+          "options": {
+            "id": "effectiveness",
+            "url": "/d/rel-effectiveness",
+            "idField": "windowDays",
+            "columns": [
+              {
+                "key": "windowDays",
+                "header": {
+                  "en": "Window (days)",
+                  "fa": "پنجره (روز)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "pmCompliancePercent",
+                "header": {
+                  "en": "PM compliance (%)",
+                  "fa": "انطباق PM"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "repeatFailureGroupCount",
+                "header": {
+                  "en": "Repeat groups",
+                  "fa": "گروه تکرار"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "currentPeriodFailureCount",
+                "header": {
+                  "en": "Failures now",
+                  "fa": "خرابی فعلی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "priorPeriodFailureCount",
+                "header": {
+                  "en": "Failures before",
+                  "fa": "خرابی قبلی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "failureFrequencyTrend",
+                "header": {
+                  "en": "Failure trend",
+                  "fa": "روند خرابی"
+                },
+                "width": 120
+              },
+              {
+                "key": "currentPeriodAverageMTTRHours",
+                "header": {
+                  "en": "MTTR now (h)",
+                  "fa": "MTTR فعلی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "priorPeriodAverageMTTRHours",
+                "header": {
+                  "en": "MTTR before (h)",
+                  "fa": "MTTR قبلی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "mttrTrend",
+                "header": {
+                  "en": "MTTR trend",
+                  "fa": "روند MTTR"
+                },
+                "width": 110
+              },
+              {
+                "key": "currentPeriodDowntimeHours",
+                "header": {
+                  "en": "Downtime now (h)",
+                  "fa": "توقف فعلی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "priorPeriodDowntimeHours",
+                "header": {
+                  "en": "Downtime before (h)",
+                  "fa": "توقف قبلی"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "downtimeTrend",
+                "header": {
+                  "en": "Downtime trend",
+                  "fa": "روند توقف"
+                },
+                "width": 120
+              },
+              {
+                "key": "correctiveWorkloadPercent",
+                "header": {
+                  "en": "Corrective workload (%)",
+                  "fa": "بار اصلاحی"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "emergencyWorkloadPercent",
+                "header": {
+                  "en": "Emergency workload (%)",
+                  "fa": "بار اضطراری"
+                },
+                "width": 150,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "crit",
+          "component": "data-grid",
+          "options": {
+            "id": "crit",
+            "url": "/d/rel-criticality-matrix",
+            "idField": "criticalityClass",
+            "columns": [
+              {
+                "key": "criticalityClass",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 90
+              },
+              {
+                "key": "equipmentCount",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "equipmentWithFailureHistoryCount",
+                "header": {
+                  "en": "With failures",
+                  "fa": "دارای خرابی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "failureCount",
+                "header": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "repeatFailureGroupCount",
+                "header": {
+                  "en": "Repeat groups",
+                  "fa": "گروه تکرار"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "pmCompliancePercent",
+                "header": {
+                  "en": "PM compliance (%)",
+                  "fa": "انطباق PM"
+                },
+                "width": 140,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 200
+          }
+        },
+        {
+          "id": "critm",
+          "component": "data-grid",
+          "options": {
+            "id": "critm",
+            "url": "/d/rel-criticality-maintenance-matrix",
+            "idField": "criticalityClass",
+            "columns": [
+              {
+                "key": "criticalityClass",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 90
+              },
+              {
+                "key": "equipmentCount",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "failureCount",
+                "header": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "repeatFailureGroupCount",
+                "header": {
+                  "en": "Repeat groups",
+                  "fa": "گروه تکرار"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "pmCompliancePercent",
+                "header": {
+                  "en": "PM compliance (%)",
+                  "fa": "انطباق PM"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "strategyCoveredEquipmentCount",
+                "header": {
+                  "en": "With strategy",
+                  "fa": "دارای استراتژی"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "strategyCoveragePercent",
+                "header": {
+                  "en": "Strategy coverage (%)",
+                  "fa": "پوشش استراتژی"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "distinctEquipmentClassCount",
+                "header": {
+                  "en": "Classes",
+                  "fa": "کلاس‌ها"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "equipmentClassesWithApprovedRcmCount",
+                "header": {
+                  "en": "Classes with approved RCM",
+                  "fa": "کلاس با RCM تأییدشده"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "rcmClassCoveragePercent",
+                "header": {
+                  "en": "RCM coverage (%)",
+                  "fa": "پوشش RCM"
+                },
+                "width": 130,
+                "type": "number"
+              }
+            ],
+            "pageSize": 10,
+            "height": 200
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

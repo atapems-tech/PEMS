@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "reliability-rcm-recommendation-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The recommendation was rejected.",
+    "fa": "توصیه رد شد."
+  },
+  "description": {
+    "en": "The recommendation was rejected.",
+    "fa": "توصیه رد شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "ReviewRcmRecommendation",
+      "args": {
+        "recommendationId": "field:id",
+        "accept": "literal:false"
+      }
+    },
+    "success": {
+      "en": "The recommendation was rejected.",
+      "fa": "توصیه رد شد."
+    },
+    "redirect": "/p/reliability-rcm-feedback"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-data-quality",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel data quality",
+    "fa": "rel data quality"
+  },
+  "description": {
+    "en": "rel data quality",
+    "fa": "rel data quality"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "DataQuality"
+    }
+  }
+}

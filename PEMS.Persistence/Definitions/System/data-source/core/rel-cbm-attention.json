@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "rel-cbm-attention",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel cbm attention",
+    "fa": "rel cbm attention"
+  },
+  "description": {
+    "en": "rel cbm attention",
+    "fa": "rel cbm attention"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "CbmDashboard",
+      "path": "AttentionPoints"
+    }
+  }
+}

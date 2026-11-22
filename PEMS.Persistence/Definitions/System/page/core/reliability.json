@@ -1,0 +1,629 @@
+{
+  "kind": "page",
+  "key": "reliability",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reliability analysis",
+    "fa": "تحلیل قابلیت اطمینان"
+  },
+  "description": {
+    "en": "Reliability analysis",
+    "fa": "تحلیل قابلیت اطمینان"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "rel-filters",
+            "resetUrl": "/p/reliability",
+            "fields": [
+              {
+                "name": "from",
+                "label": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "kind": "date",
+                "value": "{{params.from}}"
+              },
+              {
+                "name": "to",
+                "label": {
+                  "en": "To",
+                  "fa": "تا"
+                },
+                "kind": "date",
+                "value": "{{params.to}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "fleet",
+          "component": "data-grid",
+          "options": {
+            "id": "fleet",
+            "url": "/d/rel-fleet",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 130
+              },
+              {
+                "key": "failureCount",
+                "header": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "lastFailureDate",
+                "header": {
+                  "en": "Last failure",
+                  "fa": "آخرین خرابی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "mtbfHours",
+                "header": {
+                  "en": "MTBF (h)",
+                  "fa": "MTBF (ساعت)"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "mttrHours",
+                "header": {
+                  "en": "MTTR (h)",
+                  "fa": "MTTR (ساعت)"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "availabilityPercent",
+                "header": {
+                  "en": "Availability (%)",
+                  "fa": "دسترس‌پذیری (٪)"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "details",
+                    "label": {
+                      "en": "Reliability",
+                      "fa": "قابلیت اطمینان"
+                    },
+                    "url": "/p/reliability-equipment?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "profile",
+                    "label": {
+                      "en": "Intelligence",
+                      "fa": "هوشمندی"
+                    },
+                    "url": "/p/reliability-equipment-profile?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "ram",
+                    "label": {
+                      "en": "RAM / Weibull",
+                      "fa": "RAM / وایبول"
+                    },
+                    "url": "/p/reliability-ram?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 25,
+            "height": 420
+          }
+        },
+        {
+          "id": "classes",
+          "component": "data-grid",
+          "options": {
+            "id": "classes",
+            "url": "/d/rel-class-reliability",
+            "idField": "equipmentClassId",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 200
+              },
+              {
+                "key": "equipmentPopulation",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "equipmentWithFailureHistory",
+                "header": {
+                  "en": "With failures",
+                  "fa": "دارای خرابی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "failureCount",
+                "header": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "averageMTBFHours",
+                "header": {
+                  "en": "Avg MTBF (h)",
+                  "fa": "میانگین MTBF"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "averageMTTRHours",
+                "header": {
+                  "en": "Avg MTTR (h)",
+                  "fa": "میانگین MTTR"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "averageAvailabilityPercent",
+                "header": {
+                  "en": "Avg availability (%)",
+                  "fa": "میانگین دسترس‌پذیری"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "detail",
+                    "label": {
+                      "en": "Reliability",
+                      "fa": "قابلیت اطمینان"
+                    },
+                    "url": "/p/reliability-class?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "intel",
+                    "label": {
+                      "en": "Intelligence",
+                      "fa": "هوشمندی"
+                    },
+                    "url": "/p/reliability-class-intelligence?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 15,
+            "height": 320
+          }
+        },
+        {
+          "id": "modes",
+          "component": "data-grid",
+          "options": {
+            "id": "modes",
+            "url": "/d/rel-failure-mode-pareto?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "key",
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                },
+                "width": 240
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "downtimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "cumulativePercent",
+                "header": {
+                  "en": "Cumulative (%)",
+                  "fa": "تجمعی (٪)"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 320
+          }
+        },
+        {
+          "id": "causes",
+          "component": "data-grid",
+          "options": {
+            "id": "causes",
+            "url": "/d/rel-failure-cause-pareto?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "key",
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                },
+                "width": 240
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "downtimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "cumulativePercent",
+                "header": {
+                  "en": "Cumulative (%)",
+                  "fa": "تجمعی (٪)"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 320
+          }
+        },
+        {
+          "id": "bad-actors",
+          "component": "data-grid",
+          "options": {
+            "id": "bad-actors",
+            "url": "/d/rel-bad-actors?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "equipmentClassName",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 150
+              },
+              {
+                "key": "criticalityClass",
+                "header": {
+                  "en": "Criticality",
+                  "fa": "بحرانی‌بودن"
+                },
+                "width": 100
+              },
+              {
+                "key": "failureCount",
+                "header": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "mtbfHours",
+                "header": {
+                  "en": "MTBF (h)",
+                  "fa": "MTBF"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "mttrHours",
+                "header": {
+                  "en": "MTTR (h)",
+                  "fa": "MTTR"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "repeatFailureCount",
+                "header": {
+                  "en": "Repeat failures",
+                  "fa": "تکرار"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "rankScore",
+                "header": {
+                  "en": "Rank score",
+                  "fa": "امتیاز"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "primaryFailureMode",
+                "header": {
+                  "en": "Main failure mode",
+                  "fa": "حالت خرابی اصلی"
+                },
+                "width": 180
+              },
+              {
+                "key": "primaryFailureCause",
+                "header": {
+                  "en": "Main cause",
+                  "fa": "علت اصلی"
+                },
+                "width": 180
+              }
+            ],
+            "pageSize": 20,
+            "height": 320
+          }
+        },
+        {
+          "id": "trend",
+          "component": "data-grid",
+          "options": {
+            "id": "trend",
+            "url": "/d/rel-monthly-trend?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "periodLabel",
+            "columns": [
+              {
+                "key": "periodLabel",
+                "header": {
+                  "en": "Period",
+                  "fa": "دوره"
+                },
+                "width": 120
+              },
+              {
+                "key": "periodStart",
+                "header": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "failureCount",
+                "header": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 24,
+            "height": 320
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

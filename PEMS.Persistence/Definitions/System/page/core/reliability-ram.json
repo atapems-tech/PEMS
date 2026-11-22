@@ -1,0 +1,287 @@
+{
+  "kind": "page",
+  "key": "reliability-ram",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "RAM and Weibull",
+    "fa": "RAM و وایبول"
+  },
+  "description": {
+    "en": "RAM and Weibull",
+    "fa": "RAM و وایبول"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-ram",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-simulation?id={{params.id}}",
+                "text": {
+                  "en": "Monte Carlo simulation",
+                  "fa": "شبیه‌سازی مونت‌کارلو"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-equipment?id={{params.id}}",
+                "text": {
+                  "en": "Reliability",
+                  "fa": "قابلیت اطمینان"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "ram",
+          "component": "data-grid",
+          "options": {
+            "id": "ram",
+            "url": "/d/rel-ram?f.id={{params.id|url}}",
+            "idField": "tagNumber",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "reliabilityDataStatus",
+                "header": {
+                  "en": "Reliability data",
+                  "fa": "داده قابلیت اطمینان"
+                },
+                "width": 150
+              },
+              {
+                "key": "mtbfHours",
+                "header": {
+                  "en": "MTBF (h)",
+                  "fa": "MTBF"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "failureRateLambdaPerHour",
+                "header": {
+                  "en": "Failure rate (1/h)",
+                  "fa": "نرخ خرابی"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "failureSampleSize",
+                "header": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "maintainabilityDataStatus",
+                "header": {
+                  "en": "Maintainability data",
+                  "fa": "داده تعمیرپذیری"
+                },
+                "width": 160
+              },
+              {
+                "key": "mttrHours",
+                "header": {
+                  "en": "MTTR (h)",
+                  "fa": "MTTR"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "inherentAvailabilityDataStatus",
+                "header": {
+                  "en": "Inherent availability data",
+                  "fa": "داده دسترس‌پذیری ذاتی"
+                },
+                "width": 190
+              },
+              {
+                "key": "inherentAvailabilityPercent",
+                "header": {
+                  "en": "Inherent availability (%)",
+                  "fa": "دسترس‌پذیری ذاتی"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "operationalAvailabilityDataStatus",
+                "header": {
+                  "en": "Operational availability data",
+                  "fa": "داده دسترس‌پذیری عملیاتی"
+                },
+                "width": 200
+              },
+              {
+                "key": "operationalAvailabilityPercent",
+                "header": {
+                  "en": "Operational availability (%)",
+                  "fa": "دسترس‌پذیری عملیاتی"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHoursConsidered",
+                "header": {
+                  "en": "Downtime considered (h)",
+                  "fa": "توقف لحاظ‌شده"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "calendarWindowHoursConsidered",
+                "header": {
+                  "en": "Window (h)",
+                  "fa": "پنجره"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "provenance",
+                "header": {
+                  "en": "Provenance",
+                  "fa": "منبع"
+                },
+                "width": 220
+              }
+            ],
+            "pageSize": 5,
+            "height": 150
+          }
+        },
+        {
+          "id": "weibull",
+          "component": "data-grid",
+          "options": {
+            "id": "weibull",
+            "url": "/d/rel-weibull?f.id={{params.id|url}}",
+            "idField": "tagNumber",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "sampleSize",
+                "header": {
+                  "en": "Sample",
+                  "fa": "نمونه"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "requiredMinimumSample",
+                "header": {
+                  "en": "Required sample",
+                  "fa": "نمونه لازم"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "dataStatus",
+                "header": {
+                  "en": "Data status",
+                  "fa": "وضعیت داده"
+                },
+                "width": 120
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 240
+              },
+              {
+                "key": "beta",
+                "header": {
+                  "en": "Beta",
+                  "fa": "بتا"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "eta",
+                "header": {
+                  "en": "Eta",
+                  "fa": "اتا"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "betaInterpretation",
+                "header": {
+                  "en": "Interpretation",
+                  "fa": "تفسیر"
+                },
+                "width": 220
+              },
+              {
+                "key": "rSquared",
+                "header": {
+                  "en": "R squared",
+                  "fa": "R²"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "provenance",
+                "header": {
+                  "en": "Provenance",
+                  "fa": "منبع"
+                },
+                "width": 220
+              },
+              {
+                "key": "methodologyVersion",
+                "header": {
+                  "en": "Method",
+                  "fa": "روش"
+                },
+                "width": 120
+              }
+            ],
+            "pageSize": 5,
+            "height": 150
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

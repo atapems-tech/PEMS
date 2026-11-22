@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-ai-insights",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel ai insights",
+    "fa": "rel ai insights"
+  },
+  "description": {
+    "en": "rel ai insights",
+    "fa": "rel ai insights"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "AiInsights",
+      "args": {
+        "status": "param:status"
+      }
+    }
+  }
+}

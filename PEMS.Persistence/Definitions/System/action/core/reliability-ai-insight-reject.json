@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "reliability-ai-insight-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The insight was rejected.",
+    "fa": "بینش رد شد."
+  },
+  "description": {
+    "en": "The insight was rejected.",
+    "fa": "بینش رد شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Reliability",
+      "action": "ReviewAiInsight",
+      "args": {
+        "insightId": "field:id",
+        "approve": "literal:false",
+        "reviewedByEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "The insight was rejected.",
+      "fa": "بینش رد شد."
+    },
+    "redirect": "/p/reliability-ai-insights"
+  }
+}

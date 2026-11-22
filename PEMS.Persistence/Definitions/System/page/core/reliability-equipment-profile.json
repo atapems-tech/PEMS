@@ -1,0 +1,282 @@
+{
+  "kind": "page",
+  "key": "reliability-equipment-profile",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment intelligence",
+    "fa": "هوشمندی تجهیز"
+  },
+  "description": {
+    "en": "Equipment intelligence",
+    "fa": "هوشمندی تجهیز"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-equipment-profile",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-equipment?id={{params.id}}",
+                "text": {
+                  "en": "Reliability",
+                  "fa": "قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/equipment-criticalities",
+                "text": {
+                  "en": "Criticality",
+                  "fa": "بحرانی‌بودن"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "record",
+            "fields": [
+              {
+                "key": "tagNumber",
+                "label": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
+              },
+              {
+                "key": "name",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
+              },
+              {
+                "key": "equipmentClassName",
+                "label": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                }
+              },
+              {
+                "key": "disciplineName",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "parentEquipmentTagNumber",
+                "label": {
+                  "en": "Parent",
+                  "fa": "والد"
+                }
+              },
+              {
+                "key": "currentCriticalityClass",
+                "label": {
+                  "en": "Criticality class",
+                  "fa": "کلاس بحرانی‌بودن"
+                }
+              },
+              {
+                "key": "currentRiskLevel",
+                "label": {
+                  "en": "Risk level",
+                  "fa": "سطح ریسک"
+                }
+              },
+              {
+                "key": "latestAssessmentStatus",
+                "label": {
+                  "en": "Latest assessment",
+                  "fa": "آخرین ارزیابی"
+                }
+              },
+              {
+                "key": "latestAssessmentFrameworkVersion",
+                "label": {
+                  "en": "Framework",
+                  "fa": "چارچوب"
+                }
+              },
+              {
+                "key": "latestAssessmentEvidenceCount",
+                "label": {
+                  "en": "Evidence",
+                  "fa": "شواهد"
+                }
+              },
+              {
+                "key": "activeStrategyCount",
+                "label": {
+                  "en": "Active strategies",
+                  "fa": "استراتژی فعال"
+                }
+              },
+              {
+                "key": "activeMaintenancePlanCount",
+                "label": {
+                  "en": "Active plans",
+                  "fa": "برنامه فعال"
+                }
+              },
+              {
+                "key": "preventiveWorkOrderCount",
+                "label": {
+                  "en": "Preventive work orders",
+                  "fa": "دستور کار پیشگیرانه"
+                }
+              },
+              {
+                "key": "correctiveWorkOrderCount",
+                "label": {
+                  "en": "Corrective work orders",
+                  "fa": "دستور کار اصلاحی"
+                }
+              },
+              {
+                "key": "emergencyWorkOrderCount",
+                "label": {
+                  "en": "Emergency work orders",
+                  "fa": "دستور کار اضطراری"
+                }
+              },
+              {
+                "key": "openBacklogWorkOrderCount",
+                "label": {
+                  "en": "Open backlog",
+                  "fa": "بک‌لاگ باز"
+                }
+              },
+              {
+                "key": "reliabilityDataStatus",
+                "label": {
+                  "en": "Reliability data",
+                  "fa": "داده قابلیت اطمینان"
+                }
+              },
+              {
+                "key": "mtbfHours",
+                "label": {
+                  "en": "MTBF (h)",
+                  "fa": "MTBF"
+                }
+              },
+              {
+                "key": "mttrHours",
+                "label": {
+                  "en": "MTTR (h)",
+                  "fa": "MTTR"
+                }
+              },
+              {
+                "key": "availabilityPercent",
+                "label": {
+                  "en": "Availability (%)",
+                  "fa": "دسترس‌پذیری"
+                }
+              },
+              {
+                "key": "failureCount",
+                "label": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                }
+              },
+              {
+                "key": "totalDowntimeHours",
+                "label": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف"
+                }
+              },
+              {
+                "key": "fmeaReadiness",
+                "label": {
+                  "en": "FMEA readiness",
+                  "fa": "آمادگی FMEA"
+                }
+              },
+              {
+                "key": "rcmReadiness",
+                "label": {
+                  "en": "RCM readiness",
+                  "fa": "آمادگی RCM"
+                }
+              },
+              {
+                "key": "anyLinkedJobPlanRequiresPermit",
+                "label": {
+                  "en": "A job plan needs a permit",
+                  "fa": "Job Plan نیازمند مجوز"
+                }
+              },
+              {
+                "key": "anyLinkedJobPlanRequiresLOTO",
+                "label": {
+                  "en": "A job plan needs LOTO",
+                  "fa": "Job Plan نیازمند LOTO"
+                }
+              },
+              {
+                "key": "isBadActor",
+                "label": {
+                  "en": "Bad actor",
+                  "fa": "Bad Actor"
+                }
+              },
+              {
+                "key": "weibullDataStatus",
+                "label": {
+                  "en": "Weibull data",
+                  "fa": "داده وایبول"
+                }
+              },
+              {
+                "key": "predictiveStatus",
+                "label": {
+                  "en": "Predictive status",
+                  "fa": "وضعیت پیش‌بینی"
+                }
+              },
+              {
+                "key": "conditionMonitoringStatus",
+                "label": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/rel-equipment-intelligence",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

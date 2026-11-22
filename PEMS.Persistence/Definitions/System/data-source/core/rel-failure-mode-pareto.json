@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-failure-mode-pareto",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel failure mode pareto",
+    "fa": "rel failure mode pareto"
+  },
+  "description": {
+    "en": "rel failure mode pareto",
+    "fa": "rel failure mode pareto"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "FailureModePareto",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "top": "param:top"
+      }
+    }
+  }
+}

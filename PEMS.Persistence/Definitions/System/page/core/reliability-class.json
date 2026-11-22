@@ -1,0 +1,141 @@
+{
+  "kind": "page",
+  "key": "reliability-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Class reliability",
+    "fa": "قابلیت اطمینان کلاس"
+  },
+  "description": {
+    "en": "Class reliability",
+    "fa": "قابلیت اطمینان کلاس"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-class",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-class-intelligence?id={{params.id}}",
+                "text": {
+                  "en": "Intelligence profile",
+                  "fa": "پروفایل هوشمندی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Back to the analysis",
+                  "fa": "بازگشت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "record",
+            "fields": [
+              {
+                "key": "code",
+                "label": {
+                  "en": "Code",
+                  "fa": "کد"
+                }
+              },
+              {
+                "key": "name",
+                "label": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                }
+              },
+              {
+                "key": "equipmentPopulation",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "equipmentWithFailureHistory",
+                "label": {
+                  "en": "With failure history",
+                  "fa": "دارای سابقه خرابی"
+                }
+              },
+              {
+                "key": "failureCount",
+                "label": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                }
+              },
+              {
+                "key": "totalDowntimeHours",
+                "label": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف"
+                }
+              },
+              {
+                "key": "averageMTBFHours",
+                "label": {
+                  "en": "Average MTBF (h)",
+                  "fa": "میانگین MTBF"
+                }
+              },
+              {
+                "key": "averageMTTRHours",
+                "label": {
+                  "en": "Average MTTR (h)",
+                  "fa": "میانگین MTTR"
+                }
+              },
+              {
+                "key": "averageAvailabilityPercent",
+                "label": {
+                  "en": "Average availability (%)",
+                  "fa": "میانگین دسترس‌پذیری"
+                }
+              },
+              {
+                "key": "mtbfSampleSize",
+                "label": {
+                  "en": "MTBF sample",
+                  "fa": "نمونه MTBF"
+                }
+              },
+              {
+                "key": "mttrSampleSize",
+                "label": {
+                  "en": "MTTR sample",
+                  "fa": "نمونه MTTR"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/rel-class-one",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

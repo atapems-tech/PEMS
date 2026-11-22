@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "reliability-cm-profile-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign an evaluation profile",
+    "fa": "تخصیص پروفایل ارزیابی"
+  },
+  "description": {
+    "en": "Assign an evaluation profile",
+    "fa": "تخصیص پروفایل ارزیابی"
+  },
+  "payload": {
+    "id": "reliability-cm-profile-assign",
+    "title": {
+      "en": "Assign an evaluation profile",
+      "fa": "تخصیص پروفایل ارزیابی"
+    },
+    "submitLabel": {
+      "en": "Assign",
+      "fa": "تخصیص"
+    },
+    "actionKey": "reliability-cm-profile-assign",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "pointId",
+        "label": {
+          "en": "Point id",
+          "fa": "شناسه نقطه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "evaluationProfileId",
+        "label": {
+          "en": "Evaluation profile id (empty to clear)",
+          "fa": "شناسه پروفایل (خالی برای حذف)"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

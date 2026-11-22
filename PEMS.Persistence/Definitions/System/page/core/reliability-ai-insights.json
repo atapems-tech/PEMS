@@ -1,0 +1,320 @@
+{
+  "kind": "page",
+  "key": "reliability-ai-insights",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "AI reliability insights",
+    "fa": "بینش‌های هوشمند قابلیت اطمینان"
+  },
+  "description": {
+    "en": "AI reliability insights",
+    "fa": "بینش‌های هوشمند قابلیت اطمینان"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-ai-insights",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "ai-filters",
+            "resetUrl": "/p/reliability-ai-insights",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "Draft"
+                    }
+                  },
+                  {
+                    "value": "Approved",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "Approved"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "Rejected"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "generate",
+          "component": "action-button",
+          "options": {
+            "action": "reliability-ai-insights-generate",
+            "label": {
+              "en": "Generate insights",
+              "fa": "تولید بینش"
+            },
+            "tone": "primary",
+            "icon": "bi-stars"
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "insights",
+          "component": "data-grid",
+          "options": {
+            "id": "insights",
+            "url": "/d/rel-ai-insights?f.status={{params.status|url}}",
+            "idField": "aiReliabilityInsightId",
+            "columns": [
+              {
+                "key": "equipmentTagNumber",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 130
+              },
+              {
+                "key": "equipmentClassName",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 140
+              },
+              {
+                "key": "insightType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 130
+              },
+              {
+                "key": "suggestionText",
+                "header": {
+                  "en": "Suggestion",
+                  "fa": "پیشنهاد"
+                },
+                "width": 300
+              },
+              {
+                "key": "sourceDataSummary",
+                "header": {
+                  "en": "Source data",
+                  "fa": "داده منبع"
+                },
+                "width": 240
+              },
+              {
+                "key": "modelName",
+                "header": {
+                  "en": "Model",
+                  "fa": "مدل"
+                },
+                "width": 120
+              },
+              {
+                "key": "confidence",
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "reviewStatus",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "reviewedByName",
+                "header": {
+                  "en": "Reviewed by",
+                  "fa": "بازبین"
+                },
+                "width": 130
+              },
+              {
+                "key": "reviewedDate",
+                "header": {
+                  "en": "Reviewed",
+                  "fa": "بازبینی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "reviewComment",
+                "header": {
+                  "en": "Comment",
+                  "fa": "یادداشت"
+                },
+                "width": 200
+              },
+              {
+                "key": "generatedDate",
+                "header": {
+                  "en": "Generated",
+                  "fa": "تولید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "provenance",
+                "header": {
+                  "en": "Provenance",
+                  "fa": "منبع"
+                },
+                "width": 200
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/a/reliability-ai-insight-approve",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Approve this insight?",
+                      "fa": "این بینش تأیید شود؟"
+                    },
+                    "showWhen": "row.reviewStatus == 'Draft'"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    },
+                    "url": "/a/reliability-ai-insight-reject",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Reject this insight?",
+                      "fa": "این بینش رد شود؟"
+                    },
+                    "showWhen": "row.reviewStatus == 'Draft'"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

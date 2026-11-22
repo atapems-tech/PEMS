@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel equipment",
+    "fa": "rel equipment"
+  },
+  "description": {
+    "en": "rel equipment",
+    "fa": "rel equipment"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "Equipment",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-class-intelligence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel class intelligence",
+    "fa": "rel class intelligence"
+  },
+  "description": {
+    "en": "rel class intelligence",
+    "fa": "rel class intelligence"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "ClassIntelligence",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

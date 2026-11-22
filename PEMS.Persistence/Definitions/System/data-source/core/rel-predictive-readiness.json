@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-predictive-readiness",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel predictive readiness",
+    "fa": "rel predictive readiness"
+  },
+  "description": {
+    "en": "rel predictive readiness",
+    "fa": "rel predictive readiness"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "PredictiveReadiness"
+    }
+  }
+}

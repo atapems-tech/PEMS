@@ -30,6 +30,6 @@
       "en": "Reading recorded.",
       "fa": "قرائت ثبت شد."
     },
-    "redirect": "/Reliability/ConditionMonitoring?equipmentId={equipmentId}"
+    "redirect": "/p/reliability-condition-monitoring?equipmentId={equipmentId}"
   }
 }
