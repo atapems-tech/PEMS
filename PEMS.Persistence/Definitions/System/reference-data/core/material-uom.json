@@ -1,0 +1,92 @@
+{
+  "kind": "reference-data",
+  "key": "material-uom",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Units of measure",
+    "fa": "واحدهای اندازه‌گیری"
+  },
+  "description": {
+    "en": "Units of measure of materials and stock lines.",
+    "fa": "واحدهای اندازه‌گیری"
+  },
+  "payload": {
+    "list": "material-uom",
+    "owner": "platform",
+    "rows": [
+      {
+        "key": "PCS",
+        "values": {
+          "name": "Piece"
+        }
+      },
+      {
+        "key": "SET",
+        "values": {
+          "name": "Set"
+        }
+      },
+      {
+        "key": "KG",
+        "values": {
+          "name": "Kilogram"
+        }
+      },
+      {
+        "key": "MT",
+        "values": {
+          "name": "Metric Ton"
+        }
+      },
+      {
+        "key": "LT",
+        "values": {
+          "name": "Liter"
+        }
+      },
+      {
+        "key": "MTR",
+        "values": {
+          "name": "Meter"
+        }
+      },
+      {
+        "key": "ROLL",
+        "values": {
+          "name": "Roll"
+        }
+      },
+      {
+        "key": "BOX",
+        "values": {
+          "name": "Box"
+        }
+      },
+      {
+        "key": "PAIR",
+        "values": {
+          "name": "Pair"
+        }
+      },
+      {
+        "key": "NO",
+        "values": {
+          "name": "Number"
+        }
+      },
+      {
+        "key": "DRUM",
+        "values": {
+          "name": "Drum"
+        }
+      },
+      {
+        "key": "BAG",
+        "values": {
+          "name": "Bag"
+        }
+      }
+    ]
+  }
+}

@@ -29,6 +29,8 @@ internal static class EntityCatalogDefaults
             .Readable("UserId", "ResourceName", "ActionName", "ResourceId", "ScopeType", "ScopeValue", "Decision", "Reason", "Timestamp", "IpAddress"))
         .Add<DefinitionGrant>("DefinitionGrantId", e => e.Roles(AdminRoles, AdminRoles)   // SCRUM-591: an administrator opens or closes a definition for a role without a deploy
             .Readable("Kind", "DefinitionKey", "RoleName", "Effect", "Reason", "CreatedBy", "CreatedDate").Writable("Kind", "DefinitionKey", "RoleName", "Effect", "Reason"))
+        .Add<DefinitionGrantSummary>("GrantKey", e => e.Roles(AdminRoles, null)   // SCRUM-806: a database view as a read-only entity
+            .Readable("Kind", "DefinitionKey", "AllowCount", "DenyCount", "RoleCount"))
         .Add<Project>("ProjectId", e => e   // SCRUM-740: the Projects controller had no permission of its own; the menu rule and the signed-in user decide, as before
             .Readable("ProjectCode", "ProjectName", "ClientName", "Location", "StartDate", "EndDate", "Status", "IsActive", "CreatedDate")
             .Writable("ProjectCode", "ProjectName", "ClientName", "Location", "StartDate", "EndDate", "Status", "IsActive", "CreatedDate"))

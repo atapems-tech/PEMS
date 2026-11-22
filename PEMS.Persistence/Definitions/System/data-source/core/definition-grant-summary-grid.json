@@ -1,0 +1,37 @@
+{
+  "kind": "data-source",
+  "key": "definition-grant-summary-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Grants per definition",
+    "fa": "مجوزها به تفکیک تعریف"
+  },
+  "description": {
+    "en": "How many roles are allowed or denied for each definition (reads the database view vw_DefinitionGrantSummary)",
+    "fa": "تعداد نقش‌های مجاز و ممنوع برای هر تعریف (از ویوی پایگاه داده)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "entity",
+    "permission": "Definitions.View",
+    "parameters": {
+      "entity": "DefinitionGrantSummary",
+      "fields": [
+        "GrantKey",
+        "Kind",
+        "DefinitionKey",
+        "AllowCount",
+        "DenyCount",
+        "RoleCount"
+      ],
+      "search": [
+        "DefinitionKey"
+      ],
+      "sort": [
+        "Kind",
+        "DefinitionKey"
+      ]
+    }
+  }
+}

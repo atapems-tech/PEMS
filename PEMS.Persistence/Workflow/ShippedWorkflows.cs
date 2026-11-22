@@ -135,6 +135,7 @@ public sealed class WorkflowShipper(PEMSDbContext db, IWorkflowDefinitionService
 
         var active = versions.Where(v => v.Status == "Published").OrderByDescending(v => v.VersionNumber).FirstOrDefault();
         IReadOnlyList<string> changes = active is null ? [] : Diff(shipped, await StructureOfAsync(active.WorkflowVersionId, ct));
+        if (active is not null && changes.Count == 0) return new ShipResult(ShipOutcome.Unchanged, []);   // an install made by the old C# seeder already has this structure: no review draft for nothing
         var draft = await defs.CreateDraftVersionAsync(definition.WorkflowDefinitionId, actor, shipped.Marker + UpstreamNote, ct);
         await FillAsync(draft.WorkflowVersionId, shipped, actor, ct);
         return new ShipResult(ShipOutcome.UpstreamStored, changes, draft.WorkflowVersionId);

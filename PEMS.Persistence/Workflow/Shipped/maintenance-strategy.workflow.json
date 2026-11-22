@@ -1,0 +1,14 @@
+{
+  "module": "CMMS",
+  "context": "StrategyApproval",
+  "name": "تایید استراتژی نگهداری (RCM)",
+  "description": "هر نسخه‌ی استراتژی پیش از فعال‌شدن و تخصیص به تگ‌ها نیازمند بازبینی مستقل است",
+  "stages": [
+    { "key": "strategyreview", "name": "StrategyReview", "nameFa": null, "order": 1, "stageType": "Sequential", "responsibleRole": "SystemAdmin,EngineeringSupervisor,EngineeringManager", "approvalStrategy": "AllApprovalsRequired", "isMandatory": true }
+  ],
+  "transitions": [
+    { "from": null, "to": "strategyreview", "action": "Start", "priority": 0 },
+    { "from": "strategyreview", "to": null, "action": "Approve", "priority": 0 },
+    { "from": "strategyreview", "to": null, "action": "Reject", "priority": 0 }
+  ]
+}

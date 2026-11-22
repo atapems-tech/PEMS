@@ -1,0 +1,14 @@
+{
+  "module": "NCR",
+  "context": "CriticalApproval",
+  "name": "تایید NCR بحرانی",
+  "description": "قبل از بستن هر NCR با شدت Critical، تایید مستقل مدیر QA الزامی است",
+  "stages": [
+    { "key": "qaapproval", "name": "QAApproval", "nameFa": null, "order": 1, "stageType": "Sequential", "responsibleRole": "SystemAdmin,QAManager", "approvalStrategy": "AllApprovalsRequired", "isMandatory": true }
+  ],
+  "transitions": [
+    { "from": null, "to": "qaapproval", "action": "Start", "priority": 0 },
+    { "from": "qaapproval", "to": null, "action": "Approve", "priority": 0 },
+    { "from": "qaapproval", "to": null, "action": "Reject", "priority": 0 }
+  ]
+}
