@@ -1,0 +1,171 @@
+{
+  "kind": "form",
+  "key": "gas-test-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a gas test",
+    "fa": "ثبت تست گاز"
+  },
+  "description": {
+    "en": "Record a gas test",
+    "fa": "ثبت تست گاز"
+  },
+  "payload": {
+    "id": "gas-test-create",
+    "title": {
+      "en": "Record a gas test",
+      "fa": "ثبت تست گاز"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "gas-test-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "location",
+        "label": {
+          "en": "Location",
+          "fa": "مکان"
+        },
+        "kind": "text",
+        "maxLength": 300,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "testedAt",
+        "label": {
+          "en": "Tested at (yyyy-MM-dd HH:mm)",
+          "fa": "زمان تست (yyyy-MM-dd HH:mm)"
+        },
+        "kind": "text",
+        "maxLength": 20,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "instrumentTag",
+        "label": {
+          "en": "Instrument tag",
+          "fa": "تگ ابزار"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "instrumentCalibrationDueDate",
+        "label": {
+          "en": "Instrument calibration due",
+          "fa": "سررسید کالیبراسیون ابزار"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "o2",
+        "label": {
+          "en": "O2",
+          "fa": "O2"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "lel",
+        "label": {
+          "en": "LEL",
+          "fa": "LEL"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "h2s",
+        "label": {
+          "en": "H2S",
+          "fa": "H2S"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "co",
+        "label": {
+          "en": "CO",
+          "fa": "CO"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "otherValue",
+        "label": {
+          "en": "Other reading",
+          "fa": "قرائت دیگر"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "otherUnit",
+        "label": {
+          "en": "Unit of the other reading",
+          "fa": "واحد قرائت دیگر"
+        },
+        "kind": "text",
+        "maxLength": 20
+      }
+    ]
+  }
+}

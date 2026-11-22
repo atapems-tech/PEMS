@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "execution-gate-start-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start work",
+    "fa": "شروع کار"
+  },
+  "description": {
+    "en": "Start work",
+    "fa": "شروع کار"
+  },
+  "payload": {
+    "id": "execution-gate-start-work",
+    "title": {
+      "en": "Start work",
+      "fa": "شروع کار"
+    },
+    "submitLabel": {
+      "en": "Start work",
+      "fa": "شروع کار"
+    },
+    "actionKey": "execution-gate-start-work",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

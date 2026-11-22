@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "simops-resolve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Resolve the SIMOPS conflict",
+    "fa": "رفع تعارض SIMOPS"
+  },
+  "description": {
+    "en": "Resolve the SIMOPS conflict",
+    "fa": "رفع تعارض SIMOPS"
+  },
+  "payload": {
+    "id": "simops-resolve",
+    "title": {
+      "en": "Resolve the SIMOPS conflict",
+      "fa": "رفع تعارض SIMOPS"
+    },
+    "submitLabel": {
+      "en": "Resolve",
+      "fa": "رفع"
+    },
+    "actionKey": "simops-resolve",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Conflict id",
+          "fa": "شناسه‌ی تعارض"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "resolutionNotes",
+        "label": {
+          "en": "Resolution notes",
+          "fa": "شرح رفع"
+        },
+        "kind": "textArea",
+        "maxLength": 2000,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

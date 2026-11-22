@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-simops-candidates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "SIMOPS candidate permits",
+    "fa": "مجوزهای کاندیدای SIMOPS"
+  },
+  "description": {
+    "en": "SIMOPS candidate permits",
+    "fa": "مجوزهای کاندیدای SIMOPS"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "SimopsCandidates",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -256,7 +256,7 @@
                       "en": "Open",
                       "fa": "باز کردن"
                     },
-                    "url": "/Permit/Details/{id}",
+                    "url": "/p/permit-details?id={id}",
                     "method": "get"
                   }
                 ]

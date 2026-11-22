@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-simops-conflicts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "SIMOPS conflicts of the permit",
+    "fa": "تعارض‌های SIMOPS مجوز"
+  },
+  "description": {
+    "en": "SIMOPS conflicts of the permit",
+    "fa": "تعارض‌های SIMOPS مجوز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "SimopsConflicts",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

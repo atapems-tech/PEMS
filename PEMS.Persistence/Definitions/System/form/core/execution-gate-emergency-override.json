@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "execution-gate-emergency-override",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Emergency override of the execution gate",
+    "fa": "عبور اضطراری از دروازه‌ی اجرا"
+  },
+  "description": {
+    "en": "Emergency override of the execution gate",
+    "fa": "عبور اضطراری از دروازه‌ی اجرا"
+  },
+  "payload": {
+    "id": "execution-gate-emergency-override",
+    "title": {
+      "en": "Emergency override of the execution gate",
+      "fa": "عبور اضطراری از دروازه‌ی اجرا"
+    },
+    "submitLabel": {
+      "en": "Override",
+      "fa": "عبور اضطراری"
+    },
+    "actionKey": "execution-gate-emergency-override",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 1000,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

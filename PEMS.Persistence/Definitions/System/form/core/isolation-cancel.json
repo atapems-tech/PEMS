@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "isolation-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the isolation point",
+    "fa": "لغو نقطه‌ی ایزوله‌سازی"
+  },
+  "description": {
+    "en": "Cancel the isolation point",
+    "fa": "لغو نقطه‌ی ایزوله‌سازی"
+  },
+  "payload": {
+    "id": "isolation-cancel",
+    "title": {
+      "en": "Cancel the isolation point",
+      "fa": "لغو نقطه‌ی ایزوله‌سازی"
+    },
+    "submitLabel": {
+      "en": "Cancel the point",
+      "fa": "لغو نقطه"
+    },
+    "actionKey": "isolation-cancel",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Isolation point id",
+          "fa": "شناسه‌ی نقطه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

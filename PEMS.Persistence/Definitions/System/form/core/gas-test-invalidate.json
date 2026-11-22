@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "gas-test-invalidate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Invalidate the gas test",
+    "fa": "ابطال تست گاز"
+  },
+  "description": {
+    "en": "Invalidate the gas test",
+    "fa": "ابطال تست گاز"
+  },
+  "payload": {
+    "id": "gas-test-invalidate",
+    "title": {
+      "en": "Invalidate the gas test",
+      "fa": "ابطال تست گاز"
+    },
+    "submitLabel": {
+      "en": "Invalidate",
+      "fa": "ابطال"
+    },
+    "actionKey": "gas-test-invalidate",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Gas test id",
+          "fa": "شناسه‌ی تست گاز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 1000,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

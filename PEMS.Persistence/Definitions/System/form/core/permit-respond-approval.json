@@ -1,0 +1,85 @@
+{
+  "kind": "form",
+  "key": "permit-respond-approval",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond to the approval step",
+    "fa": "پاسخ به مرحله‌ی تأیید"
+  },
+  "description": {
+    "en": "Respond to the approval step",
+    "fa": "پاسخ به مرحله‌ی تأیید"
+  },
+  "payload": {
+    "id": "permit-respond-approval",
+    "title": {
+      "en": "Respond to the approval step",
+      "fa": "پاسخ به مرحله‌ی تأیید"
+    },
+    "submitLabel": {
+      "en": "Send",
+      "fa": "ارسال"
+    },
+    "actionKey": "permit-respond-approval",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Approve",
+            "label": {
+              "en": "Approve",
+              "fa": "تأیید"
+            }
+          },
+          {
+            "value": "Reject",
+            "label": {
+              "en": "Reject (the whole chain ends rejected)",
+              "fa": "رد (کل زنجیره رد می‌شود)"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment (optional)",
+          "fa": "توضیح (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

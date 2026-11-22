@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-gate-checks",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Execution gate checks",
+    "fa": "بررسی‌های دروازه‌ی اجرا"
+  },
+  "description": {
+    "en": "Execution gate checks",
+    "fa": "بررسی‌های دروازه‌ی اجرا"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "GateChecks",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

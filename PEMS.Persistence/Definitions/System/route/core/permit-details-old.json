@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "permit-details-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permit details (old address)",
+    "fa": "جزئیات مجوز (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Permit details (old address)",
+    "fa": "جزئیات مجوز (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Permit/Details/{id}",
+    "target": "/p/permit-details?id={id}",
+    "permanent": false
+  }
+}

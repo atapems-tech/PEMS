@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-gate-decisions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Execution gate decisions",
+    "fa": "تصمیم‌های دروازه‌ی اجرا"
+  },
+  "description": {
+    "en": "Execution gate decisions",
+    "fa": "تصمیم‌های دروازه‌ی اجرا"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "GateDecisions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

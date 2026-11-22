@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "simops-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm the SIMOPS conflict",
+    "fa": "تأیید تعارض SIMOPS"
+  },
+  "description": {
+    "en": "Confirm the SIMOPS conflict",
+    "fa": "تأیید تعارض SIMOPS"
+  },
+  "payload": {
+    "id": "simops-confirm",
+    "title": {
+      "en": "Confirm the SIMOPS conflict",
+      "fa": "تأیید تعارض SIMOPS"
+    },
+    "submitLabel": {
+      "en": "Confirm",
+      "fa": "تأیید"
+    },
+    "actionKey": "simops-confirm",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Conflict id",
+          "fa": "شناسه‌ی تعارض"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}
