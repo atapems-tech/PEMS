@@ -18,7 +18,6 @@
       "model": "EngineeringIntelligence",
       "action": "ApproveClassification",
       "args": {
-        "documentId": "field:documentId",
         "classificationId": "field:classificationId",
         "applyDiscipline": "field:applyDiscipline",
         "applyVendor": "field:applyVendor",

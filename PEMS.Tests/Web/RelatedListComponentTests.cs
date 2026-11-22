@@ -120,9 +120,7 @@ public class RelatedListComponentTests
         while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
         Assert.NotNull(dir);
         var web = Path.Combine(dir!.FullName, "PEMS.Web");
-        foreach (var (page, sections) in new[]
-        {
-        })
+        foreach (var (page, sections) in Array.Empty<(string Page, string[] Sections)>())
         {
             var view = File.ReadAllText(Path.Combine(web, page.Replace('/', Path.DirectorySeparatorChar)));
             foreach (var id in sections) Assert.Contains($"<pems-related-list id=\"{id}\"", view);

@@ -18,7 +18,6 @@
       "model": "EngineeringIntelligence",
       "action": "RejectTagLink",
       "args": {
-        "documentId": "field:documentId",
         "tagLinkId": "field:tagLinkId",
         "reviewedById": "context:userId"
       }

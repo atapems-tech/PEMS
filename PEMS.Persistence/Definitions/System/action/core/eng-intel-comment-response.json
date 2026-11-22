@@ -19,8 +19,7 @@
       "action": "RecordCommentResponse",
       "args": {
         "commentId": "field:commentId",
-        "responseText": "field:responseText",
-        "documentId": "field:documentId"
+        "responseText": "field:responseText"
       }
     },
     "success": {

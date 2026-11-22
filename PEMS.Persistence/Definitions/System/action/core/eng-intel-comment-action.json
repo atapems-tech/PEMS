@@ -19,8 +19,7 @@
       "action": "SetCommentAction",
       "args": {
         "commentId": "field:commentId",
-        "actionStatus": "field:actionStatus",
-        "documentId": "field:documentId"
+        "actionStatus": "field:actionStatus"
       }
     },
     "success": {

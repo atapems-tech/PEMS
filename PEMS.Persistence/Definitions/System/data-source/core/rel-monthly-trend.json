@@ -19,8 +19,7 @@
       "action": "MonthlyTrend",
       "args": {
         "from": "param:from",
-        "to": "param:to",
-        "top": "param:top"
+        "to": "param:to"
       }
     }
   }

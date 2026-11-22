@@ -18,8 +18,7 @@
       "model": "Mdb",
       "action": "RemoveDocument",
       "args": {
-        "mdbDocumentId": "field:mdbDocumentId",
-        "mdbId": "field:mdbId"
+        "mdbDocumentId": "field:mdbDocumentId"
       }
     },
     "success": {

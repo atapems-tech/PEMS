@@ -74,3 +74,98 @@ Do not add an MCP server "just in case": each one adds its tool schemas to every
 ## 5. What the instruction files hold
 
 `AGENTS.md` holds the mandatory order and the five rules, and points here. `CLAUDE.md` (root and `.claude/`) holds the read-first pointer and the graphify rule, nothing else. A rule that is only needed for one kind of task belongs in a chapter or a skill, not in a file every session loads. Before adding a line to an instruction file ask: would every session need it? If not, it goes in a skill.
+
+# PEMS — Codex-Only Smart Model Selection Policy
+
+## 1. Scope and Isolation
+
+This policy applies exclusively to OpenAI Codex working on the PEMS repository.
+
+- Do not modify `AGENTS.md`, `CLAUDE.md`, `.claude/`, or any other agent's configuration.
+- Follow the existing PEMS development workflow and task ownership rules.
+- Treat `docs/guidelines/09-ai-agents-and-token-efficiency.md` as the authoritative source for token optimization.
+- Do not duplicate or override existing project guidelines.
+- This policy is advisory and must not interfere with other agents.
+
+## 2. Task Complexity Assessment
+
+Before substantial execution of a new task, assess complexity from 1 to 10 using:
+
+- Architectural impact
+- Number of affected modules
+- Security and database risks
+- Implementation difficulty
+- Required investigation and testing
+- Cross-module dependencies
+
+## 3. Model Recommendation
+
+**Low complexity (1–3)**
+
+Recommend the most economical capable model available in Codex.
+
+Reasoning: Low.
+
+**Medium complexity (4–7)**
+
+Recommend a balanced coding model.
+
+Reasoning: Medium.
+
+**High complexity (8–10)**
+
+Recommend the strongest appropriate available model, including GPT-6 Astra when available and justified.
+
+Reasoning: High when necessary.
+
+Use only verified available models. Never invent model names, costs, or expected savings.
+
+## 4. Pre-Execution Assessment
+
+Before substantial work, report briefly:
+
+- Complexity: X/10
+- Recommended model
+- Recommended reasoning effort
+- Risk level
+- Affected modules
+- Reason for recommendation
+
+If the currently selected model is unnecessarily expensive, recommend switching before expensive execution.
+
+Do not claim automatic model switching. The user controls the primary model unless an authorized mechanism supports switching.
+
+## 5. Credit Optimization
+
+Follow Chapter 09 of the PEMS guidelines.
+
+In particular:
+
+- Avoid redundant repository scans.
+- Avoid repeated architectural investigations.
+- Reuse existing context and findings.
+- Prefer targeted file inspection.
+- Minimize unnecessary tool calls and verbose outputs.
+- Run targeted tests first, while respecting all mandatory quality gates.
+- Use subagents only when justified.
+- Avoid unnecessary high reasoning effort.
+
+Never compromise correctness, security, testing requirements, or PEMS development procedures to reduce credits.
+
+## 6. Multi-Agent Protection
+
+- Respect Jira task ownership and active branches.
+- Never take over another agent's assigned work without authorization.
+- Do not change shared instructions or another agent's configuration.
+- Preserve compatibility with existing PEMS guidelines.
+
+## 7. Completion Report
+
+When relevant, briefly report:
+
+- Model recommended
+- Model actually used, if known
+- Major resource-consumption factors
+- Opportunities for further optimization
+
+**Objective:** Reduce unnecessary Codex credit consumption while maintaining the required quality and reliability of PEMS development.

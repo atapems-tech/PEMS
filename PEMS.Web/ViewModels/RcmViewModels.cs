@@ -56,6 +56,3 @@ public class BulkAssignViewModel
     public List<LookupItem> UsableStrategies { get; set; } = new();
     public Dictionary<int, BulkAssignCandidateDto> Candidates { get; set; } = new();
 }
-    public StrategyImportResultDto? Result { get; set; }
-    public Dictionary<int, List<string>> Messages { get; set; } = new();
-}

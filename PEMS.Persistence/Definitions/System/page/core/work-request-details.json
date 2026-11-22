@@ -20,11 +20,8 @@
           "id": "back",
           "component": "button",
           "options": {
-            "label": {
-              "en": "Back to the list",
-              "fa": "بازگشت به فهرست"
-            },
-            "tone": "secondary",
+            "label": "Back to the list",
+            "tone": "neutral",
             "href": "/p/work-requests"
           }
         }
