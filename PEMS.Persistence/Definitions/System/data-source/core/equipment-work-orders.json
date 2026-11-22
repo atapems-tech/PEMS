@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-work-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment work orders",
+    "fa": "equipment work orders"
+  },
+  "description": {
+    "en": "equipment work orders",
+    "fa": "equipment work orders"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "WorkOrders"
+    }
+  }
+}

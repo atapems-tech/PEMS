@@ -1,0 +1,50 @@
+{
+  "kind": "action",
+  "key": "equipment-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create equipment",
+    "fa": "ایجاد تجهیز"
+  },
+  "description": {
+    "en": "Create equipment",
+    "fa": "ایجاد تجهیز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "entity.create",
+    "parameters": {
+      "entity": "Equipment",
+      "map": {
+        "tagNumber": "TagNumber",
+        "name": "Name",
+        "equipmentType": "EquipmentType",
+        "projectId": "ProjectId",
+        "disciplineId": "DisciplineId",
+        "manufacturer": "Manufacturer",
+        "model": "Model",
+        "serialNumber": "SerialNumber",
+        "description": "Description"
+      },
+      "required": [
+        "TagNumber",
+        "Name",
+        "EquipmentType",
+        "ProjectId",
+        "DisciplineId"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now",
+        "Status": "Active"
+      },
+      "unique": []
+    },
+    "success": {
+      "en": "Equipment created.",
+      "fa": "تجهیز ایجاد شد."
+    },
+    "redirect": "/p/equipments"
+  }
+}

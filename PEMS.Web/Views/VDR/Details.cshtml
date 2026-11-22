@@ -186,7 +186,7 @@
             <pems-info-item label="@Localizer["Vs_Po"]">@Model.PoNumber</pems-info-item>
             <pems-info-item label="@Localizer["Vs_Equipment"]">
                     @if (Model.EquipmentId.HasValue)
-                    { <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
+                    { <pems-link href="/p/equipment-passport?id=@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
                     else
                     { <span class="text-muted">-</span> }
             </pems-info-item>

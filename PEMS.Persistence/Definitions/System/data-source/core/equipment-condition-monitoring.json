@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-condition-monitoring",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment condition monitoring",
+    "fa": "equipment condition monitoring"
+  },
+  "description": {
+    "en": "equipment condition monitoring",
+    "fa": "equipment condition monitoring"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "ConditionMonitoring"
+    }
+  }
+}

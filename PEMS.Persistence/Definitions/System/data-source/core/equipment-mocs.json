@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-mocs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment mocs",
+    "fa": "equipment mocs"
+  },
+  "description": {
+    "en": "equipment mocs",
+    "fa": "equipment mocs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "MOCs"
+    }
+  }
+}

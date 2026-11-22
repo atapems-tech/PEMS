@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "equipment-classification-explanation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment classification explanation",
+    "fa": "equipment classification explanation"
+  },
+  "description": {
+    "en": "equipment classification explanation",
+    "fa": "equipment classification explanation"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "ClassificationExplanation",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

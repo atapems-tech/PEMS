@@ -1,0 +1,146 @@
+{
+  "kind": "form",
+  "key": "equipment-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New equipment",
+    "fa": "تجهیز جدید"
+  },
+  "description": {
+    "en": "New equipment",
+    "fa": "تجهیز جدید"
+  },
+  "payload": {
+    "id": "equipment-create",
+    "title": {
+      "en": "New equipment",
+      "fa": "تجهیز جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "equipment-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tagNumber",
+        "label": {
+          "en": "Tag number",
+          "fa": "شماره تگ"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "equipmentType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-project-options"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-discipline-options"
+      },
+      {
+        "name": "manufacturer",
+        "label": {
+          "en": "Manufacturer",
+          "fa": "سازنده"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "model",
+        "label": {
+          "en": "Model",
+          "fa": "مدل"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "serialNumber",
+        "label": {
+          "en": "Serial number",
+          "fa": "شماره سریال"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

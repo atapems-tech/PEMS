@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-strategies",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment strategies",
+    "fa": "equipment strategies"
+  },
+  "description": {
+    "en": "equipment strategies",
+    "fa": "equipment strategies"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "Strategies"
+    }
+  }
+}

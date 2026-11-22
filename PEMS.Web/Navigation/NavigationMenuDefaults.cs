@@ -132,7 +132,7 @@ public static class NavigationMenuDefaults
         // ---- CMMS (قاعده‌ی هر آیتم همان IsCmmsItemVisible: مجوز + Override مدیر)
         Section("sec.cmms", 700, "CmmsIntegration", "bi-tools", "Module:CmmsIntegration",
             "Equipment,Instrument,Asset,MaintenanceStrategy,FailureModeCatalog,StrategyImport,MaintenancePlan,MaintenanceCalendar,JobPlan,WorkRequest,WorkOrder,SparePart,Team,Crew,ShiftHandover,MaintenanceMasterData,EquipmentClassification,RcmFmea,EquipmentCriticality,CriticalityAssessment,FunctionalLocation,Barcode,Reliability,Inspection,Kpi,Permit,CmmsReadiness,CmmsOperations"),
-        Link("cmms.equipment", "sec.cmms", 10, "Equipment", "bi-gear", "Equipment", rule: "CmmsItem:Equipment"),
+        new("cmms.equipment", "sec.cmms", L, 10, "Equipment", "bi-gear", "CmmsItem:Equipment", ExternalPath: "/p/equipments", ExtraActiveControllers: "Equipment"),   // SCRUM-692: a definition page (/p/...)
         new("cmms.instrument", "sec.cmms", L, 20, "Instrument Passport", "bi-cpu", "CmmsItem:Instrument", ExternalPath: "/p/instruments", ExtraActiveControllers: "Instrument"),   // SCRUM-708: a definition page (/p/...)
         new("cmms.asset", "sec.cmms", L, 30, "Assets", "bi-diagram-2", "CmmsItem:Asset", ExternalPath: "/p/assets", ExtraActiveControllers: "Asset"),   // SCRUM-670: a definition page (/p/...)
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),

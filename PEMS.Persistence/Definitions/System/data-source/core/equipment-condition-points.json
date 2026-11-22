@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-condition-points",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment condition points",
+    "fa": "equipment condition points"
+  },
+  "description": {
+    "en": "equipment condition points",
+    "fa": "equipment condition points"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "ConditionMonitoring.Points"
+    }
+  }
+}

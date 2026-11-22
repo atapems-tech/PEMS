@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-suggested-links",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment suggested links",
+    "fa": "equipment suggested links"
+  },
+  "description": {
+    "en": "equipment suggested links",
+    "fa": "equipment suggested links"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "SuggestedLinks"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-vdr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment vdr",
+    "fa": "equipment vdr"
+  },
+  "description": {
+    "en": "equipment vdr",
+    "fa": "equipment vdr"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "VDRItems"
+    }
+  }
+}

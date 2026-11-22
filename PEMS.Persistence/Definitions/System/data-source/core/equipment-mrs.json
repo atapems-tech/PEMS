@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-mrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment mrs",
+    "fa": "equipment mrs"
+  },
+  "description": {
+    "en": "equipment mrs",
+    "fa": "equipment mrs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "RelatedMRs"
+    }
+  }
+}

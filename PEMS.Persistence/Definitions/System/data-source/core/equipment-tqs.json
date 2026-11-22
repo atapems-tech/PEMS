@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-tqs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment tqs",
+    "fa": "equipment tqs"
+  },
+  "description": {
+    "en": "equipment tqs",
+    "fa": "equipment tqs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "TechnicalQueries"
+    }
+  }
+}

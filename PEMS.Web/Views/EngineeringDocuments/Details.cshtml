@@ -288,7 +288,7 @@
             <span class="text-muted small">این مدرک P&amp;ID تجهیزات زیر است:</span>
             @foreach (var e in equipmentUsingThisAsPID)
             {
-                <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@e.EquipmentId" class="text-decoration-none">
+                <pems-link href="/p/equipment-passport?id=@e.EquipmentId" class="text-decoration-none">
                     <pems-badge tone="info"><pems-icon name="bi-gear" /> @e.TagNumber</pems-badge>
                 </pems-link>
             }
@@ -418,7 +418,7 @@
                 }
                 <pems-info-item label="@Localizer["Ed_RelatedEquipment"]">
                         @if (Model.EquipmentId.HasValue)
-                        { <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
+                        { <pems-link href="/p/equipment-passport?id=@Model.EquipmentId">@Model.EquipmentTagNumber</pems-link> }
                         else { <span class="text-muted">—</span> }
                 </pems-info-item>
                 <pems-info-item label="@Localizer["Ed_RelatedContract"]">

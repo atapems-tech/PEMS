@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "equipment-project-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment ProjectOptions",
+    "fa": "تجهیز ProjectOptions"
+  },
+  "description": {
+    "en": "Equipment ProjectOptions",
+    "fa": "تجهیز ProjectOptions"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "ProjectOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

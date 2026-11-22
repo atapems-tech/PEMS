@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-mechanical",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment mechanical",
+    "fa": "equipment mechanical"
+  },
+  "description": {
+    "en": "equipment mechanical",
+    "fa": "equipment mechanical"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "MechanicalEquipment"
+    }
+  }
+}

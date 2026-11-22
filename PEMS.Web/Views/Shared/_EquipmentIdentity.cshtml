@@ -12,7 +12,7 @@
     <pems-row gap="2">
         <pems-col md="3">
             <div class="text-muted">@Localizer["Rcm_Tag"]</div>
-            <pems-link asp-controller="Equipment" asp-action="Details" asp-route-id="@Model.EquipmentId" class="fw-bold">@Model.Tag</pems-link>
+            <pems-link href="/p/equipment-passport?id=@Model.EquipmentId" class="fw-bold">@Model.Tag</pems-link>
         </pems-col>
         <pems-col md="3">
             <div class="text-muted">@Localizer["Rcm_EquipmentName"]</div>
