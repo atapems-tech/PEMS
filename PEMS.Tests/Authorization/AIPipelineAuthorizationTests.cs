@@ -103,58 +103,6 @@ public class AIPipelineAuthorizationTests
     // ================= TableExtraction =================
 
     [Fact]
-    public async Task TableExtraction_ConfirmRow_WithoutPermission_ReturnsForbid_DoesNotConfirm()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(TableExtraction_ConfirmRow_WithoutPermission_ReturnsForbid_DoesNotConfirm), role: SystemRoles.Viewer);
-        var service = new FakeTableExtractionImportService();
-        var controller = new TableExtractionController(ctx, null!, service, user, perms).WithTempData();
-
-        var result = await controller.ConfirmRow(1, 1, 1);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.ConfirmRowCalled);
-    }
-
-    [Fact]
-    public async Task TableExtraction_ConfirmRow_WithPermission_Confirms()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(TableExtraction_ConfirmRow_WithPermission_Confirms), role: SystemRoles.DisciplineEngineer);
-        var service = new FakeTableExtractionImportService();
-        var controller = new TableExtractionController(ctx, null!, service, user, perms).WithTempData();
-
-        var result = await controller.ConfirmRow(1, 1, 1);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(service.ConfirmRowCalled);
-    }
-
-    [Fact]
-    public async Task TableExtraction_BulkConfirm_WithoutPermission_ReturnsForbid_DoesNotConfirm()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(TableExtraction_BulkConfirm_WithoutPermission_ReturnsForbid_DoesNotConfirm), role: SystemRoles.Viewer);
-        var service = new FakeTableExtractionImportService();
-        var controller = new TableExtractionController(ctx, null!, service, user, perms).WithTempData();
-
-        var result = await controller.BulkConfirm(1, new List<int> { 10, 11 });
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.BulkConfirmCalled);
-    }
-
-    [Fact]
-    public async Task TableExtraction_ConfirmRowManual_WithoutPermission_ReturnsForbid_DoesNotLookUpOrConfirm()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(TableExtraction_ConfirmRowManual_WithoutPermission_ReturnsForbid_DoesNotLookUpOrConfirm), role: SystemRoles.Viewer);
-        var service = new FakeTableExtractionImportService();
-        var controller = new TableExtractionController(ctx, null!, service, user, perms).WithTempData();
-
-        var result = await controller.ConfirmRowManual(1, 1, "EQ-999");
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.ConfirmRowCalled);
-    }
-
-    [Fact]
     public async Task TableExtraction_Index_WithoutViewPermission_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(TableExtraction_Index_WithoutViewPermission_ReturnsForbid), role: null);

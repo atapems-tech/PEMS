@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "table-extraction-confirm-row-manual",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Link a row to an equipment by its tag",
+    "fa": "اتصال ردیف به تجهیز با تگ"
+  },
+  "description": {
+    "en": "Link a row to an equipment by its tag",
+    "fa": "اتصال ردیف به تجهیز با تگ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TableExtraction",
+      "action": "ConfirmRowManual",
+      "args": {
+        "rowId": "field:rowId",
+        "equipmentTagNumber": "field:equipmentTagNumber",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/TableExtraction/Review?batchId={batchId}"
+  }
+}

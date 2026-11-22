@@ -39,7 +39,7 @@
     </pems-stat-grid>
 </pems-content-card>
 
-<pems-form id="bulkConfirmForm" asp-action="BulkConfirm" method="post">
+<pems-form id="bulkConfirmForm" action="/a/table-extraction-bulk-confirm" method="post">
     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
 </pems-form>
 
@@ -105,13 +105,13 @@
                             {
                                 <pems-flex align="center" gap="2">
                                     <span class="small text-muted">→ @row.MatchedEquipment?.TagNumber</span>
-                                    <pems-form asp-action="ConfirmRow" method="post" class="d-inline">
+                                    <pems-form action="/a/table-extraction-confirm-row" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="equipmentId" value="@row.MatchedEquipmentId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
                                         <pems-button tone="primary" size="small" css="btn-xs" type="submit">Confirm</pems-button>
                                     </pems-form>
-                                    <pems-form asp-action="RejectRow" method="post" class="d-inline">
+                                    <pems-form action="/a/table-extraction-reject-row" method="post" class="d-inline">
                                         <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                         <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
                                         <pems-button tone="neutral" size="small" outline="true" type="submit">@Localizer["Reject"]</pems-button>
@@ -120,7 +120,7 @@
                             }
                             else if (row.MatchStatus == "Unmatched")
                             {
-                                <pems-form asp-action="ConfirmRowManual" method="post"><pems-flex gap="2">
+                                <pems-form action="/a/table-extraction-confirm-row-manual" method="post"><pems-flex gap="2">
                                     <input type="hidden" name="rowId" value="@row.TableExtractionRowId" />
                                     <input type="hidden" name="batchId" value="@Model.TableExtractionBatchId" />
                                     <pems-input class="pems-maxw-160" scale="small" type="text" name="equipmentTagNumber" placeholder="Equipment tag..." />
