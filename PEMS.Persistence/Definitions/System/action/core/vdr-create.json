@@ -1,0 +1,43 @@
+{
+  "kind": "action",
+  "key": "vdr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Register a VDR item",
+    "fa": "ثبت مدرک VDR"
+  },
+  "description": {
+    "en": "Register a VDR item",
+    "fa": "ثبت مدرک VDR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrItem",
+      "action": "Create",
+      "args": {
+        "sequenceNo": "field:sequenceNo",
+        "projectId": "field:projectId",
+        "vendorId": "field:vendorId",
+        "disciplineCodeRaw": "field:disciplineCodeRaw",
+        "equipmentId": "field:equipmentId",
+        "documentTypeCode": "field:documentTypeCode",
+        "documentNumber": "field:documentNumber",
+        "mrNumber": "field:mrNumber",
+        "materialCode": "field:materialCode",
+        "typologyCode": "field:typologyCode",
+        "documentDescription": "field:documentDescription",
+        "responsiblePartyCode": "field:responsiblePartyCode",
+        "documentClass": "field:documentClass",
+        "plannedFirstIssueDate": "field:plannedFirstIssueDate"
+      }
+    },
+    "success": {
+      "en": "VDR item created",
+      "fa": "مدرک VDR ثبت شد."
+    },
+    "redirect": "/VDR/Details/{result}"
+  }
+}

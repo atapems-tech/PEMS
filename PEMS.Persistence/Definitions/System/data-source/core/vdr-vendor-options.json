@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "vdr-vendor-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR vendors",
+    "fa": "وندورهای VDR"
+  },
+  "description": {
+    "en": "VDR vendors",
+    "fa": "وندورهای VDR"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MdbOptions",
+      "action": "Vendors",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

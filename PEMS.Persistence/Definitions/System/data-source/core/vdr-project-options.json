@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "vdr-project-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR projects",
+    "fa": "پروژه‌های VDR"
+  },
+  "description": {
+    "en": "VDR projects",
+    "fa": "پروژه‌های VDR"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MdbOptions",
+      "action": "Projects",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

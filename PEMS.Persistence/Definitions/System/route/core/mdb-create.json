@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mdb-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New MDB (old address)",
+    "fa": "New MDB (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New MDB (old address)",
+    "fa": "New MDB (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MDB/Create",
+    "target": "/f/mdb-create",
+    "permanent": false
+  }
+}

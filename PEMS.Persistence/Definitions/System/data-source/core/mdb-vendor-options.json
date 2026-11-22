@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mdb-vendor-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MDB vendors",
+    "fa": "وندورهای MDB"
+  },
+  "description": {
+    "en": "MDB vendors",
+    "fa": "وندورهای MDB"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MdbOptions",
+      "action": "Vendors",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

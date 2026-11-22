@@ -125,42 +125,6 @@ public class VDRController : Controller
         return View(item);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Create()
-    {
-        ViewData["Title"] = "New VDR Item";
-        ViewData["Section"] = "Engineering Management";
-
-        ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
-            .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
-
-        ViewBag.Vendors = await _context.Vendors.Where(x => x.IsActive)
-            .Select(x => new { x.VendorId, x.Name }).ToListAsync();
-
-        ViewBag.Equipments = await _context.Equipments.Where(x => x.IsActive)
-            .Select(x => new { x.EquipmentId, x.TagNumber }).ToListAsync();
-
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(VDRItemDto item)
-    {
-        // طبق «PEMS Phase 2B — VDR/Vendor/Equipment Authorization Wiring»: ماتریس مجوز ماژول
-        // "VDR" از قبل Seed شده بود (EngineeringManager/DocumentController: Create) اما هیچ‌جا
-        // واقعاً بررسی نمی‌شد - این‌جا همون سیاست از‌قبل‌تعریف‌شده سیم‌کشی می‌شود، نه یک سیاست جدید
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Create"))
-        {
-            TempData["Error"] = "شما مجاز به ثبت مدرک VDR جدید نیستید.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        var id = await _service.CreateManualAsync(item);
-        TempData["Message"] = "VDR item created";
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
     // ==============================================================================
     // طبق ممیزی: قبلاً یک اکشن تخت (AddSubmission) همه‌چیز را با هم می‌گرفت - بدون RBAC،
     // بدون بازبینی موازی دیسیپلین، بدون تاریخچه‌ی واقعی. حالا دقیقاً مثل مدرک مهندسی چهار

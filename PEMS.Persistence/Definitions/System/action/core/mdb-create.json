@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "mdb-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create an MDB",
+    "fa": "ایجاد MDB"
+  },
+  "description": {
+    "en": "Create an MDB",
+    "fa": "ایجاد MDB"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Mdb",
+      "action": "Create",
+      "args": {
+        "projectId": "field:projectId",
+        "equipmentId": "field:equipmentId",
+        "vendorId": "field:vendorId",
+        "poId": "field:poId",
+        "plannedFinalIssueDate": "field:plannedFinalIssueDate"
+      }
+    },
+    "success": {
+      "en": "MDB created successfully",
+      "fa": "MDB با موفقیت ایجاد شد."
+    },
+    "redirect": "/MDB/Details/{result}"
+  }
+}

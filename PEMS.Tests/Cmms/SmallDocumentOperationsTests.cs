@@ -26,6 +26,7 @@ public class SmallDocumentOperationsTests
     [InlineData("EngineeringIntelligence", "RejectClassification", "EngineeringDocuments.Create")]
     [InlineData("EngineeringIntelligence", "ApproveTagLink", "EngineeringDocuments.Approve")]
     [InlineData("EngineeringIntelligence", "AdvanceStage", "EngineeringDocuments.Approve")]
+    [InlineData("VdrItem", "Create", "VDR.Create")]
     [InlineData("VdrWorkflow", "SubmitForReview", "VDR.Edit")]
     [InlineData("VdrWorkflow", "DisciplineRespond", "VDR.Edit")]
     [InlineData("VdrWorkflow", "LeadReview", "VDR.Approve")]
@@ -42,6 +43,7 @@ public class SmallDocumentOperationsTests
     [Theory]
     [InlineData("Mdb", "AddDocument")]
     [InlineData("Mdb", "MarkFinalIssued")]
+    [InlineData("Mdb", "Create")]
     public void TheMdbCommandsAreOperations(string model, string action) => Assert.NotNull(Catalog.Get(model, action));
 
     [Fact]

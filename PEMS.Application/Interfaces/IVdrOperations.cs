@@ -18,6 +18,11 @@ public interface IVdrOperations
     [PEMS.Application.Common.PemsOperation("VdrItem", "Deactivate", "VDR.Delete")]
     Task<(bool Success, string? Error)> DeactivateAsync(int vdrItemId, string? reason, string? userName);
 
+    /// <summary>Registers a VDR item by hand (the manual entry form); answers the id of the new item.</summary>
+    [PEMS.Application.Common.PemsOperation("VdrItem", "Create", "VDR.Create")]
+    Task<int> CreateAsync(int? sequenceNo, int projectId, int vendorId, string? disciplineCodeRaw, int? equipmentId, string documentTypeCode, string documentNumber, string? mrNumber, string? materialCode, string? typologyCode,
+        string? documentDescription, string? responsiblePartyCode, int? documentClass, DateTime? plannedFirstIssueDate);
+
     [PEMS.Application.Common.PemsOperation("VdrItem", "SetCommentAction")]
     Task<(bool Success, string? Error)> SetCommentActionAsync(int commentId, string actionStatus);
 }

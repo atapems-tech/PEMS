@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "mdb-project-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MDB projects",
+    "fa": "پروژه‌های MDB"
+  },
+  "description": {
+    "en": "MDB projects",
+    "fa": "پروژه‌های MDB"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MdbOptions",
+      "action": "Projects",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

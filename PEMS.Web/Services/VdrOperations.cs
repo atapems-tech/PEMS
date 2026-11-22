@@ -32,6 +32,14 @@ public sealed class VdrOperations(IVDRService vdr, IDocumentHoldService hold, ID
         return r.Success ? (true, null) : (false, T(r.Error!));
     }
 
+    public Task<int> CreateAsync(int? sequenceNo, int projectId, int vendorId, string? disciplineCodeRaw, int? equipmentId, string documentTypeCode, string documentNumber, string? mrNumber, string? materialCode, string? typologyCode,
+        string? documentDescription, string? responsiblePartyCode, int? documentClass, DateTime? plannedFirstIssueDate)
+        => vdr.CreateManualAsync(new PEMS.Application.DTOs.VDRItemDto
+        {
+            SequenceNo = sequenceNo ?? 1, ProjectId = projectId, VendorId = vendorId, DisciplineCodeRaw = disciplineCodeRaw, EquipmentId = equipmentId, DocumentTypeCode = documentTypeCode, DocumentNumber = documentNumber,
+            MRNumber = mrNumber, MaterialCode = materialCode, TypologyCode = typologyCode, DocumentDescription = documentDescription, ResponsiblePartyCode = responsiblePartyCode, DocumentClass = documentClass, PlannedFirstIssueDate = plannedFirstIssueDate
+        });
+
     public async Task<(bool Success, string? Error)> SetCommentActionAsync(int commentId, string actionStatus)
     {
         await comments.SetActionStatusAsync(commentId, actionStatus);

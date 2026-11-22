@@ -94,6 +94,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-718, 761: new MDB and new VDR item forms as definitions
+
+### Changed
+- The new MDB and the new VDR item (manual entry) pages are form definitions (/f/mdb-create, /f/vdr-create, the old addresses redirect) over operations; the project, vendor, equipment and purchase order lists are options of an operation with the same rows as before. The VDR form needs VDR.Create. Compile and tests not run in this step (owner instruction).
+
 ## 2026-11-21 - SCRUM-690: delete document, delete attachment and new revision as definitions
 
 ### Changed

@@ -1,0 +1,94 @@
+{
+  "kind": "form",
+  "key": "mdb-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New MDB",
+    "fa": "MDB جدید"
+  },
+  "description": {
+    "en": "New MDB",
+    "fa": "MDB جدید"
+  },
+  "payload": {
+    "id": "mdb-create",
+    "title": {
+      "en": "New MDB",
+      "fa": "MDB جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "mdb-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mdb-project-options"
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mdb-equipment-options"
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "وندور"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mdb-vendor-options"
+      },
+      {
+        "name": "poId",
+        "label": {
+          "en": "Purchase Order (optional)",
+          "fa": "سفارش خرید (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "mdb-po-options"
+      },
+      {
+        "name": "plannedFinalIssueDate",
+        "label": {
+          "en": "Planned final issue date (the index of contents is due before)",
+          "fa": "تاریخ برنامه‌ریزی‌شده‌ی صدور نهایی (فهرست محتوا پیش از آن)"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}
