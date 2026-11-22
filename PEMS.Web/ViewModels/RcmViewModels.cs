@@ -56,11 +56,6 @@ public class BulkAssignViewModel
     public List<LookupItem> UsableStrategies { get; set; } = new();
     public Dictionary<int, BulkAssignCandidateDto> Candidates { get; set; } = new();
 }
-
-public class StrategyImportViewModel
-{
-    public string Kind { get; set; } = "strategies";
-    public string? Token { get; set; }
     public StrategyImportResultDto? Result { get; set; }
     public Dictionary<int, List<string>> Messages { get; set; } = new();
 }

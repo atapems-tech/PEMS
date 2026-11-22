@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "strategy-import-assignments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import tag assignments (Excel)",
+    "fa": "ورود تخصیص تگ‌ها (Excel)"
+  },
+  "description": {
+    "en": "Import tag assignments (Excel)",
+    "fa": "ورود تخصیص تگ‌ها (Excel)"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StrategyImport",
+      "action": "ImportAssignments",
+      "args": {
+        "file": "file:file",
+        "commit": "field:commit"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 5
+      }
+    },
+    "success": {
+      "en": "The workbook was imported (strategies are drafts and go through approval).",
+      "fa": "فایل ثبت شد (استراتژی‌ها پیش‌نویس‌اند و باید تأیید شوند)."
+    },
+    "redirect": "/p/strategy-import"
+  }
+}

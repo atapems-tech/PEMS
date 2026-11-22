@@ -173,18 +173,4 @@ public class RcmViewRenderTests
         Assert.Contains("Failure mode catalogue", index);
         Assert.Contains("name=\"Code\"", edit);
     }
-
-    [Fact]
-    public async Task ImportPage_RendersUploadFormsAndResults()
-    {
-        var env = await RcmTestFactory.CreateEnvAsync("View_Import");
-        var controller = new StrategyImportController(env.Ctx, new PEMS.Persistence.Services.StrategyImportService(env.Ctx, env.Commands, env.Assignments),
-            new Microsoft.Extensions.Caching.Memory.MemoryCache(new Microsoft.Extensions.Caching.Memory.MemoryCacheOptions()), env.User, env.Permissions).WithTempData();
-
-        var html = await Render(controller, await controller.Index(), "/Views/StrategyImport/Index.cshtml");
-
-        Assert.Contains("name=\"file\"", html);
-        Assert.Contains("Download template", html);
-        _ = typeof(StrategyImportViewModel);
-    }
 }

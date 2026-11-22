@@ -1,0 +1,52 @@
+{
+  "kind": "form",
+  "key": "strategy-import-strategies",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import strategies (Excel)",
+    "fa": "ورود استراتژی‌ها (Excel)"
+  },
+  "description": {
+    "en": "Import strategies (Excel)",
+    "fa": "ورود استراتژی‌ها (Excel)"
+  },
+  "payload": {
+    "id": "strategy-import-strategies",
+    "title": {
+      "en": "Import strategies (Excel)",
+      "fa": "ورود استراتژی‌ها (Excel)"
+    },
+    "submitLabel": {
+      "en": "Run",
+      "fa": "اجرا"
+    },
+    "actionKey": "strategy-import-strategies",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "file",
+        "label": {
+          "en": "Excel file (.xlsx, max 5 MB)",
+          "fa": "فایل Excel (.xlsx، حداکثر ۵ مگابایت)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "commit",
+        "label": {
+          "en": "Write the valid rows now (leave off to only check the file)",
+          "fa": "ثبت ردیف‌های معتبر (برای فقط بررسی فایل خاموش بگذارید)"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

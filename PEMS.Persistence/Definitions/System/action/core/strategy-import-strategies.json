@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "strategy-import-strategies",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import strategies (Excel)",
+    "fa": "ورود استراتژی‌ها (Excel)"
+  },
+  "description": {
+    "en": "Import strategies (Excel)",
+    "fa": "ورود استراتژی‌ها (Excel)"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StrategyImport",
+      "action": "ImportStrategies",
+      "args": {
+        "file": "file:file",
+        "commit": "field:commit"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 5
+      }
+    },
+    "success": {
+      "en": "The workbook was imported (strategies are drafts and go through approval).",
+      "fa": "فایل ثبت شد (استراتژی‌ها پیش‌نویس‌اند و باید تأیید شوند)."
+    },
+    "redirect": "/p/strategy-import"
+  }
+}

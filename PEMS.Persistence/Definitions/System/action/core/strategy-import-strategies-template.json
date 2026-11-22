@@ -1,0 +1,186 @@
+{
+  "kind": "action",
+  "key": "strategy-import-strategies-template",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Download template",
+    "fa": "دریافت الگو"
+  },
+  "description": {
+    "en": "Download template",
+    "fa": "دریافت الگو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "file.export",
+    "parameters": {
+      "dataSource": "strategy-template",
+      "format": "xlsx",
+      "fileName": "rcm-strategies-template",
+      "columns": [
+        {
+          "field": "equipmentClassCode",
+          "header": {
+            "en": "EquipmentClassCode",
+            "fa": "EquipmentClassCode"
+          }
+        },
+        {
+          "field": "strategyType",
+          "header": {
+            "en": "StrategyType",
+            "fa": "StrategyType"
+          }
+        },
+        {
+          "field": "failureModeCode",
+          "header": {
+            "en": "FailureModeCode",
+            "fa": "FailureModeCode"
+          }
+        },
+        {
+          "field": "consequenceCategory",
+          "header": {
+            "en": "ConsequenceCategory",
+            "fa": "ConsequenceCategory"
+          }
+        },
+        {
+          "field": "isHiddenFailure",
+          "header": {
+            "en": "IsHiddenFailure",
+            "fa": "IsHiddenFailure"
+          }
+        },
+        {
+          "field": "justification",
+          "header": {
+            "en": "Justification",
+            "fa": "Justification"
+          }
+        },
+        {
+          "field": "frequency",
+          "header": {
+            "en": "Frequency",
+            "fa": "Frequency"
+          }
+        },
+        {
+          "field": "defaultIntervalDays",
+          "header": {
+            "en": "DefaultIntervalDays",
+            "fa": "DefaultIntervalDays"
+          }
+        },
+        {
+          "field": "taskType",
+          "header": {
+            "en": "TaskType",
+            "fa": "TaskType"
+          }
+        },
+        {
+          "field": "ownerDisciplineCode",
+          "header": {
+            "en": "OwnerDisciplineCode",
+            "fa": "OwnerDisciplineCode"
+          }
+        },
+        {
+          "field": "cbmParameter",
+          "header": {
+            "en": "CbmParameter",
+            "fa": "CbmParameter"
+          }
+        },
+        {
+          "field": "thresholdUnit",
+          "header": {
+            "en": "ThresholdUnit",
+            "fa": "ThresholdUnit"
+          }
+        },
+        {
+          "field": "alarmThreshold",
+          "header": {
+            "en": "AlarmThreshold",
+            "fa": "AlarmThreshold"
+          }
+        },
+        {
+          "field": "tripThreshold",
+          "header": {
+            "en": "TripThreshold",
+            "fa": "TripThreshold"
+          }
+        },
+        {
+          "field": "pfIntervalDays",
+          "header": {
+            "en": "PfIntervalDays",
+            "fa": "PfIntervalDays"
+          }
+        },
+        {
+          "field": "inspectionIntervalDays",
+          "header": {
+            "en": "InspectionIntervalDays",
+            "fa": "InspectionIntervalDays"
+          }
+        },
+        {
+          "field": "source",
+          "header": {
+            "en": "Source",
+            "fa": "Source"
+          }
+        },
+        {
+          "field": "title",
+          "header": {
+            "en": "Title",
+            "fa": "Title"
+          }
+        },
+        {
+          "field": "functionalFailure",
+          "header": {
+            "en": "FunctionalFailure",
+            "fa": "FunctionalFailure"
+          }
+        },
+        {
+          "field": "failureEffect",
+          "header": {
+            "en": "FailureEffect",
+            "fa": "FailureEffect"
+          }
+        },
+        {
+          "field": "requiredSkills",
+          "header": {
+            "en": "RequiredSkills",
+            "fa": "RequiredSkills"
+          }
+        },
+        {
+          "field": "estimatedDurationHours",
+          "header": {
+            "en": "EstimatedDurationHours",
+            "fa": "EstimatedDurationHours"
+          }
+        },
+        {
+          "field": "reviewDate",
+          "header": {
+            "en": "ReviewDate",
+            "fa": "ReviewDate"
+          }
+        }
+      ]
+    }
+  }
+}

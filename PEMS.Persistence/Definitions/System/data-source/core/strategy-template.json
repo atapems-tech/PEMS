@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-template",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "strategy-template",
+    "fa": "strategy-template"
+  },
+  "description": {
+    "en": "strategy-template",
+    "fa": "strategy-template"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyImport",
+      "action": "StrategyTemplate"
+    }
+  }
+}

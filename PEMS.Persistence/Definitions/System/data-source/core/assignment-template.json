@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "assignment-template",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "assignment-template",
+    "fa": "assignment-template"
+  },
+  "description": {
+    "en": "assignment-template",
+    "fa": "assignment-template"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyImport",
+      "action": "AssignmentTemplate"
+    }
+  }
+}
