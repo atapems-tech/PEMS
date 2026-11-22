@@ -170,7 +170,7 @@
     "PEMS.Web.Controllers.DataHostController": 1,
     "PEMS.Web.Controllers.DefinitionPreviewHostController": 2,
     "PEMS.Web.Controllers.DocumentRegisterController": 6,
-    "PEMS.Web.Controllers.DocumentUploadController": 2,
+    "PEMS.Web.Controllers.DocumentUploadController": 1,
     "PEMS.Web.Controllers.EngineeringDocumentIntelligenceController": 10,
     "PEMS.Web.Controllers.EngineeringDocumentsController": 13,
     "PEMS.Web.Controllers.EquipmentClassificationController": 3,

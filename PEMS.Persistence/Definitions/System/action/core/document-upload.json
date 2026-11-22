@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "document-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload documents into the AI intake queue",
+    "fa": "بارگذاری مدارک در صف ورودی هوشمند"
+  },
+  "description": {
+    "en": "Upload documents into the AI intake queue",
+    "fa": "بارگذاری مدارک در صف ورودی هوشمند"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DocumentUpload",
+      "action": "Upload",
+      "args": {
+        "projectId": "field:projectId",
+        "files": "file:files",
+        "employeeId": "context:employeeId",
+        "userRoles": "context:roles"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 50
+      }
+    },
+    "success": {
+      "en": "Uploaded.",
+      "fa": "بارگذاری شد."
+    },
+    "redirect": "/p/intake"
+  }
+}

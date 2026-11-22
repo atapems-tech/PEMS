@@ -43,4 +43,13 @@ public class SmallDocumentOperationsTests
     [InlineData("Mdb", "AddDocument")]
     [InlineData("Mdb", "MarkFinalIssued")]
     public void TheMdbCommandsAreOperations(string model, string action) => Assert.NotNull(Catalog.Get(model, action));
+
+    [Fact]
+    public async Task TheUploadIntoTheIntakeQueueKeepsTheRoleGateOfTheImportCard()
+    {
+        var operations = new PEMS.Web.Services.DocumentUploadOperations(null!);
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => operations.UploadAsync(1, [], null, ["Viewer"]));
+        var empty = await operations.UploadAsync(1, [], null, ["SystemAdmin"]);
+        Assert.False(empty.Success);
+    }
 }

@@ -91,6 +91,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-685: document upload into the AI intake queue as a definition
+
+### Changed
+- The multi-file upload of the document upload page is a definition (/a/document-upload) over IDocumentUploadOperations with the same role gate as the Import Center card, the same intake queue and the same message. Web and tests compile; tests not run (end of batch).
+
 ## 2026-11-21 - SCRUM-753: table extraction review commands as definitions
 
 ### Changed
