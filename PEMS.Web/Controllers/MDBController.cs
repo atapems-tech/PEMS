@@ -66,45 +66,4 @@ public class MDBController : Controller
         return View(mdb);
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Create()
-    {
-        ViewData["Title"] = "New MDB";
-        ViewData["Section"] = "Engineering Management";
-
-        await LoadCreateViewBagsAsync();
-
-        return View();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(int equipmentId, int vendorId, int? poId, int projectId, DateTime? plannedFinalIssueDate)
-    {
-        if (equipmentId == 0 || vendorId == 0 || projectId == 0)
-        {
-            ModelState.AddModelError(string.Empty, T("Equipment, Vendor and Project are required."));
-            await LoadCreateViewBagsAsync();
-            ViewData["Title"] = "New MDB";
-            ViewData["Section"] = "Engineering Management";
-            return View();
-        }
-
-        var id = await _service.CreateAsync(equipmentId, vendorId, poId, projectId, plannedFinalIssueDate);
-
-        TempData["Message"] = T("MDB created successfully");
-        return RedirectToAction(nameof(Details), new { id });
-    }
-
-    private async Task LoadCreateViewBagsAsync()
-    {
-        ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
-            .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
-        ViewBag.Vendors = await _context.Vendors.Where(x => x.IsActive)
-            .Select(x => new { x.VendorId, x.Name }).ToListAsync();
-        ViewBag.Equipments = await _context.Equipments.Where(x => x.IsActive)
-            .Select(x => new { x.EquipmentId, x.TagNumber, x.ProjectId }).ToListAsync();
-        ViewBag.PurchaseOrders = await _context.PurchaseOrders
-            .Select(x => new { x.PoId, x.PoNumber, x.VendorId }).ToListAsync();
-    }
 }

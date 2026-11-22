@@ -14,6 +14,7 @@ public interface IManufacturerDataBookService
     // Projection را در SQL انجام می‌دهد.
     Task<PagedResult<ManufacturerDataBookDto>> GetPagedAsync(int page, int pageSize, int? projectId = null, int? vendorId = null);
     Task<ManufacturerDataBookDto?> GetByIdAsync(int id);
+    [PEMS.Application.Common.PemsOperation("Mdb", "Create")]   // SCRUM-718
     Task<int> CreateAsync(int equipmentId, int vendorId, int? poId, int projectId, DateTime? plannedFinalIssueDate);
     [PEMS.Application.Common.PemsOperation("Mdb", "AddDocument")]   // SCRUM-718
     Task AddDocumentAsync(int mdbId, string part, int? documentId, string? title, int? dvdVolumeNo, bool isNotApplicable, string? notes);

@@ -1,0 +1,189 @@
+{
+  "kind": "form",
+  "key": "vdr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New VDR item",
+    "fa": "مدرک VDR جدید"
+  },
+  "description": {
+    "en": "New VDR item",
+    "fa": "مدرک VDR جدید"
+  },
+  "payload": {
+    "id": "vdr-create",
+    "title": {
+      "en": "New VDR item",
+      "fa": "مدرک VDR جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "vdr-create",
+    "columns": 2,
+    "permission": "VDR.Create",
+    "fields": [
+      {
+        "name": "sequenceNo",
+        "label": {
+          "en": "Seq No",
+          "fa": "ردیف"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "vdr-project-options"
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "وندور"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "vdr-vendor-options"
+      },
+      {
+        "name": "disciplineCodeRaw",
+        "label": {
+          "en": "Discipline code",
+          "fa": "کد دیسیپلین"
+        },
+        "kind": "text",
+        "placeholder": {
+          "en": "ME / EL / IN / PI / PM / HV / HS",
+          "fa": "ME / EL / IN / PI / PM / HV / HS"
+        }
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Related equipment (optional)",
+          "fa": "تجهیز مرتبط (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "vdr-equipment-options"
+      },
+      {
+        "name": "documentTypeCode",
+        "label": {
+          "en": "Document type",
+          "fa": "نوع مدرک"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "placeholder": {
+          "en": "DWG / DSH / PRC ...",
+          "fa": "DWG / DSH / PRC ..."
+        }
+      },
+      {
+        "name": "documentNumber",
+        "label": {
+          "en": "Document number",
+          "fa": "شماره مدرک"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2
+      },
+      {
+        "name": "mrNumber",
+        "label": {
+          "en": "MR number",
+          "fa": "شماره MR"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "materialCode",
+        "label": {
+          "en": "Material code",
+          "fa": "کد متریال"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "typologyCode",
+        "label": {
+          "en": "Typology code",
+          "fa": "کد تایپولوژی"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "documentDescription",
+        "label": {
+          "en": "Document description",
+          "fa": "شرح مدرک"
+        },
+        "kind": "text",
+        "span": 2
+      },
+      {
+        "name": "responsiblePartyCode",
+        "label": {
+          "en": "Responsible party",
+          "fa": "طرف مسئول"
+        },
+        "kind": "text",
+        "placeholder": {
+          "en": "PJPC-Eng / QC / Procurement ...",
+          "fa": "PJPC-Eng / QC / Procurement ..."
+        }
+      },
+      {
+        "name": "documentClass",
+        "label": {
+          "en": "Class (1-3)",
+          "fa": "کلاس (۱ تا ۳)"
+        },
+        "kind": "number",
+        "min": 1,
+        "max": 3
+      },
+      {
+        "name": "plannedFirstIssueDate",
+        "label": {
+          "en": "Planned first issue",
+          "fa": "تاریخ برنامه‌ریزی‌شده‌ی اولین صدور"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

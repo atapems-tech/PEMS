@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "vdr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New VDR item (old address)",
+    "fa": "New VDR item (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New VDR item (old address)",
+    "fa": "New VDR item (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "VDR/Create",
+    "target": "/f/vdr-create",
+    "permanent": false
+  }
+}

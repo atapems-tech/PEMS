@@ -159,28 +159,6 @@ public class VDRControllerAuthorizationTests
     // Create — طبق سید موجود فقط EngineeringManager/DocumentController مجاز به Create هستند
     // ==============================================================================
 
-    [Fact]
-    public async Task Create_ViewerRole_Denied_NoItemCreated()
-    {
-        var (controller, _, _, vdr) = await CreateController(nameof(Create_ViewerRole_Denied_NoItemCreated), SystemRoles.Viewer);
-
-        var result = await controller.Create(new VDRItemDto());
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(vdr.CreateCalled);
-    }
-
-    [Fact]
-    public async Task Create_DocumentController_Authorized_CreatesItem()
-    {
-        var (controller, _, _, vdr) = await CreateController(nameof(Create_DocumentController_Authorized_CreatesItem), SystemRoles.DocumentController);
-
-        var result = await controller.Create(new VDRItemDto());
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(vdr.CreateCalled);
-    }
-
     // ==============================================================================
     // SubmitForReview / DisciplineRespond — طبق سید، عملیات "Edit"
     // ==============================================================================
