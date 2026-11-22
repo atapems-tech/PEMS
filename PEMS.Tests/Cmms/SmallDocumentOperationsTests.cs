@@ -26,6 +26,10 @@ public class SmallDocumentOperationsTests
     [InlineData("EngineeringIntelligence", "RejectClassification", "EngineeringDocuments.Create")]
     [InlineData("EngineeringIntelligence", "ApproveTagLink", "EngineeringDocuments.Approve")]
     [InlineData("EngineeringIntelligence", "AdvanceStage", "EngineeringDocuments.Approve")]
+    [InlineData("VdrWorkflow", "SubmitForReview", "VDR.Edit")]
+    [InlineData("VdrWorkflow", "DisciplineRespond", "VDR.Edit")]
+    [InlineData("VdrWorkflow", "LeadReview", "VDR.Approve")]
+    [InlineData("VdrWorkflow", "ReturnToVendor", "VDR.Approve")]
     [InlineData("EngineeringIntelligence", "AddComment", "EngineeringDocuments.Create")]
     public void TheOperationsKeepTheFloorOfTheOldController(string model, string action, string permission)
         => Assert.Equal(permission, Catalog.Get(model, action)!.Permission);

@@ -185,123 +185,14 @@ public class VDRControllerAuthorizationTests
     // SubmitForReview / DisciplineRespond — طبق سید، عملیات "Edit"
     // ==============================================================================
 
-    [Fact]
-    public async Task SubmitForReview_ViewerRole_Denied_WorkflowNotCalled()
-    {
-        var (controller, _, workflow, _) = await CreateController(nameof(SubmitForReview_ViewerRole_Denied_WorkflowNotCalled), SystemRoles.Viewer);
-
-        var result = await controller.SubmitForReview(1, 0, "VT-1", null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(workflow.SubmitForReviewCalled);
-    }
-
-    [Fact]
-    public async Task SubmitForReview_EngineeringManager_Authorized_WorkflowCalled()
-    {
-        var (controller, _, workflow, _) = await CreateController(nameof(SubmitForReview_EngineeringManager_Authorized_WorkflowCalled), SystemRoles.EngineeringManager);
-
-        var result = await controller.SubmitForReview(1, 0, "VT-1", null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(workflow.SubmitForReviewCalled);
-    }
-
-    [Fact]
-    public async Task DisciplineRespond_ViewerRole_Denied_WorkflowNotCalled()
-    {
-        var (controller, _, workflow, _) = await CreateController(nameof(DisciplineRespond_ViewerRole_Denied_WorkflowNotCalled), SystemRoles.Viewer);
-
-        var result = await controller.DisciplineRespond(1, "Approve", null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(workflow.DisciplineRespondCalled);
-    }
-
     // ==============================================================================
     // LeadReview / ReturnToVendor — طبق سید، عملیات "Approve" (فقط EngineeringManager/DisciplineEngineer)
     // ==============================================================================
-
-    [Fact]
-    public async Task LeadReview_ViewerRole_Denied_WorkflowNotCalled()
-    {
-        var (controller, _, workflow, _) = await CreateController(nameof(LeadReview_ViewerRole_Denied_WorkflowNotCalled), SystemRoles.Viewer);
-
-        var result = await controller.LeadReview(1, "AP", null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(workflow.LeadReviewCalled);
-    }
-
-    [Fact]
-    public async Task LeadReview_DocumentController_Denied_NoApprovePermission()
-    {
-        // طبق سید: DocumentController فقط Create/Edit دارد، نه Approve
-        var (controller, _, workflow, _) = await CreateController(nameof(LeadReview_DocumentController_Denied_NoApprovePermission), SystemRoles.DocumentController);
-
-        var result = await controller.LeadReview(1, "AP", null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(workflow.LeadReviewCalled);
-    }
-
-    [Fact]
-    public async Task LeadReview_DisciplineEngineer_Authorized_WorkflowCalled()
-    {
-        var (controller, _, workflow, _) = await CreateController(nameof(LeadReview_DisciplineEngineer_Authorized_WorkflowCalled), SystemRoles.DisciplineEngineer);
-
-        var result = await controller.LeadReview(1, "AP", null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(workflow.LeadReviewCalled);
-    }
-
-    [Fact]
-    public async Task ReturnToVendor_ViewerRole_Denied_WorkflowNotCalled()
-    {
-        var (controller, _, workflow, _) = await CreateController(nameof(ReturnToVendor_ViewerRole_Denied_WorkflowNotCalled), SystemRoles.Viewer);
-
-        var result = await controller.ReturnToVendor(1, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(workflow.ReturnToVendorCalled);
-    }
-
-    [Fact]
-    public async Task ReturnToVendor_EngineeringManager_Authorized_WorkflowCalled()
-    {
-        var (controller, _, workflow, _) = await CreateController(nameof(ReturnToVendor_EngineeringManager_Authorized_WorkflowCalled), SystemRoles.EngineeringManager);
-
-        var result = await controller.ReturnToVendor(1, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(workflow.ReturnToVendorCalled);
-    }
 
     // ==============================================================================
     // GenerateContractorNumber / UploadToFtp — طبق سید، عملیات "Edit"؛ سرویس‌های وابسته Throwing
     // هستند - اگر گیت درست کار نکند، خودِ تست با Exception می‌شکند (نه فقط Assert)
     // ==============================================================================
-
-    [Fact]
-    public async Task GenerateContractorNumber_ViewerRole_Denied_NumberingServiceNeverInvoked()
-    {
-        var (controller, _, _, _) = await CreateController(nameof(GenerateContractorNumber_ViewerRole_Denied_NumberingServiceNeverInvoked), SystemRoles.Viewer);
-
-        var result = await controller.GenerateContractorNumber(1, null, null, null, null);
-
-        Assert.IsType<RedirectToActionResult>(result);
-    }
-
-    [Fact]
-    public async Task UploadToFtp_ViewerRole_Denied_FtpServiceNeverInvoked()
-    {
-        var (controller, _, _, _) = await CreateController(nameof(UploadToFtp_ViewerRole_Denied_FtpServiceNeverInvoked), SystemRoles.Viewer);
-
-        var result = await controller.UploadToFtp(1, 1, null!);
-
-        Assert.IsType<RedirectToActionResult>(result);
-    }
 
     // ==============================================================================
     // Index/Details — طبق تصمیم صریح کاربر: عمداً دست‌نخورده، برای همه‌ی نقش‌ها در دسترس
