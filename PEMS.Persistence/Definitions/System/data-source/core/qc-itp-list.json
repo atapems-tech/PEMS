@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-itp-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC ItpList",
+    "fa": "QC ItpList"
+  },
+  "description": {
+    "en": "QC ItpList",
+    "fa": "QC ItpList"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "ItpList"
+    }
+  }
+}

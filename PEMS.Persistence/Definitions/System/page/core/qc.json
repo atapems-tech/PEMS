@@ -1,0 +1,296 @@
+{
+  "kind": "page",
+  "key": "qc",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC / QA",
+    "fa": "QC / QA"
+  },
+  "description": {
+    "en": "QC / QA",
+    "fa": "QC / QA"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "qc",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/qc-kpi",
+                "text": {
+                  "en": "KPI report",
+                  "fa": "گزارش KPI"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/qc-itp-create",
+                "text": {
+                  "en": "New ITP",
+                  "fa": "ITP جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/qc-ncr-create",
+                "text": {
+                  "en": "Raise an NCR",
+                  "fa": "ثبت NCR"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/qc-itps",
+                "text": {
+                  "en": "All ITPs",
+                  "fa": "همه ITP ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/qc-ncrs",
+                "text": {
+                  "en": "All NCRs",
+                  "fa": "همه NCR ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "counts",
+          "component": "data-grid",
+          "options": {
+            "id": "counts",
+            "url": "/d/qc-summary",
+            "idField": "openNcrCount",
+            "columns": [
+              {
+                "key": "openNcrCount",
+                "header": {
+                  "en": "Open NCRs",
+                  "fa": "NCR باز"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "activeItpCount",
+                "header": {
+                  "en": "Active ITPs",
+                  "fa": "ITP فعال"
+                },
+                "width": 140,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 120
+          }
+        },
+        {
+          "id": "recent-itps",
+          "component": "data-grid",
+          "options": {
+            "id": "recent-itps",
+            "url": "/d/qc-recent-itps",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "itpNumber",
+                "header": {
+                  "en": "ITP",
+                  "fa": "ITP"
+                },
+                "width": 150
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 280
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 150
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "revision",
+                "header": {
+                  "en": "Rev",
+                  "fa": "ویرایش"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/qc-itp-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320
+          }
+        },
+        {
+          "id": "recent-ncrs",
+          "component": "data-grid",
+          "options": {
+            "id": "recent-ncrs",
+            "url": "/d/qc-recent-ncrs",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "ncrNumber",
+                "header": {
+                  "en": "NCR",
+                  "fa": "NCR"
+                },
+                "width": 150
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 160
+              },
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 150
+              },
+              {
+                "key": "severity",
+                "header": {
+                  "en": "Severity",
+                  "fa": "شدت"
+                },
+                "width": 100
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "disposition",
+                "header": {
+                  "en": "Disposition",
+                  "fa": "Disposition"
+                },
+                "width": 130
+              },
+              {
+                "key": "raisedDate",
+                "header": {
+                  "en": "Raised",
+                  "fa": "ثبت"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "closedDate",
+                "header": {
+                  "en": "Closed",
+                  "fa": "بسته‌شدن"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/qc-ncr-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 10,
+            "height": 320
+          }
+        }
+      ]
+    }
+  }
+}

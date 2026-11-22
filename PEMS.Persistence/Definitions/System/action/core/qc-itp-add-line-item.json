@@ -31,6 +31,6 @@
       "en": "Line item added.",
       "fa": "ردیف اضافه شد."
     },
-    "redirect": "/QC/ItpDetails/{itpId}"
+    "redirect": "/p/qc-itp-details?id={itpId}"
   }
 }

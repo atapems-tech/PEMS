@@ -246,26 +246,6 @@ public class CmmsListPagesTests
     // ---------- Production orders and the procurement cartable (SCRUM-337) ----------
 
     [Fact]
-    public async Task QcLists_AreListPages_WithToneBadges()
-    {
-        var ncr = await Render<QCController>("/Views/QC/NcrIndex.cshtml", new List<NonConformanceReport>
-        {
-            new() { NonConformanceReportId = 1, NCRNumber = "NCR-001", Severity = "Critical", Status = "Closed", RaisedDate = new DateTime(2026, 10, 1) },
-        }, _ => { });
-        AssertBuiltFromTheComponent(ncr, null, 1, keepsDataBadges: true);
-        Assert.Contains("NCR-001", ncr);
-        Assert.Contains("badge bg-success\">Closed<", ncr);
-
-        var itp = await Render<QCController>("/Views/QC/ItpIndex.cshtml", new List<InspectionTestPlan>
-        {
-            new() { InspectionTestPlanId = 2, ITPNumber = "ITP-002", Title = "Weld check", Status = "Active", Revision = 1 },
-        }, _ => { });
-        AssertBuiltFromTheComponent(itp, null, 1, keepsDataBadges: true);
-        Assert.Contains("ITP-002", itp);
-        Assert.Contains("badge bg-success\">Active<", itp);
-    }
-
-    [Fact]
     public async Task ReferredLetters_AreAListPage()
     {
         var html = await Render<LetterController>("/Views/Letter/MyReferrals.cshtml", new List<LetterDto>

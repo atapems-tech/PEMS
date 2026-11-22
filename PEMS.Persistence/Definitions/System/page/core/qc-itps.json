@@ -1,0 +1,112 @@
+{
+  "kind": "page",
+  "key": "qc-itps",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Inspection and test plans",
+    "fa": "برنامه‌های بازرسی و آزمون"
+  },
+  "description": {
+    "en": "Inspection and test plans",
+    "fa": "برنامه‌های بازرسی و آزمون"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "qc-itps",
+    "template": "entity-list",
+    "args": {
+      "id": "qc-itps",
+      "url": "/d/qc-itp-list",
+      "idField": "id",
+      "viewsKey": "qc-itps",
+      "columns": [
+        {
+          "key": "itpNumber",
+          "header": {
+            "en": "ITP",
+            "fa": "ITP"
+          },
+          "width": 150
+        },
+        {
+          "key": "title",
+          "header": {
+            "en": "Title",
+            "fa": "عنوان"
+          },
+          "width": 280
+        },
+        {
+          "key": "discipline",
+          "header": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          },
+          "width": 160
+        },
+        {
+          "key": "equipment",
+          "header": {
+            "en": "Equipment",
+            "fa": "تجهیز"
+          },
+          "width": 150
+        },
+        {
+          "key": "status",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          },
+          "width": 110
+        },
+        {
+          "key": "revision",
+          "header": {
+            "en": "Rev",
+            "fa": "ویرایش"
+          },
+          "width": 70,
+          "type": "number"
+        },
+        {
+          "key": "createdDate",
+          "header": {
+            "en": "Created",
+            "fa": "ایجاد"
+          },
+          "width": 120,
+          "type": "date"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 100,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "open",
+              "label": {
+                "en": "Open",
+                "fa": "باز کردن"
+              },
+              "url": "/p/qc-itp-details?id={id}",
+              "method": "get"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/qc-itp-create",
+      "newLabel": {
+        "en": "New ITP",
+        "fa": "ITP جدید"
+      }
+    }
+  }
+}

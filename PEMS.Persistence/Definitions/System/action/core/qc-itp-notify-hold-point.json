@@ -25,6 +25,7 @@
       "en": "Notice recorded.",
       "fa": "اعلان ثبت شد."
     },
-    "redirect": "/QC/ItpDetails/{itpId}"
+    "redirect": "/p/qc-itps",
+    "redirectBack": true
   }
 }

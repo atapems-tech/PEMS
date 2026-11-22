@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "qc-ncr-close",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close the NCR",
+    "fa": "بستن NCR"
+  },
+  "description": {
+    "en": "Close the NCR",
+    "fa": "بستن NCR"
+  },
+  "payload": {
+    "id": "qc-ncr-close",
+    "title": {
+      "en": "Close the NCR",
+      "fa": "بستن NCR"
+    },
+    "submitLabel": {
+      "en": "Close",
+      "fa": "بستن"
+    },
+    "actionKey": "qc-ncr-close",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

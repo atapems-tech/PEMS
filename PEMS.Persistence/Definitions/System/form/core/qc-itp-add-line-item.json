@@ -1,0 +1,149 @@
+{
+  "kind": "form",
+  "key": "qc-itp-add-line-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an ITP line item",
+    "fa": "افزودن ردیف ITP"
+  },
+  "description": {
+    "en": "Add an ITP line item",
+    "fa": "افزودن ردیف ITP"
+  },
+  "payload": {
+    "id": "qc-itp-add-line-item",
+    "title": {
+      "en": "Add an ITP line item",
+      "fa": "افزودن ردیف ITP"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "qc-itp-add-line-item",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "itpId",
+        "label": {
+          "en": "ITP id",
+          "fa": "شناسه ITP"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "activity",
+        "label": {
+          "en": "Activity",
+          "fa": "فعالیت"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      },
+      {
+        "name": "qcDisciplineId",
+        "label": {
+          "en": "QC discipline",
+          "fa": "دیسیپلین QC"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "qc-discipline-options"
+      },
+      {
+        "name": "inspectionCategory",
+        "label": {
+          "en": "Inspection category",
+          "fa": "دسته بازرسی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "H",
+            "label": {
+              "en": "H - Hold",
+              "fa": "H - توقف"
+            }
+          },
+          {
+            "value": "W",
+            "label": {
+              "en": "W - Witness",
+              "fa": "W - شاهد"
+            }
+          },
+          {
+            "value": "R",
+            "label": {
+              "en": "R - Review",
+              "fa": "R - بازبینی"
+            }
+          },
+          {
+            "value": "S",
+            "label": {
+              "en": "S - Surveillance",
+              "fa": "S - نظارت"
+            }
+          }
+        ]
+      },
+      {
+        "name": "acceptanceCriteria",
+        "label": {
+          "en": "Acceptance criteria",
+          "fa": "معیار پذیرش"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "referenceCodeStandard",
+        "label": {
+          "en": "Reference code / standard",
+          "fa": "کد / استاندارد مرجع"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "responsibleParty",
+        "label": {
+          "en": "Responsible party",
+          "fa": "مسئول"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

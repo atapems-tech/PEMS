@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "qc-ncr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise an NCR",
+    "fa": "ثبت NCR"
+  },
+  "description": {
+    "en": "Raise an NCR",
+    "fa": "ثبت NCR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Qc",
+      "action": "NcrCreate",
+      "args": {
+        "ncrNumber": "field:ncrNumber",
+        "projectId": "field:projectId",
+        "qcDisciplineId": "field:qcDisciplineId",
+        "description": "field:description",
+        "severity": "field:severity",
+        "equipmentId": "field:equipmentId",
+        "itpLineItemId": "field:itpLineItemId"
+      }
+    },
+    "success": {
+      "en": "The NCR was raised.",
+      "fa": "NCR ثبت شد."
+    },
+    "redirect": "/p/qc-ncrs"
+  }
+}

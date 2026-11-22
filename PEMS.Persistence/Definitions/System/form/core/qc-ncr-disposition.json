@@ -1,0 +1,124 @@
+{
+  "kind": "form",
+  "key": "qc-ncr-disposition",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the NCR disposition",
+    "fa": "ثبت Disposition"
+  },
+  "description": {
+    "en": "Record the NCR disposition",
+    "fa": "ثبت Disposition"
+  },
+  "payload": {
+    "id": "qc-ncr-disposition",
+    "title": {
+      "en": "Record the NCR disposition",
+      "fa": "ثبت Disposition"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "qc-ncr-disposition",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "disposition",
+        "label": {
+          "en": "Disposition",
+          "fa": "Disposition"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "UseAsIs",
+            "label": {
+              "en": "UseAsIs",
+              "fa": "UseAsIs"
+            }
+          },
+          {
+            "value": "Rework",
+            "label": {
+              "en": "Rework",
+              "fa": "Rework"
+            }
+          },
+          {
+            "value": "Repair",
+            "label": {
+              "en": "Repair",
+              "fa": "Repair"
+            }
+          },
+          {
+            "value": "Reject",
+            "label": {
+              "en": "Reject",
+              "fa": "Reject"
+            }
+          },
+          {
+            "value": "Concession",
+            "label": {
+              "en": "Concession",
+              "fa": "Concession"
+            }
+          }
+        ]
+      },
+      {
+        "name": "rootCause",
+        "label": {
+          "en": "Root cause",
+          "fa": "علت ریشه‌ای"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      },
+      {
+        "name": "correctiveAction",
+        "label": {
+          "en": "Corrective action",
+          "fa": "اقدام اصلاحی"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      },
+      {
+        "name": "preventiveAction",
+        "label": {
+          "en": "Preventive action",
+          "fa": "اقدام پیشگیرانه"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

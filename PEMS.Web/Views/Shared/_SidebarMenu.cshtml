@@ -249,7 +249,7 @@
         </div>
         <div class="@SectionClass(active)" id="sec-quality">
 
-            <pems-nav-link item="false" active="@(IsActive("QC"))" asp-controller="QC" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/qc" active="@(IsActive("QC") || Context.Request.Path.StartsWithSegments("/p/qc"))">
                 <pems-icon name="bi-patch-check" /> @Localizer["QC / QA"]
             </pems-nav-link>
 

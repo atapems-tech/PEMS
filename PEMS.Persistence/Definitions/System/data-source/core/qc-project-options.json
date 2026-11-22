@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "qc-project-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC ProjectOptions",
+    "fa": "QC ProjectOptions"
+  },
+  "description": {
+    "en": "QC ProjectOptions",
+    "fa": "QC ProjectOptions"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Qc",
+      "action": "ProjectOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

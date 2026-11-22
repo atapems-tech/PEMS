@@ -157,7 +157,7 @@ public class PemsWorkflowContractTests : IDisposable
         Assert.Equal(Const(typeof(MOCService), "BusinessObjectType"), Contract("MOC", "ChangeApproval").EntityType);
         Assert.Equal(Const(typeof(TechnicalQueryService), "BusinessObjectType"), Contract("TechnicalQuery", "Response").EntityType);
         Assert.Equal(Const(typeof(WorkOrderReviewService), "BusinessObjectType"), Contract("WorkOrder", "MultiDisciplineReview").EntityType);
-        Assert.Equal(Const(typeof(PEMS.Web.Controllers.QCController), "NcrBusinessObjectType"), Contract("NCR", "CriticalApproval").EntityType);
+        Assert.Equal(Const(typeof(PEMS.Web.Services.QcOperations), "NcrBusinessObjectType"), Contract("NCR", "CriticalApproval").EntityType);
         await Task.CompletedTask;
     }
 

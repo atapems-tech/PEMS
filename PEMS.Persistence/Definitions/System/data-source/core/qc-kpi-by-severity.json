@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-kpi-by-severity",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC KpiBySeverity",
+    "fa": "QC KpiBySeverity"
+  },
+  "description": {
+    "en": "QC KpiBySeverity",
+    "fa": "QC KpiBySeverity"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "KpiBySeverity"
+    }
+  }
+}

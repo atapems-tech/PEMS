@@ -1,0 +1,120 @@
+{
+  "kind": "page",
+  "key": "qc-ncrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Non-conformance reports",
+    "fa": "گزارش‌های عدم انطباق"
+  },
+  "description": {
+    "en": "Non-conformance reports",
+    "fa": "گزارش‌های عدم انطباق"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "qc-ncrs",
+    "template": "entity-list",
+    "args": {
+      "id": "qc-ncrs",
+      "url": "/d/qc-ncr-list",
+      "idField": "id",
+      "viewsKey": "qc-ncrs",
+      "columns": [
+        {
+          "key": "ncrNumber",
+          "header": {
+            "en": "NCR",
+            "fa": "NCR"
+          },
+          "width": 150
+        },
+        {
+          "key": "discipline",
+          "header": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          },
+          "width": 160
+        },
+        {
+          "key": "equipment",
+          "header": {
+            "en": "Equipment",
+            "fa": "تجهیز"
+          },
+          "width": 150
+        },
+        {
+          "key": "severity",
+          "header": {
+            "en": "Severity",
+            "fa": "شدت"
+          },
+          "width": 100
+        },
+        {
+          "key": "status",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          },
+          "width": 130
+        },
+        {
+          "key": "disposition",
+          "header": {
+            "en": "Disposition",
+            "fa": "Disposition"
+          },
+          "width": 130
+        },
+        {
+          "key": "raisedDate",
+          "header": {
+            "en": "Raised",
+            "fa": "ثبت"
+          },
+          "width": 120,
+          "type": "date"
+        },
+        {
+          "key": "closedDate",
+          "header": {
+            "en": "Closed",
+            "fa": "بسته‌شدن"
+          },
+          "width": 120,
+          "type": "date"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 100,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "open",
+              "label": {
+                "en": "Open",
+                "fa": "باز کردن"
+              },
+              "url": "/p/qc-ncr-details?id={id}",
+              "method": "get"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/qc-ncr-create",
+      "newLabel": {
+        "en": "Raise an NCR",
+        "fa": "ثبت NCR"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "qc-itp-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC ItpHead",
+    "fa": "QC ItpHead"
+  },
+  "description": {
+    "en": "QC ItpHead",
+    "fa": "QC ItpHead"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "ItpHead",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

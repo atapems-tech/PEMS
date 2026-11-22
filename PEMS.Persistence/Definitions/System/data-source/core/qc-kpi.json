@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-kpi",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC Kpi",
+    "fa": "QC Kpi"
+  },
+  "description": {
+    "en": "QC Kpi",
+    "fa": "QC Kpi"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "Kpi"
+    }
+  }
+}

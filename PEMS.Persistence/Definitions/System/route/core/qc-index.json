@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "qc-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC / QA (old address)",
+    "fa": "QC / QA (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "QC / QA (old address)",
+    "fa": "QC / QA (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "QC/Index",
+    "target": "/p/qc",
+    "permanent": false
+  }
+}

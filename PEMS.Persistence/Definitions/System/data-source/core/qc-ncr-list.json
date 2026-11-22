@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-ncr-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC NcrList",
+    "fa": "QC NcrList"
+  },
+  "description": {
+    "en": "QC NcrList",
+    "fa": "QC NcrList"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "NcrList"
+    }
+  }
+}

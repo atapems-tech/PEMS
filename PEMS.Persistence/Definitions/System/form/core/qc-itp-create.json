@@ -1,0 +1,139 @@
+{
+  "kind": "form",
+  "key": "qc-itp-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New inspection and test plan",
+    "fa": "برنامه بازرسی و آزمون جدید"
+  },
+  "description": {
+    "en": "New inspection and test plan",
+    "fa": "برنامه بازرسی و آزمون جدید"
+  },
+  "payload": {
+    "id": "qc-itp-create",
+    "title": {
+      "en": "New inspection and test plan",
+      "fa": "برنامه بازرسی و آزمون جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "qc-itp-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "itpNumber",
+        "label": {
+          "en": "ITP number",
+          "fa": "شماره ITP"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "qc-project-options"
+      },
+      {
+        "name": "qcDisciplineId",
+        "label": {
+          "en": "QC discipline",
+          "fa": "دیسیپلین QC"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "qc-discipline-options"
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "optionsFrom": "qc-equipment-options"
+      },
+      {
+        "name": "procurementPackageId",
+        "label": {
+          "en": "Procurement package",
+          "fa": "پکیج"
+        },
+        "kind": "select",
+        "optionsFrom": "qc-package-options"
+      },
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Contract",
+          "fa": "قرارداد"
+        },
+        "kind": "select",
+        "optionsFrom": "qc-contract-options"
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300
+      },
+      {
+        "name": "referenceCodeStandard",
+        "label": {
+          "en": "Reference code / standard",
+          "fa": "کد / استاندارد مرجع"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

@@ -8,7 +8,7 @@ using PEMS.WorkflowPlatform.Interfaces;
 
 namespace PEMS.Web.Services;
 
-/// <summary>SCRUM-694: the write commands of QCController (ITP and NCR), the logic moved without change (see <see cref="IQcOperations"/>).</summary>
+/// <summary>SCRUM-694, 742: QC (ITP and NCR), the logic moved without change (see <see cref="IQcOperations"/>).</summary>
 public sealed class QcOperations(PEMSDbContext context, IWorkflowRuntime runtime, ICurrentUserService currentUser, IHttpContextAccessor http) : IQcOperations
 {
     private const string NcrModule = NcrApprovalWorkflowSeeder.Module;
@@ -18,6 +18,106 @@ public sealed class QcOperations(PEMSDbContext context, IWorkflowRuntime runtime
     {
         if (!currentUser.UserId.HasValue) return null;
         return await context.Users.Where(u => u.Id == currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+    }
+
+    // ---- reads
+    public async Task<List<QcSummaryRow>> SummaryAsync()
+        => [new(await context.NonConformanceReports.CountAsync(x => x.IsActive && x.Status != "Closed"), await context.InspectionTestPlans.CountAsync(x => x.IsActive && x.Status == "Active"))];
+
+    private static QcItpRow ItpRow(InspectionTestPlan i) => new(i.InspectionTestPlanId, i.ITPNumber, i.Title, i.QCDiscipline?.Name ?? "", i.Equipment?.TagNumber ?? "", i.Status, i.Revision, i.CreatedDate);
+    private static QcNcrRow NcrRow(NonConformanceReport n) => new(n.NonConformanceReportId, n.NCRNumber, n.QCDiscipline?.Name ?? "", n.Equipment?.TagNumber ?? "", n.Severity, n.Status, n.Disposition ?? "", n.RaisedDate, n.ClosedDate);
+
+    public async Task<List<QcNcrRow>> RecentNcrsAsync()
+        => (await context.NonConformanceReports.AsNoTracking().Where(x => x.IsActive).Include(x => x.QCDiscipline).Include(x => x.Equipment).OrderByDescending(x => x.RaisedDate).Take(10).ToListAsync()).Select(NcrRow).ToList();
+
+    public async Task<List<QcItpRow>> RecentItpsAsync()
+        => (await context.InspectionTestPlans.AsNoTracking().Where(x => x.IsActive).Include(x => x.QCDiscipline).Include(x => x.Equipment).OrderByDescending(x => x.CreatedDate).Take(10).ToListAsync()).Select(ItpRow).ToList();
+
+    public async Task<List<QcItpRow>> ItpListAsync()
+        => (await context.InspectionTestPlans.AsNoTracking().Where(x => x.IsActive).Include(x => x.QCDiscipline).Include(x => x.Equipment).OrderByDescending(x => x.CreatedDate).ToListAsync()).Select(ItpRow).ToList();
+
+    public async Task<List<QcItpHeadRow>> ItpHeadAsync(int id)
+    {
+        var i = await context.InspectionTestPlans.AsNoTracking().Include(x => x.QCDiscipline).Include(x => x.Equipment).Include(x => x.ProcurementPackage).Include(x => x.Contract).FirstOrDefaultAsync(x => x.InspectionTestPlanId == id);
+        return i == null ? [] : [new(i.InspectionTestPlanId, i.ITPNumber, i.Title, i.Status, i.Revision, i.QCDiscipline?.Name ?? "", i.Equipment?.TagNumber ?? "", i.ProcurementPackage?.PackageNumber ?? "", i.Contract?.ContractNo ?? "",
+            i.ReferenceCodeStandard ?? "", i.Description ?? "", i.ApprovedDate)];
+    }
+
+    public async Task<List<QcLineItemRow>> ItpLineItemsAsync(int id)
+        => (await context.ITPLineItems.AsNoTracking().Include(x => x.QCDiscipline).Where(x => x.InspectionTestPlanId == id).OrderBy(x => x.SequenceNo).ToListAsync())
+            .Select(l => new QcLineItemRow(l.ITPLineItemId, l.SequenceNo, l.Activity, l.QCDiscipline?.Name ?? "", l.InspectionCategory, l.AcceptanceCriteria ?? "", l.ReferenceCodeStandard ?? "", l.ResponsibleParty ?? "", l.Status, l.NotifiedDate)).ToList();
+
+    public async Task<List<QcNcrRow>> NcrListAsync()
+        => (await context.NonConformanceReports.AsNoTracking().Where(x => x.IsActive).Include(x => x.QCDiscipline).Include(x => x.Equipment).OrderByDescending(x => x.RaisedDate).ToListAsync()).Select(NcrRow).ToList();
+
+    public async Task<List<QcNcrHeadRow>> NcrHeadAsync(int id)
+    {
+        var n = await context.NonConformanceReports.AsNoTracking().Include(x => x.QCDiscipline).Include(x => x.Equipment).Include(x => x.ITPLineItem).FirstOrDefaultAsync(x => x.NonConformanceReportId == id);
+        return n == null ? [] : [new(n.NonConformanceReportId, n.NCRNumber, n.QCDiscipline?.Name ?? "", n.Equipment?.TagNumber ?? "", n.Severity, n.Status, n.Description, n.Disposition ?? "", n.RootCause ?? "", n.CorrectiveAction ?? "",
+            n.PreventiveAction ?? "", n.RaisedDate, n.DispositionedDate, n.ClosedDate, n.ITPLineItem?.Activity ?? "")];
+    }
+
+    private async Task<List<NonConformanceReport>> ActiveNcrsAsync()
+        => await context.NonConformanceReports.AsNoTracking().Where(x => x.IsActive).Include(x => x.QCDiscipline).ToListAsync();
+
+    public async Task<List<QcKpiRow>> KpiAsync()
+    {
+        var ncrs = await ActiveNcrsAsync();
+        var closed = ncrs.Count(x => x.ClosedDate.HasValue);
+        var rate = closed == 0 ? 0 : Math.Round(100.0 * ncrs.Count(x => x.ClosedDate.HasValue && (x.ClosedDate.Value - x.RaisedDate).TotalDays <= 14) / closed, 1);
+        return [new(1, ncrs.Count, rate)];
+    }
+
+    public async Task<List<QcKpiGroupRow>> KpiByDisciplineAsync()
+        => (await ActiveNcrsAsync()).GroupBy(x => x.QCDiscipline?.Name ?? "نامشخص")
+            .Select(g => new QcKpiGroupRow(g.Key, g.Count(), g.Count(x => x.Status != "Closed"), g.Count(x => x.Severity == "Critical"),
+                g.Where(x => x.ClosedDate.HasValue).Select(x => (x.ClosedDate!.Value - x.RaisedDate).TotalDays).DefaultIfEmpty(0).Average())).OrderByDescending(x => x.Total).ToList();
+
+    public async Task<List<QcKpiGroupRow>> KpiBySeverityAsync()
+        => (await ActiveNcrsAsync()).GroupBy(x => x.Severity).Select(g => new QcKpiGroupRow(g.Key, g.Count(), 0, 0, 0)).ToList();
+
+    public async Task<List<QcKpiGroupRow>> KpiByMonthAsync()
+        => (await ActiveNcrsAsync()).Where(x => x.RaisedDate >= DateTime.Now.AddMonths(-12)).GroupBy(x => x.RaisedDate.ToString("yyyy-MM"))
+            .Select(g => new QcKpiGroupRow(g.Key, g.Count(), 0, 0, 0)).OrderBy(x => x.Group).ToList();
+
+    // ---- the choices of the two create forms
+    public async Task<List<QcOption>> ProjectOptionsAsync()
+        => await context.Projects.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.ProjectName).Select(x => new QcOption(x.ProjectId.ToString(), x.ProjectName)).ToListAsync();
+
+    public async Task<List<QcOption>> DisciplineOptionsAsync()
+        => await context.QCDisciplines.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new QcOption(x.QCDisciplineId.ToString(), x.Name)).ToListAsync();
+
+    public async Task<List<QcOption>> EquipmentOptionsAsync()
+        => await context.Equipments.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.TagNumber).Take(300).Select(x => new QcOption(x.EquipmentId.ToString(), x.TagNumber + " - " + x.Name)).ToListAsync();
+
+    public async Task<List<QcOption>> PackageOptionsAsync()
+        => await context.ProcurementPackages.AsNoTracking().Where(x => x.IsActive).OrderByDescending(x => x.CreatedDate).Select(x => new QcOption(x.ProcurementPackageId.ToString(), x.PackageNumber)).ToListAsync();
+
+    public async Task<List<QcOption>> ContractOptionsAsync()
+        => await context.Contracts.AsNoTracking().Where(x => x.IsActive).OrderByDescending(x => x.CreatedDate).Select(x => new QcOption(x.ContractId.ToString(), x.ContractNo)).ToListAsync();
+
+    // ---- the two creates
+    public async Task<(bool Success, string? Error)> ItpCreateAsync(string itpNumber, int projectId, int qcDisciplineId, string title, int? equipmentId = null, string? referenceCodeStandard = null, string? description = null,
+        int? procurementPackageId = null, int? contractId = null)
+    {
+        await context.InspectionTestPlans.AddAsync(new InspectionTestPlan
+        {
+            ITPNumber = itpNumber, ProjectId = projectId, QCDisciplineId = qcDisciplineId, EquipmentId = equipmentId, ProcurementPackageId = procurementPackageId, ContractId = contractId, Title = title,
+            ReferenceCodeStandard = referenceCodeStandard, Description = description, Status = "Draft", Revision = 0, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await context.SaveChangesAsync();
+        return (true, null);
+    }
+
+    public async Task<(bool Success, string? Error)> NcrCreateAsync(string ncrNumber, int projectId, int qcDisciplineId, string description, string severity, int? equipmentId = null, int? itpLineItemId = null)
+    {
+        await context.NonConformanceReports.AddAsync(new NonConformanceReport
+        {
+            NCRNumber = ncrNumber, ProjectId = projectId, QCDisciplineId = qcDisciplineId, EquipmentId = equipmentId, ITPLineItemId = itpLineItemId, Description = description, Severity = severity, Status = "Open",
+            RaisedById = await EmployeeIdAsync(), RaisedDate = DateTime.Now, IsActive = true, CreatedDate = DateTime.Now
+        });
+        await context.SaveChangesAsync();
+        return (true, null);
     }
 
     public async Task<(bool Success, string? Error)> ItpAddLineItemAsync(int itpId, string activity, int qcDisciplineId, string inspectionCategory, string? acceptanceCriteria = null, string? referenceCodeStandard = null, string? responsibleParty = null)
