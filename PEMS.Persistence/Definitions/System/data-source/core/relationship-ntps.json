@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-ntps",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship ntps",
+    "fa": "relationship ntps"
+  },
+  "description": {
+    "en": "relationship ntps",
+    "fa": "relationship ntps"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "ContractNTPs"
+    }
+  }
+}

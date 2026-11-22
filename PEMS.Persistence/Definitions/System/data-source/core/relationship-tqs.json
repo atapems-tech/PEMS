@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-tqs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship tqs",
+    "fa": "relationship tqs"
+  },
+  "description": {
+    "en": "relationship tqs",
+    "fa": "relationship tqs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "TechnicalQueries"
+    }
+  }
+}

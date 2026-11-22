@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-mrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship mrs",
+    "fa": "relationship mrs"
+  },
+  "description": {
+    "en": "relationship mrs",
+    "fa": "relationship mrs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "MaterialRequisitions"
+    }
+  }
+}

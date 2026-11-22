@@ -1,0 +1,2071 @@
+{
+  "kind": "page",
+  "key": "relationship-explorer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering Relationship Explorer",
+    "fa": "کاوشگر روابط مهندسی"
+  },
+  "description": {
+    "en": "Engineering Relationship Explorer",
+    "fa": "کاوشگر روابط مهندسی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "relationship-explorer",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "relationship-filters",
+            "resetUrl": "/p/relationship-explorer",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Tag, document number or vendor",
+                  "fa": "شماره تگ، شماره مدرک یا فروشنده"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "kind",
+                "label": {
+                  "en": "Search type",
+                  "fa": "نوع جستجو"
+                },
+                "kind": "select",
+                "value": "{{params.kind}}",
+                "options": [
+                  {
+                    "value": "search",
+                    "label": {
+                      "en": "Free text",
+                      "fa": "متن آزاد"
+                    }
+                  },
+                  {
+                    "value": "equipment",
+                    "label": {
+                      "en": "Equipment id",
+                      "fa": "شناسه تجهیز"
+                    }
+                  },
+                  {
+                    "value": "document",
+                    "label": {
+                      "en": "Document id",
+                      "fa": "شناسه مدرک"
+                    }
+                  },
+                  {
+                    "value": "vendor",
+                    "label": {
+                      "en": "Vendor id",
+                      "fa": "شناسه فروشنده"
+                    }
+                  },
+                  {
+                    "value": "package",
+                    "label": {
+                      "en": "Procurement package id",
+                      "fa": "شناسه بسته تدارکات"
+                    }
+                  },
+                  {
+                    "value": "contract",
+                    "label": {
+                      "en": "Contract id",
+                      "fa": "شناسه قرارداد"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "id",
+                "label": {
+                  "en": "Id (for the id types)",
+                  "fa": "شناسه (برای نوع‌های شناسه‌ای)"
+                },
+                "kind": "text",
+                "value": "{{params.id}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "relationship-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/Relationship/BulkSuggestions",
+                "text": {
+                  "en": "Approve suggested links in bulk",
+                  "fa": "تأیید دسته‌جمعی اتصال‌ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/relationship-gap-report",
+                "text": {
+                  "en": "Incomplete equipment report",
+                  "fa": "گزارش تجهیزات ناقص"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "relationship-record",
+            "fields": [
+              {
+                "key": "rootType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "rootLabel",
+                "label": {
+                  "en": "Item",
+                  "fa": "مورد"
+                }
+              },
+              {
+                "key": "rootArea",
+                "label": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                }
+              },
+              {
+                "key": "rootIsActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/relationship-head",
+              "idField": "rootId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "pid",
+          "component": "def:related-table",
+          "options": {
+            "id": "pid",
+            "title": {
+              "en": "P&ID",
+              "fa": "P&ID"
+            },
+            "url": "/d/relationship-pid?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "suggested",
+          "component": "def:related-table",
+          "options": {
+            "id": "suggested",
+            "title": {
+              "en": "Suggested links (unconfirmed)",
+              "fa": "پیشنهادهای اتصال (تاییدنشده)"
+            },
+            "url": "/d/relationship-suggested?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Suggestion",
+                  "fa": "پیشنهاد"
+                },
+                "width": 260
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "nodeType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 80
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "confirm",
+                    "label": {
+                      "en": "Confirm link",
+                      "fa": "تأیید اتصال"
+                    },
+                    "url": "/a/relationship-confirm-link?equipmentId={{params.id|url}}&targetType={nodeType}&targetId={nodeId}",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Confirm this link?",
+                      "fa": "این اتصال تأیید شود؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "documents",
+          "component": "def:related-table",
+          "options": {
+            "id": "documents",
+            "title": {
+              "en": "Engineering documents",
+              "fa": "مدارک مهندسی"
+            },
+            "url": "/d/relationship-documents?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/EngineeringDocuments/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "vendor-documents",
+          "component": "def:related-table",
+          "options": {
+            "id": "vendor-documents",
+            "title": {
+              "en": "Vendor documents (VDR)",
+              "fa": "مدارک فروشنده (VDR)"
+            },
+            "url": "/d/relationship-vendor-documents?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/VDR/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "equipment",
+          "component": "def:related-table",
+          "options": {
+            "id": "equipment",
+            "title": {
+              "en": "Related equipment",
+              "fa": "تجهیزات مرتبط"
+            },
+            "url": "/d/relationship-equipment?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/equipment-passport?id={nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "vendors",
+          "component": "def:related-table",
+          "options": {
+            "id": "vendors",
+            "title": {
+              "en": "Vendors",
+              "fa": "فروشندگان"
+            },
+            "url": "/d/relationship-vendors?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Vendor/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "contracts",
+          "component": "def:related-table",
+          "options": {
+            "id": "contracts",
+            "title": {
+              "en": "Contracts",
+              "fa": "قراردادها"
+            },
+            "url": "/d/relationship-contracts?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Contract/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "packages",
+          "component": "def:related-table",
+          "options": {
+            "id": "packages",
+            "title": {
+              "en": "Procurement packages",
+              "fa": "بسته‌های تدارکات"
+            },
+            "url": "/d/relationship-packages?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/ProcurementPackage/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "purchase-orders",
+          "component": "def:related-table",
+          "options": {
+            "id": "purchase-orders",
+            "title": {
+              "en": "Purchase orders",
+              "fa": "سفارش‌های خرید"
+            },
+            "url": "/d/relationship-purchase-orders?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "tenders",
+          "component": "def:related-table",
+          "options": {
+            "id": "tenders",
+            "title": {
+              "en": "Tenders",
+              "fa": "مناقصه‌ها"
+            },
+            "url": "/d/relationship-tenders?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Tender/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "bids",
+          "component": "def:related-table",
+          "options": {
+            "id": "bids",
+            "title": {
+              "en": "Bids",
+              "fa": "پیشنهادها"
+            },
+            "url": "/d/relationship-bids?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ntps",
+          "component": "def:related-table",
+          "options": {
+            "id": "ntps",
+            "title": {
+              "en": "Notice to proceed (NTP)",
+              "fa": "ابلاغ شروع کار (NTP)"
+            },
+            "url": "/d/relationship-ntps?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "kickoffs",
+          "component": "def:related-table",
+          "options": {
+            "id": "kickoffs",
+            "title": {
+              "en": "Kick-off meetings",
+              "fa": "جلسات شروع"
+            },
+            "url": "/d/relationship-kickoffs?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/Meeting/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "itps",
+          "component": "def:related-table",
+          "options": {
+            "id": "itps",
+            "title": {
+              "en": "Inspection / ITP",
+              "fa": "بازرسی / ITP"
+            },
+            "url": "/d/relationship-itps?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/qc-itp-details?id={nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "mrs",
+          "component": "def:related-table",
+          "options": {
+            "id": "mrs",
+            "title": {
+              "en": "Material requisitions",
+              "fa": "درخواست‌های مواد"
+            },
+            "url": "/d/relationship-mrs?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/MaterialRequisition/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "quotations",
+          "component": "def:related-table",
+          "options": {
+            "id": "quotations",
+            "title": {
+              "en": "Quotations (MRQ)",
+              "fa": "استعلام‌ها (MRQ)"
+            },
+            "url": "/d/relationship-quotations?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "work-orders",
+          "component": "def:related-table",
+          "options": {
+            "id": "work-orders",
+            "title": {
+              "en": "Maintenance / work orders",
+              "fa": "نگهداری / دستورهای کار"
+            },
+            "url": "/d/relationship-work-orders?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "ncrs",
+          "component": "def:related-table",
+          "options": {
+            "id": "ncrs",
+            "title": {
+              "en": "NCR",
+              "fa": "NCR"
+            },
+            "url": "/d/relationship-ncrs?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/qc-ncr-details?id={nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "mocs",
+          "component": "def:related-table",
+          "options": {
+            "id": "mocs",
+            "title": {
+              "en": "MOC",
+              "fa": "MOC"
+            },
+            "url": "/d/relationship-mocs?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/MOC/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "tqs",
+          "component": "def:related-table",
+          "options": {
+            "id": "tqs",
+            "title": {
+              "en": "TQ / TSR / RFI",
+              "fa": "TQ / TSR / RFI"
+            },
+            "url": "/d/relationship-tqs?f.kind={{params.kind|url}}&f.id={{params.id|url}}&f.q={{params.q|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Item",
+                  "fa": "مورد"
+                },
+                "width": 240
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 240
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 90
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "delayDays",
+                "header": {
+                  "en": "Delay (days)",
+                  "fa": "تاخیر (روز)"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/TechnicalQuery/Details/{nodeId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

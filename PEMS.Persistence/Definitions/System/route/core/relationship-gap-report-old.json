@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "relationship-gap-report-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Relationship explorer (old address)",
+    "fa": "کاوشگر روابط (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Relationship explorer (old address)",
+    "fa": "کاوشگر روابط (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Relationship/GapReport",
+    "target": "/p/relationship-gap-report",
+    "permanent": false
+  }
+}

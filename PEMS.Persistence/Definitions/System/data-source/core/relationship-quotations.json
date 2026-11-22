@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-quotations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship quotations",
+    "fa": "relationship quotations"
+  },
+  "description": {
+    "en": "relationship quotations",
+    "fa": "relationship quotations"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "Quotations"
+    }
+  }
+}

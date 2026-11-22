@@ -725,6 +725,7 @@ builder.Services.AddScoped<IIntakeService, IntakeService>();
 builder.Services.AddScoped<ITableExtractionImportService, TableExtractionImportService>();
 
 builder.Services.AddScoped<IRelationshipService, RelationshipService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IRelationshipPagesOperations, PEMS.Web.Services.RelationshipPagesOperations>();   // SCRUM-745
 
 builder.Services.AddScoped<IKnowledgeBaseService, KnowledgeBaseService>();
 

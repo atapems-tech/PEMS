@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-work-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship work orders",
+    "fa": "relationship work orders"
+  },
+  "description": {
+    "en": "relationship work orders",
+    "fa": "relationship work orders"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "WorkOrders"
+    }
+  }
+}

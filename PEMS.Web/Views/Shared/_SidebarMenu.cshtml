@@ -787,7 +787,7 @@
                     <pems-icon name="bi-table" /> @Localizer["Table Extraction"]
                 </pems-nav-link>
 
-                <pems-nav-link item="false" sub="true" active="@(IsActive("Relationship"))" asp-controller="Relationship" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" sub="true" href="/p/relationship-explorer" active="@(IsActive("Relationship") || Context.Request.Path.StartsWithSegments("/p/relationship"))">
                     <pems-icon name="bi-diagram-3" /> @Localizer["RelationshipExplorer"]
                 </pems-nav-link>
 

@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-pid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship pid",
+    "fa": "relationship pid"
+  },
+  "description": {
+    "en": "relationship pid",
+    "fa": "relationship pid"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "PIDDocument"
+    }
+  }
+}

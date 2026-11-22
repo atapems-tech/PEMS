@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-vendors",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship vendors",
+    "fa": "relationship vendors"
+  },
+  "description": {
+    "en": "relationship vendors",
+    "fa": "relationship vendors"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "Vendors"
+    }
+  }
+}

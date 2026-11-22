@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-documents",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship documents",
+    "fa": "relationship documents"
+  },
+  "description": {
+    "en": "relationship documents",
+    "fa": "relationship documents"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "Documents"
+    }
+  }
+}

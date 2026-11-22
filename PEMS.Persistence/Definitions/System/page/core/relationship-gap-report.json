@@ -1,0 +1,117 @@
+{
+  "kind": "page",
+  "key": "relationship-gap-report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Relationship gap report",
+    "fa": "گزارش شکاف روابط"
+  },
+  "description": {
+    "en": "Relationship gap report",
+    "fa": "گزارش شکاف روابط"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "relationship-gap-report",
+    "template": "entity-list",
+    "args": {
+      "id": "relationship-gaps",
+      "url": "/d/relationship-gap-items",
+      "idField": "equipmentId",
+      "viewsKey": "relationship-gaps",
+      "columns": [
+        {
+          "key": "tagNumber",
+          "header": {
+            "en": "Tag",
+            "fa": "تگ"
+          },
+          "width": 140
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 220
+        },
+        {
+          "key": "area",
+          "header": {
+            "en": "Area",
+            "fa": "ناحیه"
+          },
+          "width": 110
+        },
+        {
+          "key": "disciplineName",
+          "header": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          },
+          "width": 130
+        },
+        {
+          "key": "hasDocuments",
+          "header": {
+            "en": "Documents",
+            "fa": "مدارک"
+          },
+          "width": 90,
+          "type": "bool"
+        },
+        {
+          "key": "hasVdrItems",
+          "header": {
+            "en": "VDR",
+            "fa": "VDR"
+          },
+          "width": 90,
+          "type": "bool"
+        },
+        {
+          "key": "hasMR",
+          "header": {
+            "en": "MR",
+            "fa": "MR"
+          },
+          "width": 90,
+          "type": "bool"
+        },
+        {
+          "key": "hasWorkOrders",
+          "header": {
+            "en": "Work orders",
+            "fa": "دستور کار"
+          },
+          "width": 90,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 120,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "explore",
+              "label": {
+                "en": "Explore",
+                "fa": "کاوش"
+              },
+              "url": "/p/relationship-explorer?kind=equipment&id={equipmentId}",
+              "method": "get"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

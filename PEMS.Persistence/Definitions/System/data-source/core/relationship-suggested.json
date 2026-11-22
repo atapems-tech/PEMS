@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-suggested",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship suggested",
+    "fa": "relationship suggested"
+  },
+  "description": {
+    "en": "relationship suggested",
+    "fa": "relationship suggested"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "SuggestedLinks"
+    }
+  }
+}

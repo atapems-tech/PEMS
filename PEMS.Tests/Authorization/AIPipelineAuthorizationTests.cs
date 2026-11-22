@@ -143,16 +143,17 @@ public class AIPipelineAuthorizationTests
         Assert.False(service.BulkConfirmCalled);
     }
 
+    // SCRUM-745: the explorer and the gap report are operations with the permission Relationship.View (the data host refuses a caller without it).
+    [Theory]
+    [InlineData("ExploreAsync")]
+    [InlineData("GapReportAsync")]
+    public void Relationship_Reads_NeedTheViewPermission(string method)
+        => Assert.Equal("Relationship.View", ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IRelationshipPagesOperations).GetMethod(method)!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission);
+
     [Fact]
-    public async Task Relationship_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Relationship_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new RelationshipController(new FakeRelationshipService(), user, perms).WithTempData();
-
-        var result = await controller.Index(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
+    public async Task Relationship_Explore_WithoutAStartPoint_ReturnsNothing()
+        => Assert.Null(await new PEMS.Web.Services.RelationshipPagesOperations(new FakeRelationshipService()).ExploreAsync("search", null, " "));
 
     // ================= EngineeringDocumentIntelligence =================
 

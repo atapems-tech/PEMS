@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-tenders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship tenders",
+    "fa": "relationship tenders"
+  },
+  "description": {
+    "en": "relationship tenders",
+    "fa": "relationship tenders"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "Tenders"
+    }
+  }
+}

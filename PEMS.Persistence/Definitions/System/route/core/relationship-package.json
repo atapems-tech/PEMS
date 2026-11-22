@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "relationship-package",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Relationship explorer (old address)",
+    "fa": "کاوشگر روابط (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Relationship explorer (old address)",
+    "fa": "کاوشگر روابط (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Relationship/ProcurementPackage/{id}",
+    "target": "/p/relationship-explorer?kind=package&id={id}",
+    "permanent": false
+  }
+}
