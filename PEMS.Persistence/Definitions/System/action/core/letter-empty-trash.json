@@ -1,0 +1,28 @@
+{
+  "kind": "action",
+  "key": "letter-empty-trash",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Empty the trash",
+    "fa": "خالی کردن سطل زباله"
+  },
+  "description": {
+    "en": "Empty the trash",
+    "fa": "خالی کردن سطل زباله"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "EmptyTrash",
+      "args": {}
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/Letter?folder=trash"
+  }
+}

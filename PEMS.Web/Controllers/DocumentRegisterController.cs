@@ -172,24 +172,4 @@ public class DocumentRegisterController : Controller
             $"DocumentRegister_Selected_{DateTime.Now:yyyyMMdd_HHmm}.xlsx");
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SaveFilter(string name, string queryString, bool isDefault)
-    {
-        if (_currentUser.UserId.HasValue)
-            await _savedFilterService.SaveAsync(_currentUser.UserId.Value, PageKey, name, queryString, isDefault);
-
-        TempData["Message"] = $"Filter \"{name}\" saved";
-        return Redirect("/DocumentRegister?" + queryString);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteFilter(int id)
-    {
-        if (_currentUser.UserId.HasValue)
-            await _savedFilterService.DeleteAsync(id, _currentUser.UserId.Value);
-
-        return RedirectToAction(nameof(Index));
-    }
 }

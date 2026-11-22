@@ -73,6 +73,18 @@ public interface ILetterOperations
     [PEMS.Application.Common.PemsOperation("Letter", "ReassignApprover")]
     Task<(bool Success, string? Error)> ReassignApproverAsync(int letterId, int stepOrder, int newApproverUserId);
 
+    /// <summary>The bulk action of the letter list (op: star, unstar, submit, archive, or a cartable op: trash, restore, purge, archiveme, unarchiveme, read, unread, tag, untag). One message tells how many letters were done and how many skipped.</summary>
+    [PEMS.Application.Common.PemsOperation("Letter", "Bulk")]
+    Task<(bool Success, string? Error)> BulkAsync(string op, int[]? ids, string? reason, int? tagId);
+
+    /// <summary>Empties the personal trash of the user (hides the letters for good for this user only).</summary>
+    [PEMS.Application.Common.PemsOperation("Letter", "EmptyTrash")]
+    Task<(bool Success, string? Error)> EmptyTrashAsync();
+
+    /// <summary>Runs the overdue reminders now (system administrators only).</summary>
+    [PEMS.Application.Common.PemsOperation("Letter", "SendReminders")]
+    Task<(bool Success, string? Error)> SendRemindersAsync();
+
     /// <summary>Attaches a file to a letter the user may see (stored in the letters folder).</summary>
     [PEMS.Application.Common.PemsOperation("Letter", "UploadAttachment")]
     Task<(bool Success, string? Error)> UploadAttachmentAsync(int letterId, PEMS.Application.Common.OperationFile? file);

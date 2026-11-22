@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "letter-bulk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Run an action on the selected letters",
+    "fa": "اجرای عملیات روی نامه‌های انتخاب‌شده"
+  },
+  "description": {
+    "en": "Run an action on the selected letters",
+    "fa": "اجرای عملیات روی نامه‌های انتخاب‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "Bulk",
+      "args": {
+        "op": "field:op",
+        "ids": "field:ids",
+        "reason": "field:reason",
+        "tagId": "field:tagId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/Letter",
+    "redirectBack": true
+  }
+}

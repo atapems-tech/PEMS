@@ -193,118 +193,8 @@ public class LetterController : Controller
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Correspondence_{stamp}.xlsx");
     }
 
-    // عملیات گروهی امن روی ردیف‌های انتخاب‌شده. تایید/صدور/بستن عمداً اینجا نیست (تفکیک وظایف).
-    //   star / unstar  - فقط ستاره‌ی خود کاربر
-    //   submit         - فقط پیش‌نویس‌های خود کاربر (همان قانون اقدام تکی)
-    //   archive        - آرشیو نرم Draft/Rejected با دلیل الزامی، نیازمند مجوز Delete، ثبت در AuditLog
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Bulk(string op, int[]? ids, string? reason, string? returnUrl, int? tagId = null)
-    {
-        string Back() => string.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl) ? Url.Action(nameof(Index))! : returnUrl;
-
-        if (ids == null || ids.Length == 0 || !_currentUser.UserId.HasValue)
-        {
-            TempData["Error"] = "No letters were selected.";
-            return LocalRedirect(Back());
-        }
-
-        var isSystemAdmin = _currentUser.Roles.Contains("SystemAdmin");
-        LetterBulkResult result;
-        string done;
-
-        switch ((op ?? "").ToLowerInvariant())
-        {
-            case "star":
-            case "unstar":
-                var canViewConfidential = isSystemAdmin ||
-                    await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
-                var starring = string.Equals(op, "star", StringComparison.OrdinalIgnoreCase);
-                result = await _letterService.BulkSetStarAsync(ids, _currentUser.UserId.Value, starring, canViewConfidential);
-                done = starring ? "starred" : "unstarred";
-                break;
-
-            case "submit":
-                result = await _letterService.BulkSubmitForReviewAsync(ids, _currentUser.UserId);
-                done = "submitted for review";
-                break;
-
-            case "archive":
-                if (!isSystemAdmin && !await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Delete"))
-                    return Forbid();
-                result = await _letterService.BulkArchiveAsync(ids, _currentUser.UserId, _currentUser.UserName, isSystemAdmin, reason ?? "");
-                done = "archived";
-                break;
-
-            // کارتابل شخصی: سطل/آرشیو/خوانده/برچسب - هیچ‌کدام خود نامه را تغییر نمی‌دهند
-            case "trash": case "restore": case "purge": case "archiveme": case "unarchiveme":
-            case "read": case "unread": case "tag": case "untag":
-                return await CartableBulkAsync(op.ToLowerInvariant(), ids, tagId, Back());
-
-            default:
-                TempData["Error"] = "Unknown bulk action.";
-                return LocalRedirect(Back());
-        }
-
-        if (result.Succeeded > 0) TempData["Message"] = $"{result.Succeeded} letter(s) {done}.";
-        if (result.Failed.Count > 0)
-        {
-            var detail = string.Join(" | ", result.Failed.Take(5).Select(f =>
-                $"{(string.IsNullOrEmpty(f.LetterNumber) ? "#" + f.LetterId : f.LetterNumber)}: {f.Reason}"));
-            TempData["Error"] = $"{result.Failed.Count} letter(s) skipped. {detail}" + (result.Failed.Count > 5 ? " ..." : "");
-        }
-
-        return LocalRedirect(Back());
-    }
-
     private async Task<bool> CanViewConfidentialAsync()
         => _currentUser.Roles.Contains("SystemAdmin") || await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
-
-    private async Task<IActionResult> CartableBulkAsync(string op, int[] ids, int? tagId, string back)
-    {
-        if (_cartable == null || _tagTree == null)
-        {
-            TempData["Error"] = "The cartable is not available.";
-            return LocalRedirect(back);
-        }
-
-        var uid = _currentUser.UserId!.Value;
-        var canView = await CanViewConfidentialAsync();
-        CartableOpResult result;
-        string done;
-
-        switch (op)
-        {
-            case "trash": result = await _cartable.TrashAsync(ids, uid, canView); done = "moved to trash"; break;
-            case "restore": result = await _cartable.RestoreAsync(ids, uid); done = "restored"; break;
-            case "purge": result = await _cartable.PurgeAsync(ids, uid); done = "removed from your trash for good"; break;
-            case "archiveme": result = await _cartable.ArchiveForMeAsync(ids, uid, canView); done = "archived for you"; break;
-            case "unarchiveme": result = await _cartable.UnarchiveForMeAsync(ids, uid); done = "returned to your inbox"; break;
-            case "read": result = await _cartable.SetReadAsync(ids, uid, true, canView); done = "marked as read"; break;
-            case "unread": result = await _cartable.SetReadAsync(ids, uid, false, canView); done = "marked as unread"; break;
-            default:
-                if (!tagId.HasValue) { TempData["Error"] = "No tag was chosen."; return LocalRedirect(back); }
-                var attach = op == "tag";
-                result = await _tagTree.ApplyAsync(tagId.Value, ids, attach, uid, canView);
-                done = attach ? "tagged" : "untagged";
-                break;
-        }
-
-        if (result.Success) TempData["Message"] = $"{result.Affected} letter(s) {done}.";
-        else TempData["Error"] = result.ErrorKey == "Cart_Err_NothingToDo" ? "Nothing to change for the selected letters." : result.ErrorKey;
-        return LocalRedirect(back);
-    }
-
-    // خالی‌کردن سطل زباله‌ی شخصی = پنهان‌سازی دائم برای همین کاربر (خود نامه‌ها دست‌نخورده می‌مانند)
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EmptyTrash()
-    {
-        if (_cartable == null || !_currentUser.UserId.HasValue) return Forbid();
-        var r = await _cartable.EmptyTrashAsync(_currentUser.UserId.Value);
-        if (r.Success) TempData["Message"] = $"{r.Affected} letter(s) removed from your trash for good.";
-        return RedirectToAction(nameof(Index), new { folder = LetterFolders.Trash });
-    }
 
     // اعضای رشته‌ی گفتگو برای باز شدن ردیف در «نمای رشته‌ای»؛ حق دیدن خودِ نامه اول سنجیده می‌شود
     [HttpGet]
@@ -335,20 +225,6 @@ public class LetterController : Controller
         ViewBag.CanReview = canReview;
         ViewBag.CanRunReminders = isSystemAdmin && _reminders != null;
         return View(model);
-    }
-
-    // اجرای دستی یادآوری معوقات (فقط SystemAdmin): برای راستی‌آزمایی بدون انتظار تا ساعت زمان‌بندی؛ ضد تکرار روزانه سرویس همچنان برقرار است
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SendReminders()
-    {
-        if (!_currentUser.Roles.Contains("SystemAdmin")) return Forbid();
-        if (_reminders == null) return NotFound();
-
-        var result = await _reminders.SendDueRemindersAsync();
-        TempData["Message"] = $"Reminders sent: {result.ReferralReminders} referral, {result.ResponseReminders} response ({result.SkippedDuplicates} already sent today)";
-        if (result.Failed > 0) TempData["Error"] = $"{result.Failed} reminder(s) could not be delivered.";
-        return RedirectToAction(nameof(Dashboard));
     }
 
     // بیننده‌ی فعلی برای قاعده‌ی دسترسی نامه (LetterAccessRules): کاربر، کارمند مرتبط، و «دسترسی کامل» (SystemAdmin یا Approve)

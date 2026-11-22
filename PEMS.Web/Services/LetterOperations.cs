@@ -7,7 +7,7 @@ using PEMS.Web.Security;
 namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-716, 715: the letter commands of LetterController and LetterComposeController (same access rules, same services, same texts). A letter the user may not see is a refusal (the 403 page, as before).</summary>
-public sealed class LetterOperations(PEMSDbContext context, ILetterService letters, ILetterReferralService referrals, ITagService tags, ILetterComposeService compose, ICurrentUserService currentUser, IPermissionService permissions, IFileStorageService storage) : ILetterOperations
+public sealed class LetterOperations(PEMSDbContext context, ILetterService letters, ILetterReferralService referrals, ITagService tags, ILetterComposeService compose, ICurrentUserService currentUser, IPermissionService permissions, IFileStorageService storage, ILetterCartableService? cartable = null, ILetterTagTreeService? tagTree = null, ILetterReminderService? reminders = null) : ILetterOperations
 {
     private bool IsAdmin => currentUser.Roles.Contains("SystemAdmin");
 
@@ -130,6 +130,76 @@ public sealed class LetterOperations(PEMSDbContext context, ILetterService lette
     public async Task<(bool Success, string? Error)> ArchiveAsync(int letterId) => await letters.ArchiveAsync(letterId, currentUser.UserId, await CanSeeAllAsync());
 
     public Task<(bool Success, string? Error)> ReassignApproverAsync(int letterId, int stepOrder, int newApproverUserId) => letters.ReassignApprovalStepAsync(letterId, stepOrder, newApproverUserId, currentUser.UserId, IsAdmin);
+
+    public async Task<(bool Success, string? Error)> BulkAsync(string op, int[]? ids, string? reason, int? tagId)
+    {
+        if (ids is null || ids.Length == 0 || !currentUser.UserId.HasValue) return (false, "No letters were selected.");
+        var userId = currentUser.UserId.Value;
+        op = (op ?? "").ToLowerInvariant();
+        var canView = await CanSeeAllAsync();
+
+        if (op is "star" or "unstar" or "submit" or "archive")
+        {
+            LetterBulkResult result;
+            string done;
+            switch (op)
+            {
+                case "star": case "unstar": result = await letters.BulkSetStarAsync(ids, userId, op == "star", canView); done = op == "star" ? "starred" : "unstarred"; break;
+                case "submit": result = await letters.BulkSubmitForReviewAsync(ids, userId); done = "submitted for review"; break;
+                default:
+                    if (!IsAdmin && !await permissions.HasPermissionAsync(currentUser.Roles, "Correspondence", "Delete")) throw new UnauthorizedAccessException();
+                    result = await letters.BulkArchiveAsync(ids, userId, currentUser.UserName, IsAdmin, reason ?? "");
+                    done = "archived";
+                    break;
+            }
+            var parts = new List<string>();
+            if (result.Succeeded > 0) parts.Add($"{result.Succeeded} letter(s) {done}.");
+            if (result.Failed.Count > 0)
+            {
+                var detail = string.Join(" | ", result.Failed.Take(5).Select(f => $"{(string.IsNullOrEmpty(f.LetterNumber) ? "#" + f.LetterId : f.LetterNumber)}: {f.Reason}"));
+                parts.Add($"{result.Failed.Count} letter(s) skipped. {detail}" + (result.Failed.Count > 5 ? " ..." : ""));
+            }
+            return (true, parts.Count == 0 ? null : string.Join(" ", parts));
+        }
+
+        if (cartable is null || tagTree is null) return (false, "The cartable is not available.");
+        CartableOpResult cart;
+        string verb;
+        switch (op)
+        {
+            case "trash": cart = await cartable.TrashAsync(ids, userId, canView); verb = "moved to trash"; break;
+            case "restore": cart = await cartable.RestoreAsync(ids, userId); verb = "restored"; break;
+            case "purge": cart = await cartable.PurgeAsync(ids, userId); verb = "removed from your trash for good"; break;
+            case "archiveme": cart = await cartable.ArchiveForMeAsync(ids, userId, canView); verb = "archived for you"; break;
+            case "unarchiveme": cart = await cartable.UnarchiveForMeAsync(ids, userId); verb = "returned to your inbox"; break;
+            case "read": cart = await cartable.SetReadAsync(ids, userId, true, canView); verb = "marked as read"; break;
+            case "unread": cart = await cartable.SetReadAsync(ids, userId, false, canView); verb = "marked as unread"; break;
+            case "tag": case "untag":
+                if (!tagId.HasValue) return (false, "No tag was chosen.");
+                cart = await tagTree.ApplyAsync(tagId.Value, ids, op == "tag", userId, canView);
+                verb = op == "tag" ? "tagged" : "untagged";
+                break;
+            default: return (false, "Unknown bulk action.");
+        }
+        return cart.Success ? (true, $"{cart.Affected} letter(s) {verb}.") : (false, cart.ErrorKey == "Cart_Err_NothingToDo" ? "Nothing to change for the selected letters." : cart.ErrorKey);
+    }
+
+    public async Task<(bool Success, string? Error)> EmptyTrashAsync()
+    {
+        if (cartable is null || !currentUser.UserId.HasValue) throw new UnauthorizedAccessException();
+        var r = await cartable.EmptyTrashAsync(currentUser.UserId.Value);
+        return (true, r.Success ? $"{r.Affected} letter(s) removed from your trash for good." : null);
+    }
+
+    public async Task<(bool Success, string? Error)> SendRemindersAsync()
+    {
+        if (!IsAdmin) throw new UnauthorizedAccessException();
+        if (reminders is null) return (false, "The reminders are not available.");
+        var result = await reminders.SendDueRemindersAsync();
+        var message = $"Reminders sent: {result.ReferralReminders} referral, {result.ResponseReminders} response ({result.SkippedDuplicates} already sent today)";
+        if (result.Failed > 0) message += $" {result.Failed} reminder(s) could not be delivered.";
+        return (true, message);
+    }
 
     public async Task<(bool Success, string? Error)> UploadAttachmentAsync(int letterId, PEMS.Application.Common.OperationFile? file)
     {

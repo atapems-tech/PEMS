@@ -92,6 +92,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-716, 683: letter bulk actions, empty trash, reminders and saved filters as definitions
+
+### Changed
+- The bulk action of the letter list (star, submit, archive, trash, restore, read, tags), the empty trash, the manual reminder run and the saved filters of the document register are definitions (/a/letter-bulk, /a/letter-empty-trash, /a/letter-send-reminders, /a/saved-filter-*) over operations with the old rules and texts; a bulk action comes back to the list the user was on. Ported controller tests to the operations. Not compiled in this step (owner instruction: no heavy build); tests not run.
+
 ## 2026-11-22 - SCRUM-775, 776, 777, 778: four new inputs of the screen engines (batch 1b, written, not built or run)
 
 - `file-preview` takes `annotationsUrl`, `saveUrl`, `deleteUrl`, `fileId` and `Texts`: pins and notes on PDF pages and images saved through a stored action (`pems-annotate.js`); `entity-file-preview` passes them on.

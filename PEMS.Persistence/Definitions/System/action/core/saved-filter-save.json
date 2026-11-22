@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "saved-filter-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the current filter",
+    "fa": "ذخیره‌ی فیلتر جاری"
+  },
+  "description": {
+    "en": "Save the current filter",
+    "fa": "ذخیره‌ی فیلتر جاری"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "SavedFilter",
+      "action": "Save",
+      "args": {
+        "applicationUserId": "context:userId",
+        "pageKey": "field:pageKey",
+        "name": "field:name",
+        "queryString": "field:queryString",
+        "isDefault": "field:isDefault"
+      }
+    },
+    "success": {
+      "en": "Filter saved.",
+      "fa": "فیلتر ذخیره شد."
+    },
+    "redirect": "/DocumentRegister",
+    "redirectBack": true
+  }
+}
