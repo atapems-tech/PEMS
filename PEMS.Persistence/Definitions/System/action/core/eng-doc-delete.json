@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "eng-doc-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete the document",
+    "fa": "حذف مدرک"
+  },
+  "description": {
+    "en": "Delete the document",
+    "fa": "حذف مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringDocument",
+      "action": "Delete",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The document was deleted.",
+      "fa": "مدرک حذف شد."
+    },
+    "redirect": "/EngineeringDocuments"
+  }
+}

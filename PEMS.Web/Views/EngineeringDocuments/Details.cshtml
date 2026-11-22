@@ -579,7 +579,7 @@
                                             <input type="hidden" name="id" value="@file.AttachmentId" />
                                             <pems-button tone="neutral" size="small" outline="true" data-bs-toggle="tooltip" title="Re-analyze" aria-label="Re-analyze @file.FileName"><pems-icon name="bi-arrow-repeat" /></pems-button>
                                         </pems-form>
-                                        <pems-form asp-action="DeleteAttachment" asp-route-id="@file.AttachmentId" method="post" class="d-inline" data-pems-confirm="Delete file?">
+                                        <pems-form action="/a/eng-doc-delete-attachment" method="post" class="d-inline" data-pems-confirm="Delete file?"><input type="hidden" name="attachmentId" value="@file.AttachmentId" /><input type="hidden" name="documentId" value="@Model.DocumentId" />
                                             <pems-button tone="danger" size="small" outline="true" data-bs-toggle="tooltip" title="Delete attachment" aria-label="Delete @file.FileName"><pems-icon name="bi-trash" /></pems-button>
                                         </pems-form>
                                     </pems-flex>
@@ -1244,7 +1244,7 @@
 
 
 <pems-modal id="newRevisionModal" tabindex="-1">
-            <pems-form asp-action="CreateRevision" method="post">
+            <pems-form action="/a/eng-doc-create-revision" method="post">
                 <input type="hidden" name="id" value="@Model.DocumentId" />
                 <pems-modal-header>@Localizer["Create New Revision"]</pems-modal-header>
                 <pems-modal-body>
