@@ -1,0 +1,81 @@
+{
+  "kind": "page",
+  "key": "strategy-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Import strategies",
+    "fa": "ورود استراتژی‌ها"
+  },
+  "description": {
+    "en": "Import strategies",
+    "fa": "ورود استراتژی‌ها"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "strategy-import",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "strategy-import-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/strategy-import-strategies",
+                "text": {
+                  "en": "Import strategies (validate, then write)",
+                  "fa": "ورود استراتژی‌ها (بررسی، سپس ثبت)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/strategy-import-assignments",
+                "text": {
+                  "en": "Import tag assignments (validate, then write)",
+                  "fa": "ورود تخصیص تگ‌ها (بررسی، سپس ثبت)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/MaintenanceStrategy",
+                "text": {
+                  "en": "Back to maintenance strategies",
+                  "fa": "بازگشت به استراتژی‌های نگهداری"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tpl-strategies",
+          "component": "action-button",
+          "options": {
+            "action": "strategy-import-strategies-template",
+            "label": {
+              "en": "Download the strategies template",
+              "fa": "دریافت الگوی استراتژی‌ها"
+            },
+            "tone": "neutral",
+            "icon": "bi-download"
+          }
+        },
+        {
+          "id": "tpl-assignments",
+          "component": "action-button",
+          "options": {
+            "action": "strategy-import-assignments-template",
+            "label": {
+              "en": "Download the assignments template",
+              "fa": "دریافت الگوی تخصیص‌ها"
+            },
+            "tone": "neutral",
+            "icon": "bi-download"
+          }
+        }
+      ]
+    }
+  }
+}

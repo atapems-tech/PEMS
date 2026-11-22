@@ -1,0 +1,60 @@
+{
+  "kind": "action",
+  "key": "strategy-import-assignments-template",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Download template",
+    "fa": "دریافت الگو"
+  },
+  "description": {
+    "en": "Download template",
+    "fa": "دریافت الگو"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "file.export",
+    "parameters": {
+      "dataSource": "assignment-template",
+      "format": "xlsx",
+      "fileName": "rcm-assignments-template",
+      "columns": [
+        {
+          "field": "strategyId",
+          "header": {
+            "en": "StrategyId",
+            "fa": "StrategyId"
+          }
+        },
+        {
+          "field": "equipmentClassCode",
+          "header": {
+            "en": "EquipmentClassCode",
+            "fa": "EquipmentClassCode"
+          }
+        },
+        {
+          "field": "strategyType",
+          "header": {
+            "en": "StrategyType",
+            "fa": "StrategyType"
+          }
+        },
+        {
+          "field": "failureModeCode",
+          "header": {
+            "en": "FailureModeCode",
+            "fa": "FailureModeCode"
+          }
+        },
+        {
+          "field": "tag",
+          "header": {
+            "en": "Tag",
+            "fa": "Tag"
+          }
+        }
+      ]
+    }
+  }
+}

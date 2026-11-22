@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "strategy-import-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy import (old address)",
+    "fa": "ورود استراتژی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Strategy import (old address)",
+    "fa": "ورود استراتژی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "StrategyImport/Index",
+    "target": "/p/strategy-import",
+    "permanent": false
+  }
+}
