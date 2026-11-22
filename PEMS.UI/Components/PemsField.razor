@@ -9,6 +9,10 @@
     var error = Locale.Text(Error);
     var placeholder = Locale.Text(Descriptor.Placeholder);
     string? placeholderAttr = placeholder.Length > 0 ? placeholder : null;
+    // SCRUM-776: the merge fields of a RichText field as JSON for pems-rte.js (no merge fields: no attribute, the output is unchanged)
+    string? mergeAttr = Descriptor.Kind == FieldKind.RichText && Descriptor.MergeFields is { Count: > 0 } mf
+        ? System.Text.Json.JsonSerializer.Serialize(mf.Select(m => new { name = m.Value, label = Locale.Text(m.Label) }))
+        : null;
 }
 <div class="pems-field">
     @if (Descriptor.Kind is FieldKind.Checkbox or FieldKind.Switch)
@@ -89,7 +93,7 @@
                 break;
             case FieldKind.RichText:
                 @* The textarea is the form value and the no-script fallback; pems-rte.js puts the editor next to it. No maxlength: the limit applies to text, not to HTML. *@
-                <textarea id="@state.Id" name="@Descriptor.Name" class="@state.InputCss pems-rte" data-pems-rte="" rows="8"
+                <textarea id="@state.Id" name="@Descriptor.Name" class="@state.InputCss pems-rte" data-pems-rte="" data-pems-rte-merge="@mergeAttr" rows="8"
                           placeholder="@placeholderAttr" required="@Descriptor.Required" readonly="@Descriptor.ReadOnly"
                           aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)">@Value</textarea>
                 break;

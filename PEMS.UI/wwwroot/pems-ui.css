@@ -357,3 +357,38 @@
 .pems-matrix__scroll { overflow-x: auto; }
 .pems-matrix__table th[scope="row"] { white-space: nowrap; position: sticky; inset-inline-start: 0; background: var(--pems-surface); }
 .pems-matrix__table input, .pems-matrix__table select { min-inline-size: 7rem; }
+
+/* SCRUM-775 file preview annotations (pems-annotate.js): a page bar, a pin layer over the frame and a note form. x and y are percent of the page; --x already mirrors in RTL. */
+.pems-file-preview__bar { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; padding: .375rem .5rem; border-block-end: 1px solid var(--pems-surface-border); }
+.pems-file-preview__btn { padding-block: .25rem; padding-inline: .625rem; border: 1px solid var(--pems-surface-border); border-radius: 6px; background: var(--pems-surface); color: inherit; font: inherit; cursor: pointer; }
+.pems-file-preview__btn[aria-pressed="true"] { border-color: var(--pems-primary); outline: 2px solid var(--pems-primary); outline-offset: -2px; }
+.pems-file-preview__page { display: inline-flex; gap: .375rem; align-items: center; font-size: .875rem; }
+.pems-file-preview__page-input { inline-size: 4.5rem; padding-inline: .375rem; border: 1px solid var(--pems-surface-border); border-radius: 6px; background: var(--pems-surface); color: inherit; }
+.pems-file-preview__status { font-size: .8125rem; color: var(--pems-text-muted); }
+.pems-file-preview__stage { position: relative; }
+.pems-file-preview__layer { position: absolute; inset: 0; pointer-events: none; }
+.pems-file-preview.is-annotating .pems-file-preview__layer { pointer-events: auto; cursor: crosshair; outline: 2px dashed var(--pems-primary); outline-offset: -2px; }
+.pems-file-preview__pin { position: absolute; inset-inline-start: calc(var(--x, 0) * 1%); inset-block-start: calc(var(--y, 0) * 1%); transform: translate(-50%, -100%); pointer-events: auto; min-inline-size: 1.5rem; block-size: 1.5rem; padding-inline: .25rem; border: 2px solid var(--pems-surface); border-radius: 999px; background: var(--pems-primary); color: var(--pems-surface); font-size: .75rem; line-height: 1; cursor: pointer; }
+.pems-file-preview__pin:focus-visible { outline: 2px solid var(--pems-text); outline-offset: 2px; }
+.pems-file-preview__note { position: absolute; inset-inline-start: calc(var(--x, 0) * 1%); inset-block-start: calc(var(--y, 0) * 1%); z-index: 2; inline-size: min(18rem, 80%); display: flex; flex-direction: column; gap: .5rem; padding: .625rem; border: 1px solid var(--pems-surface-border); border-radius: 8px; background: var(--pems-surface); box-shadow: 0 4px 16px rgba(0, 0, 0, .18); pointer-events: auto; cursor: auto; }
+.pems-file-preview__note-label { display: flex; flex-direction: column; gap: .25rem; font-size: .8125rem; }
+.pems-file-preview__note-label textarea { inline-size: 100%; border: 1px solid var(--pems-surface-border); border-radius: 6px; background: var(--pems-surface); color: inherit; font: inherit; }
+.pems-file-preview__note-actions { display: flex; flex-wrap: wrap; gap: .375rem; }
+
+/* SCRUM-778 chat panel (pems-chat.js): a scrolling log of messages and a box under it; the user's messages sit at the inline end, the assistant's at the inline start, in RTL and LTR. */
+.pems-chat__shell { display: flex; flex-direction: column; gap: .75rem; }
+.pems-chat__log { display: flex; flex-direction: column; gap: .5rem; overflow-y: auto; padding: .75rem; border: 1px solid var(--pems-surface-border); border-radius: 8px; background: var(--pems-surface); min-block-size: 8rem; }
+.pems-chat__msg { max-inline-size: min(46rem, 88%); padding: .5rem .75rem; border-radius: 10px; border: 1px solid var(--pems-surface-border); }
+.pems-chat__msg.is-user { align-self: flex-end; background: var(--pems-primary); color: var(--pems-surface); border-color: var(--pems-primary); }
+.pems-chat__msg.is-assistant { align-self: flex-start; background: var(--pems-surface); }
+.pems-chat__msg.is-pending { opacity: .6; }
+.pems-chat__meta { display: flex; gap: .5rem; font-size: .75rem; opacity: .8; margin-block-end: .125rem; }
+.pems-chat__text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.pems-chat__form { display: flex; flex-direction: column; gap: .5rem; }
+.pems-chat__input { inline-size: 100%; padding: .5rem .625rem; border: 1px solid var(--pems-surface-border); border-radius: 8px; background: var(--pems-surface); color: inherit; font: inherit; resize: vertical; }
+.pems-chat__actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.pems-chat__btn { padding-block: .375rem; padding-inline: .875rem; border: 1px solid var(--pems-surface-border); border-radius: 6px; background: var(--pems-surface); color: inherit; font: inherit; cursor: pointer; }
+.pems-chat__btn--primary { background: var(--pems-primary); border-color: var(--pems-primary); color: var(--pems-surface); }
+.pems-chat__btn:disabled { opacity: .55; cursor: default; }
+.pems-chat__status { font-size: .8125rem; color: var(--pems-text-muted); }
+.pems-chat__status.is-error { color: var(--pems-danger, var(--pems-text)); }

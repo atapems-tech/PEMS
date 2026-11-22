@@ -88,6 +88,11 @@ public sealed record FieldDescriptor
     public string? Mask { get; init; }
     /// <summary>The on-screen keyboard hint (SCRUM-374): numeric, decimal, tel, email, url or text; money fields and all-digit masks get one by themselves.</summary>
     public string? InputMode { get; init; }
+    /// <summary>
+    /// RichText only (SCRUM-776): the merge fields the editor lists in its "insert field" picker. <see cref="FieldOption.Value"/> is the token name (a letter, then letters, digits, dots or underscores), the label is what the picker shows;
+    /// choosing one inserts <c>{{value}}</c> at the cursor. The tokens are plain text: a record-view template (<c>RecordViewField.Template</c>) replaces them by the values of the record.
+    /// </summary>
+    public IReadOnlyList<FieldOption>? MergeFields { get; init; }
 }
 
 /// <summary>A rule of a field or of the whole form: <see cref="Expression"/> must be true, otherwise <see cref="Message"/> is shown (on <see cref="Field"/> of a form rule, else on the form).</summary>

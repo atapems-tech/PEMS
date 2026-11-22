@@ -224,6 +224,11 @@ public static class FormEngine
             if (f.Kind is FieldKind.Select or FieldKind.Radio && (f.Options is null || f.Options.Count == 0) && string.IsNullOrEmpty(f.OptionsFrom))
                 errors.Add(new(at + "/options", "required", "Def_Err_Required", "A Select or Radio field needs options or optionsFrom."));
             if (!string.IsNullOrEmpty(f.OptionsFrom) && f.Options is { Count: > 0 }) errors.Add(new(at + "/optionsFrom", "overlap", "Def_Err_Overlap", "A field takes its options from one place: options or optionsFrom, not both."));
+            if (f.MergeFields is { Count: > 0 })
+            {
+                if (f.Kind != FieldKind.RichText) errors.Add(new(at + "/mergeFields", "field-not-allowed", "Def_Err_Type", "mergeFields belong to a richText field."));
+                foreach (var (m, j) in f.MergeFields.Select((m, j) => (m, j))) { Text(m.Label, $"{at}/mergeFields/{j}/label"); if (!Regex.IsMatch(m.Value ?? "", "^[A-Za-z][A-Za-z0-9_.]*$")) errors.Add(new($"{at}/mergeFields/{j}/value", "pattern", "Def_Err_Pattern", "A merge field name is a letter followed by letters, digits, dots or underscores.")); }
+            }
             if (f.Span is { } span && (span < 1 || span > Math.Max(form.Columns, 1))) errors.Add(new(at + "/span", "range", "Def_Err_Range", "span is between 1 and the form's columns."));
             if (!string.IsNullOrEmpty(f.Pattern))
             {

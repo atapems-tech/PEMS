@@ -1,0 +1,25 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("chat-panel", Category = "content", Icon = "bi-chat-dots")]
+@using System.Text.Json
+@inject IPemsLocale Locale
+@* SCRUM-778: a chat bound to a data source (the history) and stored actions (ask, clear). The element carries the configuration; pems-chat.js builds the log, the box and the buttons from the chat-* script templates. *@
+<div @attributes="Options.Attributes" class="@Join("pems-chat", Options.PageClass)" id="@Options.Id" data-pems-chat="" data-config="@Config()"></div>
+@code {
+    [Parameter, EditorRequired] public ChatPanelOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+
+    private string Config()
+    {
+        var t = Options.Texts;
+        string T(PEMS.UI.Abstractions.TranslatableText x) => Locale.Text(x);
+        var config = new
+        {
+            history = "/d/" + Options.HistorySource, ask = "/a/" + Options.AskAction, askField = Options.AskField,
+            clear = string.IsNullOrWhiteSpace(Options.ClearAction) ? null : "/a/" + Options.ClearAction,
+            fields = Options.Fields, userRole = Options.UserRole, maxLength = Options.MaxLength, height = Options.Height,
+            texts = new { placeholder = T(t.Placeholder), label = T(t.Label), send = T(t.Send), clear = T(t.Clear), empty = T(t.Empty), loading = T(t.Loading), thinking = T(t.Thinking), error = T(t.Error), you = T(t.You), assistant = T(t.Assistant) }
+        };
+        return JsonSerializer.Serialize(config, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+    }
+}

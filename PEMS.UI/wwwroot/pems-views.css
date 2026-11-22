@@ -115,3 +115,12 @@
 .pems-view__toggle { min-inline-size: 4.5rem; padding: .05rem .4rem; font-size: .8rem; color: var(--pems-text-muted); background: transparent; border: 1px solid var(--pems-surface-border); border-radius: .25rem; }
 .pems-view__node-title { color: var(--pems-text); text-decoration: none; }
 .pems-view__node-title:hover { color: var(--pems-primary); }
+
+/* SCRUM-777: movable gantt bars and timeline days (only with moveUrl). The edge handles are logical: the start edge is on the inline-start side in both directions. */
+.pems-view__bar[data-id] { cursor: grab; touch-action: none; user-select: none; }
+.pems-view__bar[data-id]:active { cursor: grabbing; }
+.pems-view__bar-handle { position: absolute; inset-block: 0; inline-size: .5rem; cursor: ew-resize; background: var(--pems-surface, transparent); opacity: .35; }
+.pems-view__bar-handle[data-edge="start"] { inset-inline-start: 0; border-start-start-radius: .25rem; border-end-start-radius: .25rem; }
+.pems-view__bar-handle[data-edge="end"] { inset-inline-end: 0; border-start-end-radius: .25rem; border-end-end-radius: .25rem; }
+.pems-view__bar-handle:hover { opacity: .8; }
+.pems-view__tl-day.is-over { outline: 2px dashed var(--pems-primary); outline-offset: -2px; }

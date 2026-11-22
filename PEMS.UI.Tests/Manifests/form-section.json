@@ -405,6 +405,15 @@
                     "string",
                     "null"
                   ]
+                },
+                "mergeFields": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "$ref": "#/properties/fields/items/properties/options/items"
+                  }
                 }
               },
               "required": [

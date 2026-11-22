@@ -16,6 +16,11 @@ public sealed class PemsFilePreviewTagHelper(IPemsComponentRenderer renderer) : 
     [HtmlAttributeName("src")] public string? Src { get; set; }
     [HtmlAttributeName("title")] public string? Title { get; set; }
     [HtmlAttributeName("empty-text")] public string? EmptyText { get; set; }
+    /// <summary>SCRUM-775: the pins of the file (GET), the save and delete actions (POST) and the file id; see <see cref="PemsFilePreview"/>.</summary>
+    [HtmlAttributeName("annotations-url")] public string? AnnotationsUrl { get; set; }
+    [HtmlAttributeName("save-url")] public string? SaveUrl { get; set; }
+    [HtmlAttributeName("delete-url")] public string? DeleteUrl { get; set; }
+    [HtmlAttributeName("file-id")] public string? FileId { get; set; }
 
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
@@ -23,6 +28,10 @@ public sealed class PemsFilePreviewTagHelper(IPemsComponentRenderer renderer) : 
         var parameters = new Dictionary<string, object?> { [nameof(PemsFilePreview.Src)] = Src, [nameof(PemsFilePreview.Id)] = id };
         if (!string.IsNullOrWhiteSpace(Title)) parameters[nameof(PemsFilePreview.Title)] = PEMS.UI.Abstractions.TranslatableText.Literal(Title);
         if (!string.IsNullOrWhiteSpace(EmptyText)) parameters[nameof(PemsFilePreview.EmptyText)] = PEMS.UI.Abstractions.TranslatableText.Literal(EmptyText);
+        if (!string.IsNullOrWhiteSpace(AnnotationsUrl)) parameters[nameof(PemsFilePreview.AnnotationsUrl)] = AnnotationsUrl;
+        if (!string.IsNullOrWhiteSpace(SaveUrl)) parameters[nameof(PemsFilePreview.SaveUrl)] = SaveUrl;
+        if (!string.IsNullOrWhiteSpace(DeleteUrl)) parameters[nameof(PemsFilePreview.DeleteUrl)] = DeleteUrl;
+        if (!string.IsNullOrWhiteSpace(FileId)) parameters[nameof(PemsFilePreview.FileId)] = FileId;
         BlockTagHelper.Replace(output, await renderer.RenderAsync<PemsFilePreview>(parameters));
     }
 }

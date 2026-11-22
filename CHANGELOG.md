@@ -92,6 +92,13 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+## 2026-11-22 - SCRUM-775, 776, 777, 778: four new inputs of the screen engines (batch 1b, written, not built or run)
+
+- `file-preview` takes `annotationsUrl`, `saveUrl`, `deleteUrl`, `fileId` and `Texts`: pins and notes on PDF pages and images saved through a stored action (`pems-annotate.js`); `entity-file-preview` passes them on.
+- `field` of kind `richText` takes `mergeFields` (a list of `{ value, label }` of the form definition): the editor shows an "insert field" picker that inserts `{{value}}`; the form check validates the names; record-view templates already merge the tokens (SCRUM-624).
+- `data-view` gantt bars and timeline cards move and resize by mouse, touch and keyboard and post `{ id, start, end }` to `moveUrl` (a stored action keeps the guards of the edit form).
+- New component `chat-panel` (`historySource`, `askAction`, `clearAction`) and `pems-chat.js`; the chat assistant page definition uses it.
+
 
 ## 2026-11-21 - SCRUM-719, 762, 761, 716: workbook uploads, VDR submission file and letter attachment as definitions
 
