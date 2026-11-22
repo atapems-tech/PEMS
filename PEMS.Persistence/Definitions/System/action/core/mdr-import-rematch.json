@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mdr-import-rematch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Fix the discipline matching",
+    "fa": "اصلاح تطبیق دیسیپلین"
+  },
+  "description": {
+    "en": "Fix the discipline matching",
+    "fa": "اصلاح تطبیق دیسیپلین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MdrImport",
+      "action": "RematchDisciplines",
+      "args": {
+        "projectId": "field:projectId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/MDRImport"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-intel-comment-response",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the response to a comment",
+    "fa": "ثبت پاسخ به نظر"
+  },
+  "description": {
+    "en": "Record the response to a comment",
+    "fa": "ثبت پاسخ به نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringIntelligence",
+      "action": "RecordCommentResponse",
+      "args": {
+        "commentId": "field:commentId",
+        "responseText": "field:responseText",
+        "documentId": "field:documentId"
+      }
+    },
+    "success": {
+      "en": "Response recorded.",
+      "fa": "پاسخ ثبت شد."
+    },
+    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-intel-reject-classification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject a classification suggestion",
+    "fa": "رد پیشنهاد طبقه‌بندی"
+  },
+  "description": {
+    "en": "Reject a classification suggestion",
+    "fa": "رد پیشنهاد طبقه‌بندی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringIntelligence",
+      "action": "RejectClassification",
+      "args": {
+        "documentId": "field:documentId",
+        "classificationId": "field:classificationId",
+        "reviewedById": "context:userId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+  }
+}

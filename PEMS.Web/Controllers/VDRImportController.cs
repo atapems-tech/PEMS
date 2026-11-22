@@ -89,41 +89,6 @@ public class VDRImportController : Controller
         return View(batch);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ToggleRow(int rowId, bool include, int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Create"))
-            return Forbid();
-
-        await _importService.SetRowIncludeAsync(rowId, include);
-        return RedirectToAction(nameof(Review), new { batchId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [PEMS.Web.Security.RequirePermission("VDR", "Approve")]
-    public async Task<IActionResult> Commit(int batchId)
-    {
-        var (created, updated, skipped) = await _importService.CommitBatchAsync(batchId);
-
-        TempData["Message"] = $"Import committed: {created} created, {updated} updated, {skipped} skipped.";
-
-        return RedirectToAction("Index", "VDR");
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Discard(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Delete"))
-            return Forbid();
-
-        await _importService.DiscardBatchAsync(batchId);
-        TempData["Message"] = "Import batch discarded.";
-        return RedirectToAction(nameof(Index));
-    }
-
     private async Task<int?> GetCurrentEmployeeIdAsync()
     {
         if (!_currentUser.UserId.HasValue) return null;

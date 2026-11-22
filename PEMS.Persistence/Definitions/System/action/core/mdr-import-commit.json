@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mdr-import-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit the MDR import",
+    "fa": "ثبت نهایی واردات MDR"
+  },
+  "description": {
+    "en": "Commit the MDR import",
+    "fa": "ثبت نهایی واردات MDR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MdrImport",
+      "action": "Commit",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/DocumentRegister"
+  }
+}

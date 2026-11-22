@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "mdb-remove-document",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove a document from the MDB",
+    "fa": "حذف مدرک از MDB"
+  },
+  "description": {
+    "en": "Remove a document from the MDB",
+    "fa": "حذف مدرک از MDB"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Mdb",
+      "action": "RemoveDocument",
+      "args": {
+        "mdbDocumentId": "field:mdbDocumentId",
+        "mdbId": "field:mdbId"
+      }
+    },
+    "success": {
+      "en": "Document removed from the MDB.",
+      "fa": "مدرک از MDB حذف شد."
+    },
+    "redirect": "/MDB/Details/{mdbId}"
+  }
+}

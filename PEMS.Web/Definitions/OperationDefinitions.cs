@@ -438,6 +438,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         {
             bool ok => ok ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Of(("en", "The operation was refused."), ("fa", "عملیات پذیرفته نشد."))),
             ITuple t when t.Length >= 2 && t[0] is bool success => success ? ActionOutcome.Done() : ActionOutcome.Refused(TranslatableText.Literal(t[1] as string ?? "The operation was refused.")),
+            int created => ActionOutcome.Done(returned: new Dictionary<string, string?> { ["result"] = created.ToString(System.Globalization.CultureInfo.InvariantCulture) }),   // SCRUM-760: the id a command created is {result} in the redirect
             _ when answer is not null && SecretOf(scope.ServiceProvider, answer) is { } secret => ActionOutcome.Revealed(secret),
             _ when answer is not null && FileOf(answer) is { } produced => ActionOutcome.Download(produced),
             _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done(result.Error is null ? null : ResultMessage(scope.ServiceProvider, result)) : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),

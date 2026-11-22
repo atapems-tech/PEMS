@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "transmittal-reissue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reissue a cancelled transmittal",
+    "fa": "صدور مجدد ترانسمیتال لغوشده"
+  },
+  "description": {
+    "en": "Reissue a cancelled transmittal",
+    "fa": "صدور مجدد ترانسمیتال لغوشده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Transmittal",
+      "action": "Reissue",
+      "args": {
+        "id": "field:id",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Draft created from cancelled transmittal - update transmittal number and re-send.",
+      "fa": "پیش‌نویس جدید از ترانسمیتال لغوشده ساخته شد؛ شماره را اصلاح و دوباره ارسال کنید."
+    },
+    "redirect": "/Transmittal/Details/{result}"
+  }
+}

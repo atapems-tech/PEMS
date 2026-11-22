@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mdb-soft-copy-delivered",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the soft copy delivery",
+    "fa": "ثبت تحویل نسخه‌ی الکترونیکی"
+  },
+  "description": {
+    "en": "Record the soft copy delivery",
+    "fa": "ثبت تحویل نسخه‌ی الکترونیکی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Mdb",
+      "action": "MarkSoftCopyDelivered",
+      "args": {
+        "mdbId": "field:mdbId"
+      }
+    },
+    "success": {
+      "en": "Soft copy delivery recorded",
+      "fa": "تحویل نسخه‌ی الکترونیکی ثبت شد."
+    },
+    "redirect": "/MDB/Details/{mdbId}"
+  }
+}

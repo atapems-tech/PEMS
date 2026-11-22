@@ -209,60 +209,6 @@ public class AIPipelineAuthorizationTests
     // ================= EngineeringDocumentIntelligence =================
 
     [Fact]
-    public async Task EDI_ApproveClassification_WithoutPermission_ReturnsForbid_DoesNotApprove()
-    {
-        // DisciplineEngineer has Create/Edit but NOT Approve on "EngineeringDocuments" - همون
-        // تفکیک وظایفی که برای خودِ EngineeringDocuments از قبل جاافتاده.
-        var (ctx, perms, user) = await CreateInfra(nameof(EDI_ApproveClassification_WithoutPermission_ReturnsForbid_DoesNotApprove), role: SystemRoles.DisciplineEngineer);
-        var service = new FakeEngineeringDocumentIntelligenceService();
-        var controller = new EngineeringDocumentIntelligenceController(service, user, perms).WithTempData();
-
-        var result = await controller.ApproveClassification(1, 1, true, true, true, true, true);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.ApproveClassificationCalled);
-    }
-
-    [Fact]
-    public async Task EDI_ApproveClassification_WithPermission_Approves()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(EDI_ApproveClassification_WithPermission_Approves), role: SystemRoles.EngineeringManager);
-        var service = new FakeEngineeringDocumentIntelligenceService();
-        var controller = new EngineeringDocumentIntelligenceController(service, user, perms).WithTempData();
-
-        var result = await controller.ApproveClassification(1, 1, true, true, true, true, true);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(service.ApproveClassificationCalled);
-    }
-
-    [Fact]
-    public async Task EDI_ApproveTagLink_WithoutPermission_ReturnsForbid_DoesNotApprove()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(EDI_ApproveTagLink_WithoutPermission_ReturnsForbid_DoesNotApprove), role: SystemRoles.DocumentController);
-        var service = new FakeEngineeringDocumentIntelligenceService();
-        var controller = new EngineeringDocumentIntelligenceController(service, user, perms).WithTempData();
-
-        var result = await controller.ApproveTagLink(1, 1);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.ApproveTagLinkCalled);
-    }
-
-    [Fact]
-    public async Task EDI_AdvanceStage_WithoutPermission_ReturnsForbid_DoesNotAdvance()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(EDI_AdvanceStage_WithoutPermission_ReturnsForbid_DoesNotAdvance), role: SystemRoles.Viewer);
-        var service = new FakeEngineeringDocumentIntelligenceService();
-        var controller = new EngineeringDocumentIntelligenceController(service, user, perms).WithTempData();
-
-        var result = await controller.AdvanceStage(1, "Revision");
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.AdvanceStageCalled);
-    }
-
-    [Fact]
     public async Task EDI_Index_WithoutViewPermission_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(EDI_Index_WithoutViewPermission_ReturnsForbid), role: null);

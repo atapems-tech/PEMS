@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "eng-intel-approve-classification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve a classification suggestion",
+    "fa": "تأیید پیشنهاد طبقه‌بندی"
+  },
+  "description": {
+    "en": "Approve a classification suggestion",
+    "fa": "تأیید پیشنهاد طبقه‌بندی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringIntelligence",
+      "action": "ApproveClassification",
+      "args": {
+        "documentId": "field:documentId",
+        "classificationId": "field:classificationId",
+        "applyDiscipline": "field:applyDiscipline",
+        "applyVendor": "field:applyVendor",
+        "applyMR": "field:applyMR",
+        "applyRevision": "field:applyRevision",
+        "applyIssuePurpose": "field:applyIssuePurpose",
+        "reviewedById": "context:userId"
+      }
+    },
+    "success": {
+      "en": "Classification approved and applied to the document",
+      "fa": "طبقه‌بندی تأیید و روی مدرک اعمال شد."
+    },
+    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+  }
+}

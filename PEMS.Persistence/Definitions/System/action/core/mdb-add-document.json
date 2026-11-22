@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "mdb-add-document",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a document to the MDB",
+    "fa": "افزودن مدرک به MDB"
+  },
+  "description": {
+    "en": "Add a document to the MDB",
+    "fa": "افزودن مدرک به MDB"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Mdb",
+      "action": "AddDocument",
+      "args": {
+        "mdbId": "field:mdbId",
+        "part": "field:part",
+        "documentId": "field:documentId",
+        "title": "field:title",
+        "dvdVolumeNo": "field:dvdVolumeNo",
+        "isNotApplicable": "field:isNotApplicable",
+        "notes": "field:notes"
+      }
+    },
+    "success": {
+      "en": "Document added to MDB",
+      "fa": "مدرک به MDB افزوده شد."
+    },
+    "redirect": "/MDB/Details/{mdbId}"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "vdr-import-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit the VDR import",
+    "fa": "ثبت نهایی واردات VDR"
+  },
+  "description": {
+    "en": "Commit the VDR import",
+    "fa": "ثبت نهایی واردات VDR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrImport",
+      "action": "Commit",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/VDR"
+  }
+}

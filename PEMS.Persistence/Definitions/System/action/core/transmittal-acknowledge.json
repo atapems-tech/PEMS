@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "transmittal-acknowledge",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the acknowledgement of a recipient",
+    "fa": "ثبت تأیید دریافت گیرنده"
+  },
+  "description": {
+    "en": "Record the acknowledgement of a recipient",
+    "fa": "ثبت تأیید دریافت گیرنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Transmittal",
+      "action": "Acknowledge",
+      "args": {
+        "transmittalRecipientId": "field:recipientId",
+        "note": "field:note",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Acknowledgement recorded",
+      "fa": "تأیید دریافت ثبت شد."
+    },
+    "redirect": "/Transmittal/Details/{id}"
+  }
+}

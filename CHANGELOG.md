@@ -88,6 +88,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-718, 760, 719, 762, 689: MDB, transmittal, MDR and VDR import review, document intelligence commands as definitions
+
+### Changed
+- The commands of the MDB details page, the transmittal details page (send, cancel, reissue, response, acknowledgement), the MDR and VDR import review (row toggle, commit, discard, discipline and status fixes) and the document intelligence review (classification, tag links, stage, comments) are definitions (/a/mdb-*, /a/transmittal-*, /a/mdr-import-*, /a/vdr-import-*, /a/eng-intel-*) over operations that keep the permission of the controller action they replace. An operation that returns an id now offers it as {result} to the redirect (a reissued transmittal opens the new draft). The stage change message no longer names the stage. Compile and tests not run (owner instruction).
+
 ## 2026-11-21 - SCRUM-690: engineering document lifecycle commands as definitions
 
 ### Changed

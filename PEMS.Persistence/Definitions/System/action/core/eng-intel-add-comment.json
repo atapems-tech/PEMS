@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-intel-add-comment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "description": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringIntelligence",
+      "action": "AddComment",
+      "args": {
+        "documentId": "field:documentId",
+        "commentText": "field:commentText",
+        "raisedByName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Comment added.",
+      "fa": "نظر افزوده شد."
+    },
+    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+  }
+}
