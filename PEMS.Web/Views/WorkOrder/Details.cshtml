@@ -238,7 +238,7 @@ else
     @if (Model.SourceWorkRequestId.HasValue)
     {
         <div class="small text-muted mt-1">
-            <pems-icon name="bi-clipboard-plus" /> Source: <pems-link asp-controller="WorkRequest" asp-action="Details" asp-route-id="@Model.SourceWorkRequestId">Work Request</pems-link>
+            <pems-icon name="bi-clipboard-plus" /> Source: <pems-link href="/p/work-request-details?id=@Model.SourceWorkRequestId">Work Request</pems-link>
         </div>
     }
 

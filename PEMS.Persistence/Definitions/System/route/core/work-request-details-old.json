@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "work-request-details-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work request details (old address)",
+    "fa": "جزئیات درخواست کار (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Work request details (old address)",
+    "fa": "جزئیات درخواست کار (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "WorkRequest/Details/{id}",
+    "target": "/p/work-request-details?id={id}",
+    "permanent": false
+  }
+}

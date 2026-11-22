@@ -1,0 +1,609 @@
+{
+  "kind": "page",
+  "key": "work-request-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work request",
+    "fa": "درخواست کار"
+  },
+  "description": {
+    "en": "One work request with its workflow, actions and history (page definition)",
+    "fa": "یک درخواست کار با گردش‌کار، اقدام‌ها و تاریخچه (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "work-request-details",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "secondary",
+            "href": "/p/work-requests"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "head",
+            "fields": [
+              {
+                "key": "requestNumber",
+                "label": {
+                  "en": "Request No",
+                  "fa": "شماره درخواست"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
+              },
+              {
+                "key": "requestedBy",
+                "label": {
+                  "en": "Requested by",
+                  "fa": "درخواست‌کننده"
+                }
+              },
+              {
+                "key": "requestedDate",
+                "label": {
+                  "en": "Requested on",
+                  "fa": "تاریخ درخواست"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "asset",
+                "label": {
+                  "en": "Asset",
+                  "fa": "دارایی"
+                }
+              },
+              {
+                "key": "location",
+                "label": {
+                  "en": "Functional location",
+                  "fa": "مکان عملکردی"
+                }
+              },
+              {
+                "key": "criticalityClass",
+                "label": {
+                  "en": "Criticality class (context only)",
+                  "fa": "کلاس بحرانیت (فقط زمینه)"
+                }
+              },
+              {
+                "key": "responseDueDate",
+                "label": {
+                  "en": "Response due",
+                  "fa": "مهلت پاسخ"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "resolutionDueDate",
+                "label": {
+                  "en": "Resolution due",
+                  "fa": "مهلت رفع"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "failureMode",
+                "label": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                }
+              },
+              {
+                "key": "failureEffect",
+                "label": {
+                  "en": "Failure effect",
+                  "fa": "اثر خرابی"
+                }
+              },
+              {
+                "key": "downtimeHours",
+                "label": {
+                  "en": "Downtime hours",
+                  "fa": "ساعت توقف"
+                },
+                "type": "number"
+              },
+              {
+                "key": "reportedCondition",
+                "label": {
+                  "en": "Reported condition",
+                  "fa": "وضعیت گزارش‌شده"
+                }
+              },
+              {
+                "key": "suggestedDiscipline",
+                "label": {
+                  "en": "Suggested discipline",
+                  "fa": "دیسیپلین پیشنهادی"
+                }
+              },
+              {
+                "key": "isEmergency",
+                "label": {
+                  "en": "Emergency",
+                  "fa": "اضطراری"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "isHseRelated",
+                "label": {
+                  "en": "HSE related",
+                  "fa": "مرتبط با HSE"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "risk",
+                "label": {
+                  "en": "Risk",
+                  "fa": "ریسک"
+                }
+              },
+              {
+                "key": "priorityRationale",
+                "label": {
+                  "en": "Priority rationale",
+                  "fa": "دلیل اولویت"
+                },
+                "wide": true
+              },
+              {
+                "key": "rejectionReason",
+                "label": {
+                  "en": "Rejection reason",
+                  "fa": "دلیل رد"
+                },
+                "wide": true
+              },
+              {
+                "key": "convertedTo",
+                "label": {
+                  "en": "Converted to work order",
+                  "fa": "تبدیل‌شده به دستورکار"
+                }
+              },
+              {
+                "key": "workflow",
+                "label": {
+                  "en": "Workflow",
+                  "fa": "گردش‌کار"
+                }
+              },
+              {
+                "key": "workflowStatus",
+                "label": {
+                  "en": "Workflow status",
+                  "fa": "وضعیت گردش‌کار"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/work-request-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "actions",
+            "url": "/d/work-request-head?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "nextStatus",
+                "header": {
+                  "en": "Next status (legacy record)",
+                  "fa": "وضعیت بعدی (رکورد قدیمی)"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "submit",
+                    "label": {
+                      "en": "Submit to the workflow",
+                      "fa": "ارسال به گردش‌کار"
+                    },
+                    "url": "/a/work-request-submit",
+                    "method": "post",
+                    "showWhen": "row.canSubmit == true"
+                  },
+                  {
+                    "key": "cancel-draft",
+                    "label": {
+                      "en": "Cancel the request",
+                      "fa": "لغو درخواست"
+                    },
+                    "url": "/f/work-request-cancel?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canSubmit == true"
+                  },
+                  {
+                    "key": "convert",
+                    "label": {
+                      "en": "Convert to a work order",
+                      "fa": "تبدیل به دستورکار"
+                    },
+                    "url": "/f/work-request-convert?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canConvert == true"
+                  },
+                  {
+                    "key": "advance",
+                    "label": {
+                      "en": "Advance to the next status",
+                      "fa": "رفتن به وضعیت بعدی"
+                    },
+                    "url": "/a/work-request-advance",
+                    "method": "post",
+                    "showWhen": "row.nextStatus != ''"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    },
+                    "url": "/f/work-request-reject?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canReject == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "cancel",
+                    "label": {
+                      "en": "Cancel the request",
+                      "fa": "لغو درخواست"
+                    },
+                    "url": "/f/work-request-cancel?id={id}",
+                    "method": "get",
+                    "showWhen": "row.isLegacy == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "stages",
+          "component": "data-grid",
+          "options": {
+            "id": "stages",
+            "url": "/d/work-request-stages?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "order",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                },
+                "width": 80,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "stage",
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "state",
+                "header": {
+                  "en": "State",
+                  "fa": "وضعیت"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "waiting",
+                "header": {
+                  "en": "Waiting for",
+                  "fa": "در انتظار"
+                },
+                "width": 320,
+                "sortable": false,
+                "filterable": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "workflow-actions",
+          "component": "data-grid",
+          "options": {
+            "id": "workflow-actions",
+            "url": "/d/work-request-workflow-actions?f.id=eq:{{params.id|url}}",
+            "idField": "actionType",
+            "columns": [
+              {
+                "key": "label",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "toStage",
+                "header": {
+                  "en": "To stage",
+                  "fa": "به مرحله"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "allowed",
+                "header": {
+                  "en": "Allowed",
+                  "fa": "مجاز"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              },
+              {
+                "key": "deniedReason",
+                "header": {
+                  "en": "Why not",
+                  "fa": "دلیل عدم امکان"
+                },
+                "width": 320,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "do",
+                    "label": {
+                      "en": "Do",
+                      "fa": "انجام"
+                    },
+                    "url": "/f/work-request-workflow-action?actionType={id}&id={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.allowed == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "workflow-history",
+          "component": "data-grid",
+          "options": {
+            "id": "workflow-history",
+            "url": "/d/work-request-workflow-history?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "actionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "fromStage",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 180,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "toStage",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 180,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "by",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 300,
+                "sortable": false,
+                "filterable": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "status-history",
+          "component": "data-grid",
+          "options": {
+            "id": "status-history",
+            "url": "/d/work-request-status-history?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "fromStatus",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "toStatus",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "changedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "changedDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 320,
+                "sortable": false,
+                "filterable": false
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
