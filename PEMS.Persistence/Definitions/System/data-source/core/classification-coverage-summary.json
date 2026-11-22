@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "classification-coverage-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "classification coverage summary",
+    "fa": "classification coverage summary"
+  },
+  "description": {
+    "en": "classification coverage summary",
+    "fa": "classification coverage summary"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentClassification",
+      "action": "CoverageSummary"
+    }
+  }
+}

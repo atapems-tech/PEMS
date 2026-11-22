@@ -73,6 +73,10 @@ public interface ILetterOperations
     [PEMS.Application.Common.PemsOperation("Letter", "ReassignApprover")]
     Task<(bool Success, string? Error)> ReassignApproverAsync(int letterId, int stepOrder, int newApproverUserId);
 
+    /// <summary>Attaches a file to a letter the user may see (stored in the letters folder).</summary>
+    [PEMS.Application.Common.PemsOperation("Letter", "UploadAttachment")]
+    Task<(bool Success, string? Error)> UploadAttachmentAsync(int letterId, PEMS.Application.Common.OperationFile? file);
+
     /// <summary>Discards a draft the user composed (the compose workspace).</summary>
     [PEMS.Application.Common.PemsOperation("Letter", "DiscardDraft")]
     Task<(bool Success, string? Error)> DiscardDraftAsync(int letterId);

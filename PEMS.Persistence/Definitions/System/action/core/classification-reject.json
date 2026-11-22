@@ -26,7 +26,7 @@
       "en": "پیشنهاد رد شد.",
       "fa": "پیشنهاد رد شد."
     },
-    "redirect": "/EquipmentClassification/ReviewQueue",
+    "redirect": "/p/classification-review-queue",
     "redirectBack": true
   }
 }

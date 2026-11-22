@@ -1,0 +1,344 @@
+{
+  "kind": "page",
+  "key": "asset-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Asset details",
+    "fa": "جزئیات دارایی"
+  },
+  "description": {
+    "en": "Asset details",
+    "fa": "جزئیات دارایی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "asset-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "asset-record",
+            "fields": [
+              {
+                "key": "assetNumber",
+                "label": {
+                  "en": "Asset",
+                  "fa": "دارایی"
+                }
+              },
+              {
+                "key": "equipmentTag",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "equipmentName",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "criticalityClass",
+                "label": {
+                  "en": "Criticality",
+                  "fa": "بحرانی‌بودن"
+                }
+              },
+              {
+                "key": "riskLevel",
+                "label": {
+                  "en": "Risk level",
+                  "fa": "سطح ریسک"
+                }
+              },
+              {
+                "key": "openWorkOrders",
+                "label": {
+                  "en": "Open work orders",
+                  "fa": "دستور کار باز"
+                }
+              },
+              {
+                "key": "totalCost",
+                "label": {
+                  "en": "Total cost",
+                  "fa": "هزینه کل"
+                }
+              },
+              {
+                "key": "manufacturerModel",
+                "label": {
+                  "en": "Manufacturer / model",
+                  "fa": "سازنده / مدل"
+                }
+              },
+              {
+                "key": "functionalLocation",
+                "label": {
+                  "en": "Functional location",
+                  "fa": "محل عملکردی"
+                }
+              },
+              {
+                "key": "functionalLocationText",
+                "label": {
+                  "en": "Functional location (raw text, legacy)",
+                  "fa": "محل عملکردی (متن خام)"
+                }
+              },
+              {
+                "key": "maintenanceClass",
+                "label": {
+                  "en": "Maintenance class",
+                  "fa": "کلاس نگهداری"
+                }
+              },
+              {
+                "key": "commissioningDate",
+                "label": {
+                  "en": "Commissioning date",
+                  "fa": "تاریخ راه‌اندازی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "latestMaintenanceDate",
+                "label": {
+                  "en": "Latest maintenance",
+                  "fa": "آخرین نگهداری"
+                },
+                "type": "date"
+              },
+              {
+                "key": "latestAction",
+                "label": {
+                  "en": "Action taken",
+                  "fa": "اقدام انجام‌شده"
+                }
+              },
+              {
+                "key": "latestTechnician",
+                "label": {
+                  "en": "Technician",
+                  "fa": "تکنسین"
+                }
+              },
+              {
+                "key": "latestDuration",
+                "label": {
+                  "en": "Duration (h)",
+                  "fa": "مدت (ساعت)"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/asset-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/asset-edit/{{params.id}}",
+                "text": {
+                  "en": "Edit",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/assets",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "work-orders",
+          "component": "def:related-table",
+          "options": {
+            "id": "work-orders",
+            "title": {
+              "en": "Work orders",
+              "fa": "دستورهای کار"
+            },
+            "url": "/d/asset-work-orders?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "workOrderNo",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستور کار"
+                },
+                "width": 140
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 300
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 110,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "inspections",
+          "component": "def:related-table",
+          "options": {
+            "id": "inspections",
+            "title": {
+              "en": "Inspections",
+              "fa": "بازرسی‌ها"
+            },
+            "url": "/d/asset-inspections?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "inspectionType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 160
+              },
+              {
+                "key": "inspectionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "inspector",
+                "header": {
+                  "en": "Inspector",
+                  "fa": "بازرس"
+                },
+                "width": 150
+              },
+              {
+                "key": "result",
+                "header": {
+                  "en": "Result",
+                  "fa": "نتیجه"
+                },
+                "width": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "failures",
+          "component": "def:related-table",
+          "options": {
+            "id": "failures",
+            "title": {
+              "en": "Failures",
+              "fa": "خرابی‌ها"
+            },
+            "url": "/d/asset-failures?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "failureDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "failureMode",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 200
+              },
+              {
+                "key": "failureCause",
+                "header": {
+                  "en": "Cause",
+                  "fa": "علت"
+                },
+                "width": 200
+              },
+              {
+                "key": "downtimeHours",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف (ساعت)"
+                },
+                "width": 120
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

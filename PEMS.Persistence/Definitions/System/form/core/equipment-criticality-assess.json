@@ -1,0 +1,151 @@
+{
+  "kind": "form",
+  "key": "equipment-criticality-assess",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assess criticality",
+    "fa": "ثبت تحلیل بحرانی‌بودن"
+  },
+  "description": {
+    "en": "Assess criticality",
+    "fa": "ثبت تحلیل بحرانی‌بودن"
+  },
+  "payload": {
+    "id": "equipment-criticality-assess",
+    "title": {
+      "en": "Assess criticality",
+      "fa": "ثبت تحلیل بحرانی‌بودن"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "equipment-criticality-assess",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-options"
+      },
+      {
+        "name": "criticalityClass",
+        "label": {
+          "en": "Criticality class",
+          "fa": "کلاس بحرانی‌بودن"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "A",
+            "label": {
+              "en": "A - critical",
+              "fa": "A - بحرانی"
+            }
+          },
+          {
+            "value": "B",
+            "label": {
+              "en": "B - important",
+              "fa": "B - مهم"
+            }
+          },
+          {
+            "value": "C",
+            "label": {
+              "en": "C - normal",
+              "fa": "C - عادی"
+            }
+          }
+        ]
+      },
+      {
+        "name": "riskLevel",
+        "label": {
+          "en": "Risk level",
+          "fa": "سطح ریسک"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "Low"
+            }
+          },
+          {
+            "value": "Medium",
+            "label": {
+              "en": "Medium",
+              "fa": "Medium"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "High"
+            }
+          }
+        ]
+      },
+      {
+        "name": "safetyImpact",
+        "label": {
+          "en": "Safety impact",
+          "fa": "اثر ایمنی"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "productionImpact",
+        "label": {
+          "en": "Production impact",
+          "fa": "اثر تولید"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "environmentImpact",
+        "label": {
+          "en": "Environment impact",
+          "fa": "اثر محیط‌زیست"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

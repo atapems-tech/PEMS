@@ -68,3 +68,16 @@ public class JobPlanRequiredMaterialDto
     public string? MaterialDescription { get; set; }
     public decimal RequiredQuantity { get; set; }
 }
+
+/// <summary>The values of the job plan edit form (SCRUM-818); the property names are the form field names.</summary>
+public class JobPlanFormRowDto
+{
+    public int JobPlanId { get; set; }
+    public string Title { get; set; } = "";
+    public string? Scope { get; set; }
+    public decimal? EstimatedDurationHours { get; set; }
+    public string? SafetyRequirements { get; set; }
+    public int? EquipmentClassId { get; set; }
+    public bool PermitRequired { get; set; }
+    public bool LotoRequired { get; set; }
+}

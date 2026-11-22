@@ -4,34 +4,50 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "New functional location",
-    "fa": "محل عملکردی جدید"
+    "en": "Create functional location",
+    "fa": "ایجاد محل عملکردی"
   },
   "description": {
-    "en": "New functional location",
-    "fa": "محل عملکردی جدید"
+    "en": "Create functional location",
+    "fa": "ایجاد محل عملکردی"
   },
   "payload": {
     "kind": "handler",
-    "handler": "operation.invoke",
+    "handler": "entity.create",
     "parameters": {
-      "model": "FunctionalLocation",
-      "action": "Create",
-      "args": {
-        "code": "field:code",
-        "name": "field:name",
-        "parentId": "field:parentId",
-        "plant": "field:plant",
-        "area": "field:area",
-        "unit": "field:unit",
-        "description": "field:description"
+      "entity": "FunctionalLocation",
+      "map": {
+        "code": "Code",
+        "name": "Name",
+        "parentId": "ParentId",
+        "plant": "Plant",
+        "area": "Area",
+        "unit": "Unit",
+        "description": "Description"
+      },
+      "required": [
+        "Code",
+        "Name"
+      ],
+      "defaults": {
+        "IsActive": true,
+        "CreatedDate": "$now"
+      },
+      "unique": [],
+      "validate": {
+        "model": "FunctionalLocation",
+        "action": "Validate",
+        "args": {
+          "id": "field:id",
+          "code": "field:code",
+          "parentId": "field:parentId"
+        }
       }
     },
     "success": {
-      "en": "Functional Location created",
-      "fa": "محل عملکردی ایجاد شد"
+      "en": "Functional location created.",
+      "fa": "محل عملکردی ایجاد شد."
     },
-    "redirect": "/FunctionalLocation/Index",
-    "redirectBack": true
+    "redirect": "/p/functional-locations"
   }
 }

@@ -47,10 +47,11 @@ public class ProcurementP0ReadAndSodDecisionTests
     [Fact]
     public async Task Contract_CreateForm_WithoutPermission_IsForbidden()
     {
+        // the create form is /f/contract-create (form permission Contracts.Create) and its action runs ContractPage.Create, whose permission the engine checks before the call
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Equal("Contracts.Create", catalog.Get("ContractPage", "Create")!.Permission);
         var (ctx, permissions, access) = await CreateAsync(nameof(Contract_CreateForm_WithoutPermission_IsForbidden));
-        var c = new ContractController(null!, null!, null!, access, permissions, User(SystemRoles.Viewer), ctx).WithTempData();
-
-        Assert.IsType<ForbidResult>(await c.Create());
+        Assert.False(await permissions.HasPermissionAsync(new[] { SystemRoles.Viewer }, "Contracts", "Create"));
     }
 
     [Theory]

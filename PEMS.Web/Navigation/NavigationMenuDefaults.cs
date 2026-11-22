@@ -134,7 +134,7 @@ public static class NavigationMenuDefaults
             "Equipment,Instrument,Asset,MaintenanceStrategy,FailureModeCatalog,StrategyImport,MaintenancePlan,MaintenanceCalendar,JobPlan,WorkRequest,WorkOrder,SparePart,Team,Crew,ShiftHandover,MaintenanceMasterData,EquipmentClassification,RcmFmea,EquipmentCriticality,CriticalityAssessment,FunctionalLocation,Barcode,Reliability,Inspection,Kpi,Permit,CmmsReadiness,CmmsOperations"),
         Link("cmms.equipment", "sec.cmms", 10, "Equipment", "bi-gear", "Equipment", rule: "CmmsItem:Equipment"),
         new("cmms.instrument", "sec.cmms", L, 20, "Instrument Passport", "bi-cpu", "CmmsItem:Instrument", ExternalPath: "/p/instruments", ExtraActiveControllers: "Instrument"),   // SCRUM-708: a definition page (/p/...)
-        Link("cmms.asset", "sec.cmms", 30, "Assets", "bi-diagram-2", "Asset", rule: "CmmsItem:Asset"),
+        new("cmms.asset", "sec.cmms", L, 30, "Assets", "bi-diagram-2", "CmmsItem:Asset", ExternalPath: "/p/assets", ExtraActiveControllers: "Asset"),   // SCRUM-670: a definition page (/p/...)
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),
         Link("cmms.strategy", "cmms.sub.planning", 10, "Maintenance Strategy", "bi-diagram-2", "MaintenanceStrategy", rule: "CmmsItem:MaintenanceStrategy"),
         new("cmms.plan", "cmms.sub.planning", L, 20, "Maintenance Plan", "bi-calendar-check", "CmmsItem:MaintenancePlan", ExternalPath: "/p/maintenance-plans", ExtraActiveControllers: "MaintenancePlan"),   // SCRUM-724: a definition page (/p/...)
@@ -148,17 +148,17 @@ public static class NavigationMenuDefaults
         new("cmms.crew", "sec.cmms", L, 100, "Crews", "bi-people-fill", "CmmsItem:Crew", ExternalPath: "/p/crews"),   // SCRUM-677: a definition page (/p/...)
         new("cmms.shifthandover", "sec.cmms", L, 110, "Shift Handovers", "bi-arrow-left-right", "CmmsItem:ShiftHandover", ExternalPath: "/p/shift-handovers"),   // SCRUM-749: a definition page (/p/...)
         new("cmms.masterdata", "sec.cmms", L, 120, "Maintenance Master Data", "bi-collection", "CmmsItem:MaintenanceMasterData", ExternalPath: "/p/maintenance-master-data"),   // SCRUM-723: a definition page (/p/...)
-        Link("cmms.classification", "sec.cmms", 130, "Equipment Classification", "bi-diagram-3-fill", "EquipmentClassification", rule: "CmmsItem:EquipmentClassification"),
+        new("cmms.classification", "sec.cmms", L, 130, "Equipment Classification", "bi-diagram-3-fill", "CmmsItem:EquipmentClassification", ExternalPath: "/p/classification-dashboard", ExtraActiveControllers: "EquipmentClassification"),   // SCRUM-691: a definition page (/p/...)
         new("cmms.readiness", "sec.cmms", L, 140, "CMMS Readiness", "bi-clipboard-check", "CmmsItem:CmmsReadiness", ExternalPath: "/p/cmms-readiness"),   // SCRUM-674: a definition page (/p/...)
         new("cmms.operations", "sec.cmms", L, 150, "CMMS Operations", "bi-speedometer2", "CmmsItem:CmmsOperations", ExternalPath: "/p/cmms-operations"),   // SCRUM-673
         Link("cmms.rcm", "sec.cmms", 160, "RCM / FMEA", "bi-clipboard2-pulse", "RcmFmea", rule: "CmmsItem:RcmFmea"),
-        Link("cmms.criticality", "sec.cmms", 170, "Criticality Analysis", "bi-shield-exclamation", "EquipmentCriticality", rule: "CmmsItem:EquipmentCriticality"),
+        new("cmms.criticality", "sec.cmms", L, 170, "Criticality Analysis", "bi-shield-exclamation", "CmmsItem:EquipmentCriticality", ExternalPath: "/p/equipment-criticalities", ExtraActiveControllers: "EquipmentCriticality"),   // SCRUM-693: a definition page (/p/...)
         new("cmms.assessment", "sec.cmms", L, 180, "Criticality Assessment", "bi-clipboard2-check", "CmmsItem:CriticalityAssessment", ExternalPath: "/p/criticality-assessment-dashboard", ExtraActiveControllers: "CriticalityAssessment"),   // SCRUM-678: a definition page (/p/...)
         Link("cmms.reliability", "sec.cmms", 190, "Reliability", "bi-graph-up-arrow", "Reliability", "Dashboard", rule: "CmmsItem:Reliability"),
         new("cmms.inspection", "sec.cmms", L, 200, "Inspections", "bi-clipboard-pulse", "CmmsItem:Inspection", ExternalPath: "/p/inspections"),   // SCRUM-707: a definition page (/p/...)
         new("cmms.kpi", "sec.cmms", L, 210, "KPI Dashboard", "bi-speedometer2", "CmmsItem:Kpi", ExternalPath: "/p/kpi"),   // SCRUM-713: a definition page (/p/...)
         new("cmms.permit", "sec.cmms", L, 220, "Permits", "bi-shield-check", "CmmsItem:Permit", ExternalPath: "/p/permits", ExtraActiveControllers: "Permit"),   // SCRUM-734: a definition page (/p/...)
-        Link("cmms.fl", "sec.cmms", 230, "Functional Locations", "bi-diagram-3", "FunctionalLocation", rule: "CmmsItem:FunctionalLocation"),
+        new("cmms.fl", "sec.cmms", L, 230, "Functional Locations", "bi-diagram-3", "CmmsItem:FunctionalLocation", ExternalPath: "/p/functional-locations", ExtraActiveControllers: "FunctionalLocation"),   // SCRUM-700: a definition page (/p/...)
         new("cmms.barcode", "sec.cmms", L, 240, "Barcode", "bi-upc-scan", "CmmsItem:Barcode", ExternalPath: "/p/barcodes"),   // SCRUM-671: a definition page (/p/...)
 
         // ---- عملیات و تولید

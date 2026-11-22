@@ -11,35 +11,7 @@ namespace PEMS.Persistence.Seed;
 /// </summary>
 public static class QCDisciplineSeeder
 {
-    public static async Task SeedAsync(IServiceProvider services)
-    {
-        var db = services.GetRequiredService<PEMSDbContext>();
-
-        if (await db.QCDisciplines.AnyAsync()) return;
-
-        var defaults = new[]
-        {
-            ("NDT", "Non-Destructive Testing (RT/UT/PT/MT)"),
-            ("WLD", "Welding Inspection"),
-            ("COAT", "Coating & Painting Inspection"),
-            ("DIM", "Dimensional & Mechanical Inspection"),
-            ("EI", "Electrical & Instrument Testing"),
-            ("CIV", "Civil & Structural QC"),
-            ("HSE", "HSE / Safety Inspection"),
-            ("MAT", "Material & Receiving Inspection")
-        };
-
-        foreach (var (code, name) in defaults)
-        {
-            db.QCDisciplines.Add(new QCDiscipline
-            {
-                Code = code,
-                Name = name,
-                IsActive = true,
-                CreatedDate = DateTime.Now
-            });
-        }
-
-        await db.SaveChangesAsync();
-    }
+    /// <summary>SCRUM-803: the rows are the reference-data definition reference-data/core/qc-discipline.json, applied by ReferenceDataApplier (clean-install parity and customer-edit tests: ReferenceDataApplierTests).</summary>
+    public static Task SeedAsync(IServiceProvider services)
+        => PEMS.Persistence.Definitions.ReferenceDataCatalog.ApplyAsync(services.GetRequiredService<PEMSDbContext>(), "qc-discipline");
 }

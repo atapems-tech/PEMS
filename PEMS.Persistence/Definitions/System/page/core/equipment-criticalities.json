@@ -1,0 +1,192 @@
+{
+  "kind": "page",
+  "key": "equipment-criticalities",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment criticality analysis",
+    "fa": "تحلیل بحرانی‌بودن تجهیز"
+  },
+  "description": {
+    "en": "Equipment criticality analysis",
+    "fa": "تحلیل بحرانی‌بودن تجهیز"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "equipment-criticalities",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "criticality-filters",
+            "resetUrl": "/p/equipment-criticalities",
+            "fields": [
+              {
+                "name": "criticalityClass",
+                "label": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "kind": "select",
+                "value": "{{params.criticalityClass}}",
+                "options": [
+                  {
+                    "value": "A",
+                    "label": {
+                      "en": "A",
+                      "fa": "A"
+                    }
+                  },
+                  {
+                    "value": "B",
+                    "label": {
+                      "en": "B",
+                      "fa": "B"
+                    }
+                  },
+                  {
+                    "value": "C",
+                    "label": {
+                      "en": "C",
+                      "fa": "C"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/equipment-criticality-assess",
+                "text": {
+                  "en": "Assess an equipment",
+                  "fa": "ارزیابی تجهیز"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "counts",
+          "component": "data-grid",
+          "options": {
+            "id": "counts",
+            "url": "/d/equipment-criticality-counts",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "classA",
+                "header": {
+                  "en": "Class A",
+                  "fa": "کلاس A"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "classB",
+                "header": {
+                  "en": "Class B",
+                  "fa": "کلاس B"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "classC",
+                "header": {
+                  "en": "Class C",
+                  "fa": "کلاس C"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "unassessed",
+                "header": {
+                  "en": "Unassessed",
+                  "fa": "بدون تحلیل"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 120
+          }
+        },
+        {
+          "id": "list",
+          "component": "data-grid",
+          "options": {
+            "id": "list",
+            "url": "/d/equipment-criticality-list?f.criticalityClass={{params.criticalityClass|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "equipmentTag",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 160
+              },
+              {
+                "key": "criticalityClass",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 90
+              },
+              {
+                "key": "riskLevel",
+                "header": {
+                  "en": "Risk",
+                  "fa": "ریسک"
+                },
+                "width": 100
+              },
+              {
+                "key": "safetyImpact",
+                "header": {
+                  "en": "Safety",
+                  "fa": "ایمنی"
+                },
+                "width": 180
+              },
+              {
+                "key": "productionImpact",
+                "header": {
+                  "en": "Production",
+                  "fa": "تولید"
+                },
+                "width": 180
+              },
+              {
+                "key": "environmentImpact",
+                "header": {
+                  "en": "Environment",
+                  "fa": "محیط‌زیست"
+                },
+                "width": 180
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "EquipmentCriticality.View"
+  }
+}

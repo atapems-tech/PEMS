@@ -10,6 +10,8 @@ public sealed record ContractNtpRow(int Id, string NtpNumber, DateTime IssuedDat
 public sealed record ContractMeetingRow(int Id, string Title, DateTime MeetingDate, string Status);
 public sealed record ContractItpRow(int Id, string ItpNumber, string Status);
 
+public sealed record ContractCreateStep(bool Success, string? Error, int? NewId = null);
+
 /// <summary>
 /// The contracts (SCRUM-676) as operations: the list, the details (head with the originating tender, discipline reviews, revisions, documents, NTPs, kick-off meetings, linked ITPs), adding a contract document (with the
 /// editor event for the separation of duties), issuing an NTP and scheduling the kick-off. The workflow steps were already actions. The create form (the creator event, the uncertain commit recovery) stays on ContractController.
@@ -48,4 +50,8 @@ public interface IContractOperations
 
     [PEMS.Application.Common.PemsOperation("ContractPage", "ScheduleKickoff", "Contracts.Edit")]
     Task<(bool Success, string? Error)> ScheduleKickoffAsync(int contractId, DateTime meetingDate, string? location = null, string? agenda = null);
+
+    /// <summary>SCRUM-817: the create form of a contract; the creator event, the user-aware permission check and the recovery after an uncertain commit stay in IContractService. NewId is the contract the page opens next.</summary>
+    [PEMS.Application.Common.PemsOperation("ContractPage", "Create", "Contracts.Create")]
+    Task<ContractCreateStep> CreateAsync(string contractNo, int projectId, int vendorId, string? scope, decimal? value, DateTime? startDate, DateTime? endDate, bool requiresInspection, int? userId, string? ip);
 }

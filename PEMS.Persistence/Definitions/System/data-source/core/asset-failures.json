@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "asset-failures",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "asset failures",
+    "fa": "asset failures"
+  },
+  "description": {
+    "en": "asset failures",
+    "fa": "asset failures"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Asset",
+      "action": "Failures",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

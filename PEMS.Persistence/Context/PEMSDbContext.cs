@@ -62,6 +62,8 @@ public class PEMSDbContext
     // تازه‌ی این فاز - استثنای دستیِ Visibility، عمداً جدا از مدل داده‌ی Authorization بالا
     public DbSet<NavigationVisibilityOverride> NavigationVisibilityOverrides { get; set; }
     public DbSet<DefinitionGrant> DefinitionGrants { get; set; }   // SCRUM-591
+    public DbSet<ReferenceDataRowState> ReferenceDataRowStates { get; set; }   // SCRUM-803
+    public DbSet<DefinitionGrantSummary> DefinitionGrantSummaries { get; set; }   // SCRUM-806 (database view, read-only)
     public DbSet<AppliedPackage> AppliedPackages { get; set; }   // SCRUM-807, 814
     public DbSet<GridSavedView> GridSavedViews { get; set; }   // SCRUM-793
 

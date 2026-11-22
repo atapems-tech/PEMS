@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "asset-root",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "description": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "payload": {
+    "pattern": "Asset",
+    "target": "/p/assets",
+    "permanent": false
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "kind": "page",
+  "key": "functional-locations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional locations",
+    "fa": "محل‌های عملکردی"
+  },
+  "description": {
+    "en": "Functional locations",
+    "fa": "محل‌های عملکردی"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "functional-locations",
+    "template": "entity-list",
+    "args": {
+      "id": "functional-locations",
+      "url": "/d/functional-location-grid",
+      "idField": "id",
+      "viewsKey": "functional-locations",
+      "columns": [
+        {
+          "key": "code",
+          "header": {
+            "en": "Code",
+            "fa": "کد"
+          },
+          "width": 150
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 220
+        },
+        {
+          "key": "plant",
+          "header": {
+            "en": "Plant",
+            "fa": "واحد"
+          },
+          "width": 110
+        },
+        {
+          "key": "area",
+          "header": {
+            "en": "Area",
+            "fa": "ناحیه"
+          },
+          "width": 110
+        },
+        {
+          "key": "unit",
+          "header": {
+            "en": "Unit",
+            "fa": "یونیت"
+          },
+          "width": 110
+        },
+        {
+          "key": "parent",
+          "header": {
+            "en": "Parent",
+            "fa": "والد"
+          },
+          "width": 130
+        },
+        {
+          "key": "path",
+          "header": {
+            "en": "Path",
+            "fa": "مسیر"
+          },
+          "width": 320
+        },
+        {
+          "key": "equipmentCount",
+          "header": {
+            "en": "Equipment",
+            "fa": "تجهیز"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "assetCount",
+          "header": {
+            "en": "Assets",
+            "fa": "دارایی"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "isActive",
+          "header": {
+            "en": "Active",
+            "fa": "فعال"
+          },
+          "width": 90,
+          "type": "bool"
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 120,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/functional-location-edit/{id}",
+              "method": "get"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/functional-location-create",
+      "newLabel": {
+        "en": "New functional location",
+        "fa": "محل عملکردی جدید"
+      }
+    },
+    "permission": "FunctionalLocation.View"
+  }
+}

@@ -250,6 +250,11 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
         return new FileResult(bytes, t.GetProperty("FileName")?.GetValue(answer) as string ?? "download", t.GetProperty("ContentType")?.GetValue(answer) as string ?? "application/octet-stream");
     }
 
+    /// <summary>SCRUM-817: a result object with a NewId (the id of the row a command created) gives {result} to the redirect, as a plain int answer does.</summary>
+    private static IReadOnlyDictionary<string, string?>? ReturnedOf(object answer) =>
+        answer.GetType().GetProperty("NewId")?.GetValue(answer) is { } id ? new Dictionary<string, string?> { ["result"] = System.Convert.ToString(id, System.Globalization.CultureInfo.InvariantCulture) } : null;
+
+
     private static (bool Success, string? Error, object?[] Args)? ResultOf(object answer)
     {
         var t = answer.GetType();
@@ -441,7 +446,7 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             int created => ActionOutcome.Done(returned: new Dictionary<string, string?> { ["result"] = created.ToString(System.Globalization.CultureInfo.InvariantCulture) }),   // SCRUM-760: the id a command created is {result} in the redirect
             _ when answer is not null && SecretOf(scope.ServiceProvider, answer) is { } secret => ActionOutcome.Revealed(secret),
             _ when answer is not null && FileOf(answer) is { } produced => ActionOutcome.Download(produced),
-            _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done(result.Error is null ? null : ResultMessage(scope.ServiceProvider, result)) : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
+            _ when answer is not null && ResultOf(answer) is { } result => result.Success ? ActionOutcome.Done(result.Error is null ? null : ResultMessage(scope.ServiceProvider, result), returned: ReturnedOf(answer)) : ActionOutcome.Refused(ResultMessage(scope.ServiceProvider, result)),
             _ => ActionOutcome.Done()
         };
         if (outcome.Ok && sectionPlan is not null)

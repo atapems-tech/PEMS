@@ -87,6 +87,13 @@
         },
         "kind": "switch"
       }
-    ]
+    ],
+    "load": {
+      "model": "OrganizationImport",
+      "action": "Pending",
+      "args": {
+        "userName": "context:userName"
+      }
+    }
   }
 }

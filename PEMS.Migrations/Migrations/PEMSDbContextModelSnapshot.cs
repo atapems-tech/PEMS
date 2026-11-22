@@ -2428,6 +2428,75 @@ namespace PEMS.Persistence.Migrations
                     b.ToTable("DefinitionGrants", (string)null);
                 });
 
+            modelBuilder.Entity("PEMS.Domain.Entities.DefinitionGrantSummary", b =>
+                {
+                    b.Property<string>("GrantKey")
+                        .HasMaxLength(161)
+                        .HasColumnType("nvarchar(161)");
+
+                    b.Property<int>("AllowCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DefinitionKey")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
+
+                    b.Property<int>("DenyCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<int>("RoleCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("GrantKey");
+
+                    b.ToView("vw_DefinitionGrantSummary", (string)null);
+                });
+
+            modelBuilder.Entity("PEMS.Domain.Entities.ReferenceDataRowState", b =>
+                {
+                    b.Property<int>("ReferenceDataRowStateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReferenceDataRowStateId"));
+
+                    b.Property<string>("ListKey")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("RowKey")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
+
+                    b.Property<string>("ShippedHash")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<DateTime>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ReferenceDataRowStateId");
+
+                    b.HasIndex("ListKey", "RowKey")
+                        .IsUnique();
+
+                    b.ToTable("ReferenceDataRowStates", (string)null);
+                });
+
             modelBuilder.Entity("PEMS.Domain.Entities.Definitions.Definition", b =>
                 {
                     b.Property<int>("DefinitionId")

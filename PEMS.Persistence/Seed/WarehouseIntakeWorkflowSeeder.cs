@@ -21,49 +21,6 @@ public static class WarehouseIntakeWorkflowSeeder
     public const string BusinessObjectType = "WorkOrderMaterialIntake";
     public const string StageName = "WarehouseIntake";
 
-    public static async Task SeedAsync(IServiceProvider services)
-    {
-        var db = services.GetRequiredService<PEMSDbContext>();
-        if (await db.WorkflowDefinitions.AnyAsync(x => x.Module == Module && x.Category == Category)) return;
-
-        var definition = new WorkflowDefinition
-        {
-            Name = "Warehouse intake of work-order materials",
-            Category = Category,
-            Module = Module,
-            Description = "Stock lines of a work order wait for the storekeeper to pick the supplying warehouse (SCRUM-472).",
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        };
-
-        var version = new WorkflowVersion
-        {
-            Definition = definition,
-            VersionNumber = 1,
-            Status = "Published",
-            EffectiveDate = DateTime.Now,
-            PublishedDate = DateTime.Now
-        };
-
-        var stage = new WorkflowStage
-        {
-            Version = version,
-            Name = StageName,
-            NameFa = "تأمین از انبار",
-            StageOrder = 1,
-            StageType = "Sequential",
-            ResponsibleRole = string.Join(",", RoleCatalog.WarehouseManager, RoleCatalog.WarehouseStorekeeper),
-            ApprovalStrategy = "AllApprovalsRequired",   // Sequential: one record whose role list is OR (as in the Permit chain)
-            IsMandatory = true
-        };
-        version.Stages.Add(stage);
-
-        version.Transitions.Add(new WorkflowTransition { Version = version, FromStage = null, ToStage = stage, ActionType = "Start", Priority = 0 });
-        version.Transitions.Add(new WorkflowTransition { Version = version, FromStage = stage, ToStage = null, ActionType = "Complete", Priority = 0 });
-        version.Transitions.Add(new WorkflowTransition { Version = version, FromStage = stage, ToStage = null, ActionType = "Cancel", Priority = 0 });
-
-        definition.Versions.Add(version);
-        db.WorkflowDefinitions.Add(definition);
-        await db.SaveChangesAsync();
-    }
+    /// <summary>SCRUM-804: the workflow is the shipped document Workflow/Shipped/warehouse-intake.workflow.json (clean-install parity is tested in ShippedWorkflowParityTests).</summary>
+    public static Task SeedAsync(IServiceProvider services) => PEMS.Persistence.Workflow.ShippedWorkflowCatalog.ShipAsync(services, "warehouse-intake");
 }

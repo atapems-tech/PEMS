@@ -1,0 +1,144 @@
+{
+  "kind": "page",
+  "key": "classification-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment classification dashboard",
+    "fa": "داشبورد طبقه‌بندی تجهیز"
+  },
+  "description": {
+    "en": "Equipment classification dashboard",
+    "fa": "داشبورد طبقه‌بندی تجهیز"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "classification-dashboard",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/classification-review-queue",
+                "text": {
+                  "en": "Review queue",
+                  "fa": "صف بازبینی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/classification-coverage",
+                "text": {
+                  "en": "Maintenance intelligence coverage",
+                  "fa": "پوشش هوشمندی نگهداری"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "summary",
+          "component": "data-grid",
+          "options": {
+            "id": "summary",
+            "url": "/d/classification-summary",
+            "idField": "totalActiveEquipment",
+            "columns": [
+              {
+                "key": "totalActiveEquipment",
+                "header": {
+                  "en": "Active equipment",
+                  "fa": "تجهیز فعال"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "classifiedCount",
+                "header": {
+                  "en": "Classified",
+                  "fa": "طبقه‌بندی‌شده"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "unclassifiedCount",
+                "header": {
+                  "en": "Unclassified",
+                  "fa": "طبقه‌بندی‌نشده"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "coveragePercent",
+                "header": {
+                  "en": "Coverage (%)",
+                  "fa": "پوشش (٪)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "pendingReviewCount",
+                "header": {
+                  "en": "Pending review",
+                  "fa": "در انتظار بازبینی"
+                },
+                "width": 150,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 120
+          }
+        },
+        {
+          "id": "breakdown",
+          "component": "data-grid",
+          "options": {
+            "id": "breakdown",
+            "url": "/d/classification-breakdown",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "group",
+                "header": {
+                  "en": "Group",
+                  "fa": "گروه"
+                },
+                "width": 280
+              },
+              {
+                "key": "key",
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                },
+                "width": 260
+              },
+              {
+                "key": "count",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ],
+            "pageSize": 50,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "MaintenanceMasterData.View"
+  }
+}

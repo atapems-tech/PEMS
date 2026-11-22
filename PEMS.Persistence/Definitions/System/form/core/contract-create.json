@@ -1,0 +1,120 @@
+{
+  "kind": "form",
+  "key": "contract-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New contract",
+    "fa": "قرارداد جدید"
+  },
+  "description": {
+    "en": "Create a contract",
+    "fa": "ایجاد قرارداد"
+  },
+  "payload": {
+    "id": "contract-create",
+    "title": {
+      "en": "New contract",
+      "fa": "قرارداد جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "contract-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "permission": "Contracts.Create",
+    "fields": [
+      {
+        "name": "contractNo",
+        "label": {
+          "en": "Contract number",
+          "fa": "شماره قرارداد"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "The contract number is required.",
+            "fa": "شماره قرارداد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "optionsFrom": "moc-projects",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "The project is required.",
+            "fa": "پروژه الزامی است."
+          }
+        }
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "optionsFrom": "irn-vendors",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "The vendor is required.",
+            "fa": "فروشنده الزامی است."
+          }
+        }
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Value",
+          "fa": "مبلغ"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "endDate",
+        "label": {
+          "en": "End date",
+          "fa": "تاریخ پایان"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "scope",
+        "label": {
+          "en": "Scope of work",
+          "fa": "محدوده‌ی کار"
+        },
+        "kind": "textArea",
+        "maxLength": 4000
+      },
+      {
+        "name": "requiresInspection",
+        "label": {
+          "en": "Requires inspection",
+          "fa": "نیازمند بازرسی"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

@@ -444,7 +444,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Asset"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Asset"))" asp-controller="Asset" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/assets" active="@(IsActive("Asset") || Context.Request.Path.StartsWithSegments("/p/asset"))">
                     <pems-icon name="bi-diagram-2" /> @Localizer["Assets"]
                 </pems-nav-link>
             }
@@ -553,7 +553,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("EquipmentClassification"))
             {
-                <pems-nav-link item="false" active="@(IsActive("EquipmentClassification"))" asp-controller="EquipmentClassification" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/classification-dashboard" active="@(IsActive("EquipmentClassification") || Context.Request.Path.StartsWithSegments("/p/classification"))">
                     <pems-icon name="bi-diagram-3-fill" /> @Localizer["Equipment Classification"]
                 </pems-nav-link>
             }
@@ -581,7 +581,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("EquipmentCriticality"))
             {
-                <pems-nav-link item="false" active="@(IsActive("EquipmentCriticality"))" asp-controller="EquipmentCriticality" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/equipment-criticalities" active="@(IsActive("EquipmentCriticality") || Context.Request.Path.StartsWithSegments("/p/equipment-criticalit"))">
                     <pems-icon name="bi-shield-exclamation" /> @Localizer["Criticality Analysis"]
                 </pems-nav-link>
             }
@@ -623,7 +623,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("FunctionalLocation"))
             {
-                <pems-nav-link item="false" active="@(IsActive("FunctionalLocation"))" asp-controller="FunctionalLocation" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/functional-locations" active="@(IsActive("FunctionalLocation") || Context.Request.Path.StartsWithSegments("/p/functional-location"))">
                     <pems-icon name="bi-diagram-3" /> @Localizer["Functional Locations"]
                 </pems-nav-link>
             }

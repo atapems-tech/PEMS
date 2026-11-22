@@ -20,49 +20,6 @@ public static class IrnHoldResolutionWorkflowSeeder
     public const string BusinessObjectType = "IrnHold";
     public const string StageName = "HoldResolution";
 
-    public static async Task SeedAsync(IServiceProvider services)
-    {
-        var db = services.GetRequiredService<PEMSDbContext>();
-        if (await db.WorkflowDefinitions.AnyAsync(x => x.Module == Module && x.Category == Category)) return;
-
-        var definition = new WorkflowDefinition
-        {
-            Name = "Goods receipt - Hold resolution",
-            Category = Category,
-            Module = Module,
-            Description = "Hold quantity of an approved goods receipt waits for the Warehouse Manager to accept or reject it (SCRUM-473).",
-            IsActive = true,
-            CreatedDate = DateTime.Now
-        };
-
-        var version = new WorkflowVersion
-        {
-            Definition = definition,
-            VersionNumber = 1,
-            Status = "Published",
-            EffectiveDate = DateTime.Now,
-            PublishedDate = DateTime.Now
-        };
-
-        var stage = new WorkflowStage
-        {
-            Version = version,
-            Name = StageName,
-            NameFa = "تعیین تکلیف کالای نگه‌داشته",
-            StageOrder = 1,
-            StageType = "Sequential",
-            ResponsibleRole = RoleCatalog.WarehouseManager,
-            ApprovalStrategy = "AllApprovalsRequired",
-            IsMandatory = true
-        };
-        version.Stages.Add(stage);
-
-        version.Transitions.Add(new WorkflowTransition { Version = version, FromStage = null, ToStage = stage, ActionType = "Start", Priority = 0 });
-        version.Transitions.Add(new WorkflowTransition { Version = version, FromStage = stage, ToStage = null, ActionType = "Complete", Priority = 0 });
-        version.Transitions.Add(new WorkflowTransition { Version = version, FromStage = stage, ToStage = null, ActionType = "Cancel", Priority = 0 });
-
-        definition.Versions.Add(version);
-        db.WorkflowDefinitions.Add(definition);
-        await db.SaveChangesAsync();
-    }
+    /// <summary>SCRUM-804: the workflow is the shipped document Workflow/Shipped/irn-hold-resolution.workflow.json (clean-install parity is tested in ShippedWorkflowParityTests).</summary>
+    public static Task SeedAsync(IServiceProvider services) => PEMS.Persistence.Workflow.ShippedWorkflowCatalog.ShipAsync(services, "irn-hold-resolution");
 }

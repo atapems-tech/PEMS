@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "asset-location-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional location choices",
+    "fa": "گزینه‌های محل عملکردی"
+  },
+  "description": {
+    "en": "Functional location choices",
+    "fa": "گزینه‌های محل عملکردی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Asset",
+      "action": "LocationOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

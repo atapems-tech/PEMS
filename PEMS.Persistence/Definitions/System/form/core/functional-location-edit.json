@@ -1,0 +1,107 @@
+{
+  "kind": "form",
+  "key": "functional-location-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit functional location",
+    "fa": "ویرایش محل عملکردی"
+  },
+  "description": {
+    "en": "Edit functional location",
+    "fa": "ویرایش محل عملکردی"
+  },
+  "payload": {
+    "id": "functional-location-edit",
+    "title": {
+      "en": "Edit functional location",
+      "fa": "ویرایش محل عملکردی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "functional-location-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "parentId",
+        "label": {
+          "en": "Parent",
+          "fa": "والد"
+        },
+        "kind": "select",
+        "optionsFrom": "asset-location-options"
+      },
+      {
+        "name": "plant",
+        "label": {
+          "en": "Plant",
+          "fa": "واحد"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "area",
+        "label": {
+          "en": "Area",
+          "fa": "ناحیه"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "unit",
+        "label": {
+          "en": "Unit",
+          "fa": "یونیت"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

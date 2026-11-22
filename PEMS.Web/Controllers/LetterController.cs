@@ -608,42 +608,6 @@ public class LetterController : Controller
         return Json(new { url });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Attachment)]
-    public async Task<IActionResult> UploadAttachment(int letterId, IFormFile file)
-    {
-        var denied = await DenyIfNoAccessAsync(letterId);
-        if (denied != null) return denied;
-
-        if (file != null && file.Length > 0)
-        {
-            string storageKey;
-            await using (var uploadStream = file.OpenReadStream())
-            {
-                storageKey = await _fileStorage.SaveAsync("letters", file.FileName, uploadStream);
-            }
-
-            await _context.DocumentAttachments.AddAsync(new DocumentAttachment
-            {
-                LetterId = letterId,
-                FileName = file.FileName,
-                FileExtension = Path.GetExtension(file.FileName),
-                FilePath = storageKey,
-                FileSize = file.Length,
-                MimeType = file.ContentType,
-                UploadDate = DateTime.Now,
-                IsActive = true,
-                AIStatus = "NotApplicable"
-            });
-
-            await _context.SaveChangesAsync();
-        }
-
-        TempData["Message"] = "Attachment uploaded";
-        return RedirectToAction(nameof(Details), new { id = letterId });
-    }
-
     // ==============================================================================
     // طبق «PEMS Letter Details — Controlled Lifecycle» بند ۳۳: جایگزین AdvanceStatus قدیمی
     // (وضعیت آزاد بدون اعتبارسنجی) - هر اکشن زیر یک اقدام کسب‌وکاری صریح است؛ کاربر هرگز

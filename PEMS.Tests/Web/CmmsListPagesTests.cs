@@ -24,10 +24,10 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "Equipment", "FunctionalLocation",
-        "MaintenanceStrategy", "Asset",
+        "WorkOrder", "Equipment",
+        "MaintenanceStrategy",
         // wave 2b
-        "EquipmentCriticality", "FailureModeCatalog", "RcmFmea",
+        "FailureModeCatalog", "RcmFmea",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary> data) where TController : Controller
@@ -130,20 +130,6 @@ public class CmmsListPagesTests
 
     // ---------- Functional locations ----------
 
-    [Fact]
-    public async Task FunctionalLocations_EditButtonsCarryTheRow_AndBothModalsStay()
-    {
-        var html = await Render<FunctionalLocationController>("/Views/FunctionalLocation/Index.cshtml",
-            Page(new FunctionalLocationListDto { FunctionalLocationId = 6, Code = "U100-CW", Name = "Cooling water", PathBreadcrumb = "JPC / U100 / U100-CW", Plant = "JPC", Unit = "U100" }),
-            v => v["PickerList"] = new List<FunctionalLocationPickerItemDto>());
-
-        AssertBuiltFromTheComponent(html, "FunctionalLocation", 1);
-        Assert.Contains("data-code=\"U100-CW\"", html);
-        Assert.Contains("id=\"createFlModal\"", html);
-        Assert.Contains("id=\"editFlModal\"", html);
-        Assert.Contains("lp-act lp-act--always edit-fl-btn", html);               // the edit script finds the buttons by this class
-    }
-
     // ---------- Instruments ----------
 
     // ---------- Maintenance strategies ----------
@@ -178,43 +164,7 @@ public class CmmsListPagesTests
 
     // ---------- Assets ----------
 
-    [Fact]
-    public async Task Assets_StatusesAreLocalisedPills_AndTheCreateModalStays()
-    {
-        var html = await Render<AssetController>("/Views/Asset/Index.cshtml",
-            Page(new AssetListDto { AssetId = 1, AssetNumber = "AST-P101", EquipmentTagNumber = "P-101A", EquipmentName = "Feed pump", Status = "Standby" }), v =>
-            {
-                v["Equipments"] = new List<dynamic>();
-                v["FunctionalLocations"] = new List<FunctionalLocationPickerItemDto>();
-                v["TotalCount"] = 1; v["ActiveCount"] = 0;
-                v["SelectedStatus"] = "Standby";
-            });
-
-        AssertBuiltFromTheComponent(html, "Asset", 1);
-        Assert.Contains("vs-pill vs-pill--warning", html);
-        Assert.Contains("Standby", Chips(html));
-        Assert.Matches("<button[^>]*data-bs-target=\"#createAssetModal\"", html);
-    }
-
     // ================= wave 2b: the remaining CMMS lists =================
-
-    // ---------- Equipment criticality ----------
-
-    [Fact]
-    public async Task EquipmentCriticality_CountsAreKpiChips_TheClassFilterWorks_AndNewOpensTheAssessModal()
-    {
-        var html = await Render<EquipmentCriticalityController>("/Views/EquipmentCriticality/Index.cshtml", Page(
-            new EquipmentCriticalityListDto { EquipmentId = 3, EquipmentTagNumber = "P-101A", CriticalityClass = "A", RiskLevel = "High", SafetyImpact = "Fire" },
-            new EquipmentCriticalityListDto { EquipmentId = 4, EquipmentTagNumber = "P-102", CriticalityClass = "C", RiskLevel = "Low" }),
-            v => { v["ClassACount"] = 1; v["ClassBCount"] = 0; v["ClassCCount"] = 1; v["UnassessedCount"] = 7; v["SelectedClass"] = "A"; });
-
-        AssertBuiltFromTheComponent(html, "EquipmentCriticality", 2);
-        Assert.Single(Regex.Matches(Chips(html), "class=\"pems-filter-chip\""));
-        Assert.Contains("vs-pill--danger", html);                                     // class A
-        Assert.Matches("<button[^>]*data-bs-target=\"#assessModal\"", html);
-        Assert.Contains("id=\"assessModal\"", html);                                  // the modal is kept
-        Assert.Equal(4, Regex.Matches(Kpis(html, "ecKpis"), "class=\"vs-chip").Count);
-    }
 
     // ---------- Mechanical equipment ----------
 
@@ -265,22 +215,6 @@ public class CmmsListPagesTests
         }, _ => { });
         AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
         Assert.Contains("name=\"active\" value=\"false\"", html);
-    }
-
-    [Fact]
-    public async Task ClassificationReviewQueue_IsAListPage_WithItsStatusFilterAndActions()
-    {
-        var html = await Render<EquipmentClassificationController>("/Views/EquipmentClassification/ReviewQueue.cshtml", new ReviewQueuePageDto
-        {
-            Items = { new ReviewQueueItemDto { SuggestionId = 11, TagNumber = "P-101", EquipmentName = "Pump", SuggestedEquipmentClassName = "Centrifugal pump", Confidence = "MEDIUM", Source = "AI", Reason = "name match" } },
-            TotalCount = 1, Page = 1, PageSize = 50
-        }, v => { v["StatusFilter"] = "PENDING"; });
-
-        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
-        Assert.Contains("P-101", html);
-        Assert.Contains("name=\"status\"", html);
-        Assert.Contains("name=\"id\" value=\"11\"", html);   // accept and reject forms kept
-        Assert.DoesNotContain("pagination-sm", html);
     }
 
     [Fact]

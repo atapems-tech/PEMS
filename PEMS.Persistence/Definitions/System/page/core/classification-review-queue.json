@@ -1,0 +1,242 @@
+{
+  "kind": "page",
+  "key": "classification-review-queue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Classification review queue",
+    "fa": "صف بازبینی طبقه‌بندی"
+  },
+  "description": {
+    "en": "Classification review queue",
+    "fa": "صف بازبینی طبقه‌بندی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "classification-review-queue",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "classification-filters",
+            "resetUrl": "/p/classification-review-queue",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "PENDING",
+                    "label": {
+                      "en": "Pending",
+                      "fa": "در انتظار"
+                    }
+                  },
+                  {
+                    "value": "ACCEPTED",
+                    "label": {
+                      "en": "Accepted",
+                      "fa": "پذیرفته‌شده"
+                    }
+                  },
+                  {
+                    "value": "REJECTED",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/classification-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/classification-coverage",
+                "text": {
+                  "en": "Maintenance intelligence coverage",
+                  "fa": "پوشش هوشمندی نگهداری"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "queue",
+          "component": "data-grid",
+          "options": {
+            "id": "queue",
+            "url": "/d/classification-review-queue?f.status={{params.status|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "equipmentName",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 200
+              },
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 130
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 130
+              },
+              {
+                "key": "suggestedClass",
+                "header": {
+                  "en": "Suggested class",
+                  "fa": "کلاس پیشنهادی"
+                },
+                "width": 180
+              },
+              {
+                "key": "confidence",
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                },
+                "width": 100
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 110
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 260
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "reviewedBy",
+                "header": {
+                  "en": "Reviewed by",
+                  "fa": "بازبین"
+                },
+                "width": 120
+              },
+              {
+                "key": "reviewedAt",
+                "header": {
+                  "en": "Reviewed",
+                  "fa": "بازبینی"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "accept",
+                    "label": {
+                      "en": "Accept",
+                      "fa": "پذیرش"
+                    },
+                    "url": "/a/classification-accept",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Accept this classification and apply it?",
+                      "fa": "این طبقه‌بندی پذیرفته و اعمال شود؟"
+                    },
+                    "showWhen": "row.status == 'PENDING'"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    },
+                    "url": "/a/classification-reject",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Reject this suggestion?",
+                      "fa": "این پیشنهاد رد شود؟"
+                    },
+                    "showWhen": "row.status == 'PENDING'"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "MaintenanceMasterData.View"
+  }
+}

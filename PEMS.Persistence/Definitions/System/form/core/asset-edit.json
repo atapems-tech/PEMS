@@ -1,0 +1,128 @@
+{
+  "kind": "form",
+  "key": "asset-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit asset",
+    "fa": "ویرایش دارایی"
+  },
+  "description": {
+    "en": "Edit asset",
+    "fa": "ویرایش دارایی"
+  },
+  "payload": {
+    "id": "asset-edit",
+    "title": {
+      "en": "Edit asset",
+      "fa": "ویرایش دارایی"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "asset-edit",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "assetNumber",
+        "label": {
+          "en": "Asset number",
+          "fa": "شماره دارایی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "status",
+        "label": {
+          "en": "Status",
+          "fa": "وضعیت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Active",
+            "label": {
+              "en": "Active",
+              "fa": "Active"
+            }
+          },
+          {
+            "value": "Standby",
+            "label": {
+              "en": "Standby",
+              "fa": "Standby"
+            }
+          },
+          {
+            "value": "Retired",
+            "label": {
+              "en": "Retired",
+              "fa": "Retired"
+            }
+          }
+        ]
+      },
+      {
+        "name": "functionalLocationId",
+        "label": {
+          "en": "Functional location",
+          "fa": "محل عملکردی"
+        },
+        "kind": "select",
+        "optionsFrom": "asset-location-options"
+      },
+      {
+        "name": "maintenanceClass",
+        "label": {
+          "en": "Maintenance class",
+          "fa": "کلاس نگهداری"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "functionalLocation",
+        "label": {
+          "en": "Functional location (raw text, legacy)",
+          "fa": "محل عملکردی (متن خام)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "commissioningDate",
+        "label": {
+          "en": "Commissioning date",
+          "fa": "تاریخ راه‌اندازی"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}
