@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mdr-import-fix-statuses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Fix the legacy status values",
+    "fa": "اصلاح مقادیر وضعیت قدیمی"
+  },
+  "description": {
+    "en": "Fix the legacy status values",
+    "fa": "اصلاح مقادیر وضعیت قدیمی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MdrImport",
+      "action": "FixLegacyStatuses",
+      "args": {
+        "projectId": "field:projectId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/MDRImport"
+  }
+}

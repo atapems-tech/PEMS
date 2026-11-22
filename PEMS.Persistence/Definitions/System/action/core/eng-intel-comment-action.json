@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-intel-comment-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Set the action status of a comment",
+    "fa": "وضعیت اقدام نظر"
+  },
+  "description": {
+    "en": "Set the action status of a comment",
+    "fa": "وضعیت اقدام نظر"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringIntelligence",
+      "action": "SetCommentAction",
+      "args": {
+        "commentId": "field:commentId",
+        "actionStatus": "field:actionStatus",
+        "documentId": "field:documentId"
+      }
+    },
+    "success": {
+      "en": "The comment was updated.",
+      "fa": "نظر به‌روز شد."
+    },
+    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+  }
+}

@@ -96,59 +96,6 @@ public class MDBController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddDocument(int mdbId, string part, int? documentId, string? title, int? dvdVolumeNo, bool isNotApplicable, string? notes)
-    {
-        await _service.AddDocumentAsync(mdbId, part, documentId, title ?? string.Empty, dvdVolumeNo, isNotApplicable, notes);
-        TempData["Message"] = "Document added to MDB";
-        return RedirectToAction(nameof(Details), new { id = mdbId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> RemoveDocument(int mdbId, int mdbDocumentId)
-    {
-        await _service.RemoveDocumentAsync(mdbDocumentId);
-        return RedirectToAction(nameof(Details), new { id = mdbId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkIndexSubmitted(int mdbId)
-    {
-        await _service.MarkIndexSubmittedAsync(mdbId);
-        TempData["Message"] = "Index of Contents marked as submitted";
-        return RedirectToAction(nameof(Details), new { id = mdbId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkFinalIssued(int mdbId)
-    {
-        await _service.MarkFinalIssuedAsync(mdbId);
-        TempData["Message"] = "MDB marked as Final Issued";
-        return RedirectToAction(nameof(Details), new { id = mdbId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkHardCopyShipped(int mdbId, int? hardCopyCount)
-    {
-        await _service.MarkHardCopyShippedAsync(mdbId, hardCopyCount);
-        TempData["Message"] = "Hard copy shipment recorded";
-        return RedirectToAction(nameof(Details), new { id = mdbId });
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkSoftCopyDelivered(int mdbId)
-    {
-        await _service.MarkSoftCopyDeliveredAsync(mdbId);
-        TempData["Message"] = "Soft copy delivery recorded";
-        return RedirectToAction(nameof(Details), new { id = mdbId });
-    }
-
     private async Task LoadCreateViewBagsAsync()
     {
         ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)

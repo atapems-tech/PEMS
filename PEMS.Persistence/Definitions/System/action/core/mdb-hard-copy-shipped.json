@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "mdb-hard-copy-shipped",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the hard copy shipment",
+    "fa": "ثبت ارسال نسخه‌ی چاپی"
+  },
+  "description": {
+    "en": "Record the hard copy shipment",
+    "fa": "ثبت ارسال نسخه‌ی چاپی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Mdb",
+      "action": "MarkHardCopyShipped",
+      "args": {
+        "mdbId": "field:mdbId",
+        "hardCopyCount": "field:hardCopyCount"
+      }
+    },
+    "success": {
+      "en": "Hard copy shipment recorded",
+      "fa": "ارسال نسخه‌ی چاپی ثبت شد."
+    },
+    "redirect": "/MDB/Details/{mdbId}"
+  }
+}

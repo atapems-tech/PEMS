@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mdb-index-submitted",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark the index as submitted",
+    "fa": "ثبت ارسال فهرست محتوا"
+  },
+  "description": {
+    "en": "Mark the index as submitted",
+    "fa": "ثبت ارسال فهرست محتوا"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Mdb",
+      "action": "MarkIndexSubmitted",
+      "args": {
+        "mdbId": "field:mdbId"
+      }
+    },
+    "success": {
+      "en": "Index of Contents marked as submitted",
+      "fa": "فهرست محتوا ارسال‌شده ثبت شد."
+    },
+    "redirect": "/MDB/Details/{mdbId}"
+  }
+}

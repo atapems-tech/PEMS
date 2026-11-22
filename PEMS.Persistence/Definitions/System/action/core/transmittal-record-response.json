@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "transmittal-record-response",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the response",
+    "fa": "ثبت پاسخ"
+  },
+  "description": {
+    "en": "Record the response",
+    "fa": "ثبت پاسخ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Transmittal",
+      "action": "RecordResponse",
+      "args": {
+        "id": "field:id",
+        "responseNote": "field:responseNote"
+      }
+    },
+    "success": {
+      "en": "Response recorded",
+      "fa": "پاسخ ثبت شد."
+    },
+    "redirect": "/Transmittal/Details/{id}"
+  }
+}
