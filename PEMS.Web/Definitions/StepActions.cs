@@ -209,10 +209,28 @@ public sealed class WebAuthnStepUpVerifier(IServiceScopeFactory scopes) : IStepU
         try
         {
             var (success, error, _) = await webauthn.CompleteAssertionAsync(userId.Value, request.AssertionJson, request.OptionsJson);
-            return success ? new StepUpResult(StepUpStatus.Passed) : await DenyAsync(scope.ServiceProvider, userId, request, error ?? "The security key answer was not accepted.");
+            if (!success) return await DenyAsync(scope.ServiceProvider, userId, request, error ?? "The security key answer was not accepted.");
+            await RecordPassAsync(db, userId.Value, request);
+            return new StepUpResult(StepUpStatus.Passed);
         }
         catch (Exception) { return await DenyAsync(scope.ServiceProvider, userId, request, "The security key answer could not be verified."); }
     }
+
+    /// <summary>SCRUM-819: a passed confirmation is audited too (the former sensitive-action check wrote a record for every attempt, allowed or denied). A failure to write is not an allow and not a denial: the confirmation itself stands.</summary>
+    private static async Task RecordPassAsync(PEMSDbContext db, int userId, StepUpRequest request)
+    {
+        try
+        {
+            db.AuthorizationAuditLogs.Add(new PEMS.Domain.Entities.AuthorizationAuditLog
+            {
+                UserId = userId, ResourceName = request.Resource, ActionName = request.Action, Decision = PEMS.Application.DTOs.AccessDecisionReason.Allow.ToString(),
+                Reason = "Step-up: security key confirmation passed", IpAddress = request.IpAddress, Timestamp = DateTime.Now
+            });
+            await db.SaveChangesAsync();
+        }
+        catch (Exception) { db.ChangeTracker.Clear(); }
+    }
+
 
     private static async Task<StepUpResult> DenyAsync(IServiceProvider services, int? userId, StepUpRequest request, string reason)
     {
