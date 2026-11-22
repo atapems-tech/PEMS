@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "asset-inspections",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "asset inspections",
+    "fa": "asset inspections"
+  },
+  "description": {
+    "en": "asset inspections",
+    "fa": "asset inspections"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Asset",
+      "action": "Inspections",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -39,25 +39,35 @@ public class FunctionalLocationControllerAuthorizationTests
         return (controller, ctx);
     }
 
+    // SCRUM-700: the list is a read operation (FunctionalLocation.View, checked by the host); the TreeNodes endpoint of the picker stays in the controller
+    private static string ViewPermission() => ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IAssetPagesOperations).GetMethod("LocationListAsync")!
+        .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission!;
+
     [Fact]
-    public async Task Index_WithoutViewPermission_ReturnsForbid()
+    public async Task List_WithoutViewPermission_IsNotAllowed()
     {
-        var (controller, _) = await CreateController(nameof(Index_WithoutViewPermission_ReturnsForbid), role: null);
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
+        var (_, ctx) = await CreateController(nameof(List_WithoutViewPermission_IsNotAllowed), role: null);
+        var parts = ViewPermission().Split('.');
+        Assert.False(await new PermissionService(ctx, new AccessControlService(ctx)).HasPermissionAsync(new List<string>(), parts[0], parts[1]));
     }
 
     [Fact]
-    public async Task Index_WithViewPermission_ReturnsView()
+    public async Task List_WithViewPermission_ReturnsTheRows_AndValidateRefusesACycle()
     {
-        var (controller, _) = await CreateController(nameof(Index_WithViewPermission_ReturnsView), role: SystemRoles.Viewer);
-
-        var result = await controller.Index();
-
-        var view = Assert.IsType<ViewResult>(result);
-        Assert.IsType<PagedResult<FunctionalLocationListDto>>(view.Model);
+        var (_, ctx) = await CreateController(nameof(List_WithViewPermission_ReturnsTheRows_AndValidateRefusesACycle), role: SystemRoles.Viewer);
+        var parts = ViewPermission().Split('.');
+        Assert.True(await new PermissionService(ctx, new AccessControlService(ctx)).HasPermissionAsync(new List<string> { SystemRoles.Viewer }, parts[0], parts[1]));
+        var parent = new PEMS.Domain.Entities.FunctionalLocation { Code = "P", Name = "Parent", IsActive = true, CreatedDate = DateTime.Now };
+        ctx.FunctionalLocations.Add(parent);
+        await ctx.SaveChangesAsync();
+        var child = new PEMS.Domain.Entities.FunctionalLocation { Code = "C", Name = "Child", ParentId = parent.FunctionalLocationId, IsActive = true, CreatedDate = DateTime.Now };
+        ctx.FunctionalLocations.Add(child);
+        await ctx.SaveChangesAsync();
+        var ops = new PEMS.Web.Services.AssetPagesOperations(ctx, null!, new FunctionalLocationService(ctx));
+        Assert.Equal(2, (await ops.LocationListAsync()).Count);
+        Assert.False((await ops.ValidateLocationAsync(parent.FunctionalLocationId, "P", child.FunctionalLocationId)).Success);   // the parent under its own child
+        Assert.False((await ops.ValidateLocationAsync(child.FunctionalLocationId, "P")).Success);                                  // a code already used
+        Assert.True((await ops.ValidateLocationAsync(child.FunctionalLocationId, "C", parent.FunctionalLocationId)).Success);
     }
 
     // Create and Edit are the operations FunctionalLocation.Create / Edit (permissions FunctionalLocation.Create / Edit, SCRUM-700); the operation host refuses a role without them.

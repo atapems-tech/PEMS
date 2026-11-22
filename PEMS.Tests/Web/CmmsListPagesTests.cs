@@ -24,8 +24,8 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "Equipment", "FunctionalLocation",
-        "MaintenanceStrategy", "Asset",
+        "WorkOrder", "Equipment",
+        "MaintenanceStrategy",
         // wave 2b
         "FailureModeCatalog", "RcmFmea",
     };
@@ -130,20 +130,6 @@ public class CmmsListPagesTests
 
     // ---------- Functional locations ----------
 
-    [Fact]
-    public async Task FunctionalLocations_EditButtonsCarryTheRow_AndBothModalsStay()
-    {
-        var html = await Render<FunctionalLocationController>("/Views/FunctionalLocation/Index.cshtml",
-            Page(new FunctionalLocationListDto { FunctionalLocationId = 6, Code = "U100-CW", Name = "Cooling water", PathBreadcrumb = "JPC / U100 / U100-CW", Plant = "JPC", Unit = "U100" }),
-            v => v["PickerList"] = new List<FunctionalLocationPickerItemDto>());
-
-        AssertBuiltFromTheComponent(html, "FunctionalLocation", 1);
-        Assert.Contains("data-code=\"U100-CW\"", html);
-        Assert.Contains("id=\"createFlModal\"", html);
-        Assert.Contains("id=\"editFlModal\"", html);
-        Assert.Contains("lp-act lp-act--always edit-fl-btn", html);               // the edit script finds the buttons by this class
-    }
-
     // ---------- Instruments ----------
 
     // ---------- Maintenance strategies ----------
@@ -177,24 +163,6 @@ public class CmmsListPagesTests
     // ---------- Spare parts ----------
 
     // ---------- Assets ----------
-
-    [Fact]
-    public async Task Assets_StatusesAreLocalisedPills_AndTheCreateModalStays()
-    {
-        var html = await Render<AssetController>("/Views/Asset/Index.cshtml",
-            Page(new AssetListDto { AssetId = 1, AssetNumber = "AST-P101", EquipmentTagNumber = "P-101A", EquipmentName = "Feed pump", Status = "Standby" }), v =>
-            {
-                v["Equipments"] = new List<dynamic>();
-                v["FunctionalLocations"] = new List<FunctionalLocationPickerItemDto>();
-                v["TotalCount"] = 1; v["ActiveCount"] = 0;
-                v["SelectedStatus"] = "Standby";
-            });
-
-        AssertBuiltFromTheComponent(html, "Asset", 1);
-        Assert.Contains("vs-pill vs-pill--warning", html);
-        Assert.Contains("Standby", Chips(html));
-        Assert.Matches("<button[^>]*data-bs-target=\"#createAssetModal\"", html);
-    }
 
     // ================= wave 2b: the remaining CMMS lists =================
 

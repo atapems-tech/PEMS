@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "asset-work-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "asset work orders",
+    "fa": "asset work orders"
+  },
+  "description": {
+    "en": "asset work orders",
+    "fa": "asset work orders"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Asset",
+      "action": "WorkOrders",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

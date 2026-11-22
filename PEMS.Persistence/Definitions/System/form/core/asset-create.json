@@ -1,0 +1,144 @@
+{
+  "kind": "form",
+  "key": "asset-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New asset",
+    "fa": "دارایی جدید"
+  },
+  "description": {
+    "en": "New asset",
+    "fa": "دارایی جدید"
+  },
+  "payload": {
+    "id": "asset-create",
+    "title": {
+      "en": "New asset",
+      "fa": "دارایی جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "asset-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-options"
+      },
+      {
+        "name": "assetNumber",
+        "label": {
+          "en": "Asset number",
+          "fa": "شماره دارایی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "status",
+        "label": {
+          "en": "Status",
+          "fa": "وضعیت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Active",
+            "label": {
+              "en": "Active",
+              "fa": "Active"
+            }
+          },
+          {
+            "value": "Standby",
+            "label": {
+              "en": "Standby",
+              "fa": "Standby"
+            }
+          },
+          {
+            "value": "Retired",
+            "label": {
+              "en": "Retired",
+              "fa": "Retired"
+            }
+          }
+        ]
+      },
+      {
+        "name": "functionalLocationId",
+        "label": {
+          "en": "Functional location",
+          "fa": "محل عملکردی"
+        },
+        "kind": "select",
+        "optionsFrom": "asset-location-options"
+      },
+      {
+        "name": "maintenanceClass",
+        "label": {
+          "en": "Maintenance class",
+          "fa": "کلاس نگهداری"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "functionalLocation",
+        "label": {
+          "en": "Functional location (raw text, legacy)",
+          "fa": "محل عملکردی (متن خام)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "commissioningDate",
+        "label": {
+          "en": "Commissioning date",
+          "fa": "تاریخ راه‌اندازی"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

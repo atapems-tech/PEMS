@@ -4,35 +4,66 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "New asset",
-    "fa": "دارایی جدید"
+    "en": "Create asset",
+    "fa": "ایجاد دارایی"
   },
   "description": {
-    "en": "New asset",
-    "fa": "دارایی جدید"
+    "en": "Create asset",
+    "fa": "ایجاد دارایی"
   },
   "payload": {
     "kind": "handler",
-    "handler": "operation.invoke",
+    "handler": "entity.create",
     "parameters": {
-      "model": "Asset",
-      "action": "Create",
-      "args": {
-        "equipmentId": "field:equipmentId",
-        "assetNumber": "field:assetNumber",
-        "status": "field:status",
-        "functionalLocation": "field:functionalLocation",
-        "maintenanceClass": "field:maintenanceClass",
-        "commissioningDate": "field:commissioningDate",
-        "description": "field:description",
-        "functionalLocationId": "field:functionalLocationId"
-      }
+      "entity": "Asset",
+      "map": {
+        "assetNumber": "AssetNumber",
+        "status": "Status",
+        "functionalLocationId": "FunctionalLocationId",
+        "maintenanceClass": "MaintenanceClass",
+        "functionalLocation": "FunctionalLocation",
+        "commissioningDate": "CommissioningDate",
+        "description": "Description",
+        "equipmentId": "EquipmentId"
+      },
+      "required": [
+        "EquipmentId",
+        "AssetNumber"
+      ],
+      "defaults": {
+        "IsActive": true
+      },
+      "unique": [
+        {
+          "fields": [
+            "EquipmentId"
+          ],
+          "where": {
+            "IsActive": true
+          },
+          "message": {
+            "en": "This equipment already has an asset.",
+            "fa": "این تجهیز از قبل یک Asset دارد."
+          }
+        },
+        {
+          "fields": [
+            "AssetNumber"
+          ],
+          "where": {
+            "IsActive": true
+          },
+          "message": {
+            "en": "This asset number is already used.",
+            "fa": "این شماره Asset قبلاً استفاده شده است."
+          }
+        }
+      ]
     },
     "success": {
-      "en": "Asset created",
-      "fa": "دارایی ایجاد شد"
+      "en": "Asset created.",
+      "fa": "دارایی ایجاد شد."
     },
-    "redirect": "/Asset/Index",
-    "redirectBack": true
+    "redirect": "/p/assets"
   }
 }

@@ -117,7 +117,7 @@
                             .FirstOrDefault(x => x.FunctionalLocationId == eq.FunctionalLocationId);
                         <pems-help-text>Currently: @(currentFl?.PathBreadcrumb ?? NA(eq.FunctionalLocationBreadcrumb))</pems-help-text>
                     }
-                    <pems-help-text>Real link, distinct from the raw "@NA(eq.Area)" import value. <pems-link asp-controller="FunctionalLocation" asp-action="Index" target="_blank">@Localizer["Manage list"]</pems-link></pems-help-text>
+                    <pems-help-text>Real link, distinct from the raw "@NA(eq.Area)" import value. <pems-link href="/p/functional-locations" target="_blank">@Localizer["Manage list"]</pems-link></pems-help-text>
                 </pems-form-group>
                 <pems-form-group css="mb-2">
                     <pems-label css="small">@Localizer["Parent Equipment"]</pems-label>
@@ -375,7 +375,7 @@
             {
                 <pems-flex justify="between" align="center" css="mb-3">
                     <pems-heading level="6" class="mb-0">Asset - @asset.AssetNumber</pems-heading>
-                    <pems-button tone="primary" size="small" as="a" asp-controller="Asset" asp-action="Details" asp-route-id="@asset.AssetId">
+                    <pems-button tone="primary" size="small" as="a" href="/p/asset-details?id=@asset.AssetId">
                         <pems-icon name="bi-diagram-2" /> @Localizer["Cm_FullAsset"]
                     </pems-button>
                 </pems-flex>
