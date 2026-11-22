@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "contract-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a contract",
+    "fa": "ایجاد قرارداد"
+  },
+  "description": {
+    "en": "Create a contract with its creator event",
+    "fa": "ایجاد قرارداد همراه با رویداد ایجادکننده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "ContractPage",
+      "action": "Create",
+      "args": {
+        "contractNo": "field:contractNo",
+        "projectId": "field:projectId",
+        "vendorId": "field:vendorId",
+        "scope": "field:scope",
+        "value": "field:value",
+        "startDate": "field:startDate",
+        "endDate": "field:endDate",
+        "requiresInspection": "field:requiresInspection",
+        "userId": "context:userId",
+        "ip": "context:ip"
+      }
+    },
+    "success": {
+      "en": "Contract created successfully.",
+      "fa": "قرارداد با موفقیت ایجاد شد."
+    },
+    "redirect": "/p/contract-details?id={result}"
+  }
+}

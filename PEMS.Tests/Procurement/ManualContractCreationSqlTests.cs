@@ -13,7 +13,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Procurement;
 
@@ -75,7 +75,7 @@ public sealed class ManualContractCreationSqlTests : IAsyncLifetime
         return new Seed(m1, m2, viewer, project.ProjectId, vendor.VendorId);
     }
 
-    private sealed record Env(PEMSDbContext Ctx, ContractService Service, AccessControlService AccessControl, ContractController Controller, FakeCurrentUserService CurrentUser);
+    private sealed record Env(PEMSDbContext Ctx, ContractService Service, AccessControlService AccessControl, ContractOperations Operations, FakeCurrentUserService CurrentUser);
 
     private Env NewEnv(string? userName, int? userId, string? role = SystemRoles.ContractManager, IEnumerable<IInterceptor>? interceptors = null,
         Func<ExecutionStrategyDependencies, IExecutionStrategy>? strategy = null, int lockTimeoutMs = 15000)
@@ -88,8 +88,8 @@ public sealed class ManualContractCreationSqlTests : IAsyncLifetime
         var currentUser = new FakeCurrentUserService { UserId = userId, Roles = role == null ? Array.Empty<string>() : new[] { role } };
         var runtime = new FakeWorkflowRuntime();
         var workflow = new ContractWorkflowService(ctx, runtime, accessControl, _numbering);
-        var controller = new ContractController(service, workflow, runtime, accessControl, permissions, currentUser, ctx).WithTempData();
-        return new Env(ctx, service, accessControl, controller, currentUser);
+        var operations = new ContractOperations(service, workflow, ctx, currentUser, accessControl);
+        return new Env(ctx, service, accessControl, operations, currentUser);
     }
 
     /// <summary>مناقصه‌ی Awarded تازه (برای تست‌های هم‌زمانی بین مسیر دستی و مسیر مناقصه).</summary>
@@ -403,74 +403,73 @@ public sealed class ManualContractCreationSqlTests : IAsyncLifetime
 
     // =============================================================== 8 : کنترلر روی SQL واقعی (Allow / Deny / استثنایی)
     [Fact]
-    public async Task M8a_Controller_Allow_CreatesTheContractAndRedirectsToDetails()
+    public async Task M8a_Operation_Allow_CreatesTheContractAndReturnsItsId()
     {
         var seed = await SeedAsync();
         var env = NewEnv("manager.one", seed.ManagerOne);
 
-        var result = await env.Controller.Create("CT-M8A", seed.ProjectId, seed.VendorId, null, null, null, null);
+        var result = await env.Operations.CreateAsync("CT-M8A", seed.ProjectId, seed.VendorId, null, null, null, null, false, env.CurrentUser.UserId, null);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Details", redirect.ActionName);
+        Assert.True(result.Success);
         await AssertCommittedOnceAsync("CT-M8A", seed.ManagerOne, "manager.one");
-        Assert.Equal(await ContractIdAsync("CT-M8A"), (int)redirect.RouteValues!["id"]!);
+        Assert.Equal(await ContractIdAsync("CT-M8A"), result.NewId);
     }
 
     [Fact]
-    public async Task M8b_Controller_Deny_UserAwareDenialAfterAPassingRoleGate_IsForbid_AndNothingIsCommitted()
+    public async Task M8b_Operation_Deny_UserAwareDenialAfterAPassingRoleGate_IsRefused_AndNothingIsCommitted()
     {
         var seed = await SeedAsync();
         // نقش نشست ContractManager است (دروازه‌ی قدیمی عبور می‌کند)، ولی این هویت (Viewer در AspNetUserRoles) در مسیر آگاه-از-کاربر مجوز ندارد
         var env = NewEnv("viewer.one", seed.Viewer, role: SystemRoles.ContractManager);
 
-        Assert.IsType<ForbidResult>(await env.Controller.Create("CT-M8B", seed.ProjectId, seed.VendorId, null, null, null, null));
+        Assert.False((await env.Operations.CreateAsync("CT-M8B", seed.ProjectId, seed.VendorId, null, null, null, null, false, env.CurrentUser.UserId, null)).Success);
 
         await AssertNoContractAsync();
         Assert.Equal(1, await PreAuthRowsAsync("DeniedByRole"));
     }
 
     [Fact]
-    public async Task M8c_Controller_Exceptional_SaveFailureInsideTheTransaction_ShowsNothingSaved_AndCommitsNothing()
+    public async Task M8c_Operation_Exceptional_SaveFailureInsideTheTransaction_ShowsNothingSaved_AndCommitsNothing()
     {
         var seed = await SeedAsync();
         var faults = new NthSaveFaultInterceptor();
         var env = NewEnv("manager.one", seed.ManagerOne, interceptors: new IInterceptor[] { faults });
         faults.Arm(5);                                                                       // C: ردیف رویداد ایجادکننده
 
-        var result = await env.Controller.Create("CT-M8C", seed.ProjectId, seed.VendorId, null, null, null, null);
+        var result = await env.Operations.CreateAsync("CT-M8C", seed.ProjectId, seed.VendorId, null, null, null, null, false, env.CurrentUser.UserId, null);
 
-        Assert.Equal("Create", Assert.IsType<RedirectToActionResult>(result).ActionName);
-        Assert.Contains("هیچ تغییری ذخیره نشد", Assert.IsType<string>(env.Controller.TempData["Error"]));
+        Assert.False(result.Success);
+        Assert.Contains("هیچ تغییری ذخیره نشد", result.Error);
         await AssertNoContractAsync();
     }
 
     [Fact]
-    public async Task M8d_Controller_UncertainCommit_UnknownOutcomeIsNeverReportedAsNotCreated()
+    public async Task M8d_Operation_UncertainCommit_UnknownOutcomeIsNeverReportedAsNotCreated()
     {
         var seed = await SeedAsync();
         var probe = new CommitProbe { ThrowAfterRealCommit = 1, TransientReadFailuresAfterCommitFailure = 3, FailReadsNonTransientAfterBudget = true };
         var env = NewEnv("manager.one", seed.ManagerOne, interceptors: new IInterceptor[] { new CommitFaultInterceptor(probe), new ReadFaultInterceptor(probe) }, strategy: d => new TestRetryingStrategy(d, 3));
 
-        var result = await env.Controller.Create("CT-M8D", seed.ProjectId, seed.VendorId, null, null, null, null);
+        var result = await env.Operations.CreateAsync("CT-M8D", seed.ProjectId, seed.VendorId, null, null, null, null, false, env.CurrentUser.UserId, null);
 
-        Assert.Equal("Index", Assert.IsType<RedirectToActionResult>(result).ActionName);
-        var message = Assert.IsType<string>(env.Controller.TempData["Error"]);
+        Assert.False(result.Success);
+        var message = result.Error!;
         Assert.Contains("نامطمئن", message);
         Assert.DoesNotContain("هیچ تغییری ذخیره نشد", message);
         await AssertCommittedOnceAsync("CT-M8D", seed.ManagerOne, "manager.one");
     }
 
     [Fact]
-    public async Task M8e_Controller_RecoveredAfterUncertainCommit_IsSuccess_WithAnExplicitMessage()
+    public async Task M8e_Operation_RecoveredAfterUncertainCommit_IsSuccess_WithAnExplicitMessage()
     {
         var seed = await SeedAsync();
         var probe = new CommitProbe { ThrowAfterRealCommit = 1 };
         var env = NewEnv("manager.one", seed.ManagerOne, interceptors: new IInterceptor[] { new CommitFaultInterceptor(probe) }, strategy: d => new TestRetryingStrategy(d));
 
-        var result = await env.Controller.Create("CT-M8E", seed.ProjectId, seed.VendorId, null, null, null, null);
+        var result = await env.Operations.CreateAsync("CT-M8E", seed.ProjectId, seed.VendorId, null, null, null, null, false, env.CurrentUser.UserId, null);
 
-        Assert.Equal("Details", Assert.IsType<RedirectToActionResult>(result).ActionName);
-        Assert.Contains("uncertain", Assert.IsType<string>(env.Controller.TempData["Message"]));
+        Assert.True(result.Success);
+        Assert.Contains("uncertain", result.Error);
         await AssertCommittedOnceAsync("CT-M8E", seed.ManagerOne, "manager.one");
     }
 
