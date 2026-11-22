@@ -440,12 +440,12 @@ public class WorkRequestWorkflowTests : IDisposable
     }
 
     [Fact]
-    public void Controller_has_no_private_status_map()
+    public void The_details_reads_have_no_private_status_map()
     {
         string? path = null;
         for (var d = new DirectoryInfo(AppContext.BaseDirectory); d != null; d = d.Parent)
         {
-            var c = Path.Combine(d.FullName, "PEMS.Web", "Controllers", "WorkRequestController.cs");
+            var c = Path.Combine(d.FullName, "PEMS.Web", "Services", "WorkRequestDetailsOperations.cs");
             if (File.Exists(c)) { path = c; break; }
         }
         Assert.NotNull(path);
@@ -461,7 +461,7 @@ public class WorkRequestWorkflowTests : IDisposable
         string? path = null;
         for (var d = new DirectoryInfo(dir); d != null; d = d.Parent)
         {
-            var candidate = Path.Combine(d.FullName, "PEMS.Web", "Views", "WorkRequest", "Details.cshtml");
+            var candidate = Path.Combine(d.FullName, "PEMS.Persistence", "Definitions", "System", "page", "core", "work-request-details.json");
             if (File.Exists(candidate)) { path = candidate; break; }
         }
         Assert.NotNull(path);
@@ -469,8 +469,8 @@ public class WorkRequestWorkflowTests : IDisposable
         foreach (var stageName in new[] { "Reliability Review", "Technical Review", "Under Review", "Supervisor Approval", "Reliability" })
             Assert.DoesNotContain(stageName, html);
         // the list is a page definition now (SCRUM-765); the work request list view no longer exists
-        Assert.Contains("wf.Stages", html);
-        Assert.Contains("wf?.AvailableActions", html);
+        Assert.Contains("work-request-stages", html);
+        Assert.Contains("work-request-workflow-actions", html);
     }
 
     // ------------------------------------------------------------------ versioning + Reliability Review proof

@@ -18,17 +18,18 @@
       "fa": "تبدیل به دستورکار"
     },
     "submitLabel": {
-      "en": "Confirm",
-      "fa": "تأیید"
+      "en": "Convert to work order",
+      "fa": "تبدیل به دستورکار"
     },
     "actionKey": "work-request-convert",
     "columns": 1,
+    "warnOnLeave": true,
     "fields": [
       {
         "name": "id",
         "label": {
-          "en": "Request id",
-          "fa": "شناسه‌ی درخواست"
+          "en": "Work request id",
+          "fa": "شناسه‌ی درخواست کار"
         },
         "kind": "number",
         "required": true,
@@ -45,21 +46,50 @@
           "en": "Work order type",
           "fa": "نوع دستورکار"
         },
-        "kind": "text",
+        "kind": "select",
+        "options": [
+          {
+            "value": "Corrective",
+            "label": {
+              "en": "Corrective",
+              "fa": "Corrective"
+            }
+          },
+          {
+            "value": "Preventive",
+            "label": {
+              "en": "Preventive",
+              "fa": "Preventive"
+            }
+          },
+          {
+            "value": "Emergency",
+            "label": {
+              "en": "Emergency",
+              "fa": "Emergency"
+            }
+          },
+          {
+            "value": "Predictive",
+            "label": {
+              "en": "Predictive",
+              "fa": "Predictive"
+            }
+          }
+        ],
         "required": true,
         "messages": {
           "required": {
             "en": "This field is required.",
             "fa": "این فیلد الزامی است."
           }
-        },
-        "maxLength": 50
+        }
       },
       {
         "name": "equipmentId",
         "label": {
-          "en": "Equipment id",
-          "fa": "شناسه‌ی تجهیز"
+          "en": "Equipment id (needed when the request has no equipment)",
+          "fa": "شناسه‌ی تجهیز (اگر درخواست تجهیز ندارد)"
         },
         "kind": "number"
       }

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-request-workflow-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow history of the work request",
+    "fa": "تاریخچه‌ی گردش‌کار درخواست کار"
+  },
+  "description": {
+    "en": "Workflow history of the work request",
+    "fa": "تاریخچه‌ی گردش‌کار درخواست کار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkRequestDetails",
+      "action": "WorkflowHistory",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}
