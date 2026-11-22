@@ -235,6 +235,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IVdrOperations, PEMS.Web.
 builder.Services.AddScoped<PEMS.Application.Interfaces.IImportReviewOperations, PEMS.Web.Services.ImportReviewOperations>();   // SCRUM-719, 762
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDocumentFileOperations, PEMS.Web.Services.DocumentFileOperations>();   // SCRUM-690, 761, 685
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITableExtractionOperations, PEMS.Web.Services.TableExtractionOperations>();   // SCRUM-753
+builder.Services.AddScoped<PEMS.Application.Interfaces.IDocumentUploadOperations, PEMS.Web.Services.DocumentUploadOperations>();   // SCRUM-685
 builder.Services.AddScoped<PEMS.Application.Interfaces.IEngineeringDocumentOperations, PEMS.Web.Services.EngineeringDocumentOperations>();   // SCRUM-690
 builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterOperations, PEMS.Web.Services.LetterOperations>();   // SCRUM-716, 715
 builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterTemplateOperations, PEMS.Web.Services.LetterTemplateOperations>();   // SCRUM-717
