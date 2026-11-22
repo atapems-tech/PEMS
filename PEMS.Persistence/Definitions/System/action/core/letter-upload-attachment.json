@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "letter-upload-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Attach a file to the letter",
+    "fa": "پیوست فایل به نامه"
+  },
+  "description": {
+    "en": "Attach a file to the letter",
+    "fa": "پیوست فایل به نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "UploadAttachment",
+      "args": {
+        "letterId": "field:letterId",
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 25
+      }
+    },
+    "success": {
+      "en": "Attachment uploaded",
+      "fa": "پیوست بارگذاری شد."
+    },
+    "redirect": "/Letter/Details/{letterId}"
+  }
+}

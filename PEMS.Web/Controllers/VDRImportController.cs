@@ -48,32 +48,6 @@ public class VDRImportController : Controller
         return View(recentBatches);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
-    public async Task<IActionResult> Upload(IFormFile file, int projectId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "VDR", "Create"))
-            return Forbid();
-
-        if (file == null || file.Length == 0)
-        {
-            TempData["Error"] = "Please select a VDR Excel file.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        using var stream = file.OpenReadStream();
-
-        // طبق باگ واقعی که در Equipment Import پیدا شد (همان کلاس باگ): ImportedById باید
-        // EmployeeId باشد، نه شناسه‌ی خام کاربر (UserId) - این‌جا هنوز FK اعمال نشده بود پس
-        // خطا نمی‌داد، ولی مقدار غلط ذخیره می‌شد
-        var importedByEmployeeId = await GetCurrentEmployeeIdAsync();
-
-        var batchId = await _importService.StageFromExcelAsync(stream, file.FileName, projectId, importedByEmployeeId);
-
-        return RedirectToAction(nameof(Review), new { batchId });
-    }
-
     [HttpGet]
     public async Task<IActionResult> Review(int batchId)
     {

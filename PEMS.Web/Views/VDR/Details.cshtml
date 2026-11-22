@@ -311,7 +311,7 @@
         else
         {
             <pems-text class="text-muted small mb-3">@Localizer["Vd_UploadHint"]</pems-text>
-            <pems-form asp-action="UploadSubmissionFile" method="post" enctype="multipart/form-data" id="vdrFileUpload">
+            <pems-form action="/a/vdr-submission-file" method="post" enctype="multipart/form-data" id="vdrFileUpload">
                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                 <pems-row gap="2" css="align-items-end">
                     <pems-col md="3">

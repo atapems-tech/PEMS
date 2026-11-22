@@ -1,3 +1,4 @@
+using PEMS.Application.Common;
 using PEMS.Application.Interfaces;
 
 namespace PEMS.Web.Services;
@@ -27,6 +28,20 @@ public sealed class ImportReviewOperations(IMDRImportService mdr, IVDRImportServ
     {
         var count = await mdr.FixLegacyStatusValuesAsync(projectId);
         return Ok(count > 0 ? $"Status corrected for {count} previously imported document(s)." : "No documents needed a status fix.");
+    }
+
+    public async Task<int> UploadMdrAsync(OperationFile? file, int projectId, int? employeeId)
+    {
+        if (file is null || file.Bytes.Length == 0) throw new InvalidOperationException("Please select an MDR Excel file.");
+        await using var stream = new MemoryStream(file.Bytes);
+        return await mdr.StageFromExcelAsync(stream, file.FileName, projectId, employeeId);
+    }
+
+    public async Task<int> UploadVdrAsync(OperationFile? file, int projectId, int? employeeId)
+    {
+        if (file is null || file.Bytes.Length == 0) throw new InvalidOperationException("Please select a VDR Excel file.");
+        await using var stream = new MemoryStream(file.Bytes);
+        return await vdr.StageFromExcelAsync(stream, file.FileName, projectId, employeeId);
     }
 
     public async Task<(bool Success, string? Error)> ToggleVdrRowAsync(int rowId, bool include) { await vdr.SetRowIncludeAsync(rowId, include); return Ok(); }

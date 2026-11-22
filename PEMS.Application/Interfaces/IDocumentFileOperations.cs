@@ -19,6 +19,10 @@ public interface IDocumentFileOperations
     [PemsOperation("VdrFiles", "RecordCommentResponse")]
     Task<(bool Success, string? Error)> RecordVdrResponseAsync(int commentId, string? responseText, OperationFile? replyAttachment);
 
+    /// <summary>The file of the Files tab: stored in PEMS and linked to the submission as its document, comment sheet or reply sheet (kind Main, CommentSheet, ReplySheet); a new file replaces the link of that kind.</summary>
+    [PemsOperation("VdrFiles", "UploadSubmissionFile", "VDR.Edit")]
+    Task<(bool Success, string? Error)> UploadVdrSubmissionFileAsync(int vdrItemId, int submissionId, string kind, OperationFile? file);
+
     [PemsOperation("VdrFiles", "UploadCommentSheet")]
     Task<(bool Success, string? Error)> UploadVdrCommentSheetAsync(int submissionId, OperationFile file);
 

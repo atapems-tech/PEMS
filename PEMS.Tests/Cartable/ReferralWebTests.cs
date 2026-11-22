@@ -187,7 +187,7 @@ public class ReferralWebTests
     {
         var ctx = LetterTestWorld.NewContext("RefWeb_" + name);
         var letters = new LetterService(ctx, sanitizer: null!, knowledgeBaseService: null!);
-        return (new PEMS.Web.Services.LetterOperations(ctx, letters, null!, null!, null!, new User { UserId = userId }, new FakePermissionService { AllowAll = allowAll }), ctx);
+        return (new PEMS.Web.Services.LetterOperations(ctx, letters, null!, null!, null!, new User { UserId = userId }, new FakePermissionService { AllowAll = allowAll }, null!), ctx);
     }
 
     private static Letter PendingLetter(PEMSDbContext ctx, params int[] approvers)

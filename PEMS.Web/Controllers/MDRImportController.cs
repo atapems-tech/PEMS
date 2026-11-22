@@ -47,31 +47,6 @@ public class MDRImportController : Controller
         return View(recentBatches);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
-    public async Task<IActionResult> Upload(IFormFile file, int projectId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "MDRImport", "Create"))
-            return Forbid();
-
-        if (file == null || file.Length == 0)
-        {
-            TempData["Error"] = "Please select an MDR Excel file.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        using var stream = file.OpenReadStream();
-
-        // طبق باگ واقعی که در Equipment Import پیدا شد (همان کلاس باگ): ImportedById باید
-        // EmployeeId باشد، نه شناسه‌ی خام کاربر (UserId)
-        var importedByEmployeeId = await GetCurrentEmployeeIdAsync();
-
-        var batchId = await _importService.StageFromExcelAsync(stream, file.FileName, projectId, importedByEmployeeId);
-
-        return RedirectToAction(nameof(Review), new { batchId });
-    }
-
     [HttpGet]
     public async Task<IActionResult> Review(int batchId)
     {

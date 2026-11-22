@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "mdr-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload an MDR workbook",
+    "fa": "بارگذاری فایل MDR"
+  },
+  "description": {
+    "en": "Upload an MDR workbook",
+    "fa": "بارگذاری فایل MDR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MdrImport",
+      "action": "Upload",
+      "args": {
+        "file": "file:file",
+        "projectId": "field:projectId",
+        "employeeId": "context:employeeId"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "The workbook was staged for review.",
+      "fa": "فایل برای بازبینی مرحله‌بندی شد."
+    },
+    "redirect": "/MDRImport/Review?batchId={result}"
+  }
+}

@@ -92,6 +92,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-719, 762, 761, 716: workbook uploads, VDR submission file and letter attachment as definitions
+
+### Changed
+- The MDR and VDR workbook uploads (the staged batch opens in its review), the VDR Files tab upload and the letter attachment upload are definitions (/a/mdr-import-upload, /a/vdr-import-upload, /a/vdr-submission-file, /a/letter-upload-attachment) over operations with the old permissions, folders and texts. Web and tests compile; tests not run (end of batch).
+
 ## 2026-11-21 - SCRUM-685: document upload into the AI intake queue as a definition
 
 ### Changed
