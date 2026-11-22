@@ -14,6 +14,10 @@ public interface IJobPlanService
 
     Task<JobPlanDetailDto?> GetDetailsAsync(int jobPlanId);
 
+    /// <summary>SCRUM-818: the saved values of one job plan for its edit form (one row, or none); the form definition names it as its load operation.</summary>
+    [PEMS.Application.Common.PemsOperation("JobPlan", "One", "JobPlan.Edit")]
+    Task<List<JobPlanFormRowDto>> GetFormRowAsync(int jobPlanId);
+
     [PEMS.Application.Common.PemsOperation("JobPlan", "Create", "JobPlan.Create")]
 
     Task<(bool Success, string? Error, int? Id)> CreateAsync(
