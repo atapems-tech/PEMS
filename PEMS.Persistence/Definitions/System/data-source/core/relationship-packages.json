@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-packages",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship packages",
+    "fa": "relationship packages"
+  },
+  "description": {
+    "en": "relationship packages",
+    "fa": "relationship packages"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "ProcurementPackages"
+    }
+  }
+}

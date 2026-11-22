@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "relationship-document",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Relationship explorer (old address)",
+    "fa": "کاوشگر روابط (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Relationship explorer (old address)",
+    "fa": "کاوشگر روابط (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Relationship/Document/{id}",
+    "target": "/p/relationship-explorer?kind=document&id={id}",
+    "permanent": false
+  }
+}

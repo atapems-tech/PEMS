@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-contracts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship contracts",
+    "fa": "relationship contracts"
+  },
+  "description": {
+    "en": "relationship contracts",
+    "fa": "relationship contracts"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "Contracts"
+    }
+  }
+}

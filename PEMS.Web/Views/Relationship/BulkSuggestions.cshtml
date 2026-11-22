@@ -11,7 +11,7 @@
             رابطه‌ی دائمی می‌سازه، هنوز یک تایید صریح (هرچند دسته‌جمعی) لازمه.
         </pems-text>
     </div>
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Index">@Localizer["بازگشت به Explorer"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/relationship-explorer">@Localizer["بازگشت به Explorer"]</pems-button>
 </pems-flex>
 
 @if (!Model.Any())
@@ -35,7 +35,7 @@ else
             @{
                 var rows_22 = Model;
                 var cell_22_0 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-input kind="bare" type="checkbox" class="item-check" name="selectedItems" value="@value" /></text>);
-                var cell_22_1 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-link asp-action="Equipment" asp-route-id="@item.EquipmentId">@item.EquipmentTagNumber</pems-link></text>);
+                var cell_22_1 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-link href="/p/relationship-explorer?kind=equipment&id=@item.EquipmentId">@item.EquipmentTagNumber</pems-link></text>);
                 var cell_22_2 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }<pems-badge tone="neutral">@item.TargetType</pems-badge></text>);
                 var cell_22_3 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }@item.TargetLabel</text>);
                 var cell_22_4 = DataCell.Template(rows_22, @<text>@{ var value = $"{item.EquipmentId}|{item.TargetType}|{item.TargetId}"; }@item.MatchedOnRawValue</text>);

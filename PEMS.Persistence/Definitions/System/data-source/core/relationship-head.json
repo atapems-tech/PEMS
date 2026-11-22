@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "relationship-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship head",
+    "fa": "relationship head"
+  },
+  "description": {
+    "en": "relationship head",
+    "fa": "relationship head"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      }
+    }
+  }
+}

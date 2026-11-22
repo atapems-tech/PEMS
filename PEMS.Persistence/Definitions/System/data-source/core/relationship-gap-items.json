@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "relationship-gap-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship gap items",
+    "fa": "ردیف‌های شکاف روابط"
+  },
+  "description": {
+    "en": "relationship gap items",
+    "fa": "ردیف‌های شکاف روابط"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "GapReport",
+      "args": {
+        "projectId": "param:projectId"
+      },
+      "path": "Items"
+    }
+  }
+}

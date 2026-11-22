@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "relationship-gap-report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship gap report",
+    "fa": "گزارش شکاف روابط"
+  },
+  "description": {
+    "en": "relationship gap report",
+    "fa": "گزارش شکاف روابط"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "GapReport",
+      "args": {
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

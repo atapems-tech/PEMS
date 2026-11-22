@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-purchase-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship purchase orders",
+    "fa": "relationship purchase orders"
+  },
+  "description": {
+    "en": "relationship purchase orders",
+    "fa": "relationship purchase orders"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "PurchaseOrders"
+    }
+  }
+}

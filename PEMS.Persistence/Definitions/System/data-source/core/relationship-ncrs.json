@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "relationship-ncrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "relationship ncrs",
+    "fa": "relationship ncrs"
+  },
+  "description": {
+    "en": "relationship ncrs",
+    "fa": "relationship ncrs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "Explore",
+      "args": {
+        "kind": "param:kind",
+        "id": "param:id",
+        "q": "param:q"
+      },
+      "path": "NonConformanceReports"
+    }
+  }
+}
