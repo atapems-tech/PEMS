@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-failure-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel failure history",
+    "fa": "rel failure history"
+  },
+  "description": {
+    "en": "rel failure history",
+    "fa": "rel failure history"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "FailureHistory",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

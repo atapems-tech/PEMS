@@ -1,0 +1,204 @@
+{
+  "kind": "page",
+  "key": "reliability-simulation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Monte Carlo simulation",
+    "fa": "شبیه‌سازی مونت‌کارلو"
+  },
+  "description": {
+    "en": "Monte Carlo simulation",
+    "fa": "شبیه‌سازی مونت‌کارلو"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-simulation",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "sim-filters",
+            "resetUrl": "/p/reliability-simulation?id={{params.id}}",
+            "fields": [
+              {
+                "name": "id",
+                "label": {
+                  "en": "Equipment id",
+                  "fa": "شناسه تجهیز"
+                },
+                "kind": "text",
+                "value": "{{params.id}}"
+              },
+              {
+                "name": "iterations",
+                "label": {
+                  "en": "Iterations",
+                  "fa": "تعداد تکرار"
+                },
+                "kind": "text",
+                "value": "{{params.iterations}}"
+              },
+              {
+                "name": "horizonHours",
+                "label": {
+                  "en": "Horizon (hours)",
+                  "fa": "افق (ساعت)"
+                },
+                "kind": "text",
+                "value": "{{params.horizonHours}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "simulation",
+          "component": "data-grid",
+          "options": {
+            "id": "simulation",
+            "url": "/d/rel-simulation?f.id={{params.id|url}}&f.iterations={{params.iterations|url}}&f.horizonHours={{params.horizonHours|url}}",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "equipmentId",
+                "header": {
+                  "en": "Equipment id",
+                  "fa": "شناسه تجهیز"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "dataStatus",
+                "header": {
+                  "en": "Data status",
+                  "fa": "وضعیت داده"
+                },
+                "width": 120
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 240
+              },
+              {
+                "key": "iterations",
+                "header": {
+                  "en": "Iterations",
+                  "fa": "تکرار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "simulatedHorizonHours",
+                "header": {
+                  "en": "Horizon (h)",
+                  "fa": "افق"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "meanAvailabilityPercent",
+                "header": {
+                  "en": "Mean availability (%)",
+                  "fa": "میانگین دسترس‌پذیری"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "p10AvailabilityPercent",
+                "header": {
+                  "en": "P10 (%)",
+                  "fa": "P10"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "p90AvailabilityPercent",
+                "header": {
+                  "en": "P90 (%)",
+                  "fa": "P90"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "meanDowntimeHours",
+                "header": {
+                  "en": "Mean downtime (h)",
+                  "fa": "میانگین توقف"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "meanFailureCount",
+                "header": {
+                  "en": "Mean failures",
+                  "fa": "میانگین خرابی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "inputBeta",
+                "header": {
+                  "en": "Beta",
+                  "fa": "بتا"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "inputEta",
+                "header": {
+                  "en": "Eta",
+                  "fa": "اتا"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "inputMTTRHours",
+                "header": {
+                  "en": "MTTR (h)",
+                  "fa": "MTTR"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "provenance",
+                "header": {
+                  "en": "Provenance",
+                  "fa": "منبع"
+                },
+                "width": 200
+              },
+              {
+                "key": "methodologyNote",
+                "header": {
+                  "en": "Method",
+                  "fa": "روش"
+                },
+                "width": 260
+              }
+            ],
+            "pageSize": 5,
+            "height": 150
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

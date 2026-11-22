@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-bad-actors",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel bad actors",
+    "fa": "rel bad actors"
+  },
+  "description": {
+    "en": "rel bad actors",
+    "fa": "rel bad actors"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "BadActors",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "top": "param:top"
+      }
+    }
+  }
+}

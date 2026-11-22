@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-fleet",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel fleet",
+    "fa": "rel fleet"
+  },
+  "description": {
+    "en": "rel fleet",
+    "fa": "rel fleet"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "Fleet"
+    }
+  }
+}

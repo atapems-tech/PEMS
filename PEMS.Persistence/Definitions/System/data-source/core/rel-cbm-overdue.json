@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "rel-cbm-overdue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel cbm overdue",
+    "fa": "rel cbm overdue"
+  },
+  "description": {
+    "en": "rel cbm overdue",
+    "fa": "rel cbm overdue"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "CbmDashboard",
+      "path": "OverdueCbmPlans"
+    }
+  }
+}

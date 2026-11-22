@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-weibull",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel weibull",
+    "fa": "rel weibull"
+  },
+  "description": {
+    "en": "rel weibull",
+    "fa": "rel weibull"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "Weibull",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

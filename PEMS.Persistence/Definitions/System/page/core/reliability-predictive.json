@@ -1,0 +1,239 @@
+{
+  "kind": "page",
+  "key": "reliability-predictive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Predictive maintenance",
+    "fa": "نگهداری پیش‌بینانه"
+  },
+  "description": {
+    "en": "Predictive maintenance",
+    "fa": "نگهداری پیش‌بینانه"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-predictive",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "readiness",
+          "component": "data-grid",
+          "options": {
+            "id": "readiness",
+            "url": "/d/rel-predictive-readiness",
+            "idField": "engineStatus",
+            "columns": [
+              {
+                "key": "engineStatus",
+                "header": {
+                  "en": "Engine",
+                  "fa": "موتور"
+                },
+                "width": 140
+              },
+              {
+                "key": "productionModelStatus",
+                "header": {
+                  "en": "Production model",
+                  "fa": "مدل تولید"
+                },
+                "width": 160
+              },
+              {
+                "key": "modelCount",
+                "header": {
+                  "en": "Models",
+                  "fa": "مدل‌ها"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "validatedModelCount",
+                "header": {
+                  "en": "Validated",
+                  "fa": "اعتبارسنجی‌شده"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "resultCount",
+                "header": {
+                  "en": "Results",
+                  "fa": "نتایج"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 300
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "models",
+          "component": "data-grid",
+          "options": {
+            "id": "models",
+            "url": "/d/rel-predictive-models",
+            "idField": "predictiveMaintenanceModelId",
+            "columns": [
+              {
+                "key": "predictiveMaintenanceModelId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "targetName",
+                "header": {
+                  "en": "Target",
+                  "fa": "هدف"
+                },
+                "width": 160
+              },
+              {
+                "key": "algorithm",
+                "header": {
+                  "en": "Algorithm",
+                  "fa": "الگوریتم"
+                },
+                "width": 140
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 260
+              },
+              {
+                "key": "trainingDataStatus",
+                "header": {
+                  "en": "Training data",
+                  "fa": "داده آموزش"
+                },
+                "width": 140
+              },
+              {
+                "key": "validationStatus",
+                "header": {
+                  "en": "Validation",
+                  "fa": "اعتبارسنجی"
+                },
+                "width": 130
+              },
+              {
+                "key": "resultCount",
+                "header": {
+                  "en": "Results",
+                  "fa": "نتایج"
+                },
+                "width": 90,
+                "type": "number"
+              }
+            ],
+            "pageSize": 25,
+            "height": 320
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

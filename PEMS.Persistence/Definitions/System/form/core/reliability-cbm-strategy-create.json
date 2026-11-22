@@ -1,0 +1,70 @@
+{
+  "kind": "form",
+  "key": "reliability-cbm-strategy-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create a CBM strategy",
+    "fa": "ایجاد استراتژی CBM"
+  },
+  "description": {
+    "en": "Create a CBM strategy",
+    "fa": "ایجاد استراتژی CBM"
+  },
+  "payload": {
+    "id": "reliability-cbm-strategy-create",
+    "title": {
+      "en": "Create a CBM strategy",
+      "fa": "ایجاد استراتژی CBM"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "reliability-cbm-strategy-create",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-options"
+      },
+      {
+        "name": "conditionMonitoringPointId",
+        "label": {
+          "en": "Monitoring point id",
+          "fa": "شناسه نقطه پایش"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "justification",
+        "label": {
+          "en": "Justification",
+          "fa": "توجیه"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

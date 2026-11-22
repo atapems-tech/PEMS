@@ -1,0 +1,190 @@
+{
+  "kind": "page",
+  "key": "reliability-class-intelligence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Class intelligence",
+    "fa": "هوشمندی کلاس"
+  },
+  "description": {
+    "en": "Class intelligence",
+    "fa": "هوشمندی کلاس"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-class-intelligence",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-class?id={{params.id}}",
+                "text": {
+                  "en": "Reliability",
+                  "fa": "قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "record",
+            "fields": [
+              {
+                "key": "code",
+                "label": {
+                  "en": "Code",
+                  "fa": "کد"
+                }
+              },
+              {
+                "key": "name",
+                "label": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                }
+              },
+              {
+                "key": "equipmentCount",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "classifiedDirectlyCount",
+                "label": {
+                  "en": "Classified directly",
+                  "fa": "طبقه‌بندی مستقیم"
+                }
+              },
+              {
+                "key": "totalActivityCoverage",
+                "label": {
+                  "en": "Activities",
+                  "fa": "فعالیت"
+                }
+              },
+              {
+                "key": "totalPMTemplateCoverage",
+                "label": {
+                  "en": "PM templates",
+                  "fa": "الگوی PM"
+                }
+              },
+              {
+                "key": "totalFailureModeCoverage",
+                "label": {
+                  "en": "Failure modes",
+                  "fa": "حالت خرابی"
+                }
+              },
+              {
+                "key": "failureCount",
+                "label": {
+                  "en": "Failures",
+                  "fa": "خرابی"
+                }
+              },
+              {
+                "key": "averageMTBFHours",
+                "label": {
+                  "en": "Average MTBF (h)",
+                  "fa": "میانگین MTBF"
+                }
+              },
+              {
+                "key": "averageMTTRHours",
+                "label": {
+                  "en": "Average MTTR (h)",
+                  "fa": "میانگین MTTR"
+                }
+              },
+              {
+                "key": "averageAvailabilityPercent",
+                "label": {
+                  "en": "Average availability (%)",
+                  "fa": "میانگین دسترس‌پذیری"
+                }
+              },
+              {
+                "key": "mtbfSampleSize",
+                "label": {
+                  "en": "MTBF sample",
+                  "fa": "نمونه MTBF"
+                }
+              },
+              {
+                "key": "fmeaReadiness",
+                "label": {
+                  "en": "FMEA readiness",
+                  "fa": "آمادگی FMEA"
+                }
+              },
+              {
+                "key": "rcmReadiness",
+                "label": {
+                  "en": "RCM readiness",
+                  "fa": "آمادگی RCM"
+                }
+              },
+              {
+                "key": "approvedFMEACount",
+                "label": {
+                  "en": "Approved FMEA",
+                  "fa": "FMEA تأییدشده"
+                }
+              },
+              {
+                "key": "approvedRCMCount",
+                "label": {
+                  "en": "Approved RCM",
+                  "fa": "RCM تأییدشده"
+                }
+              },
+              {
+                "key": "repeatFailureGroupCount",
+                "label": {
+                  "en": "Repeat failure groups",
+                  "fa": "گروه تکرار"
+                }
+              },
+              {
+                "key": "badActorCount",
+                "label": {
+                  "en": "Bad actors",
+                  "fa": "Bad Actor"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/rel-class-intelligence",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

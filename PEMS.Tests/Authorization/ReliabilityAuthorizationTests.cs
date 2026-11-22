@@ -53,129 +53,47 @@ public class ReliabilityAuthorizationTests
         return true;
     }
 
-    private static ReliabilityController CreateController(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms)
+    // SCRUM-746: every read of the reliability pages is an operation of IReliabilityPagesOperations with the permission Reliability.View;
+    // the action and data hosts refuse a caller without it before they call the operation.
+    private static string ViewPermission(string method)
+        => ((PEMS.Application.Common.PemsOperationAttribute)typeof(IReliabilityPagesOperations).GetMethod(method)!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission!;
+
+    [Theory]
+    [InlineData("FleetAsync")]
+    [InlineData("DataQualityAsync")]
+    [InlineData("RecommendationsAsync")]
+    [InlineData("ConditionFoundationAsync")]
+    [InlineData("PredictiveModelsAsync")]
+    [InlineData("AiInsightsAsync")]
+    [InlineData("CbmDashboardAsync")]
+    public async Task EveryRead_NeedsTheViewPermission(string method)
     {
+        Assert.Equal("Reliability.View", ViewPermission(method));
+        var (_, perms, user) = await CreateInfra(nameof(EveryRead_NeedsTheViewPermission) + method, role: SystemRoles.QAManager);
+        Assert.False(await perms.HasPermissionAsync(user.Roles, "Reliability", "View"));
+    }
+
+    [Fact]
+    public async Task Reads_ViewerRole_CanView()
+    {
+        var (_, perms, user) = await CreateInfra(nameof(Reads_ViewerRole_CanView), role: SystemRoles.Viewer);
+        Assert.True(await perms.HasPermissionAsync(user.Roles, "Reliability", "View"));
+    }
+
+    [Fact]
+    public async Task Trend_RangeIsAlwaysBounded_AndAnUnknownPointHasNoTrend()
+    {
+        var (ctx, _, _) = await CreateInfra(nameof(Trend_RangeIsAlwaysBounded_AndAnUnknownPointHasNoTrend), role: SystemRoles.Viewer);
         var reliabilityService = new ReliabilityService(ctx);
-        var intelligenceService = new ReliabilityIntelligenceService(ctx);
-        var ramWeibullService = new RamWeibullService(ctx, reliabilityService);
-        var predictiveMaintenanceService = new PredictiveMaintenanceService(ctx);
-        var conditionMonitoringService = new ConditionMonitoringService(ctx);
-        var analyticsService = new ReliabilityAnalyticsService(ctx, reliabilityService);
-        var rcmFmeaReadinessService = new RcmFmeaReadinessService(ctx);
-
-        return new ReliabilityController(reliabilityService, analyticsService,
-            new ReliabilityDataQualityService(ctx), intelligenceService, new RcmFeedbackService(ctx), user, perms,
-            ramWeibullService, new ReliabilitySimulationService(ramWeibullService), conditionMonitoringService,
-            predictiveMaintenanceService,
-            new AIReliabilityInsightService(ctx, null!, analyticsService, intelligenceService, new Microsoft.Extensions.Configuration.ConfigurationBuilder().Build()),
-            new ClassIntelligenceService(ctx, new EquipmentClassCoverageService(ctx), analyticsService, intelligenceService, rcmFmeaReadinessService),
-            new EquipmentIntelligenceService(ctx, reliabilityService, analyticsService, ramWeibullService, rcmFmeaReadinessService, predictiveMaintenanceService, conditionMonitoringService),
-            ctx)
-            .WithTempData();
-    }
-
-    [Fact]
-    public async Task Index_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Index_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Index(null, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Index_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Index_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Index(null, null);
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public async Task DataQuality_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(DataQuality_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.DataQuality();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task DataQuality_MaintenanceEngineer_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(DataQuality_MaintenanceEngineer_CanView), role: SystemRoles.MaintenanceEngineer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.DataQuality();
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public async Task ClassDetail_UnknownClass_ReturnsNotFound_ForAuthorizedUser()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(ClassDetail_UnknownClass_ReturnsNotFound_ForAuthorizedUser), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.ClassDetail(99999);
-
-        Assert.IsType<NotFoundResult>(result);
-    }
-
-    // ==============================================================================
-    // طبق «PEMS Phase 7» بند ۲۸: همان ماژول "Reliability" موجود - View برای Intelligence/
-    // RcmFeedback، Edit برای GenerateRcmEvidence، Approve فقط برای ReviewRcmRecommendation.
-    // ==============================================================================
-
-    [Fact]
-    public async Task Intelligence_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Intelligence_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Intelligence(null, null, null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Intelligence_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Intelligence_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Intelligence(null, null, null);
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public async Task RcmFeedback_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(RcmFeedback_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.RcmFeedback(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task RcmFeedback_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(RcmFeedback_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.RcmFeedback(null);
-
-        Assert.IsType<ViewResult>(result);
+        var analytics = new ReliabilityAnalyticsService(ctx, reliabilityService);
+        var intelligence = new ReliabilityIntelligenceService(ctx);
+        var ramWeibull = new RamWeibullService(ctx, reliabilityService);
+        var rcmFeedback = new RcmFeedbackService(ctx);
+        var ops = new PEMS.Web.Services.ReliabilityPagesOperations(reliabilityService, analytics, new ReliabilityDataQualityService(ctx), intelligence, rcmFeedback, ramWeibull, new ReliabilitySimulationService(ramWeibull),
+            new ConditionMonitoringService(ctx), new PredictiveMaintenanceService(ctx), null!, null!, null!);
+        Assert.Null(await ops.TrendAsync(99999, "custom", new DateTime(2020, 1, 1), new DateTime(2026, 1, 1)));
+        Assert.Empty(await ops.FleetAsync());
     }
 
     [Fact]
@@ -224,83 +142,6 @@ public class ReliabilityAuthorizationTests
     // ==============================================================================
 
     [Fact]
-    public async Task Dashboard_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Dashboard_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Dashboard();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Dashboard_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Dashboard_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Dashboard();
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public async Task EquipmentProfile_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(EquipmentProfile_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.EquipmentProfile(1);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task ClassIntelligence_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(ClassIntelligence_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.ClassIntelligence(1);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Ram_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Ram_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Ram(1);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task ConditionMonitoring_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(ConditionMonitoring_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.ConditionMonitoring(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task ConditionMonitoring_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(ConditionMonitoring_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.ConditionMonitoring(null);
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
     public async Task CreateConditionMonitoringPoint_ViewerRole_CannotCreate_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(CreateConditionMonitoringPoint_ViewerRole_CannotCreate_ReturnsForbid), role: SystemRoles.Viewer);
@@ -316,50 +157,6 @@ public class ReliabilityAuthorizationTests
         var allowed = await RunOperation(ctx, user, perms, "CreateConditionMonitoringPoint", o => o.CreateConditionMonitoringPointAsync(99999, "Vibration", "VT-1"));
 
         Assert.True(allowed);
-    }
-
-    [Fact]
-    public async Task PredictiveMaintenance_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(PredictiveMaintenance_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.PredictiveMaintenance();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task PredictiveMaintenance_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(PredictiveMaintenance_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.PredictiveMaintenance();
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public async Task AiInsights_NoPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(AiInsights_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.AiInsights(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task AiInsights_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(AiInsights_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.AiInsights(null);
-
-        Assert.IsType<ViewResult>(result);
     }
 
     [Fact]

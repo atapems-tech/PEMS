@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-monthly-trend",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel monthly trend",
+    "fa": "rel monthly trend"
+  },
+  "description": {
+    "en": "rel monthly trend",
+    "fa": "rel monthly trend"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "MonthlyTrend",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "top": "param:top"
+      }
+    }
+  }
+}

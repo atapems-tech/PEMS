@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-predictive-models",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel predictive models",
+    "fa": "rel predictive models"
+  },
+  "description": {
+    "en": "rel predictive models",
+    "fa": "rel predictive models"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "PredictiveModels"
+    }
+  }
+}

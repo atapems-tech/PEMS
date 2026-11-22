@@ -1,0 +1,334 @@
+{
+  "kind": "page",
+  "key": "reliability-cbm-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "CBM dashboard",
+    "fa": "داشبورد CBM"
+  },
+  "description": {
+    "en": "CBM dashboard",
+    "fa": "داشبورد CBM"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-cbm-dashboard",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "summary",
+          "component": "data-grid",
+          "options": {
+            "id": "summary",
+            "url": "/d/rel-cbm-dashboard",
+            "idField": "totalActivePoints",
+            "columns": [
+              {
+                "key": "totalActivePoints",
+                "header": {
+                  "en": "Active points",
+                  "fa": "نقاط فعال"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "pointsWithEvaluationProfile",
+                "header": {
+                  "en": "With profile",
+                  "fa": "دارای پروفایل"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "pointsWithoutEvaluationProfile",
+                "header": {
+                  "en": "Without profile",
+                  "fa": "بدون پروفایل"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "pointsWithCbmStrategy",
+                "header": {
+                  "en": "With CBM strategy",
+                  "fa": "دارای استراتژی CBM"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "criticalCount",
+                "header": {
+                  "en": "Critical",
+                  "fa": "بحرانی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "alarmCount",
+                "header": {
+                  "en": "Alarm",
+                  "fa": "آلارم"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "warningCount",
+                "header": {
+                  "en": "Warning",
+                  "fa": "هشدار"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "requiresEngineeringReviewCount",
+                "header": {
+                  "en": "Needs review",
+                  "fa": "نیازمند بازبینی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "openFindingCount",
+                "header": {
+                  "en": "Open findings",
+                  "fa": "یافته باز"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "linkedFindingCount",
+                "header": {
+                  "en": "Linked findings",
+                  "fa": "یافته مرتبط"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "overdueCbmPlanCount",
+                "header": {
+                  "en": "Overdue CBM plans",
+                  "fa": "برنامه CBM عقب‌افتاده"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "dueSoonCbmPlanCount",
+                "header": {
+                  "en": "Due soon",
+                  "fa": "نزدیک سررسید"
+                },
+                "width": 110,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "attention",
+          "component": "data-grid",
+          "options": {
+            "id": "attention",
+            "url": "/d/rel-cbm-attention",
+            "idField": "tag",
+            "columns": [
+              {
+                "key": "equipmentTagNumber",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "variableType",
+                "header": {
+                  "en": "Variable",
+                  "fa": "متغیر"
+                },
+                "width": 120
+              },
+              {
+                "key": "tag",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "evaluationStatus",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "lastReadingDate",
+                "header": {
+                  "en": "Last reading",
+                  "fa": "آخرین قرائت"
+                },
+                "width": 120,
+                "type": "date"
+              }
+            ],
+            "pageSize": 25,
+            "height": 320
+          }
+        },
+        {
+          "id": "overdue",
+          "component": "data-grid",
+          "options": {
+            "id": "overdue",
+            "url": "/d/rel-cbm-overdue",
+            "idField": "tag",
+            "columns": [
+              {
+                "key": "equipmentTagNumber",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "variableType",
+                "header": {
+                  "en": "Variable",
+                  "fa": "متغیر"
+                },
+                "width": 120
+              },
+              {
+                "key": "tag",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "nextDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "daysOverdue",
+                "header": {
+                  "en": "Days overdue",
+                  "fa": "روز تأخیر"
+                },
+                "width": 110,
+                "type": "number"
+              }
+            ],
+            "pageSize": 25,
+            "height": 320
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-class-reliability",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel class reliability",
+    "fa": "rel class reliability"
+  },
+  "description": {
+    "en": "rel class reliability",
+    "fa": "rel class reliability"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "ClassReliability"
+    }
+  }
+}

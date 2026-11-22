@@ -1,0 +1,331 @@
+{
+  "kind": "page",
+  "key": "reliability-rcm-feedback",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "RCM feedback",
+    "fa": "بازخورد RCM"
+  },
+  "description": {
+    "en": "RCM feedback",
+    "fa": "بازخورد RCM"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-rcm-feedback",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "rcm-filters",
+            "resetUrl": "/p/reliability-rcm-feedback",
+            "fields": [
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "PENDING",
+                    "label": {
+                      "en": "Pending",
+                      "fa": "در انتظار"
+                    }
+                  },
+                  {
+                    "value": "ACCEPTED",
+                    "label": {
+                      "en": "Accepted",
+                      "fa": "پذیرفته‌شده"
+                    }
+                  },
+                  {
+                    "value": "REJECTED",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "ردشده"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "generate",
+          "component": "action-button",
+          "options": {
+            "action": "reliability-rcm-evidence-generate",
+            "label": {
+              "en": "Generate evidence",
+              "fa": "تولید شواهد"
+            },
+            "tone": "primary",
+            "icon": "bi-search"
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "recommendations",
+          "component": "data-grid",
+          "options": {
+            "id": "recommendations",
+            "url": "/d/rel-recommendations?f.status={{params.status|url}}",
+            "idField": "rcmReviewRecommendationId",
+            "columns": [
+              {
+                "key": "equipmentTagNumber",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140
+              },
+              {
+                "key": "maintenanceStrategyType",
+                "header": {
+                  "en": "Strategy type",
+                  "fa": "نوع استراتژی"
+                },
+                "width": 130
+              },
+              {
+                "key": "failureModeCode",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 130
+              },
+              {
+                "key": "triggerReason",
+                "header": {
+                  "en": "Trigger",
+                  "fa": "علت"
+                },
+                "width": 180
+              },
+              {
+                "key": "evidence",
+                "header": {
+                  "en": "Evidence",
+                  "fa": "شواهد"
+                },
+                "width": 260
+              },
+              {
+                "key": "repeatFailureCount",
+                "header": {
+                  "en": "Repeat failures",
+                  "fa": "تکرار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "failureCountInWindow",
+                "header": {
+                  "en": "Failures in the window",
+                  "fa": "خرابی در پنجره"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "totalDowntimeHoursInWindow",
+                "header": {
+                  "en": "Downtime (h)",
+                  "fa": "توقف"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "windowDays",
+                "header": {
+                  "en": "Window (days)",
+                  "fa": "پنجره"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "generatedDate",
+                "header": {
+                  "en": "Generated",
+                  "fa": "تولید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "reviewedBy",
+                "header": {
+                  "en": "Reviewed by",
+                  "fa": "بازبین"
+                },
+                "width": 120
+              },
+              {
+                "key": "reviewedAt",
+                "header": {
+                  "en": "Reviewed",
+                  "fa": "بازبینی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "reviewNotes",
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت"
+                },
+                "width": 200
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "accept",
+                    "label": {
+                      "en": "Accept",
+                      "fa": "پذیرش"
+                    },
+                    "url": "/a/reliability-rcm-recommendation-accept",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Accept this recommendation?",
+                      "fa": "این توصیه پذیرفته شود؟"
+                    },
+                    "showWhen": "row.status == 'PENDING'"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    },
+                    "url": "/a/reliability-rcm-recommendation-reject",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Reject this recommendation?",
+                      "fa": "این توصیه رد شود؟"
+                    },
+                    "showWhen": "row.status == 'PENDING'"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 50,
+            "height": 520
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-failure-cause-pareto",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel failure cause pareto",
+    "fa": "rel failure cause pareto"
+  },
+  "description": {
+    "en": "rel failure cause pareto",
+    "fa": "rel failure cause pareto"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "FailureCausePareto",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "top": "param:top"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-ram",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel ram",
+    "fa": "rel ram"
+  },
+  "description": {
+    "en": "rel ram",
+    "fa": "rel ram"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "Ram",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

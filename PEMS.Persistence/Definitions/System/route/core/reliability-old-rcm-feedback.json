@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "reliability-old-rcm-feedback",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reliability (old address)",
+    "fa": "قابلیت اطمینان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Reliability (old address)",
+    "fa": "قابلیت اطمینان (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Reliability/RcmFeedback",
+    "target": "/p/reliability-rcm-feedback",
+    "permanent": false
+  }
+}

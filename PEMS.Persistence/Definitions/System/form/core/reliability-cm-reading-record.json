@@ -1,0 +1,145 @@
+{
+  "kind": "form",
+  "key": "reliability-cm-reading-record",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a reading",
+    "fa": "ثبت قرائت"
+  },
+  "description": {
+    "en": "Record a reading",
+    "fa": "ثبت قرائت"
+  },
+  "payload": {
+    "id": "reliability-cm-reading-record",
+    "title": {
+      "en": "Record a reading",
+      "fa": "ثبت قرائت"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "reliability-cm-reading-record",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment id",
+          "fa": "شناسه تجهیز"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "pointId",
+        "label": {
+          "en": "Point id (shown in the points table)",
+          "fa": "شناسه نقطه (در جدول نقاط)"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "readingDate",
+        "label": {
+          "en": "Reading date",
+          "fa": "تاریخ قرائت"
+        },
+        "kind": "date",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Value",
+          "fa": "مقدار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "source",
+        "label": {
+          "en": "Source",
+          "fa": "منبع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Manual",
+            "label": {
+              "en": "Manual",
+              "fa": "Manual"
+            }
+          },
+          {
+            "value": "Route",
+            "label": {
+              "en": "Route",
+              "fa": "Route"
+            }
+          },
+          {
+            "value": "Online",
+            "label": {
+              "en": "Online",
+              "fa": "Online"
+            }
+          },
+          {
+            "value": "Import",
+            "label": {
+              "en": "Import",
+              "fa": "Import"
+            }
+          }
+        ]
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "یادداشت"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "instrumentId",
+        "label": {
+          "en": "Instrument id (optional)",
+          "fa": "شناسه ابزار (اختیاری)"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

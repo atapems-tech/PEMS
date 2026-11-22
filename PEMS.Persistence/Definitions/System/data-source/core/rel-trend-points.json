@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "rel-trend-points",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel trend points",
+    "fa": "rel trend points"
+  },
+  "description": {
+    "en": "rel trend points",
+    "fa": "rel trend points"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "Trend",
+      "args": {
+        "pointId": "param:pointId",
+        "range": "param:range",
+        "from": "param:from",
+        "to": "param:to"
+      },
+      "path": "Points"
+    }
+  }
+}

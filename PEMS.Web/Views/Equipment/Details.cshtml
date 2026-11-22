@@ -339,7 +339,7 @@
                         <pems-button tone="danger" size="small" outline="true" as="a" href="/p/findings?equipmentId=@eq.EquipmentId">
                             <pems-icon name="bi-flag" /> @Localizer["Findings"] @(cm.OpenFindingCount > 0 ? $"({cm.OpenFindingCount})" : "")
                         </pems-button>
-                        <pems-button tone="primary" size="small" as="a" asp-controller="Reliability" asp-action="ConditionMonitoring" asp-route-equipmentId="@eq.EquipmentId">
+                        <pems-button tone="primary" size="small" as="a" href="/p/reliability-condition-monitoring?equipmentId=@eq.EquipmentId">
                             <pems-icon name="bi-activity" /> @Localizer["Full Condition Monitoring"]
                         </pems-button>
                     </pems-flex>
@@ -451,7 +451,7 @@
             <pems-content-card css="mb-3">
                 <pems-flex justify="between" align="center" css="mb-2">
                     <pems-heading level="6" class="mb-0"><pems-icon name="bi-graph-up-arrow" /> @Localizer["Cm_Reliability"]</pems-heading>
-                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Reliability" asp-action="Details" asp-route-id="@eq.EquipmentId">
+                    <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/reliability-equipment?id=@eq.EquipmentId">
                         <pems-icon name="bi-clock-history" /> @Localizer["Cm_FailureHistory"]
                     </pems-button>
                 </pems-flex>

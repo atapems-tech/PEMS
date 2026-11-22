@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rel-repeat-failures",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel repeat failures",
+    "fa": "rel repeat failures"
+  },
+  "description": {
+    "en": "rel repeat failures",
+    "fa": "rel repeat failures"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "RepeatFailures",
+      "args": {
+        "from": "param:from",
+        "to": "param:to",
+        "top": "param:top"
+      }
+    }
+  }
+}

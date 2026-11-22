@@ -1,0 +1,333 @@
+{
+  "kind": "page",
+  "key": "reliability-data-quality",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reliability data quality",
+    "fa": "کیفیت داده قابلیت اطمینان"
+  },
+  "description": {
+    "en": "Reliability data quality",
+    "fa": "کیفیت داده قابلیت اطمینان"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "reliability-data-quality",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/reliability-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability",
+                "text": {
+                  "en": "Reliability analysis",
+                  "fa": "تحلیل قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-intelligence",
+                "text": {
+                  "en": "Maintenance intelligence",
+                  "fa": "هوشمندی نگهداری"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-data-quality",
+                "text": {
+                  "en": "Data quality",
+                  "fa": "کیفیت داده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-rcm-feedback",
+                "text": {
+                  "en": "RCM feedback",
+                  "fa": "بازخورد RCM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-cbm-dashboard",
+                "text": {
+                  "en": "CBM dashboard",
+                  "fa": "داشبورد CBM"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-predictive",
+                "text": {
+                  "en": "Predictive maintenance",
+                  "fa": "نگهداری پیش‌بینانه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-ai-insights",
+                "text": {
+                  "en": "AI insights",
+                  "fa": "بینش هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "quality",
+          "component": "data-grid",
+          "options": {
+            "id": "quality",
+            "url": "/d/rel-data-quality",
+            "idField": "totalActiveEquipment",
+            "columns": [
+              {
+                "key": "totalActiveEquipment",
+                "header": {
+                  "en": "Active equipment",
+                  "fa": "تجهیز فعال"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "equipmentWithFailureHistory",
+                "header": {
+                  "en": "With failure history",
+                  "fa": "دارای سابقه خرابی"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "totalFailureRecords",
+                "header": {
+                  "en": "Failure records",
+                  "fa": "رکورد خرابی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "failureRecordsWithoutFailureMode",
+                "header": {
+                  "en": "No failure mode",
+                  "fa": "بدون حالت خرابی"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "failureRecordsWithoutFailureCause",
+                "header": {
+                  "en": "No cause",
+                  "fa": "بدون علت"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "failureRecordsWithoutDowntimeHours",
+                "header": {
+                  "en": "No downtime",
+                  "fa": "بدون توقف"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "failureRecordsWithInvalidDate",
+                "header": {
+                  "en": "Invalid date",
+                  "fa": "تاریخ نامعتبر"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "failureRecordsLinkedToWorkOrderMissingDuration",
+                "header": {
+                  "en": "Work order without duration",
+                  "fa": "دستور کار بدون مدت"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "failureRecordsWithNegativeDuration",
+                "header": {
+                  "en": "Negative duration",
+                  "fa": "مدت منفی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "equipmentReliabilityCoveragePercent",
+                "header": {
+                  "en": "Reliability coverage (%)",
+                  "fa": "پوشش قابلیت اطمینان"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "failureTaxonomyCoveragePercent",
+                "header": {
+                  "en": "Taxonomy coverage (%)",
+                  "fa": "پوشش طبقه‌بندی خرابی"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "repairDataCoveragePercent",
+                "header": {
+                  "en": "Repair data coverage (%)",
+                  "fa": "پوشش داده تعمیر"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "totalWorkOrders",
+                "header": {
+                  "en": "Work orders",
+                  "fa": "دستور کار"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "workOrdersMissingWorkOrderType",
+                "header": {
+                  "en": "Missing type",
+                  "fa": "بدون نوع"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "completedOrClosedWorkOrders",
+                "header": {
+                  "en": "Completed or closed",
+                  "fa": "تکمیل/بسته"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "workOrdersMissingCompletionDate",
+                "header": {
+                  "en": "Missing completion date",
+                  "fa": "بدون تاریخ تکمیل"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "equipmentWithCriticality",
+                "header": {
+                  "en": "With criticality",
+                  "fa": "دارای بحرانی‌بودن"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "equipmentWithMaintenanceStrategy",
+                "header": {
+                  "en": "With strategy",
+                  "fa": "دارای استراتژی"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "equipmentWithMaintenancePlan",
+                "header": {
+                  "en": "With plan",
+                  "fa": "دارای برنامه"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "maintenanceTypeCompletenessPercent",
+                "header": {
+                  "en": "Type completeness (%)",
+                  "fa": "کامل‌بودن نوع"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "workOrderCompletionCoveragePercent",
+                "header": {
+                  "en": "Completion coverage (%)",
+                  "fa": "پوشش تکمیل"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "criticalityCoveragePercent",
+                "header": {
+                  "en": "Criticality coverage (%)",
+                  "fa": "پوشش بحرانی‌بودن"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "maintenanceStrategyCoveragePercent",
+                "header": {
+                  "en": "Strategy coverage (%)",
+                  "fa": "پوشش استراتژی"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "maintenancePlanCoveragePercent",
+                "header": {
+                  "en": "Plan coverage (%)",
+                  "fa": "پوشش برنامه"
+                },
+                "width": 140,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 150
+          }
+        }
+      ]
+    },
+    "permission": "Reliability.View"
+  }
+}

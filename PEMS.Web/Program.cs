@@ -221,6 +221,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IFunctionalLocationImport
 builder.Services.AddScoped<PEMS.Application.Interfaces.ICriticalityAssessmentOperations, PEMS.Web.Services.CriticalityAssessmentOperations>();   // SCRUM-701
 builder.Services.AddScoped<PEMS.Application.Interfaces.IRcmFmeaOperations, PEMS.Web.Services.RcmFmeaOperations>();   // SCRUM-744
 builder.Services.AddScoped<PEMS.Application.Interfaces.IReliabilityOperations, PEMS.Web.Services.ReliabilityOperations>();   // SCRUM-678
+builder.Services.AddScoped<PEMS.Application.Interfaces.IReliabilityPagesOperations, PEMS.Web.Services.ReliabilityPagesOperations>();   // SCRUM-746
 builder.Services.AddScoped<PEMS.Application.Interfaces.IQcOperations, PEMS.Web.Services.QcOperations>();   // SCRUM-694
 builder.Services.AddScoped<PEMS.Application.Interfaces.IRegisterPagesOperations, PEMS.Web.Services.RegisterPagesOperations>();   // SCRUM-691, 693
 builder.Services.AddScoped<PEMS.Application.Interfaces.IAssetPagesOperations, PEMS.Web.Services.AssetPagesOperations>();   // SCRUM-670, 700

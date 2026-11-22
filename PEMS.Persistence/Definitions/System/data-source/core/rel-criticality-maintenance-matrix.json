@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-criticality-maintenance-matrix",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel criticality maintenance matrix",
+    "fa": "rel criticality maintenance matrix"
+  },
+  "description": {
+    "en": "rel criticality maintenance matrix",
+    "fa": "rel criticality maintenance matrix"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "CriticalityMaintenanceMatrix"
+    }
+  }
+}

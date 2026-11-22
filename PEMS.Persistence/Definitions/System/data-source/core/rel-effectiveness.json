@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rel-effectiveness",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel effectiveness",
+    "fa": "rel effectiveness"
+  },
+  "description": {
+    "en": "rel effectiveness",
+    "fa": "rel effectiveness"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "Effectiveness"
+    }
+  }
+}

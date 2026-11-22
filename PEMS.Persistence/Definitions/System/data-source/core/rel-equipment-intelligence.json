@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rel-equipment-intelligence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rel equipment intelligence",
+    "fa": "rel equipment intelligence"
+  },
+  "description": {
+    "en": "rel equipment intelligence",
+    "fa": "rel equipment intelligence"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "ReliabilityPage",
+      "action": "EquipmentIntelligence",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}
