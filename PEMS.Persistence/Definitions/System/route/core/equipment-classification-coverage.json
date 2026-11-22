@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-classification-coverage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "description": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "payload": {
+    "pattern": "EquipmentClassification/Coverage",
+    "target": "/p/classification-coverage",
+    "permanent": false
+  }
+}

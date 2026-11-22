@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "classification-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "classification summary",
+    "fa": "classification summary"
+  },
+  "description": {
+    "en": "classification summary",
+    "fa": "classification summary"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentClassification",
+      "action": "Summary"
+    }
+  }
+}

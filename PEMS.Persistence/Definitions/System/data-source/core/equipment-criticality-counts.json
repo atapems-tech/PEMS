@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "equipment-criticality-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment criticality counts",
+    "fa": "equipment criticality counts"
+  },
+  "description": {
+    "en": "equipment criticality counts",
+    "fa": "equipment criticality counts"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentCriticality",
+      "action": "Counts"
+    }
+  }
+}

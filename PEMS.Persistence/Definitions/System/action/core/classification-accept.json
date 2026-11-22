@@ -26,7 +26,7 @@
       "en": "طبقه‌بندی تایید و اعمال شد.",
       "fa": "طبقه‌بندی تایید و اعمال شد."
     },
-    "redirect": "/EquipmentClassification/ReviewQueue",
+    "redirect": "/p/classification-review-queue",
     "redirectBack": true
   }
 }

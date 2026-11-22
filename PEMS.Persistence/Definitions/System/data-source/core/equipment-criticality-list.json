@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "equipment-criticality-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment criticality list",
+    "fa": "equipment criticality list"
+  },
+  "description": {
+    "en": "equipment criticality list",
+    "fa": "equipment criticality list"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentCriticality",
+      "action": "List",
+      "args": {
+        "criticalityClass": "param:criticalityClass"
+      }
+    }
+  }
+}

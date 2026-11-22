@@ -31,7 +31,6 @@
       "en": "تحلیل بحرانی‌بودن ثبت شد.",
       "fa": "تحلیل بحرانی‌بودن ثبت شد."
     },
-    "redirect": "/EquipmentCriticality/Index",
-    "redirectBack": true
+    "redirect": "/p/equipment-criticalities"
   }
 }

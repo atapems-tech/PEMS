@@ -19,7 +19,7 @@
     <div>
         <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="Details" asp-route-id="@Model.EquipmentId">Reliability Detail</pems-button>
         <pems-button tone="primary" size="small" outline="true" as="a" asp-action="Ram" asp-route-id="@Model.EquipmentId">RAM / Weibull</pems-button>
-        <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="EquipmentCriticality" asp-action="Index">@Localizer["Criticality"]</pems-button>
+        <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/equipment-criticalities">@Localizer["Criticality"]</pems-button>
     </div>
 </pems-flex>
 <pems-text class="text-muted small">

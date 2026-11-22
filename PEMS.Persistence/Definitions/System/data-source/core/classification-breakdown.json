@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "classification-breakdown",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "classification breakdown",
+    "fa": "classification breakdown"
+  },
+  "description": {
+    "en": "classification breakdown",
+    "fa": "classification breakdown"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentClassification",
+      "action": "Breakdown"
+    }
+  }
+}
