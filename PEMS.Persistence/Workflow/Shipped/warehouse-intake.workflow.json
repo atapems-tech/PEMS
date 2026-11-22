@@ -1,0 +1,14 @@
+{
+  "module": "WarehouseIntake",
+  "context": "WarehouseIntake",
+  "name": "Warehouse intake of work-order materials",
+  "description": "Stock lines of a work order wait for the storekeeper to pick the supplying warehouse (SCRUM-472).",
+  "stages": [
+    { "key": "warehouseintake", "name": "WarehouseIntake", "nameFa": "تأمین از انبار", "order": 1, "stageType": "Sequential", "responsibleRole": "WH.Manager,WH.Storekeeper", "approvalStrategy": "AllApprovalsRequired", "isMandatory": true }
+  ],
+  "transitions": [
+    { "from": null, "to": "warehouseintake", "action": "Start", "priority": 0 },
+    { "from": "warehouseintake", "to": null, "action": "Complete", "priority": 0 },
+    { "from": "warehouseintake", "to": null, "action": "Cancel", "priority": 0 }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "module": "PurchaseOrder",
+  "context": "PurchaseOrderApproval",
+  "name": "Purchase order approval",
+  "description": "Approval of a submitted purchase order by the role of the matching PO authority rule (SCRUM-470).",
+  "stages": [
+    { "key": "approval", "name": "Approval", "nameFa": "تأیید سفارش خرید", "order": 1, "stageType": "Parallel", "responsibleRole": null, "approvalStrategy": "AllApprovalsRequired", "isMandatory": true }
+  ],
+  "transitions": [
+    { "from": null, "to": "approval", "action": "Start", "priority": 0 },
+    { "from": "approval", "to": null, "action": "Approve", "priority": 0 },
+    { "from": "approval", "to": null, "action": "Reject", "priority": 0 }
+  ]
+}

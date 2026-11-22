@@ -1,0 +1,14 @@
+{
+  "module": "IRN",
+  "context": "DispositionApproval",
+  "name": "تایید Disposition دریافت مادی (IRN)",
+  "description": "پیش از تبدیل مقدار پذیرفته‌شده‌ی یک IRN به موجودی قابل‌استفاده، تایید مستقل QA الزامی است",
+  "stages": [
+    { "key": "qadispositionapproval", "name": "QADispositionApproval", "nameFa": null, "order": 1, "stageType": "Sequential", "responsibleRole": "SystemAdmin,QAManager", "approvalStrategy": "AllApprovalsRequired", "isMandatory": true }
+  ],
+  "transitions": [
+    { "from": null, "to": "qadispositionapproval", "action": "Start", "priority": 0 },
+    { "from": "qadispositionapproval", "to": null, "action": "Approve", "priority": 0 },
+    { "from": "qadispositionapproval", "to": null, "action": "Reject", "priority": 0 }
+  ]
+}

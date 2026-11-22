@@ -45,6 +45,8 @@
 
   <ItemGroup>
     <!-- مرجع‌های IFS ماژول Part Catalogue (Seed ایدمپوتنت): داخل Assembly تا مسیر فایل/Deploy مسئله نشود -->
+    <!-- SCRUM-804: shipped workflow documents -->
+    <EmbeddedResource Include="Workflow\Shipped\*.workflow.json" LogicalName="PEMS.Workflow.Shipped.%(Filename)%(Extension)" />
     <EmbeddedResource Include="Seed\Data\PartCatalogue\*.xlsx" LogicalName="PEMS.Seed.PartCatalogue.%(Filename)%(Extension)" />  </ItemGroup>
 
 </Project>

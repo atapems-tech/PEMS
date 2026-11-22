@@ -1,0 +1,68 @@
+{
+  "kind": "reference-data",
+  "key": "qc-discipline",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC disciplines",
+    "fa": "دیسیپلین‌های QC"
+  },
+  "description": {
+    "en": "Standard QC and QA inspection disciplines.",
+    "fa": "دیسیپلین‌های QC"
+  },
+  "payload": {
+    "list": "qc-discipline",
+    "owner": "platform",
+    "rows": [
+      {
+        "key": "NDT",
+        "values": {
+          "name": "Non-Destructive Testing (RT/UT/PT/MT)"
+        }
+      },
+      {
+        "key": "WLD",
+        "values": {
+          "name": "Welding Inspection"
+        }
+      },
+      {
+        "key": "COAT",
+        "values": {
+          "name": "Coating & Painting Inspection"
+        }
+      },
+      {
+        "key": "DIM",
+        "values": {
+          "name": "Dimensional & Mechanical Inspection"
+        }
+      },
+      {
+        "key": "EI",
+        "values": {
+          "name": "Electrical & Instrument Testing"
+        }
+      },
+      {
+        "key": "CIV",
+        "values": {
+          "name": "Civil & Structural QC"
+        }
+      },
+      {
+        "key": "HSE",
+        "values": {
+          "name": "HSE / Safety Inspection"
+        }
+      },
+      {
+        "key": "MAT",
+        "values": {
+          "name": "Material & Receiving Inspection"
+        }
+      }
+    ]
+  }
+}

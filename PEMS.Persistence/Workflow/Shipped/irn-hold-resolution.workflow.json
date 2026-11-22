@@ -1,0 +1,14 @@
+{
+  "module": "IRN",
+  "context": "HoldResolution",
+  "name": "Goods receipt - Hold resolution",
+  "description": "Hold quantity of an approved goods receipt waits for the Warehouse Manager to accept or reject it (SCRUM-473).",
+  "stages": [
+    { "key": "holdresolution", "name": "HoldResolution", "nameFa": "تعیین تکلیف کالای نگه‌داشته", "order": 1, "stageType": "Sequential", "responsibleRole": "WH.Manager", "approvalStrategy": "AllApprovalsRequired", "isMandatory": true }
+  ],
+  "transitions": [
+    { "from": null, "to": "holdresolution", "action": "Start", "priority": 0 },
+    { "from": "holdresolution", "to": null, "action": "Complete", "priority": 0 },
+    { "from": "holdresolution", "to": null, "action": "Cancel", "priority": 0 }
+  ]
+}

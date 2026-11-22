@@ -1,0 +1,164 @@
+{
+  "kind": "reference-data",
+  "key": "maintenance-type",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance types",
+    "fa": "انواع نگهداری"
+  },
+  "description": {
+    "en": "Standard maintenance types.",
+    "fa": "انواع نگهداری"
+  },
+  "payload": {
+    "list": "maintenance-type",
+    "owner": "platform",
+    "rows": [
+      {
+        "key": "CORRECTIVE",
+        "values": {
+          "name": "Corrective",
+          "nameFa": "اصلاحی",
+          "displayOrder": 10
+        }
+      },
+      {
+        "key": "PREVENTIVE",
+        "values": {
+          "name": "Preventive",
+          "nameFa": "پیشگیرانه",
+          "displayOrder": 20
+        }
+      },
+      {
+        "key": "PREDICTIVE",
+        "values": {
+          "name": "Predictive",
+          "nameFa": "پیش‌بینانه",
+          "displayOrder": 30
+        }
+      },
+      {
+        "key": "CONDITION_BASED",
+        "values": {
+          "name": "Condition Based",
+          "nameFa": "مبتنی بر وضعیت",
+          "displayOrder": 40
+        }
+      },
+      {
+        "key": "EMERGENCY",
+        "values": {
+          "name": "Emergency",
+          "nameFa": "اضطراری",
+          "displayOrder": 50
+        }
+      },
+      {
+        "key": "BREAKDOWN",
+        "values": {
+          "name": "Breakdown",
+          "nameFa": "خرابی ناگهانی",
+          "displayOrder": 60
+        }
+      },
+      {
+        "key": "OPPORTUNITY",
+        "values": {
+          "name": "Opportunity",
+          "nameFa": "فرصت‌طلبانه",
+          "displayOrder": 70
+        }
+      },
+      {
+        "key": "SHUTDOWN",
+        "values": {
+          "name": "Shutdown",
+          "nameFa": "توقف کامل",
+          "displayOrder": 80
+        }
+      },
+      {
+        "key": "TURNAROUND",
+        "values": {
+          "name": "Turnaround",
+          "nameFa": "توقف دوره‌ای (Turnaround)",
+          "displayOrder": 90
+        }
+      },
+      {
+        "key": "OVERHAUL",
+        "values": {
+          "name": "Overhaul",
+          "nameFa": "بازسازی کامل",
+          "displayOrder": 100
+        }
+      },
+      {
+        "key": "MODIFICATION",
+        "values": {
+          "name": "Modification",
+          "nameFa": "اصلاح/تغییر",
+          "displayOrder": 110
+        }
+      },
+      {
+        "key": "INSPECTION",
+        "values": {
+          "name": "Inspection",
+          "nameFa": "بازرسی",
+          "displayOrder": 120
+        }
+      },
+      {
+        "key": "TESTING",
+        "values": {
+          "name": "Testing",
+          "nameFa": "تست",
+          "displayOrder": 130
+        }
+      },
+      {
+        "key": "CALIBRATION",
+        "values": {
+          "name": "Calibration",
+          "nameFa": "کالیبراسیون",
+          "displayOrder": 140
+        }
+      },
+      {
+        "key": "LUBRICATION",
+        "values": {
+          "name": "Lubrication",
+          "nameFa": "روانکاری",
+          "displayOrder": 150
+        }
+      },
+      {
+        "key": "CLEANING",
+        "values": {
+          "name": "Cleaning",
+          "nameFa": "نظافت/شست‌وشو",
+          "displayOrder": 160
+        }
+      },
+      {
+        "key": "ALIGNMENT",
+        "values": {
+          "name": "Alignment",
+          "nameFa": "هم‌راستاسازی",
+          "displayOrder": 170
+        }
+      },
+      {
+        "key": "FUNCTIONAL_TEST",
+        "values": {
+          "name": "Functional Test",
+          "nameFa": "تست عملکردی",
+          "displayOrder": 180
+        }
+      }
+    ]
+  }
+}

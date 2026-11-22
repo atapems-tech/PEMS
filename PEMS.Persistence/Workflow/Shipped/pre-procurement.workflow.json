@@ -1,0 +1,14 @@
+{
+  "module": "PreProcurement",
+  "context": "PreProcurement",
+  "name": "Pre-procurement review",
+  "description": "A procurement demand waits for the buyer's decision (SCRUM-471).",
+  "stages": [
+    { "key": "buyerreview", "name": "BuyerReview", "nameFa": "بررسی کارشناس خرید", "order": 1, "stageType": "Sequential", "responsibleRole": "PRC.Buyer,PRC.Manager", "approvalStrategy": "AllApprovalsRequired", "isMandatory": true }
+  ],
+  "transitions": [
+    { "from": null, "to": "buyerreview", "action": "Start", "priority": 0 },
+    { "from": "buyerreview", "to": null, "action": "Complete", "priority": 0 },
+    { "from": "buyerreview", "to": null, "action": "Cancel", "priority": 0 }
+  ]
+}

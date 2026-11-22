@@ -1,0 +1,148 @@
+{
+  "kind": "reference-data",
+  "key": "failure-mechanism",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure mechanisms",
+    "fa": "سازوکارهای خرابی"
+  },
+  "description": {
+    "en": "ISO 14224 failure mechanism baseline.",
+    "fa": "سازوکارهای خرابی"
+  },
+  "payload": {
+    "list": "failure-mechanism",
+    "owner": "platform",
+    "rows": [
+      {
+        "key": "GENERAL_CORROSION",
+        "values": {
+          "name": "General Corrosion",
+          "nameFa": "خوردگی عمومی",
+          "displayOrder": 10
+        }
+      },
+      {
+        "key": "LOCALIZED_CORROSION",
+        "values": {
+          "name": "Localized Corrosion",
+          "nameFa": "خوردگی موضعی",
+          "displayOrder": 20
+        }
+      },
+      {
+        "key": "PITTING",
+        "values": {
+          "name": "Pitting",
+          "nameFa": "خوردگی حفره‌ای",
+          "displayOrder": 30
+        }
+      },
+      {
+        "key": "EROSION",
+        "values": {
+          "name": "Erosion",
+          "nameFa": "فرسایش سایشی",
+          "displayOrder": 40
+        }
+      },
+      {
+        "key": "EROSION_CORROSION",
+        "values": {
+          "name": "Erosion-Corrosion",
+          "nameFa": "خوردگی-فرسایشی",
+          "displayOrder": 50
+        }
+      },
+      {
+        "key": "CAVITATION",
+        "values": {
+          "name": "Cavitation",
+          "nameFa": "کاویتاسیون",
+          "displayOrder": 60
+        }
+      },
+      {
+        "key": "FATIGUE",
+        "values": {
+          "name": "Mechanical Fatigue",
+          "nameFa": "خستگی مکانیکی",
+          "displayOrder": 70
+        }
+      },
+      {
+        "key": "THERMAL_FATIGUE",
+        "values": {
+          "name": "Thermal Fatigue",
+          "nameFa": "خستگی حرارتی",
+          "displayOrder": 80
+        }
+      },
+      {
+        "key": "CREEP",
+        "values": {
+          "name": "Creep",
+          "nameFa": "خزش",
+          "displayOrder": 90
+        }
+      },
+      {
+        "key": "BRITTLE_FRACTURE",
+        "values": {
+          "name": "Brittle Fracture",
+          "nameFa": "شکست ترد",
+          "displayOrder": 100
+        }
+      },
+      {
+        "key": "STRESS_CORROSION_CRACKING",
+        "values": {
+          "name": "Stress Corrosion Cracking",
+          "nameFa": "ترک خوردگی تنشی",
+          "displayOrder": 110
+        }
+      },
+      {
+        "key": "HYDROGEN_DAMAGE",
+        "values": {
+          "name": "Hydrogen Damage",
+          "nameFa": "آسیب هیدروژنی",
+          "displayOrder": 120
+        }
+      },
+      {
+        "key": "WEAR",
+        "values": {
+          "name": "Mechanical Wear",
+          "nameFa": "سایش مکانیکی",
+          "displayOrder": 130
+        }
+      },
+      {
+        "key": "FRETTING",
+        "values": {
+          "name": "Fretting",
+          "nameFa": "فرتینگ (سایش لرزشی)",
+          "displayOrder": 140
+        }
+      },
+      {
+        "key": "OVERHEATING",
+        "values": {
+          "name": "Overheating Damage",
+          "nameFa": "آسیب ناشی از حرارت بیش‌ازحد",
+          "displayOrder": 150
+        }
+      },
+      {
+        "key": "ELECTRICAL_BREAKDOWN",
+        "values": {
+          "name": "Electrical Breakdown",
+          "nameFa": "شکست عایقی/الکتریکی",
+          "displayOrder": 160
+        }
+      }
+    ]
+  }
+}
