@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
@@ -7,7 +6,6 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Authorization;
 
@@ -52,144 +50,41 @@ public class EquipmentControllerAuthorizationTests
         }
     }
 
-    private class ThrowingFunctionalLocationService : IFunctionalLocationService
-    {
-        public Task<List<FunctionalLocationListDto>> GetListAsync() => throw new NotImplementedException();
-        public Task<PagedResult<FunctionalLocationListDto>> GetPagedListAsync(int page, int pageSize) => throw new NotImplementedException();
-        public Task<List<FunctionalLocationPickerItemDto>> GetPickerListAsync() => throw new NotImplementedException();
-        public Task<string?> GetBreadcrumbAsync(int? functionalLocationId) => throw new NotImplementedException();
-        public Task<(bool Success, string? Error, int? Id)> CreateAsync(string code, string name, int? parentId, string? plant,
-            string? area, string? unit, string? description, string? currentUserName) => throw new NotImplementedException();
-        public Task<(bool Success, string? Error)> UpdateAsync(int id, string code, string name, int? parentId, string? plant,
-            string? area, string? unit, string? description, string? currentUserName) => throw new NotImplementedException();
-        public Task<TreeNodePage> GetTreeNodesAsync(int? parentId, string? query, int page, int pageSize) => throw new NotImplementedException();
-        public Task<List<int>> GetDescendantIdsAsync(IEnumerable<int> functionalLocationIds, bool includeSelf) => throw new NotImplementedException();
-    }
 
-    private class ThrowingReliabilityService : IReliabilityService
-    {
-        public Task<List<EquipmentReliabilityDto>> GetFleetReliabilityAsync() => throw new NotImplementedException();
-        public Task<EquipmentReliabilityDto?> GetEquipmentReliabilityAsync(int equipmentId) => throw new NotImplementedException();
-    }
 
-    private class ThrowingInspectionService : IInspectionService
-    {
-        public Task<PagedResult<InspectionListItemDto>> GetPagedFleetAsync(int page, int pageSize) => throw new NotImplementedException();
-        public Task<List<InspectionListItemDto>> GetForEquipmentAsync(int equipmentId) => throw new NotImplementedException();
-        public Task<(bool Success, string? Error, int? InspectionRecordId)> CreateAsync(int equipmentId, string inspectionType,
-            DateTime inspectionDate, string? inspector, decimal? measurementValue, string? measurementUnit, decimal? lowerLimit,
-            decimal? upperLimit, string? recommendation, DateTime? nextInspectionDate, string? description) => throw new NotImplementedException();
-    }
 
-    private class ThrowingEquipmentClassificationService : IEquipmentClassificationService
-    {
-        public Task<ClassificationDashboardDto> GetDashboardAsync() => throw new NotImplementedException();
-        public Task<ReviewQueuePageDto> GetReviewQueueAsync(int page, int pageSize, string statusFilter = "PENDING") => throw new NotImplementedException();
-        public Task<ReviewQueueItemDto?> GetPendingSuggestionForEquipmentAsync(int equipmentId) => throw new NotImplementedException();
-        public Task<ClassificationExplanationDto?> ExplainClassificationAsync(int equipmentId) => throw new NotImplementedException();
-        public Task<BackfillResultDto> BackfillAsync() => throw new NotImplementedException();
-        public Task<bool> AcceptSuggestionAsync(int suggestionId, string reviewedBy, string? comment) => throw new NotImplementedException();
-        public Task<bool> RejectSuggestionAsync(int suggestionId, string reviewedBy, string? comment) => throw new NotImplementedException();
-    }
 
-    private class ThrowingMaintenanceIntelligenceService : IMaintenanceIntelligenceService
-    {
-        public Task<EquipmentMaintenanceIntelligenceDto?> GetForEquipmentAsync(int equipmentId) => throw new NotImplementedException();
-    }
 
-    private static async Task<(EquipmentController Controller, SpyEquipmentService Equipment)> CreateController(string dbName, string? role)
+    // SCRUM-692: the create is the entity action over Equipment with the permission Equipment.Create; the reads are operations without a module permission (signed-in users, as before).
+    private static async Task<bool> MayAsync(string dbName, string? role, string module, string action)
     {
         var ctx = PemsDbContextFactory.CreateInMemory($"EquipmentAuth_{dbName}");
         foreach (var roleName in SystemRoles.All)
             ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
         await ctx.SaveChangesAsync();
-
-        var accessControl = new AccessControlService(ctx);
-        var permissionService = new PermissionService(ctx, accessControl);
+        var permissionService = new PermissionService(ctx, new AccessControlService(ctx));
         await permissionService.SeedDefaultsAsync();
-
         var services = new ServiceCollection();
         services.AddSingleton(ctx);
         await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
-
-        var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
-
-        var equipmentService = new SpyEquipmentService();
-        var controller = new EquipmentController(
-            equipmentService, ctx, new ThrowingFunctionalLocationService(), currentUser,
-            new ThrowingReliabilityService(), new ThrowingInspectionService(),
-            new ThrowingEquipmentClassificationService(), new ThrowingMaintenanceIntelligenceService(),
-            permissionService, new PEMS.Persistence.Services.BarcodeService(ctx)).WithTempData();
-
-        return (controller, equipmentService);
-    }
-
-    // ==============================================================================
-    // Create — طبق سید موجود فقط MaintenanceEngineer مجاز است
-    // ==============================================================================
-
-    [Fact]
-    public async Task CreateGet_ViewerRole_Denied()
-    {
-        var (controller, _) = await CreateController(nameof(CreateGet_ViewerRole_Denied), SystemRoles.Viewer);
-
-        var result = await controller.Create();
-
-        Assert.IsType<RedirectToActionResult>(result);
+        return await permissionService.HasPermissionAsync(role != null ? new List<string> { role } : new List<string>(), module, action);
     }
 
     [Fact]
-    public async Task CreateGet_MaintenanceEngineer_Authorized_ReturnsView()
-    {
-        var (controller, _) = await CreateController(nameof(CreateGet_MaintenanceEngineer_Authorized_ReturnsView), SystemRoles.MaintenanceEngineer);
-
-        var result = await controller.Create();
-
-        Assert.IsType<ViewResult>(result);
-    }
+    public async Task Create_ViewerRole_IsNotAllowed()
+        => Assert.False(await MayAsync(nameof(Create_ViewerRole_IsNotAllowed), SystemRoles.Viewer, "Equipment", "Create"));
 
     [Fact]
-    public async Task CreatePost_ViewerRole_Denied_NoEquipmentCreated()
-    {
-        var (controller, equipment) = await CreateController(nameof(CreatePost_ViewerRole_Denied_NoEquipmentCreated), SystemRoles.Viewer);
-
-        var result = await controller.Create(new Equipment { TagNumber = "EQ-X", Name = "EQ-X", EquipmentType = "Pump" });
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.False(equipment.CreateCalled);
-    }
+    public async Task Create_MaintenanceEngineer_IsAllowed()
+        => Assert.True(await MayAsync(nameof(Create_MaintenanceEngineer_IsAllowed), SystemRoles.MaintenanceEngineer, "Equipment", "Create"));
 
     [Fact]
-    public async Task CreatePost_MaintenanceEngineer_Authorized_CreatesEquipment()
+    public async Task List_AndPassport_ReadThroughTheService_WithoutAPermissionGate()
     {
-        var (controller, equipment) = await CreateController(nameof(CreatePost_MaintenanceEngineer_Authorized_CreatesEquipment), SystemRoles.MaintenanceEngineer);
-
-        var result = await controller.Create(new Equipment { TagNumber = "EQ-X", Name = "EQ-X", EquipmentType = "Pump" });
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(equipment.CreateCalled);
-    }
-
-    // ==============================================================================
-    // AssignFoundation — طبق سید موجود، عملیات "Edit"
-    // ==============================================================================
-
-
-
-    // ==============================================================================
-    // Index — طبق تصمیم صریح کاربر: عمداً دست‌نخورده، برای همه‌ی نقش‌ها در دسترس
-    // (Details از این پوشش مستثنی است چون به چند سرویس دیگر - Reliability/Inspection/
-    // Classification/MaintenanceIntelligence - وابسته است که مستقیماً هدف این فاز نیستند)
-    // ==============================================================================
-
-    [Fact]
-    public async Task Index_ViewerRole_StillAccessible_NoRegressionFromNewGates()
-    {
-        var (controller, _) = await CreateController(nameof(Index_ViewerRole_StillAccessible_NoRegressionFromNewGates), SystemRoles.Viewer);
-
-        var result = await controller.Index(null, null, null, null, null);
-
-        Assert.IsType<ViewResult>(result);
+        var ctx = PemsDbContextFactory.CreateInMemory("EquipmentAuth_reads");
+        var ops = new PEMS.Web.Services.EquipmentPagesOperations(ctx, new SpyEquipmentService(), null!, null!, null!);
+        Assert.Empty(await ops.ListAsync());
+        Assert.Empty(await ops.ProjectOptionsAsync());
     }
 
     // AssignFoundation is the operation Equipment.AssignFoundation (permission Equipment.Edit, SCRUM-692): the operation host refuses a role without it; the operation calls the service.

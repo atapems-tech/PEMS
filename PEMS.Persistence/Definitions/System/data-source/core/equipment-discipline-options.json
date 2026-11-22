@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "equipment-discipline-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment DisciplineOptions",
+    "fa": "تجهیز DisciplineOptions"
+  },
+  "description": {
+    "en": "Equipment DisciplineOptions",
+    "fa": "تجهیز DisciplineOptions"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "DisciplineOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

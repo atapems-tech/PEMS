@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-instrument",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment instrument",
+    "fa": "equipment instrument"
+  },
+  "description": {
+    "en": "equipment instrument",
+    "fa": "equipment instrument"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "Instrument"
+    }
+  }
+}

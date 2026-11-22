@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "equipment-classification-suggestion",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment classification suggestion",
+    "fa": "equipment classification suggestion"
+  },
+  "description": {
+    "en": "equipment classification suggestion",
+    "fa": "equipment classification suggestion"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "ClassificationSuggestion",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

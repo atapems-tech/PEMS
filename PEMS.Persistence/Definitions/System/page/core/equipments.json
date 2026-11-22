@@ -1,0 +1,169 @@
+{
+  "kind": "page",
+  "key": "equipments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment",
+    "fa": "تجهیزات"
+  },
+  "description": {
+    "en": "Equipment",
+    "fa": "تجهیزات"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "equipments",
+    "template": "entity-list",
+    "args": {
+      "id": "equipments",
+      "url": "/d/equipment-grid",
+      "idField": "equipmentId",
+      "viewsKey": "equipments",
+      "columns": [
+        {
+          "key": "tagNumber",
+          "header": {
+            "en": "Tag",
+            "fa": "تگ"
+          },
+          "width": 150
+        },
+        {
+          "key": "name",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 200
+        },
+        {
+          "key": "equipmentType",
+          "header": {
+            "en": "Type",
+            "fa": "نوع"
+          },
+          "width": 130
+        },
+        {
+          "key": "projectName",
+          "header": {
+            "en": "Project",
+            "fa": "پروژه"
+          },
+          "width": 150
+        },
+        {
+          "key": "disciplineName",
+          "header": {
+            "en": "Discipline",
+            "fa": "دیسیپلین"
+          },
+          "width": 130
+        },
+        {
+          "key": "status",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          },
+          "width": 100
+        },
+        {
+          "key": "manufacturer",
+          "header": {
+            "en": "Manufacturer",
+            "fa": "سازنده"
+          },
+          "width": 150
+        },
+        {
+          "key": "model",
+          "header": {
+            "en": "Model",
+            "fa": "مدل"
+          },
+          "width": 130
+        },
+        {
+          "key": "area",
+          "header": {
+            "en": "Area",
+            "fa": "ناحیه"
+          },
+          "width": 110
+        },
+        {
+          "key": "criticalityClass",
+          "header": {
+            "en": "Criticality",
+            "fa": "بحرانی‌بودن"
+          },
+          "width": 100
+        },
+        {
+          "key": "documentsCount",
+          "header": {
+            "en": "Documents",
+            "fa": "مدارک"
+          },
+          "width": 90,
+          "type": "number"
+        },
+        {
+          "key": "vdrItemsCount",
+          "header": {
+            "en": "VDR items",
+            "fa": "اقلام VDR"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "workOrdersCount",
+          "header": {
+            "en": "Work orders",
+            "fa": "دستور کار"
+          },
+          "width": 100,
+          "type": "number"
+        },
+        {
+          "key": "functionalLocationBreadcrumb",
+          "header": {
+            "en": "Functional location",
+            "fa": "محل عملکردی"
+          },
+          "width": 240
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 120,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "passport",
+              "label": {
+                "en": "Passport",
+                "fa": "شناسنامه"
+              },
+              "url": "/p/equipment-passport?id={id}",
+              "method": "get"
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/equipment-create",
+      "newLabel": {
+        "en": "New equipment",
+        "fa": "تجهیز جدید"
+      }
+    }
+  }
+}

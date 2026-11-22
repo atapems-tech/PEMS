@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "equipment-maintenance-intelligence",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment maintenance intelligence",
+    "fa": "equipment maintenance intelligence"
+  },
+  "description": {
+    "en": "equipment maintenance intelligence",
+    "fa": "equipment maintenance intelligence"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "MaintenanceIntelligence",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

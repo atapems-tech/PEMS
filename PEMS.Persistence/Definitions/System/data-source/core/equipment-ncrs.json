@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-ncrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment ncrs",
+    "fa": "equipment ncrs"
+  },
+  "description": {
+    "en": "equipment ncrs",
+    "fa": "equipment ncrs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "NonConformanceReports"
+    }
+  }
+}

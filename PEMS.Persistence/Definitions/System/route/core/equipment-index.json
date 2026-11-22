@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment (old address)",
+    "fa": "تجهیز (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Equipment (old address)",
+    "fa": "تجهیز (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Equipment/Index",
+    "target": "/p/equipments",
+    "permanent": false
+  }
+}

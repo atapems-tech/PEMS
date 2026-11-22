@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment head",
+    "fa": "equipment head"
+  },
+  "description": {
+    "en": "equipment head",
+    "fa": "equipment head"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "Equipment"
+    }
+  }
+}

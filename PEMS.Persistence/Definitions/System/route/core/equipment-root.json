@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-root",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment (old address)",
+    "fa": "تجهیز (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Equipment (old address)",
+    "fa": "تجهیز (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Equipment",
+    "target": "/p/equipments",
+    "permanent": false
+  }
+}

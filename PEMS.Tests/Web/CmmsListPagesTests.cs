@@ -24,7 +24,7 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "Equipment",
+        "WorkOrder",
         "MaintenanceStrategy",
         // wave 2b
         "FailureModeCatalog", "RcmFmea",

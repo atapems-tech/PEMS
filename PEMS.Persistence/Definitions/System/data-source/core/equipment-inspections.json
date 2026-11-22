@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "equipment-inspections",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment inspections",
+    "fa": "equipment inspections"
+  },
+  "description": {
+    "en": "equipment inspections",
+    "fa": "equipment inspections"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Inspections",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

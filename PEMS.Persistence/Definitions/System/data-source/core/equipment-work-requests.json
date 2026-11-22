@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-work-requests",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment work requests",
+    "fa": "equipment work requests"
+  },
+  "description": {
+    "en": "equipment work requests",
+    "fa": "equipment work requests"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "WorkRequests"
+    }
+  }
+}

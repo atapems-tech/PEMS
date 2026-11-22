@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "equipment-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment grid",
+    "fa": "equipment grid"
+  },
+  "description": {
+    "en": "equipment grid",
+    "fa": "equipment grid"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "List"
+    }
+  }
+}

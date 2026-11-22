@@ -28,7 +28,6 @@
       "en": "Functional Location / Parent Equipment updated",
       "fa": "محل استقرار و تجهیز والد به‌روز شد"
     },
-    "redirect": "/Equipment/Index",
-    "redirectBack": true
+    "redirect": "/p/equipment-passport?id={equipmentId}"
   }
 }

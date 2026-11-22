@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-documents",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment documents",
+    "fa": "equipment documents"
+  },
+  "description": {
+    "en": "equipment documents",
+    "fa": "equipment documents"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "Documents"
+    }
+  }
+}

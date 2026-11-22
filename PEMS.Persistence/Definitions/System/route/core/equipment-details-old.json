@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-details-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment (old address)",
+    "fa": "تجهیز (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Equipment (old address)",
+    "fa": "تجهیز (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Equipment/Details/{id}",
+    "target": "/p/equipment-passport?id={id}",
+    "permanent": false
+  }
+}

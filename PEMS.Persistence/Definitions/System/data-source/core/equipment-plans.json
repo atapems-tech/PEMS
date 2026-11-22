@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment plans",
+    "fa": "equipment plans"
+  },
+  "description": {
+    "en": "equipment plans",
+    "fa": "equipment plans"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "Plans"
+    }
+  }
+}

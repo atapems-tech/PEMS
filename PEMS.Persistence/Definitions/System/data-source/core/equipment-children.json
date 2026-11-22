@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "equipment-children",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment children",
+    "fa": "equipment children"
+  },
+  "description": {
+    "en": "equipment children",
+    "fa": "equipment children"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentPage",
+      "action": "Passport",
+      "args": {
+        "id": "param:id"
+      },
+      "path": "Equipment.ChildEquipments"
+    }
+  }
+}

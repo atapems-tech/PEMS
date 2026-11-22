@@ -1,0 +1,1683 @@
+{
+  "kind": "page",
+  "key": "equipment-passport",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Digital equipment passport",
+    "fa": "شناسنامه دیجیتال تجهیز"
+  },
+  "description": {
+    "en": "Digital equipment passport",
+    "fa": "شناسنامه دیجیتال تجهیز"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "equipment-passport",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "equipment-record",
+            "fields": [
+              {
+                "key": "tagNumber",
+                "label": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
+              },
+              {
+                "key": "name",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
+              },
+              {
+                "key": "equipmentType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "projectName",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "disciplineName",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "manufacturer",
+                "label": {
+                  "en": "Manufacturer",
+                  "fa": "سازنده"
+                }
+              },
+              {
+                "key": "model",
+                "label": {
+                  "en": "Model",
+                  "fa": "مدل"
+                }
+              },
+              {
+                "key": "area",
+                "label": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                }
+              },
+              {
+                "key": "pidNumber",
+                "label": {
+                  "en": "P&ID",
+                  "fa": "P&ID"
+                }
+              },
+              {
+                "key": "criticalityClass",
+                "label": {
+                  "en": "Criticality",
+                  "fa": "بحرانی‌بودن"
+                }
+              },
+              {
+                "key": "functionalLocationBreadcrumb",
+                "label": {
+                  "en": "Functional location",
+                  "fa": "محل عملکردی"
+                }
+              },
+              {
+                "key": "parentEquipmentTagNumber",
+                "label": {
+                  "en": "Parent equipment",
+                  "fa": "تجهیز والد"
+                }
+              },
+              {
+                "key": "installationDate",
+                "label": {
+                  "en": "Installation date",
+                  "fa": "تاریخ نصب"
+                },
+                "type": "date"
+              },
+              {
+                "key": "childEquipmentCount",
+                "label": {
+                  "en": "Child equipment",
+                  "fa": "تجهیز فرزند"
+                }
+              },
+              {
+                "key": "documentsCount",
+                "label": {
+                  "en": "Documents",
+                  "fa": "مدارک"
+                }
+              },
+              {
+                "key": "vdrItemsCount",
+                "label": {
+                  "en": "VDR items",
+                  "fa": "اقلام VDR"
+                }
+              },
+              {
+                "key": "workOrdersCount",
+                "label": {
+                  "en": "Work orders",
+                  "fa": "دستور کار"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/equipment-head",
+              "idField": "equipmentId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/equipment-assign-foundation?equipmentId={{params.id}}",
+                "text": {
+                  "en": "Place the equipment (location, parent, installation date)",
+                  "fa": "تعیین جایگاه تجهیز"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/barcode-generate?targetType=Equipment&targetId={{params.id}}",
+                "text": {
+                  "en": "Barcode",
+                  "fa": "بارکد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-equipment?id={{params.id}}",
+                "text": {
+                  "en": "Reliability",
+                  "fa": "قابلیت اطمینان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-equipment-profile?id={{params.id}}",
+                "text": {
+                  "en": "Intelligence profile",
+                  "fa": "پروفایل هوشمندی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/reliability-condition-monitoring?equipmentId={{params.id}}",
+                "text": {
+                  "en": "Condition monitoring",
+                  "fa": "پایش وضعیت"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/instrument-passport",
+                "text": {
+                  "en": "Instrument passports",
+                  "fa": "شناسنامه ابزار دقیق"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/equipments",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "instrument",
+          "component": "data-grid",
+          "options": {
+            "id": "instrument",
+            "url": "/d/equipment-instrument?f.id={{params.id|url}}",
+            "idField": "instrumentType",
+            "columns": [
+              {
+                "key": "instrumentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 130
+              },
+              {
+                "key": "loopNumber",
+                "header": {
+                  "en": "Loop",
+                  "fa": "حلقه"
+                },
+                "width": 100
+              },
+              {
+                "key": "system",
+                "header": {
+                  "en": "System",
+                  "fa": "سیستم"
+                },
+                "width": 100
+              },
+              {
+                "key": "processVariable",
+                "header": {
+                  "en": "Process variable",
+                  "fa": "متغیر فرآیند"
+                },
+                "width": 140
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "calibrationStatus",
+                "header": {
+                  "en": "Calibration",
+                  "fa": "کالیبراسیون"
+                },
+                "width": 110
+              },
+              {
+                "key": "lastCalibrationDate",
+                "header": {
+                  "en": "Last calibration",
+                  "fa": "آخرین کالیبراسیون"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "nextCalibrationDue",
+                "header": {
+                  "en": "Next due",
+                  "fa": "سررسید بعدی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "currentStatus",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "asset",
+          "component": "data-grid",
+          "options": {
+            "id": "asset",
+            "url": "/d/equipment-asset?f.id={{params.id|url}}",
+            "idField": "assetNumber",
+            "columns": [
+              {
+                "key": "assetNumber",
+                "header": {
+                  "en": "Asset",
+                  "fa": "دارایی"
+                },
+                "width": 130
+              },
+              {
+                "key": "functionalLocationBreadcrumb",
+                "header": {
+                  "en": "Functional location",
+                  "fa": "محل عملکردی"
+                },
+                "width": 260
+              },
+              {
+                "key": "maintenanceClass",
+                "header": {
+                  "en": "Maintenance class",
+                  "fa": "کلاس نگهداری"
+                },
+                "width": 140
+              },
+              {
+                "key": "commissioningDate",
+                "header": {
+                  "en": "Commissioned",
+                  "fa": "راه‌اندازی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "criticalityClass",
+                "header": {
+                  "en": "Criticality",
+                  "fa": "بحرانی‌بودن"
+                },
+                "width": 110
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "mechanical",
+          "component": "data-grid",
+          "options": {
+            "id": "mechanical",
+            "url": "/d/equipment-mechanical?f.id={{params.id|url}}",
+            "idField": "tagNumber",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 120
+              },
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "subType",
+                "header": {
+                  "en": "Sub-class",
+                  "fa": "زیررده"
+                },
+                "width": 110
+              },
+              {
+                "key": "designPressure",
+                "header": {
+                  "en": "Design pressure",
+                  "fa": "فشار طراحی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "designTemperature",
+                "header": {
+                  "en": "Design temperature",
+                  "fa": "دمای طراحی"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "material",
+                "header": {
+                  "en": "Material",
+                  "fa": "جنس"
+                },
+                "width": 110
+              },
+              {
+                "key": "flowRate",
+                "header": {
+                  "en": "Flow rate",
+                  "fa": "دبی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "speedRPM",
+                "header": {
+                  "en": "Speed (RPM)",
+                  "fa": "دور"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "rotatingPowerKW",
+                "header": {
+                  "en": "Power (kW)",
+                  "fa": "توان"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "volume",
+                "header": {
+                  "en": "Volume",
+                  "fa": "حجم"
+                },
+                "width": 90,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "cm",
+          "component": "data-grid",
+          "options": {
+            "id": "cm",
+            "url": "/d/equipment-condition-monitoring?f.id={{params.id|url}}",
+            "idField": "pointCount",
+            "columns": [
+              {
+                "key": "pointCount",
+                "header": {
+                  "en": "Points",
+                  "fa": "نقاط"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "openFindingCount",
+                "header": {
+                  "en": "Open findings",
+                  "fa": "یافته باز"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "hasCbmStrategy",
+                "header": {
+                  "en": "CBM strategy",
+                  "fa": "استراتژی CBM"
+                },
+                "width": 120,
+                "type": "bool"
+              },
+              {
+                "key": "nextDueDate",
+                "header": {
+                  "en": "Next due",
+                  "fa": "سررسید بعدی"
+                },
+                "width": 120,
+                "type": "date"
+              }
+            ],
+            "pageSize": 5,
+            "height": 130
+          }
+        },
+        {
+          "id": "cm-points",
+          "component": "def:related-table",
+          "options": {
+            "id": "cm-points",
+            "title": {
+              "en": "Condition monitoring points",
+              "fa": "نقاط پایش وضعیت"
+            },
+            "url": "/d/equipment-condition-points?f.id={{params.id|url}}",
+            "idField": "conditionMonitoringPointId",
+            "columns": [
+              {
+                "key": "variableType",
+                "header": {
+                  "en": "Variable",
+                  "fa": "متغیر"
+                },
+                "width": 120
+              },
+              {
+                "key": "tag",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "lastValue",
+                "header": {
+                  "en": "Last value",
+                  "fa": "آخرین مقدار"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "lastReadingDate",
+                "header": {
+                  "en": "Last reading",
+                  "fa": "آخرین قرائت"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "lastReadingEvaluationStatus",
+                "header": {
+                  "en": "Evaluation",
+                  "fa": "ارزیابی"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "trend",
+                    "label": {
+                      "en": "Trend",
+                      "fa": "روند"
+                    },
+                    "url": "/p/reliability-trend?pointId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "children",
+          "component": "def:related-table",
+          "options": {
+            "id": "children",
+            "title": {
+              "en": "Child equipment",
+              "fa": "تجهیزات فرزند"
+            },
+            "url": "/d/equipment-children?f.id={{params.id|url}}",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 140
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 220
+              }
+            ]
+          }
+        },
+        {
+          "id": "documents",
+          "component": "def:related-table",
+          "options": {
+            "id": "documents",
+            "title": {
+              "en": "Engineering documents",
+              "fa": "مدارک مهندسی"
+            },
+            "url": "/d/equipment-documents?f.id={{params.id|url}}",
+            "idField": "documentId",
+            "columns": [
+              {
+                "key": "documentNo",
+                "header": {
+                  "en": "Document",
+                  "fa": "سند"
+                },
+                "width": 150
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "documentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "revisionNo",
+                "header": {
+                  "en": "Rev",
+                  "fa": "ویرایش"
+                },
+                "width": 70
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              }
+            ]
+          }
+        },
+        {
+          "id": "vdr",
+          "component": "def:related-table",
+          "options": {
+            "id": "vdr",
+            "title": {
+              "en": "Vendor documents (VDR)",
+              "fa": "مدارک فروشنده (VDR)"
+            },
+            "url": "/d/equipment-vdr?f.id={{params.id|url}}",
+            "idField": "vdrItemId",
+            "columns": [
+              {
+                "key": "sequenceNo",
+                "header": {
+                  "en": "#",
+                  "fa": "#"
+                },
+                "width": 60,
+                "type": "number"
+              },
+              {
+                "key": "documentNumber",
+                "header": {
+                  "en": "Document",
+                  "fa": "سند"
+                },
+                "width": 160
+              },
+              {
+                "key": "vendorName",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "documentTypeCode",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 90
+              },
+              {
+                "key": "workflowStatus",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 130
+              },
+              {
+                "key": "plannedFirstIssueDate",
+                "header": {
+                  "en": "Planned",
+                  "fa": "برنامه‌ریزی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "isOverdue",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                },
+                "width": 90,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "mrs",
+          "component": "def:related-table",
+          "options": {
+            "id": "mrs",
+            "title": {
+              "en": "Material requisitions",
+              "fa": "درخواست‌های مواد"
+            },
+            "url": "/d/equipment-mrs?f.id={{params.id|url}}",
+            "idField": "mrId",
+            "columns": [
+              {
+                "key": "mrNumber",
+                "header": {
+                  "en": "MR",
+                  "fa": "MR"
+                },
+                "width": 130
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 280
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "requiredDate",
+                "header": {
+                  "en": "Required",
+                  "fa": "مورد نیاز"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "quotationsCount",
+                "header": {
+                  "en": "Quotations",
+                  "fa": "استعلام‌ها"
+                },
+                "width": 100,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "work-orders",
+          "component": "def:related-table",
+          "options": {
+            "id": "work-orders",
+            "title": {
+              "en": "Work orders",
+              "fa": "دستورهای کار"
+            },
+            "url": "/d/equipment-work-orders?f.id={{params.id|url}}",
+            "idField": "workOrderId",
+            "columns": [
+              {
+                "key": "workOrderNo",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستور کار"
+                },
+                "width": 140
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "width": 300
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "createdDate",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "width": 120,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "work-requests",
+          "component": "def:related-table",
+          "options": {
+            "id": "work-requests",
+            "title": {
+              "en": "Work requests",
+              "fa": "درخواست‌های کار"
+            },
+            "url": "/d/equipment-work-requests?f.id={{params.id|url}}",
+            "idField": "workRequestId",
+            "columns": [
+              {
+                "key": "requestNumber",
+                "header": {
+                  "en": "Request",
+                  "fa": "درخواست"
+                },
+                "width": 140
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 260
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              },
+              {
+                "key": "requestedDate",
+                "header": {
+                  "en": "Requested",
+                  "fa": "درخواست"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "linkedWorkOrderNo",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستور کار"
+                },
+                "width": 140
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategies",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategies",
+            "title": {
+              "en": "Maintenance strategies",
+              "fa": "استراتژی‌های نگهداری"
+            },
+            "url": "/d/equipment-strategies?f.id={{params.id|url}}",
+            "idField": "maintenanceStrategyId",
+            "columns": [
+              {
+                "key": "maintenanceStrategyId",
+                "header": {
+                  "en": "Id",
+                  "fa": "شناسه"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "strategyType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "recommendedTriggerType",
+                "header": {
+                  "en": "Trigger",
+                  "fa": "محرک"
+                },
+                "width": 120
+              },
+              {
+                "key": "frequency",
+                "header": {
+                  "en": "Frequency",
+                  "fa": "تناوب"
+                },
+                "width": 110
+              },
+              {
+                "key": "consequenceCategory",
+                "header": {
+                  "en": "Consequence",
+                  "fa": "پیامد"
+                },
+                "width": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "plans",
+          "component": "def:related-table",
+          "options": {
+            "id": "plans",
+            "title": {
+              "en": "Maintenance plans",
+              "fa": "برنامه‌های نگهداری"
+            },
+            "url": "/d/equipment-plans?f.id={{params.id|url}}",
+            "idField": "maintenancePlanId",
+            "columns": [
+              {
+                "key": "planNumber",
+                "header": {
+                  "en": "Plan",
+                  "fa": "برنامه"
+                },
+                "width": 130
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 240
+              },
+              {
+                "key": "triggerType",
+                "header": {
+                  "en": "Trigger",
+                  "fa": "محرک"
+                },
+                "width": 110
+              },
+              {
+                "key": "intervalDays",
+                "header": {
+                  "en": "Interval (days)",
+                  "fa": "فاصله (روز)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "lastExecutionDate",
+                "header": {
+                  "en": "Last run",
+                  "fa": "آخرین اجرا"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "nextDueDate",
+                "header": {
+                  "en": "Next due",
+                  "fa": "سررسید بعدی"
+                },
+                "width": 120,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "inspections",
+          "component": "def:related-table",
+          "options": {
+            "id": "inspections",
+            "title": {
+              "en": "Inspections",
+              "fa": "بازرسی‌ها"
+            },
+            "url": "/d/equipment-inspections?f.id={{params.id|url}}",
+            "idField": "inspectionRecordId",
+            "columns": [
+              {
+                "key": "inspectionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "inspectionType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 140
+              },
+              {
+                "key": "inspector",
+                "header": {
+                  "en": "Inspector",
+                  "fa": "بازرس"
+                },
+                "width": 130
+              },
+              {
+                "key": "measurementValue",
+                "header": {
+                  "en": "Value",
+                  "fa": "مقدار"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "measurementUnit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 70
+              },
+              {
+                "key": "conditionStatus",
+                "header": {
+                  "en": "Condition",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "nextInspectionDate",
+                "header": {
+                  "en": "Next",
+                  "fa": "بعدی"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "dueStatus",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 100
+              },
+              {
+                "key": "recommendation",
+                "header": {
+                  "en": "Recommendation",
+                  "fa": "توصیه"
+                },
+                "width": 220
+              }
+            ]
+          }
+        },
+        {
+          "id": "ncrs",
+          "component": "def:related-table",
+          "options": {
+            "id": "ncrs",
+            "title": {
+              "en": "Non-conformance reports",
+              "fa": "گزارش‌های عدم انطباق"
+            },
+            "url": "/d/equipment-ncrs?f.id={{params.id|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "nodeType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 100
+              },
+              {
+                "key": "label",
+                "header": {
+                  "en": "Label",
+                  "fa": "عنوان"
+                },
+                "width": 220
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 220
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI proposed",
+                  "fa": "پیشنهاد هوشمند"
+                },
+                "width": 120,
+                "type": "bool"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              }
+            ]
+          }
+        },
+        {
+          "id": "mocs",
+          "component": "def:related-table",
+          "options": {
+            "id": "mocs",
+            "title": {
+              "en": "Management of change",
+              "fa": "مدیریت تغییر"
+            },
+            "url": "/d/equipment-mocs?f.id={{params.id|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "nodeType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 100
+              },
+              {
+                "key": "label",
+                "header": {
+                  "en": "Label",
+                  "fa": "عنوان"
+                },
+                "width": 220
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 220
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI proposed",
+                  "fa": "پیشنهاد هوشمند"
+                },
+                "width": 120,
+                "type": "bool"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              }
+            ]
+          }
+        },
+        {
+          "id": "tqs",
+          "component": "def:related-table",
+          "options": {
+            "id": "tqs",
+            "title": {
+              "en": "Technical queries",
+              "fa": "پرسش‌های فنی"
+            },
+            "url": "/d/equipment-tqs?f.id={{params.id|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "nodeType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 100
+              },
+              {
+                "key": "label",
+                "header": {
+                  "en": "Label",
+                  "fa": "عنوان"
+                },
+                "width": 220
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 220
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI proposed",
+                  "fa": "پیشنهاد هوشمند"
+                },
+                "width": 120,
+                "type": "bool"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              }
+            ]
+          }
+        },
+        {
+          "id": "suggested",
+          "component": "def:related-table",
+          "options": {
+            "id": "suggested",
+            "title": {
+              "en": "Suggested links",
+              "fa": "پیوندهای پیشنهادی"
+            },
+            "url": "/d/equipment-suggested-links?f.id={{params.id|url}}",
+            "idField": "nodeId",
+            "columns": [
+              {
+                "key": "nodeType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 100
+              },
+              {
+                "key": "label",
+                "header": {
+                  "en": "Label",
+                  "fa": "عنوان"
+                },
+                "width": 220
+              },
+              {
+                "key": "subLabel",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 220
+              },
+              {
+                "key": "relationshipType",
+                "header": {
+                  "en": "Relationship",
+                  "fa": "رابطه"
+                },
+                "width": 130
+              },
+              {
+                "key": "isAIProposed",
+                "header": {
+                  "en": "AI proposed",
+                  "fa": "پیشنهاد هوشمند"
+                },
+                "width": 120,
+                "type": "bool"
+              },
+              {
+                "key": "isConfirmed",
+                "header": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "plannedOrDueDate",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              }
+            ]
+          }
+        },
+        {
+          "id": "suggestion",
+          "component": "def:related-table",
+          "options": {
+            "id": "suggestion",
+            "title": {
+              "en": "Pending classification suggestion",
+              "fa": "پیشنهاد طبقه‌بندی در انتظار"
+            },
+            "url": "/d/equipment-classification-suggestion?f.id={{params.id|url}}",
+            "idField": "suggestionId",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 120
+              },
+              {
+                "key": "suggestedEquipmentClassName",
+                "header": {
+                  "en": "Suggested class",
+                  "fa": "کلاس پیشنهادی"
+                },
+                "width": 200
+              },
+              {
+                "key": "confidence",
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                },
+                "width": 100
+              },
+              {
+                "key": "source",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 100
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 280
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "accept",
+                    "label": {
+                      "en": "Accept",
+                      "fa": "پذیرش"
+                    },
+                    "url": "/a/classification-accept",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Accept this classification and apply it?",
+                      "fa": "این طبقه‌بندی پذیرفته و اعمال شود؟"
+                    }
+                  },
+                  {
+                    "key": "review",
+                    "label": {
+                      "en": "Review queue",
+                      "fa": "صف بازبینی"
+                    },
+                    "url": "/p/classification-review-queue",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "explanation",
+          "component": "def:related-table",
+          "options": {
+            "id": "explanation",
+            "title": {
+              "en": "Classification explanation",
+              "fa": "توضیح طبقه‌بندی"
+            },
+            "url": "/d/equipment-classification-explanation?f.id={{params.id|url}}",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "matchedRuleTier",
+                "header": {
+                  "en": "Rule tier",
+                  "fa": "سطح قاعده"
+                },
+                "width": 120
+              },
+              {
+                "key": "matchedInput",
+                "header": {
+                  "en": "Matched input",
+                  "fa": "ورودی منطبق"
+                },
+                "width": 200
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 300
+              },
+              {
+                "key": "resolvedEquipmentClassCode",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 120
+              }
+            ]
+          }
+        },
+        {
+          "id": "intelligence",
+          "component": "def:related-table",
+          "options": {
+            "id": "intelligence",
+            "title": {
+              "en": "Maintenance intelligence",
+              "fa": "هوشمندی نگهداری"
+            },
+            "url": "/d/equipment-maintenance-intelligence?f.id={{params.id|url}}",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 120
+              },
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "equipmentClassName",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 180
+              },
+              {
+                "key": "classificationConfidence",
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                },
+                "width": 100
+              },
+              {
+                "key": "classificationSource",
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                },
+                "width": 100
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
