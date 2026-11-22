@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "table-extraction-reject-row",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject a row",
+    "fa": "رد ردیف"
+  },
+  "description": {
+    "en": "Reject a row",
+    "fa": "رد ردیف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TableExtraction",
+      "action": "RejectRow",
+      "args": {
+        "rowId": "field:rowId",
+        "comment": "field:comment",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/TableExtraction/Review?batchId={batchId}"
+  }
+}

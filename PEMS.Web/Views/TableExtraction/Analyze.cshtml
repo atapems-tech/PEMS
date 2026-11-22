@@ -17,7 +17,7 @@
         <pems-flex gap="2">
             @if (Model.Success && table != null && table.Rows.Any())
             {
-                <pems-form asp-action="StageForReview" method="post" class="d-inline">
+                <pems-form action="/a/table-extraction-stage" method="post" class="d-inline">
                     <input type="hidden" name="attachmentId" value="@attachment.AttachmentId" />
                     <pems-button tone="primary" size="small" type="submit">
                         <pems-icon name="bi-link-45deg" /> Stage for Review (link to Equipment)

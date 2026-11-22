@@ -90,6 +90,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-753: table extraction review commands as definitions
+
+### Changed
+- Staging a table for review, confirming a row (matched, bulk, by tag) and rejecting a row are definitions (/a/table-extraction-*) over ITableExtractionOperations with the old permissions and texts; the staged batch opens in the review page. Web and tests compile; tests not run (end of batch).
+
 ## 2026-11-21 - SCRUM-685, 690, 761: files in operations (optional file, many files); comments and sheets with attachments as definitions
 
 ### Changed

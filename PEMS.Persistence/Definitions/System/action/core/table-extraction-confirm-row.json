@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "table-extraction-confirm-row",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm a row",
+    "fa": "تأیید ردیف"
+  },
+  "description": {
+    "en": "Confirm a row",
+    "fa": "تأیید ردیف"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TableExtraction",
+      "action": "ConfirmRow",
+      "args": {
+        "rowId": "field:rowId",
+        "equipmentId": "field:equipmentId",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/TableExtraction/Review?batchId={batchId}"
+  }
+}

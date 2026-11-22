@@ -30,6 +30,11 @@ public class SmallDocumentOperationsTests
     [InlineData("VdrWorkflow", "DisciplineRespond", "VDR.Edit")]
     [InlineData("VdrWorkflow", "LeadReview", "VDR.Approve")]
     [InlineData("VdrWorkflow", "ReturnToVendor", "VDR.Approve")]
+    [InlineData("TableExtraction", "StageForReview", "TableExtraction.Create")]
+    [InlineData("TableExtraction", "ConfirmRow", "TableExtraction.Approve")]
+    [InlineData("TableExtraction", "BulkConfirm", "TableExtraction.Approve")]
+    [InlineData("TableExtraction", "ConfirmRowManual", "TableExtraction.Approve")]
+    [InlineData("TableExtraction", "RejectRow", "TableExtraction.Create")]
     [InlineData("EngineeringIntelligence", "AddComment", "EngineeringDocuments.Create")]
     public void TheOperationsKeepTheFloorOfTheOldController(string model, string action, string permission)
         => Assert.Equal(permission, Catalog.Get(model, action)!.Permission);

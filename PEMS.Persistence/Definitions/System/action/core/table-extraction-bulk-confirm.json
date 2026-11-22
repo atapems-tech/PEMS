@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "table-extraction-bulk-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm the selected rows",
+    "fa": "تأیید ردیف‌های انتخاب‌شده"
+  },
+  "description": {
+    "en": "Confirm the selected rows",
+    "fa": "تأیید ردیف‌های انتخاب‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TableExtraction",
+      "action": "BulkConfirm",
+      "args": {
+        "selectedRowIds": "field:selectedRowIds",
+        "employeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/TableExtraction/Review?batchId={batchId}"
+  }
+}
