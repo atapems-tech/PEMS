@@ -63,6 +63,14 @@ public class JobPlanService : IJobPlanService
             .ToListAsync();
     }
 
+    public async Task<List<JobPlanFormRowDto>> GetFormRowAsync(int jobPlanId) =>
+        await _context.JobPlans.AsNoTracking().Where(x => x.JobPlanId == jobPlanId).Select(x => new JobPlanFormRowDto
+        {
+            JobPlanId = x.JobPlanId, Title = x.Title, Scope = x.Scope, EstimatedDurationHours = x.EstimatedDurationHours, SafetyRequirements = x.SafetyRequirements,
+            EquipmentClassId = x.EquipmentClassId, PermitRequired = x.PermitRequired, LotoRequired = x.LOTORequired
+        }).ToListAsync();
+
+
     public async Task<JobPlanDetailDto?> GetDetailsAsync(int jobPlanId)
     {
         var jobPlan = await _context.JobPlans.Include(x => x.EquipmentClass).FirstOrDefaultAsync(x => x.JobPlanId == jobPlanId);

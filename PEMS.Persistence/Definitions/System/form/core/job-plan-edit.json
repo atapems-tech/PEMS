@@ -4,18 +4,18 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Edit the job plan (retype every field: the saved values are not preloaded)",
-    "fa": "ویرایش طرح کار (همه‌ی فیلدها را دوباره وارد کنید)"
+    "en": "Edit the job plan",
+    "fa": "ویرایش طرح کار"
   },
   "description": {
-    "en": "Edit the job plan (retype every field: the saved values are not preloaded)",
-    "fa": "ویرایش طرح کار (همه‌ی فیلدها را دوباره وارد کنید)"
+    "en": "Edit the job plan (the saved values are preloaded)",
+    "fa": "ویرایش طرح کار (مقادیر ذخیره‌شده از پیش پر می‌شوند)"
   },
   "payload": {
     "id": "job-plan-edit",
     "title": {
-      "en": "Edit the job plan (retype every field: the saved values are not preloaded)",
-      "fa": "ویرایش طرح کار (همه‌ی فیلدها را دوباره وارد کنید)"
+      "en": "Edit the job plan",
+      "fa": "ویرایش طرح کار"
     },
     "submitLabel": {
       "en": "Save",
@@ -106,6 +106,13 @@
         },
         "kind": "checkbox"
       }
-    ]
+    ],
+    "load": {
+      "model": "JobPlan",
+      "action": "One",
+      "args": {
+        "jobPlanId": "param:jobPlanId"
+      }
+    }
   }
 }

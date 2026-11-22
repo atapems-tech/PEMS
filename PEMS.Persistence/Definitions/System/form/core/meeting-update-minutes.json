@@ -80,8 +80,8 @@
       {
         "name": "minutesNotes",
         "label": {
-          "en": "Minutes (replaces the saved text)",
-          "fa": "صورتجلسه (جایگزین متن ذخیره‌شده)"
+          "en": "Minutes",
+          "fa": "صورت‌جلسه"
         },
         "kind": "text",
         "required": true,
@@ -93,6 +93,13 @@
         },
         "maxLength": 8000
       }
-    ]
+    ],
+    "load": {
+      "model": "Meeting",
+      "action": "Head",
+      "args": {
+        "id": "param:meetingId"
+      }
+    }
   }
 }
