@@ -25,7 +25,7 @@
       "en": "Asset status updated",
       "fa": "وضعیت دارایی به‌روز شد"
     },
-    "redirect": "/Asset/Index",
+    "redirect": "/p/assets",
     "redirectBack": true
   }
 }

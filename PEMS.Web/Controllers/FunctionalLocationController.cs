@@ -24,24 +24,6 @@ public class FunctionalLocationController : Controller
         _permissionService = permissionService;
     }
 
-    // طبق سند «PEMS — Global Data Grid Standard» (فاز ۶B - Wave A): قبلاً کل درخت با
-    // ToListAsync (بدون Skip/Take) بارگذاری می‌شد.
-    // طبق ممیزی مستقل فاز ۶B Wave A (P0): این Action هیچ بررسی مجوزی نداشت.
-    public async Task<IActionResult> Index(int page = 1, int? pageSize = null)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "FunctionalLocation", "View"))
-            return Forbid();
-
-        ViewData["HelpKey"] = "FunctionalLocations.Index";
-
-        ViewData["Title"] = "Functional Locations";
-        ViewData["Section"] = "CMMS Integration";
-
-        var items = await _service.GetPagedListAsync(page, DataGridPageSize.Normalize(pageSize));
-        ViewBag.PickerList = await _service.GetPickerListAsync();
-
-        return View(items);
-    }
 
     // SCRUM-513: the nodes of the tree picker (pems-tree-select). GET /FunctionalLocation/TreeNodes?parentId=&q=&page=1 -> { items: [{ value, text, sub, hasChildren }], hasMore }.
     // The picker is used by forms of other modules (equipment, work request), so the rule is the View right of the locations, like the list.

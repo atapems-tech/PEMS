@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "asset-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "asset grid",
+    "fa": "asset grid"
+  },
+  "description": {
+    "en": "asset grid",
+    "fa": "asset grid"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Asset",
+      "action": "List"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "functional-location-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "functional location grid",
+    "fa": "functional location grid"
+  },
+  "description": {
+    "en": "functional location grid",
+    "fa": "functional location grid"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "FunctionalLocation",
+      "action": "List"
+    }
+  }
+}

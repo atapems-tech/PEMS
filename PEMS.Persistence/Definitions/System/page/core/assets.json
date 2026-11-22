@@ -1,0 +1,150 @@
+{
+  "kind": "page",
+  "key": "assets",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assets",
+    "fa": "دارایی‌ها"
+  },
+  "description": {
+    "en": "Assets",
+    "fa": "دارایی‌ها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "assets",
+    "template": "entity-list",
+    "args": {
+      "id": "assets",
+      "url": "/d/asset-grid",
+      "idField": "id",
+      "viewsKey": "assets",
+      "columns": [
+        {
+          "key": "assetNumber",
+          "header": {
+            "en": "Asset",
+            "fa": "دارایی"
+          },
+          "width": 140
+        },
+        {
+          "key": "equipmentTag",
+          "header": {
+            "en": "Equipment",
+            "fa": "تجهیز"
+          },
+          "width": 150
+        },
+        {
+          "key": "equipmentName",
+          "header": {
+            "en": "Name",
+            "fa": "نام"
+          },
+          "width": 200
+        },
+        {
+          "key": "maintenanceClass",
+          "header": {
+            "en": "Maintenance class",
+            "fa": "کلاس نگهداری"
+          },
+          "width": 140
+        },
+        {
+          "key": "status",
+          "header": {
+            "en": "Status",
+            "fa": "وضعیت"
+          },
+          "width": 100
+        },
+        {
+          "key": "commissioningDate",
+          "header": {
+            "en": "Commissioned",
+            "fa": "راه‌اندازی"
+          },
+          "width": 120,
+          "type": "date"
+        },
+        {
+          "key": "criticalityClass",
+          "header": {
+            "en": "Criticality",
+            "fa": "بحرانی‌بودن"
+          },
+          "width": 100
+        },
+        {
+          "key": "openWorkOrderCount",
+          "header": {
+            "en": "Open work orders",
+            "fa": "دستور کار باز"
+          },
+          "width": 120,
+          "type": "number"
+        },
+        {
+          "key": "functionalLocation",
+          "header": {
+            "en": "Functional location",
+            "fa": "محل عملکردی"
+          },
+          "width": 260
+        },
+        {
+          "key": "_actions",
+          "header": {
+            "en": "Actions",
+            "fa": "عملیات"
+          },
+          "type": "actions",
+          "width": 300,
+          "sortable": false,
+          "filterable": false,
+          "actions": [
+            {
+              "key": "details",
+              "label": {
+                "en": "Details",
+                "fa": "جزئیات"
+              },
+              "url": "/p/asset-details?id={id}",
+              "method": "get"
+            },
+            {
+              "key": "edit",
+              "label": {
+                "en": "Edit",
+                "fa": "ویرایش"
+              },
+              "url": "/f/asset-edit/{id}",
+              "method": "get"
+            },
+            {
+              "key": "toggle",
+              "label": {
+                "en": "Activate / deactivate",
+                "fa": "فعال / غیرفعال"
+              },
+              "url": "/a/asset-toggle-active",
+              "method": "post",
+              "confirm": {
+                "en": "Change the status?",
+                "fa": "وضعیت تغییر کند؟"
+              }
+            }
+          ]
+        }
+      ],
+      "newUrl": "/f/asset-create",
+      "newLabel": {
+        "en": "New asset",
+        "fa": "دارایی جدید"
+      }
+    }
+  }
+}
