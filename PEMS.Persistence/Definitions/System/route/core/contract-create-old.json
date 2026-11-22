@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "contract-create-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New contract (old address)",
+    "fa": "قرارداد جدید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New contract (old address)",
+    "fa": "قرارداد جدید (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Contract/Create",
+    "target": "/f/contract-create",
+    "permanent": false
+  }
+}

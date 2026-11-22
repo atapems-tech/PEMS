@@ -24,7 +24,7 @@
             "blocks": [
               {
                 "type": "link",
-                "href": "/Contract/Create",
+                "href": "/f/contract-create",
                 "text": {
                   "en": "New contract",
                   "fa": "قرارداد جدید"

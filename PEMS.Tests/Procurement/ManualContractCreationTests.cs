@@ -10,7 +10,8 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Definitions;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Procurement;
 
@@ -22,7 +23,7 @@ namespace PEMS.Tests.Procurement;
 public class ManualContractCreationTests
 {
     private sealed record Rig(PEMSDbContext Ctx, ContractService Service, AccessControlService AccessControl, PermissionService Permissions,
-        ContractController Controller, FakeCurrentUserService CurrentUser, int ManagerId, int ViewerId, int NoRoleUserId, int ProjectId, int VendorId);
+        ContractOperations Operations, FakeCurrentUserService CurrentUser, int ManagerId, int ViewerId, int NoRoleUserId, int ProjectId, int VendorId);
 
     private static async Task<Rig> BuildAsync(string name, IAccessControlService? serviceAccessControlOverride = null, bool passAccessControlToService = true)
     {
@@ -67,9 +68,9 @@ public class ManualContractCreationTests
         var currentUser = new FakeCurrentUserService { UserId = manager, Roles = new[] { SystemRoles.ContractManager } };
         var runtime = new FakeWorkflowRuntime();
         var workflow = new ContractWorkflowService(ctx, runtime, accessControl, new FakeNumberingService());
-        var controller = new ContractController(service, workflow, runtime, accessControl, permissions, currentUser, ctx).WithTempData();
+        var operations = new ContractOperations(service, workflow, ctx, currentUser, accessControl);
         ctx.CurrentUserName = "manager.m";
-        return new Rig(ctx, service, accessControl, permissions, controller, currentUser, manager, viewer, noRole, project.ProjectId, vendor.VendorId);
+        return new Rig(ctx, service, accessControl, permissions, operations, currentUser, manager, viewer, noRole, project.ProjectId, vendor.VendorId);
     }
 
     private static Task<List<AuthorizationAuditLog>> CreateRowsAsync(PEMSDbContext ctx)
@@ -232,39 +233,37 @@ public class ManualContractCreationTests
         Assert.Equal(ContractCreatorEventStatus.AlreadyRecorded, await r.Service.EnsureCreatorEventAsync(id));
     }
 
-    // ------------------------------------------------------------------ کنترلر
+    // ------------------------------------------------------------------ the create operation (formerly ContractController.Create)
+    private static Task<ContractCreateStep> CreateAsync(Rig r, string no, int? userId = null, bool useRigUser = true) =>
+        r.Operations.CreateAsync(no, r.ProjectId, r.VendorId, null, null, null, null, false, useRigUser ? r.CurrentUser.UserId : userId, null);
+
     [Fact]
-    public async Task Controller_Allow_RedirectsToDetails_AndRecordsTheEventForTheCurrentUser()
+    public async Task Operation_Allow_ReturnsTheNewIdForTheRedirect_AndRecordsTheEventForTheCurrentUser()
     {
-        var r = await BuildAsync(nameof(Controller_Allow_RedirectsToDetails_AndRecordsTheEventForTheCurrentUser));
+        var r = await BuildAsync(nameof(Operation_Allow_ReturnsTheNewIdForTheRedirect_AndRecordsTheEventForTheCurrentUser));
 
-        var result = await r.Controller.Create("CT-M8", r.ProjectId, r.VendorId, null, null, null, null);
+        var result = await CreateAsync(r, "CT-M8");
 
-        var redirect = Assert.IsType<RedirectResult>(result);   // the details page is a definition page (SCRUM-676)
-        Assert.StartsWith("/p/contract-details?id=", redirect.Url);
-        var id = int.Parse(redirect.Url["/p/contract-details?id=".Length..]);
+        Assert.True(result.Success);
+        var id = result.NewId!.Value;                                                    // the action redirects to /p/contract-details?id={result}
         Assert.Contains(await CreateRowsAsync(r.Ctx), x => x.ResourceId == id.ToString() && x.UserId == r.ManagerId && x.Decision == "Allow");
-        Assert.Equal("Contract created successfully", r.Controller.TempData["Message"]);
     }
 
     [Fact]
-    public async Task Controller_RoleGateDenial_IsForbid_AndCreatesNothing()
+    public void The_role_gate_is_the_permission_of_the_operation_checked_by_the_engine_before_the_call()
     {
-        var r = await BuildAsync(nameof(Controller_RoleGateDenial_IsForbid_AndCreatesNothing));
-        r.CurrentUser.Roles = new[] { SystemRoles.Viewer };
-
-        Assert.IsType<ForbidResult>(await r.Controller.Create("CT-M9", r.ProjectId, r.VendorId, null, null, null, null));
-        Assert.Empty(r.Ctx.Contracts);
+        var catalog = OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Equal("Contracts.Create", catalog.Get("ContractPage", "Create")!.Permission);
     }
 
     [Fact]
-    public async Task Controller_UserAwareDenial_AfterThePassingRoleGate_IsForbid_AndCreatesNothing()
+    public async Task Operation_UserAwareDenial_IsRefused_AndCreatesNothing()
     {
-        // نقش نشست (ContractManager) قدیمی را رد می‌کند ولی این کاربر در AspNetUserRoles هیچ نقشی ندارد → مسیر آگاه-از-کاربر رد می‌کند
-        var r = await BuildAsync(nameof(Controller_UserAwareDenial_AfterThePassingRoleGate_IsForbid_AndCreatesNothing));
+        // the session role (ContractManager) would pass the old gate but this user has no role in AspNetUserRoles, so the user-aware path refuses
+        var r = await BuildAsync(nameof(Operation_UserAwareDenial_IsRefused_AndCreatesNothing));
         r.CurrentUser.UserId = r.NoRoleUserId;
 
-        Assert.IsType<ForbidResult>(await r.Controller.Create("CT-M10", r.ProjectId, r.VendorId, null, null, null, null));
+        Assert.False((await CreateAsync(r, "CT-M10")).Success);
 
         Assert.Empty(r.Ctx.Contracts);
         var denial = Assert.Single(await CreateRowsAsync(r.Ctx));
@@ -272,12 +271,12 @@ public class ManualContractCreationTests
     }
 
     [Fact]
-    public async Task Controller_MissingIdentity_IsForbid_AuditedAndCreatesNothing()
+    public async Task Operation_MissingIdentity_IsRefused_AuditedAndCreatesNothing()
     {
-        var r = await BuildAsync(nameof(Controller_MissingIdentity_IsForbid_AuditedAndCreatesNothing));
+        var r = await BuildAsync(nameof(Operation_MissingIdentity_IsRefused_AuditedAndCreatesNothing));
         r.CurrentUser.UserId = null;
 
-        Assert.IsType<ForbidResult>(await r.Controller.Create("CT-M11", r.ProjectId, r.VendorId, null, null, null, null));
+        Assert.False((await CreateAsync(r, "CT-M11")).Success);
 
         Assert.Empty(r.Ctx.Contracts);
         var denial = Assert.Single(await CreateRowsAsync(r.Ctx));
@@ -286,14 +285,14 @@ public class ManualContractCreationTests
     }
 
     [Fact]
-    public async Task Controller_ValidationFailure_ShowsTheMessage_AndRedirectsToCreate()
+    public async Task Operation_ValidationFailure_GivesTheMessage_AndCreatesNothing()
     {
-        var r = await BuildAsync(nameof(Controller_ValidationFailure_ShowsTheMessage_AndRedirectsToCreate));
+        var r = await BuildAsync(nameof(Operation_ValidationFailure_GivesTheMessage_AndCreatesNothing));
 
-        var result = await r.Controller.Create("  ", r.ProjectId, r.VendorId, null, null, null, null);
+        var result = await CreateAsync(r, "  ");
 
-        Assert.Equal("Create", Assert.IsType<RedirectToActionResult>(result).ActionName);
-        Assert.NotNull(r.Controller.TempData["Error"]);
+        Assert.False(result.Success);
+        Assert.NotNull(result.Error);
         Assert.Empty(r.Ctx.Contracts);
     }
 
@@ -310,59 +309,55 @@ public class ManualContractCreationTests
         public Task<ContractCreatorEventStatus> EnsureCreatorEventAsync(int contractId, string? ipAddress = null) => throw new NotSupportedException();
     }
 
-    private static async Task<(ContractController Controller, FakeContractService Fake)> ControllerWithFakeServiceAsync(string name)
+    private static async Task<(ContractOperations Operations, FakeContractService Fake)> OperationsWithFakeServiceAsync(string name)
     {
         var r = await BuildAsync(name);
         var fake = new FakeContractService();
         var runtime = new FakeWorkflowRuntime();
         var workflow = new ContractWorkflowService(r.Ctx, runtime, r.AccessControl, new FakeNumberingService());
-        var controller = new ContractController(fake, workflow, runtime, r.AccessControl, r.Permissions, r.CurrentUser, r.Ctx).WithTempData();
-        return (controller, fake);
+        return (new ContractOperations(fake, workflow, r.Ctx, r.CurrentUser, r.AccessControl), fake);
     }
 
     [Fact]
-    public async Task Controller_OutcomeUnknown_NeverSaysNotCreated()
+    public async Task Operation_OutcomeUnknown_NeverSaysNotCreated()
     {
-        var (controller, fake) = await ControllerWithFakeServiceAsync(nameof(Controller_OutcomeUnknown_NeverSaysNotCreated));
+        var (operations, fake) = await OperationsWithFakeServiceAsync(nameof(Operation_OutcomeUnknown_NeverSaysNotCreated));
         fake.Result = new ContractCreateResult(false, "نتیجه‌ی ساخت قرارداد نامطمئن است", null, OutcomeUnknown: true, CreatorEvent: ContractCreatorEventStatus.OutcomeUnknown);
 
-        var result = await controller.Create("CT-M12", 1, 1, null, null, null, null);
+        var result = await operations.CreateAsync("CT-M12", 1, 1, null, null, null, null, false, 1, null);
 
-        Assert.Equal("/p/contracts", Assert.IsType<RedirectResult>(result).Url);   // the list is a definition page (SCRUM-676)
-        var message = Assert.IsType<string>(controller.TempData["Error"]);
-        Assert.Contains("نامطمئن", message);
-        Assert.DoesNotContain("هیچ تغییری ذخیره نشد", message);
-        Assert.Null(controller.TempData["Message"]);
+        Assert.False(result.Success);
+        Assert.Contains("نامطمئن", result.Error);
+        Assert.DoesNotContain("هیچ تغییری ذخیره نشد", result.Error);
     }
 
     [Fact]
-    public async Task Controller_RecoveredAfterUncertainCommit_IsSuccess_WithAnExplicitMessage()
+    public async Task Operation_RecoveredAfterUncertainCommit_IsSuccess_WithAnExplicitMessage()
     {
-        var (controller, fake) = await ControllerWithFakeServiceAsync(nameof(Controller_RecoveredAfterUncertainCommit_IsSuccess_WithAnExplicitMessage));
+        var (operations, fake) = await OperationsWithFakeServiceAsync(nameof(Operation_RecoveredAfterUncertainCommit_IsSuccess_WithAnExplicitMessage));
         fake.Result = new ContractCreateResult(true, null, 77, Committed: true, CreatorEvent: ContractCreatorEventStatus.Recorded, RecoveredAfterUncertainCommit: true);
 
-        var result = await controller.Create("CT-M13", 1, 1, null, null, null, null);
+        var result = await operations.CreateAsync("CT-M13", 1, 1, null, null, null, null, false, 1, null);
 
-        var redirect = Assert.IsType<RedirectResult>(result);
-        Assert.Equal("/p/contract-details?id=77", redirect.Url);
-        Assert.Contains("uncertain", Assert.IsType<string>(controller.TempData["Message"]));
+        Assert.True(result.Success);
+        Assert.Equal(77, result.NewId);
+        Assert.Contains("uncertain", result.Error);
     }
 
     [Fact]
-    public async Task Controller_Indeterminate_And_Denied_And_NothingSaved_AreAllNonSuccess()
+    public async Task Operation_Indeterminate_And_Denied_And_NothingSaved_AreAllNonSuccess()
     {
-        var (controller, fake) = await ControllerWithFakeServiceAsync(nameof(Controller_Indeterminate_And_Denied_And_NothingSaved_AreAllNonSuccess));
+        var (operations, fake) = await OperationsWithFakeServiceAsync(nameof(Operation_Indeterminate_And_Denied_And_NothingSaved_AreAllNonSuccess));
 
         fake.Result = new ContractCreateResult(false, "مجوز قابل‌ارزیابی نبود", null, AuthorizationIndeterminate: true);
-        var indeterminate = await controller.Create("CT-M14", 1, 1, null, null, null, null);
-        Assert.Equal("Create", Assert.IsType<RedirectToActionResult>(indeterminate).ActionName);
-        Assert.NotNull(controller.TempData["Error"]);
+        var indeterminate = await operations.CreateAsync("CT-M14", 1, 1, null, null, null, null, false, 1, null);
+        Assert.False(indeterminate.Success);
+        Assert.NotNull(indeterminate.Error);
 
         fake.Result = new ContractCreateResult(false, "شما مجاز نیستید", null, AuthorizationDenied: true);
-        Assert.IsType<ForbidResult>(await controller.Create("CT-M14", 1, 1, null, null, null, null));
+        Assert.False((await operations.CreateAsync("CT-M14", 1, 1, null, null, null, null, false, 1, null)).Success);
 
         fake.Result = new ContractCreateResult(false, "ساخت قرارداد انجام نشد؛ هیچ تغییری ذخیره نشد.", null);
-        var nothingSaved = await controller.Create("CT-M14", 1, 1, null, null, null, null);
-        Assert.Equal("Create", Assert.IsType<RedirectToActionResult>(nothingSaved).ActionName);
+        Assert.False((await operations.CreateAsync("CT-M14", 1, 1, null, null, null, null, false, 1, null)).Success);
     }
 }

@@ -8,7 +8,7 @@ using PEMS.Web.Security;
 namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-676: the list, details and the document, NTP and kick-off commands of ContractController (it used the context inline), as operations.</summary>
-public sealed class ContractOperations(IContractService contracts, IContractWorkflowService workflow, PEMSDbContext context, ICurrentUserService currentUser) : IContractOperations
+public sealed class ContractOperations(IContractService contracts, IContractWorkflowService workflow, PEMSDbContext context, ICurrentUserService currentUser, IAccessControlService accessControl) : IContractOperations
 {
     public async Task<List<ContractRow>> ContractsAsync() => (await contracts.GetPagedAsync(1, 500)).Items.Select(c => new ContractRow(c.ContractId, c.ContractNo, c.ProjectName, c.VendorName, c.ContractValue, c.Currency ?? "", c.StartDate, c.EndDate, c.Status, c.PurchaseOrdersCount, c.RequiresInspection)).ToList();
 
@@ -61,5 +61,29 @@ public sealed class ContractOperations(IContractService contracts, IContractWork
     {
         var r = await workflow.ScheduleKickoffMeetingAsync(contractId, meetingDate, location, currentUser.FullName, agenda);
         return (r.Success, r.Error);
+    }
+
+    public async Task<ContractCreateStep> CreateAsync(string contractNo, int projectId, int vendorId, string? scope, decimal? value, DateTime? startDate, DateTime? endDate, bool requiresInspection, int? userId, string? ip)
+    {
+        // without an authenticated identity there is no creator to attribute and no separation of duties to evaluate: nothing is created (P0.4 / H-1), and the refusal is audited
+        if (!userId.HasValue)
+        {
+            try { await accessControl.RecordDenialAsync(null, "Contracts", "Create", null, ip, PEMS.Application.DTOs.AccessDecisionReason.DeniedByPolicy, "The identity of the signed-in user is not available; the contract was not created."); }
+            catch (Exception) { /* a failure to audit never becomes an allow */ }
+            return new(false, "You may not do this.");
+        }
+        var result = await contracts.CreateWithCreatorEventAsync(contractNo, projectId, vendorId, scope, value, startDate, endDate, requiresInspection, userId.Value, ip);
+        if (result.AuthorizationDenied) return new(false, "You may not do this.");
+        if (result.AuthorizationIndeterminate) return new(false, result.Error);
+        // the commit was uncertain and the re-read did not settle it: never say "not created"
+        if (result.OutcomeUnknown) return new(false, result.Error);
+        if (!result.Success) return new(false, result.Error);
+        // the contract exists in every remaining case; the message tells whether the creator event is missing
+        var warning = result.CreatorEvent == PEMS.Application.DTOs.ContractCreatorEventStatus.NotRecorded
+            ? "The contract was created, but its creator event was not recorded (only possible with a provider without transactions); repair it from the contract page."
+            : result.RecoveredAfterUncertainCommit
+                ? "Contract created successfully (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)"
+                : null;
+        return new(true, warning, result.ContractId);
     }
 }

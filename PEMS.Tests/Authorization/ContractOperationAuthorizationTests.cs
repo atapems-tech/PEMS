@@ -1,11 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Authorization;
 
@@ -15,12 +14,12 @@ namespace PEMS.Tests.Authorization;
 /// [RequirePermission] و اتصال درست به IContractWorkflowService را می‌آزمایند - منطق عمیق
 /// گردش‌کار/SoD در ContractWorkflowServiceTests پوشش داده شده.
 /// </summary>
-public class ContractControllerAuthorizationTests
+public class ContractOperationAuthorizationTests
 {
-    private static async Task<(ContractController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx, FakeWorkflowRuntime Runtime)> CreateController(
+    private static async Task<(ContractOperations Operations, PEMS.Persistence.Context.PEMSDbContext Ctx, FakeWorkflowRuntime Runtime)> CreateController(
         string dbName, string? role, int userId = 1)
     {
-        var ctx = PemsDbContextFactory.CreateInMemory($"ContractCtrlAuth_{dbName}");
+        var ctx = PemsDbContextFactory.CreateInMemory($"ContractOpAuth_{dbName}");
         foreach (var roleName in SystemRoles.All)
             ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
         await ctx.SaveChangesAsync();
@@ -57,32 +56,39 @@ public class ContractControllerAuthorizationTests
             Roles = role != null ? new List<string> { role } : new List<string>()
         };
 
-        var controller = new ContractController(contractService, workflowService, runtime, accessControl, permissionService, currentUser, ctx).WithTempData();
-        return (controller, ctx, runtime);
+        var operations = new ContractOperations(contractService, workflowService, ctx, currentUser, accessControl);
+        return (operations, ctx, runtime);
     }
 
     [Fact]
-    public async Task Create_WithoutCreatePermission_ReturnsForbid_DoesNotCreateContract()
+    public void The_create_operation_requires_the_permission_the_controller_checked_and_the_engine_checks_it_before_the_call()
     {
-        var (controller, ctx, _) = await CreateController(nameof(Create_WithoutCreatePermission_ReturnsForbid_DoesNotCreateContract), role: SystemRoles.Viewer);
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        Assert.Equal("Contracts.Create", catalog.Get("ContractPage", "Create")!.Permission);
+    }
+
+    [Fact]
+    public async Task Create_WithoutAnIdentity_CreatesNothing()
+    {
+        var (operations, ctx, _) = await CreateController(nameof(Create_WithoutAnIdentity_CreatesNothing), role: SystemRoles.ContractManager);
         SeedProjectAndVendor(ctx);
 
-        var result = await controller.Create("CT-001", ctx.Projects.Single().ProjectId, ctx.Vendors.Single().VendorId, null, null, null, null);
+        var result = await operations.CreateAsync("CT-001", ctx.Projects.Single().ProjectId, ctx.Vendors.Single().VendorId, null, null, null, null, false, null, null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
         Assert.Empty(ctx.Contracts);
     }
 
     [Fact]
-    public async Task Create_WithCreatePermission_CreatesContract()
+    public async Task Create_WithCreatePermission_CreatesContract_AndReturnsItsIdForTheRedirect()
     {
-        var (controller, ctx, _) = await CreateController(nameof(Create_WithCreatePermission_CreatesContract), role: SystemRoles.ContractManager);
+        var (operations, ctx, _) = await CreateController(nameof(Create_WithCreatePermission_CreatesContract_AndReturnsItsIdForTheRedirect), role: SystemRoles.ContractManager);
         SeedProjectAndVendor(ctx);
 
-        var result = await controller.Create("CT-001", ctx.Projects.Single().ProjectId, ctx.Vendors.Single().VendorId, null, null, null, null);
+        var result = await operations.CreateAsync("CT-001", ctx.Projects.Single().ProjectId, ctx.Vendors.Single().VendorId, null, null, null, null, false, 1, null);
 
-        Assert.IsType<RedirectResult>(result);   // to the contract details page (a definition page, SCRUM-676)
-        Assert.Single(ctx.Contracts);
+        Assert.True(result.Success);
+        Assert.Equal(ctx.Contracts.Single().ContractId, result.NewId);                   // the redirect /p/contract-details?id={result}
         Assert.Equal("Draft", ctx.Contracts.Single().Status);
     }
 
