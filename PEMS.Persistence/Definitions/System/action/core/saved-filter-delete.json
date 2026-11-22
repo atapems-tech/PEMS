@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "saved-filter-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a saved filter",
+    "fa": "حذف فیلتر ذخیره‌شده"
+  },
+  "description": {
+    "en": "Delete a saved filter",
+    "fa": "حذف فیلتر ذخیره‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "SavedFilter",
+      "action": "Delete",
+      "args": {
+        "savedFilterId": "field:id",
+        "applicationUserId": "context:userId"
+      }
+    },
+    "success": {
+      "en": "Filter deleted.",
+      "fa": "فیلتر حذف شد."
+    },
+    "redirect": "/DocumentRegister",
+    "redirectBack": true
+  }
+}

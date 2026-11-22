@@ -465,7 +465,7 @@
                 <span>@Localizer["Ct_TrashHint"]</span>
                 @if (Model.TotalCount > 0)
                 {
-                    <pems-form asp-action="EmptyTrash" method="post" class="ms-auto" data-pems-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
+                    <pems-form action="/a/letter-empty-trash" method="post" class="ms-auto" data-pems-confirm="@Localizer["Ct_ConfirmEmptyTrash"]">
                         <pems-button tone="danger" size="small" outline="true" type="submit"><pems-icon name="bi-trash3" aria-hidden="true" /> @Localizer["Ct_EmptyTrash"]</pems-button>
                     </pems-form>
                 }
@@ -473,7 +473,7 @@
         }
 
         <div class="lp-tablewrap">
-            <pems-form id="letterBulkForm" method="post" asp-action="Bulk">
+            <pems-form id="letterBulkForm" method="post" action="/a/letter-bulk">
                 <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
                 <input type="hidden" name="tagId" id="ctBulkTagId" value="" />
                 <div id="letterBulkIds"></div>

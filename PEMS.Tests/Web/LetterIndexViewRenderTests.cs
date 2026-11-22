@@ -189,16 +189,12 @@ public class LetterIndexViewRenderTests
     }
 
     [Fact]
-    public void BulkEndpoint_IsPostWithAntiForgery_AndExcludesApproveIssueAndClose()
+    public void BulkOperation_ExcludesApproveIssueAndClose_AndArchiveNeedsTheDeletePermission()
     {
-        var bulk = typeof(LetterController).GetMethod(nameof(LetterController.Bulk))!;
-
-        Assert.NotEmpty(bulk.GetCustomAttributes(typeof(HttpPostAttribute), true));
-        Assert.NotEmpty(bulk.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), true));
-
-        var source = File.ReadAllText(RepoFile("PEMS.Web/Controllers/LetterController.cs"));
-        var bulkBody = source[source.IndexOf("public async Task<IActionResult> Bulk(", StringComparison.Ordinal)..];
-        bulkBody = bulkBody[..bulkBody.IndexOf("ToggleStar", StringComparison.Ordinal)];
+        // SCRUM-716: the bulk endpoint is the operation Letter.Bulk (the action host posts it with the anti-forgery token)
+        var source = File.ReadAllText(RepoFile("PEMS.Web/Services/LetterOperations.cs"));
+        var bulkBody = source[source.IndexOf("public async Task<(bool Success, string? Error)> BulkAsync(", StringComparison.Ordinal)..];
+        bulkBody = bulkBody[..bulkBody.IndexOf("EmptyTrashAsync", StringComparison.Ordinal)];
         foreach (var banned in new[] { "ApproveAsync", "IssueAsync", "CloseAsync", "RejectAsync", "ReturnForRevisionAsync" })
             Assert.DoesNotContain(banned, bulkBody);
         // archive additionally needs the Delete permission, checked on the server

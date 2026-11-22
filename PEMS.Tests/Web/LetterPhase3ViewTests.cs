@@ -179,13 +179,17 @@ public class LetterPhase3ViewTests
 
     // ------------------------------------------------------------------ manual reminder run
 
+    // SCRUM-716: the manual run is the operation Letter.SendReminders
+    private static PEMS.Web.Services.LetterOperations RemindersOperations(ILetterReminderService? reminders, params string[] roles)
+        => new(PemsDbContextFactory.CreateInMemory("LetterOps_" + Guid.NewGuid()), new FakeLetterService(), null!, null!, null!, new FakeUser { Roles = roles }, new FakePermissionService(), null!, null, null, reminders);
+
     [Fact]
     public async Task SendReminders_IsForbiddenForNonAdmins_AndNeverRunsTheJob()
     {
         var reminders = new FakeReminders();
-        var c = NewController(new FakeLetterService(), reminders: reminders, user: new FakeUser { Roles = new[] { "Staff" } });
+        var ops = RemindersOperations(reminders, "Staff");
 
-        Assert.IsType<ForbidResult>(await c.SendReminders());
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => ops.SendRemindersAsync());
         Assert.Equal(0, reminders.Calls);
     }
 
@@ -193,33 +197,23 @@ public class LetterPhase3ViewTests
     public async Task SendReminders_RunsOnceForSystemAdmin_ThenReportsWhatWasSent()
     {
         var reminders = new FakeReminders();
-        var c = NewController(new FakeLetterService(), reminders: reminders, user: new FakeUser { Roles = new[] { "SystemAdmin" } });
+        var ops = RemindersOperations(reminders, "SystemAdmin");
 
-        var result = Assert.IsType<RedirectToActionResult>(await c.SendReminders());
+        var result = await ops.SendRemindersAsync();
 
-        Assert.Equal(nameof(LetterController.Dashboard), result.ActionName);
+        Assert.True(result.Success);
         Assert.Equal(1, reminders.Calls);
-        var message = (string)c.TempData["Message"]!;
-        Assert.Contains("2 referral", message);
-        Assert.Contains("1 response", message);
-        Assert.Contains("4 already sent today", message);
+        Assert.Contains("2 referral", result.Error);
+        Assert.Contains("1 response", result.Error);
+        Assert.Contains("4 already sent today", result.Error);
     }
 
     [Fact]
-    public async Task SendReminders_WithoutTheService_IsNotFound()
+    public async Task SendReminders_WithoutTheService_IsRefused()
     {
-        var c = NewController(new FakeLetterService(), reminders: null, user: new FakeUser { Roles = new[] { "SystemAdmin" } });
+        var result = await RemindersOperations(null, "SystemAdmin").SendRemindersAsync();
 
-        Assert.IsType<NotFoundResult>(await c.SendReminders());
-    }
-
-    [Fact]
-    public void SendReminders_IsPostWithAntiForgery()
-    {
-        var m = typeof(LetterController).GetMethod(nameof(LetterController.SendReminders))!;
-
-        Assert.NotEmpty(m.GetCustomAttributes(typeof(HttpPostAttribute), true));
-        Assert.NotEmpty(m.GetCustomAttributes(typeof(ValidateAntiForgeryTokenAttribute), true));
+        Assert.False(result.Success);
     }
 
     private static async Task<string> RenderDashboard(bool canRun)

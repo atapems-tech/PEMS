@@ -363,17 +363,27 @@ public class CartableWebTests
         return l;
     }
 
-    [Fact]
-    public async Task Bulk_TrashAndRestore_GoThroughTheCartableService_AndRedirectBack()
+    // SCRUM-716: the bulk action and the empty trash are the operations Letter.Bulk and Letter.EmptyTrash
+    private static (PEMS.Web.Services.LetterOperations Ops, PEMSDbContext Ctx, LetterCartableService Cart) Operations(string name, ICurrentUserService? user = null)
     {
-        var (c, ctx, _) = Controller(nameof(Bulk_TrashAndRestore_GoThroughTheCartableService_AndRedirectBack));
-        var l = SentLetter(ctx, 700);
-        var trashed = await c.Bulk("trash", new[] { 700 }, null, "/Letter");
-        Assert.IsType<LocalRedirectResult>(trashed);
-        Assert.True(ctx.LetterUserStates.Single().IsTrashed);
-        Assert.Contains("1 letter(s) moved to trash", (string)c.TempData["Message"]!);
+        var ctx = LetterTestWorld.NewContext("CartOps_" + name);
+        var cart = new LetterCartableService(ctx, new OrganizationSubordinateResolver(ctx));
+        var letters = new LetterService(ctx, sanitizer: null!, knowledgeBaseService: null!);
+        var ops = new PEMS.Web.Services.LetterOperations(ctx, letters, null!, null!, null!, user ?? new FakeUser(), new FakePermissionService { AllowAll = false }, null!, cart, new LetterTagTreeService(ctx));
+        return (ops, ctx, cart);
+    }
 
-        await c.Bulk("restore", new[] { 700 }, null, "/Letter");
+    [Fact]
+    public async Task Bulk_TrashAndRestore_GoThroughTheCartableService()
+    {
+        var (ops, ctx, _) = Operations(nameof(Bulk_TrashAndRestore_GoThroughTheCartableService));
+        SentLetter(ctx, 700);
+        var trashed = await ops.BulkAsync("trash", new[] { 700 }, null, null);
+        Assert.True(trashed.Success);
+        Assert.True(ctx.LetterUserStates.Single().IsTrashed);
+        Assert.Contains("1 letter(s) moved to trash", trashed.Error);
+
+        await ops.BulkAsync("restore", new[] { 700 }, null, null);
         Assert.False(ctx.LetterUserStates.Single().IsTrashed);
         Assert.Equal("Sent", ctx.Letters.Single(x => x.LetterId == 700).Status);   // the letter itself never changes
     }
@@ -381,52 +391,53 @@ public class CartableWebTests
     [Fact]
     public async Task Bulk_TagAndUntag_UseTheChosenTag_AndNeedOne()
     {
-        var (c, ctx, _) = Controller(nameof(Bulk_TagAndUntag_UseTheChosenTag_AndNeedOne));
+        var (ops, ctx, _) = Operations(nameof(Bulk_TagAndUntag_UseTheChosenTag_AndNeedOne));
         SentLetter(ctx, 701);
         ctx.Tags.Add(new Tag { TagId = 1, Name = "T" }); await ctx.SaveChangesAsync();
 
-        await c.Bulk("tag", new[] { 701 }, null, "/Letter");
-        Assert.Equal("No tag was chosen.", c.TempData["Error"]);
+        var none = await ops.BulkAsync("tag", new[] { 701 }, null, null);
+        Assert.False(none.Success);
+        Assert.Equal("No tag was chosen.", none.Error);
         Assert.Empty(ctx.LetterTags);
 
-        await c.Bulk("tag", new[] { 701 }, null, "/Letter", tagId: 1);
+        await ops.BulkAsync("tag", new[] { 701 }, null, 1);
         Assert.Single(ctx.LetterTags);
-        await c.Bulk("untag", new[] { 701 }, null, "/Letter", tagId: 1);
+        await ops.BulkAsync("untag", new[] { 701 }, null, 1);
         Assert.Empty(ctx.LetterTags);
     }
 
     [Fact]
     public async Task Bulk_ReadUnread_AndNothingToDoIsReportedHonestly()
     {
-        var (c, ctx, _) = Controller(nameof(Bulk_ReadUnread_AndNothingToDoIsReportedHonestly));
+        var (ops, ctx, _) = Operations(nameof(Bulk_ReadUnread_AndNothingToDoIsReportedHonestly));
         SentLetter(ctx, 702);
-        await c.Bulk("read", new[] { 702 }, null, "/Letter");
+        await ops.BulkAsync("read", new[] { 702 }, null, null);
         Assert.True(ctx.LetterRecipients.Single().IsRead);
-        await c.Bulk("read", new[] { 702 }, null, "/Letter");
-        Assert.Equal("Nothing to change for the selected letters.", c.TempData["Error"]);
+        var again = await ops.BulkAsync("read", new[] { 702 }, null, null);
+        Assert.False(again.Success);
+        Assert.Equal("Nothing to change for the selected letters.", again.Error);
     }
 
     [Fact]
     public async Task Bulk_CannotTouchLettersTheUserCannotSee()
     {
-        var (c, ctx, _) = Controller(nameof(Bulk_CannotTouchLettersTheUserCannotSee), new FakeUser { UserId = 105 });
+        var (ops, ctx, _) = Operations(nameof(Bulk_CannotTouchLettersTheUserCannotSee), new FakeUser { UserId = 105 });
         SentLetter(ctx, 703, to: new[] { 2 }, conf: "Restricted");
-        await c.Bulk("trash", new[] { 703 }, null, "/Letter");
+        var result = await ops.BulkAsync("trash", new[] { 703 }, null, null);
         Assert.Empty(ctx.LetterUserStates);
-        Assert.NotNull(c.TempData["Error"]);
+        Assert.False(result.Success);
     }
 
     [Fact]
     public async Task EmptyTrash_PurgesOnlyTheCurrentUsersTrash()
     {
-        var (c, ctx, cart) = Controller(nameof(EmptyTrash_PurgesOnlyTheCurrentUsersTrash));
+        var (ops, ctx, cart) = Operations(nameof(EmptyTrash_PurgesOnlyTheCurrentUsersTrash));
         SentLetter(ctx, 704, to: new[] { 2, 3 });
         await cart.TrashAsync(new[] { 704 }, 102, false);
         await cart.TrashAsync(new[] { 704 }, 103, false);
 
-        var r = Assert.IsType<RedirectToActionResult>(await c.EmptyTrash());
-        Assert.Equal("Index", r.ActionName);
-        Assert.Equal(LetterFolders.Trash, r.RouteValues!["folder"]);
+        var r = await ops.EmptyTrashAsync();
+        Assert.True(r.Success);
         Assert.True(ctx.LetterUserStates.Single(s => s.ApplicationUserId == 102).IsPurged);
         Assert.False(ctx.LetterUserStates.Single(s => s.ApplicationUserId == 103).IsPurged);
     }

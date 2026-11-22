@@ -1,0 +1,28 @@
+{
+  "kind": "action",
+  "key": "letter-send-reminders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Send the due reminders",
+    "fa": "ارسال یادآوری‌های معوق"
+  },
+  "description": {
+    "en": "Send the due reminders",
+    "fa": "ارسال یادآوری‌های معوق"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Letter",
+      "action": "SendReminders",
+      "args": {}
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/Letter/Dashboard"
+  }
+}

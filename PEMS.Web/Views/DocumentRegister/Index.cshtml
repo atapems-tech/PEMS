@@ -99,8 +99,9 @@
                                     @if (sf.IsDefault) { <pems-icon name="bi-star-fill" aria-hidden="true" /> }
                                     @sf.Name
                                 </pems-link>
-                                <pems-form asp-action="DeleteFilter" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
+                                <pems-form action="/a/saved-filter-delete" method="post" data-pems-confirm="@Localizer["Dr_DeleteFilterConfirm"]">
                                     <input type="hidden" name="id" value="@sf.SavedFilterId" />
+                                    <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
                                     <pems-button plain="true" type="submit" css="lp-act lp-act--always" title="@Localizer["Dr_DeleteFilter"]"><pems-icon name="bi-x-lg" aria-hidden="true" /><span class="visually-hidden">@Localizer["Dr_DeleteFilter"]: @sf.Name</span></pems-button>
                                 </pems-form>
                             </pems-bullet>
@@ -211,7 +212,9 @@
 </pems-list-page>
 
 <pems-modal id="saveFilterModal" tabindex="-1" aria-labelledby="saveFilterTitle" aria-hidden="true">
-            <pems-form asp-action="SaveFilter" method="post">
+            <pems-form action="/a/saved-filter-save" method="post">
+                <input type="hidden" name="pageKey" value="DocumentRegister" />
+                <input type="hidden" name="returnUrl" value="@Context.Request.Path@Context.Request.QueryString" />
                 <pems-modal-header title-id="saveFilterTitle">@Localizer["Dr_SaveFilterTitle"]</pems-modal-header>
                 <pems-modal-body>
                     <pems-label css="small" for="saveFilterName">@Localizer["Dr_FilterName"]</pems-label>

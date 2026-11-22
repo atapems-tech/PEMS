@@ -39,7 +39,7 @@
     <pems-flex wrap="true" gap="2">
         @if (ViewBag.CanRunReminders == true)
         {
-            <pems-form asp-action="SendReminders" method="post" data-pems-confirm="@Localizer["Lt_RemindersConfirm"]">
+            <pems-form action="/a/letter-send-reminders" method="post" data-pems-confirm="@Localizer["Lt_RemindersConfirm"]">
                 <pems-button tone="neutral" size="small" outline="true" type="submit"><pems-icon name="bi-bell" aria-hidden="true" /> @Localizer["Lt_RemindersRun"]</pems-button>
             </pems-form>
         }
