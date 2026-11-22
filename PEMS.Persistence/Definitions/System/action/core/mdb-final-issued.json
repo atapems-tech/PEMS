@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "mdb-final-issued",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark the MDB as final issued",
+    "fa": "ثبت صدور نهایی MDB"
+  },
+  "description": {
+    "en": "Mark the MDB as final issued",
+    "fa": "ثبت صدور نهایی MDB"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Mdb",
+      "action": "MarkFinalIssued",
+      "args": {
+        "mdbId": "field:mdbId"
+      }
+    },
+    "success": {
+      "en": "MDB marked as Final Issued",
+      "fa": "MDB به‌صورت صدور نهایی ثبت شد."
+    },
+    "redirect": "/MDB/Details/{mdbId}"
+  }
+}

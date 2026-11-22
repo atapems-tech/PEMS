@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "vdr-import-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard the VDR import batch",
+    "fa": "دورریختن دسته‌ی واردات VDR"
+  },
+  "description": {
+    "en": "Discard the VDR import batch",
+    "fa": "دورریختن دسته‌ی واردات VDR"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrImport",
+      "action": "Discard",
+      "args": {
+        "batchId": "field:batchId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/VDRImport"
+  }
+}

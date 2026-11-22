@@ -128,9 +128,9 @@ public class ManufacturerDataBookService : IManufacturerDataBookService
         return mdb.MDBId;
     }
 
-    public async Task AddDocumentAsync(int mdbId, string part, int? documentId, string title, int? dvdVolumeNo, bool isNotApplicable, string? notes)
+    public async Task AddDocumentAsync(int mdbId, string part, int? documentId, string? title, int? dvdVolumeNo, bool isNotApplicable, string? notes)
     {
-        string resolvedTitle = title;
+        string resolvedTitle = title ?? string.Empty;
 
         if (documentId.HasValue)
         {

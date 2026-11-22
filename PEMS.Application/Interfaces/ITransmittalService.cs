@@ -28,14 +28,18 @@ public interface ITransmittalService
     /// دیگر Draft نیست و قابل ویرایش بی‌صدا نیست. اگر ResponseRequired=true باشد، ResponseDueDate
     /// از روی WorkingDayCalculator موجود محاسبه و اجباراً ثبت می‌شود.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("Transmittal", "MarkSent", "Transmittal.Approve")]   // SCRUM-760
     Task MarkSentAsync(int id, int responseDueWorkingDays = 10);
 
     /// <summary>طبق بخش ۸: مسیر اصلاحیِ قابل‌ردیابی - ویرایش بی‌صدای رکورد صادرشده مجاز نیست.</summary>
+    [PEMS.Application.Common.PemsOperation("Transmittal", "Cancel", "Transmittal.Delete")]   // SCRUM-760
     Task CancelAsync(int id, string reason, int? actorEmployeeId);
 
     /// <summary>یک ترانسمیتال Cancel‌شده را به‌عنوان پیش‌نویس جدید (زنجیره‌ی Supersedes) بازسازی می‌کند.</summary>
+    [PEMS.Application.Common.PemsOperation("Transmittal", "Reissue", "Transmittal.Create")]   // SCRUM-760
     Task<int> ReissueAsync(int id, int? actorEmployeeId);
 
+    [PEMS.Application.Common.PemsOperation("Transmittal", "RecordResponse", "Transmittal.Edit")]   // SCRUM-760
     Task RecordResponseAsync(int id, string? responseNote);
 
     /// <summary>
@@ -45,5 +49,6 @@ public interface ITransmittalService
     /// گیرندگان فعال تایید کرده باشند، خودِ Transmittal.Status به "Acknowledged" تغییر می‌کند -
     /// هرگز به‌خاطر یک گیرنده.
     /// </summary>
+    [PEMS.Application.Common.PemsOperation("Transmittal", "Acknowledge", "Transmittal.Edit")]   // SCRUM-760
     Task AcknowledgeAsync(int transmittalRecipientId, string? note, int? actorEmployeeId);
 }

@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "eng-intel-advance-stage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move the document to the next stage",
+    "fa": "انتقال مدرک به مرحله‌ی بعد"
+  },
+  "description": {
+    "en": "Move the document to the next stage",
+    "fa": "انتقال مدرک به مرحله‌ی بعد"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringIntelligence",
+      "action": "AdvanceStage",
+      "args": {
+        "documentId": "field:documentId",
+        "newStage": "field:newStage"
+      }
+    },
+    "success": {
+      "en": "The document stage was changed.",
+      "fa": "مرحله‌ی مدرک تغییر کرد."
+    },
+    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+  }
+}

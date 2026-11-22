@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "transmittal-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the transmittal",
+    "fa": "لغو ترانسمیتال"
+  },
+  "description": {
+    "en": "Cancel the transmittal",
+    "fa": "لغو ترانسمیتال"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Transmittal",
+      "action": "Cancel",
+      "args": {
+        "id": "field:id",
+        "reason": "field:reason",
+        "actorEmployeeId": "context:employeeId"
+      }
+    },
+    "success": {
+      "en": "Transmittal cancelled",
+      "fa": "ترانسمیتال لغو شد."
+    },
+    "redirect": "/Transmittal/Details/{id}"
+  }
+}

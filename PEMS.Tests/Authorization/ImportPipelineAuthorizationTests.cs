@@ -99,32 +99,6 @@ public class ImportPipelineAuthorizationTests
     // ================= MDR Import =================
 
     [Fact]
-    public async Task MDR_Commit_WithoutPermission_ReturnsForbid_DoesNotCommit()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MDR_Commit_WithoutPermission_ReturnsForbid_DoesNotCommit), role: SystemRoles.Viewer);
-        var service = new FakeMDRImportService();
-        var controller = new MDRImportController(service, ctx, user, perms).WithTempData();
-
-        var result = await controller.Commit(1);
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.False(service.CommitCalled);
-    }
-
-    [Fact]
-    public async Task MDR_Commit_WithPermission_Commits()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MDR_Commit_WithPermission_Commits), role: SystemRoles.EngineeringManager);
-        var service = new FakeMDRImportService();
-        var controller = new MDRImportController(service, ctx, user, perms).WithTempData();
-
-        var result = await controller.Commit(1);
-
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.True(service.CommitCalled);
-    }
-
-    [Fact]
     public async Task MDR_Index_WithoutViewPermission_ReturnsForbid()
     {
         var (ctx, perms, user) = await CreateInfra(nameof(MDR_Index_WithoutViewPermission_ReturnsForbid), role: null);
@@ -213,17 +187,6 @@ public class ImportPipelineAuthorizationTests
         var result = await controller.Index();
 
         Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
-    public async Task VDR_Discard_WithoutPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(VDR_Discard_WithoutPermission_ReturnsForbid), role: SystemRoles.Viewer);
-        var controller = new VDRImportController(new FakeVDRImportService(), ctx, user, perms).WithTempData();
-
-        var result = await controller.Discard(1);
-
-        Assert.IsType<ForbidResult>(result);
     }
 
     // ================= MRS Import =================

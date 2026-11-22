@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "eng-intel-reject-tag-link",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject a tag link",
+    "fa": "رد پیوند تگ"
+  },
+  "description": {
+    "en": "Reject a tag link",
+    "fa": "رد پیوند تگ"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngineeringIntelligence",
+      "action": "RejectTagLink",
+      "args": {
+        "documentId": "field:documentId",
+        "tagLinkId": "field:tagLinkId",
+        "reviewedById": "context:userId"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+  }
+}

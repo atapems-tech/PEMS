@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "transmittal-mark-sent",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark the transmittal as sent",
+    "fa": "ثبت ارسال ترانسمیتال"
+  },
+  "description": {
+    "en": "Mark the transmittal as sent",
+    "fa": "ثبت ارسال ترانسمیتال"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Transmittal",
+      "action": "MarkSent",
+      "args": {
+        "id": "field:id",
+        "responseDueWorkingDays": "field:responseDueWorkingDays"
+      }
+    },
+    "success": {
+      "en": "Transmittal marked as Sent",
+      "fa": "ترانسمیتال به‌صورت ارسال‌شده ثبت شد."
+    },
+    "redirect": "/Transmittal/Details/{id}"
+  }
+}
