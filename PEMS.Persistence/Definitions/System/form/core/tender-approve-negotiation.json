@@ -1,0 +1,82 @@
+{
+  "kind": "form",
+  "key": "tender-approve-negotiation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve the negotiation",
+    "fa": "تأیید مذاکره"
+  },
+  "description": {
+    "en": "Approve the negotiation",
+    "fa": "تأیید مذاکره"
+  },
+  "payload": {
+    "id": "tender-approve-negotiation",
+    "title": {
+      "en": "Approve the negotiation",
+      "fa": "تأیید مذاکره"
+    },
+    "submitLabel": {
+      "en": "Approve",
+      "fa": "تأیید"
+    },
+    "actionKey": "tender-approve-negotiation",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "bidId",
+        "label": {
+          "en": "Bid id",
+          "fa": "شناسه‌ی پیشنهاد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "bidNegotiationId",
+        "label": {
+          "en": "Negotiation id",
+          "fa": "شناسه‌ی مذاکره"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ],
+    "load": {
+      "model": "TenderDetails",
+      "action": "PendingNegotiation",
+      "args": {
+        "bidId": "param:bidId"
+      }
+    }
+  }
+}

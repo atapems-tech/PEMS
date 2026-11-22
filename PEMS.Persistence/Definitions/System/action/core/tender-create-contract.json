@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "tender-create-contract",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create the contract draft from the winning bid",
+    "fa": "ایجاد پیش‌نویس قرارداد از پیشنهاد برنده"
+  },
+  "description": {
+    "en": "Create the contract draft from the winning bid",
+    "fa": "ایجاد پیش‌نویس قرارداد از پیشنهاد برنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TenderPage",
+      "action": "CreateContract",
+      "args": {
+        "tenderId": "field:tenderId",
+        "contractNo": "field:contractNo",
+        "startDate": "field:startDate",
+        "endDate": "field:endDate",
+        "ip": "context:ip"
+      }
+    },
+    "redirect": "/p/contract-details?id={result}",
+    "success": {
+      "en": "Contract draft created from the winning bid.",
+      "fa": "پیش‌نویس قرارداد از پیشنهاد برنده ایجاد شد."
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tender-approve-negotiation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve a negotiation",
+    "fa": "تأیید مذاکره"
+  },
+  "description": {
+    "en": "Approve a negotiation",
+    "fa": "تأیید مذاکره"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TenderPage",
+      "action": "ApproveNegotiation",
+      "args": {
+        "tenderId": "field:tenderId",
+        "bidNegotiationId": "field:bidNegotiationId",
+        "ip": "context:ip"
+      }
+    },
+    "redirect": "/p/tender-details?id={tenderId}",
+    "success": {
+      "en": "Negotiation approved.",
+      "fa": "مذاکره تأیید شد."
+    }
+  }
+}

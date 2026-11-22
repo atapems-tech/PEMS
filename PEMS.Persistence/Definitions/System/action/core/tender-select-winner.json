@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tender-select-winner",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Select the winner",
+    "fa": "انتخاب برنده"
+  },
+  "description": {
+    "en": "Select the winner",
+    "fa": "انتخاب برنده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TenderPage",
+      "action": "SelectWinner",
+      "args": {
+        "tenderId": "field:tenderId",
+        "bidId": "field:bidId",
+        "ip": "context:ip"
+      }
+    },
+    "redirect": "/p/tender-details?id={tenderId}",
+    "success": {
+      "en": "Winner selected.",
+      "fa": "برنده انتخاب شد."
+    }
+  }
+}

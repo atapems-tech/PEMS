@@ -26,9 +26,9 @@ public static class ProtectedActionGuard
 {
     public static async Task<ProtectedActionOutcome> EvaluateAsync(
         HttpContext? http, IPermissionService permissions, IAccessControlService access, ICurrentUserService user,
-        string resource, string action, string resourceId)
+        string resource, string action, string resourceId, string? ipAddress = null)
     {
-        var ip = http?.Connection.RemoteIpAddress?.ToString();
+        var ip = http?.Connection.RemoteIpAddress?.ToString() ?? ipAddress;
         var logger = http?.RequestServices?.GetService<ILoggerFactory>()?.CreateLogger("PEMS.ProtectedAction");
 
         async Task DeniedAsync(AccessDecisionReason reason, string detail)

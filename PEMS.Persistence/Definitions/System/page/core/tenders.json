@@ -145,7 +145,7 @@
                       "en": "Open",
                       "fa": "باز کردن"
                     },
-                    "url": "/Tender/Details/{id}",
+                    "url": "/p/tender-details?id={id}",
                     "method": "get"
                   }
                 ]

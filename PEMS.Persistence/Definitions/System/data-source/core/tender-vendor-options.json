@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "tender-vendor-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendors",
+    "fa": "فروشندگان"
+  },
+  "description": {
+    "en": "Active vendors",
+    "fa": "فروشندگان فعال"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TenderDetails",
+      "action": "VendorChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

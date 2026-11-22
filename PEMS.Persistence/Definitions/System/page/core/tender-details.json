@@ -1,0 +1,607 @@
+{
+  "kind": "page",
+  "key": "tender-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tender",
+    "fa": "مناقصه"
+  },
+  "description": {
+    "en": "One tender with its vendors, bids, clarifications and next steps (page definition)",
+    "fa": "یک مناقصه با فروشندگان، پیشنهادها، شفاف‌سازی‌ها و گام‌های بعدی (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "tender-details",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "secondary",
+            "href": "/p/tenders"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "head",
+            "fields": [
+              {
+                "key": "tenderNumber",
+                "label": {
+                  "en": "Tender No",
+                  "fa": "شماره مناقصه"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "package",
+                "label": {
+                  "en": "Package",
+                  "fa": "پکیج"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "responseDeadline",
+                "label": {
+                  "en": "Deadline",
+                  "fa": "مهلت"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "requiresVendorQualification",
+                "label": {
+                  "en": "Requires vendor qualification",
+                  "fa": "نیازمند احراز صلاحیت فروشنده"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "awardedTo",
+                "label": {
+                  "en": "Awarded to",
+                  "fa": "برنده"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/tender-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "actions",
+            "url": "/d/tender-head?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "contractId",
+                "header": {
+                  "en": "Contract id",
+                  "fa": "شناسه‌ی قرارداد"
+                },
+                "width": 130,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open for bidding",
+                      "fa": "بازکردن"
+                    },
+                    "url": "/f/tender-open-for-bidding?tenderId={id}",
+                    "method": "get",
+                    "showWhen": "row.canOpen == true"
+                  },
+                  {
+                    "key": "close",
+                    "label": {
+                      "en": "Close bidding",
+                      "fa": "بستن"
+                    },
+                    "url": "/f/tender-close-bidding?tenderId={id}",
+                    "method": "get",
+                    "showWhen": "row.canClose == true"
+                  },
+                  {
+                    "key": "invite",
+                    "label": {
+                      "en": "Invite a vendor",
+                      "fa": "دعوت از فروشنده"
+                    },
+                    "url": "/f/tender-invite-vendor?tenderId={id}",
+                    "method": "get",
+                    "showWhen": "row.status in ['Draft', 'Open']"
+                  },
+                  {
+                    "key": "send",
+                    "label": {
+                      "en": "Send invitations by email",
+                      "fa": "ارسال دعوت‌نامه با ایمیل"
+                    },
+                    "url": "/f/tender-send-invitations?tenderId={id}",
+                    "method": "get",
+                    "showWhen": "row.canSendInvitations == true"
+                  },
+                  {
+                    "key": "bid",
+                    "label": {
+                      "en": "Submit a bid",
+                      "fa": "ثبت پیشنهاد"
+                    },
+                    "url": "/f/tender-submit-bid?tenderId={id}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Open'"
+                  },
+                  {
+                    "key": "clarify",
+                    "label": {
+                      "en": "Raise a clarification",
+                      "fa": "طرح شفاف‌سازی"
+                    },
+                    "url": "/f/tender-raise-clarification?tenderId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "contract",
+                    "label": {
+                      "en": "Create contract draft",
+                      "fa": "ایجاد پیش‌نویس قرارداد"
+                    },
+                    "url": "/f/tender-create-contract?tenderId={id}",
+                    "method": "get",
+                    "showWhen": "row.canCreateContract == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "vendors",
+          "component": "data-grid",
+          "options": {
+            "id": "vendors",
+            "url": "/d/tender-vendors?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 260,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "qualificationConfirmed",
+                "header": {
+                  "en": "Qualification confirmed",
+                  "fa": "صلاحیت تأییدشده"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "invitation-log",
+          "component": "data-grid",
+          "options": {
+            "id": "invitation-log",
+            "url": "/d/tender-invitation-log?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "toAddress",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "attempts",
+                "header": {
+                  "en": "Attempts",
+                  "fa": "تلاش‌ها"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "queuedBy",
+                "header": {
+                  "en": "Queued by",
+                  "fa": "ثبت‌کننده"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "queuedAt",
+                "header": {
+                  "en": "Queued",
+                  "fa": "زمان ثبت"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "sentAt",
+                "header": {
+                  "en": "Sent",
+                  "fa": "زمان ارسال"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "lastError",
+                "header": {
+                  "en": "Last error",
+                  "fa": "آخرین خطا"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "resend",
+                    "label": {
+                      "en": "Resend",
+                      "fa": "ارسال مجدد"
+                    },
+                    "url": "/f/tender-send-invitations?tenderId={{params.id}}&vendorIds={id}",
+                    "method": "get",
+                    "showWhen": "row.canResend == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "bids",
+          "component": "data-grid",
+          "options": {
+            "id": "bids",
+            "url": "/d/tender-bids?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "bidNumber",
+                "header": {
+                  "en": "Bid",
+                  "fa": "پیشنهاد"
+                },
+                "width": 130,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "originalValue",
+                "header": {
+                  "en": "Original",
+                  "fa": "اولیه"
+                },
+                "width": 130,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "negotiatedValue",
+                "header": {
+                  "en": "Negotiated",
+                  "fa": "پس از مذاکره"
+                },
+                "width": 130,
+                "sortable": false,
+                "filterable": false,
+                "type": "number"
+              },
+              {
+                "key": "currency",
+                "header": {
+                  "en": "Currency",
+                  "fa": "ارز"
+                },
+                "width": 80,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "technical",
+                "header": {
+                  "en": "Technical",
+                  "fa": "فنی"
+                },
+                "width": 100,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "commercial",
+                "header": {
+                  "en": "Commercial",
+                  "fa": "بازرگانی"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "evaluate",
+                    "label": {
+                      "en": "Record an evaluation",
+                      "fa": "ثبت ارزیابی"
+                    },
+                    "url": "/f/tender-record-evaluation?bidId={id}&tenderId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canEvaluate == true"
+                  },
+                  {
+                    "key": "negotiate",
+                    "label": {
+                      "en": "Propose a negotiation",
+                      "fa": "پیشنهاد مذاکره"
+                    },
+                    "url": "/f/tender-request-negotiation?bidId={id}&tenderId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canNegotiate == true"
+                  },
+                  {
+                    "key": "approve-negotiation",
+                    "label": {
+                      "en": "Approve the negotiation",
+                      "fa": "تأیید مذاکره"
+                    },
+                    "url": "/f/tender-approve-negotiation?bidId={id}&tenderId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canApproveNegotiation == true"
+                  },
+                  {
+                    "key": "winner",
+                    "label": {
+                      "en": "Select as winner",
+                      "fa": "انتخاب به‌عنوان برنده"
+                    },
+                    "url": "/f/tender-select-winner?bidId={id}&tenderId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canSelectWinner == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "clarifications",
+          "component": "data-grid",
+          "options": {
+            "id": "clarifications",
+            "url": "/d/tender-clarifications?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "type",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 190,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "subject",
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "vendor",
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "body",
+                "header": {
+                  "en": "Question",
+                  "fa": "پرسش"
+                },
+                "width": 320,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "responses",
+                "header": {
+                  "en": "Responses",
+                  "fa": "پاسخ‌ها"
+                },
+                "width": 360,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "respond",
+                    "label": {
+                      "en": "Respond",
+                      "fa": "پاسخ"
+                    },
+                    "url": "/f/tender-respond-clarification?communicationId={id}&tenderId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

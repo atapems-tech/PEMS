@@ -1,0 +1,77 @@
+{
+  "kind": "form",
+  "key": "tender-create-contract",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create the contract draft from the winning bid",
+    "fa": "ایجاد پیش‌نویس قرارداد از پیشنهاد برنده"
+  },
+  "description": {
+    "en": "Create the contract draft from the winning bid",
+    "fa": "ایجاد پیش‌نویس قرارداد از پیشنهاد برنده"
+  },
+  "payload": {
+    "id": "tender-create-contract",
+    "title": {
+      "en": "Create the contract draft from the winning bid",
+      "fa": "ایجاد پیش‌نویس قرارداد از پیشنهاد برنده"
+    },
+    "submitLabel": {
+      "en": "Create contract draft",
+      "fa": "ایجاد پیش‌نویس"
+    },
+    "actionKey": "tender-create-contract",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "contractNo",
+        "label": {
+          "en": "Contract number",
+          "fa": "شماره قرارداد"
+        },
+        "kind": "text",
+        "maxLength": 100,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "endDate",
+        "label": {
+          "en": "End date",
+          "fa": "تاریخ پایان"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

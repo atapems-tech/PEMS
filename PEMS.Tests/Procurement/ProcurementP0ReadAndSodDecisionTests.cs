@@ -200,9 +200,9 @@ public class ProcurementP0ReadAndSodDecisionTests
     }
 
     [Fact]
-    public async Task TenderController_ApproveNegotiation_ByTheTenderCreator_IsRefused_AndNothingChanges()
+    public async Task TenderOperations_ApproveNegotiation_ByTheTenderCreator_IsRefused_AndNothingChanges()
     {
-        var (ctx, svc, tenderId, negotiationId) = await TenderAsync(nameof(TenderController_ApproveNegotiation_ByTheTenderCreator_IsRefused_AndNothingChanges), "alice");
+        var (ctx, svc, tenderId, negotiationId) = await TenderAsync(nameof(TenderOperations_ApproveNegotiation_ByTheTenderCreator_IsRefused_AndNothingChanges), "alice");
         foreach (var roleName in SystemRoles.All)
             ctx.Roles.Add(new ApplicationRole(roleName) { NormalizedName = roleName.ToUpperInvariant() });
         await ctx.SaveChangesAsync();
@@ -213,12 +213,12 @@ public class ProcurementP0ReadAndSodDecisionTests
         await AccessControlSeeder.SeedFromLegacyAsync(services.BuildServiceProvider());
 
         var user = new FakeCurrentUserService { UserId = 7, UserName = "alice", Roles = new List<string> { SystemRoles.ContractManager } };
-        var controller = new TenderController(svc, null!, permissions, user, ctx, access).WithTempData();
+        var operations = new PEMS.Web.Services.TenderOperations(ctx, null!, null!, null!, null!, null!, user, svc, permissions, access);
 
-        var result = await controller.ApproveNegotiation(tenderId, negotiationId);
+        var result = await operations.ApproveNegotiationAsync(tenderId, negotiationId, null);
 
-        Assert.IsType<RedirectToActionResult>(result);
-        Assert.Contains("تفکیک وظایف", (string)controller.TempData["Error"]!);
+        Assert.False(result.Success);
+        Assert.Contains("تفکیک وظایف", result.Error);
         Assert.Equal("Proposed", ctx.BidNegotiations.Single().Status);
     }
 }

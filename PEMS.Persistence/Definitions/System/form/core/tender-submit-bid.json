@@ -1,0 +1,103 @@
+{
+  "kind": "form",
+  "key": "tender-submit-bid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit a bid",
+    "fa": "ثبت پیشنهاد"
+  },
+  "description": {
+    "en": "Submit a bid",
+    "fa": "ثبت پیشنهاد"
+  },
+  "payload": {
+    "id": "tender-submit-bid",
+    "title": {
+      "en": "Submit a bid",
+      "fa": "ثبت پیشنهاد"
+    },
+    "submitLabel": {
+      "en": "Submit bid",
+      "fa": "ثبت پیشنهاد"
+    },
+    "actionKey": "tender-submit-bid",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "optionsFrom": "tender-invited-vendor-options",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "originalValue",
+        "label": {
+          "en": "Value",
+          "fa": "مبلغ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "currency",
+        "label": {
+          "en": "Currency",
+          "fa": "ارز"
+        },
+        "kind": "text",
+        "maxLength": 10
+      },
+      {
+        "name": "technicalSubmissionReference",
+        "label": {
+          "en": "Technical reference",
+          "fa": "مرجع فنی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "commercialSubmissionReference",
+        "label": {
+          "en": "Commercial reference",
+          "fa": "مرجع بازرگانی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

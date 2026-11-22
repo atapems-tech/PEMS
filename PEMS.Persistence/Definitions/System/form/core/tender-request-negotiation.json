@@ -1,0 +1,84 @@
+{
+  "kind": "form",
+  "key": "tender-request-negotiation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Propose a negotiation",
+    "fa": "پیشنهاد مذاکره"
+  },
+  "description": {
+    "en": "Propose a negotiation",
+    "fa": "پیشنهاد مذاکره"
+  },
+  "payload": {
+    "id": "tender-request-negotiation",
+    "title": {
+      "en": "Propose a negotiation",
+      "fa": "پیشنهاد مذاکره"
+    },
+    "submitLabel": {
+      "en": "Propose",
+      "fa": "پیشنهاد"
+    },
+    "actionKey": "tender-request-negotiation",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "bidId",
+        "label": {
+          "en": "Bid id",
+          "fa": "شناسه‌ی پیشنهاد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "negotiatedValue",
+        "label": {
+          "en": "New value",
+          "fa": "مبلغ جدید"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "justification",
+        "label": {
+          "en": "Justification",
+          "fa": "توجیه"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

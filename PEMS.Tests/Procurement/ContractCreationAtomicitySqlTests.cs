@@ -12,7 +12,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 using Xunit.Abstractions;
 
 namespace PEMS.Tests.Procurement;
@@ -632,7 +632,7 @@ public sealed class ContractCreationAtomicitySqlTests : IAsyncLifetime
     private const string ManagerOne = "manager.one";
     private const string ManagerTwo = "manager.two";
 
-    private sealed record Rig(TenderController Controller, PEMSDbContext Ctx, FakeCurrentUserService User, AccessControlService AccessControl,
+    private sealed record Rig(TenderOperations Operations, PEMSDbContext Ctx, FakeCurrentUserService User, AccessControlService AccessControl,
         NthSaveFaultInterceptor Faults, int ManagerOneId, int ManagerTwoId);
 
     private async Task<Rig> BuildRigAsync()
@@ -668,9 +668,9 @@ public sealed class ContractCreationAtomicitySqlTests : IAsyncLifetime
         // the approver and fails closed with Forbid
         var user2 = new FakeCurrentUserService { UserId = m1, UserName = ManagerOne, Roles = new[] { SystemRoles.ContractManager } };
         var tenderService = new TenderService(ctx, _numbering);
-        var controller = new TenderController(tenderService, new ProcurementPackageService(ctx), permissionService, user2, ctx, accessControl).WithTempData();
+        var operations = new TenderOperations(ctx, null!, null!, null!, null!, null!, user2, tenderService, permissionService, accessControl);
         ctx.CurrentUserName = ManagerOne;
-        return new Rig(controller, ctx, user2, accessControl, faults, m1, m2);
+        return new Rig(operations, ctx, user2, accessControl, faults, m1, m2);
     }
 
     private Task<int> GuardRowsAsync(int tenderId)
@@ -685,20 +685,20 @@ public sealed class ContractCreationAtomicitySqlTests : IAsyncLifetime
 
         // ۱-۲ = رکوردهای گارد Tender.Approve (خارج از تراکنش ساخت قرارداد)، ۳ = A، ۴ = B، ۵ = C ← شکست ردیف رویداد
         rig.Faults.Arm(5);
-        var failed = await rig.Controller.CreateContract(tenderId, "CT-T12", null, null);
+        var failed = await rig.Operations.CreateContractAsync(tenderId, "CT-T12", null, null, null);
 
-        Assert.Equal("Details", Assert.IsType<RedirectToActionResult>(failed).ActionName);       // به قرارداد هدایت نمی‌شود: قرارداد ساخته نشده
+        Assert.False(failed.Success);                                                            // the contract was not created
         Assert.Equal(0, await ContractsAsync());
         Assert.Null(await LinkedAsync(tenderId));
         Assert.Empty(await EventsAsync());
         Assert.Equal(1, await GuardRowsAsync(tenderId));                                        // رکورد گارد باقی ماند
-        var message = rig.Controller.TempData["Error"]?.ToString() ?? "";
+        var message = failed.Error ?? "";
         Assert.Contains("هیچ تغییری ذخیره نشد", message);
         Assert.DoesNotContain("ساخته و ذخیره شد", message);
 
         rig.Faults.Disarm();
-        var ok = await rig.Controller.CreateContract(tenderId, "CT-T12", null, null);
-        Assert.Equal("Contract", Assert.IsType<RedirectToActionResult>(ok).ControllerName);
+        var ok = await rig.Operations.CreateContractAsync(tenderId, "CT-T12", null, null, null);
+        Assert.True(ok.Success);
         Assert.Equal(2, await GuardRowsAsync(tenderId));                                        // هر تلاش یک رکورد گارد جدا (بدون یکتایی سراسری)
         var linked = await LinkedAsync(tenderId);
         var ev = Assert.Single(await EventsAsync());                                            // و دقیقاً یک رویداد ایجادکننده
@@ -711,8 +711,8 @@ public sealed class ContractCreationAtomicitySqlTests : IAsyncLifetime
     {
         var rig = await BuildRigAsync();
         var tenderId = await AwardedTenderAsync();
-        var created = await rig.Controller.CreateContract(tenderId, "CT-T13", null, null);
-        Assert.Equal("Contract", Assert.IsType<RedirectToActionResult>(created).ControllerName);
+        var created = await rig.Operations.CreateContractAsync(tenderId, "CT-T13", null, null, null);
+        Assert.True(created.Success);
         var contractId = (await LinkedAsync(tenderId))!.Value;
 
         var self = await rig.AccessControl.AuthorizeAsync(new PEMS.Application.DTOs.AccessControlRequest { UserId = rig.ManagerOneId, ResourceName = "Contracts", ActionName = "Approve", ResourceId = contractId.ToString() });

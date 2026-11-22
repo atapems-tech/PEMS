@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "tender-select-winner",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Select the winner",
+    "fa": "انتخاب برنده"
+  },
+  "description": {
+    "en": "Select the winner",
+    "fa": "انتخاب برنده"
+  },
+  "payload": {
+    "id": "tender-select-winner",
+    "title": {
+      "en": "Select the winner",
+      "fa": "انتخاب برنده"
+    },
+    "submitLabel": {
+      "en": "Select as winner",
+      "fa": "انتخاب به‌عنوان برنده"
+    },
+    "actionKey": "tender-select-winner",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "bidId",
+        "label": {
+          "en": "Bid id",
+          "fa": "شناسه‌ی پیشنهاد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

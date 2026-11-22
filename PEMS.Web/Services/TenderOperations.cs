@@ -11,7 +11,7 @@ namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-759: the list, invitations and clarifications of TenderController (it used the context inline), as operations.</summary>
 public sealed class TenderOperations(PEMSDbContext context, IProcurementPackageService packages, ITenderInvitationService invitations, IBackgroundJobClient jobs, IStringLocalizer<SharedResource> localizer,
-    IConfiguration configuration, ICurrentUserService currentUser) : ITenderOperations
+    IConfiguration configuration, ICurrentUserService currentUser, ITenderService tenders, IPermissionService permissions, IAccessControlService accessControl) : ITenderOperations
 {
     public async Task<List<TenderRow>> TendersAsync(int? procurementPackageId = null)
     {
@@ -39,5 +39,81 @@ public sealed class TenderOperations(PEMSDbContext context, IProcurementPackageS
     {
         await packages.RespondToCommunicationAsync(procurementPackageId, communicationId, responseText, currentUser.FullName);
         return (true, null);
+    }
+
+    // ---- SCRUM-817: the guarded commands of TenderController (separation of duties and creator separation), as operations. The permission Tender.Approve is checked by the engine; the shared
+    // access decision (role, identity, scope, separation of duties, audit row) and the creator-approver separation run here, as in the controller.
+
+    private async Task<int?> EmployeeIdAsync() =>
+        currentUser.UserId.HasValue ? await context.Users.Where(u => u.Id == currentUser.UserId.Value).Select(u => u.EmployeeId).FirstOrDefaultAsync() : null;
+
+    /// <summary>Null = go on; else the refusal.</summary>
+    private async Task<TenderStep?> GuardAsync(int tenderId, string? ip)
+    {
+        var outcome = await ProtectedActionGuard.EvaluateAsync(null, permissions, accessControl, currentUser, "Tender", "Approve", tenderId.ToString(), ip);
+        if (outcome == ProtectedActionOutcome.DeniedBySoD) return new(false, "Error");
+        return outcome == ProtectedActionOutcome.Allowed ? null : new(false, "You may not do this.");
+    }
+
+    private async Task<TenderStep?> SeparationAsync(int? tenderId, int? bidNegotiationId, string? ip)
+    {
+        var result = await tenders.CheckCreatorApproverSeparationAsync(tenderId, bidNegotiationId, currentUser.UserId, currentUser.UserName,
+            currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin), ip);
+        return result switch
+        {
+            TenderApprovalSeparation.DeniedCreator => new(false, "Error"),
+            TenderApprovalSeparation.DeniedUnverifiable => new(false, "You may not do this."),
+            _ => null
+        };
+    }
+
+    public async Task<TenderStep> ApproveNegotiationAsync(int tenderId, int bidNegotiationId, string? ip)
+    {
+        // the tender is taken from the negotiation itself, not from the form (P0-10)
+        if (await SeparationAsync(null, bidNegotiationId, ip) is { } refused) return refused;
+        var result = await tenders.ApproveNegotiationAsync(bidNegotiationId, await EmployeeIdAsync());
+        return new(result.Success, result.Error);
+    }
+
+    public async Task<TenderStep> SelectWinnerAsync(int tenderId, int bidId, string? ip)
+    {
+        if (await GuardAsync(tenderId, ip) is { } blocked) return blocked;
+        if (await SeparationAsync(tenderId, null, ip) is { } refused) return refused;
+        var result = await tenders.SelectWinnerAsync(tenderId, bidId, await EmployeeIdAsync());
+        return new(result.Success, result.Error);
+    }
+
+    public async Task<TenderStep> CreateContractAsync(int tenderId, string contractNo, DateTime? startDate, DateTime? endDate, string? ip)
+    {
+        // creating the contract is an approval of its own: Tender.Approve (guard) and Contracts.Create
+        if (await GuardAsync(tenderId, ip) is { } blocked) return blocked;
+        if (!await permissions.HasPermissionAsync(currentUser.Roles, "Contracts", "Create")) return new(false, "You may not do this.");
+        if (await SeparationAsync(tenderId, null, ip) is { } refused) return refused;
+
+        var result = await tenders.CreateContractFromWinningBidAsync(tenderId, contractNo, startDate, endDate, currentUser.UserId, ip);
+        // the commit was uncertain and the re-read did not settle it: never say "not created"
+        if (result.OutcomeUnknown) return new(false, result.Error);
+        if (result.Success)
+        {
+            var problems = new List<string>();
+            if (result.GenericAuditFailed) problems.Add("ثبت AuditLog عمومی این عملیات با خطا مواجه شد (در لاگ سیستم ثبت شده است)");
+            if (result.CreatorEvent == ContractCreatorEventStatus.NotRecorded) problems.Add("رویداد «ایجادکننده‌ی قرارداد» ثبت نشد؛ برای ترمیم، همین عملیات را دوباره اجرا کنید (قرارداد تکراری ساخته نمی‌شود)");
+            if (problems.Count > 0) return new(true, "Error" + string.Join("؛ ", problems) + ".", null, result.ContractId);
+            if (result.RecoveredAfterUncertainCommit) return new(true, "Contract draft created from winning bid (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)", null, result.ContractId);
+            return new(true, null, null, result.ContractId);
+        }
+        if (result.Committed && result.ContractId.HasValue)
+        {
+            // the contract exists already; a retry creates no duplicate and only repairs the creator event
+            return result.CreatorEvent switch
+            {
+                ContractCreatorEventStatus.Repaired => new(true, "Message", null, result.ContractId),
+                ContractCreatorEventStatus.NotRecorded => new(false, "Error"),
+                ContractCreatorEventStatus.OutcomeUnknown => new(false, "Error"),
+                ContractCreatorEventStatus.CreatorUnidentified => new(false, "Error"),
+                _ => new(false, result.Error)
+            };
+        }
+        return new(false, result.Error);
     }
 }
