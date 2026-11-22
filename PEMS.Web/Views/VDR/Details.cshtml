@@ -268,7 +268,7 @@
                         }
                         else
                         {
-                            <pems-form asp-action="UploadCommentSheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                            <pems-form action="/a/vdr-comment-sheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
@@ -283,7 +283,7 @@
                         }
                         else
                         {
-                            <pems-form asp-action="UploadReplySheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
+                            <pems-form action="/a/vdr-reply-sheet" method="post" enctype="multipart/form-data"><pems-flex gap="1">
                                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                                 <input type="hidden" name="submissionId" value="@s.VDRSubmissionId" />
                                 <pems-uploader class="pems-maxw-120" scale="small" name="file" required />
@@ -573,7 +573,7 @@
 
 @* طبق درخواست: افزودن کامنت به‌صورت Popup تا کاربر از صفحه‌ی اصلی خارج نشود *@
 <pems-modal size="large" id="addCommentModal" tabindex="-1">
-            <pems-form asp-action="AddComment" method="post" enctype="multipart/form-data">
+            <pems-form action="/a/vdr-comment-add" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                 <input type="hidden" name="pageNumber" id="pinPageNumber" value="" />
                 <input type="hidden" name="pinX" id="pinX" value="" />
@@ -627,7 +627,7 @@
 @if (comments.Any())
 {
     <pems-modal id="replyModal" tabindex="-1">
-                <pems-form asp-action="RecordCommentResponse" method="post" enctype="multipart/form-data">
+                <pems-form action="/a/vdr-comment-reply" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="vdrItemId" value="@Model.VDRItemId" />
                     <input type="hidden" name="commentId" value="" />
                     <pems-modal-header>@Localizer["Vd_ReplyTo"] <span data-fill-text="commentno"></span></pems-modal-header>
