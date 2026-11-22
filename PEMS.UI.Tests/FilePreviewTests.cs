@@ -27,6 +27,39 @@ public sealed class FilePreviewTests
     }
 
     [Fact]
+    public void Annotation_urls_add_the_pin_configuration_and_nothing_else_changes()
+    {
+        // SCRUM-775: without the urls the markup is the one above; with them the wrapper carries the configuration the script reads
+        var html = Run(new PemsFilePreviewTagHelper(UiTestRenderer.Instance) { Src = "/Files/Preview/12", AnnotationsUrl = "/d/file-notes?f.fileId=12", SaveUrl = "/a/file-note-save", DeleteUrl = "/a/file-note-delete", FileId = "12" }, [new("id", "pv")]);
+        Assert.Contains("data-pems-annotate=", html);
+        var decoded = System.Net.WebUtility.HtmlDecode(html);
+        Assert.Contains("\"saveUrl\":\"/a/file-note-save\"", decoded);
+        Assert.Contains("\"fileId\":\"12\"", decoded);
+        Assert.Contains("\"deleteUrl\":\"/a/file-note-delete\"", decoded);
+        var plain = Run(new PemsFilePreviewTagHelper(UiTestRenderer.Instance) { Src = "/Files/Preview/12" });
+        Assert.DoesNotContain("data-pems-annotate", plain);
+    }
+
+    [Fact]
+    public void The_annotation_script_posts_json_with_the_token_builds_from_templates_and_is_loaded_by_the_layout()
+    {
+        var dir = new DirectoryInfo(AppContext.BaseDirectory);
+        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.UI", "PEMS.UI.csproj"))) dir = dir.Parent;
+        string Read(params string[] p) => File.ReadAllText(Path.Combine(new[] { dir!.FullName }.Concat(p).ToArray()));
+        var js = Read("PEMS.UI", "wwwroot", "pems-annotate.js");
+        Assert.DoesNotContain("createElement", js);
+        Assert.DoesNotContain("innerHTML", js);
+        Assert.Contains("RequestVerificationToken", js);
+        var razor = Read("PEMS.UI", "Components", "PemsScriptTemplates.razor");
+        foreach (var name in new[] { "fp-bar", "fp-stage", "fp-layer", "fp-pin", "fp-note" })
+        {
+            Assert.Contains("'" + name + "'", js);
+            Assert.Contains($"data-pems-template=\"{name}\"", razor);
+        }
+        Assert.Contains("pems-annotate.js", Read("PEMS.Web", "Views", "Shared", "_Layout.cshtml"));
+    }
+
+    [Fact]
     public void No_source_shows_the_empty_text_and_no_frame()
     {
         var html = Run(new PemsFilePreviewTagHelper(UiTestRenderer.Instance) { EmptyText = "Nothing to show" });

@@ -34,7 +34,7 @@
       },
       "moveUrl": {
         "type": "string",
-        "description": "Kanban: a card move posts { id, to } here (an /a/{action} works)"
+        "description": "Kanban: a card move posts { id, to } here; calendar: { id, date }; gantt and timeline: { id, start, end } (an /a/{action} works)"
       },
       "itemUrl": {
         "type": "string",

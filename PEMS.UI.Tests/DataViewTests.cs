@@ -81,12 +81,12 @@ public sealed class DataViewTests
         Assert.DoesNotContain("innerHTML", js);
         Assert.DoesNotMatch("https?://", js);
         var razor = Read("PEMS.UI", "Components", "PemsScriptTemplates.razor");
-        foreach (var name in new[] { "dv-root", "dv-card", "dv-col", "dv-cal", "dv-cal-day", "dv-chip", "dv-tl-day", "dv-more", "dv-gantt", "dv-gantt-row", "dv-gantt-tick", "dv-tree", "dv-tree-node" })
+        foreach (var name in new[] { "dv-root", "dv-card", "dv-col", "dv-cal", "dv-cal-day", "dv-chip", "dv-tl-day", "dv-more", "dv-gantt", "dv-gantt-row", "dv-gantt-tick", "dv-gantt-handle", "dv-tree", "dv-tree-node" })
         {
             Assert.Contains("'" + name + "'", js);
             Assert.Contains($"data-pems-template=\"{name}\"", razor);
         }
-        foreach (var feature in new[] { "range:", "RequestVerificationToken", "persian", "weekStart", "draggable", "altKey", "showGantt", "showTree", "aria-expanded", "setProperty('--from'", "MAX_DAYS" }) Assert.Contains(feature, js);
+        foreach (var feature in new[] { "range:", "RequestVerificationToken", "persian", "weekStart", "draggable", "altKey", "showGantt", "showTree", "aria-expanded", "setProperty('--from'", "MAX_DAYS", "wireBar", "pointerdown", "postSchedule", "start: start" }) Assert.Contains(feature, js);
         var css = Read("PEMS.UI", "wwwroot", "pems-views.css");
         Assert.DoesNotMatch(@"(margin|padding|border)-(left|right)\s*:|(?<![\w-])(left|right)\s*:", css);
         Assert.DoesNotMatch("#[0-9a-fA-F]{3,8}\\b", css);

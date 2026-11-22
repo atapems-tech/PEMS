@@ -72,6 +72,7 @@ public static class ComponentSamples
         ["tree-item"] = """{"label":"Engineering","key":"1","href":"/letters?tag=1","countText":"4"}""",
         ["image"] = """{"src":"/Files/Image/photo.png","alt":{"en":"Photo","fa":"عکس"},"css":"rounded-circle","size":120,"empty":{"en":"No photo","fa":"بدون عکس"}}""",
         ["signature-pad"] = """{"id":"signature","action":"profile-signature-save","clearLabel":{"en":"Clear","fa":"پاک کردن"},"saveLabel":{"en":"Save","fa":"ذخیره"},"emptyText":{"en":"Draw first.","fa":"اول امضا کنید."},"savedText":{"en":"Saved.","fa":"ذخیره شد."},"errorText":{"en":"Not saved.","fa":"ذخیره نشد."},"hint":{"en":"Draw in the box.","fa":"در کادر امضا کنید."},"currentUrl":"/Files/Image/signature.png","currentLabel":{"en":"Current signature","fa":"امضای فعلی"}}""",
+        ["chat-panel"] = """{"id":"chat","historySource":"chat-history-grid","askAction":"chat-ask","clearAction":"chat-clear"}""",
         ["script-island"] = """{"id":"island","bootId":"island-boot","module":"/dist/dashboards/dashboards.js","styles":["/dist/dashboards/dashboards.css"],"values":{"dataUrl":"/Data"},"links":{"Reports":"/p/report-correspondence"},"i18n":{"Title":{"en":"Executive","fa":"مدیریتی"}},"note":{"en":"Loading","fa":"در حال بارگذاری"}}""",
         ["chart"] = """{"spec":{"kind":"gauge","ariaLabel":"Completion","emptyText":"-","value":72.5,"unit":"%"}}""",
         ["date"] = """{"attributes":{"class":"form-control","type":"date","name":"due","value":"2026-11-05"}}""",

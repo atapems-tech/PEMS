@@ -98,6 +98,36 @@
             });
         }
 
+        // ---- timeline: a card dropped on another day (or Alt+Up/Down to the previous or next day) posts { id, start, end } (SCRUM-777); the end keeps the length of the row when it has one
+        function dayKey(sec) { return sec.getAttribute('data-date'); }
+        function moveTimelineCard(card, item, sec) {
+            var key = sec && dayKey(sec), from = card.parentNode, old = dateKey(item[F.date]);
+            if (!key || key === old || from === slot(sec, 'list')) return;
+            var span = F.end && item[F.end] ? Math.round((new Date(dateKey(item[F.end]) + 'T00:00:00Z') - new Date(old + 'T00:00:00Z')) / DAY) : 0;
+            var end = F.end ? iso(addDays(new Date(key + 'T00:00:00Z'), isNaN(span) || span < 0 ? 0 : span)) : key;
+            slot(sec, 'list').appendChild(card);
+            postSchedule(String(item[F.id || 'id']), key, end).then(function () { item[F.date] = key; if (F.end) item[F.end] = end; say(''); })
+                .catch(function () { from.appendChild(card); say(T.error); });
+        }
+        function wireTimelineCard(card, item) {
+            card.setAttribute('draggable', 'true');
+            card.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', card.getAttribute('data-id')); root.__dragging = { card: card, item: item }; });
+            card.addEventListener('dragend', function () { root.__dragging = null; });
+            card.addEventListener('keydown', function (e) {
+                if (!e.altKey || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return;
+                e.preventDefault();
+                var sec = card.closest('.pems-view__tl-day'), next = sec && (e.key === 'ArrowDown' ? sec.nextElementSibling : sec.previousElementSibling);
+                if (next) { moveTimelineCard(card, item, next); card.focus(); }
+            });
+        }
+        function wireTimelineDay(sec) {
+            if (sec.getAttribute('data-wired') !== null || !sec.getAttribute('data-date')) return;
+            sec.setAttribute('data-wired', '');
+            sec.addEventListener('dragover', function (e) { if (root.__dragging && root.__dragging.item) { e.preventDefault(); sec.classList.add('is-over'); } });
+            sec.addEventListener('dragleave', function () { sec.classList.remove('is-over'); });
+            sec.addEventListener('drop', function (e) { e.preventDefault(); sec.classList.remove('is-over'); var d = root.__dragging; if (d && d.item) moveTimelineCard(d.card, d.item, sec); });
+        }
+
         // ---- timeline: rows by date, newest last, grouped by day
         function showTimeline() {
             var dayLists = {};
@@ -109,12 +139,87 @@
                         var key = dateKey(F.date ? it[F.date] : ''), list = dayLists[key];
                         if (!list) {
                             var day = tpl('dv-tl-day', { date: key ? fmtDay.format(new Date(key + 'T00:00:00Z')) : T.uncategorized });
+                            if (key) day.setAttribute('data-date', key);
                             w.appendChild(day); list = dayLists[key] = slot(day, 'list');
                         }
-                        list.appendChild(cardFor(it));
+                        var card = cardFor(it);
+                        if (cfg.moveUrl && F.date) wireTimelineCard(card, it);
+                        list.appendChild(card);
                     });
+                    if (cfg.moveUrl && F.date) w.querySelectorAll('.pems-view__tl-day').forEach(wireTimelineDay);
                 }
             }, F.date || null);
+        }
+
+        // ---- gantt and timeline bars: drag the bar to move it, drag an edge to resize it, Alt+arrows move it by a day and Alt+Shift+arrows resize it (SCRUM-777).
+        // Every change posts { id, start, end } (ISO dates, JSON, antiforgery token) to cfg.moveUrl, an /a/{action} of a stored definition: the guards of the edit form (permission, state, date order)
+        // are that action's, a refused post puts the bar back and shows the error text.
+        function postSchedule(id, start, end) {
+            return fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify({ id: id, start: start, end: end }) })
+                .then(function (res) { if (!res.ok) throw new Error(String(res.status)); });
+        }
+        function wireBar(bar, track, r, lo, days, from0, span0, name) {
+            var st = { from: from0, span: span0 }, drag = null, moved = false;
+            var id = String(r.item[F.id || 'id']);
+            bar.setAttribute('data-id', id);
+            bar.setAttribute('aria-keyshortcuts', 'Alt+ArrowLeft Alt+ArrowRight Alt+Shift+ArrowLeft Alt+Shift+ArrowRight');
+            ['start', 'end'].forEach(function (edge) {
+                var h = tpl('dv-gantt-handle'); h.setAttribute('data-edge', edge); bar.appendChild(h);
+            });
+            function paint() {
+                bar.style.setProperty('--from', String(st.from / days * 100));
+                bar.style.setProperty('--span', String(st.span / days * 100));
+            }
+            function dates() { return { start: iso(addDays(lo, st.from)), end: iso(addDays(lo, st.from + st.span - 1)) }; }
+            function commit(before) {
+                if (before.from === st.from && before.span === st.span) return;
+                var d = dates();
+                paint();
+                postSchedule(id, d.start, d.end).then(function () {
+                    r.item[F.date] = d.start; if (F.end) r.item[F.end] = d.end;
+                    bar.setAttribute('title', name + ' (' + d.start + (F.end ? ' - ' + d.end : '') + ')');
+                    say('');
+                }).catch(function () { st.from = before.from; st.span = before.span; paint(); say(T.error); });
+            }
+            function apply(mode, delta, base) {
+                var from = base.from, span = base.span;
+                if (mode === 'move') from = Math.max(0, Math.min(days - span, base.from + delta));
+                else if (mode === 'end') span = Math.max(1, Math.min(days - base.from, base.span + delta));
+                else { var f = Math.max(0, Math.min(base.from + base.span - 1, base.from + delta)); span = base.span - (f - base.from); from = f; }
+                st.from = from; st.span = span; paint();
+            }
+            bar.addEventListener('pointerdown', function (e) {
+                if (e.button !== 0) return;
+                var edge = e.target.closest ? e.target.closest('[data-edge]') : null;
+                drag = { mode: edge ? edge.getAttribute('data-edge') : 'move', x: e.clientX, base: { from: st.from, span: st.span }, unit: track.getBoundingClientRect().width / days };
+                moved = false;
+                try { bar.setPointerCapture(e.pointerId); } catch (x) { /* no capture: the move still works inside the bar */ }
+                e.preventDefault();
+            });
+            bar.addEventListener('pointermove', function (e) {
+                if (!drag || !drag.unit) return;
+                var dx = e.clientX - drag.x;
+                if (getComputedStyle(root).direction === 'rtl') dx = -dx;
+                var delta = Math.round(dx / drag.unit);
+                if (delta !== 0 || moved) { moved = true; apply(drag.mode, delta, drag.base); }
+            });
+            function release() {
+                if (!drag) return;
+                var before = drag.base; drag = null;
+                if (moved) commit(before);
+            }
+            bar.addEventListener('pointerup', release);
+            bar.addEventListener('pointercancel', function () { if (drag) { st.from = drag.base.from; st.span = drag.base.span; paint(); drag = null; moved = false; } });
+            bar.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } });
+            bar.addEventListener('keydown', function (e) {
+                if (!e.altKey || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+                e.preventDefault();
+                var rtl = getComputedStyle(root).direction === 'rtl';
+                var n = (e.key === 'ArrowRight') !== rtl ? 1 : -1;
+                var before = { from: st.from, span: st.span };
+                apply(e.shiftKey ? 'end' : 'move', n, before);
+                commit(before);
+            });
         }
 
         // ---- gantt: one request, a bar per row from its start to its end date on a shared day scale (at most MAX_DAYS wide)
@@ -154,6 +259,7 @@
                     bar.style.setProperty('--from', String(from / days * 100));
                     bar.style.setProperty('--span', String(span / days * 100));
                     bar.setAttribute('title', label.textContent + ' (' + dateKey(r.item[F.date]) + (F.end && r.item[F.end] ? ' - ' + dateKey(r.item[F.end]) : '') + ')');
+                    if (cfg.moveUrl && F.date) wireBar(bar, slot(row, 'track'), r, lo, days, from, span, label.textContent);
                     list.appendChild(row);
                 });
                 body.appendChild(wrap);

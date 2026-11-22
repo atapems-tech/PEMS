@@ -29,65 +29,18 @@
                   "en": "Answers from the real data of the system (documents, statuses, projects, MRs ...). Example: how many documents are waiting for approval?",
                   "fa": "بر اساس داده‌ی واقعی سیستم (مدارک، وضعیت‌ها، پروژه‌ها، MR ها و ...) پاسخ می‌دهد. مثال: چند مدرک در انتظار تایید داریم؟"
                 }
-              },
-              {
-                "type": "link",
-                "href": "/f/chat-ask",
-                "text": {
-                  "en": "Ask a question",
-                  "fa": "پرسیدن"
-                }
               }
             ]
           }
         },
         {
-          "id": "clear",
-          "component": "action-button",
+          "id": "chat",
+          "component": "chat-panel",
           "options": {
-            "action": "chat-clear",
-            "label": {
-              "en": "Clear",
-              "fa": "پاک کردن"
-            },
-            "tone": "neutral",
-            "icon": "bi-trash"
-          }
-        },
-        {
-          "id": "history",
-          "component": "data-grid",
-          "options": {
-            "id": "chat-history",
-            "url": "/d/chat-history-grid",
-            "idField": "createdDate",
-            "columns": [
-              {
-                "key": "createdDate",
-                "header": {
-                  "en": "Time",
-                  "fa": "زمان"
-                },
-                "width": 150
-              },
-              {
-                "key": "role",
-                "header": {
-                  "en": "Who",
-                  "fa": "گوینده"
-                },
-                "width": 100
-              },
-              {
-                "key": "content",
-                "header": {
-                  "en": "Message",
-                  "fa": "پیام"
-                },
-                "width": 760
-              }
-            ],
-            "pageSize": 50,
+            "id": "chat",
+            "historySource": "chat-history-grid",
+            "askAction": "chat-ask",
+            "clearAction": "chat-clear",
             "height": 520
           }
         }

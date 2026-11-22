@@ -10,7 +10,7 @@
 }
 else
 {
-    <div class="pems-file-preview" id="@Id">
+    <div class="pems-file-preview" id="@Id" data-pems-annotate="@AnnotateConfig()">
         <iframe class="pems-file-preview__frame" src="@Src" title="@Locale.Text(Title)" loading="lazy" referrerpolicy="same-origin"></iframe>
     </div>
 }
@@ -22,4 +22,26 @@ else
     /// <summary>Shown when there is no source.</summary>
     [Parameter] public TranslatableText? EmptyText { get; set; }
     [Parameter] public string? Id { get; set; }
+    /// <summary>SCRUM-775: GET url of the pins of the file (a data source, <c>{ items: [{ id, page, x, y, note }] }</c>). With this or <see cref="SaveUrl"/> the preview gets a page bar and a pin layer; without both its output is unchanged.</summary>
+    [Parameter] public string? AnnotationsUrl { get; set; }
+    /// <summary>POST url that saves a pin <c>{ id, fileId, page, x, y, note }</c>: a stored action (<c>/a/{action}</c>) that applies the record permission; without it the pins are read only.</summary>
+    [Parameter] public string? SaveUrl { get; set; }
+    /// <summary>POST url that deletes a pin <c>{ id }</c> (a stored action); without it a pin cannot be deleted.</summary>
+    [Parameter] public string? DeleteUrl { get; set; }
+    /// <summary>The id of the file, posted with every pin.</summary>
+    [Parameter] public string? FileId { get; set; }
+    [Parameter] public FilePreviewTexts? Texts { get; set; }
+
+    private string? AnnotateConfig()
+    {
+        if (string.IsNullOrWhiteSpace(AnnotationsUrl) && string.IsNullOrWhiteSpace(SaveUrl)) return null;
+        var t = Texts ?? new FilePreviewTexts();
+        string T(PEMS.UI.Abstractions.TranslatableText x) => Locale.Text(x);
+        var config = new
+        {
+            listUrl = AnnotationsUrl, saveUrl = SaveUrl, deleteUrl = DeleteUrl, fileId = FileId,
+            texts = new { annotate = T(t.Annotate), previous = T(t.Previous), next = T(t.Next), page = T(t.Page), pin = T(t.Pin), note = T(t.Note), save = T(t.Save), remove = T(t.Remove), cancel = T(t.Cancel), loading = T(t.Loading), error = T(t.Error) }
+        };
+        return System.Text.Json.JsonSerializer.Serialize(config, new System.Text.Json.JsonSerializerOptions { DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });
+    }
 }

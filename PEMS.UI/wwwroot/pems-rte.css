@@ -30,3 +30,6 @@
 .ql-font-arial { font-family: Arial, sans-serif; }
 .ql-font-times-new-roman { font-family: 'Times New Roman', serif; }
 .ql-font-b-nazanin { font-family: 'B Nazanin', Tahoma, sans-serif; }
+
+/* SCRUM-776: the merge-field picker in the toolbar (a native select, so the keyboard and screen readers work as they are). */
+.pems-rte-merge__select { max-inline-size: 11rem; padding-block: .1rem; padding-inline: .35rem; border: 1px solid var(--pems-surface-border); border-radius: .25rem; background: var(--pems-surface); color: inherit; font: inherit; }

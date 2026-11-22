@@ -67,7 +67,7 @@ public sealed record DataViewOptions : FrameOptions
     public int WeekStart { get; init; } = 6;
     /// <summary>The link of a row, <c>{id}</c> is replaced: <c>/Items/Details/{id}</c>.</summary>
     public string? ItemUrl { get; init; }
-    /// <summary>Kanban: moving a card posts <c>{ id, to }</c> (JSON, antiforgery token) here; without it the board is read only.</summary>
+    /// <summary>Kanban: moving a card posts <c>{ id, to }</c> (JSON, antiforgery token) here; calendar: <c>{ id, date }</c>; gantt bars and timeline cards (move, resize, Alt+arrows, SCRUM-777): <c>{ id, start, end }</c>; without it the view is read only.</summary>
     public string? MoveUrl { get; init; }
     public int PageSize { get; init; } = 50;
     public int Height { get; init; } = 560;

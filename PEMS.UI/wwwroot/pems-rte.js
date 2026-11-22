@@ -9,6 +9,7 @@
 //   data-pems-rte-upload="/X/Y"       the image button uploads to this URL (antiforgery token from the form, answer { url }); without it
 //                                     there is no image button (images are never pasted as Base64)
 //   data-pems-rte-label="..."         accessible name of the editing area (default: the field's <label>)
+//   data-pems-rte-merge='[{"name":"code","label":"Code"}]'   the merge fields of the form definition (SCRUM-776): a picker in the toolbar inserts {{name}} at the cursor
 // On a data-pems-rte-for element the upload and label attributes are read from that element.
 // Texts and the Quill folder are inputs: the layout puts them on <body data-pems-rte-texts='{json}' data-pems-rte-lib="/lib/quill/">
 // (the first element on the page carrying them is used, so a partial in a layout without them can bring its own).
@@ -163,6 +164,33 @@
         };
     }
 
+    // SCRUM-776: the "insert field" picker. The list comes from the form definition (data-pems-rte-merge on the textarea); a choice inserts the plain-text token {{name}}
+    // at the cursor (or the end), replacing a selection. Only names of the safe token shape are accepted; the server and the record view treat the token as text.
+    function mergePicker(quill, textarea) {
+        var raw = textarea.getAttribute('data-pems-rte-merge'), list;
+        if (!raw) return;
+        try { list = JSON.parse(raw); } catch (e) { return; }
+        list = (list || []).filter(function (m) { return m && /^[A-Za-z][A-Za-z0-9_.]*$/.test(String(m.name)); });
+        if (!list.length) return;
+        var box = window.PemsTemplate.clone('rte-merge'), select = box.querySelector('select');
+        var items = [{ value: '', text: t('mergeField') }].concat(list.map(function (m) { return { value: String(m.name), text: String(m.label || m.name) }; }));
+        window.PemsTemplate.options(select, items);
+        select.setAttribute('aria-label', t('mergeField'));
+        select.setAttribute('title', t('mergeField'));
+        var saved = null;
+        quill.on('selection-change', function (range) { if (range) saved = range; });
+        select.addEventListener('change', function () {
+            var name = select.value; select.value = '';
+            if (!name) return;
+            var at = saved || { index: Math.max(0, quill.getLength() - 1), length: 0 };
+            if (at.length) quill.deleteText(at.index, at.length, 'user');
+            quill.insertText(at.index, '{{' + name + '}}', 'user');
+            quill.setSelection(at.index + name.length + 4, 0, 'user');
+            quill.focus();
+        });
+        quill.getModule('toolbar').container.appendChild(box);
+    }
+
     function isEmpty(quill) { return quill.getText().trim().length === 0 && !quill.root.querySelector('img'); }
 
     function build(Quill, textarea, source) {
@@ -198,6 +226,7 @@
             quill.formatLine(0, 1, { direction: 'rtl', align: 'right' });
         }
         quill.history.clear();
+        if (!readOnly) mergePicker(quill, textarea);
 
         function sync() { textarea.value = isEmpty(quill) ? '' : quill.root.innerHTML; }
         quill.on('text-change', function () {

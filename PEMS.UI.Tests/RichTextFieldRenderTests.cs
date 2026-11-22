@@ -8,6 +8,7 @@ namespace PEMS.UI.Tests;
 /// <summary>SCRUM-59: a field of kind RichText renders as a labelled textarea that pems-rte.js turns into the editor.</summary>
 public sealed class RichTextFieldRenderTests
 {
+    private static string Here([System.Runtime.CompilerServices.CallerFilePath] string p = "") => p;
     private static async Task<string> RenderAsync(FieldDescriptor d, string? value, string culture = "en", TranslatableText? error = null)
     {
         var provider = new ServiceCollection().AddPemsUi().BuildServiceProvider();
@@ -57,5 +58,21 @@ public sealed class RichTextFieldRenderTests
     {
         var html = await RenderAsync(Body(readOnly: true), "<p>x</p>");
         Assert.Contains("readonly", html);
+    }
+
+    [Fact]
+    public async Task Merge_fields_of_the_definition_reach_the_editor_and_no_list_leaves_the_output_unchanged()
+    {
+        // SCRUM-776: the picker list is data of the field; without it the textarea has no merge attribute at all
+        Assert.DoesNotContain("data-pems-rte-merge", await RenderAsync(Body(), null));
+        var fields = Body() with { MergeFields = [new FieldOption { Value = "code", Label = TranslatableText.Of(("en", "Code"), ("fa", "کد")) }] };
+        var en = System.Net.WebUtility.HtmlDecode(await RenderAsync(fields, null));
+        Assert.Contains("data-pems-rte-merge=\"[{\"name\":\"code\",\"label\":\"Code\"}]\"", en);
+        var fa = System.Net.WebUtility.HtmlDecode(await RenderAsync(fields, null, "fa"));
+        Assert.Contains("\"name\":\"code\"", fa);
+        Assert.Contains("کد", fa);
+        var js = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Here())!, "..", "PEMS.UI", "wwwroot", "pems-rte.js"));
+        Assert.Contains("mergePicker", js);
+        Assert.Contains("'{{' + name + '}}'", js);
     }
 }

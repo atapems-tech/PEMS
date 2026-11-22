@@ -17,7 +17,7 @@ public static class RichTextEditorTexts
         ("sub", "Rte_Sub"), ("super", "Rte_Super"), ("ordered", "Rte_Ordered"), ("bullet", "Rte_Bullet"), ("outdent", "Rte_IndentLess"),
         ("indent", "Rte_IndentMore"), ("direction", "Rte_Direction"), ("blockquote", "Rte_Quote"), ("link", "Rte_Link"), ("image", "Rte_Image"),
         ("clean", "Rte_Clean"), ("font", "Rte_Font"), ("size", "Rte_Size"), ("color", "Rte_Color"), ("background", "Rte_Background"),
-        ("header", "Rte_Header"), ("align", "Rte_Align"), ("uploadFailed", "Rte_UploadFailed")
+        ("header", "Rte_Header"), ("align", "Rte_Align"), ("uploadFailed", "Rte_UploadFailed"), ("mergeField", "Rte_MergeField")
     };
 
     public static string Json(IStringLocalizer<SharedResource> localizer) =>

@@ -34,6 +34,18 @@
       "titleField": {
         "type": "string",
         "description": "The row property that holds the file name"
+      },
+      "annotationsUrl": {
+        "type": "string",
+        "description": "SCRUM-775: the data source of the pins of the file, a /d/{key} url filtered to the file; with it (or saveUrl) the preview gets a page bar and pins"
+      },
+      "saveUrl": {
+        "type": "string",
+        "description": "SCRUM-775: the stored action that saves a pin { id, fileId, page, x, y, note } (/a/{action}); it applies the record permission. Without it the pins are read only"
+      },
+      "deleteUrl": {
+        "type": "string",
+        "description": "SCRUM-775: the stored action that deletes a pin { id }"
       }
     },
     "instances": [
@@ -41,7 +53,10 @@
         "id": "file",
         "component": "file-preview",
         "options": {
-          "id": "${id}"
+          "id": "${id}",
+          "annotationsUrl": "${annotationsUrl}",
+          "saveUrl": "${saveUrl}",
+          "deleteUrl": "${deleteUrl}"
         },
         "bindings": {
           "record": {
@@ -50,7 +65,8 @@
             "id": "{{params.id}}",
             "map": {
               "src": "${srcField}",
-              "title": "${titleField}"
+              "title": "${titleField}",
+              "fileId": "${idField}"
             }
           }
         }
