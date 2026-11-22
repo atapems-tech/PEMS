@@ -1,0 +1,259 @@
+{
+  "kind": "page",
+  "key": "classification-coverage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance intelligence coverage",
+    "fa": "پوشش هوشمندی نگهداری"
+  },
+  "description": {
+    "en": "Maintenance intelligence coverage",
+    "fa": "پوشش هوشمندی نگهداری"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "classification-coverage",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/classification-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/classification-review-queue",
+                "text": {
+                  "en": "Review queue",
+                  "fa": "صف بازبینی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "summary",
+          "component": "data-grid",
+          "options": {
+            "id": "summary",
+            "url": "/d/classification-coverage-summary",
+            "idField": "classesWithEquipment",
+            "columns": [
+              {
+                "key": "classesWithEquipment",
+                "header": {
+                  "en": "Classes with equipment",
+                  "fa": "کلاس‌های دارای تجهیز"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "classesWithActivities",
+                "header": {
+                  "en": "With activities",
+                  "fa": "دارای فعالیت"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "classesWithPmTemplates",
+                "header": {
+                  "en": "With PM templates",
+                  "fa": "دارای PM"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "classesWithFailureModes",
+                "header": {
+                  "en": "With failure modes",
+                  "fa": "دارای حالت خرابی"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "classesWithStandards",
+                "header": {
+                  "en": "With standards",
+                  "fa": "دارای استاندارد"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "classesWithJobPlans",
+                "header": {
+                  "en": "With job plans",
+                  "fa": "دارای Job Plan"
+                },
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "activityCoveragePercent",
+                "header": {
+                  "en": "Activities (%)",
+                  "fa": "فعالیت (٪)"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "pmTemplateCoveragePercent",
+                "header": {
+                  "en": "PM templates (%)",
+                  "fa": "PM (٪)"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "failureModeCoveragePercent",
+                "header": {
+                  "en": "Failure modes (%)",
+                  "fa": "حالت خرابی (٪)"
+                },
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "standardsCoveragePercent",
+                "header": {
+                  "en": "Standards (%)",
+                  "fa": "استاندارد (٪)"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 120
+          }
+        },
+        {
+          "id": "classes",
+          "component": "data-grid",
+          "options": {
+            "id": "classes",
+            "url": "/d/classification-coverage-classes",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "width": 200
+              },
+              {
+                "key": "parentClass",
+                "header": {
+                  "en": "Parent",
+                  "fa": "والد"
+                },
+                "width": 160
+              },
+              {
+                "key": "equipmentCount",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "activities",
+                "header": {
+                  "en": "Activities",
+                  "fa": "فعالیت"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "pmTemplates",
+                "header": {
+                  "en": "PM templates",
+                  "fa": "PM"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "jobPlans",
+                "header": {
+                  "en": "Job plans",
+                  "fa": "Job Plan"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "failureModes",
+                "header": {
+                  "en": "Failure modes",
+                  "fa": "حالت خرابی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "standardReferences",
+                "header": {
+                  "en": "Standards",
+                  "fa": "استاندارد"
+                },
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "strategyTypes",
+                "header": {
+                  "en": "Strategy types",
+                  "fa": "انواع استراتژی"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "gaps",
+                "header": {
+                  "en": "Gaps",
+                  "fa": "خلأها"
+                },
+                "width": 360
+              }
+            ],
+            "pageSize": 50,
+            "height": 560
+          }
+        }
+      ]
+    },
+    "permission": "MaintenanceMasterData.View"
+  }
+}

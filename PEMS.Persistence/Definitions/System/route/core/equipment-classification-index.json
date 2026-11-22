@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-classification-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "description": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "payload": {
+    "pattern": "EquipmentClassification/Index",
+    "target": "/p/classification-dashboard",
+    "permanent": false
+  }
+}

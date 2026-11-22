@@ -716,7 +716,7 @@
                 <pems-alert tone="warning" css="small mt-3 mb-0">
                     <strong>پیشنهاد در انتظار بازبینی:</strong> @pendingSuggestion.SuggestedEquipmentClassName
                     (<pems-badge tone="warning">@pendingSuggestion.Confidence</pems-badge>) &mdash; @pendingSuggestion.Reason
-                    <pems-link asp-controller="EquipmentClassification" asp-action="ReviewQueue" class="ms-2">بازبینی در صف →</pems-link>
+                    <pems-link href="/p/classification-review-queue" class="ms-2">بازبینی در صف →</pems-link>
                 </pems-alert>
             }
         </pems-content-card>

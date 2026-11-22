@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-criticality-root",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "description": {
+    "en": "Old address",
+    "fa": "نشانی قدیمی"
+  },
+  "payload": {
+    "pattern": "EquipmentCriticality",
+    "target": "/p/equipment-criticalities",
+    "permanent": false
+  }
+}

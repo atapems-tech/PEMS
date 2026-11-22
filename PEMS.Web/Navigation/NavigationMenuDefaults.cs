@@ -148,11 +148,11 @@ public static class NavigationMenuDefaults
         new("cmms.crew", "sec.cmms", L, 100, "Crews", "bi-people-fill", "CmmsItem:Crew", ExternalPath: "/p/crews"),   // SCRUM-677: a definition page (/p/...)
         new("cmms.shifthandover", "sec.cmms", L, 110, "Shift Handovers", "bi-arrow-left-right", "CmmsItem:ShiftHandover", ExternalPath: "/p/shift-handovers"),   // SCRUM-749: a definition page (/p/...)
         new("cmms.masterdata", "sec.cmms", L, 120, "Maintenance Master Data", "bi-collection", "CmmsItem:MaintenanceMasterData", ExternalPath: "/p/maintenance-master-data"),   // SCRUM-723: a definition page (/p/...)
-        Link("cmms.classification", "sec.cmms", 130, "Equipment Classification", "bi-diagram-3-fill", "EquipmentClassification", rule: "CmmsItem:EquipmentClassification"),
+        new("cmms.classification", "sec.cmms", L, 130, "Equipment Classification", "bi-diagram-3-fill", "CmmsItem:EquipmentClassification", ExternalPath: "/p/classification-dashboard", ExtraActiveControllers: "EquipmentClassification"),   // SCRUM-691: a definition page (/p/...)
         new("cmms.readiness", "sec.cmms", L, 140, "CMMS Readiness", "bi-clipboard-check", "CmmsItem:CmmsReadiness", ExternalPath: "/p/cmms-readiness"),   // SCRUM-674: a definition page (/p/...)
         new("cmms.operations", "sec.cmms", L, 150, "CMMS Operations", "bi-speedometer2", "CmmsItem:CmmsOperations", ExternalPath: "/p/cmms-operations"),   // SCRUM-673
         Link("cmms.rcm", "sec.cmms", 160, "RCM / FMEA", "bi-clipboard2-pulse", "RcmFmea", rule: "CmmsItem:RcmFmea"),
-        Link("cmms.criticality", "sec.cmms", 170, "Criticality Analysis", "bi-shield-exclamation", "EquipmentCriticality", rule: "CmmsItem:EquipmentCriticality"),
+        new("cmms.criticality", "sec.cmms", L, 170, "Criticality Analysis", "bi-shield-exclamation", "CmmsItem:EquipmentCriticality", ExternalPath: "/p/equipment-criticalities", ExtraActiveControllers: "EquipmentCriticality"),   // SCRUM-693: a definition page (/p/...)
         new("cmms.assessment", "sec.cmms", L, 180, "Criticality Assessment", "bi-clipboard2-check", "CmmsItem:CriticalityAssessment", ExternalPath: "/p/criticality-assessment-dashboard", ExtraActiveControllers: "CriticalityAssessment"),   // SCRUM-678: a definition page (/p/...)
         Link("cmms.reliability", "sec.cmms", 190, "Reliability", "bi-graph-up-arrow", "Reliability", "Dashboard", rule: "CmmsItem:Reliability"),
         new("cmms.inspection", "sec.cmms", L, 200, "Inspections", "bi-clipboard-pulse", "CmmsItem:Inspection", ExternalPath: "/p/inspections"),   // SCRUM-707: a definition page (/p/...)

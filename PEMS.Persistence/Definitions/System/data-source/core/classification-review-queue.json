@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "classification-review-queue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "classification review queue",
+    "fa": "classification review queue"
+  },
+  "description": {
+    "en": "classification review queue",
+    "fa": "classification review queue"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentClassification",
+      "action": "ReviewQueue",
+      "args": {
+        "status": "param:status"
+      }
+    }
+  }
+}
