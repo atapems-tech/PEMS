@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "instrument-passport-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Instrument (old address)",
+    "fa": "ابزار دقیق (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Instrument (old address)",
+    "fa": "ابزار دقیق (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Instrument/Passport/{id}",
+    "target": "/p/instrument-passport?id={id}",
+    "permanent": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "instrument-alarms",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Instrument alarms",
+    "fa": "ابزار Alarms"
+  },
+  "description": {
+    "en": "Instrument alarms",
+    "fa": "ابزار Alarms"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Instrument",
+      "action": "Alarms",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

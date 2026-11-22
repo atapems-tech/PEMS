@@ -4,60 +4,61 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Update instrument",
+    "en": "Edit instrument",
     "fa": "ویرایش ابزار"
   },
   "description": {
-    "en": "Update instrument",
+    "en": "Edit instrument",
     "fa": "ویرایش ابزار"
   },
   "payload": {
     "kind": "handler",
-    "handler": "operation.invoke",
+    "handler": "entity.update",
     "parameters": {
-      "model": "Instrument",
-      "action": "Edit",
-      "args": {
-        "instrumentId": "field:instrumentId",
-        "instrumentType": "field:InstrumentType",
-        "loopNumber": "field:LoopNumber",
-        "system": "field:System",
-        "signalClass": "field:SignalClass",
-        "rangeMin": "field:RangeMin",
-        "rangeMax": "field:RangeMax",
-        "unit": "field:Unit",
-        "signalType": "field:SignalType",
-        "processVariable": "field:ProcessVariable",
-        "accuracy": "field:Accuracy",
-        "outputSignal": "field:OutputSignal",
-        "powerSupply": "field:PowerSupply",
-        "communication": "field:Communication",
-        "ipRating": "field:IPRating",
-        "processConnection": "field:ProcessConnection",
-        "electricalConnection": "field:ElectricalConnection",
-        "hazardousArea": "field:HazardousArea",
-        "exProtection": "field:ExProtection",
-        "zone": "field:Zone",
-        "gasGroup": "field:GasGroup",
-        "tempClass": "field:TempClass",
-        "failAction": "field:FailAction",
-        "alarmSetpoint": "field:AlarmSetpoint",
-        "tripSetpoint": "field:TripSetpoint",
-        "sil": "field:SIL",
-        "junctionBox": "field:JunctionBox",
-        "marshallingCabinet": "field:MarshallingCabinet",
-        "cableNumber": "field:CableNumber",
-        "barrierRelay": "field:BarrierRelay",
-        "ioCardChannel": "field:IOCardChannel",
-        "systemCabinet": "field:SystemCabinet",
-        "calibrationInterval": "field:CalibrationInterval",
-        "currentStatus": "field:CurrentStatus"
-      }
+      "entity": "Instrument",
+      "map": {
+        "instrumentType": "InstrumentType",
+        "rangeMin": "RangeMin",
+        "rangeMax": "RangeMax",
+        "alarmSetpoint": "AlarmSetpoint",
+        "tripSetpoint": "TripSetpoint",
+        "calibrationInterval": "CalibrationInterval",
+        "loopNumber": "LoopNumber",
+        "system": "System",
+        "signalClass": "SignalClass",
+        "unit": "Unit",
+        "signalType": "SignalType",
+        "processVariable": "ProcessVariable",
+        "accuracy": "Accuracy",
+        "outputSignal": "OutputSignal",
+        "powerSupply": "PowerSupply",
+        "communication": "Communication",
+        "ipRating": "IPRating",
+        "processConnection": "ProcessConnection",
+        "electricalConnection": "ElectricalConnection",
+        "hazardousArea": "HazardousArea",
+        "exProtection": "ExProtection",
+        "zone": "Zone",
+        "gasGroup": "GasGroup",
+        "tempClass": "TempClass",
+        "failAction": "FailAction",
+        "sil": "SIL",
+        "junctionBox": "JunctionBox",
+        "marshallingCabinet": "MarshallingCabinet",
+        "cableNumber": "CableNumber",
+        "barrierRelay": "BarrierRelay",
+        "ioCardChannel": "IOCardChannel",
+        "systemCabinet": "SystemCabinet"
+      },
+      "required": [
+        "InstrumentType"
+      ],
+      "unique": []
     },
     "success": {
       "en": "Instrument updated.",
       "fa": "ابزار به‌روزرسانی شد."
     },
-    "redirect": "/Instrument/Passport/{instrumentId}"
+    "redirect": "/p/instruments"
   }
 }

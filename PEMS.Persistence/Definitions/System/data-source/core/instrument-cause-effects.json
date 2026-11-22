@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "instrument-cause-effects",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Instrument causeeffects",
+    "fa": "ابزار CauseEffects"
+  },
+  "description": {
+    "en": "Instrument causeeffects",
+    "fa": "ابزار CauseEffects"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Instrument",
+      "action": "CauseEffects",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

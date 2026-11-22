@@ -1,0 +1,97 @@
+{
+  "kind": "form",
+  "key": "instrument-assign-control-loop",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign the control loop",
+    "fa": "تخصیص حلقه کنترل"
+  },
+  "description": {
+    "en": "Assign the control loop",
+    "fa": "تخصیص حلقه کنترل"
+  },
+  "payload": {
+    "id": "instrument-assign-control-loop",
+    "title": {
+      "en": "Assign the control loop",
+      "fa": "تخصیص حلقه کنترل"
+    },
+    "submitLabel": {
+      "en": "Assign",
+      "fa": "تخصیص"
+    },
+    "actionKey": "instrument-assign-control-loop",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "instrumentId",
+        "label": {
+          "en": "Instrument id",
+          "fa": "شناسه ابزار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "loopNumber",
+        "label": {
+          "en": "Loop number",
+          "fa": "شماره حلقه"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "processArea",
+        "label": {
+          "en": "Process area",
+          "fa": "ناحیه فرآیند"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "controllerType",
+        "label": {
+          "en": "Controller type",
+          "fa": "نوع کنترلر"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "controllerSystem",
+        "label": {
+          "en": "Controller system",
+          "fa": "سیستم کنترلر"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

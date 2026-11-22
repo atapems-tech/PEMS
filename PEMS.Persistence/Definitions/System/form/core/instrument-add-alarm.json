@@ -1,0 +1,186 @@
+{
+  "kind": "form",
+  "key": "instrument-add-alarm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an alarm",
+    "fa": "ثبت آلارم"
+  },
+  "description": {
+    "en": "Add an alarm",
+    "fa": "ثبت آلارم"
+  },
+  "payload": {
+    "id": "instrument-add-alarm",
+    "title": {
+      "en": "Add an alarm",
+      "fa": "ثبت آلارم"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "instrument-add-alarm",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "instrumentId",
+        "label": {
+          "en": "Instrument id",
+          "fa": "شناسه ابزار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "alarmTag",
+        "label": {
+          "en": "Alarm tag",
+          "fa": "تگ آلارم"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "alarmType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "High"
+            }
+          },
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "Low"
+            }
+          },
+          {
+            "value": "HighHigh",
+            "label": {
+              "en": "HighHigh",
+              "fa": "HighHigh"
+            }
+          },
+          {
+            "value": "LowLow",
+            "label": {
+              "en": "LowLow",
+              "fa": "LowLow"
+            }
+          }
+        ]
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "Low"
+            }
+          },
+          {
+            "value": "Medium",
+            "label": {
+              "en": "Medium",
+              "fa": "Medium"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "High"
+            }
+          },
+          {
+            "value": "Critical",
+            "label": {
+              "en": "Critical",
+              "fa": "Critical"
+            }
+          }
+        ]
+      },
+      {
+        "name": "setPoint",
+        "label": {
+          "en": "Set point",
+          "fa": "نقطه تنظیم"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "unit",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "action",
+        "label": {
+          "en": "Action",
+          "fa": "اقدام"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

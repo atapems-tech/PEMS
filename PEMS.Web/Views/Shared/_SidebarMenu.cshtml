@@ -437,7 +437,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("Instrument"))
             {
-                <pems-nav-link item="false" active="@(IsActive("Instrument"))" asp-controller="Instrument" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/instruments" active="@(IsActive("Instrument") || Context.Request.Path.StartsWithSegments("/p/instrument"))">
                     <pems-icon name="bi-cpu" /> @Localizer["Instrument Passport"]
                 </pems-nav-link>
             }

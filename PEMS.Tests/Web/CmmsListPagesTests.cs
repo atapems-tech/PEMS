@@ -24,7 +24,7 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder", "Equipment", "FunctionalLocation", "Instrument",
+        "WorkOrder", "Equipment", "FunctionalLocation",
         "MaintenanceStrategy", "Asset",
         // wave 2b
         "EquipmentCriticality", "FailureModeCatalog", "RcmFmea",
@@ -145,23 +145,6 @@ public class CmmsListPagesTests
     }
 
     // ---------- Instruments ----------
-
-    [Fact]
-    public async Task Instruments_CountsAreKpis_TheExportSaysItIsEveryRow_AndCalibrationIsAPill()
-    {
-        var html = await Render<InstrumentController>("/Views/Instrument/Index.cshtml",
-            Page(new InstrumentListDto { InstrumentId = 1, EquipmentId = 3, TagNumber = "PT-1001", InstrumentType = "PT", CalibrationStatus = "DueSoon" }), v =>
-            {
-                v["Equipments"] = new List<dynamic>();
-                v["TotalCount"] = 40; v["OverdueCount"] = 2; v["DueSoonCount"] = 5;
-            });
-
-        AssertBuiltFromTheComponent(html, "Instrument", 1);
-        Assert.Contains("vs-chip--danger", Kpis(html, "inKpis"));
-        Assert.Contains("title=\"Export all instruments to Excel\"", html);
-        Assert.Contains("vs-pill--warning", html);
-        Assert.Contains("id=\"createInstrumentModal\"", html);
-    }
 
     // ---------- Maintenance strategies ----------
 

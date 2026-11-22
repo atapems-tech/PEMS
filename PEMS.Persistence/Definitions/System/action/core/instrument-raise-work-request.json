@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "instrument-raise-work-request",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a work request from a cause and effect",
+    "fa": "ثبت درخواست کار از علت و معلول"
+  },
+  "description": {
+    "en": "Raise a work request from a cause and effect",
+    "fa": "ثبت درخواست کار از علت و معلول"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "RaiseWorkRequest",
+      "args": {
+        "causeEffectId": "field:id"
+      }
+    },
+    "success": {
+      "en": "The work request was created.",
+      "fa": "درخواست کار ساخته شد."
+    },
+    "redirect": "/p/instruments",
+    "redirectBack": true
+  }
+}

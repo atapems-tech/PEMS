@@ -32,6 +32,6 @@
       "en": "Alarm recorded.",
       "fa": "آلارم ثبت شد."
     },
-    "redirect": "/Instrument/Passport/{instrumentId}"
+    "redirect": "/p/instrument-passport?id={instrumentId}"
   }
 }

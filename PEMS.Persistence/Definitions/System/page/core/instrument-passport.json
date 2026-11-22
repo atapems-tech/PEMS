@@ -1,0 +1,634 @@
+{
+  "kind": "page",
+  "key": "instrument-passport",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Instrument passport",
+    "fa": "شناسنامه ابزار دقیق"
+  },
+  "description": {
+    "en": "Instrument passport",
+    "fa": "شناسنامه ابزار دقیق"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "instrument-passport",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "instrument-record",
+            "fields": [
+              {
+                "key": "equipmentTag",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "instrumentType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "currentStatus",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "loopNumber",
+                "label": {
+                  "en": "Loop",
+                  "fa": "حلقه"
+                }
+              },
+              {
+                "key": "system",
+                "label": {
+                  "en": "System",
+                  "fa": "سیستم"
+                }
+              },
+              {
+                "key": "signalClass",
+                "label": {
+                  "en": "Signal class",
+                  "fa": "کلاس سیگنال"
+                }
+              },
+              {
+                "key": "signalType",
+                "label": {
+                  "en": "Signal type",
+                  "fa": "نوع سیگنال"
+                }
+              },
+              {
+                "key": "processVariable",
+                "label": {
+                  "en": "Process variable",
+                  "fa": "متغیر فرآیند"
+                }
+              },
+              {
+                "key": "range",
+                "label": {
+                  "en": "Range",
+                  "fa": "محدوده"
+                }
+              },
+              {
+                "key": "unit",
+                "label": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                }
+              },
+              {
+                "key": "accuracy",
+                "label": {
+                  "en": "Accuracy",
+                  "fa": "دقت"
+                }
+              },
+              {
+                "key": "calibrationStatus",
+                "label": {
+                  "en": "Calibration status",
+                  "fa": "وضعیت کالیبراسیون"
+                }
+              },
+              {
+                "key": "calibrationInterval",
+                "label": {
+                  "en": "Calibration interval (days)",
+                  "fa": "فاصله کالیبراسیون (روز)"
+                }
+              },
+              {
+                "key": "lastCalibrationDate",
+                "label": {
+                  "en": "Last calibration",
+                  "fa": "آخرین کالیبراسیون"
+                },
+                "type": "date"
+              },
+              {
+                "key": "nextCalibrationDue",
+                "label": {
+                  "en": "Next due",
+                  "fa": "سررسید بعدی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "latestMaintenanceDate",
+                "label": {
+                  "en": "Latest maintenance",
+                  "fa": "آخرین نگهداری"
+                },
+                "type": "date"
+              },
+              {
+                "key": "latestMaintenance",
+                "label": {
+                  "en": "Latest maintenance work",
+                  "fa": "آخرین کار نگهداری"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/instrument-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/instrument-edit/{{params.id}}",
+                "text": {
+                  "en": "Edit",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/instrument-add-calibration?instrumentId={{params.id}}",
+                "text": {
+                  "en": "Record a calibration",
+                  "fa": "ثبت کالیبراسیون"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/instrument-add-alarm?instrumentId={{params.id}}",
+                "text": {
+                  "en": "Add an alarm",
+                  "fa": "ثبت آلارم"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/instrument-add-cause-effect",
+                "text": {
+                  "en": "Add a cause and effect",
+                  "fa": "ثبت علت و معلول"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/instrument-assign-control-loop?instrumentId={{params.id}}",
+                "text": {
+                  "en": "Assign the control loop",
+                  "fa": "تخصیص حلقه کنترل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/instrument-generate-calibration-work-order?instrumentId={{params.id}}",
+                "text": {
+                  "en": "Generate a calibration work order",
+                  "fa": "ایجاد دستور کار کالیبراسیون"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/instruments",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "calibrations",
+          "component": "def:related-table",
+          "options": {
+            "id": "calibrations",
+            "title": {
+              "en": "Calibration history",
+              "fa": "تاریخچه کالیبراسیون"
+            },
+            "url": "/d/instrument-calibrations?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "calibrationDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "calibrationType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "standardReference",
+                "header": {
+                  "en": "Standard",
+                  "fa": "استاندارد"
+                },
+                "width": 140
+              },
+              {
+                "key": "asFound",
+                "header": {
+                  "en": "As found",
+                  "fa": "As found"
+                },
+                "width": 100
+              },
+              {
+                "key": "asLeft",
+                "header": {
+                  "en": "As left",
+                  "fa": "As left"
+                },
+                "width": 100
+              },
+              {
+                "key": "result",
+                "header": {
+                  "en": "Result",
+                  "fa": "نتیجه"
+                },
+                "width": 90
+              },
+              {
+                "key": "technician",
+                "header": {
+                  "en": "Technician",
+                  "fa": "تکنسین"
+                },
+                "width": 150
+              },
+              {
+                "key": "certificateNo",
+                "header": {
+                  "en": "Certificate",
+                  "fa": "گواهی"
+                },
+                "width": 120
+              },
+              {
+                "key": "nextDue",
+                "header": {
+                  "en": "Next due",
+                  "fa": "سررسید بعدی"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "remarks",
+                "header": {
+                  "en": "Remarks",
+                  "fa": "ملاحظات"
+                },
+                "width": 200
+              }
+            ]
+          }
+        },
+        {
+          "id": "alarms",
+          "component": "def:related-table",
+          "options": {
+            "id": "alarms",
+            "title": {
+              "en": "Alarms",
+              "fa": "آلارم‌ها"
+            },
+            "url": "/d/instrument-alarms?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "id",
+                "header": {
+                  "en": "Alarm id",
+                  "fa": "شناسه آلارم"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "alarmTag",
+                "header": {
+                  "en": "Alarm tag",
+                  "fa": "تگ آلارم"
+                },
+                "width": 130
+              },
+              {
+                "key": "alarmType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 100
+              },
+              {
+                "key": "priority",
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "width": 100
+              },
+              {
+                "key": "setPoint",
+                "header": {
+                  "en": "Set point",
+                  "fa": "نقطه تنظیم"
+                },
+                "width": 100
+              },
+              {
+                "key": "unit",
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "width": 80
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 160
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 240
+              }
+            ]
+          }
+        },
+        {
+          "id": "cause-effects",
+          "component": "def:related-table",
+          "options": {
+            "id": "cause-effects",
+            "title": {
+              "en": "Cause and effect",
+              "fa": "علت و معلول"
+            },
+            "url": "/d/instrument-cause-effects?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "alarmTag",
+                "header": {
+                  "en": "Alarm",
+                  "fa": "آلارم"
+                },
+                "width": 130
+              },
+              {
+                "key": "cause",
+                "header": {
+                  "en": "Cause",
+                  "fa": "علت"
+                },
+                "width": 200
+              },
+              {
+                "key": "effect",
+                "header": {
+                  "en": "Effect",
+                  "fa": "معلول"
+                },
+                "width": 200
+              },
+              {
+                "key": "actionType",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 100
+              },
+              {
+                "key": "tripSignal",
+                "header": {
+                  "en": "Trip signal",
+                  "fa": "سیگنال تریپ"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 180,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "raise",
+                    "label": {
+                      "en": "Raise a work request",
+                      "fa": "ثبت درخواست کار"
+                    },
+                    "url": "/a/instrument-raise-work-request",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Create a work request from this cause and effect?",
+                      "fa": "از این علت و معلول درخواست کار ساخته شود؟"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "control-loop",
+          "component": "def:related-table",
+          "options": {
+            "id": "control-loop",
+            "title": {
+              "en": "Control loop",
+              "fa": "حلقه کنترل"
+            },
+            "url": "/d/instrument-control-loop?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "loopNumber",
+                "header": {
+                  "en": "Loop",
+                  "fa": "حلقه"
+                },
+                "width": 120
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 240
+              },
+              {
+                "key": "processArea",
+                "header": {
+                  "en": "Process area",
+                  "fa": "ناحیه فرآیند"
+                },
+                "width": 150
+              },
+              {
+                "key": "controllerType",
+                "header": {
+                  "en": "Controller type",
+                  "fa": "نوع کنترلر"
+                },
+                "width": 150
+              },
+              {
+                "key": "controllerSystem",
+                "header": {
+                  "en": "Controller system",
+                  "fa": "سیستم کنترلر"
+                },
+                "width": 150
+              }
+            ]
+          }
+        },
+        {
+          "id": "io-points",
+          "component": "def:related-table",
+          "options": {
+            "id": "io-points",
+            "title": {
+              "en": "IO points",
+              "fa": "نقاط IO"
+            },
+            "url": "/d/instrument-io-points?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 130
+              },
+              {
+                "key": "ioType",
+                "header": {
+                  "en": "IO type",
+                  "fa": "نوع IO"
+                },
+                "width": 100
+              },
+              {
+                "key": "signalType",
+                "header": {
+                  "en": "Signal",
+                  "fa": "سیگنال"
+                },
+                "width": 100
+              },
+              {
+                "key": "plcName",
+                "header": {
+                  "en": "PLC",
+                  "fa": "PLC"
+                },
+                "width": 110
+              },
+              {
+                "key": "rack",
+                "header": {
+                  "en": "Rack",
+                  "fa": "رک"
+                },
+                "width": 70
+              },
+              {
+                "key": "slot",
+                "header": {
+                  "en": "Slot",
+                  "fa": "اسلات"
+                },
+                "width": 70
+              },
+              {
+                "key": "channel",
+                "header": {
+                  "en": "Channel",
+                  "fa": "کانال"
+                },
+                "width": 80
+              },
+              {
+                "key": "address",
+                "header": {
+                  "en": "Address",
+                  "fa": "آدرس"
+                },
+                "width": 110
+              },
+              {
+                "key": "description",
+                "header": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "width": 220
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

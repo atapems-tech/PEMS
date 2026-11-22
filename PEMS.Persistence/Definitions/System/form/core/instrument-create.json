@@ -1,0 +1,149 @@
+{
+  "kind": "form",
+  "key": "instrument-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New instrument",
+    "fa": "ابزار جدید"
+  },
+  "description": {
+    "en": "New instrument",
+    "fa": "ابزار جدید"
+  },
+  "payload": {
+    "id": "instrument-create",
+    "title": {
+      "en": "New instrument",
+      "fa": "ابزار جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "instrument-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-options"
+      },
+      {
+        "name": "instrumentType",
+        "label": {
+          "en": "Instrument type",
+          "fa": "نوع ابزار"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "loopNumber",
+        "label": {
+          "en": "Loop number",
+          "fa": "شماره حلقه"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "system",
+        "label": {
+          "en": "System",
+          "fa": "سیستم"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "signalClass",
+        "label": {
+          "en": "Signal class",
+          "fa": "کلاس سیگنال"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "rangeMin",
+        "label": {
+          "en": "Range min",
+          "fa": "حداقل محدوده"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "rangeMax",
+        "label": {
+          "en": "Range max",
+          "fa": "حداکثر محدوده"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "unit",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "signalType",
+        "label": {
+          "en": "Signal type",
+          "fa": "نوع سیگنال"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "processVariable",
+        "label": {
+          "en": "Process variable",
+          "fa": "متغیر فرآیند"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "accuracy",
+        "label": {
+          "en": "Accuracy",
+          "fa": "دقت"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "calibrationInterval",
+        "label": {
+          "en": "Calibration interval (days)",
+          "fa": "فاصله کالیبراسیون (روز)"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

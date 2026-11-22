@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "instrument-calibrations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Instrument calibrations",
+    "fa": "ابزار Calibrations"
+  },
+  "description": {
+    "en": "Instrument calibrations",
+    "fa": "ابزار Calibrations"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Instrument",
+      "action": "Calibrations",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

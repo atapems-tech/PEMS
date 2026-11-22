@@ -1,0 +1,183 @@
+{
+  "kind": "form",
+  "key": "instrument-add-calibration",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record a calibration",
+    "fa": "ثبت کالیبراسیون"
+  },
+  "description": {
+    "en": "Record a calibration",
+    "fa": "ثبت کالیبراسیون"
+  },
+  "payload": {
+    "id": "instrument-add-calibration",
+    "title": {
+      "en": "Record a calibration",
+      "fa": "ثبت کالیبراسیون"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "instrument-add-calibration",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "instrumentId",
+        "label": {
+          "en": "Instrument id",
+          "fa": "شناسه ابزار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "calibrationDate",
+        "label": {
+          "en": "Date",
+          "fa": "تاریخ"
+        },
+        "kind": "date",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "calibrationType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Routine",
+            "label": {
+              "en": "Routine",
+              "fa": "Routine"
+            }
+          },
+          {
+            "value": "PostRepair",
+            "label": {
+              "en": "PostRepair",
+              "fa": "PostRepair"
+            }
+          },
+          {
+            "value": "PreCommissioning",
+            "label": {
+              "en": "PreCommissioning",
+              "fa": "PreCommissioning"
+            }
+          }
+        ]
+      },
+      {
+        "name": "standardReference",
+        "label": {
+          "en": "Standard reference",
+          "fa": "مرجع استاندارد"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "asFound",
+        "label": {
+          "en": "As found",
+          "fa": "As found"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "asLeft",
+        "label": {
+          "en": "As left",
+          "fa": "As left"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "result",
+        "label": {
+          "en": "Result",
+          "fa": "نتیجه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Pass",
+            "label": {
+              "en": "Pass",
+              "fa": "Pass"
+            }
+          },
+          {
+            "value": "Fail",
+            "label": {
+              "en": "Fail",
+              "fa": "Fail"
+            }
+          },
+          {
+            "value": "Adjusted",
+            "label": {
+              "en": "Adjusted",
+              "fa": "Adjusted"
+            }
+          }
+        ]
+      },
+      {
+        "name": "technicianEmployeeId",
+        "label": {
+          "en": "Technician",
+          "fa": "تکنسین"
+        },
+        "kind": "select",
+        "optionsFrom": "dw-employee-options"
+      },
+      {
+        "name": "certificateNo",
+        "label": {
+          "en": "Certificate no.",
+          "fa": "شماره گواهی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "remarks",
+        "label": {
+          "en": "Remarks",
+          "fa": "ملاحظات"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "instrument-control-loop",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Instrument controlloop",
+    "fa": "ابزار ControlLoop"
+  },
+  "description": {
+    "en": "Instrument controlloop",
+    "fa": "ابزار ControlLoop"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Instrument",
+      "action": "ControlLoop",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

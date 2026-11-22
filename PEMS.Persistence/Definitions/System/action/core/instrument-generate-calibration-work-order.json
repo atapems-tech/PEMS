@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "instrument-generate-calibration-work-order",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate a calibration work order",
+    "fa": "ایجاد دستور کار کالیبراسیون"
+  },
+  "description": {
+    "en": "Generate a calibration work order",
+    "fa": "ایجاد دستور کار کالیبراسیون"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Instrument",
+      "action": "GenerateCalibrationWorkOrder",
+      "args": {
+        "instrumentId": "field:instrumentId"
+      }
+    },
+    "success": {
+      "en": "The calibration work order was created.",
+      "fa": "دستور کار کالیبراسیون ساخته شد."
+    },
+    "redirect": "/p/instrument-passport?id={instrumentId}"
+  }
+}
