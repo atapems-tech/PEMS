@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tender-bids",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Bids",
+    "fa": "پیشنهادها"
+  },
+  "description": {
+    "en": "Bids",
+    "fa": "پیشنهادها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TenderDetails",
+      "action": "Bids",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

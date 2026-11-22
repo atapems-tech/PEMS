@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "tender-open-for-bidding",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open the tender for bidding",
+    "fa": "بازکردن مناقصه برای پیشنهاد"
+  },
+  "description": {
+    "en": "Open the tender for bidding",
+    "fa": "بازکردن مناقصه برای پیشنهاد"
+  },
+  "payload": {
+    "id": "tender-open-for-bidding",
+    "title": {
+      "en": "Open the tender for bidding",
+      "fa": "بازکردن مناقصه برای پیشنهاد"
+    },
+    "submitLabel": {
+      "en": "Open for bidding",
+      "fa": "بازکردن"
+    },
+    "actionKey": "tender-open-for-bidding",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tender-invited-vendor-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Invited vendors",
+    "fa": "فروشندگان دعوت‌شده"
+  },
+  "description": {
+    "en": "Invited vendors of the tender",
+    "fa": "فروشندگان دعوت‌شده‌ی مناقصه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TenderDetails",
+      "action": "InvitedVendorChoices",
+      "args": {
+        "tenderId": "param:tenderId"
+      },
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

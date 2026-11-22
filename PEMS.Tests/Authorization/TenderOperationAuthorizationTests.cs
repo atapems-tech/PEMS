@@ -5,7 +5,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Authorization;
 
@@ -13,9 +13,9 @@ namespace PEMS.Tests.Authorization;
 /// طبق ممیزی Package Procurement Contract Finalization (§H/§J، Phase 7.2/9): پوشش دروازه‌ی مجوز
 /// برای TenderController تازه‌ساخته - منطق عمیق کسب‌وکار در TenderServiceTests پوشش داده شده.
 /// </summary>
-public class TenderControllerAuthorizationTests
+public class TenderOperationAuthorizationTests
 {
-    private static async Task<(TenderController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(string dbName, string? role)
+    private static async Task<(TenderOperations Operations, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(string dbName, string? role)
     {
         var ctx = PemsDbContextFactory.CreateInMemory($"TenderCtrlAuth_{dbName}");
         foreach (var roleName in SystemRoles.All)
@@ -32,16 +32,15 @@ public class TenderControllerAuthorizationTests
 
         var currentUser = new FakeCurrentUserService { UserId = 1, Roles = role != null ? new List<string> { role } : new List<string>() };
         var service = new TenderService(ctx, new FakeNumberingService());
-        var packageService = new ProcurementPackageService(ctx);
-        var controller = new TenderController(service, packageService, permissionService, currentUser, ctx, accessControl).WithTempData();
+        var operations = new TenderOperations(ctx, null!, null!, null!, null!, null!, currentUser, service, permissionService, accessControl);
 
-        return (controller, ctx);
+        return (operations, ctx);
     }
 
     [Fact]
-    public async Task SelectWinner_WithoutApprovePermission_ReturnsForbid()
+    public async Task SelectWinner_WithoutApprovePermission_IsRefused()
     {
-        var (controller, ctx) = await CreateController(nameof(SelectWinner_WithoutApprovePermission_ReturnsForbid), role: SystemRoles.DisciplineEngineer);
+        var (operations, ctx) = await CreateController(nameof(SelectWinner_WithoutApprovePermission_IsRefused), role: SystemRoles.DisciplineEngineer);
         var package = new ProcurementPackage { PackageNumber = "PP-001", ProjectId = 1, Title = "T", IsActive = true };
         ctx.ProcurementPackages.Add(package);
         await ctx.SaveChangesAsync();
@@ -49,9 +48,9 @@ public class TenderControllerAuthorizationTests
         ctx.Tenders.Add(tender);
         await ctx.SaveChangesAsync();
 
-        var result = await controller.SelectWinner(tender.TenderId, 1);
+        var result = await operations.SelectWinnerAsync(tender.TenderId, 1, null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
         Assert.Equal("Closed", ctx.Tenders.Single().Status);
     }
 }

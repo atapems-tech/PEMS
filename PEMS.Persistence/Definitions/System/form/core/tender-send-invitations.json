@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "tender-send-invitations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Send the invitations by email",
+    "fa": "ارسال دعوت‌نامه‌ها با ایمیل"
+  },
+  "description": {
+    "en": "Send the invitations by email",
+    "fa": "ارسال دعوت‌نامه‌ها با ایمیل"
+  },
+  "payload": {
+    "id": "tender-send-invitations",
+    "title": {
+      "en": "Send the invitations by email",
+      "fa": "ارسال دعوت‌نامه‌ها با ایمیل"
+    },
+    "submitLabel": {
+      "en": "Send",
+      "fa": "ارسال"
+    },
+    "actionKey": "tender-send-invitations",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "vendorIds",
+        "label": {
+          "en": "Vendor id (blank = every vendor not yet invited)",
+          "fa": "شناسه‌ی فروشنده (خالی = همه‌ی دعوت‌نشده‌ها)"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

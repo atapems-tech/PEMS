@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "tender-details-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tender details (old address)",
+    "fa": "جزئیات مناقصه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Tender details (old address)",
+    "fa": "جزئیات مناقصه (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Tender/Details/{id}",
+    "target": "/p/tender-details?id={id}",
+    "permanent": false
+  }
+}

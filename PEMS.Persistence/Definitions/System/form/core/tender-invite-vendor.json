@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "tender-invite-vendor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Invite a vendor",
+    "fa": "دعوت از فروشنده"
+  },
+  "description": {
+    "en": "Invite a vendor",
+    "fa": "دعوت از فروشنده"
+  },
+  "payload": {
+    "id": "tender-invite-vendor",
+    "title": {
+      "en": "Invite a vendor",
+      "fa": "دعوت از فروشنده"
+    },
+    "submitLabel": {
+      "en": "Invite",
+      "fa": "دعوت"
+    },
+    "actionKey": "tender-invite-vendor",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor",
+          "fa": "فروشنده"
+        },
+        "kind": "select",
+        "optionsFrom": "tender-vendor-options",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

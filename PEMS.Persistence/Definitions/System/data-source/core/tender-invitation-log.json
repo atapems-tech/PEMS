@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tender-invitation-log",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Invitation log",
+    "fa": "سابقه‌ی دعوت‌نامه‌ها"
+  },
+  "description": {
+    "en": "Invitation log",
+    "fa": "سابقه‌ی دعوت‌نامه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TenderDetails",
+      "action": "InvitationLog",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

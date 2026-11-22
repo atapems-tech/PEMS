@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "tender-close-bidding",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Close bidding",
+    "fa": "بستن دریافت پیشنهاد"
+  },
+  "description": {
+    "en": "Close bidding",
+    "fa": "بستن دریافت پیشنهاد"
+  },
+  "payload": {
+    "id": "tender-close-bidding",
+    "title": {
+      "en": "Close bidding",
+      "fa": "بستن دریافت پیشنهاد"
+    },
+    "submitLabel": {
+      "en": "Close bidding",
+      "fa": "بستن"
+    },
+    "actionKey": "tender-close-bidding",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

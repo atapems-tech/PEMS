@@ -1,0 +1,153 @@
+{
+  "kind": "form",
+  "key": "tender-raise-clarification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a clarification",
+    "fa": "طرح شفاف‌سازی"
+  },
+  "description": {
+    "en": "Raise a clarification",
+    "fa": "طرح شفاف‌سازی"
+  },
+  "payload": {
+    "id": "tender-raise-clarification",
+    "title": {
+      "en": "Raise a clarification",
+      "fa": "طرح شفاف‌سازی"
+    },
+    "submitLabel": {
+      "en": "Raise",
+      "fa": "ثبت"
+    },
+    "actionKey": "tender-raise-clarification",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "procurementPackageId",
+        "label": {
+          "en": "Package id",
+          "fa": "شناسه‌ی پکیج"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "type",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "TechnicalClarification",
+            "label": {
+              "en": "Technical",
+              "fa": "فنی"
+            }
+          },
+          {
+            "value": "CommercialClarification",
+            "label": {
+              "en": "Commercial",
+              "fa": "بازرگانی"
+            }
+          },
+          {
+            "value": "ContractualClarification",
+            "label": {
+              "en": "Contractual",
+              "fa": "قراردادی"
+            }
+          },
+          {
+            "value": "VendorInquiry",
+            "label": {
+              "en": "General",
+              "fa": "عمومی"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "vendorId",
+        "label": {
+          "en": "Vendor (optional)",
+          "fa": "فروشنده (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "tender-vendor-options"
+      },
+      {
+        "name": "subject",
+        "label": {
+          "en": "Subject",
+          "fa": "موضوع"
+        },
+        "kind": "text",
+        "maxLength": 300,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "body",
+        "label": {
+          "en": "Question",
+          "fa": "پرسش"
+        },
+        "kind": "textArea",
+        "maxLength": 4000,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ],
+    "load": {
+      "model": "TenderDetails",
+      "action": "Head",
+      "args": {
+        "id": "param:tenderId"
+      }
+    }
+  }
+}

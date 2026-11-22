@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tender-pending-negotiation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Negotiation waiting for approval",
+    "fa": "مذاکره‌ی در انتظار تأیید"
+  },
+  "description": {
+    "en": "Negotiation waiting for approval",
+    "fa": "مذاکره‌ی در انتظار تأیید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TenderDetails",
+      "action": "PendingNegotiation",
+      "args": {
+        "bidId": "param:bidId"
+      }
+    }
+  }
+}

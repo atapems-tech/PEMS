@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tender-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The tender",
+    "fa": "مناقصه"
+  },
+  "description": {
+    "en": "The tender",
+    "fa": "مناقصه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TenderDetails",
+      "action": "Head",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

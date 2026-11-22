@@ -1,0 +1,131 @@
+{
+  "kind": "form",
+  "key": "tender-record-evaluation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an evaluation",
+    "fa": "ثبت ارزیابی"
+  },
+  "description": {
+    "en": "Record an evaluation",
+    "fa": "ثبت ارزیابی"
+  },
+  "payload": {
+    "id": "tender-record-evaluation",
+    "title": {
+      "en": "Record an evaluation",
+      "fa": "ثبت ارزیابی"
+    },
+    "submitLabel": {
+      "en": "Record evaluation",
+      "fa": "ثبت ارزیابی"
+    },
+    "actionKey": "tender-record-evaluation",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "tenderId",
+        "label": {
+          "en": "Tender id",
+          "fa": "شناسه‌ی مناقصه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "bidId",
+        "label": {
+          "en": "Bid id",
+          "fa": "شناسه‌ی پیشنهاد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "evaluationType",
+        "label": {
+          "en": "Evaluation",
+          "fa": "ارزیابی"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Technical",
+            "label": {
+              "en": "Technical",
+              "fa": "فنی"
+            }
+          },
+          {
+            "value": "Commercial",
+            "label": {
+              "en": "Commercial",
+              "fa": "بازرگانی"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Passed",
+            "label": {
+              "en": "Passed",
+              "fa": "قبول"
+            }
+          },
+          {
+            "value": "Failed",
+            "label": {
+              "en": "Failed",
+              "fa": "رد"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

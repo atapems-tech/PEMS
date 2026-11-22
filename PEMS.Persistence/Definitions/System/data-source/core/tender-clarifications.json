@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tender-clarifications",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Clarifications",
+    "fa": "شفاف‌سازی‌ها"
+  },
+  "description": {
+    "en": "Clarifications",
+    "fa": "شفاف‌سازی‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TenderDetails",
+      "action": "Clarifications",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

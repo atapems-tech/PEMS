@@ -9,7 +9,7 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Controllers;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Procurement;
 
@@ -17,12 +17,12 @@ namespace PEMS.Tests.Procurement;
 /// P0 / F-02 + F-03 (لایه‌ی کنترلر، موتور مجوز واقعی): انتخاب برنده و ساخت قرارداد از برنده Fail-Closed و ممیزی‌شده‌اند، و
 /// سازنده‌ی قرارداد (از مناقصه) برای سیاست SoD «ایجادکننده ≠ تاییدکننده» دیده می‌شود. شرط Allowed صریح در گارد مشترک است.
 /// </summary>
-public class TenderControllerP0Tests
+public class TenderOperationP0Tests
 {
     private const string TenderOnlyRole = "TENDER_ONLY";
 
     private sealed record Arrange(
-        TenderController Controller, PEMSDbContext Ctx, AccessControlService AccessControl, FakeCurrentUserService User, int TenderId, int ActorUserId);
+        TenderOperations Operations, PEMSDbContext Ctx, AccessControlService AccessControl, FakeCurrentUserService User, int TenderId, int ActorUserId);
 
     private static async Task<int> CreateUserWithRoleAsync(PEMSDbContext ctx, string roleName)
     {
@@ -76,9 +76,8 @@ public class TenderControllerP0Tests
         await tenderService.RecordBidEvaluationAsync(bid.BidId!.Value, "Technical", 1, "Engineering", "Passed", null);
         await tenderService.RecordBidEvaluationAsync(bid.BidId!.Value, "Commercial", 1, "Finance", "Passed", null);
 
-        var controller = new TenderController(
-            tenderService, new ProcurementPackageService(ctx), permissionService, user, ctx, accessControl).WithTempData();
-        return new Arrange(controller, ctx, accessControl, user, tenderId, actorUserId) with { };
+        var operations = new TenderOperations(ctx, null!, null!, null!, null!, null!, user, tenderService, permissionService, accessControl);
+        return new Arrange(operations, ctx, accessControl, user, tenderId, actorUserId) with { };
     }
 
     private static int BidIdOf(PEMSDbContext ctx) => ctx.Bids.Single().BidId;
@@ -89,9 +88,9 @@ public class TenderControllerP0Tests
     {
         var a = await CreateAsync(nameof(SelectWinner_ByAuthorizedUser_Awards_AndWritesAnAllowAuditRowForTheTender), SystemRoles.ContractManager);
 
-        var result = await a.Controller.SelectWinner(a.TenderId, BidIdOf(a.Ctx));
+        var result = await a.Operations.SelectWinnerAsync(a.TenderId, BidIdOf(a.Ctx), null);
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.True(result.Success);
         Assert.Equal("Awarded", (await a.Ctx.Tenders.SingleAsync()).Status);
         Assert.Contains(a.Ctx.AuthorizationAuditLogs.ToList(), l =>
             l.UserId == a.ActorUserId && l.ResourceName == "Tender" && l.ActionName == "Approve"
@@ -103,9 +102,9 @@ public class TenderControllerP0Tests
     {
         var a = await CreateAsync(nameof(SelectWinner_ByRoleWithoutApprove_IsForbidden_AndAwardsNothing), SystemRoles.DisciplineEngineer);
 
-        var result = await a.Controller.SelectWinner(a.TenderId, BidIdOf(a.Ctx));
+        var result = await a.Operations.SelectWinnerAsync(a.TenderId, BidIdOf(a.Ctx), null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
         Assert.Equal("Closed", (await a.Ctx.Tenders.SingleAsync()).Status);
         Assert.Contains(a.Ctx.AuthorizationAuditLogs.ToList(), l => l.ResourceName == "Tender" && l.ActionName == "Approve" && l.Decision != nameof(AccessDecisionReason.Allow));
     }
@@ -116,9 +115,9 @@ public class TenderControllerP0Tests
         var a = await CreateAsync(nameof(SelectWinner_WithoutAnAuthenticatedUserId_IsFailClosed), SystemRoles.ContractManager);
         a.User.UserId = null;
 
-        var result = await a.Controller.SelectWinner(a.TenderId, BidIdOf(a.Ctx));
+        var result = await a.Operations.SelectWinnerAsync(a.TenderId, BidIdOf(a.Ctx), null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
         Assert.Equal("Closed", (await a.Ctx.Tenders.SingleAsync()).Status);
     }
 
@@ -127,15 +126,15 @@ public class TenderControllerP0Tests
     {
         var a = await CreateAsync(nameof(SelectWinner_BySystemAdminWithoutAnExplicitGrant_IsForbidden), SystemRoles.SystemAdmin);
 
-        var result = await a.Controller.SelectWinner(a.TenderId, BidIdOf(a.Ctx));
+        var result = await a.Operations.SelectWinnerAsync(a.TenderId, BidIdOf(a.Ctx), null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
         Assert.Equal("Closed", (await a.Ctx.Tenders.SingleAsync()).Status);
     }
 
     // ------------------------------------------------------------------ ساخت قرارداد از برنده
     private static async Task AwardAsync(Arrange a)
-        => Assert.IsType<RedirectToActionResult>(await a.Controller.SelectWinner(a.TenderId, BidIdOf(a.Ctx)));
+        => Assert.True((await a.Operations.SelectWinnerAsync(a.TenderId, BidIdOf(a.Ctx), null)).Success);
 
     [Fact]
     public async Task CreateContract_RecordsTheCreator_SoTheSameUserIsDeniedBySoDOnApproval()
@@ -143,10 +142,10 @@ public class TenderControllerP0Tests
         var a = await CreateAsync(nameof(CreateContract_RecordsTheCreator_SoTheSameUserIsDeniedBySoDOnApproval), SystemRoles.ContractManager);
         await AwardAsync(a);
 
-        var result = await a.Controller.CreateContract(a.TenderId, "CT-900", null, null);
+        var result = await a.Operations.CreateContractAsync(a.TenderId, "CT-900", null, null, null);
 
-        var redirect = Assert.IsType<RedirectToActionResult>(result);
-        Assert.Equal("Contract", redirect.ControllerName);
+        Assert.True(result.Success);
+        Assert.NotNull(result.NewId);                                                   // the action redirects to /p/contract-details?id={result}
         var contract = await a.Ctx.Contracts.SingleAsync();
         Assert.Equal(contract.ContractId, (await a.Ctx.Tenders.SingleAsync()).ContractId);
 
@@ -170,9 +169,9 @@ public class TenderControllerP0Tests
         var a = await CreateAsync(nameof(CreateContract_WithTenderApproveButWithoutContractsCreate_IsForbidden_AndCreatesNothing), TenderOnlyRole);
         await AwardAsync(a);                       // این نقش می‌تواند برنده را انتخاب کند (Tender.Approve)
 
-        var result = await a.Controller.CreateContract(a.TenderId, "CT-901", null, null);
+        var result = await a.Operations.CreateContractAsync(a.TenderId, "CT-901", null, null, null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
         Assert.Equal(0, await a.Ctx.Contracts.CountAsync());
         Assert.Null((await a.Ctx.Tenders.SingleAsync()).ContractId);
     }
@@ -182,9 +181,9 @@ public class TenderControllerP0Tests
     {
         var a = await CreateAsync(nameof(CreateContract_ByRoleWithoutTenderApprove_IsForbidden), SystemRoles.DisciplineEngineer);
 
-        var result = await a.Controller.CreateContract(a.TenderId, "CT-902", null, null);
+        var result = await a.Operations.CreateContractAsync(a.TenderId, "CT-902", null, null, null);
 
-        Assert.IsType<ForbidResult>(result);
+        Assert.False(result.Success);
         Assert.Equal(0, await a.Ctx.Contracts.CountAsync());
     }
 
@@ -194,11 +193,11 @@ public class TenderControllerP0Tests
         var a = await CreateAsync(nameof(CreateContract_Retry_DoesNotDuplicateTheContractOrTheCreateAuditEvent), SystemRoles.ContractManager);
         await AwardAsync(a);
 
-        await a.Controller.CreateContract(a.TenderId, "CT-903", null, null);
-        var retry = await a.Controller.CreateContract(a.TenderId, "CT-904", null, null);
+        await a.Operations.CreateContractAsync(a.TenderId, "CT-903", null, null, null);
+        var retry = await a.Operations.CreateContractAsync(a.TenderId, "CT-904", null, null, null);
 
-        Assert.IsType<RedirectToActionResult>(retry);
-        Assert.NotNull(a.Controller.TempData["Error"]);
+        Assert.False(retry.Success);
+        Assert.NotNull(retry.Error);
         Assert.Equal(1, await a.Ctx.Contracts.CountAsync());
         Assert.Equal(1, a.Ctx.AuthorizationAuditLogs.Count(l => l.ResourceName == "Contracts" && l.ActionName == "Create" && l.Decision == nameof(AccessDecisionReason.Allow)));
     }
