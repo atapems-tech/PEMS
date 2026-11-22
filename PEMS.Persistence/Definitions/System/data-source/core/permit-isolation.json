@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-isolation",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Isolation points of the permit",
+    "fa": "نقاط ایزوله‌سازی مجوز"
+  },
+  "description": {
+    "en": "Isolation points of the permit",
+    "fa": "نقاط ایزوله‌سازی مجوز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "Isolation",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

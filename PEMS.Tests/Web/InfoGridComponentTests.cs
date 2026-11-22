@@ -138,7 +138,6 @@ public class InfoGridComponentTests
     [Theory]
     [InlineData("Views/MaintenanceStrategy/Details.cshtml", 1, 18)]
     [InlineData("Views/Transmittal/Details.cshtml", 1, 6)]
-    [InlineData("Views/Permit/Details.cshtml", 1, 9)]
     [InlineData("Views/WorkOrder/Details.cshtml", 1, 7)]
     [InlineData("Views/WorkRequest/Details.cshtml", 1, 12)]
     public void WaveI4_CmmsAndDocumentHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)

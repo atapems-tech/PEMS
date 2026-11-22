@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-approval",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approval chain of the permit",
+    "fa": "زنجیره‌ی تأیید مجوز"
+  },
+  "description": {
+    "en": "Approval chain of the permit",
+    "fa": "زنجیره‌ی تأیید مجوز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "Approval",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

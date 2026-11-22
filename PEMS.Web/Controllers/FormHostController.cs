@@ -87,6 +87,8 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
             case ActionStatus.Forbidden: return Forbid();
             case ActionStatus.NotFound: log.LogWarning("Form definition {Key}: the action \"{Action}\" does not exist.", key, form.ActionKey); return NotFound();
             case ActionStatus.StepUpRequired:
+                // SCRUM-817: the same form comes back with the marker; pems-form-stepup.js runs the security-key ceremony and posts the form again with the answer
+                return await Show(key, loaded, posted, new Dictionary<string, TranslatableText>(), [], stepUp: true);
             case ActionStatus.Refused:
                 return await Show(key, loaded, posted, result.Outcome!.FieldErrors ?? new Dictionary<string, TranslatableText>(), result.Outcome.FormError is { } fe ? [fe] : []);
         }
@@ -123,7 +125,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         return new Loaded(null, form with { Id = key, Action = Url.Action(nameof(Submit), new { key, id })! }, context, options, PageRenderer.TitleOf(result.Resolved.Source.TitleJson, CultureInfo.CurrentUICulture));
     }
 
-    private async Task<IActionResult> Show(string key, Loaded loaded, IReadOnlyDictionary<string, string?> values, IReadOnlyDictionary<string, TranslatableText> errors, IReadOnlyList<TranslatableText> formErrors)
+    private async Task<IActionResult> Show(string key, Loaded loaded, IReadOnlyDictionary<string, string?> values, IReadOnlyDictionary<string, TranslatableText> errors, IReadOnlyList<TranslatableText> formErrors, bool stepUp = false)
     {
         var conditions = FormEngine.Evaluate(loaded.Form!, values, loaded.Context);
         var shown = FormEngine.Effective(loaded.Form!, conditions, loaded.Options);
@@ -138,6 +140,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         var state = new FormState { Values = values, Errors = errors, Hidden = hidden, FormErrors = formErrors };
         var html = await renderer.RenderAsync("form", new Dictionary<string, object?> { ["Definition"] = shown, ["State"] = state, ["RequestToken"] = tokens.RequestToken, ["RequestTokenName"] = tokens.FormFieldName ?? "__RequestVerificationToken", ["RulesJson"] = rules }, CultureInfo.CurrentUICulture);
         ViewData["Title"] = loaded.Title ?? key;
+        if (stepUp) html += "<div id=\"pems-stepup-marker\" hidden></div><script src=\"/js/webauthn.js\"></script><script src=\"/js/pems-form-stepup.js\"></script>";
         return View("~/Views/PageHost/Index.cshtml", new RenderedPage(html, loaded.Title, []));
     }
 }

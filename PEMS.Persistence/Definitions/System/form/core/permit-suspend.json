@@ -1,0 +1,54 @@
+{
+  "kind": "form",
+  "key": "permit-suspend",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Suspend the permit",
+    "fa": "تعلیق مجوز"
+  },
+  "description": {
+    "en": "Suspend the permit",
+    "fa": "تعلیق مجوز"
+  },
+  "payload": {
+    "id": "permit-suspend",
+    "title": {
+      "en": "Suspend the permit",
+      "fa": "تعلیق مجوز"
+    },
+    "submitLabel": {
+      "en": "Suspend",
+      "fa": "تعلیق"
+    },
+    "actionKey": "permit-suspend",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

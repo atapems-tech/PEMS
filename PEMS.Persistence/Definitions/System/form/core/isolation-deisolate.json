@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "isolation-deisolate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "De-isolate the point",
+    "fa": "برداشتن ایزوله‌سازی"
+  },
+  "description": {
+    "en": "De-isolate the point",
+    "fa": "برداشتن ایزوله‌سازی"
+  },
+  "payload": {
+    "id": "isolation-deisolate",
+    "title": {
+      "en": "De-isolate the point",
+      "fa": "برداشتن ایزوله‌سازی"
+    },
+    "submitLabel": {
+      "en": "De-isolate",
+      "fa": "برداشتن"
+    },
+    "actionKey": "isolation-deisolate",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Isolation point id",
+          "fa": "شناسه‌ی نقطه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

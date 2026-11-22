@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-approval-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approval history of the permit",
+    "fa": "تاریخچه‌ی تأیید مجوز"
+  },
+  "description": {
+    "en": "Approval history of the permit",
+    "fa": "تاریخچه‌ی تأیید مجوز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "ApprovalHistory",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

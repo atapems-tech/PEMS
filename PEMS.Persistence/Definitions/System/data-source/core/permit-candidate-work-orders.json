@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-candidate-work-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Candidate work orders",
+    "fa": "دستورکارهای کاندیدا"
+  },
+  "description": {
+    "en": "Candidate work orders",
+    "fa": "دستورکارهای کاندیدا"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "CandidateWorkOrders",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

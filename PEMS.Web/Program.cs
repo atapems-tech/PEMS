@@ -244,6 +244,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterTemplateOperations
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkRequestOperations, PEMS.Web.Services.WorkRequestOperations>();   // SCRUM-765
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITenderOperations, PEMS.Web.Services.TenderOperations>();   // SCRUM-759
 builder.Services.AddScoped<PEMS.Application.Interfaces.IContractOperations, PEMS.Web.Services.ContractOperations>();   // SCRUM-676
+builder.Services.AddScoped<PEMS.Application.Interfaces.IPermitDetailsOperations, PEMS.Web.Services.PermitDetailsOperations>();   // SCRUM-817
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMaintenancePlanOperations, PEMS.Web.Services.MaintenancePlanOperations>();   // SCRUM-724
 builder.Services.AddScoped<PEMS.Application.Interfaces.IJobPlanOperations, PEMS.Web.Services.JobPlanOperations>();   // SCRUM-711
 builder.Services.AddScoped<PEMS.Application.Interfaces.IShiftHandoverOperations, PEMS.Web.Services.ShiftHandoverOperations>();   // SCRUM-749

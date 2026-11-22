@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-status-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Status history of the permit",
+    "fa": "تاریخچه‌ی وضعیت مجوز"
+  },
+  "description": {
+    "en": "Status history of the permit",
+    "fa": "تاریخچه‌ی وضعیت مجوز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "StatusHistory",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

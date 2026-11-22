@@ -1,0 +1,54 @@
+{
+  "kind": "form",
+  "key": "permit-revoke",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revoke the permit",
+    "fa": "ابطال مجوز"
+  },
+  "description": {
+    "en": "Revoke the permit",
+    "fa": "ابطال مجوز"
+  },
+  "payload": {
+    "id": "permit-revoke",
+    "title": {
+      "en": "Revoke the permit",
+      "fa": "ابطال مجوز"
+    },
+    "submitLabel": {
+      "en": "Revoke",
+      "fa": "ابطال"
+    },
+    "actionKey": "permit-revoke",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

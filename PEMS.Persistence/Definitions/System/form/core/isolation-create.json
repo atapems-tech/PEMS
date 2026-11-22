@@ -1,0 +1,182 @@
+{
+  "kind": "form",
+  "key": "isolation-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New isolation point",
+    "fa": "نقطه‌ی ایزوله‌سازی جدید"
+  },
+  "description": {
+    "en": "New isolation point",
+    "fa": "نقطه‌ی ایزوله‌سازی جدید"
+  },
+  "payload": {
+    "id": "isolation-create",
+    "title": {
+      "en": "New isolation point",
+      "fa": "نقطه‌ی ایزوله‌سازی جدید"
+    },
+    "submitLabel": {
+      "en": "Add",
+      "fa": "افزودن"
+    },
+    "actionKey": "isolation-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "energyType",
+        "label": {
+          "en": "Energy type",
+          "fa": "نوع انرژی"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Electrical",
+            "label": {
+              "en": "Electrical",
+              "fa": "Electrical"
+            }
+          },
+          {
+            "value": "Mechanical",
+            "label": {
+              "en": "Mechanical",
+              "fa": "Mechanical"
+            }
+          },
+          {
+            "value": "Hydraulic",
+            "label": {
+              "en": "Hydraulic",
+              "fa": "Hydraulic"
+            }
+          },
+          {
+            "value": "Pneumatic",
+            "label": {
+              "en": "Pneumatic",
+              "fa": "Pneumatic"
+            }
+          },
+          {
+            "value": "Pressure",
+            "label": {
+              "en": "Pressure",
+              "fa": "Pressure"
+            }
+          },
+          {
+            "value": "Steam",
+            "label": {
+              "en": "Steam",
+              "fa": "Steam"
+            }
+          },
+          {
+            "value": "Thermal",
+            "label": {
+              "en": "Thermal",
+              "fa": "Thermal"
+            }
+          },
+          {
+            "value": "Chemical",
+            "label": {
+              "en": "Chemical",
+              "fa": "Chemical"
+            }
+          },
+          {
+            "value": "Gravity",
+            "label": {
+              "en": "Gravity",
+              "fa": "Gravity"
+            }
+          },
+          {
+            "value": "StoredEnergy",
+            "label": {
+              "en": "StoredEnergy",
+              "fa": "StoredEnergy"
+            }
+          },
+          {
+            "value": "ProcessEnergy",
+            "label": {
+              "en": "ProcessEnergy",
+              "fa": "ProcessEnergy"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "location",
+        "label": {
+          "en": "Location",
+          "fa": "مکان"
+        },
+        "kind": "text",
+        "maxLength": 300,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "normalState",
+        "label": {
+          "en": "Normal state",
+          "fa": "وضعیت عادی"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "requiredIsolationState",
+        "label": {
+          "en": "Required isolation state",
+          "fa": "وضعیت ایزوله‌ی لازم"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "isolationMethod",
+        "label": {
+          "en": "Method",
+          "fa": "روش"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

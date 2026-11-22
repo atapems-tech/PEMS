@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "simops-accept-risk",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Accept the risk of the SIMOPS conflict",
+    "fa": "پذیرش ریسک تعارض SIMOPS"
+  },
+  "description": {
+    "en": "Accept the risk of the SIMOPS conflict",
+    "fa": "پذیرش ریسک تعارض SIMOPS"
+  },
+  "payload": {
+    "id": "simops-accept-risk",
+    "title": {
+      "en": "Accept the risk of the SIMOPS conflict",
+      "fa": "پذیرش ریسک تعارض SIMOPS"
+    },
+    "submitLabel": {
+      "en": "Accept the risk",
+      "fa": "پذیرش ریسک"
+    },
+    "actionKey": "simops-accept-risk",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Conflict id",
+          "fa": "شناسه‌ی تعارض"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "permitId",
+        "label": {
+          "en": "Permit id",
+          "fa": "شناسه‌ی مجوز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "justification",
+        "label": {
+          "en": "Justification",
+          "fa": "توجیه"
+        },
+        "kind": "textArea",
+        "maxLength": 2000,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

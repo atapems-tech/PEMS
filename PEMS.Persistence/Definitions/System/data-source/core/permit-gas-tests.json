@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "permit-gas-tests",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Gas tests of the permit",
+    "fa": "تست‌های گاز مجوز"
+  },
+  "description": {
+    "en": "Gas tests of the permit",
+    "fa": "تست‌های گاز مجوز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PermitDetails",
+      "action": "GasTests",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

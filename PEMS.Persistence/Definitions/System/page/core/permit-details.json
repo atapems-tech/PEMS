@@ -1,0 +1,1337 @@
+{
+  "kind": "page",
+  "key": "permit-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Permit",
+    "fa": "مجوز کار"
+  },
+  "description": {
+    "en": "One permit with its approval chain, isolation, gas tests, SIMOPS and execution gate (page definition)",
+    "fa": "یک مجوز کار با زنجیره‌ی تأیید، ایزوله‌سازی، تست گاز، SIMOPS و دروازه‌ی اجرا (تعریف صفحه)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "permit-details",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "secondary",
+            "href": "/p/permits"
+          }
+        },
+        {
+          "id": "add-isolation",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Add an isolation point",
+              "fa": "افزودن نقطه‌ی ایزوله‌سازی"
+            },
+            "tone": "primary",
+            "href": "/f/isolation-create?permitId={{params.id}}"
+          }
+        },
+        {
+          "id": "add-gas-test",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Record a gas test",
+              "fa": "ثبت تست گاز"
+            },
+            "tone": "primary",
+            "href": "/f/gas-test-create?permitId={{params.id}}"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "head",
+            "fields": [
+              {
+                "key": "permitNumber",
+                "label": {
+                  "en": "Permit No",
+                  "fa": "شماره مجوز"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
+              },
+              {
+                "key": "permitType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "location",
+                "label": {
+                  "en": "Location",
+                  "fa": "مکان"
+                }
+              },
+              {
+                "key": "workOrder",
+                "label": {
+                  "en": "Work order",
+                  "fa": "دستورکار"
+                }
+              },
+              {
+                "key": "requestedBy",
+                "label": {
+                  "en": "Requested by",
+                  "fa": "درخواست‌کننده"
+                }
+              },
+              {
+                "key": "issuer",
+                "label": {
+                  "en": "Issuer",
+                  "fa": "صادرکننده"
+                }
+              },
+              {
+                "key": "receiver",
+                "label": {
+                  "en": "Receiver",
+                  "fa": "دریافت‌کننده"
+                }
+              },
+              {
+                "key": "validFrom",
+                "label": {
+                  "en": "Valid from",
+                  "fa": "اعتبار از"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "validTo",
+                "label": {
+                  "en": "Valid to",
+                  "fa": "اعتبار تا"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "closedDate",
+                "label": {
+                  "en": "Closed",
+                  "fa": "بسته‌شده"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "cancellationReason",
+                "label": {
+                  "en": "Cancellation reason",
+                  "fa": "دلیل لغو"
+                },
+                "wide": true
+              },
+              {
+                "key": "revocationReason",
+                "label": {
+                  "en": "Revocation reason",
+                  "fa": "دلیل ابطال"
+                },
+                "wide": true
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/permit-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "actions",
+            "url": "/d/permit-head?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "nextStatus",
+                "header": {
+                  "en": "Next status",
+                  "fa": "وضعیت بعدی"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "notices",
+                "header": {
+                  "en": "Authority notices (what would refuse an action)",
+                  "fa": "یادآوری‌های اختیار (آنچه اقدام را رد می‌کند)"
+                },
+                "width": 420,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "advance",
+                    "label": {
+                      "en": "Advance to the next status",
+                      "fa": "رفتن به وضعیت بعدی"
+                    },
+                    "url": "/a/permit-advance",
+                    "method": "post",
+                    "showWhen": "row.nextStatus != ''"
+                  },
+                  {
+                    "key": "submit",
+                    "label": {
+                      "en": "Submit for approval",
+                      "fa": "ارسال برای تأیید"
+                    },
+                    "url": "/a/permit-submit-for-approval",
+                    "method": "post",
+                    "showWhen": "row.canSubmitForApproval == true"
+                  },
+                  {
+                    "key": "respond",
+                    "label": {
+                      "en": "Respond to the approval step",
+                      "fa": "پاسخ به مرحله‌ی تأیید"
+                    },
+                    "url": "/f/permit-respond-approval?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true"
+                  },
+                  {
+                    "key": "rework",
+                    "label": {
+                      "en": "Return for rework",
+                      "fa": "بازگشت برای اصلاح"
+                    },
+                    "url": "/f/permit-return-for-rework?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true"
+                  },
+                  {
+                    "key": "start",
+                    "label": {
+                      "en": "Start work",
+                      "fa": "شروع کار"
+                    },
+                    "url": "/f/execution-gate-start-work?permitId={id}",
+                    "method": "get",
+                    "showWhen": "row.gateEligible == true"
+                  },
+                  {
+                    "key": "override",
+                    "label": {
+                      "en": "Emergency override",
+                      "fa": "عبور اضطراری"
+                    },
+                    "url": "/f/execution-gate-emergency-override?permitId={id}",
+                    "method": "get",
+                    "showWhen": "row.canEmergencyOverride == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "suspend",
+                    "label": {
+                      "en": "Suspend",
+                      "fa": "تعلیق"
+                    },
+                    "url": "/f/permit-suspend?id={id}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Active'"
+                  },
+                  {
+                    "key": "close",
+                    "label": {
+                      "en": "Close",
+                      "fa": "بستن"
+                    },
+                    "url": "/f/permit-close?id={id}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Active'"
+                  },
+                  {
+                    "key": "cancel",
+                    "label": {
+                      "en": "Cancel the permit",
+                      "fa": "لغو مجوز"
+                    },
+                    "url": "/f/permit-cancel?id={id}",
+                    "method": "get",
+                    "showWhen": "row.status in ['Draft', 'Submitted']"
+                  },
+                  {
+                    "key": "revoke",
+                    "label": {
+                      "en": "Revoke",
+                      "fa": "ابطال"
+                    },
+                    "url": "/f/permit-revoke?id={id}",
+                    "method": "get",
+                    "showWhen": "row.status in ['Approved', 'Issued', 'Active']",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "gate-checks",
+          "component": "data-grid",
+          "options": {
+            "id": "gate-checks",
+            "url": "/d/permit-gate-checks?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "category",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Check",
+                  "fa": "بررسی"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "passed",
+                "header": {
+                  "en": "Passed",
+                  "fa": "قبول"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              },
+              {
+                "key": "detail",
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                },
+                "width": 420,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "advisory",
+                "header": {
+                  "en": "Advisory (does not block)",
+                  "fa": "توصیه‌ای (مانع نمی‌شود)"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "gate-decisions",
+          "component": "data-grid",
+          "options": {
+            "id": "gate-decisions",
+            "url": "/d/permit-gate-decisions?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "fromStatus",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "toStatus",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "result",
+                "header": {
+                  "en": "Result",
+                  "fa": "نتیجه"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "actor",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "decisionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "isEmergencyOverride",
+                "header": {
+                  "en": "Emergency override",
+                  "fa": "عبور اضطراری"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 320,
+                "sortable": false,
+                "filterable": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "approval",
+          "component": "data-grid",
+          "options": {
+            "id": "approval",
+            "url": "/d/permit-approval?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "stage",
+                "header": {
+                  "en": "Current stage",
+                  "fa": "مرحله‌ی جاری"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "owner",
+                "header": {
+                  "en": "Waiting for",
+                  "fa": "در انتظار"
+                },
+                "width": 260,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "started",
+                "header": {
+                  "en": "Started",
+                  "fa": "شروع"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "completed",
+                "header": {
+                  "en": "Completed",
+                  "fa": "پایان"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              }
+            ]
+          }
+        },
+        {
+          "id": "approval-history",
+          "component": "data-grid",
+          "options": {
+            "id": "approval-history",
+            "url": "/d/permit-approval-history?f.id=eq:{{params.id|url}}",
+            "idField": "actionDate",
+            "columns": [
+              {
+                "key": "actionDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "actionType",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "fromStage",
+                "header": {
+                  "en": "From stage",
+                  "fa": "از مرحله"
+                },
+                "width": 180,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "toStage",
+                "header": {
+                  "en": "To stage",
+                  "fa": "به مرحله"
+                },
+                "width": 180,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "decision",
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "role",
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "comment",
+                "header": {
+                  "en": "Comment",
+                  "fa": "توضیح"
+                },
+                "width": 280,
+                "sortable": false,
+                "filterable": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "isolation",
+          "component": "data-grid",
+          "options": {
+            "id": "isolation",
+            "url": "/d/permit-isolation?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "energyType",
+                "header": {
+                  "en": "Energy",
+                  "fa": "انرژی"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "location",
+                "header": {
+                  "en": "Location",
+                  "fa": "مکان"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "requiredState",
+                "header": {
+                  "en": "Required state",
+                  "fa": "وضعیت لازم"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "method",
+                "header": {
+                  "en": "Method",
+                  "fa": "روش"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "lockNumber",
+                "header": {
+                  "en": "Lock",
+                  "fa": "قفل"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "isolatedBy",
+                "header": {
+                  "en": "Isolated by",
+                  "fa": "ایزوله‌کننده"
+                },
+                "width": 150,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "verifiedBy",
+                "header": {
+                  "en": "Verified by",
+                  "fa": "تأییدکننده"
+                },
+                "width": 150,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "isolate",
+                    "label": {
+                      "en": "Isolate",
+                      "fa": "ایزوله"
+                    },
+                    "url": "/f/isolation-mark-isolated?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Requested'"
+                  },
+                  {
+                    "key": "cancel",
+                    "label": {
+                      "en": "Cancel the point",
+                      "fa": "لغو نقطه"
+                    },
+                    "url": "/f/isolation-cancel?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Requested'"
+                  },
+                  {
+                    "key": "verify",
+                    "label": {
+                      "en": "Verify",
+                      "fa": "تأیید"
+                    },
+                    "url": "/f/isolation-verify?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Isolated'"
+                  },
+                  {
+                    "key": "deisolate",
+                    "label": {
+                      "en": "De-isolate",
+                      "fa": "برداشتن"
+                    },
+                    "url": "/f/isolation-deisolate?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Verified'"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "gas-tests",
+          "component": "data-grid",
+          "options": {
+            "id": "gas-tests",
+            "url": "/d/permit-gas-tests?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "location",
+                "header": {
+                  "en": "Location",
+                  "fa": "مکان"
+                },
+                "width": 180,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "testedAt",
+                "header": {
+                  "en": "Tested at",
+                  "fa": "زمان تست"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "tester",
+                "header": {
+                  "en": "Tester",
+                  "fa": "آزمونگر"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "readings",
+                "header": {
+                  "en": "Readings",
+                  "fa": "قرائت‌ها"
+                },
+                "width": 320,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "instrument",
+                "header": {
+                  "en": "Instrument",
+                  "fa": "ابزار"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "calibrationStatus",
+                "header": {
+                  "en": "Calibration",
+                  "fa": "کالیبراسیون"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "validUntil",
+                "header": {
+                  "en": "Valid until",
+                  "fa": "معتبر تا"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "isExpired",
+                "header": {
+                  "en": "Expired",
+                  "fa": "منقضی"
+                },
+                "width": 90,
+                "sortable": false,
+                "filterable": false,
+                "type": "bool"
+              },
+              {
+                "key": "invalidationReason",
+                "header": {
+                  "en": "Invalidation reason",
+                  "fa": "دلیل ابطال"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "invalidate",
+                    "label": {
+                      "en": "Invalidate",
+                      "fa": "ابطال"
+                    },
+                    "url": "/f/gas-test-invalidate?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canInvalidate == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "simops-conflicts",
+          "component": "data-grid",
+          "options": {
+            "id": "simops-conflicts",
+            "url": "/d/permit-simops-conflicts?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "otherPermit",
+                "header": {
+                  "en": "Other permit",
+                  "fa": "مجوز دیگر"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "basis",
+                "header": {
+                  "en": "Basis",
+                  "fa": "مبنا"
+                },
+                "width": 220,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "severity",
+                "header": {
+                  "en": "Severity",
+                  "fa": "شدت"
+                },
+                "width": 100,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "raisedBy",
+                "header": {
+                  "en": "Raised by",
+                  "fa": "ثبت‌کننده"
+                },
+                "width": 150,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "notes",
+                "header": {
+                  "en": "Notes",
+                  "fa": "توضیح"
+                },
+                "width": 280,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "confirm",
+                    "label": {
+                      "en": "Confirm",
+                      "fa": "تأیید"
+                    },
+                    "url": "/f/simops-confirm?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Potential'"
+                  },
+                  {
+                    "key": "accept",
+                    "label": {
+                      "en": "Accept the risk",
+                      "fa": "پذیرش ریسک"
+                    },
+                    "url": "/f/simops-accept-risk?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status in ['Potential', 'Confirmed']"
+                  },
+                  {
+                    "key": "resolve",
+                    "label": {
+                      "en": "Resolve",
+                      "fa": "رفع"
+                    },
+                    "url": "/f/simops-resolve?id={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Confirmed'"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "simops-candidates",
+          "component": "data-grid",
+          "options": {
+            "id": "simops-candidates",
+            "url": "/d/permit-simops-candidates?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "permitNumber",
+                "header": {
+                  "en": "Permit",
+                  "fa": "مجوز"
+                },
+                "width": 130,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 240,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "permitType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 130,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "matchBasis",
+                "header": {
+                  "en": "Match basis",
+                  "fa": "مبنای تطابق"
+                },
+                "width": 200,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "timeWindow",
+                "header": {
+                  "en": "Time window",
+                  "fa": "بازه‌ی زمانی"
+                },
+                "width": 150,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "raise",
+                    "label": {
+                      "en": "Raise a conflict",
+                      "fa": "ثبت تعارض"
+                    },
+                    "url": "/f/simops-create?otherPermitId={id}&permitId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.hasConflict == false"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "candidate-work-orders",
+          "component": "data-grid",
+          "options": {
+            "id": "candidate-work-orders",
+            "url": "/d/permit-candidate-work-orders?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "workOrderNumber",
+                "header": {
+                  "en": "Work order",
+                  "fa": "دستورکار"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "equipment",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "startDate",
+                "header": {
+                  "en": "Start",
+                  "fa": "شروع"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "completionDate",
+                "header": {
+                  "en": "Completion",
+                  "fa": "پایان"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              }
+            ]
+          }
+        },
+        {
+          "id": "handovers",
+          "component": "data-grid",
+          "options": {
+            "id": "handovers",
+            "url": "/d/permit-handovers?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "handoverId",
+                "header": {
+                  "en": "Shift handover",
+                  "fa": "تحویل شیفت"
+                },
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "preparedDate",
+                "header": {
+                  "en": "Prepared",
+                  "fa": "تاریخ آماده‌سازی"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/shift-handover-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "status-history",
+          "component": "data-grid",
+          "options": {
+            "id": "status-history",
+            "url": "/d/permit-status-history?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "fromStatus",
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "toStatus",
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                },
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "changedBy",
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                },
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "changedDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 170,
+                "sortable": false,
+                "filterable": false,
+                "type": "datetime"
+              },
+              {
+                "key": "reason",
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                },
+                "width": 320,
+                "sortable": false,
+                "filterable": false
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
