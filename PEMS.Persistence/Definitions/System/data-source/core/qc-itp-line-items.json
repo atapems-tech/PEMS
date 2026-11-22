@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "qc-itp-line-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC ItpLineItems",
+    "fa": "QC ItpLineItems"
+  },
+  "description": {
+    "en": "QC ItpLineItems",
+    "fa": "QC ItpLineItems"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "ItpLineItems",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "kind": "form",
+  "key": "qc-ncr-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Raise a new NCR",
+    "fa": "ثبت NCR جدید"
+  },
+  "description": {
+    "en": "Raise a new NCR",
+    "fa": "ثبت NCR جدید"
+  },
+  "payload": {
+    "id": "qc-ncr-create",
+    "title": {
+      "en": "Raise a new NCR",
+      "fa": "ثبت NCR جدید"
+    },
+    "submitLabel": {
+      "en": "Raise",
+      "fa": "ثبت"
+    },
+    "actionKey": "qc-ncr-create",
+    "columns": 2,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "ncrNumber",
+        "label": {
+          "en": "NCR number",
+          "fa": "شماره NCR"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "qc-project-options"
+      },
+      {
+        "name": "qcDisciplineId",
+        "label": {
+          "en": "QC discipline",
+          "fa": "دیسیپلین QC"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "qc-discipline-options"
+      },
+      {
+        "name": "severity",
+        "label": {
+          "en": "Severity",
+          "fa": "شدت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Minor",
+            "label": {
+              "en": "Minor",
+              "fa": "Minor"
+            }
+          },
+          {
+            "value": "Major",
+            "label": {
+              "en": "Major",
+              "fa": "Major"
+            }
+          },
+          {
+            "value": "Critical",
+            "label": {
+              "en": "Critical",
+              "fa": "Critical"
+            }
+          }
+        ]
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "optionsFrom": "qc-equipment-options"
+      },
+      {
+        "name": "itpLineItemId",
+        "label": {
+          "en": "ITP line item id (optional)",
+          "fa": "شناسه ردیف ITP (اختیاری)"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 2000
+      }
+    ]
+  }
+}

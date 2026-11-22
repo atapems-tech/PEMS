@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "qc-itp-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create an ITP",
+    "fa": "ایجاد ITP"
+  },
+  "description": {
+    "en": "Create an ITP",
+    "fa": "ایجاد ITP"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Qc",
+      "action": "ItpCreate",
+      "args": {
+        "itpNumber": "field:itpNumber",
+        "projectId": "field:projectId",
+        "qcDisciplineId": "field:qcDisciplineId",
+        "title": "field:title",
+        "equipmentId": "field:equipmentId",
+        "referenceCodeStandard": "field:referenceCodeStandard",
+        "description": "field:description",
+        "procurementPackageId": "field:procurementPackageId",
+        "contractId": "field:contractId"
+      }
+    },
+    "success": {
+      "en": "The ITP was created.",
+      "fa": "ITP ساخته شد."
+    },
+    "redirect": "/p/qc-itps"
+  }
+}

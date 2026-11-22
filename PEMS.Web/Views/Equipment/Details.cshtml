@@ -639,7 +639,7 @@
                         @foreach (var n in Model.NonConformanceReports)
                         {
                             <pems-flex as="li" justify="between" css="border-bottom py-1">
-                                <pems-link asp-controller="QC" asp-action="NcrDetails" asp-route-id="@n.NodeId">@n.Label</pems-link>
+                                <pems-link href="/p/qc-ncr-details?id=@n.NodeId">@n.Label</pems-link>
                                 <pems-badge tone="@(n.Priority == "Urgent" ? "danger" : "neutral")">@n.SubLabel</pems-badge>
                             </pems-flex>
                         }

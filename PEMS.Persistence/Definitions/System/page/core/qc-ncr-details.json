@@ -1,0 +1,184 @@
+{
+  "kind": "page",
+  "key": "qc-ncr-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "NCR details",
+    "fa": "جزئیات NCR"
+  },
+  "description": {
+    "en": "NCR details",
+    "fa": "جزئیات NCR"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "qc-ncr-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "ncr-record",
+            "fields": [
+              {
+                "key": "ncrNumber",
+                "label": {
+                  "en": "NCR",
+                  "fa": "NCR"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "severity",
+                "label": {
+                  "en": "Severity",
+                  "fa": "شدت"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "lineItem",
+                "label": {
+                  "en": "ITP line item",
+                  "fa": "ردیف ITP"
+                }
+              },
+              {
+                "key": "raisedDate",
+                "label": {
+                  "en": "Raised",
+                  "fa": "ثبت"
+                },
+                "type": "date"
+              },
+              {
+                "key": "dispositionedDate",
+                "label": {
+                  "en": "Dispositioned",
+                  "fa": "تعیین تکلیف"
+                },
+                "type": "date"
+              },
+              {
+                "key": "closedDate",
+                "label": {
+                  "en": "Closed",
+                  "fa": "بسته‌شدن"
+                },
+                "type": "date"
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              },
+              {
+                "key": "disposition",
+                "label": {
+                  "en": "Disposition",
+                  "fa": "Disposition"
+                }
+              },
+              {
+                "key": "rootCause",
+                "label": {
+                  "en": "Root cause",
+                  "fa": "علت ریشه‌ای"
+                },
+                "wide": true
+              },
+              {
+                "key": "correctiveAction",
+                "label": {
+                  "en": "Corrective action",
+                  "fa": "اقدام اصلاحی"
+                },
+                "wide": true
+              },
+              {
+                "key": "preventiveAction",
+                "label": {
+                  "en": "Preventive action",
+                  "fa": "اقدام پیشگیرانه"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/qc-ncr-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/qc-ncr-disposition?id={{params.id}}",
+                "text": {
+                  "en": "Record the disposition",
+                  "fa": "ثبت Disposition"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/qc-ncr-approve?id={{params.id}}",
+                "text": {
+                  "en": "Approve or reject the disposition (QA manager)",
+                  "fa": "تأیید یا رد Disposition (مدیر QA)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/qc-ncr-close?id={{params.id}}",
+                "text": {
+                  "en": "Close the NCR",
+                  "fa": "بستن NCR"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/qc-ncrs",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-kpi-by-month",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC KpiByMonth",
+    "fa": "QC KpiByMonth"
+  },
+  "description": {
+    "en": "QC KpiByMonth",
+    "fa": "QC KpiByMonth"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "KpiByMonth"
+    }
+  }
+}

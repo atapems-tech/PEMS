@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "qc-discipline-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC DisciplineOptions",
+    "fa": "QC DisciplineOptions"
+  },
+  "description": {
+    "en": "QC DisciplineOptions",
+    "fa": "QC DisciplineOptions"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Qc",
+      "action": "DisciplineOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

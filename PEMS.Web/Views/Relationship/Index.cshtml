@@ -147,7 +147,7 @@ else
                                     <span>
                                         @if (s.Controller != null)
                                         {
-                                            <pems-link asp-controller="@s.Controller" asp-action="@s.Action" asp-route-id="@item.NodeId">@item.Label</pems-link>
+                                            <pems-link href="@(s.Controller == "QC" ? (s.Action == "ItpDetails" ? "/p/qc-itp-details?id=" : "/p/qc-ncr-details?id=") + item.NodeId : Url.Action(s.Action, s.Controller, new { id = item.NodeId }))">@item.Label</pems-link>
                                         }
                                         else
                                         {

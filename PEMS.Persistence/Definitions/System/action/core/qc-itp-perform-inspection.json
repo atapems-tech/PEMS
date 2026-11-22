@@ -28,6 +28,6 @@
       "en": "Inspection recorded. If it failed, consider raising an NCR for this row.",
       "fa": "بازرسی ثبت شد. در صورت ناموفق بودن، ثبت یک NCR برای این ردیف توصیه می‌شود."
     },
-    "redirect": "/QC/ItpDetails/{itpId}"
+    "redirect": "/p/qc-itps"
   }
 }

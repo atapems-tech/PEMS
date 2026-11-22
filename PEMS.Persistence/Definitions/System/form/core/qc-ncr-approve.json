@@ -1,0 +1,85 @@
+{
+  "kind": "form",
+  "key": "qc-ncr-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve or reject the NCR disposition",
+    "fa": "تأیید یا رد Disposition"
+  },
+  "description": {
+    "en": "Approve or reject the NCR disposition",
+    "fa": "تأیید یا رد Disposition"
+  },
+  "payload": {
+    "id": "qc-ncr-approve",
+    "title": {
+      "en": "Approve or reject the NCR disposition",
+      "fa": "تأیید یا رد Disposition"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ثبت"
+    },
+    "actionKey": "qc-ncr-approve",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Approve",
+            "label": {
+              "en": "Approve",
+              "fa": "تأیید"
+            }
+          },
+          {
+            "value": "Reject",
+            "label": {
+              "en": "Reject",
+              "fa": "رد"
+            }
+          }
+        ]
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment (required to reject)",
+          "fa": "توضیح (برای رد الزامی است)"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

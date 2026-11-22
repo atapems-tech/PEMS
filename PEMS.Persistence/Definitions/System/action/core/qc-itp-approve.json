@@ -25,6 +25,6 @@
       "en": "ITP approved and activated.",
       "fa": "ITP تایید و فعال شد."
     },
-    "redirect": "/QC/ItpDetails/{id}"
+    "redirect": "/p/qc-itp-details?id={id}"
   }
 }

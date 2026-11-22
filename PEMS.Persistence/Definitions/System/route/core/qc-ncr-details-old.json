@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "qc-ncr-details-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC / QA (old address)",
+    "fa": "QC / QA (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "QC / QA (old address)",
+    "fa": "QC / QA (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "QC/NcrDetails/{id}",
+    "target": "/p/qc-ncr-details?id={id}",
+    "permanent": false
+  }
+}

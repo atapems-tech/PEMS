@@ -1,0 +1,187 @@
+{
+  "kind": "page",
+  "key": "qc-kpi",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC KPI report",
+    "fa": "گزارش KPI کیفیت"
+  },
+  "description": {
+    "en": "QC KPI report",
+    "fa": "گزارش KPI کیفیت"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "qc-kpi",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/qc",
+                "text": {
+                  "en": "Back to QC / QA",
+                  "fa": "بازگشت به QC / QA"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "totals",
+          "component": "data-grid",
+          "options": {
+            "id": "totals",
+            "url": "/d/qc-kpi",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "totalNcr",
+                "header": {
+                  "en": "NCRs raised",
+                  "fa": "NCR های ثبت‌شده"
+                },
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "closedOnTimeRate",
+                "header": {
+                  "en": "Closed within 14 days (%)",
+                  "fa": "درصد بسته‌شده در ۱۴ روز"
+                },
+                "width": 200,
+                "type": "number"
+              }
+            ],
+            "pageSize": 5,
+            "height": 120
+          }
+        },
+        {
+          "id": "by-discipline",
+          "component": "data-grid",
+          "options": {
+            "id": "by-discipline",
+            "url": "/d/qc-kpi-by-discipline",
+            "idField": "group",
+            "columns": [
+              {
+                "key": "group",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 200
+              },
+              {
+                "key": "total",
+                "header": {
+                  "en": "Total",
+                  "fa": "کل"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "open",
+                "header": {
+                  "en": "Open",
+                  "fa": "باز"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "critical",
+                "header": {
+                  "en": "Critical",
+                  "fa": "بحرانی"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "avgDaysToClose",
+                "header": {
+                  "en": "Average days to close",
+                  "fa": "میانگین روز تا بسته‌شدن"
+                },
+                "width": 200,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 300
+          }
+        },
+        {
+          "id": "by-severity",
+          "component": "data-grid",
+          "options": {
+            "id": "by-severity",
+            "url": "/d/qc-kpi-by-severity",
+            "idField": "group",
+            "columns": [
+              {
+                "key": "group",
+                "header": {
+                  "en": "Severity",
+                  "fa": "شدت"
+                },
+                "width": 200
+              },
+              {
+                "key": "total",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 90,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 300
+          }
+        },
+        {
+          "id": "by-month",
+          "component": "data-grid",
+          "options": {
+            "id": "by-month",
+            "url": "/d/qc-kpi-by-month",
+            "idField": "group",
+            "columns": [
+              {
+                "key": "group",
+                "header": {
+                  "en": "Month",
+                  "fa": "ماه"
+                },
+                "width": 200
+              },
+              {
+                "key": "total",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                },
+                "width": 90,
+                "type": "number"
+              }
+            ],
+            "pageSize": 20,
+            "height": 300
+          }
+        }
+      ]
+    }
+  }
+}

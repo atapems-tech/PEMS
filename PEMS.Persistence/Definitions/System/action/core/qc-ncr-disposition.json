@@ -29,6 +29,6 @@
       "en": "Disposition recorded; a critical NCR waits for the QA manager approval.",
       "fa": "تعیین تکلیف ثبت شد؛ NCR بحرانی در انتظار تایید مدیر QA است."
     },
-    "redirect": "/QC/NcrDetails/{id}"
+    "redirect": "/p/qc-ncr-details?id={id}"
   }
 }

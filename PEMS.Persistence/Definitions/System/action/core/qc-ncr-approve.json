@@ -27,6 +27,6 @@
       "en": "The decision was recorded.",
       "fa": "تصمیم ثبت شد."
     },
-    "redirect": "/QC/NcrDetails/{id}"
+    "redirect": "/p/qc-ncr-details?id={id}"
   }
 }

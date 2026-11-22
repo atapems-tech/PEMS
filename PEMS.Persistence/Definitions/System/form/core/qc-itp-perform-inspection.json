@@ -1,0 +1,94 @@
+{
+  "kind": "form",
+  "key": "qc-itp-perform-inspection",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record an inspection",
+    "fa": "ثبت بازرسی"
+  },
+  "description": {
+    "en": "Record an inspection",
+    "fa": "ثبت بازرسی"
+  },
+  "payload": {
+    "id": "qc-itp-perform-inspection",
+    "title": {
+      "en": "Record an inspection",
+      "fa": "ثبت بازرسی"
+    },
+    "submitLabel": {
+      "en": "Record",
+      "fa": "ثبت"
+    },
+    "actionKey": "qc-itp-perform-inspection",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "lineItemId",
+        "label": {
+          "en": "Line item id",
+          "fa": "شناسه ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "result",
+        "label": {
+          "en": "Result",
+          "fa": "نتیجه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Acceptable",
+            "label": {
+              "en": "Acceptable",
+              "fa": "قابل قبول"
+            }
+          },
+          {
+            "value": "Unacceptable",
+            "label": {
+              "en": "Unacceptable",
+              "fa": "غیرقابل قبول"
+            }
+          }
+        ]
+      },
+      {
+        "name": "inspector",
+        "label": {
+          "en": "Inspector",
+          "fa": "بازرس"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

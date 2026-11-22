@@ -1,0 +1,266 @@
+{
+  "kind": "page",
+  "key": "qc-itp-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "ITP details",
+    "fa": "جزئیات ITP"
+  },
+  "description": {
+    "en": "ITP details",
+    "fa": "جزئیات ITP"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "qc-itp-details",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "itp-record",
+            "fields": [
+              {
+                "key": "itpNumber",
+                "label": {
+                  "en": "ITP",
+                  "fa": "ITP"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "revision",
+                "label": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "package",
+                "label": {
+                  "en": "Procurement package",
+                  "fa": "پکیج"
+                }
+              },
+              {
+                "key": "contract",
+                "label": {
+                  "en": "Contract",
+                  "fa": "قرارداد"
+                }
+              },
+              {
+                "key": "referenceCodeStandard",
+                "label": {
+                  "en": "Reference code / standard",
+                  "fa": "کد / استاندارد مرجع"
+                }
+              },
+              {
+                "key": "approvedDate",
+                "label": {
+                  "en": "Approved",
+                  "fa": "تأیید"
+                },
+                "type": "date"
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/qc-itp-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/qc-itp-approve?id={{params.id}}",
+                "text": {
+                  "en": "Approve and activate",
+                  "fa": "تأیید و فعال‌سازی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/qc-itp-add-line-item?itpId={{params.id}}",
+                "text": {
+                  "en": "Add a line item",
+                  "fa": "افزودن ردیف"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/qc-itps",
+                "text": {
+                  "en": "Back to the list",
+                  "fa": "بازگشت به فهرست"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "lines",
+          "component": "def:related-table",
+          "options": {
+            "id": "lines",
+            "title": {
+              "en": "Line items",
+              "fa": "ردیف‌ها"
+            },
+            "url": "/d/qc-itp-line-items?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "sequenceNo",
+                "header": {
+                  "en": "#",
+                  "fa": "#"
+                },
+                "width": 60,
+                "type": "number"
+              },
+              {
+                "key": "activity",
+                "header": {
+                  "en": "Activity",
+                  "fa": "فعالیت"
+                },
+                "width": 240
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 140
+              },
+              {
+                "key": "inspectionCategory",
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                },
+                "width": 110
+              },
+              {
+                "key": "acceptanceCriteria",
+                "header": {
+                  "en": "Acceptance criteria",
+                  "fa": "معیار پذیرش"
+                },
+                "width": 220
+              },
+              {
+                "key": "responsibleParty",
+                "header": {
+                  "en": "Responsible",
+                  "fa": "مسئول"
+                },
+                "width": 140
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 100
+              },
+              {
+                "key": "notifiedDate",
+                "header": {
+                  "en": "Notified",
+                  "fa": "اعلان"
+                },
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "notify",
+                    "label": {
+                      "en": "Notify hold point",
+                      "fa": "اعلان Hold Point"
+                    },
+                    "url": "/a/qc-itp-notify-hold-point",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Record the hold point notice?",
+                      "fa": "اعلان ثبت شود؟"
+                    }
+                  },
+                  {
+                    "key": "inspect",
+                    "label": {
+                      "en": "Record inspection",
+                      "fa": "ثبت بازرسی"
+                    },
+                    "url": "/f/qc-itp-perform-inspection?lineItemId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

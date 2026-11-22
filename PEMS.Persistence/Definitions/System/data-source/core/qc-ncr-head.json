@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "qc-ncr-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC NcrHead",
+    "fa": "QC NcrHead"
+  },
+  "description": {
+    "en": "QC NcrHead",
+    "fa": "QC NcrHead"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "NcrHead",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

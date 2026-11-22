@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "qc-itp-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve and activate the ITP",
+    "fa": "تأیید و فعال‌سازی ITP"
+  },
+  "description": {
+    "en": "Approve and activate the ITP",
+    "fa": "تأیید و فعال‌سازی ITP"
+  },
+  "payload": {
+    "id": "qc-itp-approve",
+    "title": {
+      "en": "Approve and activate the ITP",
+      "fa": "تأیید و فعال‌سازی ITP"
+    },
+    "submitLabel": {
+      "en": "Approve",
+      "fa": "تأیید"
+    },
+    "actionKey": "qc-itp-approve",
+    "columns": 1,
+    "warnOnLeave": true,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

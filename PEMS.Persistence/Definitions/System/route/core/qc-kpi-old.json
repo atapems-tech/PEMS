@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "qc-kpi-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC / QA (old address)",
+    "fa": "QC / QA (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "QC / QA (old address)",
+    "fa": "QC / QA (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "QC/Kpi",
+    "target": "/p/qc-kpi",
+    "permanent": false
+  }
+}

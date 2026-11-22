@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-kpi-by-discipline",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC KpiByDiscipline",
+    "fa": "QC KpiByDiscipline"
+  },
+  "description": {
+    "en": "QC KpiByDiscipline",
+    "fa": "QC KpiByDiscipline"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "KpiByDiscipline"
+    }
+  }
+}

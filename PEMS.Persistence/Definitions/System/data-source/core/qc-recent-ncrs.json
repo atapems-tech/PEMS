@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-recent-ncrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC RecentNcrs",
+    "fa": "QC RecentNcrs"
+  },
+  "description": {
+    "en": "QC RecentNcrs",
+    "fa": "QC RecentNcrs"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "RecentNcrs"
+    }
+  }
+}

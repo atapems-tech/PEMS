@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "qc-contract-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC ContractOptions",
+    "fa": "QC ContractOptions"
+  },
+  "description": {
+    "en": "QC ContractOptions",
+    "fa": "QC ContractOptions"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Qc",
+      "action": "ContractOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

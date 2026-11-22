@@ -89,7 +89,7 @@ public static class NavigationMenuDefaults
 
         // ---- کنترل کیفیت
         Section("sec.quality", 400, "QualityControl", "bi-patch-check", "Module:QualityControl", "QC,MOC"),
-        Link("quality.qc", "sec.quality", 10, "QC / QA", "bi-patch-check", "QC"),
+        new("quality.qc", "sec.quality", L, 10, "QC / QA", "bi-patch-check", Always, ExternalPath: "/p/qc", ExtraActiveControllers: "QC"),   // SCRUM-742: a definition page (/p/...)
         new("quality.moc", "sec.quality", L, 20, "MOC", "bi-arrow-repeat", Always, ExternalPath: "/p/mocs"),   // SCRUM-720: a definition page (/p/...)
 
         // ---- تدارکات و زنجیره‌ی تأمین (SCRUM-423): خرید، قرارداد، فروشنده و انبار در یک بخش، مثل CMMS. هر پیوند همان دروازه‌ی

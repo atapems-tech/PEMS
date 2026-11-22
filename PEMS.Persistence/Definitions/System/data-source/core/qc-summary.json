@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "qc-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "QC Summary",
+    "fa": "QC Summary"
+  },
+  "description": {
+    "en": "QC Summary",
+    "fa": "QC Summary"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Qc",
+      "action": "Summary"
+    }
+  }
+}
