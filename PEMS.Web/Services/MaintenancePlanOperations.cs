@@ -6,7 +6,8 @@ using PEMS.Persistence.Context;
 namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-724: the list and the plan commands of MaintenancePlanController (it used the context inline), as operations.</summary>
-public sealed class MaintenancePlanOperations(IMaintenancePlanService plans, IPMGenerationService generation, IWorkOrderLifecycleService lifecycle, PEMSDbContext context) : IMaintenancePlanOperations
+public sealed class MaintenancePlanOperations(IMaintenancePlanService plans, IPMGenerationService generation, IWorkOrderLifecycleService lifecycle, PEMSDbContext context,
+    IMaintenancePlanCommandService commands, IStrategyAssignmentService assignments) : IMaintenancePlanOperations
 {
     public async Task<List<MaintenancePlanRow>> PlansAsync() => (await plans.GetListAsync(1, 500)).Items.Select(p => new MaintenancePlanRow(p.MaintenancePlanId, p.PlanNumber, p.EquipmentId, p.EquipmentTagNumber, p.EquipmentName, p.EquipmentClassName ?? "", p.CriticalityClass ?? "",
         p.Title, p.StrategyType ?? "", p.StrategyId, p.StrategyVersion, p.FailureModeName ?? "", p.ScheduleMode, p.HasAssignment, p.TriggerType, p.IntervalDays, p.MeterType ?? "", p.MeterInterval, p.LastExecutionMeterReading, p.NextDueMeterReading,
@@ -55,5 +56,30 @@ public sealed class MaintenancePlanOperations(IMaintenancePlanService plans, IPM
         plan.IsActive = false;
         await context.SaveChangesAsync();
         return (true, null);
+    }
+
+    public async Task<List<MaintenancePlanAssignmentRow>> AssignmentChoicesAsync(int? equipmentId = null, int? strategyId = null) =>
+        (await assignments.GetPlanEligibleAssignmentsAsync(equipmentId, strategyId)).Select(c => new MaintenancePlanAssignmentRow(c.AssignmentId, c.Tag, c.StrategyType,
+            string.IsNullOrWhiteSpace(c.FailureModeName) ? (c.FailureModeNameFa ?? "") : c.FailureModeName, c.StrategyVersion, c.EquipmentClassName ?? "")).ToList();
+
+    public async Task<List<MaintenancePlanFormRow>> FormOfAsync(int id)
+    {
+        var c = await commands.GetFormContextAsync(id);
+        if (c is null) return [];
+        return [new MaintenancePlanFormRow(c.AssignmentId, c.Equipment.Tag, $"#{c.StrategyId} v{c.StrategyVersion} {c.StrategyType}", c.FailureModeName ?? c.FailureModeNameFa ?? "",
+            c.SuggestedTitle ?? "", c.RecommendedTriggerType ?? "", c.SuggestedIntervalDays,
+            c.SuggestedIntervalDays.HasValue ? $"{c.SuggestedIntervalDays.Value} ({c.Equipment.CriticalityClass ?? "-"})" : "", PEMS.Domain.Common.RcmCodes.ScheduleMode.Fixed)];
+    }
+
+    public async Task<List<ReportChoiceRow>> JobPlanChoicesAsync() =>
+        (await context.JobPlans.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.JobPlanNumber).Select(x => new { x.JobPlanId, x.JobPlanNumber, x.Title }).ToListAsync())
+            .Select(x => new ReportChoiceRow(x.JobPlanId.ToString(System.Globalization.CultureInfo.InvariantCulture), x.JobPlanNumber + " - " + x.Title)).ToList();
+
+    public async Task<MaintenancePlanCreateStep> CreateAsync(PlanInputDto input, List<string> userRoles, int? employeeId, string? userName)
+    {
+        var result = await commands.CreateAsync(input, new StrategyActor(employeeId, userName, userRoles));
+        if (result.Success) return new(true, "Rcm_Info_PlanCreated", null, result.Id);
+        var first = result.Errors[0];
+        return new(false, first.Code, first.Args.Cast<object?>().ToArray());
     }
 }

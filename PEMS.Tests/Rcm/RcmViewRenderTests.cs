@@ -115,47 +115,42 @@ public class RcmViewRenderTests
     }
 
     [Fact]
-    public async Task PlanForm_PrefillsTagAsReadOnlyIdentity_AndNeverPostsEquipmentId()
+    public async Task PlanForm_PrefillsTagAsReadOnlyIdentity_AndTheAssignmentIsTheOnlyKey()
     {
-        var f = await BuildAsync(nameof(PlanForm_PrefillsTagAsReadOnlyIdentity_AndNeverPostsEquipmentId));
+        var f = await BuildAsync(nameof(PlanForm_PrefillsTagAsReadOnlyIdentity_AndTheAssignmentIsTheOnlyKey));
         await RcmTestFactory.AddJobPlanAsync(f.Env.Ctx);
-        var c = f.Env.PlanController();
+        var operations = f.Env.PlanOperations();
 
-        var html = await Render(c, await c.Create(f.AssignmentId, null, null), "/Views/MaintenancePlan/Create.cshtml");
+        var row = Assert.Single(await operations.FormOfAsync(f.AssignmentId));
 
-        Assert.Contains("80-FT-6001", html);
-        Assert.Contains("data-equipment-identity", html);
-        Assert.Contains($"name=\"MaintenanceStrategyAssignmentId\" value=\"{f.AssignmentId}\"", html);
-        Assert.DoesNotContain("name=\"equipmentId\"", html);
-        Assert.DoesNotContain("name=\"maintenanceStrategyId\"", html);
-        Assert.Contains("80-FT-6001 - Leakage PUMP_T - Preventive", html); // عنوان پیشنهادی
-        Assert.Contains("Suggested: 15 days", html);                         // ضریب بحرانی A
+        Assert.Equal("80-FT-6001", row.Tag);
+        Assert.Equal(f.AssignmentId, row.Id);                                              // the form is /f/maintenance-plan-create/{assignmentId}: no equipment id or strategy id is read from the client
+        Assert.Equal("80-FT-6001 - Leakage PUMP_T - Preventive", row.Title);              // the suggested title
+        Assert.StartsWith("15", row.SuggestedInterval);                                    // criticality A factor
+        var form = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(Path.Combine(PEMS.Tests.TestSupport.SupportedReleases.RepoRoot(), "PEMS.Persistence", "Definitions", "System", "form", "core", "maintenance-plan-create.json")))!["payload"]!;
+        var names = form["fields"]!.AsArray().Select(x => (string)x!["name"]!).ToList();
+        Assert.DoesNotContain("equipmentId", names);
+        Assert.DoesNotContain("maintenanceStrategyId", names);
     }
 
     [Fact]
     public async Task PlanForm_WithoutAssignment_ListsDistinctChoices()
     {
         var f = await BuildAsync(nameof(PlanForm_WithoutAssignment_ListsDistinctChoices));
-        var c = f.Env.PlanController();
 
-        var html = await Render(c, await c.Create(null, null, f.TagId), "/Views/MaintenancePlan/Create.cshtml");
+        var choices = await f.Env.PlanOperations().AssignmentChoicesAsync(f.TagId, null);
 
-        Assert.Contains("Select the tag and strategy for the new plan", html);
-        Assert.Contains("80-FT-6001", html);
-        Assert.Contains("v1", html);
+        var choice = Assert.Single(choices);
+        Assert.Equal("80-FT-6001", choice.Tag);
+        Assert.Equal(1, choice.StrategyVersion);
     }
 
     [Fact]
-    public async Task PlanForm_UnknownAssignment_RendersAMessage_NotAnException()
+    public async Task PlanForm_UnknownAssignment_GivesNoRow_NotAnException()
     {
         var env = await RcmTestFactory.CreateEnvAsync("View_PlanUnknown");
-        var c = env.PlanController();
 
-        var result = await c.Create(424242, null, null);
-        var html = await Render(c, result, "/Views/MaintenancePlan/Create.cshtml");
-
-        Assert.Equal(404, c.Response.StatusCode);
-        Assert.Contains("alert-danger", html);
+        Assert.Empty(await env.PlanOperations().FormOfAsync(424242));                       // the form host answers 404 for an id that gives no row
     }
 
     [Fact]

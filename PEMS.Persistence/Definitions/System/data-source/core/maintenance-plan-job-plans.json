@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "maintenance-plan-job-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Job plans",
+    "fa": "طرح‌های کار"
+  },
+  "description": {
+    "en": "Active job plans",
+    "fa": "طرح‌های کار فعال"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "MaintenancePlanPage",
+      "action": "JobPlanChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}
