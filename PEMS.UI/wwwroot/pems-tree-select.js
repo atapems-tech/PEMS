@@ -1,5 +1,5 @@
 // PEMS.UI tree select (SCRUM-513). Loaded once by the layout. A field that picks one node of a large tree (functional location, organization unit, PBS, equipment)
-// without loading the tree: <div data-pems-tree-select data-url="/FunctionalLocation/TreeNodes"> written by <pems-tree-select>.
+// without loading the tree: <div data-pems-tree-select data-url="/x/functional-location-tree-nodes"> written by <pems-tree-select>.
 //   GET url?parentId=&q=&page=  ->  { items: [{ value, text, sub?, hasChildren }], hasMore }      (the server applies the user's permissions)
 //   No parentId: the roots. A level is read 20 nodes at a time ("more" asks the next page). A search of two characters or more is a flat list over the whole tree.
 // Keyboard (WAI-ARIA tree): Down/Up move, Right opens or enters a node, Left closes or goes to the parent, Home/End, Enter or Space picks, Escape closes.

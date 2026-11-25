@@ -16,7 +16,7 @@ namespace PEMS.Tests.Authorization;
 /// </summary>
 public class FunctionalLocationControllerAuthorizationTests
 {
-    private static async Task<(FunctionalLocationController Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
+    private static async Task<(object? Controller, PEMS.Persistence.Context.PEMSDbContext Ctx)> CreateController(
         string dbName, string? role = SystemRoles.EngineeringManager)
     {
         var ctx = PemsDbContextFactory.CreateInMemory($"FLAuth_{dbName}");
@@ -34,12 +34,10 @@ public class FunctionalLocationControllerAuthorizationTests
 
         var currentUser = new FakeCurrentUserService { Roles = role != null ? new List<string> { role } : new List<string>() };
 
-        var flService = new FunctionalLocationService(ctx);
-        var controller = new FunctionalLocationController(flService, currentUser, permissionService).WithTempData();
-        return (controller, ctx);
+        return (null, ctx);   // SCRUM-700: no controller any more; the tests use the operations and the permission service
     }
 
-    // SCRUM-700: the list is a read operation (FunctionalLocation.View, checked by the host); the TreeNodes endpoint of the picker stays in the controller
+    // SCRUM-700: the list is a read operation (FunctionalLocation.View, checked by the host); the nodes of the picker are the read operation TreeNodes (served at /x/functional-location-tree-nodes)
     private static string ViewPermission() => ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IAssetPagesOperations).GetMethod("LocationListAsync")!
         .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission!;
 

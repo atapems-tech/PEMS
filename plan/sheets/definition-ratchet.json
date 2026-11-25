@@ -140,7 +140,6 @@
     "PEMS.Web.Controllers.FileHostController": 1,
     "PEMS.Web.Controllers.FilesController": 3,
     "PEMS.Web.Controllers.FormHostController": 2,
-    "PEMS.Web.Controllers.FunctionalLocationController": 1,
     "PEMS.Web.Controllers.HelpController": 3,
     "PEMS.Web.Controllers.HomeController": 4,
     "PEMS.Web.Controllers.LetterCartableController": 8,

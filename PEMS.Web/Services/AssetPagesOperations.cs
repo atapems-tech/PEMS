@@ -35,6 +35,12 @@ public sealed class AssetPagesOperations(PEMSDbContext context, IAssetService as
     public async Task<List<PickerOption>> LocationOptionsAsync()
         => (await locations.GetPickerListAsync()).Select(l => new PickerOption(l.FunctionalLocationId.ToString(), l.PathBreadcrumb)).ToList();
 
+    public async Task<TreeNodesAnswer> TreeNodesAsync(int? parentId = null, string? q = null, int page = 1)
+    {
+        var result = await locations.GetTreeNodesAsync(parentId, q, page, 20);
+        return new(result.Items.Select(i => new TreeNodeItem(i.Id.ToString(), i.Label, i.Sub, i.HasChildren)).ToList(), result.HasMore);
+    }
+
     public async Task<List<LocationRow>> LocationListAsync()
         => (await locations.GetPagedListAsync(1, RowLimit)).Items
             .Select(l => new LocationRow(l.FunctionalLocationId, l.Code, l.Name, l.Plant ?? "", l.Area ?? "", l.Unit ?? "", l.ParentCode ?? "", l.PathBreadcrumb, l.EquipmentCount, l.AssetCount, l.IsActive)).ToList();
