@@ -42,6 +42,25 @@
             }
         </fieldset>
     }
+    else if (Descriptor.Kind == FieldKind.MultiSelect)
+    {
+        <fieldset class="pems-field__group" aria-describedby="@state.DescribedBy">
+            <legend class="pems-field__label">
+                @label
+                @if (Descriptor.Required)
+                {
+                    <span class="pems-field__required" aria-hidden="true">*</span>
+                }
+            </legend>
+            @foreach (var o in Descriptor.Options ?? [])
+            {
+                <label class="pems-field__check">
+                    <input type="checkbox" name="@Descriptor.Name" value="@o.Value" checked="@IsChosen(o.Value)" disabled="@Descriptor.ReadOnly" />
+                    @Locale.Text(o.Label)
+                </label>
+            }
+        </fieldset>
+    }
     else if (Descriptor.Kind == FieldKind.CheckboxMatrix)
     {
         <fieldset class="pems-field__group" aria-describedby="@state.DescribedBy">
@@ -134,6 +153,8 @@
     [Parameter] public TranslatableText? Error { get; set; }
     /// <summary>The selected "row|column" pairs of a checkbox matrix.</summary>
     [Parameter] public IReadOnlyList<string>? Values { get; set; }
+
+    private bool IsChosen(string option) => (Value ?? "").Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Contains(option);
 
     private bool IsChecked(string row, string column) => Values?.Contains(row + "|" + column) == true;
 

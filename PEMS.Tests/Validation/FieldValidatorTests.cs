@@ -54,6 +54,7 @@ public sealed class FieldValidatorTests
     [InlineData(FieldType.DateTime, "2030-01-01T10:00", ConstraintCodes.DateAfter)]
     [InlineData(FieldType.Time, "25:61", ConstraintCodes.NotATime)]
     [InlineData(FieldType.Select, "z", ConstraintCodes.NotAllowed)]
+    [InlineData(FieldType.MultiSelect, "a,z", ConstraintCodes.NotAllowed)]
     [InlineData(FieldType.Tags, "a,b,c,d", ConstraintCodes.MaxItems)]
     [InlineData(FieldType.Tags, "a", ConstraintCodes.MinItems)]
     public void Each_constraint_reports_its_own_stable_code(FieldType type, string value, string code)
@@ -78,6 +79,7 @@ public sealed class FieldValidatorTests
     [InlineData(FieldType.DateTime, "۲۰۲۶-۰۱-۱۵T08:30")]
     [InlineData(FieldType.Time, "08:30")]
     [InlineData(FieldType.Select, "a")]
+    [InlineData(FieldType.MultiSelect, "a,b")]
     [InlineData(FieldType.Tags, "x, y")]
     public void Valid_values_of_every_type_pass_including_persian_digits(FieldType type, string value)
     {

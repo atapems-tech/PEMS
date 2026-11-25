@@ -173,7 +173,7 @@ public static class FormEngine
         {
             FieldKind.TextArea => FieldType.TextArea, FieldKind.Number => FieldType.Number, FieldKind.Date => FieldType.Date, FieldKind.DateTime => FieldType.DateTime, FieldKind.Select => FieldType.Select, FieldKind.Checkbox => FieldType.Checkbox,
             FieldKind.File => FieldType.File, FieldKind.RichText => FieldType.RichText, FieldKind.Password => FieldType.Password, FieldKind.Money => FieldType.Money, FieldKind.Time => FieldType.Time,
-            FieldKind.Radio => FieldType.Radio, FieldKind.Switch => FieldType.Switch, FieldKind.Tags => FieldType.Tags, _ => FieldType.Text,
+            FieldKind.Radio => FieldType.Radio, FieldKind.Switch => FieldType.Switch, FieldKind.Tags => FieldType.Tags, FieldKind.MultiSelect => FieldType.MultiSelect, _ => FieldType.Text,
         },
         Required = f.Required, MinLength = f.MinLength, MaxLength = f.MaxLength, Min = f.Min, Max = f.Max, Pattern = f.Pattern,
         Options = f.Options?.Select(o => o.Value).ToList(),
@@ -221,8 +221,14 @@ public static class FormEngine
             foreach (var (k, t) in new (string, TranslatableText?)[] { ("required", f.Messages?.Required), ("maxLength", f.Messages?.MaxLength), ("minLength", f.Messages?.MinLength), ("pattern", f.Messages?.Pattern), ("min", f.Messages?.Min), ("max", f.Messages?.Max), ("invalid", f.Messages?.Invalid), ("notAllowed", f.Messages?.NotAllowed) })
                 Text(t, $"{at}/messages/{k}");
             foreach (var (o, j) in (f.Options ?? []).Select((o, j) => (o, j))) Text(o.Label, $"{at}/options/{j}/label");
-            if (f.Kind is FieldKind.Select or FieldKind.Radio && (f.Options is null || f.Options.Count == 0) && string.IsNullOrEmpty(f.OptionsFrom))
+            if (f.Kind is FieldKind.Select or FieldKind.Radio or FieldKind.MultiSelect && (f.Options is null || f.Options.Count == 0) && string.IsNullOrEmpty(f.OptionsFrom))
                 errors.Add(new(at + "/options", "required", "Def_Err_Required", "A Select or Radio field needs options or optionsFrom."));
+            if (f.OptionsArgs is { Count: > 0 } optionsArgs)
+            {
+                if (string.IsNullOrEmpty(f.OptionsFrom)) errors.Add(new(at + "/optionsArgs", "overlap", "Def_Err_Overlap", "optionsArgs needs optionsFrom."));
+                foreach (var (argument, requestName) in optionsArgs)
+                    if (!Regex.IsMatch(argument, "^[A-Za-z][A-Za-z0-9]{0,40}$") || !Regex.IsMatch(requestName ?? "", "^[A-Za-z][A-Za-z0-9]{0,40}$")) errors.Add(new($"{at}/optionsArgs/{argument}", "pattern", "Def_Err_Pattern", "An argument and a request value are names of letters and digits."));
+            }
             if (!string.IsNullOrEmpty(f.OptionsFrom) && f.Options is { Count: > 0 }) errors.Add(new(at + "/optionsFrom", "overlap", "Def_Err_Overlap", "A field takes its options from one place: options or optionsFrom, not both."));
             if (f.MergeFields is { Count: > 0 })
             {

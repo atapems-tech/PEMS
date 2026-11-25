@@ -174,7 +174,7 @@ public sealed class OperationOptionsProvider(OperationReader reader) : IDataSour
 
     public async Task<IReadOnlyList<FieldOption>> LoadAsync(DataSourceRequest request, CancellationToken ct)
     {
-        var rows = await reader.ReadAsync(request.Parameters, request.Culture, request.Roles, request.UserName, ct) ?? [];
+        var rows = await reader.ReadAsync(request.Parameters, request.Culture, request.Roles, request.UserName, ct, request.Query) ?? [];
         var value = request.Parameters.GetValueOrDefault("value") ?? "value";
         var label = request.Parameters.GetValueOrDefault("label") ?? value;
         string Show(IDictionary<string, object?> r, string name) => r.TryGetValue(name, out var v) ? Convert.ToString(v, CultureInfo.InvariantCulture) ?? "" : "";

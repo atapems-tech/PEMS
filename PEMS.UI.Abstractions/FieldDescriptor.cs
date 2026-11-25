@@ -28,7 +28,9 @@ public enum FieldKind
     Tags,
     /// <summary>A grid of checkboxes: <see cref="FieldDescriptor.Options"/> are the rows and <see cref="FieldDescriptor.Columns"/> the columns; it posts one list of "row|column" values.</summary>
     CheckboxMatrix,
-    DateTime
+    DateTime,
+    /// <summary>Several choices out of <see cref="FieldDescriptor.Options"/> (or <see cref="FieldDescriptor.OptionsFrom"/>), shown as a group of checkboxes; it posts the chosen values, kept as one comma separated text (SCRUM-821).</summary>
+    MultiSelect
 }
 
 /// <summary>
@@ -82,6 +84,11 @@ public sealed record FieldDescriptor
     public FieldMessages? Messages { get; init; }
     /// <summary>The key of a data-source definition that gives the options of a Select or Radio field (resolved for the request by the pipeline).</summary>
     public string? OptionsFrom { get; init; }
+    /// <summary>
+    /// SCRUM-820: the request values an <see cref="OptionsFrom"/> source reads: the key is the argument name the data source declares (<c>param:classId</c>), the value is the name of the query value of the form address
+    /// (<c>/f/key?classId=5</c>; the record id of <c>/f/key/{id}</c> is <c>id</c>). Only these names reach the source and they only filter its choices; without a value the field has no choices.
+    /// </summary>
+    public IReadOnlyDictionary<string, string>? OptionsArgs { get; init; }
     /// <summary>Columns this field takes in the form grid (1 to the form's <c>columns</c>).</summary>
     public int? Span { get; init; }
     /// <summary>Shows the value grouped as the user types (SCRUM-386): <c>9</c> a digit, <c>A</c> a letter, <c>*</c> a letter or digit, any other character a separator ("9999-9999-9999-9999", "AA99 9999"). The value that is posted and stored has no separators (<see cref="PEMS.UI.Abstractions.FieldMask"/>).</summary>

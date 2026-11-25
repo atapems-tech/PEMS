@@ -10,7 +10,7 @@ namespace PEMS.Web.Definitions;
 // them is registered in the host, so a definition can never run code that is not reviewed, and an unknown name is refused when the definition is loaded.
 
 /// <summary>What a data source provider is asked: the signed-in user and the language, plus the parameters of the definition.</summary>
-public sealed record DataSourceRequest(string Culture, IReadOnlyCollection<string> Roles, string? UserName, IReadOnlyDictionary<string, string?> Parameters);
+public sealed record DataSourceRequest(string Culture, IReadOnlyCollection<string> Roles, string? UserName, IReadOnlyDictionary<string, string?> Parameters, IReadOnlyDictionary<string, string?>? Query = null);
 
 /// <summary>A registered source of choices (departments, equipment statuses ...). Reads through the REST-level services with the same rights as the rest of the product.</summary>
 public interface IDataSourceProvider
@@ -287,7 +287,7 @@ public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAcces
             var name = DataSourceDefinitionKind.Str(field["name"]);
             var from = DataSourceDefinitionKind.Str(field["optionsFrom"]);
             if (name is null || from is null) continue;
-            var list = await LoadAsync(from, request, problems, ct);
+            var list = await LoadAsync(from, request, QueryOf(field, request), problems, ct);
             options[name] = list;
         }
         definition.Hydrated[OptionsKey] = options;
@@ -297,7 +297,17 @@ public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAcces
         if (cache is not null) { definition.Counts["cacheHits"] = (int)cache.Hits; definition.Counts["cacheMisses"] = (int)cache.Misses; }   // running totals, SCRUM-574
     }
 
-    private async Task<IReadOnlyList<FieldOption>> LoadAsync(string key, PipelineRequest request, List<string> problems, CancellationToken ct)
+    /// <summary>SCRUM-820: the values the field's optionsArgs name, taken from the request (the query of the form address); nothing else of the request reaches the source.</summary>
+    private static Dictionary<string, string?> QueryOf(JsonObject field, PipelineRequest request)
+    {
+        var query = new Dictionary<string, string?>(StringComparer.Ordinal);
+        if (field["optionsArgs"] is not JsonObject map) return query;
+        foreach (var (argument, requestName) in map)
+            if (DataSourceDefinitionKind.Str(requestName) is { } from && request.Parameters is not null && request.Parameters.TryGetValue(from, out var value) && !string.IsNullOrWhiteSpace(value)) query[argument] = value;
+        return query;
+    }
+
+    private async Task<IReadOnlyList<FieldOption>> LoadAsync(string key, PipelineRequest request, Dictionary<string, string?> query, List<string> problems, CancellationToken ct)
     {
         var published = await store.GetPublishedAsync("data-source", key, request.AppKey, ct);
         if (published is null) { problems.Add($"The data source \"{key}\" does not exist."); return []; }
@@ -313,10 +323,10 @@ public sealed class FormOptionsHydrator(IDefinitionStore store, IDefinitionAcces
         if (providerKey is null || !_providers.TryGetValue(providerKey, out var provider)) { problems.Add($"The provider of \"{key}\" is not registered."); return []; }
         if (provider.AllowedRoles is not null && !provider.AllowedRoles.Any(r => request.Roles.Contains(r, StringComparer.OrdinalIgnoreCase))) { problems.Add($"The user may not read the provider \"{providerKey}\"."); return []; }
         var parameters = (root["parameters"] as JsonObject)?.ToDictionary(p => p.Key, p => (string?)DataSourceDefinitionKind.Str(p.Value) ?? p.Value?.ToJsonString(), StringComparer.Ordinal) ?? new Dictionary<string, string?>();
-        var dataRequest = new DataSourceRequest(request.Culture, request.Roles, request.UserName, parameters);
+        var dataRequest = new DataSourceRequest(request.Culture, request.Roles, request.UserName, parameters, query);
         if (cache is null || provider.CacheSeconds <= 0) return await provider.LoadAsync(dataRequest, ct);
         // SCRUM-574: shared by the users of one permission set; the key holds the definition hash, the sorted roles, the culture and the parameters
-        var cacheKey = HydrationCache.Key(published.ContentHash, request.Roles, request.Culture, "options:" + key + ":" + string.Join(';', parameters.OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => p.Key + "=" + p.Value)));
+        var cacheKey = HydrationCache.Key(published.ContentHash, request.Roles, request.Culture, "options:" + key + ":" + string.Join(';', parameters.Concat(query).OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => p.Key + "=" + p.Value)));
         return await cache.GetOrAddAsync(cacheKey, TimeSpan.FromSeconds(provider.CacheSeconds), () => provider.LoadAsync(dataRequest, ct));
     }
 }

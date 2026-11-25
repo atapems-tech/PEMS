@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "equipment-class-filter",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment classes (filter choices)",
+    "fa": "کلاس‌های تجهیز (گزینه‌های فیلتر)"
+  },
+  "description": {
+    "en": "Equipment classes (filter choices)",
+    "fa": "کلاس‌های تجهیز (گزینه‌های فیلتر)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MaintenanceMasterDataPage",
+      "action": "EquipmentClassesChoices"
+    }
+  }
+}

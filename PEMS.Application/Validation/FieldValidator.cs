@@ -9,7 +9,7 @@ namespace PEMS.Application.Validation;
 /// <summary>create: every required field must be present; update: only the keys that are present are checked, an omitted key never clears a stored value.</summary>
 public enum ValidationMode { Create, Update }
 
-public enum FieldType { Text, TextArea, RichText, Password, Number, Money, Date, Time, Select, Radio, Checkbox, Switch, Tags, File, DateTime }
+public enum FieldType { Text, TextArea, RichText, Password, Number, Money, Date, Time, Select, Radio, Checkbox, Switch, Tags, File, DateTime, MultiSelect }
 
 /// <summary>What a field accepts, independent of how it is shown. Built from a form field, an entity column or an import column.</summary>
 public sealed record FieldConstraints
@@ -148,6 +148,11 @@ public static class FieldValidator
                 break;
             case FieldType.Select or FieldType.Radio:
                 if (f.Options is { Count: > 0 } opts && !opts.Contains(value)) found.Add(V(f.Name, ConstraintCodes.NotAllowed, a));
+                break;
+            case FieldType.MultiSelect:
+                // SCRUM-821: every chosen value must be one of the options
+                var chosen = value.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                if (f.Options is { Count: > 0 } choices && chosen.Any(c => !choices.Contains(c))) found.Add(V(f.Name, ConstraintCodes.NotAllowed, a));
                 break;
             case FieldType.Tags:
                 var items = value.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Length;
