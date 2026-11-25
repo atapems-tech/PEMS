@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "equipment-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload an equipment workbook",
+    "fa": "بارگذاری فایل تجهیزات"
+  },
+  "description": {
+    "en": "Upload an equipment workbook",
+    "fa": "بارگذاری فایل تجهیزات"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentImport",
+      "action": "Upload",
+      "args": {
+        "projectId": "field:projectId",
+        "file": "file:file",
+        "fileName": "field:fileName",
+        "employeeId": "context:employeeId"
+      },
+      "upload": {
+        "profile": "spreadsheet",
+        "maxFileMb": 20
+      }
+    },
+    "success": {
+      "en": "The workbook was staged; review the rows before the commit.",
+      "fa": "فایل مرحله‌بندی شد؛ پیش از ثبت ردیف‌ها را بازبینی کنید."
+    },
+    "redirect": "/p/equipment-import-review?batchId={result}"
+  }
+}

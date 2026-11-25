@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "equipment-import-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment-import-rows",
+    "fa": "equipment-import-rows"
+  },
+  "description": {
+    "en": "equipment-import-rows",
+    "fa": "equipment-import-rows"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentImport",
+      "action": "Rows",
+      "args": {
+        "batchId": "param:batchId"
+      }
+    }
+  }
+}
