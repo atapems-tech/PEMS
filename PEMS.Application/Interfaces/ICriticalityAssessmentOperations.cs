@@ -31,7 +31,7 @@ public interface ICriticalityAssessmentOperations
     Task<List<CriticalityAssessmentDashboardRow>> DashboardAsync();
 
     [PEMS.Application.Common.PemsOperation("CriticalityAssessment", "CreateDraft", "CriticalityAssessment.Create")]
-    Task<(bool Success, string? Error)> CreateDraftAsync(int equipmentId, string? rationale = null);
+    Task<int> CreateDraftAsync(int equipmentId, string? rationale = null);
 
     [PEMS.Application.Common.PemsOperation("CriticalityAssessment", "SetScores", "CriticalityAssessment.Edit")]
     Task<(bool Success, string? Error)> SetScoresAsync(int id, int? safetyScore = null, int? productionScore = null, int? environmentScore = null, string? rationale = null);

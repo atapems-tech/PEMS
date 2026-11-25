@@ -26,6 +26,6 @@
       "en": "The draft was created; open it from the queue.",
       "fa": "پیش‌نویس ساخته شد؛ آن را از صف باز کنید."
     },
-    "redirect": "/p/criticality-assessments"
+    "redirect": "/p/criticality-assessment-details?id={result}"
   }
 }

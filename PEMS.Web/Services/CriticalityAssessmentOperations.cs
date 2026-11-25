@@ -36,10 +36,12 @@ public sealed class CriticalityAssessmentOperations(ICriticalityAssessmentServic
         return [new(d.TotalActiveEquipment, d.Assessed, d.Unassessed, d.Approved, d.UnderReview, d.Draft, d.Superseded, d.PublishedCriticalityA, d.PublishedCriticalityB, d.PublishedCriticalityC, d.PublishedCriticalityOther, d.FrameworkVersion)];
     }
 
-    public async Task<(bool Success, string? Error)> CreateDraftAsync(int equipmentId, string? rationale = null)
+    /// <summary>The id of the new draft (the action opens it); a refusal of the service is shown as it is.</summary>
+    public async Task<int> CreateDraftAsync(int equipmentId, string? rationale = null)
     {
-        var (success, error, _) = await service.CreateDraftAsync(equipmentId, currentUser.UserName, rationale);
-        return (success, error);
+        var (success, error, id) = await service.CreateDraftAsync(equipmentId, currentUser.UserName, rationale);
+        if (!success) throw new InvalidOperationException(error ?? "The assessment could not be created.");
+        return id ?? 0;
     }
 
     public Task<(bool Success, string? Error)> SetScoresAsync(int id, int? safetyScore = null, int? productionScore = null, int? environmentScore = null, string? rationale = null)

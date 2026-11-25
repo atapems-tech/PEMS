@@ -69,11 +69,11 @@ public interface IQcOperations
     Task<List<QcOption>> ContractOptionsAsync();
 
     [PEMS.Application.Common.PemsOperation("Qc", "ItpCreate")]
-    Task<(bool Success, string? Error)> ItpCreateAsync(string itpNumber, int projectId, int qcDisciplineId, string title, int? equipmentId = null, string? referenceCodeStandard = null, string? description = null,
+    Task<int> ItpCreateAsync(string itpNumber, int projectId, int qcDisciplineId, string title, int? equipmentId = null, string? referenceCodeStandard = null, string? description = null,
         int? procurementPackageId = null, int? contractId = null);
 
     [PEMS.Application.Common.PemsOperation("Qc", "NcrCreate")]
-    Task<(bool Success, string? Error)> NcrCreateAsync(string ncrNumber, int projectId, int qcDisciplineId, string description, string severity, int? equipmentId = null, int? itpLineItemId = null);
+    Task<int> NcrCreateAsync(string ncrNumber, int projectId, int qcDisciplineId, string description, string severity, int? equipmentId = null, int? itpLineItemId = null);
 
     [PEMS.Application.Common.PemsOperation("Qc", "ItpAddLineItem")]
     Task<(bool Success, string? Error)> ItpAddLineItemAsync(int itpId, string activity, int qcDisciplineId, string inspectionCategory, string? acceptanceCriteria = null, string? referenceCodeStandard = null, string? responsibleParty = null);
