@@ -1,0 +1,53 @@
+{
+  "kind": "action",
+  "key": "reliability-trend-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Export the readings",
+    "fa": "خروجی قرائت‌ها"
+  },
+  "description": {
+    "en": "Export the readings",
+    "fa": "خروجی قرائت‌ها"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "file.export",
+    "parameters": {
+      "dataSource": "rel-trend-points",
+      "format": "xlsx",
+      "fileName": "ConditionReadings",
+      "columns": [
+        {
+          "field": "readingDate",
+          "header": {
+            "en": "Reading date",
+            "fa": "تاریخ قرائت"
+          }
+        },
+        {
+          "field": "value",
+          "header": {
+            "en": "Value",
+            "fa": "مقدار"
+          }
+        },
+        {
+          "field": "evaluationStatus",
+          "header": {
+            "en": "Evaluation",
+            "fa": "ارزیابی"
+          }
+        },
+        {
+          "field": "isAlarm",
+          "header": {
+            "en": "Alarm",
+            "fa": "آلارم"
+          }
+        }
+      ]
+    }
+  }
+}
