@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "dcc-outgoing-for-reply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Outgoing letters to answer",
+    "fa": "نامه‌های صادره برای پاسخ"
+  },
+  "description": {
+    "en": "Outgoing letters to answer",
+    "fa": "نامه‌های صادره برای پاسخ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Dcc",
+      "action": "OutgoingForReply",
+      "args": {
+        "partyId": "param:partyId"
+      }
+    }
+  }
+}

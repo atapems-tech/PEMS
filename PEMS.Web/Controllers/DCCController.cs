@@ -187,55 +187,6 @@ public class DCCController : Controller
     }
 
 
-    // ------------------------------------------------------------------ جستجوها (JSON)
-
-    [HttpGet]
-    [RequirePermission("Correspondence", "Create")]
-    public async Task<IActionResult> Parties(string? q, int? projectId)
-        => Json(await _incoming.SearchPartiesAsync(q, projectId));
-
-    [HttpGet]
-    [RequirePermission("Correspondence", "Create")]
-    public async Task<IActionResult> PartyThread(int partyId)
-    {
-        var thread = await _incoming.GetPartyThreadAsync(partyId, await CanViewConfidentialAsync(), _currentUser.UserId);
-        return thread == null ? NotFound() : Json(thread);
-    }
-
-    [HttpGet]
-    [RequirePermission("Correspondence", "Create")]
-    public async Task<IActionResult> OutgoingForReply(int partyId)
-        => Json(await _incoming.GetOutgoingForReplyAsync(partyId, await CanViewConfidentialAsync(), _currentUser.UserId));
-
-    [HttpGet]
-    [RequirePermission("Correspondence", "Create")]
-    public async Task<IActionResult> Links(string type, string? q, int? projectId)
-        => Json(await _incoming.SearchLinksAsync(type, q, projectId));
-
-    [HttpGet]
-    [RequirePermission("Correspondence", "Create")]
-    public async Task<IActionResult> People(string? q)
-        => Json(await _incoming.SearchPeopleAsync(q));
-
-    [HttpGet]
-    [RequirePermission("Correspondence", "Create")]
-    public async Task<IActionResult> NextNumber(int? projectId, string? receivedDate)
-    {
-        var received = TryParseIsoDate(receivedDate) ?? DateTime.Today;
-        return Json(new { number = await _incoming.PeekNextNumberAsync(projectId, received) });
-    }
-
-    [HttpGet]
-    [RequirePermission("Correspondence", "Create")]
-    public async Task<IActionResult> CheckDuplicate(int partyId, string? reference)
-    {
-        var hit = await _incoming.FindDuplicateAsync(partyId, reference ?? "");
-        return Json(hit == null
-            ? null
-            : new { letterId = hit.Value.LetterId, letterNumber = hit.Value.LetterNumber, url = Url.Action("Details", "Letter", new { id = hit.Value.LetterId }) });
-    }
-
-
     // ------------------------------------------------------------------ کمکی
 
     private IncomingRegistrationInput Map(IncomingRegisterRequest r, List<LetterComposeIssue> errors)

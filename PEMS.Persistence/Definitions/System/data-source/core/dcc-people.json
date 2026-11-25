@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "dcc-people",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "description": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Dcc",
+      "action": "People",
+      "args": {
+        "term": "param:term"
+      }
+    }
+  }
+}

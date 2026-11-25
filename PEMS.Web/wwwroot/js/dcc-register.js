@@ -64,11 +64,14 @@
             return tpl("dcc-empty", { icon: icon ? { addClass: icon } : null, text: text, name: name === undefined ? null : name });
         }
 
-        function getJson(url, params) {
-            var q = Object.keys(params || {}).filter(function (k) { return params[k] !== undefined && params[k] !== null && params[k] !== ""; })
+        function getJson(url, params, one) {
+            params = params || {};
+            if (params.q !== undefined) { params.term = params.q; delete params.q; }   // the data host reserves "q" for the grid search
+            var q = Object.keys(params).filter(function (k) { return params[k] !== undefined && params[k] !== null && params[k] !== ""; })
                 .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]); }).join("&");
             return fetch(url + (q ? (url.indexOf("?") >= 0 ? "&" : "?") + q : ""), { credentials: "same-origin", headers: { "Accept": "application/json" } })
-                .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); });
+                .then(function (r) { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
+                .then(function (j) { var items = (j && j.items) || []; return one ? (items[0] || null) : items; });
         }
 
         // ------------------------------------------------------------ combobox (input + listbox, keyboard: arrows/Enter/Esc)
@@ -258,8 +261,8 @@
         // ------------------------------------------------------------ number preview
         var refreshNumber = debounce(function () {
             var pid = $("dcrProject").value;
-            getJson(ds.urlNumber, { projectId: pid, receivedDate: recvDate.get() || Jalali.todayIso() })
-                .then(function (r) { $("dcrNumber").textContent = r.number; }).catch(function () { /* preview is optional */ });
+            getJson(ds.urlNumber, { projectId: pid, receivedDate: recvDate.get() || Jalali.todayIso() }, true)
+                .then(function (r) { if (r) $("dcrNumber").textContent = r.number; }).catch(function () { /* preview is optional */ });
         }, 150);
         $("dcrProject").addEventListener("change", function () { refreshNumber(); fillContracts(); loadLinksHint(); });
 
@@ -374,7 +377,7 @@
         }
         function loadThread(partyId) {
             $("dcrThread").replaceChildren(emptyNote(null, T("Dcc_Searching")));
-            getJson(ds.urlThread, { partyId: partyId }).then(function (t) { if (state.party && state.party.id === partyId) renderThread(t); })
+            getJson(ds.urlThread, { partyId: partyId }, true).then(function (t) { if (t && state.party && state.party.id === partyId) renderThread(t); })
                 .catch(function () { $("dcrThread").replaceChildren(emptyNote(null, T("Dcc_NetworkError"))); });
         }
 
@@ -383,7 +386,7 @@
             var ref = $("dcrRef").value.trim();
             var hint = $("dcrRefHint"); hint.textContent = ""; hint.classList.remove("is-warn");
             if (!state.party || !ref) return;
-            getJson(ds.urlDuplicate, { partyId: state.party.id, reference: ref }).then(function (d) {
+            getJson(ds.urlDuplicate, { partyId: state.party.id, reference: ref }, true).then(function (d) {
                 if (!d) return;
                 hint.classList.add("is-warn");
                 hint.textContent = T("Dcc_DuplicateFound").replace("{0}", d.letterNumber);
