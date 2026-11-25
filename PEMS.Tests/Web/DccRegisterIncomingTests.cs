@@ -57,7 +57,7 @@ public class DccRegisterIncomingTests
         public Task DeleteAsync(string key) => Task.CompletedTask;
     }
 
-    private sealed record Rig(DCCController Controller, PEMSDbContext Ctx, IncomingCorrespondenceService Service);
+    private sealed record Rig(DCCController Controller, PEMSDbContext Ctx, IncomingCorrespondenceService Service, PEMS.Web.Services.DccOperations Ops);
 
     private static Rig NewRig(string name, bool persian = true, bool approver = false)
     {
@@ -72,7 +72,7 @@ public class DccRegisterIncomingTests
         var user = new FakeCurrentUserService { UserId = LetterTestWorld.Author, UserName = "u1", FullName = "User 1", Roles = new[] { "Staff" } };
         var localizer = new ResxLocalizer(LoadResx(persian ? "SharedResource.fa.resx" : "SharedResource.resx"));
         var controller = new DCCController(ctx, service, user, permissions, localizer).WithTempData().WithUrlHelper();
-        return new Rig(controller, ctx, service);
+        return new Rig(controller, ctx, service, new PEMS.Web.Services.DccOperations(service, user, permissions));
     }
 
     private static IFormFile Upload(string name, byte[] bytes, string contentType = "application/pdf")
@@ -228,20 +228,19 @@ public class DccRegisterIncomingTests
         await rig.Controller.RegisterIncoming(Request());
         var partyId = rig.Ctx.CorrespondentParties.Single().CorrespondentPartyId;
 
-        Assert.Equal("Acme Co", J(await rig.Controller.Parties("acme", 1)).EnumerateArray().Single().GetProperty("name").GetString());
-        Assert.Equal(1, J(await rig.Controller.PartyThread(partyId)).GetProperty("total").GetInt32());
-        Assert.IsType<NotFoundResult>(await rig.Controller.PartyThread(9999));
-        Assert.Equal(7, J(await rig.Controller.People(null)).GetArrayLength());
-        Assert.Equal(0, J(await rig.Controller.Links("Transmittal", null, 1)).GetArrayLength());
-        Assert.Equal(0, J(await rig.Controller.OutgoingForReply(partyId)).GetArrayLength());
+        Assert.Equal("Acme Co", (await rig.Ops.PartiesAsync("acme", 1)).Single().Name);
+        Assert.Equal(1, (await rig.Ops.PartyThreadAsync(partyId))!.Total);
+        Assert.Null(await rig.Ops.PartyThreadAsync(9999));
+        Assert.Equal(7, (await rig.Ops.PeopleAsync(null)).Count);
+        Assert.Empty(await rig.Ops.LinksAsync("Transmittal", null, 1));
+        Assert.Empty(await rig.Ops.OutgoingForReplyAsync(partyId));
 
-        var number = J(await rig.Controller.NextNumber(1, DateTime.Today.ToString("yyyy-MM-dd"))).GetProperty("number").GetString();
+        var number = (await rig.Ops.NextNumberAsync(1, DateTime.Today.ToString("yyyy-MM-dd"))).Number;
         Assert.EndsWith("-0002", number);
 
-        var dup = J(await rig.Controller.CheckDuplicate(partyId, "acme-0452"));
-        Assert.Equal(rig.Ctx.Letters.Single().LetterNumber, dup.GetProperty("letterNumber").GetString());
-        Assert.IsType<JsonResult>(await rig.Controller.CheckDuplicate(partyId, "nope"));
-        Assert.Null(((JsonResult)await rig.Controller.CheckDuplicate(partyId, "nope")).Value);
+        var dup = await rig.Ops.CheckDuplicateAsync(partyId, "acme-0452");
+        Assert.Equal(rig.Ctx.Letters.Single().LetterNumber, dup!.LetterNumber);
+        Assert.Null(await rig.Ops.CheckDuplicateAsync(partyId, "nope"));
     }
 
     [Fact]
@@ -254,7 +253,7 @@ public class DccRegisterIncomingTests
         rig.Ctx.Letters.Add(new Letter { LetterType = "Outgoing", LetterNumber = "OUT-R", Subject = "secret", Status = "Issued", ConfidentialityLevel = "Restricted", CorrespondentPartyId = party.CorrespondentPartyId, RegisteredById = LetterTestWorld.Other });
         await rig.Ctx.SaveChangesAsync();
 
-        Assert.Equal(0, J(await rig.Controller.PartyThread(party.CorrespondentPartyId)).GetProperty("total").GetInt32());
+        Assert.Equal(0, (await rig.Ops.PartyThreadAsync(party.CorrespondentPartyId))!.Total);
 
         var allowed = NewRig("look3", approver: true);
         allowed.Ctx.CorrespondentParties.Add(new CorrespondentParty { Name = "Acme Co", PartyType = "Client" });
@@ -262,7 +261,7 @@ public class DccRegisterIncomingTests
         var partyId = allowed.Ctx.CorrespondentParties.Single().CorrespondentPartyId;
         allowed.Ctx.Letters.Add(new Letter { LetterType = "Outgoing", LetterNumber = "OUT-R", Subject = "secret", Status = "Issued", ConfidentialityLevel = "Restricted", CorrespondentPartyId = partyId, RegisteredById = LetterTestWorld.Other });
         await allowed.Ctx.SaveChangesAsync();
-        Assert.Equal(1, J(await allowed.Controller.PartyThread(partyId)).GetProperty("total").GetInt32());
+        Assert.Equal(1, (await allowed.Ops.PartyThreadAsync(partyId))!.Total);
     }
 
     // ------------------------------------------------------------------ permission
@@ -270,10 +269,9 @@ public class DccRegisterIncomingTests
     [Fact]
     public void EveryRegistrationAndLookupAction_RequiresCorrespondenceCreate()
     {
-        var actions = typeof(DCCController).GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-            .Where(m => m.Name is "RegisterIncoming" or "Parties" or "PartyThread" or "OutgoingForReply" or "Links" or "People" or "NextNumber" or "CheckDuplicate").ToList();
-
-        Assert.Equal(9, actions.Count);   // seven lookups + RegisterIncoming (GET and POST)
+        // the registration (GET and POST) is still a controller action
+        var actions = typeof(DCCController).GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Where(m => m.Name == "RegisterIncoming").ToList();
+        Assert.Equal(2, actions.Count);
         foreach (var m in actions)
         {
             var attr = m.GetCustomAttribute<RequirePermissionAttribute>();
@@ -282,6 +280,11 @@ public class DccRegisterIncomingTests
             Assert.Equal("Correspondence", fields["_module"]);
             Assert.Equal("Create", fields["_action"]);
         }
+
+        // SCRUM-679: the seven lookups are operations with the same floor
+        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
+        foreach (var name in new[] { "Parties", "PartyThread", "OutgoingForReply", "Links", "People", "NextNumber", "CheckDuplicate" })
+            Assert.Equal("Correspondence.Create", catalog.Get("Dcc", name)!.Permission);
     }
 
     [Fact]

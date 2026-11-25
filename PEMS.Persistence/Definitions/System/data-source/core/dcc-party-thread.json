@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "dcc-party-thread",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Thread of a correspondent",
+    "fa": "رشته‌ی مکاتبات طرف"
+  },
+  "description": {
+    "en": "Thread of a correspondent",
+    "fa": "رشته‌ی مکاتبات طرف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Dcc",
+      "action": "PartyThread",
+      "args": {
+        "partyId": "param:partyId"
+      }
+    }
+  }
+}

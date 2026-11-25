@@ -134,7 +134,7 @@
     "PEMS.Web.Controllers.ComingSoonController": 1,
     "PEMS.Web.Controllers.ContractController": 2,
     "PEMS.Web.Controllers.CultureController": 1,
-    "PEMS.Web.Controllers.DCCController": 10,
+    "PEMS.Web.Controllers.DCCController": 3,
     "PEMS.Web.Controllers.DataHostController": 1,
     "PEMS.Web.Controllers.DefinitionPreviewHostController": 2,
     "PEMS.Web.Controllers.DocumentRegisterController": 4,

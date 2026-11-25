@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "dcc-parties",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondents",
+    "fa": "طرف‌های مکاتبه"
+  },
+  "description": {
+    "en": "Correspondents",
+    "fa": "طرف‌های مکاتبه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Dcc",
+      "action": "Parties",
+      "args": {
+        "term": "param:term",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

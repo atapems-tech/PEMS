@@ -97,6 +97,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-679: incoming registration lookups as data sources
+
+### Changed
+- The seven lookups of the incoming correspondence registration form (parties, thread of a party, outgoing letters to answer, links, people, next number, duplicate hint) are data sources (/d/dcc-*) over IDccOperations with the Correspondence Create floor and the confidential rule of the thread; the page script reads the items (the search text is sent as term). The registration itself (several files with roles, field by field answer with the duplicate letter) stays on the controller until an action can answer structured errors (gap). Not compiled in this step; tests not run.
+
 ## 2026-11-21 - SCRUM-714: personal correspondence cartable writes as definitions
 
 ### Changed

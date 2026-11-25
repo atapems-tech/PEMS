@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "dcc-links",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Links of the registration",
+    "fa": "پیوندهای ثبت"
+  },
+  "description": {
+    "en": "Links of the registration",
+    "fa": "پیوندهای ثبت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Dcc",
+      "action": "Links",
+      "args": {
+        "type": "param:type",
+        "term": "param:term",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

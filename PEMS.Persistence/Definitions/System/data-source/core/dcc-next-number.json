@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "dcc-next-number",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Next number",
+    "fa": "شماره‌ی بعدی"
+  },
+  "description": {
+    "en": "Next number",
+    "fa": "شماره‌ی بعدی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Dcc",
+      "action": "NextNumber",
+      "args": {
+        "projectId": "param:projectId",
+        "receivedDate": "param:receivedDate"
+      }
+    }
+  }
+}

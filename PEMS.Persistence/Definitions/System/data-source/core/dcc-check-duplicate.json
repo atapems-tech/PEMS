@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "dcc-check-duplicate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Duplicate hint",
+    "fa": "هشدار تکراری"
+  },
+  "description": {
+    "en": "Duplicate hint",
+    "fa": "هشدار تکراری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Dcc",
+      "action": "CheckDuplicate",
+      "args": {
+        "partyId": "param:partyId",
+        "reference": "param:reference"
+      }
+    }
+  }
+}
