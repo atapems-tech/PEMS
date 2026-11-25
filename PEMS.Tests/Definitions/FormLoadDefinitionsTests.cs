@@ -28,7 +28,8 @@ public class FormLoadDefinitionsTests
         var op = operations.Get(model, action);
         Assert.NotNull(op);
         // the returned element type carries a property for each field of the form that is preloaded (the first letter in lower case)
-        var rowType = op!.Method.ReturnType.GetGenericArguments()[0].GetGenericArguments()[0];
+        var answer = op!.Method.ReturnType.GetGenericArguments()[0];   // Task<List<Row>> or Task<Row>
+        var rowType = answer.IsGenericType && answer.GetGenericArguments().Length == 1 && typeof(System.Collections.IEnumerable).IsAssignableFrom(answer) ? answer.GetGenericArguments()[0] : Nullable.GetUnderlyingType(answer) ?? answer;
         var props = rowType.GetProperties().Select(p => char.ToLowerInvariant(p.Name[0]) + p.Name[1..]).ToHashSet();
         var fields = Form(form)["fields"]!.AsArray().Select(f => (string)f!["name"]!).ToList();
         Assert.Contains(fields, f => props.Contains(f));

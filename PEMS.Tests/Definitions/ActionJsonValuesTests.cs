@@ -9,7 +9,7 @@ public sealed class ActionJsonValuesTests
     private static JsonElement Parse(string json) => JsonDocument.Parse(json).RootElement;
 
     [Fact]
-    public void Scalars_become_text_and_objects_and_arrays_are_ignored()
+    public void Scalars_become_text_arrays_of_scalars_are_joined_and_objects_are_ignored()
     {
         var values = ActionValues.FromJson(Parse("{\"id\":42,\"to\":\"Done\",\"flag\":true,\"none\":null,\"nested\":{\"a\":1},\"list\":[1,2]}"));
         Assert.Equal("42", values["id"]);
@@ -17,7 +17,7 @@ public sealed class ActionJsonValuesTests
         Assert.Equal("true", values["flag"]);
         Assert.Null(values["none"]);
         Assert.DoesNotContain("nested", values.Keys);
-        Assert.DoesNotContain("list", values.Keys);
+        Assert.Equal("1,2", values["list"]);   // an array of scalars is one comma separated text (an id list or a list of text, SCRUM-824)
     }
 
     [Fact]
