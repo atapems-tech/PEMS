@@ -110,7 +110,7 @@ public sealed class DefinitionActionsTests
         var result = await executor.RunAsync("a", Invocation("Admin"));
         Assert.Equal(ActionStatus.Refused, result.Status);
         Assert.Equal("Taken", result.Outcome!.FieldErrors!["name"].Resolve(new System.Globalization.CultureInfo("en")));
-        Assert.Null(result.Redirect);
+        Assert.Equal("/Done", result.Redirect);   // SCRUM-761: an error brings the user back to the address of the action when it needs no posted value
     }
 
     // ---- hydrator

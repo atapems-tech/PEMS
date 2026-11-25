@@ -88,7 +88,8 @@ public sealed class DefinitionGrantPagesTests
     public void Only_the_system_admin_reads_or_writes_grants_and_the_pieces_of_the_page_fit_together()
     {
         var entity = Catalog.Get("DefinitionGrant")!;
-        Assert.Equal((new[] { "SystemAdmin" }, new[] { "SystemAdmin" }), (entity.ReadRoles!.ToArray(), entity.WriteRoles!.ToArray()));
+        Assert.Equal(new[] { "SystemAdmin" }, entity.ReadRoles!.ToArray());
+        Assert.Equal(new[] { "SystemAdmin" }, entity.WriteRoles!.ToArray());
         Assert.Empty(new EntityGridProvider(null!, Catalog).ValidateParameters((JsonObject)Shipped("data-source", "definition-grants-grid")["parameters"]!));
 
         var page = Shipped("page", "definition-grants")["args"]!.AsObject();
