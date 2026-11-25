@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "failure-mode-grid",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "failure-mode-grid",
+    "fa": "failure-mode-grid"
+  },
+  "description": {
+    "en": "failure-mode-grid",
+    "fa": "failure-mode-grid"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "FailureModePage",
+      "action": "List",
+      "args": {
+        "classId": "param:classId",
+        "q": "param:q"
+      }
+    }
+  }
+}

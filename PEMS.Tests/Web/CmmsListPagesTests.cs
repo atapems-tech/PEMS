@@ -27,7 +27,7 @@ public class CmmsListPagesTests
         "WorkOrder",
         "MaintenanceStrategy",
         // wave 2b
-        "FailureModeCatalog", "RcmFmea",
+        "RcmFmea",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary> data) where TController : Controller
@@ -167,29 +167,6 @@ public class CmmsListPagesTests
     // ================= wave 2b: the remaining CMMS lists =================
 
     // ---------- Mechanical equipment ----------
-
-    [Fact]
-    public async Task FailureModeCatalog_EditAndDeactivateOnlyForEditors()
-    {
-        static Task<string> Catalog(bool canEdit) => Render<FailureModeCatalogController>("/Views/FailureModeCatalog/Index.cshtml",
-            new List<FailureModeOptionDto>
-            {
-                new() { FailureModeId = 1, Code = "VIB", Name = "Vibration", EquipmentClassName = "Pump", Causes = { new FailureCauseOptionDto { Code = "MIS", Name = "Misalignment" } } },
-            },
-            v => { v["Classes"] = new List<LookupItem> { new() { Id = 2, Text = "Pump", Code = "PU" } }; v["ClassId"] = 2; v["Query"] = null; v["CanEdit"] = canEdit; });
-
-        var editor = await Catalog(true);
-        AssertBuiltFromTheComponent(editor, null, 1);
-        Assert.Contains("Misalignment", editor);
-        Assert.Single(Regex.Matches(Chips(editor), "class=\"pems-filter-chip\""));
-        Assert.Contains("name=\"active\" value=\"false\"", editor);
-        Assert.Contains("/a/failure-mode-toggle", editor);   // SCRUM-695: the switch posts to the action definition
-        Assert.Contains("lp-compose", editor);
-
-        var reader = await Catalog(false);
-        Assert.DoesNotContain("name=\"active\"", reader);
-        Assert.DoesNotContain("lp-compose", reader);
-    }
 
     // ---------- Shift handovers ----------
 

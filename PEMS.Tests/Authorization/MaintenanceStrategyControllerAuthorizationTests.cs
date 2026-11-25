@@ -201,8 +201,7 @@ public class MaintenanceStrategyControllerAuthorizationTests
     {
         var controllers = new[]
         {
-            typeof(MaintenanceStrategyController),
-            typeof(FailureModeCatalogController)
+            typeof(MaintenanceStrategyController)
         };
 
         var missing = new List<string>();

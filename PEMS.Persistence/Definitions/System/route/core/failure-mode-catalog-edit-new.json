@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "failure-mode-catalog-edit-new",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure mode catalogue (old address)",
+    "fa": "کاتالوگ حالت‌های خرابی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Failure mode catalogue (old address)",
+    "fa": "کاتالوگ حالت‌های خرابی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "FailureModeCatalog/Edit",
+    "target": "/f/failure-mode-create",
+    "permanent": false
+  }
+}

@@ -72,7 +72,7 @@
                 </pems-list-filters>
                 <pems-list-menu id="msMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
                     <pems-bullet><pems-link class="dropdown-item" asp-action="Coverage"><pems-icon name="bi-pie-chart" aria-hidden="true" /> @Localizer["Rcm_Coverage"]</pems-link></pems-bullet>
-                    <pems-bullet><pems-link class="dropdown-item" asp-controller="FailureModeCatalog" asp-action="Index"><pems-icon name="bi-journal-text" aria-hidden="true" /> @Localizer["Rcm_FailureModeCatalog"]</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="/p/failure-mode-catalog"><pems-icon name="bi-journal-text" aria-hidden="true" /> @Localizer["Rcm_FailureModeCatalog"]</pems-link></pems-bullet>
                     @if (Model.CanApprove)
                     {
                         <pems-bullet><pems-link class="dropdown-item" asp-action="BulkCreate"><pems-icon name="bi-collection" aria-hidden="true" /> @Localizer["Rcm_BulkAssign"]</pems-link></pems-bullet>
