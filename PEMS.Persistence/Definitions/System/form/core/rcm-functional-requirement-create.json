@@ -1,0 +1,94 @@
+{
+  "kind": "form",
+  "key": "rcm-functional-requirement-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New functional requirement",
+    "fa": "کارکرد الزامی جدید"
+  },
+  "description": {
+    "en": "New functional requirement",
+    "fa": "کارکرد الزامی جدید"
+  },
+  "payload": {
+    "id": "rcm-functional-requirement-create",
+    "title": {
+      "en": "New functional requirement",
+      "fa": "کارکرد الزامی جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "rcm-functional-requirement-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "requiredFunction",
+        "label": {
+          "en": "Required function",
+          "fa": "کارکرد الزامی"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

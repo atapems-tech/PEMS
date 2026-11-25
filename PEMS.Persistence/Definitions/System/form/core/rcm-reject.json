@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "rcm-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the RCM to draft",
+    "fa": "رد RCM به پیش‌نویس"
+  },
+  "description": {
+    "en": "Reject the RCM to draft",
+    "fa": "رد RCM به پیش‌نویس"
+  },
+  "payload": {
+    "id": "rcm-reject",
+    "title": {
+      "en": "Reject the RCM to draft",
+      "fa": "رد RCM به پیش‌نویس"
+    },
+    "submitLabel": {
+      "en": "Reject the RCM to draft",
+      "fa": "رد RCM به پیش‌نویس"
+    },
+    "actionKey": "rcm-reject",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rcmAnalysisId",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

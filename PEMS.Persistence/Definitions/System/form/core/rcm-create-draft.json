@@ -1,0 +1,63 @@
+{
+  "kind": "form",
+  "key": "rcm-create-draft",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New RCM draft",
+    "fa": "پیش‌نویس RCM جدید"
+  },
+  "description": {
+    "en": "New RCM draft",
+    "fa": "پیش‌نویس RCM جدید"
+  },
+  "payload": {
+    "id": "rcm-create-draft",
+    "title": {
+      "en": "New RCM draft",
+      "fa": "پیش‌نویس RCM جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "rcm-create-draft",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fmeaAnalysisId",
+        "label": {
+          "en": "Based on the approved FMEA",
+          "fa": "بر اساس FMEA تاییدشده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "rcm-approved-fmea-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      }
+    ]
+  }
+}

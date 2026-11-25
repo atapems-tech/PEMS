@@ -1,0 +1,78 @@
+{
+  "kind": "form",
+  "key": "rcm-decision-apply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Apply the RCM decision to equipment",
+    "fa": "اعمال تصمیم RCM روی تجهیز"
+  },
+  "description": {
+    "en": "Apply the RCM decision to equipment",
+    "fa": "اعمال تصمیم RCM روی تجهیز"
+  },
+  "payload": {
+    "id": "rcm-decision-apply",
+    "title": {
+      "en": "Apply the RCM decision to equipment",
+      "fa": "اعمال تصمیم RCM روی تجهیز"
+    },
+    "submitLabel": {
+      "en": "Apply (creates or updates the operational strategy)",
+      "fa": "اعمال (استراتژی عملیاتی را می‌سازد یا به‌روز می‌کند)"
+    },
+    "actionKey": "rcm-decision-apply",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rcmDecisionId",
+        "label": {
+          "en": "RCM decision id",
+          "fa": "شناسه تصمیم RCM"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "rcm-equipment-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      }
+    ]
+  }
+}

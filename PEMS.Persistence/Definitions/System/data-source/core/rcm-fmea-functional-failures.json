@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rcm-fmea-functional-failures",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-fmea-functional-failures",
+    "fa": "rcm-fmea-functional-failures"
+  },
+  "description": {
+    "en": "rcm-fmea-functional-failures",
+    "fa": "rcm-fmea-functional-failures"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "FunctionalFailures",
+      "args": {
+        "equipmentClassId": "param:id"
+      }
+    }
+  }
+}

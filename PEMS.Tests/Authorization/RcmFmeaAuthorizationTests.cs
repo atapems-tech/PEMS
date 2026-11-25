@@ -57,10 +57,6 @@ public class RcmFmeaAuthorizationTests
             Task.FromResult($"{documentType}-0001");
     }
 
-    private static RcmFmeaController CreateController(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms) =>
-        new RcmFmeaController(new RcmFmeaReadinessService(ctx), new FMEAService(ctx), new RCMService(ctx),
-            new RcmOperationalBridgeService(ctx, new FakeNumberingService()), ctx, user, perms).WithTempData();
-
     // SCRUM-744: the write commands are operations. The action host checks the operation permission first (Allowed false = refused, nothing runs), then calls the operation.
     private sealed record Outcome(bool Allowed, bool Success, string? Error);
 
@@ -86,26 +82,16 @@ public class RcmFmeaAuthorizationTests
 
     private static OpsHost CreateHost(PEMSDbContext ctx, ICurrentUserService user, IPermissionService perms) => new(ctx, user, perms);
 
+    // SCRUM-744: every read of the coverage matrix and the class detail is an operation with RCMFMEA.View (the data host refuses a caller without it).
     [Fact]
-    public async Task Index_NoPermission_ReturnsForbid()
+    public async Task Reads_NoPermission_AreRefused_ViewerCanView()
     {
-        var (ctx, perms, user) = await CreateInfra(nameof(Index_NoPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Index_ViewerRole_CanView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Index_ViewerRole_CanView), role: SystemRoles.Viewer);
-        var controller = CreateController(ctx, user, perms);
-
-        var result = await controller.Index();
-
-        Assert.IsType<ViewResult>(result);
+        var (_, perms, none) = await CreateInfra(nameof(Reads_NoPermission_AreRefused_ViewerCanView) + "N", role: SystemRoles.QAManager);
+        Assert.False(await perms.HasPermissionAsync(none.Roles, "RCMFMEA", "View"));
+        var (_, perms2, viewer) = await CreateInfra(nameof(Reads_NoPermission_AreRefused_ViewerCanView) + "V", role: SystemRoles.Viewer);
+        Assert.True(await perms2.HasPermissionAsync(viewer.Roles, "RCMFMEA", "View"));
+        Assert.Equal("RCMFMEA.View", ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IRcmFmeaPagesOperations).GetMethod("CoverageAsync")!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission);
     }
 
     [Fact]

@@ -729,6 +729,7 @@ builder.Services.AddScoped<IIntakeService, IntakeService>();
 builder.Services.AddScoped<ITableExtractionImportService, TableExtractionImportService>();
 
 builder.Services.AddScoped<IRelationshipService, RelationshipService>();
+builder.Services.AddScoped<PEMS.Application.Interfaces.IRcmFmeaPagesOperations, PEMS.Web.Services.RcmFmeaPagesOperations>();   // SCRUM-744
 builder.Services.AddScoped<PEMS.Application.Interfaces.IFailureModeCatalogPagesOperations, PEMS.Web.Services.FailureModeCatalogPagesOperations>();   // SCRUM-698
 builder.Services.AddScoped<PEMS.Application.Interfaces.IStrategyImportOperations, PEMS.Web.Services.StrategyImportOperations>();   // SCRUM-752
 builder.Services.AddScoped<PEMS.Application.Interfaces.IRelationshipPagesOperations, PEMS.Web.Services.RelationshipPagesOperations>();   // SCRUM-745

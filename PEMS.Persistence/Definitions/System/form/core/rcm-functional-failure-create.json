@@ -1,0 +1,104 @@
+{
+  "kind": "form",
+  "key": "rcm-functional-failure-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New functional failure",
+    "fa": "خرابی کارکردی جدید"
+  },
+  "description": {
+    "en": "New functional failure",
+    "fa": "خرابی کارکردی جدید"
+  },
+  "payload": {
+    "id": "rcm-functional-failure-create",
+    "title": {
+      "en": "New functional failure",
+      "fa": "خرابی کارکردی جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "rcm-functional-failure-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "functionalRequirementId",
+        "label": {
+          "en": "Functional requirement",
+          "fa": "کارکرد الزامی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "rcm-functional-requirement-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      },
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "failureDefinition",
+        "label": {
+          "en": "Failure definition",
+          "fa": "تعریف خرابی"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

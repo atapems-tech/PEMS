@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "rcm-fmea-class-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "RCM / FMEA (old address)",
+    "fa": "RCM / FMEA (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "RCM / FMEA (old address)",
+    "fa": "RCM / FMEA (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "RcmFmea/ClassDetail/{id}",
+    "target": "/p/rcm-fmea-class?id={id}",
+    "permanent": false
+  }
+}

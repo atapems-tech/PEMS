@@ -106,7 +106,7 @@
                 "en": "Explore",
                 "fa": "کاوش"
               },
-              "url": "/p/relationship-explorer?kind=equipment&id={equipmentId}",
+              "url": "/p/relationship-explorer?kind=equipment&id={id}",
               "method": "get"
             }
           ]

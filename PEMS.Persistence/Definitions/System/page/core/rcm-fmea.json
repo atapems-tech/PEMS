@@ -1,0 +1,246 @@
+{
+  "kind": "page",
+  "key": "rcm-fmea",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "RCM / FMEA / FMECA dashboard",
+    "fa": "داشبورد RCM / FMEA / FMECA"
+  },
+  "description": {
+    "en": "RCM / FMEA / FMECA dashboard",
+    "fa": "داشبورد RCM / FMEA / FMECA"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "rcm-fmea",
+    "permission": "RCMFMEA.View",
+    "regions": {
+      "content": [
+        {
+          "id": "figures",
+          "component": "data-grid",
+          "options": {
+            "id": "rcm-figures",
+            "url": "/d/rcm-fmea-summary",
+            "idField": "classesWithEquipment",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "classesWithEquipment",
+                "header": {
+                  "en": "Classes with equipment",
+                  "fa": "کلاس‌های دارای تجهیز"
+                },
+                "width": 150,
+                "type": "number"
+              },
+              {
+                "key": "classesFmeaReady",
+                "header": {
+                  "en": "FMEA ready",
+                  "fa": "FMEA آماده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "classesFmeaPartiallyReady",
+                "header": {
+                  "en": "FMEA partial",
+                  "fa": "FMEA ناقص"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "classesRcmReady",
+                "header": {
+                  "en": "RCM ready",
+                  "fa": "RCM آماده"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "classesRcmPartiallyReady",
+                "header": {
+                  "en": "RCM partial",
+                  "fa": "RCM ناقص"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "totalApprovedFMEAs",
+                "header": {
+                  "en": "Approved FMEAs",
+                  "fa": "FMEA تاییدشده"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "totalApprovedRCMs",
+                "header": {
+                  "en": "Approved RCMs",
+                  "fa": "RCM تاییدشده"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "classes",
+          "component": "def:entity-list",
+          "options": {
+            "id": "rcm-fmea-classes",
+            "url": "/d/rcm-fmea-classes",
+            "idField": "equipmentClassId",
+            "viewsKey": "rcm-fmea-classes",
+            "columns": [
+              {
+                "key": "name",
+                "header": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                },
+                "width": 220
+              },
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 120
+              },
+              {
+                "key": "equipmentCount",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "functionalRequirementCount",
+                "header": {
+                  "en": "Functions",
+                  "fa": "کارکرد"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "failureModeCount",
+                "header": {
+                  "en": "Failure modes",
+                  "fa": "حالت خرابی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "failureCauseCount",
+                "header": {
+                  "en": "Causes",
+                  "fa": "علل"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "failureEffectCount",
+                "header": {
+                  "en": "Effects",
+                  "fa": "اثرات"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "failureConsequenceCount",
+                "header": {
+                  "en": "Consequences",
+                  "fa": "پیامدها"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "strategyTypeCount",
+                "header": {
+                  "en": "Strategy types",
+                  "fa": "انواع استراتژی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "fmeaReadiness",
+                "header": {
+                  "en": "FMEA",
+                  "fa": "FMEA"
+                },
+                "width": 130
+              },
+              {
+                "key": "approvedFMEACount",
+                "header": {
+                  "en": "Approved FMEAs",
+                  "fa": "FMEA تاییدشده"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "rcmReadiness",
+                "header": {
+                  "en": "RCM",
+                  "fa": "RCM"
+                },
+                "width": 130
+              },
+              {
+                "key": "approvedRCMCount",
+                "header": {
+                  "en": "Approved RCMs",
+                  "fa": "RCM تاییدشده"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/rcm-fmea-class?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

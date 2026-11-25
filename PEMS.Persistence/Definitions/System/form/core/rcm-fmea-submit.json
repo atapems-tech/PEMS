@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "rcm-fmea-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit the FMEA for review",
+    "fa": "ارسال FMEA برای بازبینی"
+  },
+  "description": {
+    "en": "Submit the FMEA for review",
+    "fa": "ارسال FMEA برای بازبینی"
+  },
+  "payload": {
+    "id": "rcm-fmea-submit",
+    "title": {
+      "en": "Submit the FMEA for review",
+      "fa": "ارسال FMEA برای بازبینی"
+    },
+    "submitLabel": {
+      "en": "Submit the FMEA for review",
+      "fa": "ارسال FMEA برای بازبینی"
+    },
+    "actionKey": "rcm-fmea-submit",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fmeaAnalysisId",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

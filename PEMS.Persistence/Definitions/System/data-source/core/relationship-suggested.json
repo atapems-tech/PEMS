@@ -16,13 +16,12 @@
     "provider": "operation",
     "parameters": {
       "model": "RelationshipPage",
-      "action": "Explore",
+      "action": "Suggested",
       "args": {
         "kind": "param:kind",
         "id": "param:id",
         "q": "param:q"
-      },
-      "path": "SuggestedLinks"
+      }
     }
   }
 }

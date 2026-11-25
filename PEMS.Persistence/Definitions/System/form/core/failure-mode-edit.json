@@ -44,8 +44,7 @@
             "en": "This field is required.",
             "fa": "این فیلد الزامی است."
           }
-        },
-        "readOnly": true
+        }
       },
       {
         "name": "code",

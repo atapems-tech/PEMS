@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "rcm-strategy-type-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-strategy-type-options",
+    "fa": "rcm-strategy-type-options"
+  },
+  "description": {
+    "en": "rcm-strategy-type-options",
+    "fa": "rcm-strategy-type-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "StrategyTypeOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rcm-failure-mode-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-failure-mode-options",
+    "fa": "rcm-failure-mode-options"
+  },
+  "description": {
+    "en": "rcm-failure-mode-options",
+    "fa": "rcm-failure-mode-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "FailureModeOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}

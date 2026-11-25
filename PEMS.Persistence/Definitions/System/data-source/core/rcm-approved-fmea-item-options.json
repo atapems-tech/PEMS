@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rcm-approved-fmea-item-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-approved-fmea-item-options",
+    "fa": "rcm-approved-fmea-item-options"
+  },
+  "description": {
+    "en": "rcm-approved-fmea-item-options",
+    "fa": "rcm-approved-fmea-item-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "ApprovedFmeaItemOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}

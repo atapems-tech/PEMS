@@ -1,0 +1,642 @@
+{
+  "kind": "page",
+  "key": "rcm-fmea-class",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "RCM / FMEA of an equipment class",
+    "fa": "RCM / FMEA یک کلاس تجهیز"
+  },
+  "description": {
+    "en": "RCM / FMEA of an equipment class",
+    "fa": "RCM / FMEA یک کلاس تجهیز"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "rcm-fmea-class",
+    "permission": "RCMFMEA.View",
+    "regions": {
+      "content": [
+        {
+          "id": "record",
+          "component": "record-view",
+          "options": {
+            "id": "rcm-class-record",
+            "fields": [
+              {
+                "key": "name",
+                "label": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                }
+              },
+              {
+                "key": "code",
+                "label": {
+                  "en": "Code",
+                  "fa": "کد"
+                }
+              },
+              {
+                "key": "equipmentCount",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "fmeaReadiness",
+                "label": {
+                  "en": "FMEA readiness",
+                  "fa": "آمادگی FMEA"
+                }
+              },
+              {
+                "key": "rcmReadiness",
+                "label": {
+                  "en": "RCM readiness",
+                  "fa": "آمادگی RCM"
+                }
+              },
+              {
+                "key": "strategyTypeCount",
+                "label": {
+                  "en": "Strategy types",
+                  "fa": "انواع استراتژی"
+                }
+              },
+              {
+                "key": "approvedFMEACount",
+                "label": {
+                  "en": "Approved FMEAs",
+                  "fa": "FMEA تاییدشده"
+                }
+              },
+              {
+                "key": "draftFMEACount",
+                "label": {
+                  "en": "Draft FMEAs",
+                  "fa": "FMEA پیش‌نویس"
+                }
+              },
+              {
+                "key": "approvedRCMCount",
+                "label": {
+                  "en": "Approved RCMs",
+                  "fa": "RCM تاییدشده"
+                }
+              },
+              {
+                "key": "draftRCMCount",
+                "label": {
+                  "en": "Draft RCMs",
+                  "fa": "RCM پیش‌نویس"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/rcm-fmea-readiness",
+              "idField": "equipmentClassId",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "rcm-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/rcm-fmea",
+                "text": {
+                  "en": "Back to the coverage matrix",
+                  "fa": "بازگشت به ماتریس پوشش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/rcm-functional-requirement-create?equipmentClassId={{params.id|url}}",
+                "text": {
+                  "en": "New functional requirement",
+                  "fa": "کارکرد الزامی جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/rcm-functional-failure-create?equipmentClassId={{params.id|url}}",
+                "text": {
+                  "en": "New functional failure",
+                  "fa": "خرابی کارکردی جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/rcm-fmea-create-draft?equipmentClassId={{params.id|url}}",
+                "text": {
+                  "en": "New FMEA draft",
+                  "fa": "پیش‌نویس FMEA جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/rcm-fmea-add-item?equipmentClassId={{params.id|url}}",
+                "text": {
+                  "en": "Add an FMEA item",
+                  "fa": "افزودن مورد FMEA"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/rcm-create-draft?equipmentClassId={{params.id|url}}",
+                "text": {
+                  "en": "New RCM draft (from an approved FMEA)",
+                  "fa": "پیش‌نویس RCM جدید (از FMEA تاییدشده)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/rcm-add-decision?equipmentClassId={{params.id|url}}",
+                "text": {
+                  "en": "Add an RCM decision",
+                  "fa": "افزودن تصمیم RCM"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "ff",
+          "component": "def:related-table",
+          "options": {
+            "id": "ff",
+            "title": {
+              "en": "Functional failures",
+              "fa": "خرابی‌های کارکردی"
+            },
+            "url": "/d/rcm-fmea-functional-failures?f.id={{params.id|url}}",
+            "idField": "functionalFailureId",
+            "columns": [
+              {
+                "key": "requirementCode",
+                "header": {
+                  "en": "Requirement",
+                  "fa": "الزام"
+                },
+                "width": 130
+              },
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 110
+              },
+              {
+                "key": "title",
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "width": 240
+              },
+              {
+                "key": "failureDefinition",
+                "header": {
+                  "en": "Failure definition",
+                  "fa": "تعریف خرابی"
+                },
+                "width": 320
+              }
+            ]
+          }
+        },
+        {
+          "id": "fmea",
+          "component": "def:related-table",
+          "options": {
+            "id": "fmea",
+            "title": {
+              "en": "FMEA analyses",
+              "fa": "تحلیل‌های FMEA"
+            },
+            "url": "/d/rcm-fmea-analyses?f.id={{params.id|url}}",
+            "idField": "fmeaAnalysisId",
+            "columns": [
+              {
+                "key": "title",
+                "header": {
+                  "en": "FMEA",
+                  "fa": "FMEA"
+                },
+                "width": 240
+              },
+              {
+                "key": "revision",
+                "header": {
+                  "en": "Rev",
+                  "fa": "ویرایش"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "preparedBy",
+                "header": {
+                  "en": "Prepared by",
+                  "fa": "تهیه‌کننده"
+                },
+                "width": 130
+              },
+              {
+                "key": "approvedBy",
+                "header": {
+                  "en": "Approved by",
+                  "fa": "تاییدکننده"
+                },
+                "width": 130
+              },
+              {
+                "key": "approvedAt",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تایید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 240,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "submit",
+                    "label": {
+                      "en": "Submit for review",
+                      "fa": "ارسال برای بازبینی"
+                    },
+                    "url": "/f/rcm-fmea-submit?fmeaAnalysisId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'DRAFT'"
+                  },
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/f/rcm-fmea-approve?fmeaAnalysisId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'UNDER_REVIEW'"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject to draft",
+                      "fa": "رد به پیش‌نویس"
+                    },
+                    "url": "/f/rcm-fmea-reject?fmeaAnalysisId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'UNDER_REVIEW'"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "items",
+          "component": "def:related-table",
+          "options": {
+            "id": "items",
+            "title": {
+              "en": "FMEA items",
+              "fa": "موارد FMEA"
+            },
+            "url": "/d/rcm-fmea-items?f.id={{params.id|url}}",
+            "idField": "fmeaItemId",
+            "columns": [
+              {
+                "key": "analysisTitle",
+                "header": {
+                  "en": "FMEA",
+                  "fa": "FMEA"
+                },
+                "width": 180
+              },
+              {
+                "key": "failureModeName",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 200
+              },
+              {
+                "key": "failureCauseName",
+                "header": {
+                  "en": "Cause",
+                  "fa": "علت"
+                },
+                "width": 150
+              },
+              {
+                "key": "failureEffectName",
+                "header": {
+                  "en": "Effect",
+                  "fa": "اثر"
+                },
+                "width": 150
+              },
+              {
+                "key": "failureConsequenceName",
+                "header": {
+                  "en": "Consequence",
+                  "fa": "پیامد"
+                },
+                "width": 150
+              },
+              {
+                "key": "severity",
+                "header": {
+                  "en": "S",
+                  "fa": "S"
+                },
+                "width": 60,
+                "type": "number"
+              },
+              {
+                "key": "occurrence",
+                "header": {
+                  "en": "O",
+                  "fa": "O"
+                },
+                "width": 60,
+                "type": "number"
+              },
+              {
+                "key": "detectability",
+                "header": {
+                  "en": "D",
+                  "fa": "D"
+                },
+                "width": 60,
+                "type": "number"
+              },
+              {
+                "key": "riskPriorityNumber",
+                "header": {
+                  "en": "RPN",
+                  "fa": "RPN"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "strategyTypeName",
+                "header": {
+                  "en": "Strategy type",
+                  "fa": "نوع استراتژی"
+                },
+                "width": 150
+              }
+            ]
+          }
+        },
+        {
+          "id": "rcm",
+          "component": "def:related-table",
+          "options": {
+            "id": "rcm",
+            "title": {
+              "en": "RCM analyses",
+              "fa": "تحلیل‌های RCM"
+            },
+            "url": "/d/rcm-fmea-rcm-analyses?f.id={{params.id|url}}",
+            "idField": "rcmAnalysisId",
+            "columns": [
+              {
+                "key": "rcmAnalysisId",
+                "header": {
+                  "en": "RCM",
+                  "fa": "RCM"
+                },
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "revision",
+                "header": {
+                  "en": "Rev",
+                  "fa": "ویرایش"
+                },
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 120
+              },
+              {
+                "key": "preparedBy",
+                "header": {
+                  "en": "Prepared by",
+                  "fa": "تهیه‌کننده"
+                },
+                "width": 130
+              },
+              {
+                "key": "approvedBy",
+                "header": {
+                  "en": "Approved by",
+                  "fa": "تاییدکننده"
+                },
+                "width": 130
+              },
+              {
+                "key": "approvedAt",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تایید"
+                },
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 240,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "submit",
+                    "label": {
+                      "en": "Submit for review",
+                      "fa": "ارسال برای بازبینی"
+                    },
+                    "url": "/f/rcm-submit?rcmAnalysisId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'DRAFT'"
+                  },
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/f/rcm-approve?rcmAnalysisId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'UNDER_REVIEW'"
+                  },
+                  {
+                    "key": "reject",
+                    "label": {
+                      "en": "Reject to draft",
+                      "fa": "رد به پیش‌نویس"
+                    },
+                    "url": "/f/rcm-reject?rcmAnalysisId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'UNDER_REVIEW'"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "decisions",
+          "component": "def:related-table",
+          "options": {
+            "id": "decisions",
+            "title": {
+              "en": "RCM decisions",
+              "fa": "تصمیم‌های RCM"
+            },
+            "url": "/d/rcm-fmea-decisions?f.id={{params.id|url}}",
+            "idField": "rcmDecisionId",
+            "columns": [
+              {
+                "key": "rcmRevision",
+                "header": {
+                  "en": "RCM rev",
+                  "fa": "ویرایش RCM"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "failureModeName",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 200
+              },
+              {
+                "key": "decisionType",
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                },
+                "width": 170
+              },
+              {
+                "key": "strategyTypeName",
+                "header": {
+                  "en": "Strategy type",
+                  "fa": "نوع استراتژی"
+                },
+                "width": 150
+              },
+              {
+                "key": "pmTemplateName",
+                "header": {
+                  "en": "PM template",
+                  "fa": "الگوی PM"
+                },
+                "width": 150
+              },
+              {
+                "key": "consequenceCategory",
+                "header": {
+                  "en": "Consequence",
+                  "fa": "پیامد"
+                },
+                "width": 120
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    },
+                    "url": "/f/rcm-decision-approve?rcmDecisionId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'DRAFT'"
+                  },
+                  {
+                    "key": "apply",
+                    "label": {
+                      "en": "Apply to equipment",
+                      "fa": "اعمال روی تجهیز"
+                    },
+                    "url": "/f/rcm-decision-apply?rcmDecisionId={id}&equipmentClassId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.status == 'APPROVED'"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

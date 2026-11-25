@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rcm-draft-rcm-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-draft-rcm-options",
+    "fa": "rcm-draft-rcm-options"
+  },
+  "description": {
+    "en": "rcm-draft-rcm-options",
+    "fa": "rcm-draft-rcm-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "DraftRcmOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}

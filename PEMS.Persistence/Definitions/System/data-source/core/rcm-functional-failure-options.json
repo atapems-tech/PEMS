@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rcm-functional-failure-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-functional-failure-options",
+    "fa": "rcm-functional-failure-options"
+  },
+  "description": {
+    "en": "rcm-functional-failure-options",
+    "fa": "rcm-functional-failure-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "FunctionalFailureOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}
