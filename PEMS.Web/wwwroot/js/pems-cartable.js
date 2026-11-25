@@ -70,7 +70,8 @@
                 headers: { "Content-Type": "application/json", "Accept": "application/json", "RequestVerificationToken": api.token() },
                 body: JSON.stringify(body || {})
             }).then(function (r) {
-                if (!r.ok) throw new Error(String(r.status));
+                // a refused command answers 400 with { ok: false, error }: that text is shown, any other failure is an error
+                if (!r.ok) return r.json().then(function (j) { if (j && j.ok === false) return j; throw new Error(String(r.status)); }, function () { throw new Error(String(r.status)); });
                 return r.json();
             });
         },

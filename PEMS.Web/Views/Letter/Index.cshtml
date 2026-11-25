@@ -872,12 +872,12 @@
     urls = new
     {
         threadMembers = Url.Action("ThreadMembers"),
-        settingsSave = Url.Action("SettingsSave", "LetterCartable"),
-        tags = Url.Action("Tags", "LetterCartable"), tagSave = Url.Action("TagSave", "LetterCartable"), tagDelete = Url.Action("TagDelete", "LetterCartable"),
-        delegations = Url.Action("Delegations", "LetterCartable"), delegationCreate = Url.Action("DelegationCreate", "LetterCartable"), delegationRevoke = Url.Action("DelegationRevoke", "LetterCartable"),
-        rules = Url.Action("Rules", "LetterCartable"), ruleSave = Url.Action("RuleSave", "LetterCartable"), ruleToggle = Url.Action("RuleToggle", "LetterCartable"), ruleDelete = Url.Action("RuleDelete", "LetterCartable"),
-        contacts = Url.Action("Contacts", "LetterCartable"), groups = Url.Action("Groups", "LetterCartable"), groupSave = Url.Action("GroupSave", "LetterCartable"), groupDelete = Url.Action("GroupDelete", "LetterCartable"),
-        reminders = Url.Action("Reminders", "LetterCartable"), reminderAdd = Url.Action("ReminderAdd", "LetterCartable"), reminderComplete = Url.Action("ReminderComplete", "LetterCartable"), reminderDelete = Url.Action("ReminderDelete", "LetterCartable")
+        settingsSave = "/a/cartable-settings-save",
+        tags = Url.Action("Tags", "LetterCartable"), tagSave = "/a/cartable-tag-save", tagDelete = "/a/cartable-tag-delete",
+        delegations = Url.Action("Delegations", "LetterCartable"), delegationCreate = "/a/cartable-delegation-create", delegationRevoke = "/a/cartable-delegation-revoke",
+        rules = Url.Action("Rules", "LetterCartable"), ruleSave = "/a/cartable-rule-save", ruleToggle = "/a/cartable-rule-toggle", ruleDelete = "/a/cartable-rule-delete",
+        contacts = Url.Action("Contacts", "LetterCartable"), groups = Url.Action("Groups", "LetterCartable"), groupSave = "/a/cartable-group-save", groupDelete = "/a/cartable-group-delete",
+        reminders = Url.Action("Reminders", "LetterCartable"), reminderAdd = "/a/cartable-reminder-add", reminderComplete = "/a/cartable-reminder-complete", reminderDelete = "/a/cartable-reminder-delete"
     }
 }))</script>
 

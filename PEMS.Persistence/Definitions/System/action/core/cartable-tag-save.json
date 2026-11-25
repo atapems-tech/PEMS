@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "cartable-tag-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a tag",
+    "fa": "ذخیره‌ی برچسب"
+  },
+  "description": {
+    "en": "Save a tag",
+    "fa": "ذخیره‌ی برچسب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "SaveTag",
+      "args": {
+        "tagId": "field:tagId",
+        "name": "field:name",
+        "color": "field:color",
+        "parentTagId": "field:parentTagId",
+        "personal": "field:personal",
+        "sortOrder": "field:sortOrder"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

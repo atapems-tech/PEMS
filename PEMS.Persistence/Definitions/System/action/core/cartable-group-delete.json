@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "cartable-group-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a contact group",
+    "fa": "حذف گروه مخاطبین"
+  },
+  "description": {
+    "en": "Delete a contact group",
+    "fa": "حذف گروه مخاطبین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "DeleteGroup",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

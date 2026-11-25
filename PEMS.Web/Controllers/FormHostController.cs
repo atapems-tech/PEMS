@@ -227,7 +227,9 @@ public static class ActionValues
                 System.Text.Json.JsonValueKind.Null => null,
                 _ => null
             };
-            if (p.Value.ValueKind is System.Text.Json.JsonValueKind.Object or System.Text.Json.JsonValueKind.Array) values.Remove(p.Name);
+            if (p.Value.ValueKind == System.Text.Json.JsonValueKind.Array)
+                values[p.Name] = string.Join(",", p.Value.EnumerateArray().Where(e => e.ValueKind is System.Text.Json.JsonValueKind.String or System.Text.Json.JsonValueKind.Number).Take(500).Select(e => e.ValueKind == System.Text.Json.JsonValueKind.String ? e.GetString() : e.GetRawText()));
+            else if (p.Value.ValueKind == System.Text.Json.JsonValueKind.Object) values.Remove(p.Name);
         }
         return values;
     }

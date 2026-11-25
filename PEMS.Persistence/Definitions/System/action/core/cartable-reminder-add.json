@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "cartable-reminder-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a reminder",
+    "fa": "افزودن یادآور"
+  },
+  "description": {
+    "en": "Add a reminder",
+    "fa": "افزودن یادآور"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "AddReminder",
+      "args": {
+        "letterId": "field:letterId",
+        "remindAt": "field:remindAt",
+        "note": "field:note"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

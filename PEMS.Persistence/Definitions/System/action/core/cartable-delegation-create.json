@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "cartable-delegation-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delegate the cartable",
+    "fa": "تفویض کارتابل"
+  },
+  "description": {
+    "en": "Delegate the cartable",
+    "fa": "تفویض کارتابل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "CreateDelegation",
+      "args": {
+        "delegateUserId": "field:delegateUserId",
+        "fromDate": "field:fromDate",
+        "toDate": "field:toDate",
+        "note": "field:note"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

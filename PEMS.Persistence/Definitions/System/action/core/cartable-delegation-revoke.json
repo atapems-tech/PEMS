@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "cartable-delegation-revoke",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revoke a delegation",
+    "fa": "لغو تفویض"
+  },
+  "description": {
+    "en": "Revoke a delegation",
+    "fa": "لغو تفویض"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "RevokeDelegation",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}
