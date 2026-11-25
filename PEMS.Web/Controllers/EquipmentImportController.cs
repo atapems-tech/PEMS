@@ -28,66 +28,21 @@ public class EquipmentImportController : Controller
         _permissionService = permissionService;
     }
 
-    // طبق «PEMS — Global Engineering Management UI/UX, Navigation & RBAC Hardening» بند ۱۱:
-    // این Pipeline قبلاً هیچ بررسی مجوزی نداشت - Commit و CreateFromTags (که مستقیم و بدون
-    // مرحله‌ی بازبینی به جدول Equipments می‌نویسد) هر دو برای هر کاربر احرازهویت‌شده‌ای باز بودند.
-    [HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "View"))
-            return Forbid();
-
-        ViewData["Title"] = "Equipment Import";
-        ViewData["Section"] = "CMMS Integration";
-        ViewData["HelpKey"] = "Imports.StagedBatchOverview";
-
-        ViewBag.Projects = await _context.Projects.Where(x => x.IsActive)
-            .Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
-
-        var recentBatches = await _importService.GetRecentBatchesAsync();
-
-        return View(recentBatches);
-    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
-    public async Task<IActionResult> Upload(IFormFile file, int projectId)
+
+    /// <summary>SCRUM-695: the upload form of the PDF scan (the page of the batches links here); the result page stays code.</summary>
+    [HttpGet]
+    public async Task<IActionResult> ScanPdfForm()
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "Create"))
             return Forbid();
-
-        if (file == null || file.Length == 0)
-        {
-            TempData["Error"] = "Please select an Equipment Excel file.";
-            return RedirectToAction(nameof(Index));
-        }
-
-        using var stream = file.OpenReadStream();
-
-        // طبق خطای واقعی گزارش‌شده: ImportedById به جدول Employees وصل است (نه ApplicationUser)
-        // - قبلاً شناسه‌ی خام کاربر (UserId) مستقیم پاس داده می‌شد که با کلید Employee یکی
-        // نیست، پس محدودیت کلید خارجی نقض می‌شد. همان الگویی که برای ساخت User هم رفع شد.
-        var importedByEmployeeId = await GetCurrentEmployeeIdAsync();
-
-        var batchId = await _importService.StageFromExcelAsync(stream, file.FileName, projectId, importedByEmployeeId);
-
-        return RedirectToAction(nameof(Review), new { batchId });
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Review(int batchId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EquipmentImport", "View"))
-            return Forbid();
-
-        ViewData["Title"] = "Review Equipment Import";
+        ViewData["Title"] = "Scan a PDF";
         ViewData["Section"] = "CMMS Integration";
-
-        var batch = await _importService.GetBatchAsync(batchId);
-        if (batch == null) return NotFound();
-
-        return View(batch);
+        ViewBag.Projects = await _context.Projects.Where(x => x.IsActive).Select(x => new { x.ProjectId, x.ProjectName }).ToListAsync();
+        return View();
     }
 
     // طبق درخواست: تشخیص تجهیزات از فایل PDF - یک تشخیص «بهترین تلاش» شماره‌تگ است (نه
@@ -103,7 +58,7 @@ public class EquipmentImportController : Controller
         if (file == null || file.Length == 0)
         {
             TempData["Error"] = "Please select a PDF file.";
-            return RedirectToAction(nameof(Index));
+            return Redirect("/p/equipment-import");
         }
 
         var tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".pdf");
@@ -148,7 +103,7 @@ public class EquipmentImportController : Controller
         if (tags == null || !tags.Any())
         {
             TempData["Error"] = "No tags were selected.";
-            return RedirectToAction(nameof(Index));
+            return Redirect("/p/equipment-import");
         }
 
         var existingTags = await _context.Equipments
@@ -180,7 +135,7 @@ public class EquipmentImportController : Controller
         await _context.SaveChangesAsync();
 
         TempData["Message"] = $"{created} equipment tag(s) added from PDF scan. Names and types are placeholders - please edit each one with the real details.";
-        return RedirectToAction("Index", "Equipment");
+        return Redirect("/p/equipments");
     }
 
     // همان الگویی که در EngineeringDocumentsController برای رفع همین دسته باگ استفاده شد:

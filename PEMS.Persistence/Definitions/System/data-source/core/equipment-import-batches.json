@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "equipment-import-batches",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "equipment-import-batches",
+    "fa": "equipment-import-batches"
+  },
+  "description": {
+    "en": "equipment-import-batches",
+    "fa": "equipment-import-batches"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EquipmentImport",
+      "action": "Batches"
+    }
+  }
+}

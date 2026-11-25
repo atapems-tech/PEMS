@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-import-root",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment import (old address)",
+    "fa": "ورود تجهیزات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Equipment import (old address)",
+    "fa": "ورود تجهیزات (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "EquipmentImport",
+    "target": "/p/equipment-import",
+    "permanent": false
+  }
+}

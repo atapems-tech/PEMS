@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "equipment-import-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard the batch",
+    "fa": "حذف دسته"
+  },
+  "description": {
+    "en": "Discard the batch",
+    "fa": "حذف دسته"
+  },
+  "payload": {
+    "id": "equipment-import-discard",
+    "title": {
+      "en": "Discard the batch",
+      "fa": "حذف دسته"
+    },
+    "submitLabel": {
+      "en": "Discard the whole batch",
+      "fa": "حذف کل دسته"
+    },
+    "actionKey": "equipment-import-discard",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

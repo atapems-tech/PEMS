@@ -1,0 +1,268 @@
+{
+  "kind": "page",
+  "key": "equipment-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review equipment import",
+    "fa": "بازبینی ورود تجهیزات"
+  },
+  "description": {
+    "en": "Review equipment import",
+    "fa": "بازبینی ورود تجهیزات"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "equipment-import-review",
+    "permission": "EquipmentImport.View",
+    "regions": {
+      "content": [
+        {
+          "id": "head",
+          "component": "data-grid",
+          "options": {
+            "id": "equipment-import-head",
+            "url": "/d/equipment-import-batch?batchId={{params.batchId|url}}",
+            "idField": "batchId",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 240
+              },
+              {
+                "key": "projectName",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 180
+              },
+              {
+                "key": "rows",
+                "header": {
+                  "en": "Rows",
+                  "fa": "ردیف"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "newCount",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "updateCount",
+                "header": {
+                  "en": "Updates",
+                  "fa": "به‌روزرسانی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "equipment-import-review-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/equipment-import-commit?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Commit the selected rows",
+                  "fa": "ثبت ردیف‌های انتخاب‌شده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/equipment-import-discard?batchId={{params.batchId}}",
+                "text": {
+                  "en": "Discard the batch",
+                  "fa": "حذف دسته"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/relationship-explorer",
+                "text": {
+                  "en": "Relationship explorer (confirm MR/PO links after the commit)",
+                  "fa": "کاوشگر روابط (تأیید اتصال MR/PO پس از ثبت)"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/equipment-import",
+                "text": {
+                  "en": "Back to the batches",
+                  "fa": "بازگشت به دسته‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "rows",
+          "component": "def:entity-list",
+          "options": {
+            "id": "equipment-import-rows",
+            "url": "/d/equipment-import-rows?f.batchId={{params.batchId|url}}",
+            "idField": "rowId",
+            "viewsKey": "equipment-import-rows",
+            "columns": [
+              {
+                "key": "rowNumber",
+                "header": {
+                  "en": "#",
+                  "fa": "#"
+                },
+                "width": 60,
+                "type": "number"
+              },
+              {
+                "key": "tagNumber",
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                },
+                "width": 140
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                },
+                "width": 200
+              },
+              {
+                "key": "equipmentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 120
+              },
+              {
+                "key": "discipline",
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "width": 120
+              },
+              {
+                "key": "area",
+                "header": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                },
+                "width": 110
+              },
+              {
+                "key": "pidNumber",
+                "header": {
+                  "en": "P&ID",
+                  "fa": "P&ID"
+                },
+                "width": 120
+              },
+              {
+                "key": "mrNumber",
+                "header": {
+                  "en": "MR",
+                  "fa": "MR"
+                },
+                "width": 110
+              },
+              {
+                "key": "poNumber",
+                "header": {
+                  "en": "PO",
+                  "fa": "PO"
+                },
+                "width": 110
+              },
+              {
+                "key": "validationStatus",
+                "header": {
+                  "en": "Validation",
+                  "fa": "اعتبارسنجی"
+                },
+                "width": 110
+              },
+              {
+                "key": "validationMessage",
+                "header": {
+                  "en": "Message",
+                  "fa": "پیام"
+                },
+                "width": 240
+              },
+              {
+                "key": "includeInCommit",
+                "header": {
+                  "en": "Include",
+                  "fa": "شامل"
+                },
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "action",
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                },
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 130,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Include / exclude",
+                      "fa": "شامل / حذف"
+                    },
+                    "url": "/f/equipment-import-toggle-row?rowId={id}&batchId={{params.batchId}}&include={raw.includeInCommit}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

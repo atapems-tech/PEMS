@@ -1,0 +1,143 @@
+{
+  "kind": "page",
+  "key": "equipment-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment import",
+    "fa": "ورود تجهیزات"
+  },
+  "description": {
+    "en": "Equipment import",
+    "fa": "ورود تجهیزات"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "equipment-import",
+    "permission": "EquipmentImport.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "equipment-import-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/equipment-import-upload",
+                "text": {
+                  "en": "Upload an equipment workbook",
+                  "fa": "بارگذاری فایل تجهیزات"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/EquipmentImport/ScanPdfForm",
+                "text": {
+                  "en": "Scan a PDF for tag numbers",
+                  "fa": "اسکن PDF برای شماره تگ‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batches",
+          "component": "def:entity-list",
+          "options": {
+            "id": "equipment-import-batches",
+            "url": "/d/equipment-import-batches",
+            "idField": "batchId",
+            "viewsKey": "equipment-import-batches",
+            "columns": [
+              {
+                "key": "fileName",
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                },
+                "width": 240
+              },
+              {
+                "key": "projectName",
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "width": 180
+              },
+              {
+                "key": "importDate",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "rows",
+                "header": {
+                  "en": "Rows",
+                  "fa": "ردیف"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "newCount",
+                "header": {
+                  "en": "New",
+                  "fa": "جدید"
+                },
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "updateCount",
+                "header": {
+                  "en": "Updates",
+                  "fa": "به‌روزرسانی"
+                },
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 110,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "review",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بازبینی"
+                    },
+                    "url": "/p/equipment-import-review?batchId={id}",
+                    "method": "get",
+                    "showWhen": "row.status == 'Staging'"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

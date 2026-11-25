@@ -129,7 +129,7 @@ public class ImportPipelineAuthorizationTests
         var service = new FakeEquipmentImportService();
 
         Assert.True(await perms.HasPermissionAsync(user.Roles, "EquipmentImport", "Approve"));
-        var result = await new PEMS.Web.Services.EquipmentImportOperations(service).CommitAsync(1);
+        var result = await new PEMS.Web.Services.EquipmentImportOperations(service, ctx).CommitAsync(1);
 
         Assert.True(result.Success);
         Assert.True(service.CommitCalled);
@@ -159,7 +159,7 @@ public class ImportPipelineAuthorizationTests
 
         var result = await controller.CreateFromTags(1, 1, new List<string> { "EQ-999" });
 
-        Assert.IsType<RedirectToActionResult>(result);
+        Assert.IsType<RedirectResult>(result);
         Assert.Single(ctx.Equipments);
     }
 

@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "equipment-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload an equipment workbook",
+    "fa": "بارگذاری فایل تجهیزات"
+  },
+  "description": {
+    "en": "Upload an equipment workbook",
+    "fa": "بارگذاری فایل تجهیزات"
+  },
+  "payload": {
+    "id": "equipment-import-upload",
+    "title": {
+      "en": "Upload an equipment workbook",
+      "fa": "بارگذاری فایل تجهیزات"
+    },
+    "submitLabel": {
+      "en": "Upload",
+      "fa": "بارگذاری"
+    },
+    "actionKey": "equipment-import-upload",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-import-project-options"
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "Equipment Excel file (.xlsx)",
+          "fa": "فایل Excel تجهیزات (.xlsx)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fileName",
+        "label": {
+          "en": "File name (with extension)",
+          "fa": "نام فایل (با پسوند)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      }
+    ]
+  }
+}

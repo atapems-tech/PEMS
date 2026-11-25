@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "equipment-import-commit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commit the batch",
+    "fa": "ثبت دسته"
+  },
+  "description": {
+    "en": "Commit the batch",
+    "fa": "ثبت دسته"
+  },
+  "payload": {
+    "id": "equipment-import-commit",
+    "title": {
+      "en": "Commit the batch",
+      "fa": "ثبت دسته"
+    },
+    "submitLabel": {
+      "en": "Commit the selected rows into the live equipment register",
+      "fa": "ثبت ردیف‌های انتخاب‌شده در ثبت زنده تجهیزات"
+    },
+    "actionKey": "equipment-import-commit",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه دسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}
