@@ -173,6 +173,25 @@
           }
         },
         {
+          "id": "export",
+          "component": "action-button",
+          "options": {
+            "action": "reliability-trend-export",
+            "label": {
+              "en": "Export the readings",
+              "fa": "خروجی قرائت‌ها"
+            },
+            "tone": "secondary",
+            "icon": "bi-download",
+            "values": {
+              "f.pointId": "{{params.pointId}}",
+              "f.range": "{{params.range}}",
+              "f.from": "{{params.from}}",
+              "f.to": "{{params.to}}"
+            }
+          }
+        },
+        {
           "id": "points",
           "component": "data-grid",
           "options": {
