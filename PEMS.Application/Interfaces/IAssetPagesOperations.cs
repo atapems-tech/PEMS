@@ -13,6 +13,9 @@ public sealed record PickerOption(string Value, string Label);
 /// The asset pages and the functional location list as operations (SCRUM-670, 700): the list, the passport head and its work orders, inspections and failures, the choice of locations, the location list (reads, signed-in users for assets, FunctionalLocation.View
 /// for locations, as the controllers checked) and the validation the location edit runs before the entity write (unique code, no own parent, no cycle). Create and edit of an asset and of a location are entity definitions.
 /// </summary>
+public sealed record TreeNodeItem(string Value, string Text, string? Sub, bool HasChildren);
+public sealed record TreeNodesAnswer(IReadOnlyList<TreeNodeItem> Items, bool HasMore);
+
 public interface IAssetPagesOperations
 {
     [PEMS.Application.Common.PemsOperation("Asset", "List")]
@@ -35,6 +38,10 @@ public interface IAssetPagesOperations
 
     [PEMS.Application.Common.PemsOperation("FunctionalLocation", "List", "FunctionalLocation.View")]
     Task<List<LocationRow>> LocationListAsync();
+
+    /// <summary>SCRUM-513, 700: the nodes of the tree picker (pems-tree-select), served as JSON at /x/functional-location-tree-nodes: { items: [{ value, text, sub, hasChildren }], hasMore }. The picker is used by forms of other modules, so the rule is the View right of the locations.</summary>
+    [PEMS.Application.Common.PemsOperation("FunctionalLocation", "TreeNodes", "FunctionalLocation.View")]
+    Task<TreeNodesAnswer> TreeNodesAsync(int? parentId = null, string? q = null, int page = 1);
 
     [PEMS.Application.Common.PemsOperation("FunctionalLocation", "Validate", "FunctionalLocation.Edit")]
     Task<(bool Success, string? Error)> ValidateLocationAsync(int? id, string code, int? parentId = null);

@@ -66,7 +66,7 @@ public sealed class PemsActionBarTagHelper(IPemsComponentRenderer renderer) : Ta
 
 /// <summary>
 /// A field that picks one node of a large tree one level at a time (SCRUM-513): <c>&lt;pems-tree-select name="FunctionalLocationId" value="@Model.FunctionalLocationId" selected-text="@Model.FunctionalLocationName"
-/// url="@Url.Action("TreeNodes", "FunctionalLocation")" placeholder="@Localizer["Select"]" search-label="@Localizer["Search"]" /&gt;</c>. The value is posted as a hidden input with the name.
+/// url="/x/functional-location-tree-nodes" placeholder="@Localizer["Select"]" search-label="@Localizer["Search"]" /&gt;</c>. The value is posted as a hidden input with the name.
 /// </summary>
 [HtmlTargetElement("pems-tree-select")]
 [PemsFacade(UiKeys.TreeSelect)]

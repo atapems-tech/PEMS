@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "functional-location-tree-nodes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Functional location tree nodes",
+    "fa": "گره‌های درخت محل عملکردی"
+  },
+  "description": {
+    "en": "Functional location tree nodes",
+    "fa": "گره‌های درخت محل عملکردی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "FunctionalLocation",
+      "action": "TreeNodes",
+      "args": {
+        "parentId": "param:parentId",
+        "q": "param:q",
+        "page": "param:page"
+      },
+      "disposition": "inline"
+    }
+  }
+}
