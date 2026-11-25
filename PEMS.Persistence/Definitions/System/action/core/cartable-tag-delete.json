@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "cartable-tag-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a tag",
+    "fa": "حذف برچسب"
+  },
+  "description": {
+    "en": "Delete a tag",
+    "fa": "حذف برچسب"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "DeleteTag",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

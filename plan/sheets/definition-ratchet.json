@@ -150,7 +150,7 @@
     "PEMS.Web.Controllers.FunctionalLocationController": 1,
     "PEMS.Web.Controllers.HelpController": 3,
     "PEMS.Web.Controllers.HomeController": 4,
-    "PEMS.Web.Controllers.LetterCartableController": 21,
+    "PEMS.Web.Controllers.LetterCartableController": 8,
     "PEMS.Web.Controllers.LetterComposeController": 10,
     "PEMS.Web.Controllers.LetterController": 14,
     "PEMS.Web.Controllers.LetterTemplateController": 1,

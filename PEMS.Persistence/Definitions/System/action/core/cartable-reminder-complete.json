@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "cartable-reminder-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete a reminder",
+    "fa": "تکمیل یادآور"
+  },
+  "description": {
+    "en": "Complete a reminder",
+    "fa": "تکمیل یادآور"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "CompleteReminder",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

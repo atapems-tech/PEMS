@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "cartable-rule-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a routing rule",
+    "fa": "ذخیره‌ی قانون مسیریابی"
+  },
+  "description": {
+    "en": "Save a routing rule",
+    "fa": "ذخیره‌ی قانون مسیریابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "SaveRule",
+      "args": {
+        "rule": {}
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

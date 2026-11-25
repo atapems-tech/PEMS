@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "cartable-rule-toggle",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Switch a routing rule",
+    "fa": "فعال یا غیرفعال کردن قانون مسیریابی"
+  },
+  "description": {
+    "en": "Switch a routing rule",
+    "fa": "فعال یا غیرفعال کردن قانون مسیریابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "ToggleRule",
+      "args": {
+        "id": "field:id",
+        "active": "field:active"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

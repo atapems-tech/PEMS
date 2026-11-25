@@ -518,61 +518,66 @@ public class CartableWebTests
         return doc.RootElement.GetProperty(prop).Deserialize<T>()!;
     }
 
-    [Fact]
-    public async Task CartableController_TagCreateReturnsLocalizedErrors_AndOkOnSuccess()
+    // SCRUM-714: the writes of the cartable are the operations of ILetterCartableOperations (the reads stay on the controller)
+    private static PEMS.Web.Services.LetterCartableOperations CartableOps(string name, out PEMSDbContext ctx, ICurrentUserService? user = null)
     {
-        var c = Cartable(nameof(CartableController_TagCreateReturnsLocalizedErrors_AndOkOnSuccess), out var ctx);
+        ctx = LetterTestWorld.NewContext("CartOps_" + name);
+        var org = new OrganizationSubordinateResolver(ctx);
+        var localizer = new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<IStringLocalizer<SharedResource>>();
+        return new PEMS.Web.Services.LetterCartableOperations(new LetterTagTreeService(ctx), new LetterUserSettingsService(ctx), new LetterDelegationService(ctx, org), new LetterRoutingRuleService(ctx, org),
+            new LetterContactService(ctx), new LetterPersonalReminderService(ctx), user ?? new FakeUser(), new FakePermissionService { AllowAll = false }, localizer);
+    }
 
-        var bad = await c.TagSave(new LetterCartableController.TagRequest(null, "", null, null, true, 0));
-        Assert.False(Value<bool>(bad, "ok"));
-        Assert.Contains("tag name", Value<string>(bad, "error"), StringComparison.OrdinalIgnoreCase);   // English text from the resx, not the raw key
+    [Fact]
+    public async Task CartableOperations_TagCreateReturnsLocalizedErrors_AndOkOnSuccess()
+    {
+        var ops = CartableOps(nameof(CartableOperations_TagCreateReturnsLocalizedErrors_AndOkOnSuccess), out var ctx);
 
-        var ok = await c.TagSave(new LetterCartableController.TagRequest(null, "Mine", "danger", null, true, 0));
-        Assert.True(Value<bool>(ok, "ok"));
+        var bad = await ops.SaveTagAsync(null, "", null, null, true, 0);
+        Assert.False(bad.Success);
+        Assert.Contains("tag name", bad.Error, StringComparison.OrdinalIgnoreCase);   // English text from the resx, not the raw key
+
+        var ok = await ops.SaveTagAsync(null, "Mine", "danger", null, true, 0);
+        Assert.True(ok.Success);
         Assert.Equal(102, ctx.Tags.Single().OwnerUserId);
 
-        var orgDenied = await c.TagSave(new LetterCartableController.TagRequest(null, "Org", null, null, false, 0));
-        Assert.False(Value<bool>(orgDenied, "ok"));   // FakePermissionService has no Approve for Staff
+        var orgDenied = await ops.SaveTagAsync(null, "Org", null, null, false, 0);
+        Assert.False(orgDenied.Success);   // FakePermissionService has no Approve for Staff
     }
 
     [Fact]
-    public async Task CartableController_DelegationAndRuleEndpoints_Work_AndRejectBadInput()
+    public async Task CartableOperations_DelegationAndRuleCommands_Work_AndRejectBadInput()
     {
-        var c = Cartable(nameof(CartableController_DelegationAndRuleEndpoints_Work_AndRejectBadInput), out var ctx);
+        var ops = CartableOps(nameof(CartableOperations_DelegationAndRuleCommands_Work_AndRejectBadInput), out var ctx);
 
-        var self = await c.DelegationCreate(new LetterCartableController.DelegationRequest(102, DateTime.Today, DateTime.Today.AddDays(2), null));
-        Assert.False(Value<bool>(self, "ok"));
-        var okDel = await c.DelegationCreate(new LetterCartableController.DelegationRequest(103, DateTime.Today, DateTime.Today.AddDays(2), "trip"));
-        Assert.True(Value<bool>(okDel, "ok"));
-        var list = Assert.IsType<JsonResult>(await c.Delegations());
-        Assert.Contains("\"given\"", JsonSerializer.Serialize(list.Value));
-        Assert.True(Value<bool>(await c.DelegationRevoke(new LetterCartableController.IdRequest(Value<int>(okDel, "id"))), "ok"));
+        var self = await ops.CreateDelegationAsync(102, DateTime.Today, DateTime.Today.AddDays(2), null);
+        Assert.False(self.Success);
+        Assert.True((await ops.CreateDelegationAsync(103, DateTime.Today, DateTime.Today.AddDays(2), "trip")).Success);
+        var delegationId = ctx.LetterDelegations.Single().LetterDelegationId;
+        Assert.True((await ops.RevokeDelegationAsync(delegationId)).Success);
 
-        var noCond = await c.RuleSave(new LetterRoutingRuleDto { Name = "x", StarLetter = true });
-        Assert.False(Value<bool>(noCond, "ok"));
-        var rule = await c.RuleSave(new LetterRoutingRuleDto { Name = "urgent", MatchPriority = "Urgent", StarLetter = true, IsActive = true });
-        Assert.True(Value<bool>(rule, "ok"));
-        Assert.Single(ctx.LetterRoutingRules);
-        Assert.True(Value<bool>(await c.RuleToggle(new LetterCartableController.ToggleRequest(Value<int>(rule, "id"), false)), "ok"));
-        Assert.True(Value<bool>(await c.RuleDelete(new LetterCartableController.IdRequest(Value<int>(rule, "id"))), "ok"));
+        var noCond = await ops.SaveRuleAsync(new LetterRoutingRuleDto { Name = "x", StarLetter = true });
+        Assert.False(noCond.Success);
+        Assert.True((await ops.SaveRuleAsync(new LetterRoutingRuleDto { Name = "urgent", MatchPriority = "Urgent", StarLetter = true, IsActive = true })).Success);
+        var ruleId = ctx.LetterRoutingRules.Single().LetterRoutingRuleId;
+        Assert.True((await ops.ToggleRuleAsync(ruleId, false)).Success);
+        Assert.True((await ops.DeleteRuleAsync(ruleId)).Success);
     }
 
     [Fact]
-    public async Task CartableController_GroupsRemindersAndSettings_RoundTrip()
+    public async Task CartableOperations_GroupsRemindersAndSettings_RoundTrip()
     {
-        var c = Cartable(nameof(CartableController_GroupsRemindersAndSettings_RoundTrip), out var ctx);
+        var ops = CartableOps(nameof(CartableOperations_GroupsRemindersAndSettings_RoundTrip), out var ctx);
         SentLetter(ctx, 800, to: new[] { 2 });
 
-        var g = await c.GroupSave(new LetterCartableController.GroupRequest(null, "Team", true, new List<int> { 3, 4 }, new List<int>()));
-        Assert.True(Value<bool>(g, "ok"));
-        Assert.Contains("Team", JsonSerializer.Serialize(Assert.IsType<JsonResult>(await c.Groups()).Value));
+        Assert.True((await ops.SaveGroupAsync(null, "Team", true, new List<int> { 3, 4 }, new List<int>())).Success);
+        Assert.Contains("Team", ctx.LetterContactGroups.Select(g => g.Name));
 
-        var rem = await c.ReminderAdd(new LetterCartableController.ReminderRequest(800, DateTime.Now.AddHours(2), "call"));
-        Assert.True(Value<bool>(rem, "ok"));
-        Assert.Contains("call", JsonSerializer.Serialize(Assert.IsType<JsonResult>(await c.Reminders()).Value));
+        Assert.True((await ops.AddReminderAsync(800, DateTime.Now.AddHours(2), "call")).Success);
+        Assert.Contains("call", ctx.LetterReminders.Select(r => r.Note));
 
-        await c.SettingsSave(new LetterCartableController.SettingsRequest("thread", "dense", new List<string> { "priority", "bogus" }, 2, false, false, true, 100));
-        var json = JsonSerializer.Serialize(Assert.IsType<JsonResult>(await c.Settings()).Value);
+        await ops.SaveSettingsAsync("thread", "dense", "priority,bogus", 2, false, false, true, 100);
+        var json = JsonSerializer.Serialize(await new LetterUserSettingsService(ctx).GetAsync(102));
         Assert.Contains("\"View\":\"thread\"", json);
         Assert.DoesNotContain("bogus", json);
     }

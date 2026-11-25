@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "cartable-settings-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the cartable settings",
+    "fa": "ذخیره‌ی تنظیمات کارتابل"
+  },
+  "description": {
+    "en": "Save the cartable settings",
+    "fa": "ذخیره‌ی تنظیمات کارتابل"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "SaveSettings",
+      "args": {
+        "view": "field:view",
+        "density": "field:density",
+        "hiddenColumns": "field:hiddenColumns",
+        "frozenColumns": "field:frozenColumns",
+        "openPreviewPane": "field:openPreviewPane",
+        "confirmTrash": "field:confirmTrash",
+        "markReadOnOpen": "field:markReadOnOpen",
+        "pageSize": "field:pageSize"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

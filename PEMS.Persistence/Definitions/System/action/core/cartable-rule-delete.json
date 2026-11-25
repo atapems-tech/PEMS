@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "cartable-rule-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a routing rule",
+    "fa": "حذف قانون مسیریابی"
+  },
+  "description": {
+    "en": "Delete a routing rule",
+    "fa": "حذف قانون مسیریابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "DeleteRule",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "action",
+  "key": "cartable-reminder-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete a reminder",
+    "fa": "حذف یادآور"
+  },
+  "description": {
+    "en": "Delete a reminder",
+    "fa": "حذف یادآور"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "DeleteReminder",
+      "args": {
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}

@@ -96,6 +96,12 @@ and theme and were reconstructed from the git history (initial import 2026-09-05
 
 
 
+
+## 2026-11-21 - SCRUM-714: personal correspondence cartable writes as definitions
+
+### Changed
+- The writes of the cartable (display settings, tags, delegations, routing rules, contact groups, reminders) are definitions (/a/cartable-*) over ILetterCartableOperations with the old rules and texts; the page script posts to the action host, shows the text of a refused command and the host reads a list of plain values in a JSON body as one comma separated text. The reads (settings, tag tree, delegations, rules, contacts, groups, reminders) and the report stay on the controller until a data source can answer one object (gap). Not compiled in this step; tests not run.
+
 ## 2026-11-21 - SCRUM-742: batch 9 status in the batch sheet
 
 ### Changed

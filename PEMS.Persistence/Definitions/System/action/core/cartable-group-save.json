@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "cartable-group-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save a contact group",
+    "fa": "ذخیره‌ی گروه مخاطبین"
+  },
+  "description": {
+    "en": "Save a contact group",
+    "fa": "ذخیره‌ی گروه مخاطبین"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Cartable",
+      "action": "SaveGroup",
+      "args": {
+        "groupId": "field:groupId",
+        "name": "field:name",
+        "personal": "field:personal",
+        "employeeIds": "field:employeeIds",
+        "partyIds": "field:partyIds"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    }
+  }
+}
