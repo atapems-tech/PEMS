@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "failure-mode-cause-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "failure-mode-cause-options",
+    "fa": "failure-mode-cause-options"
+  },
+  "description": {
+    "en": "failure-mode-cause-options",
+    "fa": "failure-mode-cause-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "FailureModePage",
+      "action": "CauseOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

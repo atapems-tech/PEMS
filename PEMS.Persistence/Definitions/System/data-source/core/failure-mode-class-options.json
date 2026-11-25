@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "failure-mode-class-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "failure-mode-class-options",
+    "fa": "failure-mode-class-options"
+  },
+  "description": {
+    "en": "failure-mode-class-options",
+    "fa": "failure-mode-class-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "FailureModePage",
+      "action": "ClassOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

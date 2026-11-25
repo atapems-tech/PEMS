@@ -1,0 +1,105 @@
+{
+  "kind": "form",
+  "key": "failure-mode-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New failure mode",
+    "fa": "حالت خرابی جدید"
+  },
+  "description": {
+    "en": "New failure mode",
+    "fa": "حالت خرابی جدید"
+  },
+  "payload": {
+    "id": "failure-mode-create",
+    "title": {
+      "en": "New failure mode",
+      "fa": "حالت خرابی جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "failure-mode-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "code",
+        "label": {
+          "en": "Code",
+          "fa": "کد"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 50
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name (English)",
+          "fa": "نام (انگلیسی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name (Persian)",
+          "fa": "نام (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class (empty: all classes)",
+          "fa": "کلاس تجهیز (خالی: همه کلاس‌ها)"
+        },
+        "kind": "select",
+        "optionsFrom": "failure-mode-class-options"
+      },
+      {
+        "name": "causeIds",
+        "label": {
+          "en": "Failure causes",
+          "fa": "علل خرابی"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "failure-mode-cause-options"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "maxLength": 2000
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "switch"
+      }
+    ]
+  }
+}

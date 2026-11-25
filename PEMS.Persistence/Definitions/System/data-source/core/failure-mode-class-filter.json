@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "failure-mode-class-filter",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "failure-mode-class-filter",
+    "fa": "failure-mode-class-filter"
+  },
+  "description": {
+    "en": "failure-mode-class-filter",
+    "fa": "failure-mode-class-filter"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "FailureModePage",
+      "action": "ClassOptions"
+    }
+  }
+}

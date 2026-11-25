@@ -1,0 +1,153 @@
+{
+  "kind": "page",
+  "key": "failure-mode-catalog",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure mode catalogue",
+    "fa": "کاتالوگ حالت‌های خرابی"
+  },
+  "description": {
+    "en": "Failure mode catalogue",
+    "fa": "کاتالوگ حالت‌های خرابی"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "failure-mode-catalog",
+    "permission": "MaintenanceMasterData.View",
+    "regions": {
+      "content": [
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "failure-mode-filters",
+            "resetUrl": "/p/failure-mode-catalog",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "classId",
+                "label": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                },
+                "kind": "select",
+                "value": "{{params.classId}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "classId",
+                "source": "/d/failure-mode-class-filter",
+                "valueField": "value",
+                "labelField": "label"
+              }
+            ]
+          }
+        },
+        {
+          "id": "catalog",
+          "component": "def:entity-list",
+          "options": {
+            "id": "failure-mode-catalog",
+            "url": "/d/failure-mode-grid?f.classId={{params.classId|url}}&f.q={{params.q|url}}",
+            "idField": "failureModeId",
+            "viewsKey": "failure-mode-catalog",
+            "columns": [
+              {
+                "key": "code",
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                },
+                "width": 120
+              },
+              {
+                "key": "name",
+                "header": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                },
+                "width": 240
+              },
+              {
+                "key": "nameFa",
+                "header": {
+                  "en": "Name (fa)",
+                  "fa": "نام (فارسی)"
+                },
+                "width": 200
+              },
+              {
+                "key": "equipmentClassName",
+                "header": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                },
+                "width": 180
+              },
+              {
+                "key": "causes",
+                "header": {
+                  "en": "Failure causes",
+                  "fa": "علل خرابی"
+                },
+                "width": 320
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 150,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/failure-mode-edit?failureModeId={failureModeId}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "deactivate",
+                    "label": {
+                      "en": "Deactivate",
+                      "fa": "غیرفعال‌سازی"
+                    },
+                    "url": "/a/failure-mode-toggle?failureModeId={failureModeId}&active=false",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Deactivate this failure mode?",
+                      "fa": "این حالت خرابی غیرفعال شود؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "newUrl": "/f/failure-mode-create",
+            "newLabel": {
+              "en": "New failure mode",
+              "fa": "حالت خرابی جدید"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

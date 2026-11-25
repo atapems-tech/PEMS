@@ -4,7 +4,6 @@ Admin,OrganizationImport,Administration,"W1 admin, account, shell",Hamid,code-on
 Admin,Users,Administration,"W1 admin, account, shell",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,FunctionalLocation,Assets,"W2 CMMS, maintenance, reliability",Hamid,form-definition,proposed,list and detail pages plus create/edit: page definitions and form definitions
 ,EquipmentImport,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
-,FailureModeCatalog,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MaintenanceCalendar,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MaintenancePlan,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"
 ,MaintenanceStrategy,Maintenance and reliability,"W2 CMMS, maintenance, reliability",Hamid,code-only,proposed,"files, imports, integrations, machine endpoints or shell behaviour"

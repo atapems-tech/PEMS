@@ -166,11 +166,5 @@ public class RcmViewRenderTests
         Assert.Contains("Strategy coverage", coverage);
         Assert.Contains("Coverage by criticality", coverage);
 
-        var catalog = new FailureModeCatalogController(f.Env.Ctx, new PEMS.Persistence.Services.FailureModeCatalogService(f.Env.Ctx),
-            f.Env.User, f.Env.Permissions).WithTempData();
-        var index = await Render(catalog, await catalog.Index(null, null), "/Views/FailureModeCatalog/Index.cshtml");
-        var edit = await Render(catalog, await catalog.Edit((int?)null), "/Views/FailureModeCatalog/Edit.cshtml");
-        Assert.Contains("Failure mode catalogue", index);
-        Assert.Contains("name=\"Code\"", edit);
     }
 }
