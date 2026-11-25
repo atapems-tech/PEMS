@@ -64,8 +64,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.ContractController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -250,8 +250,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.MaintenancePlanController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -286,8 +286,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.PermitController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -358,8 +358,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.TenderController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -400,8 +400,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.WorkRequestController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "hostedService",
