@@ -89,9 +89,9 @@ public class CriticalityAssessmentControllerAuthorizationTests
 
         Assert.True(await MayAsync(perms, SystemRoles.MaintenanceEngineer, "CriticalityAssessment.Create"));
         var ops = new PEMS.Web.Services.CriticalityAssessmentOperations(new CriticalityAssessmentService(ctx), new FakeCurrentUserService { UserName = "tester" });
-        var result = await ops.CreateDraftAsync(equipment.EquipmentId, "rationale");
+        var id = await ops.CreateDraftAsync(equipment.EquipmentId, "rationale");
 
-        Assert.True(result.Success);
+        Assert.True(id > 0);   // SCRUM-823: the id of the new draft goes to the redirect
         Assert.Single(ctx.CriticalityAssessments);
     }
 

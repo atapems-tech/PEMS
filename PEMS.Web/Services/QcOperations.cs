@@ -97,27 +97,31 @@ public sealed class QcOperations(PEMSDbContext context, IWorkflowRuntime runtime
         => await context.Contracts.AsNoTracking().Where(x => x.IsActive).OrderByDescending(x => x.CreatedDate).Select(x => new QcOption(x.ContractId.ToString(), x.ContractNo)).ToListAsync();
 
     // ---- the two creates
-    public async Task<(bool Success, string? Error)> ItpCreateAsync(string itpNumber, int projectId, int qcDisciplineId, string title, int? equipmentId = null, string? referenceCodeStandard = null, string? description = null,
+    /// <summary>The id of the new plan (the action opens it).</summary>
+    public async Task<int> ItpCreateAsync(string itpNumber, int projectId, int qcDisciplineId, string title, int? equipmentId = null, string? referenceCodeStandard = null, string? description = null,
         int? procurementPackageId = null, int? contractId = null)
     {
-        await context.InspectionTestPlans.AddAsync(new InspectionTestPlan
+        var plan = new InspectionTestPlan
         {
             ITPNumber = itpNumber, ProjectId = projectId, QCDisciplineId = qcDisciplineId, EquipmentId = equipmentId, ProcurementPackageId = procurementPackageId, ContractId = contractId, Title = title,
             ReferenceCodeStandard = referenceCodeStandard, Description = description, Status = "Draft", Revision = 0, IsActive = true, CreatedDate = DateTime.Now
-        });
+        };
+        await context.InspectionTestPlans.AddAsync(plan);
         await context.SaveChangesAsync();
-        return (true, null);
+        return plan.InspectionTestPlanId;
     }
 
-    public async Task<(bool Success, string? Error)> NcrCreateAsync(string ncrNumber, int projectId, int qcDisciplineId, string description, string severity, int? equipmentId = null, int? itpLineItemId = null)
+    /// <summary>The id of the new report (the action opens it).</summary>
+    public async Task<int> NcrCreateAsync(string ncrNumber, int projectId, int qcDisciplineId, string description, string severity, int? equipmentId = null, int? itpLineItemId = null)
     {
-        await context.NonConformanceReports.AddAsync(new NonConformanceReport
+        var report = new NonConformanceReport
         {
             NCRNumber = ncrNumber, ProjectId = projectId, QCDisciplineId = qcDisciplineId, EquipmentId = equipmentId, ITPLineItemId = itpLineItemId, Description = description, Severity = severity, Status = "Open",
             RaisedById = await EmployeeIdAsync(), RaisedDate = DateTime.Now, IsActive = true, CreatedDate = DateTime.Now
-        });
+        };
+        await context.NonConformanceReports.AddAsync(report);
         await context.SaveChangesAsync();
-        return (true, null);
+        return report.NonConformanceReportId;
     }
 
     public async Task<(bool Success, string? Error)> ItpAddLineItemAsync(int itpId, string activity, int qcDisciplineId, string inspectionCategory, string? acceptanceCriteria = null, string? referenceCodeStandard = null, string? responsibleParty = null)

@@ -33,6 +33,6 @@
       "en": "The ITP was created.",
       "fa": "ITP ساخته شد."
     },
-    "redirect": "/p/qc-itps"
+    "redirect": "/p/qc-itp-details?id={result}"
   }
 }

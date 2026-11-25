@@ -31,6 +31,6 @@
       "en": "The NCR was raised.",
       "fa": "NCR ثبت شد."
     },
-    "redirect": "/p/qc-ncrs"
+    "redirect": "/p/qc-ncr-details?id={result}"
   }
 }
