@@ -76,12 +76,10 @@ public class QuickSetupAuthorizationTests
         await ctx.SaveChangesAsync();
         await AccessControlSeeder.SeedFromLegacyAsync(BuildProvider(ctx));
 
-        var equipmentImportController = new EquipmentImportController(
-            new FakeEquipmentImportService(), new FakeEquipmentPdfScanService(), ctx, user, perms).WithTempData();
-
-        var result = await equipmentImportController.Index();
-
-        Assert.IsType<ForbidResult>(result);
+        // SCRUM-695: the batches page reads through an operation with EquipmentImport.View; the data host refuses a role without it
+        Assert.Equal("EquipmentImport.View", ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IEquipmentImportOperations).GetMethod("BatchesAsync")!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission);
+        Assert.False(await perms.HasPermissionAsync(user.Roles, "EquipmentImport", "View"));
     }
 
     private class FakeEquipmentImportService : IEquipmentImportService
