@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "failure-mode-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate the failure mode",
+    "fa": "غیرفعال‌سازی حالت خرابی"
+  },
+  "description": {
+    "en": "Deactivate the failure mode",
+    "fa": "غیرفعال‌سازی حالت خرابی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "FailureMode",
+      "action": "SetActive",
+      "args": {
+        "failureModeId": "field:id",
+        "active": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Failure mode deactivated.",
+      "fa": "حالت خرابی غیرفعال شد."
+    },
+    "redirectBack": true
+  }
+}

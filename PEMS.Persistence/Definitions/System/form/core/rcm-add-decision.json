@@ -1,0 +1,237 @@
+{
+  "kind": "form",
+  "key": "rcm-add-decision",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an RCM decision",
+    "fa": "افزودن تصمیم RCM"
+  },
+  "description": {
+    "en": "Add an RCM decision",
+    "fa": "افزودن تصمیم RCM"
+  },
+  "payload": {
+    "id": "rcm-add-decision",
+    "title": {
+      "en": "Add an RCM decision",
+      "fa": "افزودن تصمیم RCM"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "rcm-add-decision",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rcmAnalysisId",
+        "label": {
+          "en": "Draft RCM",
+          "fa": "RCM پیش‌نویس"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "rcm-draft-rcm-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      },
+      {
+        "name": "fmeaItemId",
+        "label": {
+          "en": "FMEA item (failure mode)",
+          "fa": "مورد FMEA (حالت خرابی)"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "rcm-approved-fmea-item-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      },
+      {
+        "name": "decisionType",
+        "label": {
+          "en": "Decision type",
+          "fa": "نوع تصمیم"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "CONDITION_BASED",
+            "label": {
+              "en": "Condition based",
+              "fa": "مبتنی بر وضعیت"
+            }
+          },
+          {
+            "value": "PREDICTIVE",
+            "label": {
+              "en": "Predictive",
+              "fa": "پیش‌بینانه"
+            }
+          },
+          {
+            "value": "TIME_BASED",
+            "label": {
+              "en": "Time based",
+              "fa": "مبتنی بر زمان"
+            }
+          },
+          {
+            "value": "USAGE_BASED",
+            "label": {
+              "en": "Usage based",
+              "fa": "مبتنی بر مصرف"
+            }
+          },
+          {
+            "value": "FAILURE_FINDING",
+            "label": {
+              "en": "Failure finding",
+              "fa": "کشف خرابی"
+            }
+          },
+          {
+            "value": "RUN_TO_FAILURE",
+            "label": {
+              "en": "Run to failure",
+              "fa": "اجرا تا خرابی"
+            }
+          },
+          {
+            "value": "REDESIGN",
+            "label": {
+              "en": "Redesign",
+              "fa": "طراحی مجدد"
+            }
+          },
+          {
+            "value": "NO_SCHEDULED_MAINTENANCE",
+            "label": {
+              "en": "No scheduled maintenance",
+              "fa": "بدون نگهداری برنامه‌ای"
+            }
+          },
+          {
+            "value": "OTHER",
+            "label": {
+              "en": "Other",
+              "fa": "سایر"
+            }
+          }
+        ]
+      },
+      {
+        "name": "maintenanceStrategyTypeId",
+        "label": {
+          "en": "Strategy type",
+          "fa": "نوع استراتژی"
+        },
+        "kind": "select",
+        "optionsFrom": "rcm-strategy-type-options"
+      },
+      {
+        "name": "recommendedPMTemplateId",
+        "label": {
+          "en": "PM template (optional)",
+          "fa": "الگوی PM (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "rcm-pm-template-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      },
+      {
+        "name": "consequenceCategory",
+        "label": {
+          "en": "Consequence category",
+          "fa": "دسته پیامد"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Safety",
+            "label": {
+              "en": "Safety",
+              "fa": "ایمنی"
+            }
+          },
+          {
+            "value": "Environmental",
+            "label": {
+              "en": "Environmental",
+              "fa": "محیط زیست"
+            }
+          },
+          {
+            "value": "Operational",
+            "label": {
+              "en": "Operational",
+              "fa": "عملیاتی"
+            }
+          },
+          {
+            "value": "Economic",
+            "label": {
+              "en": "Economic",
+              "fa": "اقتصادی"
+            }
+          }
+        ]
+      },
+      {
+        "name": "rationale",
+        "label": {
+          "en": "Rationale",
+          "fa": "توجیه"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      }
+    ]
+  }
+}

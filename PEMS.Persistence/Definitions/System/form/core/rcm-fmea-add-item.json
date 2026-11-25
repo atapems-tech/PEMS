@@ -1,0 +1,160 @@
+{
+  "kind": "form",
+  "key": "rcm-fmea-add-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add an FMEA item",
+    "fa": "افزودن مورد FMEA"
+  },
+  "description": {
+    "en": "Add an FMEA item",
+    "fa": "افزودن مورد FMEA"
+  },
+  "payload": {
+    "id": "rcm-fmea-add-item",
+    "title": {
+      "en": "Add an FMEA item",
+      "fa": "افزودن مورد FMEA"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "rcm-fmea-add-item",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fmeaAnalysisId",
+        "label": {
+          "en": "Draft FMEA",
+          "fa": "FMEA پیش‌نویس"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "rcm-draft-fmea-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      },
+      {
+        "name": "failureModeId",
+        "label": {
+          "en": "Failure mode",
+          "fa": "حالت خرابی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "rcm-failure-mode-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      },
+      {
+        "name": "functionalFailureId",
+        "label": {
+          "en": "Functional failure (optional)",
+          "fa": "خرابی کارکردی (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "rcm-functional-failure-options",
+        "optionsArgs": {
+          "equipmentClassId": "equipmentClassId"
+        }
+      },
+      {
+        "name": "detectionMethod",
+        "label": {
+          "en": "Detection method",
+          "fa": "روش تشخیص"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "existingControl",
+        "label": {
+          "en": "Existing control",
+          "fa": "کنترل موجود"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "recommendedAction",
+        "label": {
+          "en": "Recommended action",
+          "fa": "اقدام پیشنهادی"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "severity",
+        "label": {
+          "en": "Severity (1-10)",
+          "fa": "شدت (۱ تا ۱۰)"
+        },
+        "kind": "number",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "name": "occurrence",
+        "label": {
+          "en": "Occurrence (1-10)",
+          "fa": "وقوع (۱ تا ۱۰)"
+        },
+        "kind": "number",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "name": "detectability",
+        "label": {
+          "en": "Detectability (1-10)",
+          "fa": "قابلیت تشخیص (۱ تا ۱۰)"
+        },
+        "kind": "number",
+        "min": 1,
+        "max": 10
+      },
+      {
+        "name": "maintenanceStrategyTypeId",
+        "label": {
+          "en": "Strategy type",
+          "fa": "نوع استراتژی"
+        },
+        "kind": "select",
+        "optionsFrom": "rcm-strategy-type-options"
+      }
+    ]
+  }
+}

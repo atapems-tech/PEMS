@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "rcm-fmea-rcm-analyses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-fmea-rcm-analyses",
+    "fa": "rcm-fmea-rcm-analyses"
+  },
+  "description": {
+    "en": "rcm-fmea-rcm-analyses",
+    "fa": "rcm-fmea-rcm-analyses"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "RcmAnalyses",
+      "args": {
+        "equipmentClassId": "param:id"
+      }
+    }
+  }
+}

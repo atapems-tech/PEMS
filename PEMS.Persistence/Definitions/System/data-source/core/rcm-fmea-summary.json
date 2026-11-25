@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "rcm-fmea-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-fmea-summary",
+    "fa": "rcm-fmea-summary"
+  },
+  "description": {
+    "en": "rcm-fmea-summary",
+    "fa": "rcm-fmea-summary"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "Coverage"
+    }
+  }
+}

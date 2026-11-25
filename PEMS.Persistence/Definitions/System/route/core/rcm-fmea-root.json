@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "rcm-fmea-root",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "RCM / FMEA (old address)",
+    "fa": "RCM / FMEA (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "RCM / FMEA (old address)",
+    "fa": "RCM / FMEA (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "RcmFmea",
+    "target": "/p/rcm-fmea",
+    "permanent": false
+  }
+}

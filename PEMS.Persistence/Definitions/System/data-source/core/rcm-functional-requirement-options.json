@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rcm-functional-requirement-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-functional-requirement-options",
+    "fa": "rcm-functional-requirement-options"
+  },
+  "description": {
+    "en": "rcm-functional-requirement-options",
+    "fa": "rcm-functional-requirement-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "FunctionalRequirementOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}

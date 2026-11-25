@@ -19,6 +19,12 @@ public sealed class RelationshipPagesOperations(IRelationshipService service) : 
         return string.IsNullOrWhiteSpace(q) ? Task.FromResult<RelationshipExplorationDto?>(null) : service.ExploreByFreeTextAsync(q);
     }
 
+    public async Task<List<RelationshipSuggestedRow>> SuggestedAsync(string? kind, int? id, string? q)
+    {
+        var result = await ExploreAsync(kind, id, q);
+        return result is null || result.RootType != "Equipment" ? [] : result.SuggestedLinks.Select(s => new RelationshipSuggestedRow($"{result.RootId}|{s.NodeType}|{s.NodeId}", s.Label, s.SubLabel, s.NodeType)).ToList();
+    }
+
     public Task<RelationshipGapReportDto> GapReportAsync(int? projectId) => service.GetGapReportAsync(projectId);
 
     public async Task<RelationshipBulkResult> BulkConfirmAsync(List<string> selectedItems)

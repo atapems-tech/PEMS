@@ -121,7 +121,7 @@
                       "en": "Edit",
                       "fa": "ویرایش"
                     },
-                    "url": "/f/failure-mode-edit?failureModeId={failureModeId}",
+                    "url": "/f/failure-mode-edit?failureModeId={id}",
                     "method": "get"
                   },
                   {
@@ -130,7 +130,7 @@
                       "en": "Deactivate",
                       "fa": "غیرفعال‌سازی"
                     },
-                    "url": "/a/failure-mode-toggle?failureModeId={failureModeId}&active=false",
+                    "url": "/a/failure-mode-deactivate",
                     "method": "post",
                     "confirm": {
                       "en": "Deactivate this failure mode?",

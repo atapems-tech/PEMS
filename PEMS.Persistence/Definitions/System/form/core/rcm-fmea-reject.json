@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "rcm-fmea-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the FMEA to draft",
+    "fa": "رد FMEA به پیش‌نویس"
+  },
+  "description": {
+    "en": "Reject the FMEA to draft",
+    "fa": "رد FMEA به پیش‌نویس"
+  },
+  "payload": {
+    "id": "rcm-fmea-reject",
+    "title": {
+      "en": "Reject the FMEA to draft",
+      "fa": "رد FMEA به پیش‌نویس"
+    },
+    "submitLabel": {
+      "en": "Reject the FMEA to draft",
+      "fa": "رد FMEA به پیش‌نویس"
+    },
+    "actionKey": "rcm-fmea-reject",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "fmeaAnalysisId",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "rcm-decision-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve the RCM decision",
+    "fa": "تأیید تصمیم RCM"
+  },
+  "description": {
+    "en": "Approve the RCM decision",
+    "fa": "تأیید تصمیم RCM"
+  },
+  "payload": {
+    "id": "rcm-decision-approve",
+    "title": {
+      "en": "Approve the RCM decision",
+      "fa": "تأیید تصمیم RCM"
+    },
+    "submitLabel": {
+      "en": "Approve the RCM decision",
+      "fa": "تأیید تصمیم RCM"
+    },
+    "actionKey": "rcm-decision-approve",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rcmDecisionId",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rcm-draft-fmea-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-draft-fmea-options",
+    "fa": "rcm-draft-fmea-options"
+  },
+  "description": {
+    "en": "rcm-draft-fmea-options",
+    "fa": "rcm-draft-fmea-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "DraftFmeaOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}

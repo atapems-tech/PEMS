@@ -574,7 +574,7 @@
 
             @if (navVisibility.IsCmmsItemVisible("RcmFmea"))
             {
-                <pems-nav-link item="false" active="@(IsActive("RcmFmea"))" asp-controller="RcmFmea" asp-action="Index" asp-area="">
+                <pems-nav-link item="false" href="/p/rcm-fmea" active="@(IsActive("RcmFmea") || Context.Request.Path.StartsWithSegments("/p/rcm-fmea"))">
                     <pems-icon name="bi-clipboard2-pulse" /> @Localizer["RCM / FMEA"]
                 </pems-nav-link>
             }

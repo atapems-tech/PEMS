@@ -1,0 +1,26 @@
+{
+  "kind": "action",
+  "key": "relationship-confirm-suggestion",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm the suggested link",
+    "fa": "تأیید اتصال پیشنهادی"
+  },
+  "description": {
+    "en": "Confirm the suggested link",
+    "fa": "تأیید اتصال پیشنهادی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "BulkConfirm",
+      "args": {
+        "selectedItems": "field:id"
+      }
+    },
+    "redirectBack": true
+  }
+}

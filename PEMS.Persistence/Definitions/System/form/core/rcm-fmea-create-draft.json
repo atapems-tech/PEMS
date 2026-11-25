@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "rcm-fmea-create-draft",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New FMEA draft",
+    "fa": "پیش‌نویس FMEA جدید"
+  },
+  "description": {
+    "en": "New FMEA draft",
+    "fa": "پیش‌نویس FMEA جدید"
+  },
+  "payload": {
+    "id": "rcm-fmea-create-draft",
+    "title": {
+      "en": "New FMEA draft",
+      "fa": "پیش‌نویس FMEA جدید"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "rcm-fmea-create-draft",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Analysis title",
+          "fa": "عنوان تحلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 200
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "text",
+        "maxLength": 2000
+      }
+    ]
+  }
+}

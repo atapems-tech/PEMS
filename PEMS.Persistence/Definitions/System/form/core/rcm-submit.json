@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "rcm-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit the RCM for review",
+    "fa": "ارسال RCM برای بازبینی"
+  },
+  "description": {
+    "en": "Submit the RCM for review",
+    "fa": "ارسال RCM برای بازبینی"
+  },
+  "payload": {
+    "id": "rcm-submit",
+    "title": {
+      "en": "Submit the RCM for review",
+      "fa": "ارسال RCM برای بازبینی"
+    },
+    "submitLabel": {
+      "en": "Submit the RCM for review",
+      "fa": "ارسال RCM برای بازبینی"
+    },
+    "actionKey": "rcm-submit",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class id",
+          "fa": "شناسه کلاس تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rcmAnalysisId",
+        "label": {
+          "en": "Id",
+          "fa": "شناسه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

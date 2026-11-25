@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "rcm-fmea-classes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-fmea-classes",
+    "fa": "rcm-fmea-classes"
+  },
+  "description": {
+    "en": "rcm-fmea-classes",
+    "fa": "rcm-fmea-classes"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "Coverage",
+      "path": "Classes"
+    }
+  }
+}

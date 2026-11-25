@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "rcm-pm-template-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "rcm-pm-template-options",
+    "fa": "rcm-pm-template-options"
+  },
+  "description": {
+    "en": "rcm-pm-template-options",
+    "fa": "rcm-pm-template-options"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RcmFmeaPage",
+      "action": "PmTemplateOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "equipmentClassId": "param:equipmentClassId"
+      }
+    }
+  }
+}

@@ -27,7 +27,6 @@ public class CmmsListPagesTests
         "WorkOrder",
         "MaintenanceStrategy",
         // wave 2b
-        "RcmFmea",
     };
 
     private static Task<string> Render<TController>(string view, object model, Action<ViewDataDictionary> data) where TController : Controller
@@ -207,29 +206,6 @@ public class CmmsListPagesTests
         Assert.Contains("name=\"assignedToEmployeeId\"", html);   // the new-task form moved into the toolbar popover
         Assert.Contains("name=\"taskItemId\" value=\"9\"", html);   // status change form kept
         Assert.DoesNotContain("pagination-sm", html);
-    }
-
-    // ---------- RCM / FMEA coverage ----------
-
-    [Fact]
-    public async Task RcmFmeaCoverage_ShowsItsCountsFirst_AndListsOnlyClassesWithEquipment()
-    {
-        var html = await Render<RcmFmeaController>("/Views/RcmFmea/Index.cshtml", new RcmFmeaCoverageMatrixDto
-        {
-            ClassesWithEquipment = 1, ClassesFmeaReady = 1,
-            Classes =
-            {
-                new() { EquipmentClassId = 2, Code = "PU", Name = "Pump", EquipmentCount = 12, FMEAReadiness = "READY", RCMReadiness = "PARTIALLY_READY", ApprovedFMEACount = 1 },
-                new() { EquipmentClassId = 3, Code = "VS", Name = "Vessel", EquipmentCount = 0 },
-            },
-        }, _ => { });
-
-        AssertBuiltFromTheComponent(html, null, 1);
-        Assert.Matches("<div class=\"lp-kpis\" id=\"rfKpis\">", html);               // open: no hidden attribute
-        Assert.Contains("data-lp-open=\"1\"", html);
-        Assert.Contains("vs-pill--success", html);
-        Assert.Contains("vs-pill--warning", html);
-        Assert.DoesNotContain("Vessel", html);
     }
 
     // ---------- Equipment <-> functional location assignment ----------
