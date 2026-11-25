@@ -1,5 +1,7 @@
 namespace PEMS.Application.Interfaces;
 
+public sealed record MechanicalCountsRow(int Total, int Rotating, int Static, int Unclassified);
+
 public sealed record MechanicalEquipmentHeadRow(int Id, string TagNumber, string EquipmentType, string EquipmentTag, string Manufacturer, string Model, string Material, string DesignPressure, string DesignTemperature,
     string OperatingPressure, string OperatingTemperature, string Description, bool IsActive, string SubType);
 
@@ -13,6 +15,9 @@ public sealed record StaticEquipmentRow(int Id, string EquipmentType, string Vol
 /// </summary>
 public interface IMechanicalEquipmentOperations
 {
+    [PEMS.Application.Common.PemsOperation("MechanicalEquipment", "Counts")]
+    Task<List<MechanicalCountsRow>> CountsAsync();
+
     [PEMS.Application.Common.PemsOperation("MechanicalEquipment", "Head")]
     Task<List<MechanicalEquipmentHeadRow>> HeadAsync(int id);
 
