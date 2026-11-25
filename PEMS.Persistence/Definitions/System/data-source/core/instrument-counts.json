@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "instrument-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "instrument-counts",
+    "fa": "instrument-counts"
+  },
+  "description": {
+    "en": "instrument-counts",
+    "fa": "instrument-counts"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Instrument",
+      "action": "Counts"
+    }
+  }
+}

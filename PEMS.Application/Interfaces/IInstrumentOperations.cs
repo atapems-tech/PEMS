@@ -2,6 +2,8 @@ namespace PEMS.Application.Interfaces;
 
 public sealed record InstrumentListRow(int Id, string EquipmentTag, string Manufacturer, string Model, string InstrumentType, string LoopNumber, string System, DateTime? LastCalibrationDate, DateTime? NextCalibrationDue, string CalibrationStatus);
 
+public sealed record InstrumentCountsRow(int Total, int Overdue, int DueSoon, int Ok, int Unknown);
+
 public sealed record InstrumentHeadRow(int Id, string EquipmentTag, string InstrumentType, string LoopNumber, string System, string SignalClass, string ProcessVariable, string Range, string Unit, string SignalType, string Accuracy,
     string CurrentStatus, string CalibrationStatus, int? CalibrationInterval, DateTime? LastCalibrationDate, DateTime? NextCalibrationDue, bool IsActive, DateTime? LatestMaintenanceDate, string LatestMaintenance);
 
@@ -22,6 +24,9 @@ public sealed record InstrumentIoPointRow(int Id, string TagNumber, string IoTyp
 /// </summary>
 public interface IInstrumentOperations
 {
+    [PEMS.Application.Common.PemsOperation("Instrument", "Counts")]
+    Task<List<InstrumentCountsRow>> CountsAsync();
+
     [PEMS.Application.Common.PemsOperation("Instrument", "List")]
     Task<List<InstrumentListRow>> ListAsync();
 

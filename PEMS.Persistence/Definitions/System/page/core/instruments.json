@@ -14,140 +14,66 @@
   "payload": {
     "layout": "list-page",
     "route": "instruments",
-    "template": "entity-list",
-    "args": {
-      "id": "instruments",
-      "url": "/d/instrument-grid",
-      "idField": "id",
-      "viewsKey": "instruments",
-      "columns": [
-        {
-          "key": "equipmentTag",
-          "header": {
-            "en": "Equipment",
-            "fa": "تجهیز"
-          },
-          "width": 160
-        },
-        {
-          "key": "manufacturer",
-          "header": {
-            "en": "Manufacturer",
-            "fa": "سازنده"
-          },
-          "width": 160
-        },
-        {
-          "key": "model",
-          "header": {
-            "en": "Model",
-            "fa": "مدل"
-          },
-          "width": 140
-        },
-        {
-          "key": "instrumentType",
-          "header": {
-            "en": "Type",
-            "fa": "نوع"
-          },
-          "width": 150
-        },
-        {
-          "key": "loopNumber",
-          "header": {
-            "en": "Loop",
-            "fa": "حلقه"
-          },
-          "width": 110
-        },
-        {
-          "key": "system",
-          "header": {
-            "en": "System",
-            "fa": "سیستم"
-          },
-          "width": 130
-        },
-        {
-          "key": "lastCalibrationDate",
-          "header": {
-            "en": "Last calibration",
-            "fa": "آخرین کالیبراسیون"
-          },
-          "width": 150,
-          "type": "date"
-        },
-        {
-          "key": "nextCalibrationDue",
-          "header": {
-            "en": "Next due",
-            "fa": "سررسید بعدی"
-          },
-          "width": 130,
-          "type": "date"
-        },
-        {
-          "key": "calibrationStatus",
-          "header": {
-            "en": "Calibration",
-            "fa": "کالیبراسیون"
-          },
-          "width": 120
-        },
-        {
-          "key": "_actions",
-          "header": {
-            "en": "Actions",
-            "fa": "عملیات"
-          },
-          "type": "actions",
-          "width": 300,
-          "sortable": false,
-          "filterable": false,
-          "actions": [
-            {
-              "key": "passport",
-              "label": {
-                "en": "Passport",
-                "fa": "شناسنامه"
-              },
-              "url": "/p/instrument-passport?id={id}",
-              "method": "get"
-            },
-            {
-              "key": "edit",
-              "label": {
-                "en": "Edit",
-                "fa": "ویرایش"
-              },
-              "url": "/f/instrument-edit/{id}",
-              "method": "get"
-            },
-            {
-              "key": "toggle",
-              "label": {
-                "en": "Activate / deactivate",
-                "fa": "فعال / غیرفعال"
-              },
-              "url": "/a/instrument-toggle-active",
-              "method": "post",
-              "confirm": {
-                "en": "Change the status?",
-                "fa": "وضعیت تغییر کند؟"
-              }
-            }
-          ]
-        }
-      ],
-      "newUrl": "/f/instrument-create",
-      "newLabel": {
-        "en": "New instrument",
-        "fa": "ابزار جدید"
-      }
-    },
     "regions": {
-      "toolbar": [
+      "content": [
+        {
+          "id": "instruments-counts",
+          "component": "data-grid",
+          "options": {
+            "id": "instruments-counts",
+            "url": "/d/instrument-counts",
+            "idField": "total",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "total",
+                "header": {
+                  "en": "Instruments",
+                  "fa": "ابزار دقیق"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "overdue",
+                "header": {
+                  "en": "Calibration overdue",
+                  "fa": "کالیبراسیون عقب‌افتاده"
+                },
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "dueSoon",
+                "header": {
+                  "en": "Due soon",
+                  "fa": "نزدیک سررسید"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "ok",
+                "header": {
+                  "en": "OK",
+                  "fa": "سالم"
+                },
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "unknown",
+                "header": {
+                  "en": "Unknown",
+                  "fa": "نامشخص"
+                },
+                "width": 120,
+                "type": "number"
+              }
+            ]
+          }
+        },
         {
           "id": "export",
           "component": "action-button",
@@ -159,6 +85,141 @@
             },
             "tone": "neutral",
             "icon": "bi-download"
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "instruments",
+            "url": "/d/instrument-grid",
+            "idField": "id",
+            "viewsKey": "instruments",
+            "columns": [
+              {
+                "key": "equipmentTag",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                },
+                "width": 160
+              },
+              {
+                "key": "manufacturer",
+                "header": {
+                  "en": "Manufacturer",
+                  "fa": "سازنده"
+                },
+                "width": 160
+              },
+              {
+                "key": "model",
+                "header": {
+                  "en": "Model",
+                  "fa": "مدل"
+                },
+                "width": 140
+              },
+              {
+                "key": "instrumentType",
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "width": 150
+              },
+              {
+                "key": "loopNumber",
+                "header": {
+                  "en": "Loop",
+                  "fa": "حلقه"
+                },
+                "width": 110
+              },
+              {
+                "key": "system",
+                "header": {
+                  "en": "System",
+                  "fa": "سیستم"
+                },
+                "width": 130
+              },
+              {
+                "key": "lastCalibrationDate",
+                "header": {
+                  "en": "Last calibration",
+                  "fa": "آخرین کالیبراسیون"
+                },
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "nextCalibrationDue",
+                "header": {
+                  "en": "Next due",
+                  "fa": "سررسید بعدی"
+                },
+                "width": 130,
+                "type": "date"
+              },
+              {
+                "key": "calibrationStatus",
+                "header": {
+                  "en": "Calibration",
+                  "fa": "کالیبراسیون"
+                },
+                "width": 120
+              },
+              {
+                "key": "_actions",
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                },
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "passport",
+                    "label": {
+                      "en": "Passport",
+                      "fa": "شناسنامه"
+                    },
+                    "url": "/p/instrument-passport?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    },
+                    "url": "/f/instrument-edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "toggle",
+                    "label": {
+                      "en": "Activate / deactivate",
+                      "fa": "فعال / غیرفعال"
+                    },
+                    "url": "/a/instrument-toggle-active",
+                    "method": "post",
+                    "confirm": {
+                      "en": "Change the status?",
+                      "fa": "وضعیت تغییر کند؟"
+                    }
+                  }
+                ]
+              }
+            ],
+            "newUrl": "/f/instrument-create",
+            "newLabel": {
+              "en": "New instrument",
+              "fa": "ابزار جدید"
+            }
           }
         }
       ]

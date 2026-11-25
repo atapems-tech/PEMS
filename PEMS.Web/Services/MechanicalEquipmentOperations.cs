@@ -8,6 +8,14 @@ namespace PEMS.Web.Services;
 /// <summary>SCRUM-727: the write commands of MechanicalEquipmentController, the logic moved without change (see <see cref="IMechanicalEquipmentOperations"/>).</summary>
 public sealed class MechanicalEquipmentOperations(PEMSDbContext context) : IMechanicalEquipmentOperations
 {
+    public async Task<List<MechanicalCountsRow>> CountsAsync()
+    {
+        var total = await context.MechanicalEquipments.CountAsync(x => x.IsActive);
+        var rotating = await context.RotatingEquipments.Where(x => x.IsActive).Select(x => x.MechanicalEquipmentId).Distinct().CountAsync();
+        var isStatic = await context.StaticEquipments.Where(x => x.IsActive).Select(x => x.MechanicalEquipmentId).Distinct().CountAsync();
+        return [new(total, rotating, isStatic, Math.Max(0, total - rotating - isStatic))];
+    }
+
     public async Task<List<MechanicalEquipmentHeadRow>> HeadAsync(int id)
     {
         var m = await context.MechanicalEquipments.AsNoTracking().Include(x => x.Equipment).FirstOrDefaultAsync(x => x.MechanicalEquipmentId == id);

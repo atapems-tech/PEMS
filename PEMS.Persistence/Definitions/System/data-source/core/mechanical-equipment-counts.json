@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mechanical-equipment-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "mechanical-equipment-counts",
+    "fa": "mechanical-equipment-counts"
+  },
+  "description": {
+    "en": "mechanical-equipment-counts",
+    "fa": "mechanical-equipment-counts"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "MechanicalEquipment",
+      "action": "Counts"
+    }
+  }
+}

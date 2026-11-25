@@ -32,6 +32,12 @@ public sealed class InstrumentOperations(PEMSDbContext context, IInstrumentServi
         => (await instruments.GetListAsync(1, RowLimit, null, null)).Items
             .Select(i => new InstrumentListRow(i.InstrumentId, i.TagNumber, i.Manufacturer ?? "", i.Model ?? "", i.InstrumentType, i.LoopNumber ?? "", i.System ?? "", i.LastCalibrationDate, i.NextCalibrationDue, i.CalibrationStatus)).ToList();
 
+    public async Task<List<InstrumentCountsRow>> CountsAsync()
+    {
+        var rows = await ListAsync();
+        return [new(rows.Count, rows.Count(r => r.CalibrationStatus == "Overdue"), rows.Count(r => r.CalibrationStatus == "DueSoon"), rows.Count(r => r.CalibrationStatus == "OK"), rows.Count(r => r.CalibrationStatus == "Unknown"))];
+    }
+
     public async Task<List<InstrumentHeadRow>> HeadAsync(int id)
     {
         var i = await context.Instruments.AsNoTracking().Include(x => x.Equipment).FirstOrDefaultAsync(x => x.InstrumentId == id);
