@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "relationship-bulk-suggestions-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Bulk suggestions (old address)",
+    "fa": "تأیید دسته‌جمعی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Bulk suggestions (old address)",
+    "fa": "تأیید دسته‌جمعی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Relationship/BulkSuggestions",
+    "target": "/f/relationship-bulk-confirm",
+    "permanent": false
+  }
+}

@@ -8,6 +8,8 @@ namespace PEMS.Application.Interfaces;
 /// </summary>
 public sealed record RelationshipSuggestedRow(string Link, string Label, string? SubLabel, string NodeType);
 
+public sealed record RelationshipSuggestionChoice(string Value, string Label);
+
 public sealed record RelationshipBulkResult(bool Success, string? Error);
 
 public interface IRelationshipPagesOperations
@@ -21,6 +23,10 @@ public interface IRelationshipPagesOperations
     /// <summary>The unconfirmed suggestions of an equipment explored by id; Link is the "equipmentId|targetType|targetId" key the confirm action takes.</summary>
     [PEMS.Application.Common.PemsOperation("RelationshipPage", "Suggested", "Relationship.View")]
     Task<List<RelationshipSuggestedRow>> SuggestedAsync(string? kind, int? id, string? q);
+
+    /// <summary>All the unconfirmed suggestions (optionally of a project) as choices of the bulk form: the value is "equipmentId|targetType|targetId".</summary>
+    [PEMS.Application.Common.PemsOperation("RelationshipPage", "SuggestionChoices", "Relationship.View")]
+    Task<List<RelationshipSuggestionChoice>> SuggestionChoicesAsync(int? projectId = null);
 
     /// <summary>SCRUM-824: the checked suggestions of the bulk page, each "equipmentId|targetType|targetId"; needs Relationship.Approve as the controller did.</summary>
     [PEMS.Application.Common.PemsOperation("RelationshipPage", "BulkConfirm", "Relationship.Approve")]

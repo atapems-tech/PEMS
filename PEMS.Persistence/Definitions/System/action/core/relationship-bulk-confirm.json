@@ -21,6 +21,10 @@
         "selectedItems": "field:selectedItems"
       }
     },
-    "redirect": "/Relationship/BulkSuggestions"
+    "redirect": "/f/relationship-bulk-confirm",
+    "success": {
+      "en": "The selected suggestions were confirmed.",
+      "fa": "پیشنهادهای انتخاب‌شده تأیید شدند."
+    }
   }
 }
