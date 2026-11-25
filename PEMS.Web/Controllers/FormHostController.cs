@@ -112,7 +112,9 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
             User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value).ToList(), currentUser.UserName);
         if (!KeyShape.IsMatch(key)) return new Loaded(NotFound(), null, context, new Dictionary<string, IReadOnlyList<FieldOption>>(), null);
 
-        var request = new PipelineRequest("form", key, "core", context.Culture, context.Roles, context.UserName);
+        var requestValues = Request.Query.ToDictionary(q => q.Key, q => q.Value.ToString(), StringComparer.Ordinal);   // SCRUM-820: optionsArgs read these (and the record id as "id")
+        if (id is not null) requestValues["id"] = id;
+        var request = new PipelineRequest("form", key, "core", context.Culture, context.Roles, context.UserName, requestValues);
         var result = await pipeline.RunAsync(request, ct);
         if (result.Status == PipelineStatus.NotFound) return new Loaded(NotFound(), null, context, new Dictionary<string, IReadOnlyList<FieldOption>>(), null);
         if (result.Status == PipelineStatus.Forbidden) return new Loaded(Forbid(), null, context, new Dictionary<string, IReadOnlyList<FieldOption>>(), null);
@@ -122,7 +124,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         var options = result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.OptionsKey, out var o) && o is IReadOnlyDictionary<string, IReadOnlyList<FieldOption>> map ? map : new Dictionary<string, IReadOnlyList<FieldOption>>();
         if (result.Resolved.Hydrated.TryGetValue(FormOptionsHydrator.ProblemsKey, out var p) && p is IEnumerable<string> problems)
             foreach (var problem in problems) log.LogWarning("Form definition {Key}: {Problem}", key, problem);
-        return new Loaded(null, form with { Id = key, Action = Url.Action(nameof(Submit), new { key, id })! }, context, options, PageRenderer.TitleOf(result.Resolved.Source.TitleJson, CultureInfo.CurrentUICulture));
+        return new Loaded(null, form with { Id = key, Action = Url.Action(nameof(Submit), new { key, id })! + Request.QueryString.Value }, context, options, PageRenderer.TitleOf(result.Resolved.Source.TitleJson, CultureInfo.CurrentUICulture));
     }
 
     private async Task<IActionResult> Show(string key, Loaded loaded, IReadOnlyDictionary<string, string?> values, IReadOnlyDictionary<string, TranslatableText> errors, IReadOnlyList<TranslatableText> formErrors, bool stepUp = false)

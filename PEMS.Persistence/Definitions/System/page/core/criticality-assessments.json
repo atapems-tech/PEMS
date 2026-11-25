@@ -61,6 +61,25 @@
                     }
                   }
                 ]
+              },
+              {
+                "name": "equipmentClass",
+                "label": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                },
+                "kind": "select",
+                "value": "{{params.equipmentClass}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "equipmentClass",
+                "source": "/d/equipment-class-filter",
+                "valueField": "label",
+                "labelField": "label"
               }
             ]
           }
@@ -95,7 +114,7 @@
           "component": "data-grid",
           "options": {
             "id": "queue",
-            "url": "/d/criticality-assessment-queue?f.status={{params.status|url}}",
+            "url": "/d/criticality-assessment-queue?f.status={{params.status|url}}&f.equipmentClass={{params.equipmentClass|url}}",
             "idField": "id",
             "columns": [
               {
