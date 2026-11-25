@@ -105,7 +105,7 @@
             "blocks": [
               {
                 "type": "link",
-                "href": "/Relationship/BulkSuggestions",
+                "href": "/f/relationship-bulk-confirm",
                 "text": {
                   "en": "Approve suggested links in bulk",
                   "fa": "تأیید دسته‌جمعی اتصال‌ها"

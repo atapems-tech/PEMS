@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "relationship-bulk-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm suggested links in bulk",
+    "fa": "تأیید دسته‌جمعی اتصال‌ها"
+  },
+  "description": {
+    "en": "Confirm suggested links in bulk",
+    "fa": "تأیید دسته‌جمعی اتصال‌ها"
+  },
+  "payload": {
+    "id": "relationship-bulk-confirm",
+    "title": {
+      "en": "Confirm suggested links in bulk",
+      "fa": "تأیید دسته‌جمعی اتصال‌ها"
+    },
+    "submitLabel": {
+      "en": "Confirm the selected links",
+      "fa": "تأیید اتصال‌های انتخاب‌شده"
+    },
+    "actionKey": "relationship-bulk-confirm",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "selectedItems",
+        "label": {
+          "en": "Suggestions (they become official links)",
+          "fa": "پیشنهادها (به اتصال رسمی تبدیل می‌شوند)"
+        },
+        "kind": "multiSelect",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "relationship-suggestion-choices"
+      }
+    ]
+  }
+}

@@ -25,6 +25,9 @@ public sealed class RelationshipPagesOperations(IRelationshipService service) : 
         return result is null || result.RootType != "Equipment" ? [] : result.SuggestedLinks.Select(s => new RelationshipSuggestedRow($"{result.RootId}|{s.NodeType}|{s.NodeId}", s.Label, s.SubLabel, s.NodeType)).ToList();
     }
 
+    public async Task<List<RelationshipSuggestionChoice>> SuggestionChoicesAsync(int? projectId = null)
+        => (await service.GetAllSuggestedLinksAsync(projectId)).Select(i => new RelationshipSuggestionChoice($"{i.EquipmentId}|{i.TargetType}|{i.TargetId}", $"{i.EquipmentTagNumber} → {i.TargetType}: {i.TargetLabel} ({i.MatchedOnRawValue})")).ToList();
+
     public Task<RelationshipGapReportDto> GapReportAsync(int? projectId) => service.GetGapReportAsync(projectId);
 
     public async Task<RelationshipBulkResult> BulkConfirmAsync(List<string> selectedItems)

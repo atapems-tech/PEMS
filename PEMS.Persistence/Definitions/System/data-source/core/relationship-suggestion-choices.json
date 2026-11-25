@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "relationship-suggestion-choices",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Suggested links",
+    "fa": "پیوندهای پیشنهادی"
+  },
+  "description": {
+    "en": "Suggested links",
+    "fa": "پیوندهای پیشنهادی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "RelationshipPage",
+      "action": "SuggestionChoices",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}
