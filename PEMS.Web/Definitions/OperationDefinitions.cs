@@ -102,6 +102,9 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
 
     private static bool IsIdList(Type t) => t == typeof(int[]) || t.IsGenericType && t.GetGenericArguments() is [var a] && a == typeof(int) && typeof(IEnumerable<int>).IsAssignableFrom(t) && t.IsAssignableFrom(typeof(List<int>));
 
+    private const int MaxTextListItems = 500;
+    private const int MaxTextListLength = 200;
+
     private static bool IsTextList(Type t) => t != typeof(string) && typeof(IEnumerable<string>).IsAssignableFrom(t);
 
     /// <summary>A list of text named "...Roles" is the roles of the user (context:roles); any other optional list of text is not settable from a definition and is passed as null.</summary>
@@ -175,7 +178,8 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             if (IsIdList(p.ParameterType)) continue;      // field:name, a comma separated list of numbers
             if (IsTextList(p.ParameterType))
             {
-                if (!IsRoles(p)) { if (args.ContainsKey(p.Name!)) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list '{p.Name}' of {op.Name} cannot be set from a definition; leave it out.")); continue; }
+                // SCRUM-824: a list of text values is the repeated values of one form field (field:name, joined by commas on the wire), each value kept as text
+                if (!IsRoles(p)) { if (args.ContainsKey(p.Name!) && !(EntityJson.Str(args[p.Name!]) ?? "").StartsWith("field:")) errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list '{p.Name}' of {op.Name} takes field:name (the repeated values of one form field).")); continue; }
                 if (EntityJson.Str(args[p.Name!]) is not "context:roles") errors.Add(new("/args/" + p.Name, "wrong-source", "Def_Err_Type", $"The list parameter '{p.Name}' of {op.Name} is the roles of the user: set it to context:roles."));
                 continue;
             }
@@ -371,7 +375,13 @@ public sealed class OperationInvokeAction(IServiceScopeFactory scopes, Operation
             }
             if (IsTextList(p.ParameterType))
             {
-                values.Add(IsRoles(p) ? invocation.Roles.ToList() : null);
+                if (IsRoles(p)) { values.Add(invocation.Roles.ToList()); continue; }
+                // SCRUM-824: the repeated values of the field named by field:name (the same field as the parameter when no source is given); at most MaxTextListItems values of MaxTextListLength characters, empty ones dropped
+                var listField = EntityJson.Str(args[p.Name!]) is { } named && named.StartsWith("field:") ? named[6..] : p.Name!;
+                var items = (invocation.Values.GetValueOrDefault(listField) ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+                if (items.Count > MaxTextListItems || items.Any(x => x.Length > MaxTextListLength))
+                    return ActionOutcome.Refused(TranslatableText.Of(("en", $"The value of '{p.Name}' is not valid."), ("fa", $"مقدار «{p.Name}» معتبر نیست.")));
+                values.Add(p.ParameterType.IsArray ? items.ToArray() : items);
                 continue;
             }
             if (IsSimple(p.ParameterType))

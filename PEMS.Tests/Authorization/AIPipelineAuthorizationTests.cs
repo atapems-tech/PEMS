@@ -130,17 +130,22 @@ public class AIPipelineAuthorizationTests
         Assert.True(service.ConfirmSuggestedLinkCalled);
     }
 
+    // SCRUM-824: BulkConfirm is an operation (permission Relationship.Approve) over a list of text values; only well formed items reach the service.
     [Fact]
-    public async Task Relationship_BulkConfirm_WithoutPermission_ReturnsForbid_DoesNotConfirm()
+    public void Relationship_BulkConfirm_NeedsTheApprovePermission()
+        => Assert.Equal("Relationship.Approve", ((PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IRelationshipPagesOperations).GetMethod("BulkConfirmAsync")!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0]).Permission);
+
+    [Fact]
+    public async Task Relationship_BulkConfirm_ConfirmsTheParsedItems_AndRefusesAnEmptyList()
     {
-        var (ctx, perms, user) = await CreateInfra(nameof(Relationship_BulkConfirm_WithoutPermission_ReturnsForbid_DoesNotConfirm), role: SystemRoles.Viewer);
         var service = new FakeRelationshipService();
-        var controller = new RelationshipController(service, user, perms).WithTempData();
+        var ops = new PEMS.Web.Services.RelationshipPagesOperations(service);
 
-        var result = await controller.BulkConfirm(new List<string> { "1|MR|1" });
-
-        Assert.IsType<ForbidResult>(result);
+        Assert.False((await ops.BulkConfirmAsync(new List<string>())).Success);
         Assert.False(service.BulkConfirmCalled);
+        Assert.True((await ops.BulkConfirmAsync(new List<string> { "1|MR|1", "bad" })).Success);
+        Assert.True(service.BulkConfirmCalled);
     }
 
     // SCRUM-745: the explorer and the gap report are operations with the permission Relationship.View (the data host refuses a caller without it).

@@ -165,7 +165,7 @@
     "PEMS.Web.Controllers.PermitController": 1,
     "PEMS.Web.Controllers.RcmFmeaController": 2,
     "PEMS.Web.Controllers.RecoveryCodesController": 2,
-    "PEMS.Web.Controllers.RelationshipController": 2,
+    "PEMS.Web.Controllers.RelationshipController": 1,
     "PEMS.Web.Controllers.SearchApiController": 4,
     "PEMS.Web.Controllers.TableExtractionController": 4,
     "PEMS.Web.Controllers.TaskController": 2,
