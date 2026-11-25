@@ -2,6 +2,7 @@ using Microsoft.Extensions.Localization;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
+using PEMS.Web.Security;
 using PEMS.Web.Resources;
 
 namespace PEMS.Web.Services;

@@ -20,4 +20,19 @@ public sealed class RelationshipPagesOperations(IRelationshipService service) : 
     }
 
     public Task<RelationshipGapReportDto> GapReportAsync(int? projectId) => service.GetGapReportAsync(projectId);
+
+    public async Task<RelationshipBulkResult> BulkConfirmAsync(List<string> selectedItems)
+    {
+        if (selectedItems.Count == 0) return new(false, "No item was selected.");
+        // every item is "equipmentId|targetType|targetId" (the format of the checkboxes of the bulk page)
+        var parsed = new List<(int EquipmentId, string TargetType, int TargetId)>();
+        foreach (var raw in selectedItems)
+        {
+            var parts = raw.Split('|');
+            if (parts.Length == 3 && int.TryParse(parts[0], out var equipmentId) && int.TryParse(parts[2], out var targetId)) parsed.Add((equipmentId, parts[1], targetId));
+        }
+        var (confirmed, errors) = await service.BulkConfirmAsync(parsed);
+        if (errors.Count > 0) return new(false, $"{confirmed} confirmed; {errors.Count} failed: " + string.Join(" | ", errors.Take(5)));
+        return new(true, $"{confirmed} suggestions were confirmed and linked.");
+    }
 }
