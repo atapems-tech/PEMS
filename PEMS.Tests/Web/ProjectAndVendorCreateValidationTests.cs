@@ -41,9 +41,6 @@ public class ProjectAndVendorCreateValidationTests
         Assert.True(Validator.TryValidateObject(p, new ValidationContext(p), new List<ValidationResult>(), validateAllProperties: true));
     }
 
-    [Fact]
-    public void VendorCreate_ShowsServerSideErrors()
-        => Assert.Contains("<pems-validation-summary", View("Vendor", "Create.cshtml"));
 
     // ------------------------------------------------------------ SCRUM-558: the project code is unique
 

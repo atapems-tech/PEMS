@@ -133,7 +133,7 @@ public class ReplenishmentAvailabilityGateTests
         await using var host = await GateHost.StartAsync("true");
         var html = await RenderSidebarAsync(host, role);
 
-        Assert.Contains("/Warehouse/Replenishment", html);
+        Assert.Contains("/p/replenishment", html);   // SCRUM-663: a definition page now
         Assert.True(host.PermissionLookupsFor(Module) > 0);
     }
 

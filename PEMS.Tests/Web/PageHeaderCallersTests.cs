@@ -15,9 +15,7 @@ namespace PEMS.Tests.Web;
 public class PageHeaderCallersTests
 {
     public static readonly string[] Callers =
-    [
-        "CriticalityAssessment/Create.cshtml"
-    ];
+    [];   // the callers were views that are definitions now
 
     private static string Root() => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
     private static string Here([CallerFilePath] string p = "") => p;

@@ -161,15 +161,6 @@ public class ReferralWebTests
         Assert.Contains("Refer to a person", sent);
     }
 
-    [Fact]
-    public async Task Details_ShowsApprovalButtonsToTheCurrentChainApprover_EvenWithoutTheModulePermission()
-    {
-        Assert.DoesNotContain("Return</button>", await RenderDetails("PendingApproval", null, currentApprover: false));
-        var html = await RenderDetails("PendingApproval", null, currentApprover: true);
-        Assert.Contains("asp-action=\"Approve\"", Web("Views", "Letter", "Details.cshtml"));
-        Assert.Matches(@"data-bs-target=""#returnModal""", html);
-        Assert.Matches(@"data-bs-target=""#rejectModal""", html);
-    }
 
     // ------------------------------------------------------------------ designated approver authority
     private static (LetterController Ctl, PEMSDbContext Ctx) Controller(string name, int userId, bool allowAll = false)

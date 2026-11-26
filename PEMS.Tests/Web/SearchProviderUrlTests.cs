@@ -21,6 +21,18 @@ public class SearchProviderUrlTests
         return dir!.FullName;
     }
 
+    private static IEnumerable<Regex> RouteDefinitionPatterns()
+    {
+        foreach (var file in Directory.GetFiles(Path.Combine(Repo(), "PEMS.Persistence", "Definitions", "System", "route", "core"), "*.json"))
+        {
+            var pattern = System.Text.Json.JsonDocument.Parse(File.ReadAllText(file)).RootElement.GetProperty("payload").GetProperty("pattern").GetString()!;
+            var regex = Regex.Escape(pattern.Trim('/')).Replace(@"\{", "{").Replace(@"\*", "*");   // Escape turns { and * of a placeholder into \{ and \*
+            regex = Regex.Replace(regex, @"\{\*[^}]+\}", ".*");                                       // {*rest}
+            regex = Regex.Replace(regex, @"\{[^}]+\}", "[^/]+");                                       // {id}
+            yield return new Regex("^" + regex + "$", RegexOptions.IgnoreCase);
+        }
+    }
+
     public static IEnumerable<object[]> ProviderUrls()
     {
         foreach (var file in Directory.GetFiles(Path.Combine(Repo(), "PEMS.Persistence", "Servises", "SearchProviders"), "*SearchProvider.cs"))
@@ -32,6 +44,10 @@ public class SearchProviderUrlTests
     [MemberData(nameof(ProviderUrls))]
     public void EverySearchResultUrl_NamesAnActionThatBindsIt(string provider, string path, bool hasPathValue, string query)
     {
+        // SCRUM-8b: an old address can be served by a route definition (a redirect to a page or form definition) instead of a controller action
+        var sample = path.Trim('/') + (hasPathValue ? "/1" : "");
+        if (RouteDefinitionPatterns().Any(r => r.IsMatch(sample))) return;
+
         var segments = path.Trim('/').Split('/');
         var controllers = typeof(PEMS.Web.Controllers.HelpController).Assembly.GetTypes()
             .Where(t => typeof(ControllerBase).IsAssignableFrom(t) && !t.IsAbstract).ToList();

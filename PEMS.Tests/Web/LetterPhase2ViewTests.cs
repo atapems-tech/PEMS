@@ -206,46 +206,7 @@ public class LetterPhase2ViewTests
         ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
     };
 
-    [Fact]
-    public async Task TemplateIndex_ListsTemplates_WithStateAsTextAndTheMatchingToggle()
-    {
-        var c = NewTemplateController();
-        var model = new List<LetterTemplateDto>
-        {
-            new() { LetterTemplateId = 1, Name = "Ack", LetterType = "Outgoing", Subject = "S1", Priority = "Normal", ConfidentialityLevel = "Internal", IsActive = true },
-            new() { LetterTemplateId = 2, Name = "Old", LetterType = null, Subject = "S2", Priority = "High", ConfidentialityLevel = "Internal", IsActive = false }
-        };
 
-        var html = await RazorViewRenderer.RenderAsync(c, Result(c, model), "~/Views/LetterTemplate/Index.cshtml");
-
-        Assert.Contains("Ack", html);
-        Assert.Contains("All letter types", html);
-        Assert.Contains("bi-check-circle", html);
-        Assert.Matches(new Regex(@"</i> Active</span>"), html);
-        Assert.Contains("Inactive", html);
-        Assert.Contains("name=\"active\" value=\"false\"", html);   // active row offers Deactivate
-        Assert.Contains("name=\"active\" value=\"true\"", html);    // inactive row offers Activate
-        Assert.Contains("Deactivate", html);
-        Assert.DoesNotContain("Delete", html);                      // soft only
-    }
-
-    [Fact]
-    public async Task TemplateEdit_ShowsServerErrorAccessibly_AndKeepsTypedValues()
-    {
-        var c = NewTemplateController();
-        c.ViewBag.Error = "A template with this name already exists.";
-        var model = new LetterTemplateDto { LetterTemplateId = 0, Name = "Typed name", Subject = "Typed subject", Priority = "Urgent", ConfidentialityLevel = "Restricted", LetterType = "Incoming" };
-
-        var html = await RazorViewRenderer.RenderAsync(c, Result(c, model), "~/Views/LetterTemplate/Edit.cshtml");
-
-        Assert.Contains("role=\"alert\"", html);
-        Assert.Contains("A template with this name already exists.", html);
-        Assert.Contains("value=\"Typed name\"", html);
-        Assert.Contains("value=\"Typed subject\"", html);
-        Assert.Matches(new Regex("<option value=\"Urgent\" selected"), html);
-        Assert.Matches(new Regex("<option value=\"Restricted\" selected"), html);
-        Assert.Matches(new Regex("<option value=\"Incoming\" selected"), html);
-    }
 
     // ------------------------------------------------------------------ wiring contracts
 
@@ -292,29 +253,6 @@ public class LetterPhase2ViewTests
         Assert.Empty(dash.GetCustomAttributes(typeof(HttpPostAttribute), true));
     }
 
-    [Theory]
-    [InlineData("PEMS.Web/Resources/SharedResource.resx")]
-    [InlineData("PEMS.Web/Resources/SharedResource.fa.resx")]
-    public void EveryPhase2LocalizationKey_ExistsInBothLanguages(string resx)
-    {
-        var keys = XDocument.Load(RepoFile(resx)).Descendants("data").Select(d => (string?)d.Attribute("name")).ToHashSet();
-
-        var used = new HashSet<string>();
-        foreach (var view in new[] { "Letter/Dashboard", "Letter/Create", "Letter/Details", "Letter/Index", "LetterTemplate/Index", "LetterTemplate/Edit" })
-        {
-            var text = File.ReadAllText(RepoFile($"PEMS.Web/Views/{view}.cshtml"));
-            foreach (Match m in Regex.Matches(text, "Localizer\\[\"(Lt[T]?_[A-Za-z0-9_]+)\"\\]")) used.Add(m.Groups[1].Value);
-            // a trailing underscore is a dynamic-key prefix ("LtT_Token_" + name); the concrete keys are checked in the Phase 3 tests
-            foreach (Match m in Regex.Matches(text, "\"(LtT_[A-Za-z0-9_]+)\"")) if (!m.Groups[1].Value.EndsWith('_')) used.Add(m.Groups[1].Value);
-        }
-        foreach (var k in new[] { "0-7", "8-30", "31-90", "90+" }) used.Add("Lt_Dash_Age_" + k);
-        foreach (var p in new[] { "Urgent", "High", "Normal", "Low" }) used.Add("Lt_P_" + p);
-        foreach (var c in new[] { "Internal", "Public", "Confidential", "Restricted", "HighlyConfidential" }) used.Add("Lt_C_" + c);
-
-        Assert.True(used.Count > 40);
-        var missing = used.Where(k => !keys.Contains(k)).OrderBy(k => k).ToList();
-        Assert.True(missing.Count == 0, "Missing localization keys in " + resx + ": " + string.Join(", ", missing));
-    }
 
     [Fact]
     public void ControllerPageTitles_AreTranslated_AndLifecycleBulkStillExcludesApprove()

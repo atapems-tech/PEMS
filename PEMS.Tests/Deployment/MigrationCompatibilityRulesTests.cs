@@ -73,7 +73,10 @@ public class MigrationCompatibilityRulesTests
         foreach (var id in chain)
         {
             Assert.Matches(@"^20\d{12}_[A-Za-z][A-Za-z0-9_]*$", id);
-            Assert.True(File.Exists(Path.Combine(dir, id + ".Designer.cs")), $"{id} has no Designer file (EF would not discover it)");
+            // EF finds a migration by its [Migration] attribute: in the Designer file, or in the migration itself when it is written by hand (SCRUM-803, 806)
+            var designer = Path.Combine(dir, id + ".Designer.cs");
+            var handWritten = File.Exists(Path.Combine(dir, id + ".cs")) && File.ReadAllText(Path.Combine(dir, id + ".cs")).Contains($"[Migration(\"{id}\")]");
+            Assert.True(File.Exists(designer) || handWritten, $"{id} has no Designer file and no [Migration] attribute of its own (EF would not discover it)");
         }
     }
 

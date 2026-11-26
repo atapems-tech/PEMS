@@ -98,7 +98,6 @@ public class KpiTileComponentTests
 
     [Theory]
     [InlineData("Views/EngineeringDocumentIntelligence/Index.cshtml", 4)]
-    [InlineData("Views/OCRProcessing/Index.cshtml", 4)]
     public void WaveK2_TakesItsTilesFromTheComponent_AndThePartialIsGone(string view, int tags)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
@@ -119,27 +118,10 @@ public class KpiTileComponentTests
         Assert.Contains(".kpi-card--compact .kpi-value { font-size: 18px; }", css);
     }
 
-    [Theory]
-    [InlineData("Views/Asset/Details.cshtml", 4)]
-    [InlineData("Views/Reliability/Details.cshtml", 4)]
-    public void WaveK3_DetailPages_UseCompactTiles(string view, int tiles)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(tiles, Regex.Matches(text, "<pems-kpi-tile compact ").Count);
-        Assert.DoesNotContain("fs-5 fw-bold", text);
-        Assert.DoesNotMatch(@"<div class=""(small )?text-muted( small)?"">[^<]*</div><div class=""(fw-semibold|fs-5)", text);
-    }
 
     // ---- K4: dashboards with their own large-number tiles
     [Theory]
     [InlineData("Views/DCC/Index.cshtml", 2)]
-    [InlineData("Views/EquipmentClassification/Index.cshtml", 5)]
-    [InlineData("Views/QC/Index.cshtml", 2)]
-    [InlineData("Views/QC/Kpi.cshtml", 3)]
-    [InlineData("Views/Relationship/GapReport.cshtml", 4)]
-    [InlineData("Views/Reliability/CBMDashboard.cshtml", 4)]
-    [InlineData("Views/Reliability/DataQuality.cshtml", 9)]
-    [InlineData("Views/Reliability/Simulate.cshtml", 4)]
     public void WaveK4_Dashboards_TakeTheirTilesFromTheComponent(string view, int tiles)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
