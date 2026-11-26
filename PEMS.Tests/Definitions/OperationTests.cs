@@ -84,7 +84,7 @@ public sealed class OperationTests
         var product = OperationCatalog.Scan(typeof(PemsOperationAttribute).Assembly);
         Assert.Contains("WorkRequest", product.Models);
         Assert.Equal(["Submit", "WorkflowAction"], product.Actions("WorkRequest"));
-        Assert.Equal(["IdListTest", "ReadContextTest", "RolesTest", "Test"], Catalog.Models);   // ReadContextTest: OperationReadContextTests; IdListTest: OperationIdListTests (SCRUM-818); RolesTest: the operations of OperationRolesAndValidationTests (SCRUM-773, 774)
+        Assert.Equal(["FileTest", "FormLoadTest", "IdListTest", "ReadContextTest", "RolesTest", "Test"], Catalog.Models);   // ReadContextTest: OperationReadContextTests; IdListTest: OperationIdListTests (SCRUM-818); FileTest: the upload tests (SCRUM-635, 685); FormLoadTest: the form load tests (SCRUM-818); RolesTest: the operations of OperationRolesAndValidationTests (SCRUM-773, 774)
         Assert.Equal(["Bag", "Boom", "Flag", "Run", "Trace", "Void"], Catalog.Actions("Test"));
         Assert.Equal("Test.Run", Catalog.Get("Test", "Run")!.Permission);
         Assert.Null(Catalog.Get("Test", "Flag")!.Permission);
