@@ -120,7 +120,7 @@ public class PersianMessagesAndTitlesTests
             .Where(f => (f.EndsWith(".cshtml") || f.EndsWith(".cs")) && !f.Contains(Path.DirectorySeparatorChar + "bin" + Path.DirectorySeparatorChar) && !f.Contains(Path.DirectorySeparatorChar + "obj" + Path.DirectorySeparatorChar))
             .SelectMany(f => Regex.Matches(File.ReadAllText(f), "ViewData\\[\"Title\"\\]\\s*=\\s*\"([^\"]*)\"").Select(m => (File: Path.GetFileName(f), Title: m.Groups[1].Value)))
             .ToList();
-        Assert.True(titles.Count > 200);
+        Assert.True(titles.Count > 40);   // the literal titles of the controllers and views that became definitions are gone (definitions carry both languages themselves); the scan must still find the rest
         Assert.Empty(titles.Where(t => Regex.IsMatch(t.Title, "[\u0600-\u06FF]")).Select(t => t.File + ": " + t.Title));
         Assert.Empty(titles.Where(t => t.Title.Length > 0 && !fa.ContainsKey(t.Title)).Select(t => t.File + ": " + t.Title).Distinct());
     }

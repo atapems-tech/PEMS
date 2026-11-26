@@ -59,7 +59,7 @@ public static class ImportCatalog
 
         // ---- CMMS
         new("Equipment", Category.Cmms, "EquipmentImport", "Index", LaunchMode.Page, ".xlsx, .pdf (tag scan)", null, true, Workflow.StagedReview, "EquipmentImport",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up", Url: "/p/equipment-import"),   // SCRUM-695: a definition page
         new("FunctionalLocation", Category.Cmms, "FunctionalLocationImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "FunctionalLocationImport",
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up", Url: "/p/fl-import"),   // converted: a definition page
         new("EquipmentFlAssignment", Category.Cmms, "EquipmentFunctionalLocationAssignment", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "EquipmentFunctionalLocationAssignment",
@@ -71,7 +71,7 @@ public static class ImportCatalog
             Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-graph-up-arrow", Url: "/p/reading-import"),   // SCRUM-675: a definition page
         // RCM کلاس‌محور: الگوهای استراتژی و تخصیص تگ‌ها (Preview → Commit صریح؛ استراتژی‌ها Draft ساخته می‌شوند)
         new("RcmStrategy", Category.Cmms, "StrategyImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MaintenanceStrategy",
-            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-diagram-3"),
+            Sets(MenuAccess.CmmsIntegration, MenuAccess.ImportCenter), "bi-diagram-3", Url: "/p/strategy-import"),
         // Direct import (no staging): the existing POST Instrument/Import, launched from the Import Center dialog.
         // The controller has no module permission - it enforces the same role gate as this card (ImportCatalog.CanUse).
         new("Instrument", Category.Cmms, "Instrument", "Import", LaunchMode.Dialog, ".xlsx", ".xlsx", false, Workflow.Direct, null,
