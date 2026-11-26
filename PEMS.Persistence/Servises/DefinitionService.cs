@@ -441,6 +441,7 @@ public sealed class DefinitionService : IDefinitionService, IDefinitionShipper, 
 
         foreach (var item in items)
         {
+            _db.ChangeTracker.Clear();   // each item is read, written and saved on its own: the entities of the earlier items are not needed (thousands of tracked definitions made every later save slower and exhausted memory)
             var at = $"{item.Kind}/{item.AppKey}/{item.Key}";
             if (!_kinds.ContainsKey(item.Kind)) { problems.Add($"{at}: '{item.Kind}' is not a registered definition kind."); continue; }
             if (!KeyPattern.IsMatch(item.Key) || !AppKeyPattern.IsMatch(item.AppKey)) { problems.Add($"{at}: the key is not valid."); continue; }
