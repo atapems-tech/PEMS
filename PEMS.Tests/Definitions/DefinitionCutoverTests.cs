@@ -143,7 +143,7 @@ public sealed class DefinitionCutoverTests
     public async Task A_definition_a_customer_changed_is_never_overwritten_by_an_upgrade()
     {
         var f = new Fixture();
-        var items = f.PackageItems().ToList();
+        var items = f.PackageItems().Where(x => x.Kind == "layout").ToList();   // the test is about one layout; shipping the whole package (thousands of definitions, one save each) exhausts the test host
         var (service, store, db) = f.NewService();
         await service.ShipAsync(items, "system");
 
