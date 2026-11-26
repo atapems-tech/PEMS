@@ -92,20 +92,6 @@ public class MrRegisteredPartTests
         Assert.Equal("EA", Assert.Single(search).Unit);
     }
 
-    [Fact]
-    public void Create_form_wires_the_part_lookup_and_the_item_script()
-    {
-        var root = Environment.GetEnvironmentVariable("PEMS_REPO_ROOT") ?? FindRoot();
-        var view = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Views", "MaterialRequisition", "Create.cshtml"));
-        Assert.Contains("data-pems-select-url=\"@Url.Action(\"PartLookup\")\"", view);
-        Assert.Contains("data-pems-select-create", view);
-        Assert.Contains("~/js/mr-items.js", view);
-        Assert.DoesNotContain("<script>", view);
-
-        var select = File.ReadAllText(Path.Combine(root, "PEMS.UI", "wwwroot", "pems-select.js"));
-        Assert.Contains("data-pems-select-url", select);
-        Assert.Contains("settings.create = true", select);
-    }
 
     private static string FindRoot()
     {

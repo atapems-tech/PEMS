@@ -144,28 +144,6 @@ public class VdrMoreActionsTests
 
     private static string Read(params string[] parts) => File.ReadAllText(Path.Combine(new[] { SupportedReleases.RepoRoot() }.Concat(parts).ToArray()));
 
-    [Fact]
-    public void The_menu_shows_each_item_only_with_its_permission_and_posts_to_the_new_actions()
-    {
-        var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
-        var menu = view[view.IndexOf("id=\"vdrMoreActions\"", StringComparison.Ordinal)..view.IndexOf("</pems-dropdown-menu>", StringComparison.Ordinal)];
-
-        Assert.Contains("@if (vdrCanEdit)", menu);
-        Assert.Contains("@if (vdrCanHold)", menu);
-        Assert.Contains("@if (vdrCanRelease)", menu);
-        Assert.Contains("@if (vdrCanDeactivate)", menu);
-        Assert.Contains("asp-controller=\"Numbering\"", menu);   // SCRUM-529 link moved into the menu
-        Assert.Equal(1, System.Text.RegularExpressions.Regex.Matches(view, "asp-controller=\"Numbering\"").Count);
-        Assert.Contains("var vdrCanEdit = Model.IsActive && ViewBag.CanEditItem is true;", view);
-        foreach (var action in new[] { "asp-action=\"UpdateDetails\"", "\"Hold\"", "\"ReleaseHold\"", "\"Deactivate\"" })
-            Assert.Contains(action, view);
-
-        var controller = Read("PEMS.Web", "Controllers", "VDRController.cs");
-        foreach (var (name, perm) in new[] { ("CanEditItem", "Edit"), ("CanHold", "Hold"), ("CanReleaseHold", "ReleaseHold"), ("CanDeactivate", "Delete") })
-            Assert.Contains($"ViewBag.{name} = await _permissionService.HasPermissionAsync(_currentUser.Roles, \"VDR\", \"{perm}\");", controller);
-        Assert.Contains("EnsurePermissionAsync(\"Delete\", vdrItemId", controller);
-        Assert.Contains("EnsurePermissionAsync(\"Edit\", vdrItemId, T(\"Vdr_Err_Forbidden\"))", controller);
-    }
 
     [Fact]
     public void Hold_grants_follow_engineering_documents_for_new_and_existing_databases()

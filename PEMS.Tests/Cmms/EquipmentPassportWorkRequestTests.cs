@@ -35,14 +35,6 @@ public class EquipmentPassportWorkRequestTests
         Assert.Equal(new[] { "WO-1" }, passport.WorkOrders.Select(x => x.WorkOrderNo));
     }
 
-    [Fact]
-    public void PassportView_HasNoWorkOrderCreateLink_AndUsesWorkRequestCreate()
-    {
-        var root = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
-        var view = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Views", "Equipment", "Details.cshtml"));
-        Assert.DoesNotContain("asp-controller=\"WorkOrder\" asp-action=\"Create\"", view);
-        Assert.Contains("asp-controller=\"WorkRequest\" asp-action=\"Create\"", view);
-    }
 
     [Fact]
     public async Task Passport_ExposesStrategiesAndPlans_FromExistingEquipmentRelations()

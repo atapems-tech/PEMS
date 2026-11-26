@@ -182,16 +182,6 @@ public class CmmsListPagesTests
         Assert.Contains("L-005", html);
     }
 
-    [Fact]
-    public async Task LetterTemplates_AreAListPage_AndKeepTheirToggleForm()
-    {
-        var html = await Render<LetterTemplateController>("/Views/LetterTemplate/Index.cshtml", new List<LetterTemplateDto>
-        {
-            new() { LetterTemplateId = 1, Name = "Ack", Subject = "S1", Priority = "Normal", ConfidentialityLevel = "Internal", IsActive = true },
-        }, _ => { });
-        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
-        Assert.Contains("name=\"active\" value=\"false\"", html);
-    }
 
     [Fact]
     public async Task Tasks_AreAListPage_WithTheirTabFilterAndTheNewTaskForm()

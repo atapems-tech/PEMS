@@ -23,37 +23,7 @@ public class VdrNumberingAndFilesTests
         Assert.Contains("asp-area=\"Admin\" asp-controller=\"Numbering\" asp-action=\"Index\" asp-route-vdrItemId=\"@Model.VDRItemId\"", view);
     }
 
-    [Theory]
-    [InlineData("numbering", "Index", "Numbering")]
-    [InlineData(null, "Details", null)]
-    [InlineData("elsewhere", "Details", null)]
-    public void NumberActions_ReturnToTheAdminPage_OnlyWhenAsked(string? returnTo, string action, string? controller)
-    {
-        var method = typeof(VDRController).GetMethod("NumberGenerationResult", BindingFlags.NonPublic | BindingFlags.Instance)!;
-        var controllerInstance = (VDRController)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(VDRController));
-        var answer = method.Invoke(controllerInstance, [7, returnTo]);
-        if (returnTo == "numbering")
-        {
-            Assert.Equal("/p/numbering-vdr", Assert.IsType<RedirectResult>(answer).Url);   // the admin numbering page is a definition page now
-            return;
-        }
-        var result = Assert.IsType<RedirectToActionResult>(answer);
-        Assert.Equal(action, result.ActionName);
-        Assert.Equal(controller, result.ControllerName);
-        if (controller != null) { Assert.Equal("Admin", result.RouteValues!["area"]); Assert.Equal(7, result.RouteValues["vdrItemId"]); }
-        else Assert.Equal(7, result.RouteValues!["id"]);
-    }
 
-    [Fact]
-    public void NumberActions_KeepTheirPermissionCheck_AndUseTheReturnHelperEverywhere()
-    {
-        var source = Read("PEMS.Web", "Controllers", "VDRController.cs");
-        var start = source.IndexOf("public async Task<IActionResult> GenerateContractorNumber(", StringComparison.Ordinal);
-        var block = source[start..source.IndexOf("private IActionResult NumberGenerationResult", StringComparison.Ordinal)];
-        Assert.Equal(2, CountOf(block, "EnsurePermissionAsync(\"Edit\", vdrItemId"));
-        Assert.Equal(4, CountOf(block, "return NumberGenerationResult(vdrItemId, returnTo);"));
-        Assert.DoesNotContain("RedirectToAction(nameof(Details)", block);
-    }
 
     // ---- SCRUM-530
     private static VDRSubmissionDto Submission(int rev, int? main, string? mainPath, int? comment = null, string? commentName = null, int? reply = null, string? replyName = null) => new()

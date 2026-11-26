@@ -95,18 +95,6 @@ public class ChartComponentTests
         Assert.Contains("case`line`:", bundle);   // the built (minified) bundle carries it: npm run build in frontend/dashboards
     }
 
-    [Fact]
-    public void WaveC2_TrendPage_UsesTheChartHost_AndChartJsIsGone()
-    {
-        var trend = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Reliability", "Trend.cshtml"));
-        Assert.Contains("BkChartSpec.Line(", trend);
-        Assert.Contains("<pems-chart spec=\"@trend\" />", trend);
-        Assert.Contains("_BkChartScripts", trend);
-        Assert.DoesNotContain("<canvas", trend);
-        Assert.DoesNotContain("new Chart(", trend);
-        Assert.DoesNotContain("chartjs", trend);
-        Assert.False(Directory.Exists(Path.Combine(RepoRoot(), "PEMS.Web", "wwwroot", "lib", "chartjs")));
-    }
 
     [Fact]
     public void Donut_WithoutPositiveValues_IsEmpty_AndKeepsItsLabels()

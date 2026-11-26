@@ -29,10 +29,6 @@ public class EquipmentImportController : Controller
     }
 
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [PEMS.Web.Security.Uploads.UploadPolicy(PEMS.Application.Uploads.UploadProfile.Spreadsheet)]
-
     /// <summary>SCRUM-695: the upload form of the PDF scan (the page of the batches links here); the result page stays code.</summary>
     [HttpGet]
     public async Task<IActionResult> ScanPdfForm()

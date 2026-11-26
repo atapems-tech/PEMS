@@ -52,7 +52,7 @@ public sealed class TenderOperations(PEMSDbContext context, IProcurementPackageS
     private async Task<TenderStep?> GuardAsync(int tenderId, string? ip)
     {
         var outcome = await ProtectedActionGuard.EvaluateAsync(null, permissions, accessControl, currentUser, "Tender", "Approve", tenderId.ToString(), ip);
-        if (outcome == ProtectedActionOutcome.DeniedBySoD) return new(false, "Error");
+        if (outcome == ProtectedActionOutcome.DeniedBySoD) return new(false, "طبق سیاست تفکیک وظایف، این اقدام برای شما مجاز نیست.");
         return outcome == ProtectedActionOutcome.Allowed ? null : new(false, "You may not do this.");
     }
 
@@ -62,7 +62,7 @@ public sealed class TenderOperations(PEMSDbContext context, IProcurementPackageS
             currentUser.Roles.Contains(PEMS.Persistence.Identity.SystemRoles.SystemAdmin), ip);
         return result switch
         {
-            TenderApprovalSeparation.DeniedCreator => new(false, "Error"),
+            TenderApprovalSeparation.DeniedCreator => new(false, "طبق سیاست تفکیک وظایف، ایجادکننده‌ی مناقصه نمی‌تواند همان مناقصه را تأیید کند."),
             TenderApprovalSeparation.DeniedUnverifiable => new(false, "You may not do this."),
             _ => null
         };
@@ -99,7 +99,7 @@ public sealed class TenderOperations(PEMSDbContext context, IProcurementPackageS
             var problems = new List<string>();
             if (result.GenericAuditFailed) problems.Add("ثبت AuditLog عمومی این عملیات با خطا مواجه شد (در لاگ سیستم ثبت شده است)");
             if (result.CreatorEvent == ContractCreatorEventStatus.NotRecorded) problems.Add("رویداد «ایجادکننده‌ی قرارداد» ثبت نشد؛ برای ترمیم، همین عملیات را دوباره اجرا کنید (قرارداد تکراری ساخته نمی‌شود)");
-            if (problems.Count > 0) return new(true, "Error" + string.Join("؛ ", problems) + ".", null, result.ContractId);
+            if (problems.Count > 0) return new(true, "قرارداد ساخته و ذخیره شد، اما " + string.Join("؛ ", problems) + ".", null, result.ContractId);
             if (result.RecoveredAfterUncertainCommit) return new(true, "Contract draft created from winning bid (the commit result was uncertain and was confirmed by re-reading the database; no duplicate was created)", null, result.ContractId);
             return new(true, null, null, result.ContractId);
         }
@@ -108,10 +108,10 @@ public sealed class TenderOperations(PEMSDbContext context, IProcurementPackageS
             // the contract exists already; a retry creates no duplicate and only repairs the creator event
             return result.CreatorEvent switch
             {
-                ContractCreatorEventStatus.Repaired => new(true, "Message", null, result.ContractId),
-                ContractCreatorEventStatus.NotRecorded => new(false, "Error"),
-                ContractCreatorEventStatus.OutcomeUnknown => new(false, "Error"),
-                ContractCreatorEventStatus.CreatorUnidentified => new(false, "Error"),
+                ContractCreatorEventStatus.Repaired => new(true, "قرارداد از قبل ساخته شده بود؛ رویداد ناقص «ایجادکننده‌ی قرارداد» برای ایجادکننده‌ی اصلی ترمیم شد. قرارداد تکراری ساخته نشد.", null, result.ContractId),
+                ContractCreatorEventStatus.NotRecorded => new(false, "قرارداد از قبل ساخته شده است، اما ترمیم رویداد «ایجادکننده‌ی قرارداد» ناموفق بود؛ دوباره تلاش کنید."),
+                ContractCreatorEventStatus.OutcomeUnknown => new(false, "قرارداد از قبل ساخته شده است، اما وضعیت رویداد «ایجادکننده‌ی قرارداد» قابل تأیید نبود؛ گزارش تشخیص را بررسی کنید."),
+                ContractCreatorEventStatus.CreatorUnidentified => new(false, "قرارداد از قبل ساخته شده است، اما ایجادکننده‌ی اصلی آن قابل شناسایی نیست؛ رویداد نوشته نشد و نیاز به بررسی دستی دارد."),
                 _ => new(false, result.Error)
             };
         }

@@ -196,7 +196,7 @@ public static class NavigationMenuDefaults
         new("admin.ocr", "admin.sub.ai", L, 20, "OCR Processing", "bi-badge-ad", "Module:Administration&Perm:OCRProcessing.View", ExternalPath: "/p/ocr-processing"),   // SCRUM-732: a definition page (/p/...)
         new("admin.aiextraction", "admin.sub.ai", L, 30, "AI Extraction", "bi-cpu", "Module:Administration&Perm:AIExtraction.View", ExternalPath: "/p/ai-extraction"),   // SCRUM-667: a definition page (/p/...)
         Link("admin.tables", "admin.sub.ai", 40, "Table Extraction", "bi-table", "TableExtraction", rule: "Module:Administration&Perm:TableExtraction.View"),
-        Link("admin.relationship", "admin.sub.ai", 50, "RelationshipExplorer", "bi-diagram-3", "Relationship", rule: "Module:Administration&Perm:Relationship.View"),
+        new("admin.relationship", "admin.sub.ai", L, 50, "RelationshipExplorer", "bi-diagram-3", "Module:Administration&Perm:Relationship.View", ExternalPath: "/p/relationship-explorer", ExtraActiveControllers: "Relationship"),   // SCRUM-745: a definition page
         // SCRUM-645: a definition page (/p/...), not a controller
         new("admin.routing", "admin.sub.ai", L, 60, "AI Routing Rules", "bi-signpost-split", "Module:Administration", ExternalPath: "/p/routing-rules"),
         new("admin.routingconfidence", "admin.sub.ai", L, 61, "Confidence Gates", "bi-speedometer2", "Module:Administration", ExternalPath: "/p/routing-confidence"),

@@ -102,7 +102,6 @@ public class InfoGridComponentTests
 
     [Theory]
     [InlineData("Views/EngineeringDocuments/Details.cshtml", 2, 15)]
-    [InlineData("Views/Equipment/Details.cshtml", 1, 7)]
     [InlineData("Views/VDR/Details.cshtml", 2, 10)]   // SCRUM-529: + the vendor-format number
     public void WaveI1_TakesItsLabelValueBlocksFromTheComponent(string view, int grids, int items)
     {

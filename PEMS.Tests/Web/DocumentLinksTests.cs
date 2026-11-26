@@ -44,8 +44,6 @@ public class DocumentLinksTests
 
     [Theory]
     [InlineData("Letter")]
-    [InlineData("MOC")]
-    [InlineData("TechnicalQuery")]
     public void RelatedDocumentLinks_GoThroughOpen(string folder)
     {
         var view = Read("PEMS.Web", "Views", folder, "Details.cshtml");

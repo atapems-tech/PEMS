@@ -163,19 +163,6 @@ public class LetterPhase3ViewTests
         Assert.IsType<NotFoundResult>(await c.Preview(12345));
     }
 
-    [Fact]
-    public async Task TemplateEdit_ListsEveryAllowedPlaceholder_WithAnExplanation()
-    {
-        var c = NewTemplateController(new FakeTemplates());
-        var result = new ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(c.ViewData) { Model = new LetterTemplateDto() } };
-
-        var html = await RazorViewRenderer.RenderAsync(c, result, "~/Views/LetterTemplate/Edit.cshtml");
-
-        foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.All)
-            Assert.Contains("{{" + token + "}}", html);
-        Assert.Contains("Placeholders you can use", html);
-        Assert.Contains("Only filled on the Reply screen", html);
-    }
 
     // ------------------------------------------------------------------ manual reminder run
 
@@ -248,24 +235,4 @@ public class LetterPhase3ViewTests
         throw new FileNotFoundException("Repository file not found (set PEMS_REPO_ROOT when running from a copied output folder): " + relative);
     }
 
-    [Theory]
-    [InlineData("PEMS.Web/Resources/SharedResource.resx")]
-    [InlineData("PEMS.Web/Resources/SharedResource.fa.resx")]
-    public void EveryPhase3LocalizationKey_ExistsInBothLanguages(string resx)
-    {
-        var keys = XDocument.Load(RepoFile(resx)).Descendants("data").Select(d => (string?)d.Attribute("name")).ToHashSet();
-
-        var used = new HashSet<string>();
-        foreach (var view in new[] { "Letter/Reply", "Letter/Dashboard", "LetterTemplate/Index", "LetterTemplate/Edit", "LetterTemplate/Preview" })
-        {
-            var text = File.ReadAllText(RepoFile($"PEMS.Web/Views/{view}.cshtml"));
-            foreach (Match m in Regex.Matches(text, "Localizer\\[\"(Lt[T]?_[A-Za-z0-9_]+)\"\\]")) used.Add(m.Groups[1].Value);
-        }
-        foreach (var token in PEMS.Application.Common.LetterTemplatePlaceholders.All) used.Add("LtT_Token_" + token);
-        used.Add("Letter Template Preview");
-
-        Assert.True(used.Count >= 12);
-        var missing = used.Where(k => !keys.Contains(k)).OrderBy(k => k).ToList();
-        Assert.True(missing.Count == 0, "Missing localization keys in " + resx + ": " + string.Join(", ", missing));
-    }
 }

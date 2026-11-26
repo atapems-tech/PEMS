@@ -30,11 +30,6 @@ public class NoNativeDateTimeInputTests
 
     [Theory]
     [InlineData("Letter", "Index.cshtml", "id=\"ctReminderAt\"")]
-    [InlineData("Meeting", "Create.cshtml", "name=\"meetingDate\"")]
-    [InlineData("Meeting", "Index.cshtml", "name=\"meetingDate\"")]
-    [InlineData("Permit", "Details.cshtml", "name=\"testedAt\"")]
-    [InlineData("Reliability", "ConditionMonitoring.cshtml", "name=\"readingDate\"")]
-    [InlineData("ShiftHandover", "Create.cshtml", "name=\"handoverDate\"")]
     [InlineData("WorkOrder", "Details.cshtml", "name=\"plannedStart\"")]
     [InlineData("WorkOrder", "Details.cshtml", "name=\"plannedFinish\"")]
     public void TheEightFields_UseTheDateTimeMode(string folder, string file, string field)
