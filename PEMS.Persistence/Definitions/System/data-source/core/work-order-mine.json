@@ -16,7 +16,11 @@
     "provider": "operation",
     "parameters": {
       "model": "WorkOrderPage",
-      "action": "Mine"
+      "action": "Mine",
+      "args": {
+        "status": "param:status",
+        "equipmentId": "param:equipmentId"
+      }
     }
   }
 }

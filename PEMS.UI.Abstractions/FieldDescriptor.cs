@@ -84,6 +84,9 @@ public sealed record FieldDescriptor
     public FieldMessages? Messages { get; init; }
     /// <summary>The key of a data-source definition that gives the options of a Select or Radio field (resolved for the request by the pipeline).</summary>
     public string? OptionsFrom { get; init; }
+
+    /// <summary>SCRUM-835: a Select whose choices are searched on the server while the user types (the shared paged search select): the type of the global search that answers it (<c>Equipment</c>, <c>Employee</c>, ...; /SearchApi?type=...). Instead of <see cref="Options"/> and <see cref="OptionsFrom"/>; a value already known (a prefilled form) is shown as the one choice until the user searches.</summary>
+    public string? SearchSource { get; init; }
     /// <summary>
     /// SCRUM-820: the request values an <see cref="OptionsFrom"/> source reads: the key is the argument name the data source declares (<c>param:classId</c>), the value is the name of the query value of the form address
     /// (<c>/f/key?classId=5</c>; the record id of <c>/f/key/{id}</c> is <c>id</c>). Only these names reach the source and they only filter its choices; without a value the field has no choices.

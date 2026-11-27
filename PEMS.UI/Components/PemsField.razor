@@ -117,8 +117,12 @@
                           aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)">@Value</textarea>
                 break;
             case FieldKind.Select:
-                <select id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" required="@Descriptor.Required"
+                <select id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" required="@Descriptor.Required" data-pems-select-source="@Descriptor.SearchSource"
                         disabled="@Descriptor.ReadOnly" aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)">
+                    @if (!string.IsNullOrEmpty(Descriptor.SearchSource) && !string.IsNullOrEmpty(Value) && (Descriptor.Options ?? []).All(x => x.Value != Value))
+                    {
+                        <option value="@Value" selected>@Value</option>
+                    }
                     @foreach (var o in Descriptor.Options ?? [])
                     {
                         <option value="@o.Value" selected="@(o.Value == Value)">@Locale.Text(o.Label)</option>

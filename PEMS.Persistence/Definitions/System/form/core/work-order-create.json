@@ -31,7 +31,6 @@
           "fa": "تجهیز"
         },
         "kind": "select",
-        "optionsFrom": "work-order-equipment-options",
         "span": 2,
         "required": true,
         "messages": {
@@ -39,7 +38,8 @@
             "en": "This field is required.",
             "fa": "این فیلد الزامی است."
           }
-        }
+        },
+        "searchSource": "Equipment"
       },
       {
         "name": "workOrderType",

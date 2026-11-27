@@ -35,7 +35,7 @@
         var stateKey = 'PemsGrid.state.' + root.id;
         var viewsKey = cfg.viewsKey ? 'PemsGrid.views.' + cfg.viewsKey : null;
 
-        var cols = cfg.columns.map(function (c) { return { key: c.key, actions: c.actions || [], header: c.header, type: c.type || 'text', width: c.width || 140, sortable: c.sortable !== false, filterable: c.filterable !== false, visible: !c.hidden, pinned: c.pinned || null, align: c.align || null }; });
+        var cols = cfg.columns.map(function (c) { return { key: c.key, actions: c.actions || [], header: c.header, type: c.type || 'text', width: c.width || 140, sortable: c.sortable !== false, filterable: c.filterable !== false, visible: !c.hidden, pinned: c.pinned || null, align: c.align || null, href: c.href || null }; });
         var state = { sort: [], filters: {}, search: '', density: cfg.density || 'comfortable' };
         var pages = {};                 // page number -> rows
         var inflight = {};
@@ -260,6 +260,14 @@
                     else text = String(v);
                 }
                 cell = tpl('dg-cell', { text: text });
+                // SCRUM-835: a column with href shows its value as a link; {value} and {id} are replaced (a KPI count that opens the filtered list)
+                if (c.href && item && text) {
+                    var a = document.createElement('a');
+                    a.textContent = text;
+                    a.href = c.href.replace('{value}', encodeURIComponent(String(v))).replace('{id}', encodeURIComponent(String(item[cfg.idField])));
+                    cell.textContent = '';
+                    cell.appendChild(a);
+                }
                 if (text) cell.setAttribute('title', text);
             }
             cell.classList.add('is-align-' + alignOf(c));
