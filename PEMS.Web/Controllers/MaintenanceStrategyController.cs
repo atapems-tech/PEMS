@@ -212,55 +212,6 @@ public class MaintenanceStrategyController : Controller
         return RedirectToAction(nameof(Details), new { id = result.Id ?? id });
     }
 
-    // ==================== Bidirectional views / reports ====================
-
-    /// <summary>از تگ: همه‌ی استراتژی‌های تخصیص‌یافته، Planها و WOهای باز.</summary>
-    public async Task<IActionResult> Tag(int equipmentId)
-    {
-        if (!await Can("View")) return Forbid();
-
-        var view = await _assignments.GetTagViewAsync(equipmentId);
-        if (view == null) return NotFound();
-
-        ViewData["Title"] = "Tag Maintenance";
-        ViewData["Section"] = "CMMS Integration";
-        return View(view);
-    }
-
-    public async Task<IActionResult> Coverage()
-    {
-        if (!await Can("View")) return Forbid();
-
-        ViewData["Title"] = "Strategy Coverage";
-        ViewData["Section"] = "CMMS Integration";
-        return View(await _coverage.GetCoverageAsync());
-    }
-
-    public async Task<IActionResult> ExportUncovered()
-    {
-        if (!await Can("View")) return Forbid();
-
-        var coverage = await _coverage.GetCoverageAsync(topUncoveredCritical: 5000);
-        var sb = new StringBuilder("Tag,Name,Class,Area,Unit,Criticality\n");
-        foreach (var r in coverage.CriticalWithoutStrategy)
-        {
-            var e = r.Equipment;
-            sb.Append(string.Join(',', new[] { e.Tag, e.Name, e.EquipmentClassName, e.Area, e.Unit, e.CriticalityClass }
-                .Select(v => "\"" + (v ?? "").Replace("\"", "\"\"") + "\""))).Append('\n');
-        }
-        return File(Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(sb.ToString())).ToArray(),
-            "text/csv", "critical-equipment-without-strategy.csv");
-    }
-
-    // ==================== Failure-mode picker (JSON) ====================
-
-    [HttpGet]
-    public async Task<IActionResult> FailureModes(int? classId, string? q)
-    {
-        if (!await Can("View")) return Forbid();
-        return Json(await _catalog.SearchAsync(classId, q, 50));
-    }
-
     // ==================== Bulk (class-level) assignment ====================
 
     [HttpGet]

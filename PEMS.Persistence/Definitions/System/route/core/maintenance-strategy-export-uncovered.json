@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-strategy-export-uncovered",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Uncovered CSV (old address)",
+    "fa": "CSV بدون پوشش (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Uncovered CSV (old address)",
+    "fa": "CSV بدون پوشش (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/ExportUncovered",
+    "target": "/x/strategy-uncovered-csv",
+    "permanent": false
+  }
+}

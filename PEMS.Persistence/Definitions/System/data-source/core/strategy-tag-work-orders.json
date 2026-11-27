@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-tag-work-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open work orders of a tag",
+    "fa": "دستور کارهای باز تگ"
+  },
+  "description": {
+    "en": "Open work orders of a tag",
+    "fa": "دستور کارهای باز تگ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "TagWorkOrders",
+      "args": {
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

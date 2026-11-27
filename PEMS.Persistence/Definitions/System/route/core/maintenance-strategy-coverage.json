@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-strategy-coverage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy coverage (old address)",
+    "fa": "پوشش استراتژی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Strategy coverage (old address)",
+    "fa": "پوشش استراتژی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/Coverage",
+    "target": "/p/strategy-coverage",
+    "permanent": false
+  }
+}

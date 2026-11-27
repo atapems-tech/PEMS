@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-coverage-summary",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy coverage figures",
+    "fa": "شاخص‌های پوشش استراتژی"
+  },
+  "description": {
+    "en": "Strategy coverage figures",
+    "fa": "شاخص‌های پوشش استراتژی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "CoverageSummary"
+    }
+  }
+}

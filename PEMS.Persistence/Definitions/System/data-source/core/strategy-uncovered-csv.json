@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "strategy-uncovered-csv",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Critical equipment without a strategy (CSV)",
+    "fa": "تجهیزات بحرانی بدون استراتژی (CSV)"
+  },
+  "description": {
+    "en": "Critical equipment without a strategy (CSV)",
+    "fa": "تجهیزات بحرانی بدون استراتژی (CSV)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "UncoveredCsv",
+      "disposition": "attachment"
+    }
+  }
+}

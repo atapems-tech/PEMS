@@ -1,0 +1,225 @@
+{
+  "kind": "page",
+  "key": "strategy-coverage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy coverage",
+    "fa": "پوشش استراتژی"
+  },
+  "description": {
+    "en": "Strategy coverage",
+    "fa": "پوشش استراتژی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "strategy-coverage",
+    "permission": "MaintenanceStrategy.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "strategy-coverage-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/MaintenanceStrategy",
+                "text": {
+                  "en": "Back to the strategies",
+                  "fa": "بازگشت به استراتژی‌ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/strategy-uncovered-csv",
+                "text": {
+                  "en": "Download the critical equipment without a strategy (CSV)",
+                  "fa": "دریافت تجهیزات بحرانی بدون استراتژی (CSV)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategy-coverage-figures",
+          "component": "record-view",
+          "options": {
+            "id": "strategy-coverage-figures",
+            "fields": [
+              {
+                "key": "totalEquipment",
+                "label": {
+                  "en": "Total equipment",
+                  "fa": "کل تجهیزات"
+                }
+              },
+              {
+                "key": "coveredEquipment",
+                "label": {
+                  "en": "Covered equipment",
+                  "fa": "تجهیزات پوشش‌یافته"
+                }
+              },
+              {
+                "key": "coveredPercent",
+                "label": {
+                  "en": "Covered (%)",
+                  "fa": "پوشش (٪)"
+                }
+              },
+              {
+                "key": "unratedEquipment",
+                "label": {
+                  "en": "Unrated",
+                  "fa": "بدون رتبه‌ی بحرانیت"
+                }
+              },
+              {
+                "key": "unclassifiedEquipment",
+                "label": {
+                  "en": "Unclassified",
+                  "fa": "بدون کلاس"
+                }
+              },
+              {
+                "key": "criticalWithoutStrategyTotal",
+                "label": {
+                  "en": "Critical without a strategy",
+                  "fa": "بحرانی بدون استراتژی"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/strategy-coverage-summary",
+              "idField": "id",
+              "id": "1"
+            }
+          }
+        },
+        {
+          "id": "strategy-coverage-by-criticality",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-coverage-by-criticality",
+            "url": "/d/strategy-coverage-by-criticality",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "key",
+                "width": 160
+              },
+              {
+                "key": "totalEquipment",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "withApprovedStrategy",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "withoutStrategy",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "coveragePercent",
+                "width": 110,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategy-coverage-by-class",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-coverage-by-class",
+            "url": "/d/strategy-coverage-by-class",
+            "idField": "key",
+            "columns": [
+              {
+                "key": "key",
+                "width": 220
+              },
+              {
+                "key": "totalEquipment",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "withApprovedStrategy",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "withoutStrategy",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "coveragePercent",
+                "width": 110,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategy-uncovered-critical",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-uncovered-critical",
+            "url": "/d/strategy-uncovered-critical",
+            "idField": "equipmentId",
+            "columns": [
+              {
+                "key": "tag",
+                "width": 140
+              },
+              {
+                "key": "name",
+                "width": 220
+              },
+              {
+                "key": "equipmentClassName",
+                "width": 160
+              },
+              {
+                "key": "area",
+                "width": 120
+              },
+              {
+                "key": "unit",
+                "width": 120
+              },
+              {
+                "key": "criticalityClass",
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/p/strategy-tag?equipmentId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

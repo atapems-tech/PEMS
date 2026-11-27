@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-coverage-by-criticality",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy coverage by criticality",
+    "fa": "پوشش استراتژی بر اساس بحرانیت"
+  },
+  "description": {
+    "en": "Strategy coverage by criticality",
+    "fa": "پوشش استراتژی بر اساس بحرانیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "CoverageByCriticality"
+    }
+  }
+}
