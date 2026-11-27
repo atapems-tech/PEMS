@@ -23,9 +23,7 @@ public class StatGridAndModalTextsTests
     }
 
     [Theory]
-    [InlineData("Views/TableExtraction/Review.cshtml", "label=\"Matched - no Instrument yet\"", "label=\"Matched - has Instrument\"")]
     [InlineData("Views/Letter/Details.cshtml", ">Reject Letter<", ">Sign / Acknowledge<", "/> Sign / Acknowledge</a>")]
-    [InlineData("Views/EngineeringDocuments/Details.cshtml", "/> Freeze Document<", ">Create New Revision<", "/> Create New Revision<", ">Record Client Response<", "/> Engineering Document Approval Workflow<", ">Client Decision<", "This is the client's (owner's) response")]
     public void TheReviewedTexts_AreNoLongerHardCoded(string view, params string[] literals)
     {
         var text = Read(["PEMS.Web", .. view.Split('/')]);

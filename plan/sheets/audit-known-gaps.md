@@ -149,3 +149,4 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - There is no tab counter, no IDC progress line, no signature images, no stage-diagram icons, no overview summary cards, no hold history fold, no confirmation of unfreeze and release beyond the form page, no marking of superseded file rows, no file preview with a chosen file; the P&ID equipment are plain text, not links.
 - The viewer shows the latest PDF; a click puts a pin through `eng-doc-comment-pin`, a comment with the note as its text (use Add comment for category, severity and the revision mark).
 - The old address `EngineeringDocuments/Details/{id}` and `DownloadAttachment/{id}` are routes; the controller, its view and scripts are deleted, the redirect after every command is the page.
+- Tests removed with the page: the engineering document details layout tests and the view-text checks of the removed views.

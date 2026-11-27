@@ -101,7 +101,6 @@ public class InfoGridComponentTests
     }
 
     [Theory]
-    [InlineData("Views/EngineeringDocuments/Details.cshtml", 2, 15)]
     public void WaveI1_TakesItsLabelValueBlocksFromTheComponent(string view, int grids, int items)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
