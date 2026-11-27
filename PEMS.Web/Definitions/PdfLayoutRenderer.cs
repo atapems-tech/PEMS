@@ -142,8 +142,18 @@ public static class PdfLayoutRenderer
         }
     }
 
+    private static IContainer Frame(IContainer c, JsonObject b)
+    {
+        if (Str(b["background"]) is { } bg) c = c.Background(bg);
+        if (Num(b["border"], 0f) is var line && line > 0) c = c.Border(line);
+        if (Num(b["padding"], 0f) is var pad && pad > 0) c = c.Padding(pad);
+        if (Num(b["minHeight"], 0f) is var min && min > 0) c = c.MinHeight(min);
+        return c;
+    }
+
     private static void Draw(IContainer container, JsonObject b, Context ctx)
     {
+        if (Str(b["type"]) is not ("row" or "keyValue")) container = Frame(container, b);
         switch (Str(b["type"]))
         {
             case "text":
@@ -158,6 +168,7 @@ public static class PdfLayoutRenderer
                 if (Num(b["size"], heading ? 16f : 0f) is var size && size > 0) t.FontSize(size);
                 if (heading || Flag(b["bold"])) t.Bold();
                 if (Str(b["color"]) is { } color) t.FontColor(color);
+                if (Flag(b["italic"])) t.Italic();
                 break;
             }
             case "html":
@@ -167,13 +178,18 @@ public static class PdfLayoutRenderer
             {
                 var rows = (b["rows"] as JsonArray)?.OfType<JsonObject>().Where(r => ctx.Text(r["value"]).Length > 0 || Flag(r["keepEmpty"])).ToList() ?? [];
                 if (rows.Count == 0) return;
+                var edge = Num(b["border"], 0f);
+                var shade = Str(b["labelBackground"]);
                 container.Table(t =>
                 {
                     t.ColumnsDefinition(c => { c.RelativeColumn(Num(b["labelWidth"], 1f)); c.RelativeColumn(Num(b["valueWidth"], 3f)); });
                     foreach (var r in rows)
                     {
-                        t.Cell().Padding(2).Text(ctx.Text(r["label"])).SemiBold();
-                        t.Cell().Padding(2).Text(ctx.Text(r["value"]));
+                        var left = t.Cell(); var right = t.Cell();
+                        if (edge > 0) { left = left.Border(edge); right = right.Border(edge); }
+                        if (shade is not null) left = left.Background(shade);
+                        left.Padding(3).Text(ctx.Text(r["label"])).SemiBold();
+                        right.Padding(3).Text(ctx.Text(r["value"]) is { Length: > 0 } v ? v : " ");
                     }
                 });
                 break;
@@ -205,12 +221,12 @@ public static class PdfLayoutRenderer
             case "row":
             {
                 var items = (b["items"] as JsonArray)?.OfType<JsonObject>().ToList() ?? [];
-                container.Row(r =>
+                Frame(container, b).Row(r =>
                 {
                     foreach (var item in items)
                     {
                         var fixedWidth = item["fixedWidth"] is not null;
-                        var cell = fixedWidth ? r.ConstantItem(Num(item["fixedWidth"], 100f)) : r.RelativeItem(Num(item["width"], 1f));
+                        var cell = Frame(fixedWidth ? r.ConstantItem(Num(item["fixedWidth"], 100f)) : r.RelativeItem(Num(item["width"], 1f)), item);
                         var aligned = Str(item["align"]) switch { "end" => cell.AlignRight(), "center" => cell.AlignCenter(), _ => cell };
                         aligned.Column(col => Blocks(col, item["blocks"] as JsonArray ?? [], ctx));
                     }
