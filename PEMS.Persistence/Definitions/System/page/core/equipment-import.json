@@ -33,7 +33,7 @@
               },
               {
                 "type": "link",
-                "href": "/EquipmentImport/ScanPdfForm",
+                "href": "/f/equipment-scan-pdf",
                 "text": {
                   "en": "Scan a PDF for tag numbers",
                   "fa": "اسکن PDF برای شماره تگ‌ها"

@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "equipment-scan-candidates-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tags found in the PDF",
+    "fa": "تگ‌های یافت‌شده در PDF"
+  },
+  "description": {
+    "en": "Tags found in the PDF",
+    "fa": "تگ‌های یافت‌شده در PDF"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EquipmentTagScan",
+      "action": "Candidates",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "token": "param:token",
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

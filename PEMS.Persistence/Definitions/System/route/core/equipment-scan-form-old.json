@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "equipment-scan-form-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Scan a PDF (old address)",
+    "fa": "اسکن PDF (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Scan a PDF",
+    "fa": "اسکن PDF"
+  },
+  "payload": {
+    "pattern": "EquipmentImport/ScanPdfForm",
+    "target": "/f/equipment-scan-pdf",
+    "permanent": false
+  }
+}

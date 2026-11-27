@@ -1,0 +1,30 @@
+{
+  "kind": "action",
+  "key": "help-ask",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Ask PEMS AI",
+    "fa": "پرسش از هوش مصنوعی PEMS"
+  },
+  "description": {
+    "en": "Ask PEMS AI about a help article",
+    "fa": "پرسش از هوش مصنوعی PEMS درباره‌ی مقاله‌ی راهنما"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "Help",
+      "action": "Ask",
+      "args": {
+        "articleCode": "field:articleCode",
+        "question": "field:question"
+      }
+    },
+    "success": {
+      "en": "The answer is ready.",
+      "fa": "پاسخ آماده است."
+    }
+  }
+}

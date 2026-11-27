@@ -1,0 +1,35 @@
+{
+  "kind": "action",
+  "key": "equipment-scan-pdf",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Scan a PDF for equipment tags",
+    "fa": "اسکن PDF برای تگ تجهیزات"
+  },
+  "description": {
+    "en": "Scan a PDF for equipment tags",
+    "fa": "اسکن PDF برای تگ تجهیزات"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentTagScan",
+      "action": "Scan",
+      "args": {
+        "projectId": "field:projectId",
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "pdf",
+        "maxFileMb": 50
+      }
+    },
+    "success": {
+      "en": "The scan is done: review the tags.",
+      "fa": "اسکن انجام شد: تگ‌ها را بازبینی کنید."
+    },
+    "redirect": "/f/equipment-scan-select?token={result}&projectId={projectId}"
+  }
+}

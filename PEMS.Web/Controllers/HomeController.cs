@@ -9,12 +9,6 @@ namespace PEMS.Web.Controllers
         public IActionResult Index() => Redirect("/p/home");
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-
         // صفحه‌ی دوستانه برای پاسخ‌های 4xx/5xx بدون بدنه (مثلاً NotFound()): Program.cs آن را با
         // UseStatusCodePagesWithReExecute صدا می‌زند و کد HTTP اصلی حفظ می‌شود. بدون احراز هویت هم باید باز شود
         // (وگرنه 404 برای کاربر ناشناس به Login منحرف می‌شد).

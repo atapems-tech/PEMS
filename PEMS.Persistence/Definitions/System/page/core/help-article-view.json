@@ -1,0 +1,155 @@
+{
+  "kind": "page",
+  "key": "help-article-view",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help article",
+    "fa": "مقاله‌ی راهنما"
+  },
+  "description": {
+    "en": "Help article",
+    "fa": "مقاله‌ی راهنما"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "help-article-view",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Help Center",
+              "fa": "مرکز راهنما"
+            },
+            "tone": "neutral",
+            "href": "/p/help"
+          }
+        },
+        {
+          "id": "ask",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Ask PEMS AI about this article",
+              "fa": "پرسش از هوش مصنوعی PEMS درباره‌ی این مقاله"
+            },
+            "tone": "primary",
+            "href": "/f/help-ask?articleCode={{params.code|url}}"
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "help-article-row",
+            "fields": [
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "category",
+                "label": {
+                  "en": "Category",
+                  "fa": "دسته"
+                }
+              },
+              {
+                "key": "type",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "summary",
+                "label": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                },
+                "wide": true
+              },
+              {
+                "key": "content",
+                "label": {
+                  "en": "Article",
+                  "fa": "مقاله"
+                },
+                "type": "html",
+                "wide": true
+              },
+              {
+                "key": "modified",
+                "label": {
+                  "en": "Last updated",
+                  "fa": "آخرین به‌روزرسانی"
+                },
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-related",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-related",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Related Help",
+                  "fa": "راهنمای مرتبط"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "related",
+          "component": "def:related-table",
+          "options": {
+            "id": "related",
+            "url": "/d/help-article-related?f.code={{params.code|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "title",
+                "width": 360
+              },
+              {
+                "key": "type",
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    },
+                    "url": "/p/help-article-view?code={code}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

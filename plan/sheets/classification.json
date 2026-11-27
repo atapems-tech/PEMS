@@ -22,8 +22,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "the type was deleted: the attachment download is /x/pc-request-attachment (operation-file over PartCatalogueRequest.Attachment, checked per file by the service)"
     },
     {
       "kind": "controller",
@@ -148,8 +148,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.EquipmentImportController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions (SCRUM-841: scan form, review form, actions over EquipmentTagScan operations)"
     },
     {
       "kind": "controller",
@@ -190,8 +190,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.HelpController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions (SCRUM-841: page help-article-view, form help-ask, operations Help.Article/Related/Ask)"
     },
     {
       "kind": "controller",

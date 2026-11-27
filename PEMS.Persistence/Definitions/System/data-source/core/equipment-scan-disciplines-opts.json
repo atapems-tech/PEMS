@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "equipment-scan-disciplines-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines (tag scan)",
+    "fa": "دیسیپلین‌ها (اسکن تگ)"
+  },
+  "description": {
+    "en": "Disciplines (tag scan)",
+    "fa": "دیسیپلین‌ها (اسکن تگ)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EquipmentTagScan",
+      "action": "Disciplines",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

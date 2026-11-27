@@ -49,7 +49,7 @@ public class SearchProviderUrlTests
         if (RouteDefinitionPatterns().Any(r => r.IsMatch(sample))) return;
 
         var segments = path.Trim('/').Split('/');
-        var controllers = typeof(PEMS.Web.Controllers.HelpController).Assembly.GetTypes()
+        var controllers = typeof(PEMS.Web.Controllers.HomeController).Assembly.GetTypes()
             .Where(t => typeof(ControllerBase).IsAssignableFrom(t) && !t.IsAbstract).ToList();
 
         // /Controller/Action or /Area/Controller/Action

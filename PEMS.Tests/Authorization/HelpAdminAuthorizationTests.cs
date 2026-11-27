@@ -29,18 +29,4 @@ public class HelpAdminAuthorizationTests
         }
     }
 
-    [Fact]
-    public void PublicHelpController_RequiresAuthenticatedUser_ButNoSpecificRole()
-    {
-        // طبق بخش ۹ سند: راهنما باید برای هر کاربر واردشده در دسترس باشد - نه محدودتر از
-        // خودِ برنامه؛ فقط مدیریتِ محتوا (ساخت/ویرایش) محدود به نقش خاص است، نه مطالعه‌ی آن
-        var controllerType = typeof(PEMS.Web.Controllers.HelpController);
-
-        var authorizeAttr = controllerType.GetCustomAttributes(typeof(AuthorizeAttribute), inherit: true)
-            .Cast<AuthorizeAttribute>()
-            .FirstOrDefault();
-
-        Assert.NotNull(authorizeAttr);
-        Assert.True(string.IsNullOrEmpty(authorizeAttr!.Roles), "Public Help Center must not be role-restricted beyond authentication.");
-    }
 }

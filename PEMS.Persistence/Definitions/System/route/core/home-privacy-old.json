@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "home-privacy-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Privacy policy (old address)",
+    "fa": "سیاست حریم خصوصی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Privacy policy",
+    "fa": "سیاست حریم خصوصی"
+  },
+  "payload": {
+    "pattern": "Home/Privacy",
+    "target": "/p/privacy",
+    "permanent": false
+  }
+}
