@@ -103,7 +103,7 @@
                 "actions": [
                   {
                     "key": "backlog",
-                    "url": "/TaskManager/Space?key={raw.key}&view=backlog",
+                    "url": "/p/task-backlog?key={raw.key}",
                     "method": "get"
                   },
                   {

@@ -140,7 +140,7 @@
                       "en": "Open",
                       "fa": "باز کردن"
                     },
-                    "url": "/Notification/Open?id={id}",
+                    "url": "/x/notification-open?id={id}",
                     "method": "get"
                   },
                   {

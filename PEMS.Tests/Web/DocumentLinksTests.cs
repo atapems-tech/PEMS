@@ -32,11 +32,11 @@ public class DocumentLinksTests
         db.Add(new EngineeringDocument { DocumentId = 1, DocumentNo = "PEMS-001-PR-DWG-0001" });
         await db.SaveChangesAsync();
 
-        var controller = new DocumentRegisterController(db);
+        var shell = new PEMS.Web.Services.ShellOperations(null!, null!, db);
 
-        Assert.Equal("/VDR/Details/6", Assert.IsType<RedirectResult>(await controller.Open(6)).Url);
-        Assert.Equal("/EngineeringDocuments/Details/1", Assert.IsType<RedirectResult>(await controller.Open(1)).Url);
-        Assert.IsType<NotFoundResult>(await controller.Open(999));
+        Assert.Equal("/VDR/Details/6", (await shell.OpenDocumentAsync(6)).RedirectUrl);
+        Assert.Equal("/EngineeringDocuments/Details/1", (await shell.OpenDocumentAsync(1)).RedirectUrl);
+        Assert.False((await shell.OpenDocumentAsync(999)).Success);
     }
 
     [Theory]

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "document-register-open-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open a document (old address)",
+    "fa": "باز کردن مدرک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Open a document",
+    "fa": "باز کردن مدرک"
+  },
+  "payload": {
+    "pattern": "DocumentRegister/Open/{id}",
+    "target": "/x/document-open?id={id}",
+    "permanent": false
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "notification-open",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open a notification",
+    "fa": "باز کردن اعلان"
+  },
+  "description": {
+    "en": "Open a notification",
+    "fa": "باز کردن اعلان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Shell",
+      "action": "OpenNotification",
+      "args": {
+        "id": "param:id"
+      },
+      "disposition": "inline"
+    }
+  }
+}

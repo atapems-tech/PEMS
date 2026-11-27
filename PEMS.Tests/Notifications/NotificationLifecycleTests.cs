@@ -214,9 +214,9 @@ public class NotificationLifecycleTests
         await svc.CreateAsync(1, "a", "m", "/Task/Index");
         var id = (await svc.GetForUserAsync(1)).Single().NotificationId;
 
-        var result = await NewController(svc, 1).Open(id);
+        var result = await new PEMS.Web.Services.ShellOperations(svc, new FakeCurrentUserService { UserId = 1 }, null!).OpenNotificationAsync(id);
 
-        Assert.Equal("/Task/Index", Assert.IsType<LocalRedirectResult>(result).Url);
+        Assert.Equal("/Task/Index", result.RedirectUrl);
         Assert.Equal(0, await svc.GetUnreadCountAsync(1));
     }
 
@@ -227,9 +227,9 @@ public class NotificationLifecycleTests
         await svc.CreateAsync(1, "a", "m", "https://evil.example/x");
         var id = (await svc.GetForUserAsync(1)).Single().NotificationId;
 
-        var result = await NewController(svc, 1).Open(id);
+        var result = await new PEMS.Web.Services.ShellOperations(svc, new FakeCurrentUserService { UserId = 1 }, null!).OpenNotificationAsync(id);
 
-        Assert.IsType<RedirectResult>(result);
+        Assert.Equal("/p/notifications", result.RedirectUrl);
     }
 
     [Fact]
