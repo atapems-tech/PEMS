@@ -142,7 +142,7 @@ public static class NavigationMenuDefaults
         Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),
         new("cmms.jobplan", "sec.cmms", L, 50, "Job Plans", "bi-list-check", "CmmsItem:JobPlan", ExternalPath: "/p/job-plans"),   // SCRUM-711: a definition page (/p/...)
         new("cmms.workrequest", "sec.cmms", L, 60, "Work Requests", "bi-clipboard-plus", "CmmsItem:WorkRequest", ExternalPath: "/p/work-requests", ExtraActiveControllers: "WorkRequest"),   // SCRUM-765: a definition page (/p/...)
-        Link("cmms.workorder", "sec.cmms", 70, "Work Order", "bi-clipboard-check", "WorkOrder", rule: "CmmsItem:WorkOrder", badge: NavigationBadges.WorkOrdersOpen),
+        new("cmms.workorder", "sec.cmms", L, 70, "Work Order", "bi-clipboard-check", "CmmsItem:WorkOrder", ExternalPath: "/p/work-orders", ExtraActiveControllers: "WorkOrder", BadgeKey: NavigationBadges.WorkOrdersOpen),
         new("cmms.sparepart", "sec.cmms", L, 80, "Spare Parts", "bi-tools", "CmmsItem:SparePart", ExternalPath: "/p/spare-parts"),   // SCRUM-751: a definition page (/p/...)
         new("cmms.team", "sec.cmms", L, 90, "Teams", "bi-people", "CmmsItem:Team", ExternalPath: "/p/teams"),   // SCRUM-757: a definition page (/p/...)
         new("cmms.crew", "sec.cmms", L, 100, "Crews", "bi-people-fill", "CmmsItem:Crew", ExternalPath: "/p/crews"),   // SCRUM-677: a definition page (/p/...)

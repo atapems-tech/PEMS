@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "work-order-mine",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My work orders",
+    "fa": "دستورکارهای من"
+  },
+  "description": {
+    "en": "My work orders",
+    "fa": "دستورکارهای من"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "Mine"
+    }
+  }
+}

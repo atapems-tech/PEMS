@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "work-order-equipment-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment of a new work order",
+    "fa": "تجهیزات دستورکار جدید"
+  },
+  "description": {
+    "en": "Equipment of a new work order",
+    "fa": "تجهیزات دستورکار جدید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "EquipmentOptions"
+    }
+  }
+}

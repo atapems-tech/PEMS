@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "work-order-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create the work order",
+    "fa": "ایجاد دستورکار"
+  },
+  "description": {
+    "en": "Create the work order",
+    "fa": "ایجاد دستورکار"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "Create",
+      "args": {
+        "equipmentId": "field:equipmentId",
+        "workOrderType": "field:workOrderType",
+        "priority": "field:priority",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "The work order was created.",
+      "fa": "دستورکار ایجاد شد."
+    },
+    "redirect": "/WorkOrder/Details/{result}"
+  }
+}

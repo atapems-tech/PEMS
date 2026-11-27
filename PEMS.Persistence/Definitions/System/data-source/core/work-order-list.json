@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "work-order-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work orders",
+    "fa": "دستورکارها"
+  },
+  "description": {
+    "en": "Work orders",
+    "fa": "دستورکارها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "List"
+    }
+  }
+}

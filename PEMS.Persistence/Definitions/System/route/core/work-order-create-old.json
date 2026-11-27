@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "work-order-create-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New work order (old address)",
+    "fa": "دستورکار جدید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New work order (old address)",
+    "fa": "دستورکار جدید (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "WorkOrder/Create",
+    "target": "/f/work-order-create",
+    "permanent": false
+  }
+}

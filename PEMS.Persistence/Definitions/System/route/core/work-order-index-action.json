@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "work-order-index-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work orders (old address)",
+    "fa": "دستورکارها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Work orders (old address)",
+    "fa": "دستورکارها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "WorkOrder/Index",
+    "target": "/p/work-orders",
+    "permanent": false
+  }
+}
