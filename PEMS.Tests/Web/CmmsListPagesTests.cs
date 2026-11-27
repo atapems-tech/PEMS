@@ -24,7 +24,6 @@ public class CmmsListPagesTests
 {
     private static readonly string[] Pages =
     {
-        "WorkOrder",
         // wave 2b
     };
 
@@ -72,45 +71,8 @@ public class CmmsListPagesTests
 
     // ---------- Work orders ----------
 
-    private static Task<string> WorkOrders(string? status = null, int? equipmentId = null, bool mine = false, params WorkOrderListDto[] items)
-        => Render<WorkOrderController>("/Views/WorkOrder/Index.cshtml", Page(items), v =>
-        {
-            v["SelectedStatus"] = status;
-            v["SelectedEquipmentId"] = equipmentId;
-            v["SelectedEquipmentLabel"] = equipmentId.HasValue ? "P-101A" : null;
-            v["AssignedToMe"] = mine;
-            v["OpenCount"] = 3; v["InProgressCount"] = 2; v["CompletedCount"] = 9; v["CriticalOpenCount"] = 1;
-        });
-
-    [Fact]
-    public async Task WorkOrders_CountsAreKpiLinks_StatusesAreLocalisedPills_AndTheEquipmentSearchFeedsTheFilter()
-    {
-        var html = await WorkOrders(items: new WorkOrderListDto { WorkOrderId = 4, WorkOrderNumber = "WO-0004", EquipmentTagNumber = "P-101A", WorkOrderType = "CM", Priority = "Critical", Status = "InProgress", CreatedDate = new DateTime(2026, 10, 5) });
-
-        AssertBuiltFromTheComponent(html, "WorkOrder", 1);
-        var kpis = Kpis(html, "woKpis");
-        Assert.Equal(4, Regex.Matches(kpis, "class=\"vs-chip").Count);
-        Assert.Equal(3, Regex.Matches(kpis, "<a ").Count);                     // open / in progress / completed stay filter links
-        Assert.Equal(2, Regex.Matches(kpis, "vs-chip--danger").Count);           // open and critical-open above zero
-        Assert.Contains(">In progress<", html.Replace("> ", ">"));               // Wo_St_InProgress, not the stored value
-        Assert.Contains("vs-pill vs-pill--danger", html);                        // critical priority
-        Assert.Contains("data-search-type=\"Equipment\"", html);
-        Assert.Contains("id=\"woEquipmentFilterHidden\"", html);
-        Assert.Contains("lp-compose", html);
-    }
-
-    [Fact]
-    public async Task WorkOrders_ActiveFilters_ShowTheBadgeAndOneChipEach()
-    {
-        var html = await WorkOrders("Open", 7, mine: true);
-
-        Assert.Matches("<span class=\"lp-badge\">3<", html);
-        var chips = Chips(html);
-        Assert.Equal(3, Regex.Matches(chips, "class=\"pems-filter-chip\"").Count);
-        Assert.Contains("P-101A", chips);
-        Assert.Matches("id=\"assignedToMeCheck\"[^>]*checked=\"checked\"", html);
-        Assert.Contains("class=\"lp-empty\"", html);
-    }
+
+
 
     // ---------- Work requests ----------
 

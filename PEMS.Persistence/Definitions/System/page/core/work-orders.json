@@ -1,0 +1,149 @@
+{
+  "kind": "page",
+  "key": "work-orders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work orders",
+    "fa": "دستورکارها"
+  },
+  "description": {
+    "en": "Work orders",
+    "fa": "دستورکارها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "work-orders",
+    "permission": "WorkOrder.View",
+    "regions": {
+      "content": [
+        {
+          "id": "counts",
+          "component": "data-grid",
+          "options": {
+            "id": "work-orders-counts",
+            "url": "/d/work-order-counts",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "open",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "inProgress",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "completed",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "criticalOpen",
+                "width": 140,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "work-orders-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/work-orders-mine",
+                "text": {
+                  "en": "Work orders assigned to me",
+                  "fa": "دستورکارهای من"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/MaintenanceCalendar",
+                "text": {
+                  "en": "Maintenance calendar",
+                  "fa": "تقویم نگهداری"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "work-orders",
+            "url": "/d/work-order-list",
+            "idField": "id",
+            "viewsKey": "work-orders",
+            "columns": [
+              {
+                "key": "workOrderNumber",
+                "width": 150
+              },
+              {
+                "key": "equipmentTag",
+                "width": 150
+              },
+              {
+                "key": "workOrderType",
+                "width": 120
+              },
+              {
+                "key": "priority",
+                "width": 100
+              },
+              {
+                "key": "team",
+                "width": 150
+              },
+              {
+                "key": "employee",
+                "width": 160
+              },
+              {
+                "key": "assignedTo",
+                "width": 140
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "createdDate",
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/WorkOrder/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "newUrl": "/f/work-order-create",
+            "newLabel": {
+              "en": "New work order",
+              "fa": "دستورکار جدید"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

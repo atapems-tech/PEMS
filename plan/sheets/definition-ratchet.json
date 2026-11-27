@@ -99,9 +99,7 @@
     "PEMS.Web/Views/VDR/Index.cshtml",
     "PEMS.Web/Views/VDRImport/Index.cshtml",
     "PEMS.Web/Views/VDRImport/Review.cshtml",
-    "PEMS.Web/Views/WorkOrder/Create.cshtml",
     "PEMS.Web/Views/WorkOrder/Details.cshtml",
-    "PEMS.Web/Views/WorkOrder/Index.cshtml",
     "PEMS.Web/Views/_ViewImports.cshtml",
     "PEMS.Web/Views/_ViewStart.cshtml"
   ],
@@ -150,6 +148,6 @@
     "PEMS.Web.Controllers.VDRController": 3,
     "PEMS.Web.Controllers.VDRImportController": 2,
     "PEMS.Web.Controllers.WebAuthnController": 3,
-    "PEMS.Web.Controllers.WorkOrderController": 6
+    "PEMS.Web.Controllers.WorkOrderController": 3
   }
 }
