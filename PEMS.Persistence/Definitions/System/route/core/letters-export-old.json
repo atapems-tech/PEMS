@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letters-export-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence export (old address)",
+    "fa": "خروجی مکاتبات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Correspondence export",
+    "fa": "خروجی مکاتبات"
+  },
+  "payload": {
+    "pattern": "Letter/Export",
+    "target": "/x/letter-export",
+    "permanent": false
+  }
+}

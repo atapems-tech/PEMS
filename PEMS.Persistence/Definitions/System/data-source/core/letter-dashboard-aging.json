@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-dashboard-aging",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Aging",
+    "fa": "سن نامه‌ها"
+  },
+  "description": {
+    "en": "Aging",
+    "fa": "سن نامه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "DashboardAging"
+    }
+  }
+}

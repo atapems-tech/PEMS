@@ -1,0 +1,45 @@
+{
+  "kind": "data-source",
+  "key": "letter-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence",
+    "fa": "مکاتبات"
+  },
+  "description": {
+    "en": "Correspondence",
+    "fa": "مکاتبات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "List",
+      "args": {
+        "letterType": "param:letterType",
+        "letterNumber": "param:letterNumber",
+        "subject": "param:subject",
+        "sender": "param:sender",
+        "receiver": "param:receiver",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "status": "param:status",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate",
+        "starred": "param:starred",
+        "priority": "param:priority",
+        "hasAttachments": "param:hasAttachments",
+        "hasReferrals": "param:hasReferrals",
+        "overdueReferral": "param:overdueReferral",
+        "overdueResponse": "param:overdueResponse",
+        "unread": "param:unread",
+        "q": "param:q",
+        "folder": "param:folder",
+        "tagId": "param:tagId",
+        "confidentiality": "param:confidentiality"
+      }
+    }
+  }
+}

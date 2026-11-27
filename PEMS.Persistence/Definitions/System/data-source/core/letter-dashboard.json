@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence dashboard",
+    "fa": "داشبورد مکاتبات"
+  },
+  "description": {
+    "en": "Correspondence dashboard",
+    "fa": "داشبورد مکاتبات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "Dashboard"
+    }
+  }
+}

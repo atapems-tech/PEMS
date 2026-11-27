@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence dashboard (old address)",
+    "fa": "داشبورد مکاتبات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Correspondence dashboard",
+    "fa": "داشبورد مکاتبات"
+  },
+  "payload": {
+    "pattern": "Letter/Dashboard",
+    "target": "/p/letter-dashboard",
+    "permanent": false
+  }
+}

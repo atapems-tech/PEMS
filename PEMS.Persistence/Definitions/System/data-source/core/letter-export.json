@@ -1,0 +1,47 @@
+{
+  "kind": "data-source",
+  "key": "letter-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence export",
+    "fa": "خروجی مکاتبات"
+  },
+  "description": {
+    "en": "Correspondence export",
+    "fa": "خروجی مکاتبات"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "Export",
+      "disposition": "attachment",
+      "args": {
+        "letterType": "param:letterType",
+        "letterNumber": "param:letterNumber",
+        "subject": "param:subject",
+        "sender": "param:sender",
+        "receiver": "param:receiver",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "status": "param:status",
+        "fromDate": "param:fromDate",
+        "toDate": "param:toDate",
+        "starred": "param:starred",
+        "priority": "param:priority",
+        "hasAttachments": "param:hasAttachments",
+        "hasReferrals": "param:hasReferrals",
+        "overdueReferral": "param:overdueReferral",
+        "overdueResponse": "param:overdueResponse",
+        "unread": "param:unread",
+        "q": "param:q",
+        "folder": "param:folder",
+        "tagId": "param:tagId",
+        "confidentiality": "param:confidentiality",
+        "format": "param:format"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letters-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence (old address)",
+    "fa": "مکاتبات (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Correspondence",
+    "fa": "مکاتبات"
+  },
+  "payload": {
+    "pattern": "Letter/Index",
+    "target": "/p/letters",
+    "permanent": false
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "kind": "page",
+  "key": "letter-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence dashboard",
+    "fa": "داشبورد مکاتبات"
+  },
+  "description": {
+    "en": "Correspondence dashboard",
+    "fa": "داشبورد مکاتبات"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "letter-dashboard",
+    "regions": {
+      "content": [
+        {
+          "id": "nav",
+          "component": "content-blocks",
+          "options": {
+            "id": "nav",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/letters",
+                "text": {
+                  "en": "Correspondence",
+                  "fa": "مکاتبات"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letter-my-referrals",
+                "text": {
+                  "en": "My referrals",
+                  "fa": "ارجاع‌های من"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "letter-dashboard",
+          "component": "data-grid",
+          "options": {
+            "id": "letter-dashboard",
+            "url": "/d/letter-dashboard",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "totalActive",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "openLetters",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "received30",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "issued30",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "openReferrals",
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "overdueReferrals",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "overdueResponses",
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "awaitingApproval",
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "myDrafts",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "myReturned",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "myOpenReferrals",
+                "width": 140,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-status",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-status",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "By status",
+                  "fa": "بر اساس وضعیت"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "status",
+          "component": "def:related-table",
+          "options": {
+            "id": "status",
+            "url": "/d/letter-dashboard-status",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "key",
+                "width": 220
+              },
+              {
+                "key": "count",
+                "width": 100,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-type",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-type",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "By type",
+                  "fa": "بر اساس نوع"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "type",
+          "component": "def:related-table",
+          "options": {
+            "id": "type",
+            "url": "/d/letter-dashboard-type",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "key",
+                "width": 220
+              },
+              {
+                "key": "count",
+                "width": 100,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-aging",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-aging",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Aging",
+                  "fa": "سن نامه‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "aging",
+          "component": "def:related-table",
+          "options": {
+            "id": "aging",
+            "url": "/d/letter-dashboard-aging",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "key",
+                "width": 220
+              },
+              {
+                "key": "count",
+                "width": 100,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-attention",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-attention",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Needs attention",
+                  "fa": "نیازمند توجه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attention",
+          "component": "def:related-table",
+          "options": {
+            "id": "attention",
+            "url": "/d/letter-attention",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "number",
+                "width": 140,
+                "href": "/Letter/Details/{id}"
+              },
+              {
+                "key": "subject",
+                "width": 320
+              },
+              {
+                "key": "reason",
+                "width": 160
+              },
+              {
+                "key": "due",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "daysOverdue",
+                "width": 110,
+                "type": "number"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.View"
+  }
+}

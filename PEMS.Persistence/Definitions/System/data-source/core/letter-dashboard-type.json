@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-dashboard-type",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "By type",
+    "fa": "بر اساس نوع"
+  },
+  "description": {
+    "en": "By type",
+    "fa": "بر اساس نوع"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "DashboardType"
+    }
+  }
+}

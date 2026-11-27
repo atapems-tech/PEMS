@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence folders",
+    "fa": "پوشه‌های مکاتبات"
+  },
+  "description": {
+    "en": "Correspondence folders",
+    "fa": "پوشه‌های مکاتبات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "Counts"
+    }
+  }
+}

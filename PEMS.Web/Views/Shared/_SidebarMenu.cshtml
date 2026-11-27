@@ -217,13 +217,11 @@
         </div>
         <div class="@SectionClass(active)" id="sec-correspondence">
 
-            <pems-nav-link item="false" active="@(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() != "MyReferrals")"
-               asp-controller="Letter" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/letters" active="@(IsActive("Letter") || Context.Request.Path.StartsWithSegments("/p/letters"))"> 
                 <pems-icon name="bi-envelope-paper" /> @Localizer["Correspondence"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("Letter") && ViewContext.RouteData.Values["action"]!.ToString() == "MyReferrals")"
-               asp-controller="Letter" asp-action="MyReferrals" asp-area="">
+            <pems-nav-link item="false" href="/p/letter-my-referrals" active="@Context.Request.Path.StartsWithSegments("/p/letter-my-referrals")"> 
                 <pems-icon name="bi-person-check" /> @Localizer["MyReferrals"]
             </pems-nav-link>
 

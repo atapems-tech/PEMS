@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-attention",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Needs attention",
+    "fa": "نیازمند توجه"
+  },
+  "description": {
+    "en": "Needs attention",
+    "fa": "نیازمند توجه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "Attention"
+    }
+  }
+}
