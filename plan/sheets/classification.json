@@ -352,8 +352,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.TeamController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "the type was deleted: the chart is the org-chart component on the page team-org-chart (SCRUM-841)"
     },
     {
       "kind": "controller",

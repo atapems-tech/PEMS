@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "team-org-chart-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization chart (old address)",
+    "fa": "نمودار سازمانی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Organization chart",
+    "fa": "نمودار سازمانی"
+  },
+  "payload": {
+    "pattern": "Team/OrganizationChart",
+    "target": "/p/team-org-chart",
+    "permanent": false
+  }
+}

@@ -42,7 +42,7 @@
             "blocks": [
               {
                 "type": "link",
-                "href": "/Team/OrganizationChart",
+                "href": "/p/team-org-chart",
                 "text": {
                   "en": "Organization chart",
                   "fa": "نمودار سازمانی"

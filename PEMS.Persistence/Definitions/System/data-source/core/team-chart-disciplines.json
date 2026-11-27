@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "team-chart-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines of the organization chart",
+    "fa": "دیسیپلین‌های نمودار سازمانی"
+  },
+  "description": {
+    "en": "Disciplines of the organization chart",
+    "fa": "دیسیپلین‌های نمودار سازمانی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Team",
+      "action": "ChartDisciplines",
+      "disposition": "inline"
+    }
+  }
+}

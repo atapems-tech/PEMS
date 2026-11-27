@@ -41,7 +41,6 @@
     "PEMS.Web/Views/Shared/_RcmErrors.cshtml",
     "PEMS.Web/Views/Shared/_SidebarMenu.cshtml",
     "PEMS.Web/Views/Shared/_ValidationScriptsPartial.cshtml",
-    "PEMS.Web/Views/Team/OrganizationChart.cshtml",
     "PEMS.Web/Views/_ViewImports.cshtml",
     "PEMS.Web/Views/_ViewStart.cshtml"
   ],
@@ -64,7 +63,6 @@
     "PEMS.Web.Controllers.PageHostController": 1,
     "PEMS.Web.Controllers.RecoveryCodesController": 2,
     "PEMS.Web.Controllers.SearchApiController": 4,
-    "PEMS.Web.Controllers.TeamController": 1,
     "PEMS.Web.Controllers.ThemeController": 1,
     "PEMS.Web.Controllers.WebAuthnController": 3
   }

@@ -103,28 +103,6 @@ public class OrganizationMasterDataAuthorizationTests
     // Scope دیسیپلینی (که با SystemAdmin دور زده می‌شود؛ Scope واقعی تست نمی‌شود این‌جا).
 
 
-    [Fact]
-    public async Task Team_OrganizationChart_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Team_OrganizationChart_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new TeamController(ctx, new FakeTeamService(), new OrganizationStructureService(ctx), user, perms).WithTempData();
-
-        var result = await controller.OrganizationChart(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Team_OrganizationChart_WithViewPermission_ReturnsView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Team_OrganizationChart_WithViewPermission_ReturnsView), role: SystemRoles.SystemAdmin);
-        var controller = new TeamController(ctx, new FakeTeamService(), new OrganizationStructureService(ctx), user, perms).WithTempData();
-
-        var result = await controller.OrganizationChart(null);
-
-        Assert.IsType<ViewResult>(result);
-    }
-
     // ================= Phase 6B: Team Details / Workforce Management =================
 
     private static async Task<(Discipline Discipline, MaintenanceGroup Group, Team Team)> SeedTeamAsync(PEMSDbContext ctx)

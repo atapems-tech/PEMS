@@ -7,6 +7,21 @@
     var root = document.getElementById("pemsOrgChartRoot");
     if (!root) return;
 
+    // SCRUM-841: the choices of the discipline filter come from the address of the component (a list of { value, label }), then the chart starts
+    var disciplinesUrl = root.getAttribute("data-disciplines-url");
+    var filterSelect = document.getElementById("orgChartDisciplineFilter");
+    if (disciplinesUrl && filterSelect) {
+        fetch(disciplinesUrl, { credentials: "same-origin", headers: { "Accept": "application/json" } })
+            .then(function (r) { return r.ok ? r.json() : []; })
+            .catch(function () { return []; })
+            .then(function (list) {
+                (list || []).forEach(function (d) { filterSelect.appendChild(new Option(d.label, d.value)); });
+                start();
+            });
+    } else start();
+
+    function start() {
+
     var treeUrl = root.getAttribute("data-tree-url");
     var detailsUrlTemplate = root.getAttribute("data-details-url-template");
     var emptyText = root.getAttribute("data-empty-text");
@@ -482,4 +497,5 @@
     }
 
     load();
+    }
 })();
