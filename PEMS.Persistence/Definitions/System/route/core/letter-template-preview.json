@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-template-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter template preview (old address)",
+    "fa": "پیش‌نمایش قالب نامه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter template preview",
+    "fa": "پیش‌نمایش قالب نامه"
+  },
+  "payload": {
+    "pattern": "LetterTemplate/Preview/{id}",
+    "target": "/p/letter-template-preview?id={id}",
+    "permanent": false
+  }
+}

@@ -114,7 +114,7 @@
                       "en": "Preview",
                       "fa": "پیش‌نمایش"
                     },
-                    "url": "/LetterTemplate/Preview/{id}",
+                    "url": "/p/letter-template-preview?id={id}",
                     "method": "get"
                   },
                   {

@@ -33,7 +33,6 @@
     "PEMS.Web/Views/LetterCompose/Compose.cshtml",
     "PEMS.Web/Views/LetterCompose/History.cshtml",
     "PEMS.Web/Views/LetterCompose/_LetterPrint.cshtml",
-    "PEMS.Web/Views/LetterTemplate/Preview.cshtml",
     "PEMS.Web/Views/MaintenanceStrategy/BulkCreate.cshtml",
     "PEMS.Web/Views/MaintenanceStrategy/Edit.cshtml",
     "PEMS.Web/Views/Notification/_NotificationDropdown.cshtml",
@@ -70,7 +69,6 @@
   "actions": {
     "PEMS.Web.Api.V1.DefinitionsApiController": 20,
     "PEMS.Web.Api.V1.DisciplinesApiController": 6,
-    "PEMS.Web.Areas.Admin.Controllers.EmployeeController": 1,
     "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController": 10,
     "PEMS.Web.Controllers.AccountController": 9,
     "PEMS.Web.Controllers.AccountRecoveryController": 2,
@@ -91,7 +89,6 @@
     "PEMS.Web.Controllers.LetterCartableController": 1,
     "PEMS.Web.Controllers.LetterComposeController": 10,
     "PEMS.Web.Controllers.LetterController": 11,
-    "PEMS.Web.Controllers.LetterTemplateController": 1,
     "PEMS.Web.Controllers.MaintenanceStrategyController": 6,
     "PEMS.Web.Controllers.NavigationBadgeController": 1,
     "PEMS.Web.Controllers.NotificationController": 2,

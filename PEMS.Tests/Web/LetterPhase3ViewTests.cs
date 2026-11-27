@@ -142,25 +142,19 @@ public class LetterPhase3ViewTests
 
     // ------------------------------------------------------------------ template manager views
 
-    private static LetterTemplateController NewTemplateController(FakeTemplates t) => new(t)
-    {
-        ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
-    };
 
     [Fact]
     public async Task TemplatePreview_ShowsSampleValues_NeverRealData_AndEncodesThem()
     {
         var t = new FakeTemplates();
         t.Items.Add(Tpl(9, "Outgoing", subject: "Re {{ParentSubject}} - {{Bogus}}", body: "<p>{{UserName}} / {{Counterparty}} / {{ParentNumber}}</p>"));
-        var c = NewTemplateController(t);
+        var ops = new PEMS.Web.Services.LetterTemplateOperations(t);
 
-        var view = Assert.IsType<ViewResult>(await c.Preview(9));
-        var html = await RazorViewRenderer.RenderAsync(c, view, "~/Views/LetterTemplate/Preview.cshtml");
+        var row = Assert.Single(await ops.PreviewAsync(9));
 
-        Assert.Contains("Re Sample subject - {{Bogus}}", html);
-        Assert.Contains("Sample User / Sample Company / LTR-0001", html);
-        Assert.Contains("Shown with sample values", html);
-        Assert.IsType<NotFoundResult>(await c.Preview(12345));
+        Assert.Contains("Re Sample subject - {{Bogus}}", row.Subject);
+        Assert.Contains("Sample User / Sample Company / LTR-0001", row.Body);
+        Assert.Empty(await ops.PreviewAsync(12345));
     }
 
 

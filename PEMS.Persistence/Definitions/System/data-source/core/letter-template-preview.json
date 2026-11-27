@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-template-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter template preview",
+    "fa": "پیش‌نمایش قالب نامه"
+  },
+  "description": {
+    "en": "Letter template preview",
+    "fa": "پیش‌نمایش قالب نامه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterTemplatePage",
+      "action": "Preview",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

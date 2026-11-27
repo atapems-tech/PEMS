@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "admin-employee-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees (old address)",
+    "fa": "کارمندان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Employees",
+    "fa": "کارمندان"
+  },
+  "payload": {
+    "pattern": "Admin/Employee/Index",
+    "target": "/p/employees",
+    "permanent": false
+  }
+}

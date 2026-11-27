@@ -1,0 +1,130 @@
+{
+  "kind": "page",
+  "key": "letter-template-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter template preview",
+    "fa": "پیش‌نمایش قالب نامه"
+  },
+  "description": {
+    "en": "Letter template preview",
+    "fa": "پیش‌نمایش قالب نامه"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "letter-template-preview",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the templates",
+              "fa": "بازگشت به قالب‌ها"
+            },
+            "tone": "neutral",
+            "href": "/p/letter-templates"
+          }
+        },
+        {
+          "id": "note",
+          "component": "content-blocks",
+          "options": {
+            "id": "note",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "Preview with sample values (not the data of a real letter): it shows what the tokens become when the template is used.",
+                  "fa": "پیش‌نمایش با مقادیر نمونه (نه داده‌ی واقعی نامه): نشان می‌دهد نشانه‌ها هنگام استفاده چه می‌شوند."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "letter-template-preview",
+            "fields": [
+              {
+                "key": "name",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
+              },
+              {
+                "key": "type",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
+              },
+              {
+                "key": "confidentiality",
+                "label": {
+                  "en": "Confidentiality",
+                  "fa": "محرمانگی"
+                }
+              },
+              {
+                "key": "subject",
+                "label": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "wide": true
+              },
+              {
+                "key": "body",
+                "label": {
+                  "en": "Body",
+                  "fa": "متن"
+                },
+                "type": "html",
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/letter-template-preview",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "edit",
+          "component": "content-blocks",
+          "options": {
+            "id": "edit",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/letter-template-edit/{{params.id}}",
+                "text": {
+                  "en": "Edit",
+                  "fa": "ویرایش"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.Approve"
+  }
+}

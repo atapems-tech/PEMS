@@ -51,6 +51,9 @@ else
             case "datetime" when DateTime.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt):
                 b.AddContent(10, Locale.Format(dt, ValueKind.DateTime));
                 break;
+            case "html":   // SCRUM-830: markup the operation has already sanitized or encoded (a template body with its values put in)
+                b.AddMarkupContent(12, raw);
+                break;
             default:
                 b.AddContent(11, raw);
                 break;
