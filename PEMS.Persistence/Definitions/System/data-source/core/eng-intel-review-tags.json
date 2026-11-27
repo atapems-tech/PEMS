@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "eng-intel-review-tags",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Related equipment tags",
+    "fa": "تگ‌های مرتبط"
+  },
+  "description": {
+    "en": "Related equipment tags",
+    "fa": "تگ‌های مرتبط"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "ReviewTags",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

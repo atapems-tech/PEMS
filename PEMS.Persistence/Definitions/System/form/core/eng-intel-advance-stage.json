@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "eng-intel-advance-stage",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move to this stage",
+    "fa": "انتقال به این مرحله"
+  },
+  "description": {
+    "en": "Move to this stage",
+    "fa": "انتقال به این مرحله"
+  },
+  "payload": {
+    "id": "eng-intel-advance-stage",
+    "title": {
+      "en": "Move to this stage",
+      "fa": "انتقال به این مرحله"
+    },
+    "submitLabel": {
+      "en": "Move to this stage",
+      "fa": "انتقال به این مرحله"
+    },
+    "actionKey": "eng-intel-advance-stage",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "newStage",
+        "label": {
+          "en": "Stage",
+          "fa": "مرحله"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

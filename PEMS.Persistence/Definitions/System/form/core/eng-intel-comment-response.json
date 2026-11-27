@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "eng-intel-comment-response",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Respond to the comment",
+    "fa": "پاسخ به نظر"
+  },
+  "description": {
+    "en": "Respond to the comment",
+    "fa": "پاسخ به نظر"
+  },
+  "payload": {
+    "id": "eng-intel-comment-response",
+    "title": {
+      "en": "Respond to the comment",
+      "fa": "پاسخ به نظر"
+    },
+    "submitLabel": {
+      "en": "Respond to the comment",
+      "fa": "پاسخ به نظر"
+    },
+    "actionKey": "eng-intel-comment-response",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "commentId",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "responseText",
+        "label": {
+          "en": "Response",
+          "fa": "پاسخ"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

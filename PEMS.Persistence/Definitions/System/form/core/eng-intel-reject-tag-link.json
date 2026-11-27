@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "eng-intel-reject-tag-link",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the tag link",
+    "fa": "رد پیوند تگ"
+  },
+  "description": {
+    "en": "Reject the tag link",
+    "fa": "رد پیوند تگ"
+  },
+  "payload": {
+    "id": "eng-intel-reject-tag-link",
+    "title": {
+      "en": "Reject the tag link",
+      "fa": "رد پیوند تگ"
+    },
+    "submitLabel": {
+      "en": "Reject the tag link",
+      "fa": "رد پیوند تگ"
+    },
+    "actionKey": "eng-intel-reject-tag-link",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "tagLinkId",
+        "label": {
+          "en": "Tag link",
+          "fa": "پیوند تگ"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

@@ -271,6 +271,25 @@ public sealed class DocumentPagesOperations(
             .Select(l => new { l.LetterId, l.LetterNumber, l.Sender, l.Subject, l.LetterDate, l.RelatedDocumentId, l.RelatedMRId }).ToListAsync())
             .Select(l => new DccLetterRow(l.LetterId, l.LetterNumber, l.Sender, l.Subject, l.LetterDate, l.RelatedDocumentId != null ? localizer["مدرک"].Value : l.RelatedMRId != null ? "MR" : localizer["وصل‌نشده"].Value)).ToList();
 
+    // ---------------------------------------------------------------- document intelligence review
+    private async Task<DocumentIntelligenceDetailDto?> DetailAsync(int id) => await intelligence.GetDetailAsync(id);
+
+    public async Task<List<ReviewHeadRow>> ReviewHeadAsync(int id)
+        => await DetailAsync(id) is { } d ? [new ReviewHeadRow(d.DocumentId, d.DocumentNo, d.Title, d.AIWorkflowStage, d.Status, d.AIProcessingStatus)] : [];
+
+    public async Task<List<ReviewStageRow>> ReviewStagesAsync(int id)
+        => await DetailAsync(id) is { } d ? new[] { "UnderReview", "CommentOpen", "Revision", "Approved", "KnowledgeBase" }.Select(s => new ReviewStageRow(s, s == d.AIWorkflowStage)).ToList() : [];
+
+    public async Task<List<ReviewClassificationRow>> ReviewClassificationsAsync(int id)
+        => await DetailAsync(id) is { } d ? d.Classifications.Select(c => new ReviewClassificationRow(c.AIDocumentClassificationId, c.ConfidenceScore.ToString("P0"), c.ReviewStatus, c.PredictedDisciplineCode, c.PredictedVendorName, c.PredictedMRNumber, c.PredictedRevisionNo, c.PredictedIssuePurpose, c.PredictedDocumentType,
+            c.ReviewStatus == "Draft", string.IsNullOrEmpty(c.PredictedVendorName) ? "" : "true", string.IsNullOrEmpty(c.PredictedMRNumber) ? "" : "true", string.IsNullOrEmpty(c.PredictedRevisionNo) ? "" : "true", string.IsNullOrEmpty(c.PredictedIssuePurpose) ? "" : "true")).ToList() : [];
+
+    public async Task<List<ReviewTagRow>> ReviewTagsAsync(int id)
+        => await DetailAsync(id) is { } d ? d.TagLinks.Select(t => new ReviewTagRow(t.EngineeringDocumentTagLinkId, t.TagNumber, t.IsAIProposed ? "AI Proposed" : "Manual", t.ReviewStatus, t.Confidence?.ToString("P0") ?? "", t.IsAIProposed && t.ReviewStatus == "Draft")).ToList() : [];
+
+    public async Task<List<ReviewCommentRow>> ReviewCommentsAsync(int id)
+        => await DetailAsync(id) is { } d ? d.Comments.Select(c => new ReviewCommentRow(c.EngineeringDocumentCommentId, c.CommentText, c.RaisedByName, c.RaisedDate, c.ActionStatus, c.ResponseText, string.IsNullOrEmpty(c.ResponseText))).ToList() : [];
+
     // ---------------------------------------------------------------- upload and intelligence
     public async Task<List<DocChoice>> UploadProjectsAsync() => await context.Projects.AsNoTracking().Where(x => x.IsActive).Select(x => new DocChoice(x.ProjectId.ToString(), x.ProjectName)).ToListAsync();
 

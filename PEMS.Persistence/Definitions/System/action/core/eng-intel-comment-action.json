@@ -26,6 +26,6 @@
       "en": "The comment was updated.",
       "fa": "نظر به‌روز شد."
     },
-    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+    "redirect": "/p/eng-intel-review?id={documentId}"
   }
 }

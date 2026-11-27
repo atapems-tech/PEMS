@@ -123,3 +123,6 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - The list, its counters (total, approved and rejected are links), search, discipline, status and area filters, saved views and the Excel export are the definition page `eng-docs`; paging is the grid (rows up to 20000); the project and the minimum revision count filters work from the address only; the delete is a confirmation form page (`eng-doc-delete`).
 - Create, Edit, Details, UploadAttachment and the file download stay in the controller until the document viewer with comment pins, the revision modals and the attachment workflow have components (SCRUM-837 decision).
 - Tests removed with the screen: the engineering documents list layout tests.
+
+### Document intelligence review (SCRUM-830)
+- The review page is a record, a stage table (set the stage from a form page), the classification, tag and comment tables with their commands as small form pages; the approve form has one checkbox per field to apply, prefilled from the suggestion; the status badges and the inline response box are plain columns and form pages; the controller is deleted and the old address `EngineeringDocumentIntelligence/Review/{id}` is a route.

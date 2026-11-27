@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "eng-intel-reject-classification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the classification",
+    "fa": "رد طبقه‌بندی"
+  },
+  "description": {
+    "en": "Reject the classification",
+    "fa": "رد طبقه‌بندی"
+  },
+  "payload": {
+    "id": "eng-intel-reject-classification",
+    "title": {
+      "en": "Reject the classification",
+      "fa": "رد طبقه‌بندی"
+    },
+    "submitLabel": {
+      "en": "Reject the classification",
+      "fa": "رد طبقه‌بندی"
+    },
+    "actionKey": "eng-intel-reject-classification",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "classificationId",
+        "label": {
+          "en": "Classification",
+          "fa": "طبقه‌بندی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}
