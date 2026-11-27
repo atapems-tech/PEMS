@@ -9,6 +9,8 @@ using PEMS.Web.Security;
 
 namespace PEMS.Web.Controllers;
 
+// SCRUM-836: the product has no WorkOrderController any more (every screen is a definition); the tests of the work order governance still use this stand-in of the section guard and the child action runner.
+
 /// <summary>
 /// طبق درخواست: تکمیل بخش‌های CMMS - Work Order قلب واقعی CMMS است (کار نگهداری واقعی که
 /// انجام می‌شود). گردش‌کار: Open → Assigned → InProgress → Completed → Closed. طبق درخواست
@@ -84,7 +86,7 @@ public class WorkOrderController : Controller
         if (_sectionGuard == null)
         {
             TempData["Error"] = L("دروازه‌ی بخش‌های Work Order پیکربندی نشده است؛ تغییر مجاز نیست.", "The Work Order section guard is not configured; the change is not allowed.");
-            return RedirectToAction(nameof(Details), new { id = workOrderId });
+            return Redirect("/p/work-order-details?id=" + workOrderId);
         }
 
         var result = await _sectionGuard.AuthorizeAsync(workOrderId, section, action, BuildCaller(await GetCurrentEmployeeIdAsync()), reason, recordRef);
@@ -97,7 +99,7 @@ public class WorkOrderController : Controller
 
         TempData["Error"] = message;
         TempData["PolicyCode"] = result.Code;
-        return RedirectToAction(nameof(Details), new { id = workOrderId });
+        return Redirect("/p/work-order-details?id=" + workOrderId);
     }
 
     private async Task RecordChildChangeAsync(int workOrderId, WoSection section, WoSectionAction action, string? recordRef, string? reason, string? before, string? after)

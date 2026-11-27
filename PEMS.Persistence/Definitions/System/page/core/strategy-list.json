@@ -85,7 +85,11 @@
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "version",
@@ -116,15 +120,27 @@
                   {
                     "key": "open",
                     "url": "/p/strategy-details?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   },
                   {
                     "key": "edit",
                     "url": "/MaintenanceStrategy/Edit/{id}",
                     "method": "get",
-                    "showWhen": "row.status != 'Retired'"
+                    "showWhen": "row.status != 'Retired'",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "newUrl": "/MaintenanceStrategy/Create",

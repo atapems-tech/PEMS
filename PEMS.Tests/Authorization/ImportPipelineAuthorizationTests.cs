@@ -1,5 +1,4 @@
-﻿using PEMS.Web.Areas.Warehouse.Controllers;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
@@ -98,17 +97,6 @@ public class ImportPipelineAuthorizationTests
 
     // ================= MDR Import =================
 
-    [Fact]
-    public async Task MDR_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(MDR_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new MDRImportController(new FakeMDRImportService(), ctx, user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
     // ================= Equipment Import =================
 
     [Fact]
@@ -150,28 +138,6 @@ public class ImportPipelineAuthorizationTests
     // ================= VDR Import =================
     // طبق بند ۱۰ ممیزی: فقط Commit این Pipeline گیت داشت؛ Index/Discard برای هر کاربر
     // احرازهویت‌شده‌ای باز بودند - با ماژول "VDR" موجود (نه ماژول جدید) هم‌راستا شد.
-
-    [Fact]
-    public async Task VDR_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(VDR_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new VDRImportController(new FakeVDRImportService(), ctx, user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task VDR_Index_WithViewPermission_ReturnsView()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(VDR_Index_WithViewPermission_ReturnsView), role: SystemRoles.EngineeringManager);
-        var controller = new VDRImportController(new FakeVDRImportService(), ctx, user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ViewResult>(result);
-    }
 
     // ================= MRS Import =================
 

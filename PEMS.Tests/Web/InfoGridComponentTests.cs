@@ -100,16 +100,6 @@ public class InfoGridComponentTests
         Assert.Contains(".pems-info__num {", css);
     }
 
-    [Theory]
-    public void WaveI1_TakesItsLabelValueBlocksFromTheComponent(string view, int grids, int items)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid[ >]").Count);
-        Assert.Equal(items, Regex.Matches(text, "<pems-info-item ").Count);
-        Assert.DoesNotContain("vs-info", text);
-    }
-
-
     [Fact]
     public void WaveI4_NewLabels_AreTranslated()
     {

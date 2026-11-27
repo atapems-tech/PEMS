@@ -5,11 +5,11 @@
 @* SCRUM-841: the friendly page of a 4xx or 5xx answer. The variant is chosen by the status code of the request; the trace id is the one the response carries (X-Trace-Id). *@
 @{
     var http = (Services.GetService(typeof(Microsoft.AspNetCore.Http.IHttpContextAccessor)) as Microsoft.AspNetCore.Http.IHttpContextAccessor)?.HttpContext;
-    var code = int.TryParse(http?.Request.Query["code"].ToString(), out var asked) && asked is >= 400 and <= 599 ? asked : (http?.Response.StatusCode is >= 400 and <= 599 ? http.Response.StatusCode : 500);
-    var variant = Options.Variants.FirstOrDefault(v => v.Codes.Contains(code)) ?? Options.Fallback;
+    var status = int.TryParse(http?.Request.Query["code"].ToString(), out var asked) && asked is >= 400 and <= 599 ? asked : (http?.Response.StatusCode is >= 400 and <= 599 ? http.Response.StatusCode : 500);
+    var variant = Options.Variants.FirstOrDefault(v => v.Codes.Contains(status)) ?? Options.Fallback;
     var trace = http is null ? null : (System.Diagnostics.Activity.Current?.TraceId.ToString() is { } id && id != "00000000000000000000000000000000" ? id : http.TraceIdentifier);
 }
-<section @attributes="Options.Attributes" class="@Join("card", "text-center", "py-5", "pems-status-page", Options.PageClass)" aria-labelledby="statusTitle" data-status-code="@code">
+<section @attributes="Options.Attributes" class="@Join("card", "text-center", "py-5", "pems-status-page", Options.PageClass)" aria-labelledby="statusTitle" data-status-code="@status">
     <div class="card-body">
         <div class="mb-3"><i class="@("bi " + variant.Icon + " pems-fs-26rem")" aria-hidden="true"></i></div>
         <h1 id="statusTitle" class="h4 mb-2">@Locale.Text(variant.Title)</h1>
@@ -19,8 +19,8 @@
             <a class="btn btn-primary" href="@Options.HomeUrl"><i class="bi bi-house" aria-hidden="true"></i> @Locale.Text(Options.HomeLabel)</a>
         </div>
         <p class="small text-muted mt-4 mb-0">
-            @Locale.Text(Options.CodeLabel): <span dir="ltr">@code</span>
-            @if (!string.IsNullOrEmpty(trace)) { <text> &middot; @Locale.Text(Options.RequestIdLabel): <span dir="ltr">@trace</span></text> }
+            @Locale.Text(Options.CodeLabel): <span dir="ltr">@status</span>
+            @if (!string.IsNullOrEmpty(trace)) { <text> <span aria-hidden="true">@("·")</span> @Locale.Text(Options.RequestIdLabel): <span dir="ltr">@trace</span></text> }
         </p>
     </div>
 </section>

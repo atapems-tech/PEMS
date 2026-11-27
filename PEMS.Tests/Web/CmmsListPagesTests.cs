@@ -108,49 +108,6 @@ public class CmmsListPagesTests
 
     // ---------- Production orders and the procurement cartable (SCRUM-337) ----------
 
-    [Fact]
-    public async Task ReferredLetters_AreAListPage()
-    {
-        var html = await Render<LetterController>("/Views/Letter/MyReferrals.cshtml", new List<LetterDto>
-        {
-            new() { LetterId = 5, LetterType = "Incoming", LetterNumber = "L-005", Subject = "Pump quote", LetterDate = new DateTime(2026, 10, 9), Status = "Draft" },
-        }, _ => { });
-        AssertBuiltFromTheComponent(html, null, 1, keepsDataBadges: true);
-        Assert.Contains("L-005", html);
-    }
-
-
-    [Fact]
-    public async Task Tasks_AreAListPage_WithTheirTabFilterAndTheNewTaskForm()
-    {
-        var html = await Render<TaskController>("/Views/Task/Index.cshtml", Page(
-            new TaskItemDto { TaskItemId = 9, Title = "Call vendor", Priority = "Normal", Status = "Open", IsOverdue = true, DueDate = new DateTime(2026, 10, 20) }),
-            v => { v["Tab"] = "action"; v["CanEdit"] = true; v["CanCreate"] = true; v["Employees"] = new List<EligibleAssigneeDto> { new() { EmployeeId = 4, Name = "A. Karimi" } }; });
-
-        AssertBuiltFromTheComponent(html, "Task", 1, keepsDataBadges: true);
-        Assert.Contains("Call vendor", html);
-        Assert.Contains("name=\"tab\"", html);
-        Assert.Contains("name=\"assignedToEmployeeId\"", html);   // the new-task form moved into the toolbar popover
-        Assert.Contains("name=\"taskItemId\" value=\"9\"", html);   // status change form kept
-        Assert.DoesNotContain("pagination-sm", html);
-    }
-
     // ---------- Equipment <-> functional location assignment ----------
 
-    [Fact]
-    public void EveryWave2Page_UsesTheComponentAndItsAssets()
-    {
-        var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.slnx"))) dir = dir.Parent;
-        Assert.NotNull(dir);
-        foreach (var page in Pages)
-        {
-            var view = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", page, "Index.cshtml"));
-            Assert.True(view.Contains("<pems-list-page texts="), page);
-            Assert.True(view.Contains("~/_content/PEMS.UI/pems-list.css"), page);
-            Assert.True(view.Contains("~/_content/PEMS.UI/pems-list.js"), page);
-            Assert.False(view.Contains("initColumnResize"), page);
-            Assert.False(view.Contains("_PageHeader"), page);           // the toolbar heading is the page title
-        }
-    }
 }

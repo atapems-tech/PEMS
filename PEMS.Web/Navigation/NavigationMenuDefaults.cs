@@ -62,19 +62,19 @@ public static class NavigationMenuDefaults
             "EngineeringDashboard,Projects,EngineeringDocuments,DocumentRegister,DocumentRevisions,DocumentWorkflow,VDR,Transmittal,MDB"),
         new("eng.dashboard", "sec.eng", L, 10, "EngineeringDashboard", "bi-speedometer2", Always, ExternalPath: "/p/engineering-dashboard"),   // SCRUM-688: a definition page (/p/...)
         new("eng.projects", "sec.eng", L, 20, "Projects", "bi-kanban", Always, ExternalPath: "/p/projects"),   // SCRUM-740: a definition page (/p/...), not a controller
-        Link("eng.documents", "sec.eng", 30, "EngineeringDocuments", "bi-file-earmark-text", "EngineeringDocuments"),
-        Link("eng.register", "sec.eng", 40, "DocumentRegister", "bi-journal-bookmark", "DocumentRegister"),
+        new("eng.documents", "sec.eng", L, 30, "EngineeringDocuments", "bi-file-earmark-text", Always, ExternalPath: "/p/eng-docs"),
+        new("eng.register", "sec.eng", L, 40, "DocumentRegister", "bi-journal-bookmark", Always, ExternalPath: "/p/document-register"),
         new("eng.revisions", "sec.eng", L, 50, "Document Revision", "bi-clock-history", Always, ExternalPath: "/p/document-revisions"),   // SCRUM-684: a definition page (/p/...)
         new("eng.docworkflow", "sec.eng", L, 60, "Document Workflow", "bi-diagram-2", Always, ExternalPath: "/p/document-workflow"),   // SCRUM-686: a definition page (/p/...)
-        Link("eng.vdr", "sec.eng", 70, "VDR", "bi-journal-check", "VDR"),
-        Link("eng.transmittal", "sec.eng", 80, "Transmittal", "bi-send", "Transmittal"),
-        Link("eng.mdb", "sec.eng", 90, "MDB", "bi-collection", "MDB"),
+        new("eng.vdr", "sec.eng", L, 70, "VDR", "bi-journal-check", Always, ExternalPath: "/p/vdr"),
+        new("eng.transmittal", "sec.eng", L, 80, "Transmittal", "bi-send", Always, ExternalPath: "/p/transmittals"),
+        new("eng.mdb", "sec.eng", L, 90, "MDB", "bi-collection", Always, ExternalPath: "/p/mdb"),
         new("eng.disciplines", "sec.eng", L, 130, "Disciplines", "bi-diagram-3", "Perm:DisciplineWorkspace.View", ExternalPath: "/p/discipline-workspaces"),   // SCRUM-682: a definition page (/p/...)
 
         // ---- هوش مصنوعی و دانش
         Section("sec.ai", 200, "AI & Knowledge", "bi-robot", "Module:AIIntelligence",
             "EngineeringDocumentIntelligence,KnowledgeBase,AISearch,ChatAssistant,AIInsights"),
-        Link("ai.docintel", "sec.ai", 10, "DocumentIntelligence", "bi-diagram-3-fill", "EngineeringDocumentIntelligence", rule: "Perm:EngineeringDocuments.View"),
+        new("ai.docintel", "sec.ai", L, 10, "DocumentIntelligence", "bi-diagram-3-fill", "Perm:EngineeringDocuments.View", ExternalPath: "/p/eng-intel"),
         new("ai.kb", "sec.ai", L, 20, "KnowledgeBaseSearch", "bi-stars", Always, ExternalPath: "/p/knowledge-base"),   // SCRUM-712: a definition page (/p/...), not a controller
         new("ai.search", "sec.ai", L, 30, "AI Search", "bi-search-heart", Always, ExternalPath: "/p/ai-search"),   // SCRUM-669: a definition page (/p/...)
         new("ai.chat", "sec.ai", L, 40, "Engineering Chat Assistant", "bi-chat-dots", Always, ExternalPath: "/p/chat-assistant"),   // SCRUM-672: a definition page (/p/...)
@@ -82,9 +82,9 @@ public static class NavigationMenuDefaults
 
         // ---- مکاتبات و کنترل مدارک
         Section("sec.correspondence", 300, "CorrespondenceDocControl", "bi-envelope-paper", "Module:CorrespondenceDocControl", "Letter,DCC,TechnicalQuery"),
-        Link("corr.letters", "sec.correspondence", 10, "Correspondence", "bi-envelope-paper", "Letter", isDefault: true),
-        Link("corr.referrals", "sec.correspondence", 20, "MyReferrals", "bi-person-check", "Letter", "MyReferrals"),
-        Link("corr.dcc", "sec.correspondence", 30, "DCC", "bi-building-gear", "DCC"),
+        new("corr.letters", "sec.correspondence", L, 10, "Correspondence", "bi-envelope-paper", Always, ExternalPath: "/p/letters"),
+        new("corr.referrals", "sec.correspondence", L, 20, "MyReferrals", "bi-person-check", Always, ExternalPath: "/p/letter-my-referrals"),
+        new("corr.dcc", "sec.correspondence", L, 30, "DCC", "bi-building-gear", Always, ExternalPath: "/p/dcc"),
         new("corr.tq", "sec.correspondence", L, 40, "TQ / TSR / RFI", "bi-question-circle", Always, ExternalPath: "/p/technical-queries"),   // SCRUM-758: a definition page (/p/...)
 
         // ---- کنترل کیفیت
@@ -125,7 +125,7 @@ public static class NavigationMenuDefaults
         // ---- کنترل پروژه
         Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,TaskManager,Tag,Report,Meeting"),
         new("proj.tasks", "sec.projctrl", L, 10, "Tasks", "bi-check2-square", "Perm:Task.View", ExternalPath: "/p/task-actions", ExtraActiveControllers: "Task", BadgeKey: NavigationBadges.TasksOpen),
-        Link("proj.taskmanager", "sec.projctrl", 15, "Nav_TaskManager", "bi-kanban", "TaskManager", rule: "Perm:Task.View"),
+        new("proj.taskmanager", "sec.projctrl", L, 15, "Nav_TaskManager", "bi-kanban", "Perm:Task.View", ExternalPath: "/p/task-manager"),
         new("proj.meetings", "sec.projctrl", L, 20, "Meetings", "bi-people", Always, ExternalPath: "/p/meetings"),   // SCRUM-728: a definition page (/p/...)
         new("proj.reports", "sec.projctrl", L, 30, "Reports", "bi-graph-up", Always, ExternalPath: "/p/report-correspondence"),   // SCRUM-747: a definition page (/p/...)
 
@@ -195,7 +195,7 @@ public static class NavigationMenuDefaults
         new("admin.intake", "admin.sub.ai", L, 10, "AIIntakeQueue", "bi-inboxes", "Module:Administration", ExternalPath: "/p/intake"),   // SCRUM-709: a definition page (/p/...)
         new("admin.ocr", "admin.sub.ai", L, 20, "OCR Processing", "bi-badge-ad", "Module:Administration&Perm:OCRProcessing.View", ExternalPath: "/p/ocr-processing"),   // SCRUM-732: a definition page (/p/...)
         new("admin.aiextraction", "admin.sub.ai", L, 30, "AI Extraction", "bi-cpu", "Module:Administration&Perm:AIExtraction.View", ExternalPath: "/p/ai-extraction"),   // SCRUM-667: a definition page (/p/...)
-        Link("admin.tables", "admin.sub.ai", 40, "Table Extraction", "bi-table", "TableExtraction", rule: "Module:Administration&Perm:TableExtraction.View"),
+        new("admin.tables", "admin.sub.ai", L, 40, "Table Extraction", "bi-table", "Module:Administration&Perm:TableExtraction.View", ExternalPath: "/p/table-extraction"),
         new("admin.relationship", "admin.sub.ai", L, 50, "RelationshipExplorer", "bi-diagram-3", "Module:Administration&Perm:Relationship.View", ExternalPath: "/p/relationship-explorer", ExtraActiveControllers: "Relationship"),   // SCRUM-745: a definition page
         // SCRUM-645: a definition page (/p/...), not a controller
         new("admin.routing", "admin.sub.ai", L, 60, "AI Routing Rules", "bi-signpost-split", "Module:Administration", ExternalPath: "/p/routing-rules"),

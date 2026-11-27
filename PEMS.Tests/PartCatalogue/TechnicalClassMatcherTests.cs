@@ -5,7 +5,6 @@ using PEMS.Application.PartCatalogue;
 using PEMS.Domain.Entities;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Warehouse.Controllers;
 
 namespace PEMS.Tests.PartCatalogue;
 

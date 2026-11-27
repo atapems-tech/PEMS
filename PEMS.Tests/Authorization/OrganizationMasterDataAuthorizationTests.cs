@@ -1,4 +1,3 @@
-using PEMS.Web.Areas.Warehouse.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

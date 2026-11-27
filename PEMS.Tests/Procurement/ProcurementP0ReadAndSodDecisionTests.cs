@@ -8,7 +8,6 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Warehouse.Controllers;
 using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Procurement;

@@ -130,13 +130,6 @@ public class LetterPhase3ViewTests
         return await RazorViewRenderer.RenderAsync(c, result, "~/Views/Letter/Dashboard.cshtml");
     }
 
-    [Fact]
-    public async Task Dashboard_ShowsTheRunRemindersButton_OnlyWhenAllowed()
-    {
-        Assert.Contains("Send overdue reminders now", await RenderDashboard(true));
-        Assert.DoesNotContain("Send overdue reminders now", await RenderDashboard(false));
-    }
-
     // ------------------------------------------------------------------ localization
 
     private static string RepoFile(string relative)

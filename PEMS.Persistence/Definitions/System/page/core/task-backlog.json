@@ -84,7 +84,11 @@
                 "key": "name",
                 "width": 240,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "_actions",
@@ -96,31 +100,55 @@
                   {
                     "key": "board",
                     "url": "/p/task-board?key={raw.key}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Board",
+                      "fa": "برد"
+                    }
                   },
                   {
                     "key": "filter",
                     "url": "/p/task-all-work?spaceKey={raw.key}&statusCategory=NotDone",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Filter",
+                      "fa": "فیلتر"
+                    }
                   },
                   {
                     "key": "create",
                     "url": "/f/tm-create-item?workSpaceId={raw.id}",
                     "method": "get",
-                    "showWhen": "row.canCreate == true"
+                    "showWhen": "row.canCreate == true",
+                    "label": {
+                      "en": "Create",
+                      "fa": "ایجاد"
+                    }
                   },
                   {
                     "key": "new-sprint",
                     "url": "/f/tm-create-sprint?workSpaceId={raw.id}&key={raw.key}",
                     "method": "get",
-                    "showWhen": "row.canManageSprints == true"
+                    "showWhen": "row.canManageSprints == true",
+                    "label": {
+                      "en": "New sprint",
+                      "fa": "اسپرینت جدید"
+                    }
                   },
                   {
                     "key": "spaces",
                     "url": "/p/task-manager",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Spaces",
+                      "fa": "فضاها"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -135,7 +163,11 @@
             "columns": [
               {
                 "key": "name",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "state",
@@ -164,7 +196,11 @@
                     "key": "start",
                     "url": "/f/tm-start-sprint?sprintId={id}&key={{params.key}}",
                     "method": "get",
-                    "showWhen": "row.canStart == true"
+                    "showWhen": "row.canStart == true",
+                    "label": {
+                      "en": "Start",
+                      "fa": "شروع"
+                    }
                   },
                   {
                     "key": "complete",
@@ -176,9 +212,17 @@
                     "key": "edit",
                     "url": "/f/tm-update-sprint?sprintId={id}&key={{params.key}}&name={raw.name}&goal={raw.goal}",
                     "method": "get",
-                    "showWhen": "row.canManage == true"
+                    "showWhen": "row.canManage == true",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -195,51 +239,95 @@
             "columns": [
               {
                 "key": "key",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "title",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "type",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "priority",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "assignee",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Assignee",
+                  "fa": "مسئول"
+                }
               },
               {
                 "key": "dueDate",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Due date",
+                  "fa": "مهلت"
+                }
               },
               {
                 "key": "overdue",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                }
               },
               {
                 "key": "points",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Points",
+                  "fa": "امتیاز"
+                }
               },
               {
                 "key": "sprint",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Sprint",
+                  "fa": "اسپرینت"
+                }
               },
               {
                 "key": "archived",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Archived",
+                  "fa": "بایگانی‌شده"
+                }
               },
               {
                 "key": "_actions",
@@ -251,27 +339,47 @@
                   {
                     "key": "open",
                     "url": "/Task/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   },
                   {
                     "key": "up",
                     "url": "/a/tm-rank-up",
                     "method": "post",
-                    "showWhen": "row.canRank == true"
+                    "showWhen": "row.canRank == true",
+                    "label": {
+                      "en": "Move up",
+                      "fa": "بالا"
+                    }
                   },
                   {
                     "key": "down",
                     "url": "/a/tm-rank-down",
                     "method": "post",
-                    "showWhen": "row.canRank == true"
+                    "showWhen": "row.canRank == true",
+                    "label": {
+                      "en": "Move down",
+                      "fa": "پایین"
+                    }
                   },
                   {
                     "key": "sprint",
                     "url": "/f/tm-set-sprint?id={id}&key={{params.key}}",
                     "method": "get",
-                    "showWhen": "row.canRank == true"
+                    "showWhen": "row.canRank == true",
+                    "label": {
+                      "en": "Sprint",
+                      "fa": "اسپرینت"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "bulkActions": [

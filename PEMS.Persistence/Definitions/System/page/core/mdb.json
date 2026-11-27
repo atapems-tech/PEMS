@@ -75,11 +75,19 @@
               {
                 "key": "equipment",
                 "width": 140,
-                "href": "/MDB/Details/{id}"
+                "href": "/MDB/Details/{id}",
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
               },
               {
                 "key": "vendor",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
               },
               {
                 "key": "po",
@@ -87,7 +95,11 @@
               },
               {
                 "key": "project",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
               },
               {
                 "key": "plannedIssue",
@@ -106,7 +118,11 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "hardCopy",
@@ -126,9 +142,17 @@
                   {
                     "key": "open",
                     "url": "/MDB/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

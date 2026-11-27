@@ -34,6 +34,47 @@ public class ReferralWebTests
         return dir ?? throw new InvalidOperationException("repo root not found; set PEMS_REPO_ROOT");
     }
 
+    private static async Task<string> RenderDetails(string status, List<ConversationMessageDto>? conversation, bool currentApprover = false)
+    {
+        var c = new LetterController(null!, null!, null!, null!, null!, null!, null!, null!, null!, null!, null!)
+        { ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() } };
+        c.ViewBag.Departments = new List<object>(); c.ViewBag.AllTags = new List<TagDto>();
+        c.ViewBag.Timeline = new List<LetterTimelineEventDto>(); c.ViewBag.Thread = new List<ThreadMessageDto>();
+        c.ViewBag.CanEditReturned = false; c.ViewBag.CanEditDraft = false; c.ViewBag.CanReview = false; c.ViewBag.IsCurrentApprover = currentApprover;
+        c.ViewBag.Conversation = conversation;
+        var model = new LetterDetailDto { Letter = new LetterDto { LetterId = 7, LetterNumber = "LTR-7", LetterType = "Internal", Subject = "Hello", Status = status, Priority = "Normal", ConfidentialityLevel = "Internal", LetterDate = new DateTime(2026, 3, 1) } };
+        var result = new ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(c.ViewData) { Model = model } };
+        return await RazorViewRenderer.RenderAsync(c, result, "~/Views/Letter/Details.cshtml");
+    }
+
+    private static List<ConversationMessageDto> Flow() => new()
+    {
+        new() { LetterId = 1, LetterNumber = "IN-1", Kind = "Original", SenderName = "ACME", Body = "<p>Please revise the datasheet.</p>", LetterDate = new DateTime(2026, 2, 27), RecipientsSummary = "Sara" },
+        new() { LetterId = 2, LetterNumber = "INT-2", Kind = "Referral", SenderName = "Sara", Body = "<p>Please check P-101</p>", LetterDate = new DateTime(2026, 2, 28), RecipientsSummary = "Joe", CcSummary = "Mina", AttachmentsCount = 1 },
+        new() { LetterId = 7, LetterNumber = "LTR-7", Kind = "Reply", SenderName = "Joe", Body = "<p>Done</p>", LetterDate = new DateTime(2026, 3, 1), IsCurrent = true }
+    };
+
+    // ------------------------------------------------------------------ designated approver authority
+    // SCRUM-716: the review steps are operations (the definitions run them); a refusal is an UnauthorizedAccessException (the 403 page)
+    private static (PEMS.Web.Services.LetterOperations Ops, PEMSDbContext Ctx) Operations(string name, int userId, bool allowAll = false)
+    {
+        var ctx = LetterTestWorld.NewContext("RefWeb_" + name);
+        var letters = new LetterService(ctx, sanitizer: null!, knowledgeBaseService: null!);
+        return (new PEMS.Web.Services.LetterOperations(ctx, letters, null!, null!, null!, new User { UserId = userId }, new FakePermissionService { AllowAll = allowAll }, null!), ctx);
+    }
+
+    private static Letter PendingLetter(PEMSDbContext ctx, params int[] approvers)
+    {
+        var l = new Letter { LetterId = 900, LetterType = "Internal", LetterNumber = "P-900", LetterDate = DateTime.Today, Subject = "s", Body = "<p>b</p>", Category = "Request", Status = "PendingApproval",
+            ApprovalRequired = true, RegisteredById = 101, IsActive = true, ConfidentialityLevel = "Internal", CreatedDate = DateTime.Now };
+        l.Recipients.Add(new LetterRecipient { RecipientType = "To", EmployeeId = 3 });
+        ctx.Letters.Add(l); ctx.SaveChanges();
+        var order = 1;
+        foreach (var a in approvers) ctx.LetterApprovalSteps.Add(new LetterApprovalStep { LetterId = l.LetterId, StepOrder = order++, ApproverUserId = a, Status = "Pending" });
+        ctx.SaveChanges();
+        return l;
+    }
+
     [Fact]
     public async Task TheCurrentChainApprover_CanApproveWithoutTheModulePermission_OthersCannot()
     {
@@ -106,15 +147,4 @@ public class ReferralWebTests
         Assert.DoesNotContain("pems-page-head", layout);
     }
 
-    // ------------------------------------------------------------------ the big frame with the fixed action bar
-    [Fact]
-    public void Cartable_FillsTheWindow_AndKeepsTheActionBarAtTheBottomAlways()
-    {
-        var css = Web("wwwroot", "css", "pems-cartable.css");
-        Assert.Contains(".ct-shell { height: calc(100dvh", css);
-        Assert.Matches(@"\.ct-shell \.lp-tablewrap \.lp-bulkbar \{ order: 3; position: static; display: flex;", css);   // always shown, never overlaying the header
-        Assert.Contains(".lp-tablewrap > form { display: contents; }", css);
-        var view = Web("Views", "Letter", "Index.cshtml");
-        Assert.Contains("data-empty=\"@Localizer[\"Ct_NoSelection\"]\"", view);
-    }
 }

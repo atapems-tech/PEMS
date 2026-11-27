@@ -110,7 +110,7 @@
   ],
   "sample": {
     "name": "FunctionalLocationId",
-    "url": "/FunctionalLocation/TreeNodes",
+    "url": "/x/functional-location-tree-nodes",
     "value": "2",
     "selectedText": "U100-CW - Cooling water",
     "placeholder": "Select a location",

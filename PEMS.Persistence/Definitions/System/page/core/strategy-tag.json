@@ -130,9 +130,17 @@
                   {
                     "key": "open",
                     "url": "/MaintenanceStrategy/Details/{raw.maintenanceStrategyId}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -151,7 +159,11 @@
               },
               {
                 "key": "title",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "strategyVersion",
@@ -176,15 +188,27 @@
             "columns": [
               {
                 "key": "workOrderNumber",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Work order number",
+                  "fa": "شماره دستور کار"
+                }
               },
               {
                 "key": "status",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "priority",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "_actions",
@@ -196,9 +220,17 @@
                   {
                     "key": "open",
                     "url": "/WorkOrder/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

@@ -178,7 +178,11 @@
               },
               {
                 "key": "name",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "class",

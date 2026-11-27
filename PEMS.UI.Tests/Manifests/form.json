@@ -129,7 +129,8 @@
                     "switch",
                     "tags",
                     "checkboxMatrix",
-                    "dateTime"
+                    "dateTime",
+                    "multiSelect"
                   ]
                 },
                 "required": {
@@ -406,6 +407,69 @@
                     "null"
                   ]
                 },
+                "searchSource": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "default": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "step": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "hidden": {
+                  "type": "boolean"
+                },
+                "dependsOn": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "dependsSource": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "dependsArg": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "uploadUrl": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "multiple": {
+                  "type": "boolean"
+                },
+                "accept": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "optionsArgs": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
                 "span": {
                   "type": [
                     "string",
@@ -459,6 +523,71 @@
           },
           "warnOnLeave": {
             "type": "boolean"
+          },
+          "load": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "model": {
+                "type": "string"
+              },
+              "action": {
+                "type": "string"
+              },
+              "args": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "model",
+              "action"
+            ],
+            "additionalProperties": false
+          },
+          "submitActions": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "label": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "minProperties": 1,
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "actionKey": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "label",
+                "actionKey"
+              ],
+              "additionalProperties": false
+            }
           }
         },
         "required": [

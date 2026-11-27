@@ -54,57 +54,101 @@
               {
                 "key": "totalActive",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Total active",
+                  "fa": "کل فعال"
+                }
               },
               {
                 "key": "openLetters",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open letters",
+                  "fa": "نامه‌های باز"
+                }
               },
               {
                 "key": "received30",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Received in 30 days",
+                  "fa": "دریافتی ۳۰ روز"
+                }
               },
               {
                 "key": "issued30",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Issued in 30 days",
+                  "fa": "صادرشده در ۳۰ روز"
+                }
               },
               {
                 "key": "openReferrals",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open referrals",
+                  "fa": "ارجاع‌های باز"
+                }
               },
               {
                 "key": "overdueReferrals",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Overdue referrals",
+                  "fa": "ارجاع‌های عقب‌افتاده"
+                }
               },
               {
                 "key": "overdueResponses",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Overdue responses",
+                  "fa": "پاسخ‌های عقب‌افتاده"
+                }
               },
               {
                 "key": "awaitingApproval",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Awaiting approval",
+                  "fa": "در انتظار تأیید"
+                }
               },
               {
                 "key": "myDrafts",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "My drafts",
+                  "fa": "پیش‌نویس‌های من"
+                }
               },
               {
                 "key": "myReturned",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "My returned",
+                  "fa": "برگشتی‌های من"
+                }
               },
               {
                 "key": "myOpenReferrals",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "My open referrals",
+                  "fa": "ارجاع‌های باز من"
+                }
               }
             ]
           }
@@ -136,7 +180,11 @@
             "columns": [
               {
                 "key": "key",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "count",
@@ -173,7 +221,11 @@
             "columns": [
               {
                 "key": "key",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "count",
@@ -210,7 +262,11 @@
             "columns": [
               {
                 "key": "key",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "count",

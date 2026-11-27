@@ -86,16 +86,6 @@ public class TreeViewComponentTests
             Assert.Contains("_content/PEMS.UI/pems-tree.js", File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", layout)));
     }
 
-    [Fact]
-    public void WaveT1_TheTwoTreesUseTheComponent()
-    {
-        var letter = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Letter", "Index.cshtml"));
-        Assert.Contains("remember-key=\"pems.cartable.tagsCollapsed\"", letter);   // the same key: what a user collapsed stays collapsed
-        Assert.DoesNotContain("role=\"treeitem\"", letter);
-        var cartable = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "wwwroot", "js", "pems-cartable.js"));
-        Assert.DoesNotContain("data-tag-toggle", cartable);
-    }
-
     // ---- T2: the help node tree
     [Fact]
     public async Task WaveT2_HelpTree_IsARealNestedTree_WithEdgeLabels()

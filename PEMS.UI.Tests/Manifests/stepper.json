@@ -46,7 +46,8 @@
               "enum": [
                 "done",
                 "current",
-                "upcoming"
+                "upcoming",
+                "rejected"
               ]
             }
           },

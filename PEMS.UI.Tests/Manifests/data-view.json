@@ -218,6 +218,20 @@
               }
             ]
           },
+          "invalidMove": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
           "moreItems": {
             "oneOf": [
               {
@@ -307,6 +321,24 @@
             "label"
           ],
           "additionalProperties": false
+        }
+      },
+      "groupsUrl": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "allowedField": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "moveFields": {
+        "type": "array",
+        "items": {
+          "type": "string"
         }
       },
       "calendar": {

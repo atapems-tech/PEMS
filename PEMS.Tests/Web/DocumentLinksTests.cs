@@ -39,15 +39,6 @@ public class DocumentLinksTests
         Assert.False((await shell.OpenDocumentAsync(999)).Success);
     }
 
-    [Theory]
-    [InlineData("Letter")]
-    public void RelatedDocumentLinks_GoThroughOpen(string folder)
-    {
-        var view = Read("PEMS.Web", "Views", folder, "Details.cshtml");
-        Assert.Contains("asp-controller=\"DocumentRegister\" asp-action=\"Open\" asp-route-id=\"@", view);
-        Assert.DoesNotMatch(@"asp-controller=""EngineeringDocuments"" asp-action=""Details"" asp-route-id=""@[\w.]*RelatedDocumentId""", view);
-    }
-
     private static string Read(params string[] parts)
     {
         var dir = new DirectoryInfo(AppContext.BaseDirectory);

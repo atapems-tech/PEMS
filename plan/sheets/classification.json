@@ -196,8 +196,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.HomeController",
-      "status": "converted",
-      "reason": "only the entry redirect to /p/home is left; the status and error pages are the public page status-page with the status-panel component (SCRUM-841)"
+      "status": "host",
+      "reason": "the entry address / forwards to the definition page /p/home (one action); the status and error pages are the public page status-page"
     },
     {
       "kind": "controller",

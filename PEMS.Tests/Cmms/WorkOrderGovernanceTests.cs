@@ -724,25 +724,6 @@ public class WorkOrderConversionAndDynamicProofTests : WorkOrderGovernanceTestBa
         Assert.Equal("Preparation / Assignment", (await Svc.GetWorkflowViewAsync(old, Planner))!.CurrentStageName);
     }
 
-    [Fact]
-    public void Work_order_ui_and_controller_contain_no_hard_coded_new_workflow_stage_names()
-    {
-        string? root = null;
-        for (var d = new DirectoryInfo(AppContext.BaseDirectory); d != null; d = d.Parent)
-            if (File.Exists(Path.Combine(d.FullName, "PEMS.Web", "Views", "WorkOrder", "Details.cshtml"))) { root = d.FullName; break; }
-        Assert.NotNull(root);
-        var view = File.ReadAllText(Path.Combine(root!, "PEMS.Web", "Views", "WorkOrder", "Details.cshtml"));
-        var ctrl = File.ReadAllText(Path.Combine(root!, "PEMS.Web", "Controllers", "WorkOrderController.cs"));
-        var svc = File.ReadAllText(Path.Combine(root!, "PEMS.Persistence", "Servises", "WorkOrderLifecycleService.cs"));
-        foreach (var name in new[] { "Reliability Review", "Maintenance Planning", "Operations Issue", "Originating-Discipline Verification", "Preparation / Assignment", "Final Approval" })
-        {
-            Assert.DoesNotContain(name, view);
-            Assert.DoesNotContain("\"" + name + "\"", ctrl);
-            Assert.DoesNotContain("\"" + name + "\"", svc);
-        }
-        Assert.Contains("wf.Stages", view);
-        Assert.Contains("actions", view);
-    }
 }
 
 internal static class WorkOrderTestExtensions

@@ -31,24 +31,40 @@
                 "key": "open",
                 "width": 110,
                 "type": "number",
-                "href": "/p/work-orders-mine?status=Open"
+                "href": "/p/work-orders-mine?status=Open",
+                "header": {
+                  "en": "Open",
+                  "fa": "باز"
+                }
               },
               {
                 "key": "inProgress",
                 "width": 130,
                 "type": "number",
-                "href": "/p/work-orders-mine?status=InProgress"
+                "href": "/p/work-orders-mine?status=InProgress",
+                "header": {
+                  "en": "In progress",
+                  "fa": "در حال انجام"
+                }
               },
               {
                 "key": "completed",
                 "width": 130,
                 "type": "number",
-                "href": "/p/work-orders-mine?status=Completed"
+                "href": "/p/work-orders-mine?status=Completed",
+                "header": {
+                  "en": "Completed",
+                  "fa": "تکمیل‌شده"
+                }
               },
               {
                 "key": "criticalOpen",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Critical open",
+                  "fa": "بحرانی باز"
+                }
               }
             ]
           }
@@ -89,7 +105,11 @@
             "columns": [
               {
                 "key": "workOrderNumber",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Work order number",
+                  "fa": "شماره دستور کار"
+                }
               },
               {
                 "key": "equipmentTag",
@@ -97,15 +117,27 @@
               },
               {
                 "key": "workOrderType",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Work order type",
+                  "fa": "نوع دستور کار"
+                }
               },
               {
                 "key": "priority",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "team",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Team",
+                  "fa": "تیم"
+                }
               },
               {
                 "key": "employee",
@@ -117,7 +149,11 @@
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "createdDate",
@@ -134,9 +170,17 @@
                   {
                     "key": "open",
                     "url": "/WorkOrder/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "newUrl": "/f/work-order-create",

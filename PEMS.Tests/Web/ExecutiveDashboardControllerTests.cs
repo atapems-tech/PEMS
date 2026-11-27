@@ -13,6 +13,7 @@ using PEMS.Tests.TestSupport;
 using PEMS.Web.Controllers;
 using PEMS.Web.Navigation;
 using PEMS.Web.Resources;
+using PEMS.Web.Services;
 
 namespace PEMS.Tests.Web;
 

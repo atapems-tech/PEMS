@@ -307,23 +307,43 @@
             "columns": [
               {
                 "key": "workOrderNumber",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Work order number",
+                  "fa": "شماره دستور کار"
+                }
               },
               {
                 "key": "equipment",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
               },
               {
                 "key": "priority",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "workOrderType",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Work order type",
+                  "fa": "نوع دستور کار"
+                }
               },
               {
                 "key": "team",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Team",
+                  "fa": "تیم"
+                }
               },
               {
                 "key": "_actions",
@@ -335,9 +355,17 @@
                   {
                     "key": "open",
                     "url": "/p/work-order-details?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

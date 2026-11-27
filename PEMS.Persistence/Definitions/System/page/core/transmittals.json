@@ -70,7 +70,11 @@
               },
               {
                 "key": "project",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
               },
               {
                 "key": "from",
@@ -91,7 +95,11 @@
               },
               {
                 "key": "status",
-                "width": 170
+                "width": 170,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "responseOverdue",
@@ -113,9 +121,17 @@
                   {
                     "key": "open",
                     "url": "/Transmittal/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

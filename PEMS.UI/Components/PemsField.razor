@@ -17,8 +17,9 @@
 @if (Descriptor.Hidden)
 {
     <input type="hidden" name="@Descriptor.Name" value="@Value" />
-    return;
 }
+else
+{
 <div class="pems-field">
     @if (Descriptor.Kind is FieldKind.Checkbox or FieldKind.Switch)
     {
@@ -155,6 +156,7 @@
         <div class="pems-field__error" id="@state.ErrorId" role="alert">@error</div>
     }
 </div>
+}
 @code {
     [Parameter, EditorRequired] public FieldDescriptor Descriptor { get; set; } = default!;
     /// <summary>The value as an HTML input needs it (data, never translated; dates as yyyy-MM-dd).</summary>

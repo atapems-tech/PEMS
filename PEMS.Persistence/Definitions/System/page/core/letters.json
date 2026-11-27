@@ -159,53 +159,93 @@
                 "key": "inbox",
                 "width": 90,
                 "type": "number",
-                "href": "/p/letters?folder=Inbox"
+                "href": "/p/letters?folder=Inbox",
+                "header": {
+                  "en": "Inbox",
+                  "fa": "دریافتی"
+                }
               },
               {
                 "key": "inboxUnread",
                 "width": 110,
                 "type": "number",
-                "href": "/p/letters?folder=Inbox&unread=true"
+                "href": "/p/letters?folder=Inbox&unread=true",
+                "header": {
+                  "en": "Unread in the inbox",
+                  "fa": "خوانده‌نشده‌ی دریافتی"
+                }
               },
               {
                 "key": "shared",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Shared",
+                  "fa": "اشتراکی"
+                }
               },
               {
                 "key": "sent",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Sent",
+                  "fa": "ارسال‌شده"
+                }
               },
               {
                 "key": "drafts",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Drafts",
+                  "fa": "پیش‌نویس‌ها"
+                }
               },
               {
                 "key": "starred",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Starred",
+                  "fa": "ستاره‌دار"
+                }
               },
               {
                 "key": "archive",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Archive",
+                  "fa": "بایگانی"
+                }
               },
               {
                 "key": "trash",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Trash",
+                  "fa": "سطل زباله"
+                }
               },
               {
                 "key": "all",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "All",
+                  "fa": "همه"
+                }
               },
               {
                 "key": "delegated",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Delegated",
+                  "fa": "واگذارشده"
+                }
               }
             ]
           }
@@ -498,7 +538,11 @@
               },
               {
                 "key": "type",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "senderReceiver",
@@ -506,21 +550,37 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "priority",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "starred",
                 "width": 70,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Starred",
+                  "fa": "ستاره‌دار"
+                }
               },
               {
                 "key": "unread",
                 "width": 70,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Unread",
+                  "fa": "خوانده‌نشده"
+                }
               },
               {
                 "key": "responseDue",
@@ -539,7 +599,11 @@
               },
               {
                 "key": "discipline",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "attachments",
@@ -561,14 +625,22 @@
                   {
                     "key": "open",
                     "url": "/Letter/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   },
                   {
                     "key": "star",
                     "url": "/a/letter-toggle-star",
                     "method": "post"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

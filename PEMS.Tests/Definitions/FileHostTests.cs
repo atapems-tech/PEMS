@@ -19,14 +19,14 @@ public class FileHostTests
         public Task<object> ResolveJsonAsync(string code) => Task.FromResult<object>(new { success = true, code });
         public Task<BarcodeFileResult> SvgAsync(int id) => Task.FromResult(new BarcodeFileResult(true, null, [1, 2, 3], "x.svg", "image/svg+xml"));
         public Task<BarcodeFileResult> PngAsync(int id) => throw new NotSupportedException();
-        public Task<BarcodeFileResult> LabelPdfAsync(int id) => throw new NotSupportedException();
-        public Task<BarcodeFileResult> LabelSheetAsync(string targetType, string ids) => throw new NotSupportedException();
+        public Task<List<BarcodeLabelRow>> LabelPdfAsync(int id) => throw new NotSupportedException();
+        public Task<List<BarcodeLabelRow>> LabelSheetAsync(string targetType, string ids) => throw new NotSupportedException();
         public Task<List<BarcodeCandidateRow>> CandidatesAsync(int? d = null, string? e = null, string? s = null) => throw new NotSupportedException();
         public Task<List<ReportChoiceRow>> DisciplinesAsync() => throw new NotSupportedException();
         public Task<List<ReportChoiceRow>> EquipmentTypesAsync() => throw new NotSupportedException();
         public Task<(bool Success, string? Error)> GenerateAsync(string targetType, int targetId, string symbology, int? employeeId) => throw new NotSupportedException();
-        public Task<BarcodeFileResult> PrintAsync(int id) => throw new NotSupportedException();
-        public Task<BarcodeFileResult> BulkGenerateAsync(string equipmentIds, string symbology, int? employeeId) => throw new NotSupportedException();
+        public Task<BarcodeCommandResult> PrintAsync(int id) => throw new NotSupportedException();
+        public Task<BarcodeCommandResult> BulkGenerateAsync(string equipmentIds, string symbology, int? employeeId) => throw new NotSupportedException();
         public Task<(bool Success, string? Error)> DisableAsync(int id, string? reason, int? employeeId) => throw new NotSupportedException();
         public Task<(bool Success, string? Error)> RevokeAsync(int id, string? reason, int? employeeId) => throw new NotSupportedException();
         public Task<(bool Success, string? Error)> ReplaceAsync(int id, string symbology, int? employeeId) => throw new NotSupportedException();

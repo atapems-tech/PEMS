@@ -7,7 +7,6 @@ using PEMS.Domain.Entities;
 using PEMS.Persistence.Context;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Warehouse.Controllers;
 using PEMS.Web.Areas.Warehouse.Models;
 using PEMS.Web.Helpers;
 using PEMS.Web.Resources;

@@ -55,65 +55,6 @@ public class LetterPhase2ViewTests
         return await RazorViewRenderer.RenderAsync(c, Result(c, model), "~/Views/Letter/Dashboard.cshtml");
     }
 
-    [Fact]
-    public async Task Dashboard_ShowsRealNumbersAsText_WithWarningsAsIconPlusText()
-    {
-        var html = await RenderDashboard(Dash(), canReview: true);
-
-        foreach (var label in new[] { "Active letters", "Open letters", "Awaiting approval", "My drafts", "Returned to me", "My open referrals",
-                     "Open referrals", "Overdue referrals", "Overdue responses", "Received (30d)", "Issued (30d)" })
-            Assert.Contains(label, html);
-        Assert.Contains("<strong class=\"vs-tile__value\">10</strong>", html);
-        Assert.Contains("<strong class=\"vs-tile__value\">3</strong>", html);
-
-        // the warning marker is text + icon, not colour alone
-        Assert.Contains("Needs action", html);
-        Assert.Contains("bi-exclamation-triangle", html);
-        Assert.DoesNotContain("<h1", html);
-    }
-
-    [Fact]
-    public async Task Dashboard_AwaitingApprovalTile_IsHiddenForNonReviewers()
-    {
-        Assert.Contains("Awaiting approval", await RenderDashboard(Dash(), canReview: true));
-        Assert.DoesNotContain("Awaiting approval", await RenderDashboard(Dash(), canReview: false));
-    }
-
-    [Fact]
-    public async Task Dashboard_NoWarningBadges_WhenNothingIsOverdue()
-    {
-        var model = Dash();
-        model.OverdueReferrals = 0; model.OverdueResponses = 0; model.MyReturnedForRevision = 0; model.NeedsAttention.Clear();
-
-        var html = await RenderDashboard(model, true);
-
-        Assert.DoesNotContain("Needs action", html);
-        Assert.Contains("No overdue referrals or responses.", html);
-    }
-
-    [Fact]
-    public async Task Dashboard_NeedsAttentionTable_NamesTheReasonAndTheDays()
-    {
-        var html = await RenderDashboard(Dash(), true);
-
-        Assert.Contains("Late reply", html);
-        Assert.Contains("Overdue response", html);
-        Assert.Contains("Overdue referral", html);
-        Assert.Contains("2026-03-01", html);
-        Assert.Matches(new Regex(@"pems-due-overdue[^>]*>.*?9", RegexOptions.Singleline), html);
-    }
-
-    [Fact]
-    public async Task Dashboard_Bars_AreLabelledForAssistiveTechnology_AndCarryTheNumbers()
-    {
-        var html = await RenderDashboard(Dash(), true);
-
-        Assert.Contains("role=\"progressbar\" aria-valuenow=\"20\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-label=\"0-7 days: 2 (20%)\"", html);
-        Assert.Contains("role=\"progressbar\" aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-label=\"Registered: 6 (60%)\"", html);
-        Assert.Contains("Over 90 days", html);
-        Assert.Contains("Urgent", html);
-    }
-
     // ------------------------------------------------------------------ create form
 
     private static string RepoFile(string relative)
@@ -139,14 +80,4 @@ public class LetterPhase2ViewTests
             Assert.Equal("Correspondence.Approve", catalog.Get("LetterTemplatePage", op)!.Permission);
     }
 
-    [Fact]
-    public void ControllerPageTitles_AreTranslated_AndLifecycleBulkStillExcludesApprove()
-    {
-        var fa = XDocument.Load(RepoFile("PEMS.Web/Resources/SharedResource.fa.resx")).Descendants("data").Select(d => (string?)d.Attribute("name")).ToHashSet();
-        foreach (var title in new[] { "Correspondence Dashboard", "Letter Templates", "Letter Template" })
-            Assert.Contains(title, fa);
-
-        var source = File.ReadAllText(RepoFile("PEMS.Web/Controllers/LetterController.cs"));
-        Assert.Contains("ViewData[\"Title\"] = \"Correspondence Dashboard\";", source);
-    }
 }

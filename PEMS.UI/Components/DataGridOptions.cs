@@ -18,6 +18,8 @@ public sealed record GridColumn
     public string? Pinned { get; init; }
     /// <summary>start, center or end; empty: numbers end, the rest start.</summary>
     public string? Align { get; init; }
+    /// <summary>SCRUM-835: a column with href shows its value as a link; {value} and {id} are replaced (a count that opens the filtered list).</summary>
+    public string? Href { get; init; }
     /// <summary>For a column of type <c>actions</c>: the buttons of every row.</summary>
     public IReadOnlyList<GridRowAction> Actions { get; init; } = [];
 }

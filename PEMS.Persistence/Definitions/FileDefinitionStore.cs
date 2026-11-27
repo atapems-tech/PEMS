@@ -41,7 +41,7 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
         _folder = string.IsNullOrWhiteSpace(options.Folder) ? Path.Combine(AppContext.BaseDirectory, "definitions") : Path.GetFullPath(options.Folder);
         Reload();
         if (_snapshot.Problems.Count > 0 && options.FailOnInvalid)
-            throw new InvalidOperationException("Invalid definition files in " + _folder + ": " + string.Join("; ", _snapshot.Problems.Take(10).Select(p => $"{p.File}{p.Pointer}: {p.Message}")));
+            throw new InvalidOperationException("Invalid definition files in " + _folder + ": " + string.Join("; ", _snapshot.Problems.Take(500).Select(p => $"{p.File}{p.Pointer}: {p.Message}")));
         if (options.Watch && Directory.Exists(_folder)) StartWatching();
     }
 
@@ -133,7 +133,7 @@ public sealed class FileDefinitionStore : IDefinitionStore, IDefinitionFiles, ID
         {
             case JsonObject o:
                 // the arguments of an operation (name to source, for example { "id": "field:id" }) are not a translatable text even when a name looks like a language code
-                if (o.Count > 0 && !pointer.EndsWith("/args", StringComparison.Ordinal) && !pointer.EndsWith("/options", StringComparison.Ordinal) && o.All(p => LanguageKey.IsMatch(p.Key) && p.Value is JsonValue))
+                if (o.Count > 0 && !pointer.EndsWith("/args", StringComparison.Ordinal) && !pointer.EndsWith("/optionsArgs", StringComparison.Ordinal) && !pointer.EndsWith("/options", StringComparison.Ordinal) && o.All(p => LanguageKey.IsMatch(p.Key) && p.Value is JsonValue))
                 {
                     foreach (var lang in Languages)
                         if (!(o[lang] is JsonValue v && v.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)v)))

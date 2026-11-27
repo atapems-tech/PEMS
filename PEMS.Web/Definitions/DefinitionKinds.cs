@@ -182,9 +182,18 @@ public sealed class PageDefinitionKind : IDefinitionKind
                             {
                                 if (bnode is not JsonObject mx) { errors.Add(new(at + "/bindings/matrix", "wrong-type", "Def_Err_Type", "matrix is an object (source, rowField, columnField, valueField).")); continue; }
                                 var msrc = mx["source"] is JsonValue ms && ms.GetValueKind() == JsonValueKind.String ? (string?)ms : null;
-                                if (msrc is null || !System.Text.RegularExpressions.Regex.IsMatch(msrc, "^/d/[a-z0-9][a-z0-9._-]*$")) errors.Add(new(at + "/bindings/matrix/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                                if (msrc is null || !System.Text.RegularExpressions.Regex.IsMatch(msrc, "^/d/[a-z0-9][a-z0-9._-]*([?].*)?$")) errors.Add(new(at + "/bindings/matrix/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
                                 foreach (var need in new[] { "rowField", "columnField", "valueField" })
                                     if (!(mx[need] is JsonValue nv && nv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)nv))) errors.Add(new(at + "/bindings/matrix/" + need, "required", "Def_Err_Required", need + " names a row property."));
+                                continue;
+                            }
+                            if (bname == "steps")
+                            {
+                                if (bnode is not JsonObject st) { errors.Add(new(at + "/bindings/steps", "wrong-type", "Def_Err_Type", "steps is an object (source, labelField, stateField).")); continue; }
+                                var ssrc = st["source"] is JsonValue ss && ss.GetValueKind() == JsonValueKind.String ? (string?)ss : null;
+                                if (ssrc is null || !System.Text.RegularExpressions.Regex.IsMatch(ssrc, "^/d/[a-z0-9][a-z0-9._-]*([?].*)?$")) errors.Add(new(at + "/bindings/steps/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
+                                foreach (var need in new[] { "labelField", "stateField" })
+                                    if (!(st[need] is JsonValue nv && nv.GetValueKind() == JsonValueKind.String && !string.IsNullOrWhiteSpace((string?)nv))) errors.Add(new(at + "/bindings/steps/" + need, "required", "Def_Err_Required", need + " names a row property."));
                                 continue;
                             }
                             if (bname == "filterOptions")
@@ -210,7 +219,7 @@ public sealed class PageDefinitionKind : IDefinitionKind
                                 if (ch["series"] is not JsonArray sa || sa.Count == 0 || sa.Any(x => !(x is JsonObject xo && xo["field"] is JsonValue xf && xf.GetValueKind() == JsonValueKind.String))) errors.Add(new(at + "/bindings/chart/series", "required", "Def_Err_Required", "series is a list of { field, name, color }."));
                                 continue;
                             }
-                            if (bname != "record") { errors.Add(new(at + "/bindings/" + bname, "unknown-property", "Def_Err_UnknownProperty", $"'{bname}' is not a binding (record, chart)." )); continue; }
+                            if (bname != "record") { errors.Add(new(at + "/bindings/" + bname, "unknown-property", "Def_Err_UnknownProperty", $"'{bname}' is not a binding (record, chart, matrix, steps, filterOptions)." )); continue; }
                             if (bnode is not JsonObject rec) { errors.Add(new(at + "/bindings/record", "wrong-type", "Def_Err_Type", "record is an object (source, idField, id).")); continue; }
                             var src = rec["source"] is JsonValue sv && sv.GetValueKind() == JsonValueKind.String ? (string?)sv : null;
                             if (src is null || !System.Text.RegularExpressions.Regex.IsMatch(src, "^/d/[a-z0-9][a-z0-9._-]*([?].*)?$")) errors.Add(new(at + "/bindings/record/source", "invalid", "Def_Err_Binding", "source is /d/{key} of a grid data source."));
@@ -224,7 +233,8 @@ public sealed class PageDefinitionKind : IDefinitionKind
 
                 var options = inst["options"] ?? new JsonObject();
                 if (options is not JsonObject) { errors.Add(new(at + "/options", "wrong-type", "Def_Err_Type", "The options are an object.")); continue; }
-                foreach (var e in _catalog.Validate(component, options.ToJsonString()).Errors)
+                var supplied = new List<string>(); if (inst["bindings"] is JsonObject bnds) { if (bnds.ContainsKey("steps")) supplied.Add("steps"); if (bnds.ContainsKey("matrix")) { supplied.Add("rows"); supplied.Add("columns"); } }
+                foreach (var e in _catalog.Validate(component, options.ToJsonString(), supplied).Errors)
                     errors.Add(new(at + "/options" + e.Pointer, e.Code, e.MessageKey, e.Message));
             }
         }

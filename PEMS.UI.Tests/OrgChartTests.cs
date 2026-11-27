@@ -32,7 +32,7 @@ public sealed class OrgChartTests
     public void The_summary_the_vacancy_filter_and_the_legend_are_there()
     {
         var html = Render();
-        Assert.Matches(new Regex("id=\"orgChartSummary\"[^>]*\bhidden\b"), html);
+        Assert.Matches(new Regex(@"<div[^>]*id=""orgChartSummary""[^>]*hidden"), html);   // hidden until a tree is loaded
         foreach (var id in new[] { "orgChartStatTotal", "orgChartStatFilled", "orgChartStatVacant", "orgChartStatOccupancy", "orgChartFilterFilled", "orgChartFilterVacant", "orgChartProgressFilled", "orgChartProgressVacant" })
             Assert.Contains($"id=\"{id}\"", html);
         Assert.Equal(3, Regex.Matches(html, "data-filter=\"(all|filled|vacant)\"").Count);
@@ -46,7 +46,7 @@ public sealed class OrgChartTests
         var html = Render();
         foreach (var id in new[] { "orgChartDisciplineSearch", "orgChartDisciplineFilter", "orgChartLoading", "orgChartError", "orgChartEmpty", "orgChartViewport", "orgChartCanvas", "orgChartExpandAll", "orgChartCollapseAll", "orgChartZoomIn", "orgChartZoomOut", "orgChartFit", "orgChartRetry" })
             Assert.Contains($"id=\"{id}\"", html);
-        Assert.Equal(1, Regex.Matches(html, "<option value=\"\">").Count);   // the choices come from the address, only "all" is written
+        Assert.Equal(1, Regex.Matches(html, @"<option").Count);   // the choices come from the address, only "all" is written
     }
 
     [Fact]

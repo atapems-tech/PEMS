@@ -123,7 +123,11 @@
             "columns": [
               {
                 "key": "stage",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                }
               },
               {
                 "key": "current",
@@ -143,7 +147,11 @@
                     "method": "get",
                     "showWhen": "row.current == false"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -179,15 +187,27 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "discipline",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "vendor",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
               },
               {
                 "key": "mr",
@@ -195,7 +215,11 @@
               },
               {
                 "key": "revision",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "purpose",
@@ -203,7 +227,11 @@
               },
               {
                 "key": "type",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "_actions",
@@ -216,16 +244,28 @@
                     "key": "approve",
                     "url": "/f/eng-intel-approve-classification?documentId={{params.id}}&classificationId={id}&applyDiscipline=true&applyVendor={raw.hasVendor}&applyMR={raw.hasMr}&applyRevision={raw.hasRevision}&applyIssuePurpose={raw.hasPurpose}",
                     "method": "get",
-                    "showWhen": "row.canReview == true"
+                    "showWhen": "row.canReview == true",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    }
                   },
                   {
                     "key": "reject",
                     "url": "/f/eng-intel-reject-classification?documentId={{params.id}}&classificationId={id}",
                     "method": "get",
                     "showWhen": "row.canReview == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -265,7 +305,11 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "confidence",
@@ -282,16 +326,28 @@
                     "key": "approve",
                     "url": "/f/eng-intel-approve-tag-link?documentId={{params.id}}&tagLinkId={id}",
                     "method": "get",
-                    "showWhen": "row.canReview == true"
+                    "showWhen": "row.canReview == true",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    }
                   },
                   {
                     "key": "reject",
                     "url": "/f/eng-intel-reject-tag-link?documentId={{params.id}}&tagLinkId={id}",
                     "method": "get",
                     "showWhen": "row.canReview == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -336,7 +392,11 @@
               },
               {
                 "key": "status",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "response",
@@ -352,7 +412,11 @@
                   {
                     "key": "status",
                     "url": "/f/eng-intel-comment-action?documentId={{params.id}}&commentId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Status",
+                      "fa": "وضعیت"
+                    }
                   },
                   {
                     "key": "respond",
@@ -360,7 +424,11 @@
                     "method": "get",
                     "showWhen": "row.canRespond == true"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

@@ -135,27 +135,47 @@
               {
                 "key": "total",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Total",
+                  "fa": "جمع"
+                }
               },
               {
                 "key": "overdue",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                }
               },
               {
                 "key": "slaOverdue",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "SLA overdue",
+                  "fa": "عقب‌افتاده از SLA"
+                }
               },
               {
                 "key": "onTimePercent",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "On time %",
+                  "fa": "درصد به‌موقع"
+                }
               },
               {
                 "key": "vendorsAtRisk",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Vendors at risk",
+                  "fa": "فروشندگان در معرض خطر"
+                }
               }
             ]
           }
@@ -205,7 +225,11 @@
               {
                 "key": "documentNumber",
                 "width": 170,
-                "href": "/p/vdr-details?id={id}"
+                "href": "/p/vdr-details?id={id}",
+                "header": {
+                  "en": "Document number",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "description",
@@ -213,24 +237,44 @@
               },
               {
                 "key": "type",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "vendor",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
               },
               {
                 "key": "project",
-                "width": 170
+                "width": 170,
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
               },
               {
                 "key": "discipline",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "revision",
                 "width": 70,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "latestCategory",
@@ -238,12 +282,20 @@
               },
               {
                 "key": "status",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "overdue",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                }
               },
               {
                 "key": "_actions",
@@ -255,9 +307,17 @@
                   {
                     "key": "open",
                     "url": "/p/vdr-details?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

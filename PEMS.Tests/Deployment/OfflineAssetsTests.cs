@@ -80,27 +80,6 @@ public sealed class OfflineAssetsTests
     }
 
     [Fact]
-    public void Pdf_viewers_use_the_vendored_pdfjs_loader()
-    {
-        var root = Root();
-        var lib = Path.Combine(root, "PEMS.Web", "wwwroot", "lib", "pdfjs");
-        foreach (var file in new[] { "pdf.min.mjs", "pdf.worker.min.mjs", "LICENSE" })
-            Assert.True(File.Exists(Path.Combine(lib, file)), file + " is missing under wwwroot/lib/pdfjs");
-
-        var loader = File.ReadAllText(Path.Combine(root, "PEMS.Web", "wwwroot", "js", "pdfjs-loader.js"));
-        Assert.Contains("../lib/pdfjs/pdf.min.mjs", loader);
-        Assert.Contains("../lib/pdfjs/pdf.worker.min.mjs", loader);
-        Assert.Contains("window.pdfjsLib", loader);
-
-        foreach (var view in new[] { Path.Combine("EngineeringDocuments", "Details.cshtml"), Path.Combine("VDR", "Details.cshtml") })
-        {
-            var text = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Views", view));
-            Assert.Contains("~/js/pdfjs-loader.js", text);
-            Assert.DoesNotContain("cdnjs", text);
-        }
-    }
-
-    [Fact]
     public void Static_files_serve_mjs_as_javascript()
     {
         // Browsers refuse a module script served with another type; the vendored pdf.js is .mjs.

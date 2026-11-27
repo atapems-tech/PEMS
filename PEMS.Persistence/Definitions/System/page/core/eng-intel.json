@@ -29,22 +29,38 @@
               {
                 "key": "total",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Total",
+                  "fa": "جمع"
+                }
               },
               {
                 "key": "pendingClassification",
                 "width": 200,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Pending classification",
+                  "fa": "در انتظار طبقه‌بندی"
+                }
               },
               {
                 "key": "pendingTags",
                 "width": 160,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Pending tags",
+                  "fa": "تگ‌های در انتظار"
+                }
               },
               {
                 "key": "openComments",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open comments",
+                  "fa": "نظرهای باز"
+                }
               }
             ]
           }
@@ -76,7 +92,11 @@
             "columns": [
               {
                 "key": "stage",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                }
               },
               {
                 "key": "count",
@@ -134,11 +154,19 @@
               },
               {
                 "key": "title",
-                "width": 300
+                "width": 300,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "stage",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                }
               },
               {
                 "key": "pendingClassifications",
@@ -148,7 +176,11 @@
               {
                 "key": "pendingTags",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Pending tags",
+                  "fa": "تگ‌های در انتظار"
+                }
               },
               {
                 "key": "_actions",
@@ -160,9 +192,17 @@
                   {
                     "key": "review",
                     "url": "/p/eng-intel-review?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بازبینی"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

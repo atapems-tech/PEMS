@@ -244,7 +244,11 @@
                 "key": "waiting",
                 "width": 260,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Waiting",
+                  "fa": "در انتظار"
+                }
               },
               {
                 "key": "_actions",
@@ -257,128 +261,216 @@
                     "key": "submit",
                     "url": "/f/eng-doc-submit?id={id}",
                     "method": "get",
-                    "showWhen": "row.canSubmit == true"
+                    "showWhen": "row.canSubmit == true",
+                    "label": {
+                      "en": "Submit",
+                      "fa": "ارسال"
+                    }
                   },
                   {
                     "key": "check",
                     "url": "/a/eng-doc-check",
                     "method": "post",
-                    "showWhen": "row.canCheck == true"
+                    "showWhen": "row.canCheck == true",
+                    "label": {
+                      "en": "Check",
+                      "fa": "بررسی"
+                    }
                   },
                   {
                     "key": "approve",
                     "url": "/a/eng-doc-approve",
                     "method": "post",
-                    "showWhen": "row.canApprove == true"
+                    "showWhen": "row.canApprove == true",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    }
                   },
                   {
                     "key": "reject",
                     "url": "/a/eng-doc-reject",
                     "method": "post",
-                    "showWhen": "row.canReject == true"
+                    "showWhen": "row.canReject == true",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   },
                   {
                     "key": "revise",
                     "url": "/f/eng-doc-revise-resubmit?id={id}",
                     "method": "get",
-                    "showWhen": "row.canRevise == true"
+                    "showWhen": "row.canRevise == true",
+                    "label": {
+                      "en": "Revise",
+                      "fa": "اصلاح"
+                    }
                   },
                   {
                     "key": "idc-approve",
                     "url": "/f/eng-doc-idc-approve?id={id}&decision=Approve",
                     "method": "get",
-                    "showWhen": "row.canIdc == true"
+                    "showWhen": "row.canIdc == true",
+                    "label": {
+                      "en": "IDC approve",
+                      "fa": "تأیید IDC"
+                    }
                   },
                   {
                     "key": "idc-comment",
                     "url": "/f/eng-doc-idc-comment?id={id}&decision=Comment",
                     "method": "get",
-                    "showWhen": "row.canIdc == true"
+                    "showWhen": "row.canIdc == true",
+                    "label": {
+                      "en": "IDC comment",
+                      "fa": "نظر IDC"
+                    }
                   },
                   {
                     "key": "idc-reject",
                     "url": "/f/eng-doc-idc-reject?id={id}&decision=Reject",
                     "method": "get",
                     "showWhen": "row.canIdc == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "IDC reject",
+                      "fa": "رد IDC"
+                    }
                   },
                   {
                     "key": "issue",
                     "url": "/f/eng-doc-issue?id={id}",
                     "method": "get",
-                    "showWhen": "row.canIssue == true"
+                    "showWhen": "row.canIssue == true",
+                    "label": {
+                      "en": "Issue",
+                      "fa": "صدور"
+                    }
                   },
                   {
                     "key": "client-response",
                     "url": "/f/eng-doc-client-response?id={id}",
                     "method": "get",
-                    "showWhen": "row.canClient == true"
+                    "showWhen": "row.canClient == true",
+                    "label": {
+                      "en": "Client response",
+                      "fa": "پاسخ کارفرما"
+                    }
                   },
                   {
                     "key": "new-revision",
                     "url": "/f/eng-doc-create-revision?id={id}",
                     "method": "get",
-                    "showWhen": "row.canNewRevision == true"
+                    "showWhen": "row.canNewRevision == true",
+                    "label": {
+                      "en": "New revision",
+                      "fa": "ویرایش جدید"
+                    }
                   },
                   {
                     "key": "edit",
                     "url": "/f/eng-doc-edit?id={id}",
                     "method": "get",
-                    "showWhen": "row.canAssign == true"
+                    "showWhen": "row.canAssign == true",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   },
                   {
                     "key": "analyze",
                     "url": "/a/eng-doc-analyze",
                     "method": "post",
-                    "showWhen": "row.canAssign == true"
+                    "showWhen": "row.canAssign == true",
+                    "label": {
+                      "en": "Analyze",
+                      "fa": "تحلیل"
+                    }
                   },
                   {
                     "key": "freeze",
                     "url": "/f/eng-doc-freeze?id={id}",
                     "method": "get",
-                    "showWhen": "row.canFreeze == true"
+                    "showWhen": "row.canFreeze == true",
+                    "label": {
+                      "en": "Freeze",
+                      "fa": "انجماد"
+                    }
                   },
                   {
                     "key": "unfreeze",
                     "url": "/f/eng-doc-unfreeze?id={id}",
                     "method": "get",
-                    "showWhen": "row.canUnfreeze == true"
+                    "showWhen": "row.canUnfreeze == true",
+                    "label": {
+                      "en": "Unfreeze",
+                      "fa": "رفع انجماد"
+                    }
                   },
                   {
                     "key": "hold",
                     "url": "/f/eng-doc-hold?id={id}",
                     "method": "get",
-                    "showWhen": "row.canHold == true"
+                    "showWhen": "row.canHold == true",
+                    "label": {
+                      "en": "Hold",
+                      "fa": "نگه‌داشتن"
+                    }
                   },
                   {
                     "key": "release",
                     "url": "/f/eng-doc-release-hold?id={id}",
                     "method": "get",
-                    "showWhen": "row.canRelease == true"
+                    "showWhen": "row.canRelease == true",
+                    "label": {
+                      "en": "Release",
+                      "fa": "آزادسازی"
+                    }
                   },
                   {
                     "key": "upload",
                     "url": "/f/eng-doc-upload-attachment?documentId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Upload",
+                      "fa": "بارگذاری"
+                    }
                   },
                   {
                     "key": "add-comment",
                     "url": "/f/eng-doc-comment-add?documentId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Add a comment",
+                      "fa": "افزودن نظر"
+                    }
                   },
                   {
                     "key": "equipment",
                     "url": "/p/equipment-passport?id={raw.equipmentId}",
                     "method": "get",
-                    "showWhen": "row.equipmentId != null"
+                    "showWhen": "row.equipmentId != null",
+                    "label": {
+                      "en": "Equipment",
+                      "fa": "تجهیز"
+                    }
                   },
                   {
                     "key": "contract",
                     "url": "/p/contract-details?id={raw.contractId}",
                     "method": "get",
-                    "showWhen": "row.contractId != null"
+                    "showWhen": "row.contractId != null",
+                    "label": {
+                      "en": "Contract",
+                      "fa": "قرارداد"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -414,7 +506,11 @@
               },
               {
                 "key": "revision",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "role",
@@ -476,7 +572,11 @@
                     "method": "get",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -508,11 +608,19 @@
             "columns": [
               {
                 "key": "discipline",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "comment",
@@ -557,11 +665,19 @@
             "columns": [
               {
                 "key": "revision",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "reason",
@@ -710,7 +826,11 @@
               },
               {
                 "key": "discipline",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "released",
@@ -760,7 +880,11 @@
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "date",
@@ -770,7 +894,11 @@
               {
                 "key": "sent",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Sent",
+                  "fa": "ارسال‌شده"
+                }
               },
               {
                 "key": "purpose",
@@ -778,7 +906,11 @@
               },
               {
                 "key": "revision",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               }
             ]
           }
@@ -810,7 +942,11 @@
             "columns": [
               {
                 "key": "type",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "number",
@@ -827,7 +963,11 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -839,9 +979,17 @@
                   {
                     "key": "open",
                     "url": "/Letter/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -936,7 +1084,11 @@
               },
               {
                 "key": "status",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "marksRevision",
@@ -957,13 +1109,21 @@
                   {
                     "key": "status",
                     "url": "/f/eng-doc-comment-action?documentId={{params.id}}&commentId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Status",
+                      "fa": "وضعیت"
+                    }
                   },
                   {
                     "key": "reply",
                     "url": "/f/eng-doc-comment-reply?documentId={{params.id}}&commentId={id}",
                     "method": "get",
-                    "showWhen": "row.canReply == true"
+                    "showWhen": "row.canReply == true",
+                    "label": {
+                      "en": "Reply",
+                      "fa": "پاسخ"
+                    }
                   },
                   {
                     "key": "attachment",
@@ -977,7 +1137,11 @@
                     "method": "get",
                     "showWhen": "row.replyAttachmentUrl != null"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

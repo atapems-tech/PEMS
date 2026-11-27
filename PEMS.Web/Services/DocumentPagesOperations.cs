@@ -85,10 +85,11 @@ public sealed class DocumentPagesOperations(
         return new(true, null, excel.ExportDocumentRegister(items), $"DocumentRegister_{DateTime.Now:yyyyMMdd_HHmm}.xlsx", Xlsx);
     }
 
-    public async Task<DocFileResult> RegisterExportSelectedAsync(List<int> ids)
+    public async Task<DocFileResult> RegisterExportSelectedAsync(string? ids)
     {
         var (restricted, mine) = await ScopeAsync();
-        var selected = await documents.GetRegisterByIdsAsync(ids ?? [], restricted, mine);
+        var wanted = (ids ?? "").Split([',', ';', ' '], StringSplitOptions.RemoveEmptyEntries).Select(x => int.TryParse(x, out var n) ? n : 0).Where(n => n > 0).Distinct().ToList();   // ids separated by commas (a simple value of the address)
+        var selected = await documents.GetRegisterByIdsAsync(wanted, restricted, mine);
         return new(true, null, excel.ExportDocumentRegister(selected), $"DocumentRegister_Selected_{DateTime.Now:yyyyMMdd_HHmm}.xlsx", Xlsx);
     }
 

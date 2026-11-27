@@ -12,19 +12,6 @@ namespace PEMS.Tests.Web;
 /// </summary>
 public class VdrNumberingAndFilesTests
 {
-    // ---- SCRUM-529
-    [Fact]
-    public void VdrDetails_NoLongerHoldsTheNumberForms_ButShowsTheVendorNumberAndTheAdminLink()
-    {
-        var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
-        Assert.DoesNotContain("GenerateContractorNumber", view);
-        Assert.DoesNotContain("GenerateVendorNumber", view);
-        Assert.Contains("Vd_VendorFormatNo", view);
-        Assert.Contains("asp-area=\"Admin\" asp-controller=\"Numbering\" asp-action=\"Index\" asp-route-vdrItemId=\"@Model.VDRItemId\"", view);
-    }
-
-
-
     // ---- SCRUM-530
     private static VDRSubmissionDto Submission(int rev, int? main, string? mainPath, int? comment = null, string? commentName = null, int? reply = null, string? replyName = null) => new()
     {
@@ -57,18 +44,6 @@ public class VdrNumberingAndFilesTests
         Assert.Empty(VdrFiles.From([Submission(0, null, null)]));
     }
 
-    [Fact]
-    public void VdrDetails_HasTheFilesTab_WithThePreviewComponent()
-    {
-        var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
-        Assert.Contains("<pems-tab target=\"tab-files\"", view);
-        Assert.Contains("id=\"tab-files\" role=\"tabpanel\"", view);
-        Assert.Contains("<pems-file-preview id=\"vdrFilePreview\" src=\"@vdrPreviewUrl\"", view);
-        Assert.Contains("Url.Action(\"Preview\", \"Files\"", view);
-        Assert.Contains("asp-controller=\"Files\" asp-action=\"Download\"", view);
-        Assert.DoesNotContain("<iframe", view);
-    }
-
     // ---- SCRUM-531: upload in the Files tab
     [Theory]
     [InlineData("Main", "documents")]
@@ -88,17 +63,6 @@ public class VdrNumberingAndFilesTests
         Assert.Contains("x.VDRSubmissionId == submissionId && x.VDRItemId == vdrItemId", source);
         Assert.Contains("VdrFiles.FolderOf(kind)", source);
         Assert.Equal("VDR.Edit", PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly).Get("VdrFiles", "UploadSubmissionFile")!.Permission);
-    }
-
-    [Fact]
-    public void FilesTab_HasTheUploadForm()
-    {
-        var view = Read("PEMS.Web", "Views", "VDR", "Details.cshtml");
-        var pane = view[view.IndexOf("id=\"tab-files\"", StringComparison.Ordinal)..];
-        Assert.Contains("<pems-form action=\"/a/vdr-submission-file\" method=\"post\" enctype=\"multipart/form-data\"", pane);
-        foreach (var field in new[] { "name=\"vdrItemId\"", "name=\"submissionId\"", "name=\"kind\"", "<pems-uploader id=\"vdrUploadFile\" name=\"file\" required" })
-            Assert.Contains(field, pane);
-        Assert.Contains("@foreach (var k in VdrFiles.Kinds)", pane);
     }
 
     private static int CountOf(string text, string part)

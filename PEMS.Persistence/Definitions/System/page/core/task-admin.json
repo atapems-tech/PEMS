@@ -45,11 +45,19 @@
             "columns": [
               {
                 "key": "key",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "name",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "department",
@@ -80,9 +88,17 @@
                   {
                     "key": "open",
                     "url": "/p/task-admin-space?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "newUrl": "/f/tm-create-space",

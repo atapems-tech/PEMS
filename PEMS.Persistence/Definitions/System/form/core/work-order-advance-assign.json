@@ -21,7 +21,7 @@
       "en": "Advance to Assigned",
       "fa": "پیشروی به تخصیص‌یافته"
     },
-    "actionKey": "work-order-advance-assign",
+    "actionKey": "work-order-advance",
     "columns": 2,
     "fields": [
       {

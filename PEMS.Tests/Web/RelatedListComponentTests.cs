@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using PEMS.UI;
 using PEMS.UI.Rendering;
 using PEMS.UI.TagHelpers;
-using PEMS.Web.Areas.Admin.Controllers;
 using PEMS.Web.Controllers;
 
 namespace PEMS.Tests.Web;
@@ -131,28 +130,4 @@ public class RelatedListComponentTests
 
 
 
-    [Fact]
-    public void Wave3cVdr_TakesItsThreeTablesFromTheComponent()
-    {
-        var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
-        Assert.NotNull(dir);
-        var vdr = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", "VDR", "Details.cshtml"));
-        Assert.Equal(3, System.Text.RegularExpressions.Regex.Matches(vdr, "<pems-related-table>").Count);   // SCRUM-58: the fourth (workflow history) is now <pems-workflow-history>
-        Assert.Contains("<pems-workflow-history", vdr);
-        Assert.DoesNotContain("<table", vdr);
-        Assert.Contains("_content/PEMS.UI/pems-list.css", vdr);
-    }
-
-    [Fact]
-    public void Wave3dWorkOrder_TakesItsFiveTablesFromTheComponent()
-    {
-        var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.Web", "PEMS.Web.csproj"))) dir = dir.Parent;
-        Assert.NotNull(dir);
-        var wo = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", "WorkOrder", "Details.cshtml"));
-        Assert.Equal(5, System.Text.RegularExpressions.Regex.Matches(wo, "<pems-related-table>").Count);
-        Assert.DoesNotContain("<table", wo);
-        Assert.Contains("_content/PEMS.UI/pems-list.css", wo);
-    }
 }

@@ -220,7 +220,11 @@
                 "key": "status",
                 "width": 120,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -233,106 +237,178 @@
                     "key": "advance",
                     "url": "/f/{raw.advanceForm}?id={id}",
                     "method": "get",
-                    "showWhen": "row.canAdvanceLegacy == true"
+                    "showWhen": "row.canAdvanceLegacy == true",
+                    "label": {
+                      "en": "Advance",
+                      "fa": "پیشبرد"
+                    }
                   },
                   {
                     "key": "hold",
                     "url": "/f/work-order-hold?id={id}",
                     "method": "get",
-                    "showWhen": "row.canHold == true"
+                    "showWhen": "row.canHold == true",
+                    "label": {
+                      "en": "Hold",
+                      "fa": "نگه‌داشتن"
+                    }
                   },
                   {
                     "key": "resume",
                     "url": "/a/work-order-resume",
                     "method": "post",
-                    "showWhen": "row.canResume == true"
+                    "showWhen": "row.canResume == true",
+                    "label": {
+                      "en": "Resume",
+                      "fa": "ازسرگیری"
+                    }
                   },
                   {
                     "key": "reject",
                     "url": "/f/work-order-reject?id={id}",
                     "method": "get",
                     "showWhen": "row.canReject == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   },
                   {
                     "key": "cancel",
                     "url": "/f/work-order-cancel?id={id}",
                     "method": "get",
                     "showWhen": "row.canCancel == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Cancel",
+                      "fa": "لغو"
+                    }
                   },
                   {
                     "key": "reopen",
                     "url": "/f/work-order-reopen?id={id}",
                     "method": "get",
-                    "showWhen": "row.canReopen == true"
+                    "showWhen": "row.canReopen == true",
+                    "label": {
+                      "en": "Reopen",
+                      "fa": "بازگشایی"
+                    }
                   },
                   {
                     "key": "responsible-discipline",
                     "url": "/f/work-order-set-planning?id={id}&responsibleDisciplineId={raw.responsibleDisciplineId}",
                     "method": "get",
-                    "showWhen": "row.ctlResponsibleDiscipline == true"
+                    "showWhen": "row.ctlResponsibleDiscipline == true",
+                    "label": {
+                      "en": "Responsible discipline",
+                      "fa": "دیسیپلین مسئول"
+                    }
                   },
                   {
                     "key": "assign-executor",
                     "url": "/f/work-order-assign-executor?id={id}",
                     "method": "get",
-                    "showWhen": "row.ctlExecutor == true"
+                    "showWhen": "row.ctlExecutor == true",
+                    "label": {
+                      "en": "Assign an executor",
+                      "fa": "تعیین مجری"
+                    }
                   },
                   {
                     "key": "schedule",
                     "url": "/f/work-order-set-schedule?id={id}&plannedStart={raw.plannedStartInput}&plannedFinish={raw.plannedFinishInput}",
                     "method": "get",
-                    "showWhen": "row.ctlSchedule == true"
+                    "showWhen": "row.ctlSchedule == true",
+                    "label": {
+                      "en": "Schedule",
+                      "fa": "زمان‌بندی"
+                    }
                   },
                   {
                     "key": "request-review",
                     "url": "/f/work-order-request-review?workOrderId={id}",
                     "method": "get",
-                    "showWhen": "row.ctlReview == true"
+                    "showWhen": "row.ctlReview == true",
+                    "label": {
+                      "en": "Request a review",
+                      "fa": "درخواست بازبینی"
+                    }
                   },
                   {
                     "key": "add-labor",
                     "url": "/f/work-order-add-labor?workOrderId={id}",
                     "method": "get",
-                    "showWhen": "row.ctlLabor == true"
+                    "showWhen": "row.ctlLabor == true",
+                    "label": {
+                      "en": "Add labor",
+                      "fa": "افزودن نیروی کار"
+                    }
                   },
                   {
                     "key": "add-spare",
                     "url": "/f/work-order-add-spare-usage?workOrderId={id}",
                     "method": "get",
-                    "showWhen": "row.ctlSpares == true"
+                    "showWhen": "row.ctlSpares == true",
+                    "label": {
+                      "en": "Add a spare part",
+                      "fa": "افزودن قطعه یدکی"
+                    }
                   },
                   {
                     "key": "add-skill",
                     "url": "/f/work-order-add-required-skill?workOrderId={id}",
                     "method": "get",
-                    "showWhen": "row.ctlSkills == true"
+                    "showWhen": "row.ctlSkills == true",
+                    "label": {
+                      "en": "Add a skill",
+                      "fa": "افزودن مهارت"
+                    }
                   },
                   {
                     "key": "add-material",
                     "url": "/f/work-order-add-required-material?workOrderId={id}",
                     "method": "get",
-                    "showWhen": "row.ctlMaterials == true"
+                    "showWhen": "row.ctlMaterials == true",
+                    "label": {
+                      "en": "Add material",
+                      "fa": "افزودن مواد"
+                    }
                   },
                   {
                     "key": "create-crew",
                     "url": "/f/work-order-create-crew?workOrderId={id}",
                     "method": "get",
-                    "showWhen": "row.ctlCrew == true"
+                    "showWhen": "row.ctlCrew == true",
+                    "label": {
+                      "en": "Create a crew",
+                      "fa": "ایجاد خدمه"
+                    }
                   },
                   {
                     "key": "equipment",
                     "url": "/p/equipment-passport?id={raw.equipmentId}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Equipment",
+                      "fa": "تجهیز"
+                    }
                   },
                   {
                     "key": "source-request",
                     "url": "/p/work-request-details?id={raw.sourceWorkRequestId}",
                     "method": "get",
-                    "showWhen": "row.sourceWorkRequestId != null"
+                    "showWhen": "row.sourceWorkRequestId != null",
+                    "label": {
+                      "en": "Source request",
+                      "fa": "درخواست منبع"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -392,7 +468,11 @@
                     "method": "get",
                     "showWhen": "row.allowed == true"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -526,11 +606,19 @@
             "columns": [
               {
                 "key": "discipline",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "status",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -545,7 +633,11 @@
                     "method": "get",
                     "showWhen": "row.canRespond == true"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -560,7 +652,11 @@
             "columns": [
               {
                 "key": "discipline",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "cycle",
@@ -627,7 +723,11 @@
               },
               {
                 "key": "team",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Team",
+                  "fa": "تیم"
+                }
               },
               {
                 "key": "regularHours",
@@ -716,9 +816,17 @@
                     "key": "return",
                     "url": "/f/work-order-return-spare-usage?workOrderId={{params.id}}&maintenanceSpareUsageId={id}",
                     "method": "get",
-                    "showWhen": "row.canReturn == true"
+                    "showWhen": "row.canReturn == true",
+                    "label": {
+                      "en": "Return",
+                      "fa": "بازگرداندن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -755,7 +863,11 @@
               },
               {
                 "key": "title",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "description",
@@ -792,9 +904,17 @@
                     "key": "reopen",
                     "url": "/f/work-order-reopen-task?workOrderId={{params.id}}&workOrderTaskId={id}",
                     "method": "get",
-                    "showWhen": "row.canReopen == true"
+                    "showWhen": "row.canReopen == true",
+                    "label": {
+                      "en": "Reopen",
+                      "fa": "بازگشایی"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -851,7 +971,11 @@
                     "showWhen": "row.canRemove == true",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -922,7 +1046,11 @@
                     "showWhen": "row.canRemove == true",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -973,9 +1101,17 @@
                     "key": "open",
                     "url": "/p/warehouse-intake?id={id}",
                     "method": "get",
-                    "showWhen": "row.isOpen == true"
+                    "showWhen": "row.isOpen == true",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -1011,7 +1147,11 @@
               },
               {
                 "key": "name",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "members",

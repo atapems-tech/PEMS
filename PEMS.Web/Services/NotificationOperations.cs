@@ -54,5 +54,5 @@ public sealed class NotificationOperations(INotificationService service, PEMSDbC
 
     public async Task<List<NotificationItemRow>> RecentAsync(string userName)
         => await UserIdAsync(userName) is not { } userId ? [] : (await service.GetForUserAsync(userId)).Take(15)
-            .Select(n => new NotificationItemRow(n.NotificationId, n.Title, n.Message, PEMS.UI.Dates.PemsDates.DateTime(n.CreatedDate), n.IsRead, "/x/notification-open?id=" + n.NotificationId)).ToList();
+            .Select(n => new NotificationItemRow(n.NotificationId, n.Title, n.Message, PEMS.UI.PemsDates.DateTime(n.CreatedDate), n.IsRead, "/x/notification-open?id=" + n.NotificationId)).ToList();
 }
