@@ -38,6 +38,8 @@ public sealed class FileHostController(IDefinitionStore store, IDefinitionAccess
 
         Response.Headers.CacheControl = "no-store";
         var type = invoked.Answer.GetType();
+        if (type.GetProperty("RedirectUrl")?.GetValue(invoked.Answer) is string redirectUrl)      // SCRUM-841: an answer that leads on: only a path of this site, a refusal is a 404
+            return type.GetProperty("Success")?.GetValue(invoked.Answer) is false || !Url.IsLocalUrl(redirectUrl) ? NotFound() : LocalRedirect(redirectUrl);
         if (type.GetProperty("Bytes")?.GetValue(invoked.Answer) is byte[] bytes)
         {
             if (type.GetProperty("Success")?.GetValue(invoked.Answer) is false) return NotFound();

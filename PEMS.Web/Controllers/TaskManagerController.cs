@@ -58,10 +58,5 @@ public class TaskManagerController : Controller
 
     // SCRUM-831: the start page (the spaces of the user) is the definition /p/task-manager over ITaskManagerPagesOperations.
 
-    // SCRUM-831: the board and the backlog of a space are the definition pages /p/task-board and /p/task-backlog (the old address keeps working).
-    [HttpGet]
-    public IActionResult Space(string key, string view = "backlog")
-        => Redirect((view == "board" ? "/p/task-board?key=" : "/p/task-backlog?key=") + Uri.EscapeDataString(key ?? ""));
-
     // SCRUM-831: AllWork is the definition page /p/task-all-work over ITaskManagerPagesOperations.AllWorkAsync (also "my tasks").
 }

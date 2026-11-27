@@ -28,18 +28,4 @@ public class NotificationController : Controller
         var items = await _service.GetForUserAsync(_currentUser.UserId.Value);
         return PartialView("_NotificationDropdown", items.Take(15).ToList());
     }
-
-    // کلیک روی اعلان: Read → ناوبری. فقط مسیر داخلی برنامه (جلوگیری از Open Redirect)
-    [HttpGet]
-    public async Task<IActionResult> Open(int id)
-    {
-        if (_currentUser.UserId == null) return Unauthorized();
-
-        var linkUrl = await _service.OpenAsync(_currentUser.UserId.Value, id);
-
-        if (!string.IsNullOrWhiteSpace(linkUrl) && Url.IsLocalUrl(linkUrl))
-            return LocalRedirect(linkUrl);
-
-        return Redirect("/p/notifications");   // SCRUM-731: the inbox is a definition page
-    }
 }

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "notification-open-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open a notification (old address)",
+    "fa": "باز کردن اعلان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Open a notification",
+    "fa": "باز کردن اعلان"
+  },
+  "payload": {
+    "pattern": "Notification/Open",
+    "target": "/x/notification-open",
+    "permanent": false
+  }
+}

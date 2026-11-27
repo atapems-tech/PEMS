@@ -270,7 +270,7 @@
                   },
                   {
                     "key": "space",
-                    "url": "/TaskManager/Space?key={raw.spaceKey}",
+                    "url": "/p/task-backlog?key={raw.spaceKey}",
                     "method": "get",
                     "showWhen": "row.isLegacy == false"
                   },

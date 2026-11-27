@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "task-manager-space-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "A work space (old address)",
+    "fa": "فضای کاری (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "A work space",
+    "fa": "فضای کاری"
+  },
+  "payload": {
+    "pattern": "TaskManager/Space",
+    "target": "/p/task-backlog",
+    "permanent": false
+  }
+}

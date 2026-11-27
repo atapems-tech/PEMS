@@ -100,8 +100,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.DocumentRegisterController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "no action is left: converted to definitions (SCRUM-841: routes and file-host redirects)"
     },
     {
       "kind": "controller",
@@ -346,8 +346,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.TaskManagerController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "no action is left: converted to definitions (SCRUM-841: routes and file-host redirects)"
     },
     {
       "kind": "controller",

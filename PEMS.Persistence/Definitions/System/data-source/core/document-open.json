@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "document-open",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Open a document on its own page",
+    "fa": "باز کردن مدرک در صفحه‌ی خودش"
+  },
+  "description": {
+    "en": "Open a document on its own page",
+    "fa": "باز کردن مدرک در صفحه‌ی خودش"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Shell",
+      "action": "OpenDocument",
+      "args": {
+        "id": "param:id"
+      },
+      "disposition": "inline"
+    }
+  }
+}
