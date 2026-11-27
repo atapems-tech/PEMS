@@ -5,6 +5,9 @@ namespace PEMS.Application.Interfaces;
 /// the review steps, the issue and close, the draft edits, the referrals, the signature, and the send, archive, approver change and draft discard of the compose workspace. Each keeps the rule and the texts of
 /// LetterController and LetterComposeController. The list, the details page, create, reply, the composer's own JSON endpoints, the bulk bar and the files stay on the controllers.
 /// </summary>
+public sealed record LetterEmployeeChoice(int EmployeeId, string Name);
+public sealed record LetterThreadMemberRow(int LetterId, int? ParentLetterId, int Depth, string? LetterNumber, string? Subject, string? LetterType, string? Status, string? SenderName, bool IsCurrent, string Date, string Url);
+
 public interface ILetterOperations
 {
     [PEMS.Application.Common.PemsOperation("Letter", "SetResponseDue")]
@@ -92,4 +95,12 @@ public interface ILetterOperations
     /// <summary>Discards a draft the user composed (the compose workspace).</summary>
     [PEMS.Application.Common.PemsOperation("Letter", "DiscardDraft")]
     Task<(bool Success, string? Error)> DiscardDraftAsync(int letterId);
+
+    /// <summary>SCRUM-8c: the active employees of the recipient picker (served at /x/letter-employee-picker).</summary>
+    [PEMS.Application.Common.PemsOperation("Letter", "EmployeePicker")]
+    Task<List<LetterEmployeeChoice>> EmployeePickerAsync();
+
+    /// <summary>SCRUM-8c: the members of the thread of a letter for the thread view of the list; the right to see the letter is checked first (served at /x/letter-thread-members).</summary>
+    [PEMS.Application.Common.PemsOperation("Letter", "ThreadMembers")]
+    Task<List<LetterThreadMemberRow>> ThreadMembersAsync(int id);
 }

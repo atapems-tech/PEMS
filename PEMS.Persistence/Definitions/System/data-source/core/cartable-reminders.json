@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "cartable-reminders",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable reminders",
+    "fa": "یادآورهای کارتابل"
+  },
+  "description": {
+    "en": "Cartable reminders",
+    "fa": "یادآورهای کارتابل"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Cartable",
+      "action": "Reminders",
+      "args": {
+        "includeDone": "param:includeDone"
+      },
+      "disposition": "inline"
+    }
+  }
+}

@@ -5,7 +5,7 @@
         function loadEmployeesOnce() {
             if (loaded) return;
             loaded = true;
-            fetch('/Letter/GetEmployeesForPicker')
+            fetch('/x/letter-employee-picker')
                 .then(function (r) { return r.json(); })
                 .then(function (list) {
                     pickers.forEach(function (sel) {

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "cartable-contacts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable contacts",
+    "fa": "مخاطبین کارتابل"
+  },
+  "description": {
+    "en": "Cartable contacts",
+    "fa": "مخاطبین کارتابل"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Cartable",
+      "action": "Contacts",
+      "args": {
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

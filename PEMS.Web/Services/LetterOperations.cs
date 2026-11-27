@@ -224,4 +224,15 @@ public sealed class LetterOperations(PEMSDbContext context, ILetterService lette
         var manual = await permissions.HasPermissionAsync(currentUser.Roles, "Correspondence", "ManualNumber");
         return await compose.DiscardDraftAsync(letterId, new LetterComposeActor(userId, currentUser.UserName, await EmployeeIdAsync(), manual, IsAdmin));
     }
+
+    public async Task<List<LetterEmployeeChoice>> EmployeePickerAsync()
+        => await context.Employees.Where(x => x.IsActive).OrderBy(x => x.FirstName).ThenBy(x => x.LastName).Select(x => new LetterEmployeeChoice(x.EmployeeId, x.FirstName + " " + x.LastName)).ToListAsync();
+
+    public async Task<List<LetterThreadMemberRow>> ThreadMembersAsync(int id)
+    {
+        if (cartable == null) throw new InvalidOperationException("The cartable service is not available.");
+        await AccessAsync(id);
+        var members = await cartable.GetThreadAsync(id, currentUser.UserId, await CanSeeAllAsync());
+        return members.Select(m => new LetterThreadMemberRow(m.LetterId, m.ParentLetterId, m.Depth, m.LetterNumber, m.Subject, m.LetterType, m.Status, m.SenderName, m.IsCurrent, m.LetterDate.ToString("yyyy-MM-dd"), "/Letter/Details/" + m.LetterId)).ToList();
+    }
 }

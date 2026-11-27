@@ -1,7 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
+using PEMS.Persistence.Context;
 using PEMS.Web.Security;
 using PEMS.Web.Resources;
 
@@ -9,7 +11,7 @@ namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-714: the writes of the personal correspondence cartable over its services (the rules and texts of LetterCartableController).</summary>
 public sealed class LetterCartableOperations(ILetterTagTreeService tags, ILetterUserSettingsService settings, ILetterDelegationService delegations, ILetterRoutingRuleService rules,
-    ILetterContactService contacts, ILetterPersonalReminderService reminders, ICurrentUserService currentUser, IPermissionService permissions, IStringLocalizer<SharedResource> localizer) : ILetterCartableOperations
+    ILetterContactService contacts, ILetterPersonalReminderService reminders, ICurrentUserService currentUser, IPermissionService permissions, IStringLocalizer<SharedResource> localizer, PEMSDbContext context) : ILetterCartableOperations
 {
     private int UserId => currentUser.UserId ?? 0;
 
@@ -64,4 +66,31 @@ public sealed class LetterCartableOperations(ILetterTagTreeService tags, ILetter
     public async Task<(bool Success, string? Error)> CompleteReminderAsync(int id) => Res(await reminders.CompleteAsync(id, UserId));
 
     public async Task<(bool Success, string? Error)> DeleteReminderAsync(int id) => Res(await reminders.DeleteAsync(id, UserId));
+
+    public Task<PEMS.Application.Common.LetterUserSettingsRules.Settings> SettingsAsync() => settings.GetAsync(UserId);
+
+    public async Task<List<LetterTagNodeDto>> TagsAsync()
+    {
+        var approve = await CanApproveAsync();
+        return await tags.GetTreeAsync(UserId, approve, withCounts: true, approve);
+    }
+
+    public async Task<CartableDelegationsAnswer> DelegationsAsync()
+    {
+        var (given, received) = await delegations.GetAsync(UserId);
+        return new CartableDelegationsAnswer(given, received, await delegations.GetCandidatesAsync(UserId));
+    }
+
+    public async Task<CartableRulesAnswer> RulesAsync()
+    {
+        var projects = await context.Projects.Where(p => p.IsActive).OrderBy(p => p.ProjectName).Select(p => new CartableLookup(p.ProjectId, p.ProjectName)).Take(300).ToListAsync();
+        var disciplines = await context.Disciplines.Where(d => d.IsActive).OrderBy(d => d.Name).Select(d => new CartableLookup(d.DisciplineId, d.Name)).ToListAsync();
+        return new CartableRulesAnswer(await rules.GetAsync(UserId), new CartableRuleLookups(projects, disciplines));
+    }
+
+    public Task<List<LetterContactDto>> ContactsAsync(string? q = null) => contacts.SearchAsync(q);
+
+    public async Task<List<LetterContactGroupDto>> GroupsAsync() => await contacts.GetGroupsAsync(UserId, await CanApproveAsync());
+
+    public Task<List<LetterReminderDto>> RemindersAsync(bool includeDone = false) => reminders.GetAsync(UserId, includeDone);
 }

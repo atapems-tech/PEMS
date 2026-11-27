@@ -445,7 +445,7 @@ public class CartableWebTests
     [Fact]
     public async Task ThreadMembers_ForbidsALetterTheUserCannotSee_AndListsTheThreadOtherwise()
     {
-        var (c, ctx, _) = Controller(nameof(ThreadMembers_ForbidsALetterTheUserCannotSee_AndListsTheThreadOtherwise));
+        var (ops, ctx, _) = Operations(nameof(ThreadMembers_ForbidsALetterTheUserCannotSee_AndListsTheThreadOtherwise));
         var root = SentLetter(ctx, 705, to: new[] { 2 });
         var reply = SentLetter(ctx, 706, author: 102, to: new[] { 1 }); reply.ParentLetterId = root.LetterId; await ctx.SaveChangesAsync();
         var secret = SentLetter(ctx, 707, to: new[] { 4 }, conf: "Restricted");
@@ -454,7 +454,7 @@ public class CartableWebTests
         var json = JsonSerializer.Serialize(ok.Value);
         Assert.Contains("N-705", json);
         Assert.Contains("N-706", json);
-        Assert.IsType<ForbidResult>(await c.ThreadMembers(secret.LetterId));
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => ops.ThreadMembersAsync(secret.LetterId));
     }
 
     [Fact]
@@ -525,7 +525,7 @@ public class CartableWebTests
         var org = new OrganizationSubordinateResolver(ctx);
         var localizer = new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<IStringLocalizer<SharedResource>>();
         return new PEMS.Web.Services.LetterCartableOperations(new LetterTagTreeService(ctx), new LetterUserSettingsService(ctx), new LetterDelegationService(ctx, org), new LetterRoutingRuleService(ctx, org),
-            new LetterContactService(ctx), new LetterPersonalReminderService(ctx), user ?? new FakeUser(), new FakePermissionService { AllowAll = false }, localizer);
+            new LetterContactService(ctx), new LetterPersonalReminderService(ctx), user ?? new FakeUser(), new FakePermissionService { AllowAll = false }, localizer, ctx);
     }
 
     [Fact]

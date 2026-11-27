@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "cartable-tags",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable tags",
+    "fa": "برچسب‌های کارتابل"
+  },
+  "description": {
+    "en": "Cartable tags",
+    "fa": "برچسب‌های کارتابل"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Cartable",
+      "action": "Tags",
+      "disposition": "inline"
+    }
+  }
+}
