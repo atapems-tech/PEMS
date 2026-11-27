@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "letter-editor-image",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter editor picture",
+    "fa": "تصویر ویرایشگر نامه"
+  },
+  "description": {
+    "en": "Stores a picture chosen in the rich text editor of a letter",
+    "fa": "ذخیره‌ی تصویر انتخاب‌شده در ویرایشگر متن نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "EditorImage",
+      "args": {
+        "file": "file:file"
+      },
+      "upload": {
+        "profile": "image",
+        "maxFileMb": 10
+      }
+    },
+    "success": {
+      "en": "The picture was stored.",
+      "fa": "تصویر ذخیره شد."
+    }
+  }
+}

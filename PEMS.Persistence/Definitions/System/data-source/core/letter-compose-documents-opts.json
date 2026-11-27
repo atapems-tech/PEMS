@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-compose-documents-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents (letter)",
+    "fa": "مدارک (نامه)"
+  },
+  "description": {
+    "en": "Documents (letter)",
+    "fa": "مدارک (نامه)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Documents",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

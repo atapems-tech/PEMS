@@ -220,8 +220,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.LetterController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "no action is left: converted to definitions (SCRUM-840: register-incoming form, composer, editor image action); the empty class is deleted with its tests in the audit"
     },
     {
       "kind": "controller",

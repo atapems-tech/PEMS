@@ -238,6 +238,8 @@ public static class FormEngine
             }
             if (!string.IsNullOrEmpty(f.SearchSource) && !Regex.IsMatch(f.SearchSource, "^[A-Za-z][A-Za-z0-9]{0,40}$"))
                 errors.Add(new(at + "/searchSource", "pattern", "Def_Err_Pattern", "searchSource is the name of a search type (letters and digits)."));
+            if (!string.IsNullOrEmpty(f.UploadUrl) && (f.Kind != FieldKind.RichText || !Regex.IsMatch(f.UploadUrl, "^/a/[a-z0-9][a-z0-9._-]{0,80}$")))
+                errors.Add(new(at + "/uploadUrl", "pattern", "Def_Err_Pattern", "uploadUrl belongs to a richText field and is the address of an action: /a/{key}."));
             if (!string.IsNullOrEmpty(f.OptionsFrom) && f.Options is { Count: > 0 }) errors.Add(new(at + "/optionsFrom", "overlap", "Def_Err_Overlap", "A field takes its options from one place: options or optionsFrom, not both."));
             if (f.MergeFields is { Count: > 0 })
             {

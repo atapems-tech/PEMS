@@ -1,0 +1,266 @@
+{
+  "kind": "form",
+  "key": "letter-register-incoming",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت نامه‌ی وارده"
+  },
+  "description": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت نامه‌ی وارده"
+  },
+  "payload": {
+    "id": "letter-register-incoming",
+    "title": {
+      "en": "Register an incoming letter",
+      "fa": "ثبت نامه‌ی وارده"
+    },
+    "submitLabel": {
+      "en": "Register",
+      "fa": "ثبت"
+    },
+    "actionKey": "letter-register-incoming",
+    "columns": 2,
+    "warnOnLeave": true,
+    "permission": "Correspondence.Create",
+    "load": {
+      "model": "LetterCompose",
+      "action": "IncomingRecord",
+      "args": {
+        "templateId": "param:templateId"
+      }
+    },
+    "fields": [
+      {
+        "name": "letterDate",
+        "label": {
+          "en": "Date",
+          "fa": "تاریخ"
+        },
+        "kind": "date",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "sender",
+        "label": {
+          "en": "From (external sender)",
+          "fa": "از (فرستنده‌ی بیرونی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 250
+      },
+      {
+        "name": "subject",
+        "label": {
+          "en": "Subject",
+          "fa": "موضوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "body",
+        "label": {
+          "en": "Letter text",
+          "fa": "متن نامه"
+        },
+        "kind": "richText",
+        "span": 2,
+        "uploadUrl": "/a/letter-editor-image"
+      },
+      {
+        "name": "responseRequired",
+        "label": {
+          "en": "A response is required",
+          "fa": "پاسخ لازم است"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "responseDueDate",
+        "label": {
+          "en": "Response due date",
+          "fa": "مهلت پاسخ"
+        },
+        "kind": "date",
+        "visible": "values.responseRequired == 'true'",
+        "requiredWhen": "values.responseRequired == 'true'"
+      },
+      {
+        "name": "letterNumber",
+        "label": {
+          "en": "Letter number (manual)",
+          "fa": "شماره‌ی نامه (دستی)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "useManualNumber",
+        "label": {
+          "en": "Use this number (needs the manual number permission)",
+          "fa": "استفاده از این شماره (نیازمند مجوز شماره‌ی دستی)"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "Normal",
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "Normal",
+            "label": {
+              "en": "Normal",
+              "fa": "عادی"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            }
+          }
+        ]
+      },
+      {
+        "name": "confidentialityLevel",
+        "label": {
+          "en": "Confidentiality",
+          "fa": "سطح محرمانگی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "Internal",
+        "options": [
+          {
+            "value": "Public",
+            "label": {
+              "en": "Public",
+              "fa": "عمومی"
+            }
+          },
+          {
+            "value": "Internal",
+            "label": {
+              "en": "Internal",
+              "fa": "داخلی"
+            }
+          },
+          {
+            "value": "Confidential",
+            "label": {
+              "en": "Confidential",
+              "fa": "محرمانه"
+            }
+          },
+          {
+            "value": "Restricted",
+            "label": {
+              "en": "Restricted",
+              "fa": "محدود"
+            }
+          },
+          {
+            "value": "HighlyConfidential",
+            "label": {
+              "en": "Highly confidential",
+              "fa": "بسیار محرمانه"
+            }
+          }
+        ]
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-projects-opts"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-disciplines-opts"
+      },
+      {
+        "name": "relatedDocumentId",
+        "label": {
+          "en": "Related engineering document",
+          "fa": "مدرک مهندسی مرتبط"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-documents-opts"
+      },
+      {
+        "name": "relatedMRId",
+        "label": {
+          "en": "Related MR",
+          "fa": "MR مرتبط"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-requisitions-opts"
+      }
+    ]
+  }
+}

@@ -256,7 +256,8 @@
           "fa": "متن نامه"
         },
         "kind": "richText",
-        "span": 2
+        "span": 2,
+        "uploadUrl": "/a/letter-editor-image"
       },
       {
         "name": "priority",

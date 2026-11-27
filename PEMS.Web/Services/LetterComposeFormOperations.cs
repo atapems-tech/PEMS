@@ -12,7 +12,7 @@ namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-840: what LetterComposeController did (see <see cref="ILetterComposeFormOperations"/>): the same services, the same rules and the same refusals; the page is the form definition <c>letter-compose</c>.</summary>
 public sealed class LetterComposeFormOperations(ILetterComposeService compose, ILetterService letters, ILetterComplianceService compliance, IPermissionService permissions, ICurrentUserService currentUser,
-    PEMSDbContext context, IStringLocalizer<SharedResource> localizer, ILetterTemplateService? templates = null) : ILetterComposeFormOperations
+    PEMSDbContext context, IStringLocalizer<SharedResource> localizer, ILetterNumberingService numbering, PEMS.Application.Uploads.IProtectedImageStore images, ILetterTemplateService? templates = null) : ILetterComposeFormOperations
 {
     private bool IsAdmin => currentUser.Roles.Contains("SystemAdmin");
     private async Task<bool> CanSeeAllAsync() => IsAdmin || await permissions.HasPermissionAsync(currentUser.Roles, "Correspondence", "Approve");
@@ -226,5 +226,57 @@ public sealed class LetterComposeFormOperations(ILetterComposeService compose, I
             sb.AppendLine(string.Join(",", Csv(row.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")), Csv(row.Actor), Csv(row.Category), Csv(row.Event), Csv(row.Detail)));
         var bytes = Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(sb.ToString())).ToArray();   // a BOM so Excel reads Persian text
         return new(true, null, bytes, $"{report.LetterNumber}-compliance.csv", "text/csv");
+    }
+
+    // ------------------------------------------------------------------ register an incoming letter, the editor image
+
+    public async Task<List<LetterIncomingFormRow>> IncomingRecordAsync(int? templateId = null)
+    {
+        var row = new LetterIncomingFormRow(DateTime.Today, "", "", "Normal", "Internal");
+        if (templateId.HasValue && templates is not null && await templates.GetAsync(templateId.Value) is { IsActive: true } t && (t.LetterType == null || t.LetterType == "Incoming"))
+        {
+            var values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["Date"] = DateTime.Today.ToString("yyyy-MM-dd"), ["UserName"] = currentUser.FullName ?? currentUser.UserName ?? "", ["LetterType"] = "Incoming" };
+            row = row with { Subject = LetterTemplatePlaceholders.Apply(t.Subject, values, htmlEncode: false), Body = LetterTemplatePlaceholders.Apply(t.Body, values, htmlEncode: true), Priority = t.Priority, ConfidentialityLevel = t.ConfidentialityLevel };
+        }
+        return [row];
+    }
+
+    private async Task<int?> DepartmentIdAsync()
+    {
+        if (!currentUser.UserId.HasValue) return null;
+        var userId = currentUser.UserId.Value;
+        var employeeId = await context.Users.Where(u => u.Id == userId).Select(u => u.EmployeeId).FirstOrDefaultAsync();
+        return employeeId.HasValue ? await context.Employees.Where(e => e.EmployeeId == employeeId.Value).Select(e => (int?)e.DepartmentId).FirstOrDefaultAsync() : null;
+    }
+
+    public async Task<LetterComposeCommandResult> RegisterIncomingAsync(string? letterNumber, DateTime? letterDate, string? sender, string? subject, string? body, string? priority, string? confidentialityLevel, int? projectId, int? disciplineId,
+        int? relatedDocumentId, int? relatedMRId, string? useManualNumber, string? responseRequired, DateTime? responseDueDate)
+    {
+        var date = letterDate ?? DateTime.Today;
+        var respond = Flag(responseRequired);
+        if (string.IsNullOrWhiteSpace(subject)) return new(false, "The subject is required.", 0);
+        if (string.IsNullOrWhiteSpace(sender)) return new(false, "The sender is required.", 0);
+        if (LetterResponseRules.Validate(respond, responseDueDate, date) is { } responseError) return new(false, responseError, 0);   // before a number is taken
+
+        var canManual = await permissions.HasPermissionAsync(currentUser.Roles, "Correspondence", "ManualNumber");
+        var number = Flag(useManualNumber) && canManual && !string.IsNullOrWhiteSpace(letterNumber) ? letterNumber : await numbering.GenerateNextNumberAsync("Incoming", projectId, await DepartmentIdAsync());
+        var id = await letters.CreateAsync("Incoming", number, date, sender, null, subject, body, string.IsNullOrWhiteSpace(priority) ? "Normal" : priority, string.IsNullOrWhiteSpace(confidentialityLevel) ? "Internal" : confidentialityLevel,
+            projectId, disciplineId, relatedDocumentId, relatedMRId, currentUser.UserId, respond, responseDueDate);
+        return new(true, null, id);
+    }
+
+    public async Task<List<LetterOption>> DocumentsAsync()
+        => (await context.Documents.AsNoTracking().Where(x => x.IsActive).OrderByDescending(x => x.CreatedDate).Take(200).Select(x => new { x.DocumentId, x.DocumentNo, x.Title }).ToListAsync())
+            .Select(x => new LetterOption(x.DocumentId.ToString(CultureInfo.InvariantCulture), x.DocumentNo + " - " + x.Title)).ToList();
+
+    public async Task<List<LetterOption>> RequisitionsAsync()
+        => (await context.MaterialRequisitions.AsNoTracking().OrderByDescending(x => x.CreatedDate).Take(200).Select(x => new { x.MRId, x.MRNumber }).ToListAsync())
+            .Select(x => new LetterOption(x.MRId.ToString(CultureInfo.InvariantCulture), x.MRNumber)).ToList();
+
+    public async Task<LetterEditorImageResult> EditorImageAsync(OperationFile? file)
+    {
+        if (file is null || file.Bytes.Length == 0) return new(false, "Choose a picture.", "");
+        await using var stream = new MemoryStream(file.Bytes);
+        return new(true, null, await images.SaveAsync(PEMS.Application.Uploads.ProtectedImageStore.LetterImages, file.FileName, stream));
     }
 }

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-reply-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reply to a letter (old address)",
+    "fa": "پاسخ به نامه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Reply to a letter",
+    "fa": "پاسخ به نامه"
+  },
+  "payload": {
+    "pattern": "Letter/Reply/{id}",
+    "target": "/f/letter-compose?replyTo={id}",
+    "permanent": false
+  }
+}
