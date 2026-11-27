@@ -1,0 +1,62 @@
+{
+  "kind": "form",
+  "key": "equipment-scan-pdf",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Scan a PDF for equipment tags",
+    "fa": "اسکن PDF برای تگ تجهیزات"
+  },
+  "description": {
+    "en": "Upload a PDF: a best-effort scan for tag numbers",
+    "fa": "بارگذاری PDF: اسکن بهترین‌تلاش برای شماره‌ی تگ"
+  },
+  "payload": {
+    "id": "equipment-scan-pdf",
+    "title": {
+      "en": "Scan a PDF for equipment tags",
+      "fa": "اسکن PDF برای تگ تجهیزات"
+    },
+    "submitLabel": {
+      "en": "Scan",
+      "fa": "اسکن"
+    },
+    "actionKey": "equipment-scan-pdf",
+    "columns": 2,
+    "permission": "EquipmentImport.Create",
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-scan-projects-opts"
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "PDF file",
+          "fa": "فایل PDF"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "accept": ".pdf,application/pdf"
+      }
+    ]
+  }
+}

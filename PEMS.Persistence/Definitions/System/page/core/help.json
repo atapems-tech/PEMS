@@ -111,7 +111,7 @@
                       "en": "Open",
                       "fa": "باز کردن"
                     },
-                    "url": "/Help/Article?code={raw.code}",
+                    "url": "/p/help-article-view?code={raw.code}",
                     "method": "get"
                   }
                 ]

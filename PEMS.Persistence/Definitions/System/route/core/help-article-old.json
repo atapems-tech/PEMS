@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "help-article-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help article (old address)",
+    "fa": "مقاله‌ی راهنما (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Help article",
+    "fa": "مقاله‌ی راهنما"
+  },
+  "payload": {
+    "pattern": "Help/Article",
+    "target": "/p/help-article-view",
+    "permanent": false
+  }
+}

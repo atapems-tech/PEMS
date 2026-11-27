@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "equipment-scan-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Create equipment from the scanned tags",
+    "fa": "ساخت تجهیز از تگ‌های اسکن‌شده"
+  },
+  "description": {
+    "en": "Create equipment from the scanned tags",
+    "fa": "ساخت تجهیز از تگ‌های اسکن‌شده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EquipmentTagScan",
+      "action": "Create",
+      "args": {
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "tags": "field:tags"
+      }
+    },
+    "success": {
+      "en": "The equipment tags were added from the PDF scan. Names and types are placeholders: edit each one with the real details.",
+      "fa": "تگ‌های تجهیزات از اسکن PDF افزوده شدند. نام و نوع جایگزین‌اند: هر کدام را با جزئیات واقعی ویرایش کنید."
+    },
+    "redirect": "/p/equipments"
+  }
+}

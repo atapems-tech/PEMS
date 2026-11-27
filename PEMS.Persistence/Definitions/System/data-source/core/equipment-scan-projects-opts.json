@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "equipment-scan-projects-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Projects (tag scan)",
+    "fa": "پروژه‌ها (اسکن تگ)"
+  },
+  "description": {
+    "en": "Projects (tag scan)",
+    "fa": "پروژه‌ها (اسکن تگ)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EquipmentTagScan",
+      "action": "Projects",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

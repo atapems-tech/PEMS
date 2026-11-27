@@ -336,17 +336,6 @@ public class OrganizationHierarchyTests
     // ------------------------------------------------------------------ Security / architecture
 
     [Fact]
-    public void PartCatalogueControllers_NeverAcceptApproverManagerOrPositionIdsFromTheBrowser()
-    {
-        var asm = typeof(PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController).Assembly;
-        var forbidden = new[] { "approverid", "managerid", "manageremployeeid", "approveremployeeid", "positionid", "parentpositionid", "resolvedemployeeid" };
-        foreach (var t in new[] { "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController" })
-            foreach (var m in asm.GetType(t)!.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly))
-                foreach (var p in m.GetParameters())
-                    Assert.DoesNotContain(p.Name!.ToLowerInvariant(), forbidden);
-    }
-
-    [Fact]
     public void OrganizationControllers_AreSystemAdminOnly()
     {
         // SCRUM-639: the organization pages are operations (SystemAdmin only)

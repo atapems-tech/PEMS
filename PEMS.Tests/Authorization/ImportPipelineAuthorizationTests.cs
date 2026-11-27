@@ -135,32 +135,16 @@ public class ImportPipelineAuthorizationTests
         Assert.True(service.CommitCalled);
     }
 
-    [Fact]
-    public async Task Equipment_CreateFromTags_WithoutPermission_ReturnsForbid_DoesNotCreateEquipment()
+    // SCRUM-841: the PDF tag scan is operations; the permissions are the old ones (Create scans, Approve creates the equipment directly)
+    [Theory]
+    [InlineData("ScanAsync", "EquipmentImport.Create")]
+    [InlineData("CandidatesAsync", "EquipmentImport.Create")]
+    [InlineData("CreateAsync", "EquipmentImport.Approve")]
+    public void EquipmentTagScan_OperationsKeepTheOldPermissions(string method, string permission)
     {
-        var (ctx, perms, user) = await CreateInfra(nameof(Equipment_CreateFromTags_WithoutPermission_ReturnsForbid_DoesNotCreateEquipment), role: SystemRoles.Viewer);
-        ctx.Projects.Add(new PEMS.Domain.Entities.Project { ProjectId = 1, ProjectCode = "P1", ProjectName = "P1", IsActive = true });
-        await ctx.SaveChangesAsync();
-        var controller = new EquipmentImportController(new FakeEquipmentImportService(), new FakeEquipmentPdfScanService(), ctx, user, perms).WithTempData();
-
-        var result = await controller.CreateFromTags(1, 1, new List<string> { "EQ-999" });
-
-        Assert.IsType<ForbidResult>(result);
-        Assert.Empty(ctx.Equipments);
-    }
-
-    [Fact]
-    public async Task Equipment_CreateFromTags_WithPermission_CreatesEquipment()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Equipment_CreateFromTags_WithPermission_CreatesEquipment), role: SystemRoles.EngineeringManager);
-        ctx.Projects.Add(new PEMS.Domain.Entities.Project { ProjectId = 1, ProjectCode = "P1", ProjectName = "P1", IsActive = true });
-        await ctx.SaveChangesAsync();
-        var controller = new EquipmentImportController(new FakeEquipmentImportService(), new FakeEquipmentPdfScanService(), ctx, user, perms).WithTempData();
-
-        var result = await controller.CreateFromTags(1, 1, new List<string> { "EQ-999" });
-
-        Assert.IsType<RedirectResult>(result);
-        Assert.Single(ctx.Equipments);
+        var attribute = (PEMS.Application.Common.PemsOperationAttribute)typeof(PEMS.Application.Interfaces.IEquipmentTagScanOperations).GetMethod(method)!
+            .GetCustomAttributes(typeof(PEMS.Application.Common.PemsOperationAttribute), false)[0];
+        Assert.Equal(permission, attribute.Permission);
     }
 
     // ================= VDR Import =================

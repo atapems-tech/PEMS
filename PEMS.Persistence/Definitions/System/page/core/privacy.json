@@ -1,0 +1,38 @@
+{
+  "kind": "page",
+  "key": "privacy",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Privacy policy",
+    "fa": "سیاست حریم خصوصی"
+  },
+  "description": {
+    "en": "Privacy policy",
+    "fa": "سیاست حریم خصوصی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "privacy",
+    "regions": {
+      "content": [
+        {
+          "id": "text",
+          "component": "content-blocks",
+          "options": {
+            "id": "text",
+            "blocks": [
+              {
+                "type": "text",
+                "text": {
+                  "en": "Use this page to detail your site's privacy policy.",
+                  "fa": "از این صفحه برای شرح سیاست حریم خصوصی سایت استفاده کنید."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

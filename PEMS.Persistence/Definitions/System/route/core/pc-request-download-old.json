@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-request-download-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part catalogue request attachment (old address)",
+    "fa": "پیوست درخواست کاتالوگ قطعه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part catalogue request attachment",
+    "fa": "پیوست درخواست کاتالوگ قطعه"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueRequest/Download",
+    "target": "/x/pc-request-attachment",
+    "permanent": false
+  }
+}

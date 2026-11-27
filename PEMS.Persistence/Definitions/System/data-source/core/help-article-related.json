@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "help-article-related",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Related help",
+    "fa": "راهنمای مرتبط"
+  },
+  "description": {
+    "en": "Related help",
+    "fa": "راهنمای مرتبط"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Help",
+      "action": "Related",
+      "args": {
+        "code": "param:code"
+      }
+    }
+  }
+}

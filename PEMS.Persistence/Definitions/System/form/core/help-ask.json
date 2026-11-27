@@ -1,0 +1,58 @@
+{
+  "kind": "form",
+  "key": "help-ask",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Ask PEMS AI",
+    "fa": "پرسش از هوش مصنوعی PEMS"
+  },
+  "description": {
+    "en": "Ask a question about a help article: the answer is based only on its content",
+    "fa": "پرسش درباره‌ی یک مقاله‌ی راهنما: پاسخ فقط بر اساس محتوای آن است"
+  },
+  "payload": {
+    "id": "help-ask",
+    "title": {
+      "en": "Ask PEMS AI",
+      "fa": "پرسش از هوش مصنوعی PEMS"
+    },
+    "submitLabel": {
+      "en": "Ask",
+      "fa": "پرسیدن"
+    },
+    "actionKey": "help-ask",
+    "columns": 1,
+    "fields": [
+      {
+        "name": "articleCode",
+        "label": {
+          "en": "Article",
+          "fa": "مقاله"
+        },
+        "kind": "text",
+        "hidden": true
+      },
+      {
+        "name": "question",
+        "label": {
+          "en": "Your question about this article",
+          "fa": "پرسش شما درباره‌ی این مقاله"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 1000,
+        "placeholder": {
+          "en": "e.g. What happens if I do not respond to IDC?",
+          "fa": "مثلاً اگر به IDC پاسخ ندهم چه می‌شود؟"
+        }
+      }
+    ]
+  }
+}

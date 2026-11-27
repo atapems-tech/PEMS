@@ -1,0 +1,83 @@
+{
+  "kind": "form",
+  "key": "equipment-scan-select",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tags found in the PDF",
+    "fa": "تگ‌های یافت‌شده در PDF"
+  },
+  "description": {
+    "en": "Review the tags found and create the chosen ones as equipment",
+    "fa": "بازبینی تگ‌های یافت‌شده و ساخت تجهیزات"
+  },
+  "payload": {
+    "id": "equipment-scan-select",
+    "title": {
+      "en": "Tags found in the PDF",
+      "fa": "تگ‌های یافت‌شده در PDF"
+    },
+    "submitLabel": {
+      "en": "Create the selected as equipment",
+      "fa": "ساخت موارد انتخابی به‌عنوان تجهیز"
+    },
+    "actionKey": "equipment-scan-create",
+    "columns": 2,
+    "permission": "EquipmentImport.Approve",
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline for all selected tags",
+          "fa": "دیسیپلین همه‌ی تگ‌های انتخاب‌شده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-scan-disciplines-opts"
+      },
+      {
+        "name": "tags",
+        "label": {
+          "en": "Tags (this is a best-effort scan: names and types are placeholders to edit afterwards)",
+          "fa": "تگ‌ها (اسکن بهترین‌تلاش است: نام و نوع جایگزین‌اند و باید بعداً ویرایش شوند)"
+        },
+        "kind": "multiSelect",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "equipment-scan-candidates-opts",
+        "optionsArgs": {
+          "token": "token",
+          "projectId": "projectId"
+        },
+        "span": 2
+      }
+    ]
+  }
+}
