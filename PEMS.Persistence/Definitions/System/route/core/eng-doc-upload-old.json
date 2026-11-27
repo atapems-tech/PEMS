@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-doc-upload-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a document attachment (old address)",
+    "fa": "بارگذاری پیوست مدرک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Upload a document attachment",
+    "fa": "بارگذاری پیوست مدرک"
+  },
+  "payload": {
+    "pattern": "EngineeringDocuments/UploadAttachment/{id}",
+    "target": "/f/eng-doc-upload-attachment?documentId={id}",
+    "permanent": false
+  }
+}

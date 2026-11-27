@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-doc-create-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New engineering document (old address)",
+    "fa": "مدرک مهندسی جدید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New engineering document",
+    "fa": "مدرک مهندسی جدید"
+  },
+  "payload": {
+    "pattern": "EngineeringDocuments/Create",
+    "target": "/f/eng-doc-create",
+    "permanent": false
+  }
+}

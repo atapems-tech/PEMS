@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-form-mrs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material requisitions",
+    "fa": "درخواست‌های خرید مواد"
+  },
+  "description": {
+    "en": "Material requisitions",
+    "fa": "درخواست‌های خرید مواد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngDocForm",
+      "action": "MaterialRequisitions"
+    }
+  }
+}
