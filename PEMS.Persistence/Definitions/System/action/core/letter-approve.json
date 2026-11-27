@@ -18,7 +18,7 @@
       "model": "Letter",
       "action": "Approve",
       "args": {
-        "letterId": "field:letterId",
+        "letterId": "field:id",
         "comment": "field:comment"
       }
     },
@@ -26,6 +26,6 @@
       "en": "Letter approved.",
       "fa": "نامه تأیید شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={id}"
   }
 }

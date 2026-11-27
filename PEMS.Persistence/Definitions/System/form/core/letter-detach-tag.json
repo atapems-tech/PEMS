@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "letter-detach-tag",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove the tag",
+    "fa": "حذف برچسب"
+  },
+  "description": {
+    "en": "Remove the tag",
+    "fa": "حذف برچسب"
+  },
+  "payload": {
+    "id": "letter-detach-tag",
+    "title": {
+      "en": "Remove the tag",
+      "fa": "حذف برچسب"
+    },
+    "submitLabel": {
+      "en": "Remove the tag",
+      "fa": "حذف برچسب"
+    },
+    "actionKey": "letter-detach-tag",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "tagId",
+        "label": {
+          "en": "Tag",
+          "fa": "برچسب"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

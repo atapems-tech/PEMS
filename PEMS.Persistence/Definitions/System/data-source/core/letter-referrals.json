@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-referrals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Referrals",
+    "fa": "ارجاع‌ها"
+  },
+  "description": {
+    "en": "Referrals",
+    "fa": "ارجاع‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Referrals",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

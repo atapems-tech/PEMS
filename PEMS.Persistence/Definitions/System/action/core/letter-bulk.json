@@ -28,7 +28,7 @@
       "en": "Done.",
       "fa": "انجام شد."
     },
-    "redirect": "/Letter",
+    "redirect": "/p/letters",
     "redirectBack": true
   }
 }

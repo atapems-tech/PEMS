@@ -11,7 +11,7 @@
         <span class="lc-number">@Model.Report.LetterNumber</span>
         <pems-badge tone="neutral">@Model.Report.Status</pems-badge>
         <span class="lc-savestate">
-            <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Details" asp-route-id="@Model.Report.LetterId">@Localizer["Lc_BackToLetter"]</pems-button>
+            <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/letter-details?id=@Model.Report.LetterId">@Localizer["Lc_BackToLetter"]</pems-button>
             <pems-button tone="primary" size="small" outline="true" as="a" asp-action="ComplianceExport" asp-route-id="@Model.Report.LetterId"><pems-icon name="bi-download" aria-hidden="true" /> @Localizer["Lc_ExportCsv"]</pems-button>
         </span>
     </div>

@@ -287,7 +287,7 @@ public class LetterComposeController : Controller
         }
 
         TempData["Message"] = request.Input.ApprovalRequired ? "Submitted for review" : "Letter sent";
-        return Json(new { success = true, letterId = saved.LetterId, redirect = Url.Action("Details", "Letter", new { id = saved.LetterId }) });
+        return Json(new { success = true, letterId = saved.LetterId, redirect = $"/p/letter-details?id={saved.LetterId}" });
     }
 
     // ------------------------------------------------------------------ lifecycle actions from Details

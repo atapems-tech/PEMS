@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "letter-sign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sign / acknowledge",
+    "fa": "امضا / تأیید دریافت"
+  },
+  "description": {
+    "en": "Sign / acknowledge",
+    "fa": "امضا / تأیید دریافت"
+  },
+  "payload": {
+    "id": "letter-sign",
+    "title": {
+      "en": "Sign / acknowledge",
+      "fa": "امضا / تأیید دریافت"
+    },
+    "submitLabel": {
+      "en": "Sign / acknowledge",
+      "fa": "امضا / تأیید دریافت"
+    },
+    "actionKey": "letter-sign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "signedByName",
+        "label": {
+          "en": "Type your full name to sign",
+          "fa": "نام کامل خود را برای امضا بنویسید"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

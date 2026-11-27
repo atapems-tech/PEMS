@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-steps",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approval steps",
+    "fa": "مراحل تأیید"
+  },
+  "description": {
+    "en": "Approval steps",
+    "fa": "مراحل تأیید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Steps",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-approvers",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approvers",
+    "fa": "تأییدکنندگان"
+  },
+  "description": {
+    "en": "Approvers",
+    "fa": "تأییدکنندگان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Approvers"
+    }
+  }
+}

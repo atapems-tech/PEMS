@@ -1,0 +1,711 @@
+{
+  "kind": "page",
+  "key": "letter-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter",
+    "fa": "نامه"
+  },
+  "description": {
+    "en": "Letter",
+    "fa": "نامه"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "letter-details",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/letters"
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "letter-head",
+            "fields": [
+              {
+                "key": "number",
+                "label": {
+                  "en": "Letter no.",
+                  "fa": "شماره نامه"
+                }
+              },
+              {
+                "key": "subject",
+                "label": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "wide": true
+              },
+              {
+                "key": "type",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
+              },
+              {
+                "key": "confidentiality",
+                "label": {
+                  "en": "Confidentiality",
+                  "fa": "محرمانگی"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "sender",
+                "label": {
+                  "en": "Sender",
+                  "fa": "فرستنده"
+                }
+              },
+              {
+                "key": "receiver",
+                "label": {
+                  "en": "Receiver",
+                  "fa": "گیرنده"
+                }
+              },
+              {
+                "key": "date",
+                "label": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                },
+                "type": "date"
+              },
+              {
+                "key": "reference",
+                "label": {
+                  "en": "Reference",
+                  "fa": "مرجع"
+                }
+              },
+              {
+                "key": "category",
+                "label": {
+                  "en": "Category",
+                  "fa": "دسته"
+                }
+              },
+              {
+                "key": "responseRequired",
+                "label": {
+                  "en": "Response required",
+                  "fa": "نیاز به پاسخ"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "responseDue",
+                "label": {
+                  "en": "Response due",
+                  "fa": "سررسید پاسخ"
+                },
+                "type": "date"
+              },
+              {
+                "key": "responseAnswered",
+                "label": {
+                  "en": "Answered",
+                  "fa": "پاسخ داده شده"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "responseOverdue",
+                "label": {
+                  "en": "Response overdue",
+                  "fa": "پاسخ دیرکرد دارد"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "signedBy",
+                "label": {
+                  "en": "Signed by",
+                  "fa": "امضا شده توسط"
+                }
+              },
+              {
+                "key": "signedDate",
+                "label": {
+                  "en": "Signed on",
+                  "fa": "تاریخ امضا"
+                },
+                "type": "date"
+              },
+              {
+                "key": "tags",
+                "label": {
+                  "en": "Tags",
+                  "fa": "برچسب‌ها"
+                },
+                "wide": true
+              },
+              {
+                "key": "body",
+                "label": {
+                  "en": "Body",
+                  "fa": "متن"
+                },
+                "type": "html",
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/letter-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "letter-actions",
+            "url": "/d/letter-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 110,
+            "columns": [
+              {
+                "key": "status",
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 2200,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "submit",
+                    "url": "/a/letter-submit-review",
+                    "method": "post",
+                    "showWhen": "row.canSubmit == true"
+                  },
+                  {
+                    "key": "approve",
+                    "url": "/a/letter-approve",
+                    "method": "post",
+                    "showWhen": "row.canApprove == true"
+                  },
+                  {
+                    "key": "return",
+                    "url": "/f/letter-return-revision?letterId={id}",
+                    "method": "get",
+                    "showWhen": "row.canApprove == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/f/letter-reject?letterId={id}",
+                    "method": "get",
+                    "showWhen": "row.canApprove == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "issue",
+                    "url": "/a/letter-issue",
+                    "method": "post",
+                    "showWhen": "row.canIssue == true"
+                  },
+                  {
+                    "key": "close",
+                    "url": "/a/letter-close",
+                    "method": "post",
+                    "showWhen": "row.canClose == true"
+                  },
+                  {
+                    "key": "send",
+                    "url": "/a/letter-send",
+                    "method": "post",
+                    "showWhen": "row.canSend == true"
+                  },
+                  {
+                    "key": "archive",
+                    "url": "/a/letter-archive",
+                    "method": "post",
+                    "showWhen": "row.canArchive == true"
+                  },
+                  {
+                    "key": "reply",
+                    "url": "/LetterCompose/Compose?replyTo={id}",
+                    "method": "get",
+                    "showWhen": "row.canReplyRefer == true"
+                  },
+                  {
+                    "key": "refer-compose",
+                    "url": "/LetterCompose/Compose?referTo={id}",
+                    "method": "get",
+                    "showWhen": "row.canReplyRefer == true"
+                  },
+                  {
+                    "key": "sign",
+                    "url": "/f/letter-sign?letterId={id}",
+                    "method": "get",
+                    "showWhen": "row.canSign == true"
+                  },
+                  {
+                    "key": "response",
+                    "url": "/f/letter-response-due?letterId={id}&responseRequired={raw.responseRequired}&responseDueDate={raw.responseDue}",
+                    "method": "get",
+                    "showWhen": "row.canResponse == true"
+                  },
+                  {
+                    "key": "refer",
+                    "url": "/f/letter-refer?letterId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "add-recipient",
+                    "url": "/f/letter-add-recipient?letterId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "tag",
+                    "url": "/f/letter-attach-tag?letterId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "upload",
+                    "url": "/f/letter-upload-attachment?letterId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "pdf",
+                    "url": "/Letter/ExportPdf/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "history",
+                    "url": "/LetterCompose/History/{id}",
+                    "method": "get",
+                    "showWhen": "row.canAudit == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-recipients",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-recipients",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Recipients",
+                  "fa": "گیرندگان"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "recipients",
+          "component": "def:related-table",
+          "options": {
+            "id": "recipients",
+            "url": "/d/letter-recipients?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "type",
+                "width": 90
+              },
+              {
+                "key": "name",
+                "width": 260
+              },
+              {
+                "key": "read",
+                "width": 140
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-referrals",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-referrals",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Referrals",
+                  "fa": "ارجاع‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "referrals",
+          "component": "def:related-table",
+          "options": {
+            "id": "referrals",
+            "url": "/d/letter-referrals?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "to",
+                "width": 200
+              },
+              {
+                "key": "instructions",
+                "width": 280
+              },
+              {
+                "key": "due",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "referredBy",
+                "width": 160
+              },
+              {
+                "key": "referred",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "responseNote",
+                "width": 240
+              },
+              {
+                "key": "overdue",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 200,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "complete",
+                    "url": "/f/letter-complete-referral?letterId={{params.id}}&referralId={id}",
+                    "method": "get",
+                    "showWhen": "row.canComplete == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-attachments",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-attachments",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Attachments",
+                  "fa": "پیوست‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "attachments",
+          "component": "def:related-table",
+          "options": {
+            "id": "attachments",
+            "url": "/d/letter-attachments?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "file",
+                "width": 360
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 140,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "download",
+                    "url": "/Files/Download/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-steps",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-steps",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Approval steps",
+                  "fa": "مراحل تأیید"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "steps",
+          "component": "def:related-table",
+          "options": {
+            "id": "steps",
+            "url": "/d/letter-steps?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "order",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "approver",
+                "width": 220
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "decided",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "comment",
+                "width": 280
+              },
+              {
+                "key": "current",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 200,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "reassign",
+                    "url": "/f/letter-reassign-approver?letterId={{params.id}}&stepOrder={id}",
+                    "method": "get",
+                    "showWhen": "row.canReassign == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-reviews",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-reviews",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Reviews",
+                  "fa": "بازبینی‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "reviews",
+          "component": "def:related-table",
+          "options": {
+            "id": "reviews",
+            "url": "/d/letter-reviews?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "reviewer",
+                "width": 200
+              },
+              {
+                "key": "decision",
+                "width": 120
+              },
+              {
+                "key": "comment",
+                "width": 320
+              },
+              {
+                "key": "created",
+                "width": 130,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-tags",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-tags",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Tags",
+                  "fa": "برچسب‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tags",
+          "component": "def:related-table",
+          "options": {
+            "id": "tags",
+            "url": "/d/letter-tags?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "width": 220
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "url": "/f/letter-detach-tag?letterId={{params.id}}&tagId={id}",
+                    "method": "get",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-timeline",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-timeline",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "History",
+                  "fa": "تاریخچه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "timeline",
+          "component": "def:related-table",
+          "options": {
+            "id": "timeline",
+            "url": "/d/letter-timeline?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "type",
+                "width": 140
+              },
+              {
+                "key": "description",
+                "width": 380
+              },
+              {
+                "key": "by",
+                "width": 160
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.View"
+  }
+}

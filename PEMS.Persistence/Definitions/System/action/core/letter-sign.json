@@ -26,6 +26,6 @@
       "en": "Letter signed.",
       "fa": "نامه امضا شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

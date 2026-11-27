@@ -18,13 +18,13 @@
       "model": "Letter",
       "action": "SubmitForReview",
       "args": {
-        "letterId": "field:letterId"
+        "letterId": "field:id"
       }
     },
     "success": {
       "en": "Submitted for review.",
       "fa": "برای بازبینی ارسال شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={id}"
   }
 }

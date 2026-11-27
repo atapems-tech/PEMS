@@ -27,6 +27,6 @@
       "en": "Referral marked as completed.",
       "fa": "ارجاع تکمیل شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

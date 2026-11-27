@@ -26,6 +26,6 @@
       "en": "Tag removed.",
       "fa": "برچسب حذف شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

@@ -27,6 +27,6 @@
       "en": "Response requirement updated.",
       "fa": "نیاز به پاسخ به‌روز شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

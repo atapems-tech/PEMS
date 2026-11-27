@@ -18,13 +18,13 @@
       "model": "Letter",
       "action": "Archive",
       "args": {
-        "letterId": "field:letterId"
+        "letterId": "field:id"
       }
     },
     "success": {
       "en": "Letter archived.",
       "fa": "نامه بایگانی شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={id}"
   }
 }
