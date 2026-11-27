@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "help-context",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Contextual help",
+    "fa": "راهنمای زمینه‌ای"
+  },
+  "description": {
+    "en": "Contextual help",
+    "fa": "راهنمای زمینه‌ای"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Help",
+      "action": "Context",
+      "args": {
+        "key": "param:key"
+      },
+      "disposition": "inline"
+    }
+  }
+}
