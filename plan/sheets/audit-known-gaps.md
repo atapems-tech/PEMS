@@ -87,3 +87,9 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - The breadcrumb, the restricted-item lock icon, the "not eligible" assignee hint text, the sprint select of the create modal and the people-diagnostic help text of the assignee list are not shown.
 - Quick add of a subtask no longer chains ("create another"); the old address `Task/Details/{id}` is a route.
 - TaskManager `Create` and `Update` controller actions and the item row and table partials are removed (their users are gone).
+
+### Maintenance calendar (SCRUM-831)
+- The week view (rows by team, one column a day, conflict marks, drag between days) and the day timeline are the generic month calendar and the day-by-day timeline of the data view; team rows and the employee-conflict marks are not shown (the conflict flag is in the row but has no style yet).
+- Moving a card to another day keeps its time and length (operation MoveDay, guarded as the schedule action); the day-by-day view moves with its start and end through the existing schedule action.
+- Items shown: planned from 90 days back to a year ahead (the old page asked for the visible range); the filters are text selects of the page filters.
+- The script `pems-maintenance-calendar.js`, its templates and the controller are unused now; delete them with the audit.

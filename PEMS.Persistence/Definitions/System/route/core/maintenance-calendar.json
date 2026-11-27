@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-calendar",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance calendar (old address)",
+    "fa": "تقویم نگهداری (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance calendar (old address)",
+    "fa": "تقویم نگهداری (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceCalendar",
+    "target": "/p/maintenance-calendar",
+    "permanent": false
+  }
+}

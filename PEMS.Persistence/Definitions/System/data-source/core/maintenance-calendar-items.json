@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "maintenance-calendar-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance calendar",
+    "fa": "تقویم نگهداری"
+  },
+  "description": {
+    "en": "Maintenance calendar",
+    "fa": "تقویم نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "CalendarItems",
+      "args": {
+        "teamId": "param:teamId",
+        "employeeId": "param:employeeId",
+        "status": "param:status",
+        "workOrderType": "param:workOrderType",
+        "priority": "param:priority"
+      }
+    }
+  }
+}

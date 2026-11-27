@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cal-type-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work types",
+    "fa": "انواع کار"
+  },
+  "description": {
+    "en": "Work types",
+    "fa": "انواع کار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "CalendarTypeOptions"
+    }
+  }
+}

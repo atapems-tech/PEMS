@@ -1,0 +1,348 @@
+{
+  "kind": "page",
+  "key": "maintenance-calendar",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance calendar",
+    "fa": "تقویم نگهداری"
+  },
+  "description": {
+    "en": "Maintenance calendar",
+    "fa": "تقویم نگهداری"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "maintenance-calendar",
+    "permission": "WorkOrder.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "maintenance-calendar-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/maintenance-calendar",
+                "text": {
+                  "en": "Month",
+                  "fa": "ماه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/maintenance-calendar?view=timeline",
+                "text": {
+                  "en": "Day by day",
+                  "fa": "روز به روز"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/work-orders",
+                "text": {
+                  "en": "Work orders",
+                  "fa": "دستورکارها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/calendar-my-work",
+                "text": {
+                  "en": "My work",
+                  "fa": "کار من"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "maintenance-calendar-filters",
+            "resetUrl": "/p/maintenance-calendar",
+            "fields": [
+              {
+                "name": "teamId",
+                "label": {
+                  "en": "Maintenance team",
+                  "fa": "تیم نگهداری"
+                },
+                "kind": "select",
+                "value": "{{params.teamId}}"
+              },
+              {
+                "name": "employeeId",
+                "label": {
+                  "en": "Executor",
+                  "fa": "مجری"
+                },
+                "kind": "select",
+                "value": "{{params.employeeId}}"
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}"
+              },
+              {
+                "name": "workOrderType",
+                "label": {
+                  "en": "Work type",
+                  "fa": "نوع کار"
+                },
+                "kind": "select",
+                "value": "{{params.workOrderType}}"
+              },
+              {
+                "name": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "kind": "select",
+                "value": "{{params.priority}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "teamId",
+                "source": "/d/cal-team-options",
+                "valueField": "value"
+              },
+              {
+                "field": "employeeId",
+                "source": "/d/cal-employee-options",
+                "valueField": "value"
+              },
+              {
+                "field": "status",
+                "source": "/d/cal-status-options",
+                "valueField": "value"
+              },
+              {
+                "field": "workOrderType",
+                "source": "/d/cal-type-options",
+                "valueField": "value"
+              },
+              {
+                "field": "priority",
+                "source": "/d/cal-priority-options",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "month",
+          "component": "data-view",
+          "visible": "params.view != 'timeline'",
+          "options": {
+            "id": "maintenance-calendar-month",
+            "url": "/d/maintenance-calendar-items?f.teamId={{params.teamId|url}}&f.employeeId={{params.employeeId|url}}&f.status={{params.status|url}}&f.workOrderType={{params.workOrderType|url}}&f.priority={{params.priority|url}}",
+            "view": "calendar",
+            "fields": {
+              "id": "id",
+              "title": "title",
+              "subtitle": "subtitle",
+              "badge": "badge",
+              "date": "date",
+              "end": "end"
+            },
+            "texts": {
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "Nothing here",
+                "fa": "موردی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "more": {
+                "en": "More",
+                "fa": "بیشتر"
+              },
+              "today": {
+                "en": "Today",
+                "fa": "امروز"
+              },
+              "previous": {
+                "en": "Previous",
+                "fa": "قبلی"
+              },
+              "next": {
+                "en": "Next",
+                "fa": "بعدی"
+              },
+              "jalali": {
+                "en": "Jalali",
+                "fa": "شمسی"
+              },
+              "gregorian": {
+                "en": "Gregorian",
+                "fa": "میلادی"
+              },
+              "uncategorized": {
+                "en": "Other",
+                "fa": "سایر"
+              },
+              "moreItems": {
+                "en": "+{0} more",
+                "fa": "{0}+ مورد دیگر"
+              }
+            },
+            "groups": [],
+            "calendar": "gregorian",
+            "weekStart": 1,
+            "moveUrl": "/a/work-order-move-day",
+            "itemUrl": "/p/work-order-details?id={id}",
+            "height": 720
+          }
+        },
+        {
+          "id": "timeline",
+          "component": "data-view",
+          "visible": "params.view == 'timeline'",
+          "options": {
+            "id": "maintenance-calendar-timeline",
+            "url": "/d/maintenance-calendar-items?f.teamId={{params.teamId|url}}&f.employeeId={{params.employeeId|url}}&f.status={{params.status|url}}&f.workOrderType={{params.workOrderType|url}}&f.priority={{params.priority|url}}",
+            "view": "timeline",
+            "fields": {
+              "id": "id",
+              "title": "title",
+              "subtitle": "subtitle",
+              "badge": "badge",
+              "date": "date",
+              "end": "end"
+            },
+            "texts": {
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "Nothing here",
+                "fa": "موردی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "more": {
+                "en": "More",
+                "fa": "بیشتر"
+              },
+              "today": {
+                "en": "Today",
+                "fa": "امروز"
+              },
+              "previous": {
+                "en": "Previous",
+                "fa": "قبلی"
+              },
+              "next": {
+                "en": "Next",
+                "fa": "بعدی"
+              },
+              "jalali": {
+                "en": "Jalali",
+                "fa": "شمسی"
+              },
+              "gregorian": {
+                "en": "Gregorian",
+                "fa": "میلادی"
+              },
+              "uncategorized": {
+                "en": "Other",
+                "fa": "سایر"
+              },
+              "moreItems": {
+                "en": "+{0} more",
+                "fa": "{0}+ مورد دیگر"
+              }
+            },
+            "groups": [],
+            "moveUrl": "/a/work-order-set-schedule",
+            "itemUrl": "/p/work-order-details?id={id}",
+            "height": 720
+          }
+        },
+        {
+          "id": "h-unscheduled",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-unscheduled",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Unscheduled work",
+                  "fa": "کارهای زمان‌بندی‌نشده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "unscheduled",
+          "component": "data-grid",
+          "options": {
+            "id": "maintenance-calendar-unscheduled",
+            "url": "/d/maintenance-calendar-unscheduled?f.teamId={{params.teamId|url}}&f.employeeId={{params.employeeId|url}}&f.status={{params.status|url}}&f.workOrderType={{params.workOrderType|url}}&f.priority={{params.priority|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "workOrderNumber",
+                "width": 150
+              },
+              {
+                "key": "equipment",
+                "width": 160
+              },
+              {
+                "key": "priority",
+                "width": 110
+              },
+              {
+                "key": "workOrderType",
+                "width": 130
+              },
+              {
+                "key": "team",
+                "width": 160
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/p/work-order-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
