@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-failure-mode-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure modes of the equipment class",
+    "fa": "حالت‌های خرابی کلاس تجهیز"
+  },
+  "description": {
+    "en": "Failure modes of the equipment class",
+    "fa": "حالت‌های خرابی کلاس تجهیز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "FailureModeOptions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-labor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order labor",
+    "fa": "ساعت‌کار دستورکار"
+  },
+  "description": {
+    "en": "Work order labor",
+    "fa": "ساعت‌کار دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "Labor",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Multi-discipline review",
+    "fa": "بازبینی چند-دیسیپلینه"
+  },
+  "description": {
+    "en": "Multi-discipline review",
+    "fa": "بازبینی چند-دیسیپلینه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "Review",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

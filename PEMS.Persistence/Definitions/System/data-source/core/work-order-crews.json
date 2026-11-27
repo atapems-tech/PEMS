@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-crews",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order crews",
+    "fa": "خدمه‌ی دستورکار"
+  },
+  "description": {
+    "en": "Work order crews",
+    "fa": "خدمه‌ی دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "Crews",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

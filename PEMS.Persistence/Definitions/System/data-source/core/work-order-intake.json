@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-intake",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouse intake of a work order",
+    "fa": "دریافت انبار دستورکار"
+  },
+  "description": {
+    "en": "Warehouse intake of a work order",
+    "fa": "دریافت انبار دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "Intake",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -270,6 +270,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IBarcodeOperations, PEMS.
 builder.Services.AddScoped<PEMS.Application.Interfaces.IStrategyPagesOperations, PEMS.Web.Services.StrategyPagesOperations>();   // SCRUM-829
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskPagesOperations, PEMS.Web.Services.TaskPagesOperations>();   // SCRUM-831
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkOrderPagesOperations, PEMS.Web.Services.WorkOrderPagesOperations>();   // SCRUM-831
+builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkOrderDetailsOperations, PEMS.Web.Services.WorkOrderDetailsOperations>();   // SCRUM-831
 builder.Services.AddScoped<PEMS.Application.Interfaces.IHelpPagesOperations, PEMS.Web.Services.HelpPagesOperations>();   // SCRUM-832
 builder.Services.AddScoped<PEMS.Application.Interfaces.IExecutiveDashboardOperations, PEMS.Web.Services.ExecutiveDashboardOperations>();   // SCRUM-832
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMrsImportOperations, PEMS.Web.Services.MrsImportOperations>();   // SCRUM-657

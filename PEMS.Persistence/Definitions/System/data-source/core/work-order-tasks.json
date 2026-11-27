@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-tasks",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order tasks",
+    "fa": "وظایف دستورکار"
+  },
+  "description": {
+    "en": "Work order tasks",
+    "fa": "وظایف دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "Tasks",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}
