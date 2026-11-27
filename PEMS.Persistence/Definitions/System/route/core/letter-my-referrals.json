@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-my-referrals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My referrals (old address)",
+    "fa": "ارجاع‌های من (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "My referrals",
+    "fa": "ارجاع‌های من"
+  },
+  "payload": {
+    "pattern": "Letter/MyReferrals",
+    "target": "/p/letter-my-referrals",
+    "permanent": false
+  }
+}

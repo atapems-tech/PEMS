@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-my-referrals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My referrals",
+    "fa": "ارجاع‌های من"
+  },
+  "description": {
+    "en": "My referrals",
+    "fa": "ارجاع‌های من"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "MyReferrals"
+    }
+  }
+}

@@ -28,7 +28,7 @@
 }
 
 <pems-flex wrap="true" align="center" gap="2" css="mb-3">
-    <pems-button tone="neutral" size="small" outline="true" as="a" asp-controller="Letter" asp-action="Index"><pems-icon name="bi-arrow-left-right" aria-hidden="true" /> @Localizer["Correspondence"]</pems-button>
+    <pems-button tone="neutral" size="small" outline="true" as="a" href="/p/letters"><pems-icon name="bi-arrow-left-right" aria-hidden="true" /> @Localizer["Correspondence"]</pems-button>
     <pems-form class="ms-auto" method="get"><pems-flex wrap="true" align="end" gap="2">
         <div><pems-label css="small mb-0" for="rFrom">@Localizer["Lp_From"]</pems-label><pems-date id="rFrom" name="from" value="@PemsDates.Date(Model.FromDate)" scale="small" /></div>
         <div><pems-label css="small mb-0" for="rTo">@Localizer["Lp_To"]</pems-label><pems-date id="rTo" name="to" value="@PemsDates.Date(Model.ToDate)" scale="small" /></div>

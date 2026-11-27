@@ -1,0 +1,79 @@
+{
+  "kind": "page",
+  "key": "letter-my-referrals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "My referrals",
+    "fa": "ارجاع‌های من"
+  },
+  "description": {
+    "en": "My referrals",
+    "fa": "ارجاع‌های من"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "letter-my-referrals",
+    "regions": {
+      "content": [
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "letter-my-referrals",
+            "url": "/d/letter-my-referrals",
+            "idField": "id",
+            "viewsKey": "letter-my-referrals",
+            "columns": [
+              {
+                "key": "subject",
+                "width": 360,
+                "href": "/Letter/Details/{id}"
+              },
+              {
+                "key": "number",
+                "width": 130
+              },
+              {
+                "key": "type",
+                "width": 90
+              },
+              {
+                "key": "senderReceiver",
+                "width": 180
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "priority",
+                "width": 90
+              },
+              {
+                "key": "date",
+                "width": 100,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Letter/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.View"
+  }
+}

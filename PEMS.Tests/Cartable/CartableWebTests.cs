@@ -457,48 +457,6 @@ public class CartableWebTests
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() => ops.ThreadMembersAsync(secret.LetterId));
     }
 
-    [Fact]
-    public async Task Index_FillsTheCartableViewBag_HonoursFolderTagViewAndSettings()
-    {
-        var (c, ctx, cart) = Controller(nameof(Index_FillsTheCartableViewBag_HonoursFolderTagViewAndSettings));
-        var root = SentLetter(ctx, 710, to: new[] { 2 });
-        var reply = SentLetter(ctx, 711, author: 102, to: new[] { 1 }); reply.ParentLetterId = root.LetterId;
-        var other = SentLetter(ctx, 712, to: new[] { 2 });
-        ctx.Tags.Add(new Tag { TagId = 1, Name = "Eng" }); ctx.LetterTags.Add(new LetterTag { LetterId = other.LetterId, TagId = 1 });
-        await ctx.SaveChangesAsync();
-        await cart.TrashAsync(new[] { 712 }, 102, false);
-        await new LetterUserSettingsService(ctx).SaveAsync(102, new LetterUserSettingsRules.Settings { View = "thread", PageSize = 20 });
-
-        // default list: no trash, thread view collapses the reply under its root
-        var view = Assert.IsType<ViewResult>(await c.Index(null, null, null, null, null, null, null, null, null, null));
-        var page = Assert.IsType<PagedResult<LetterDto>>(view.Model);
-        Assert.Equal(new[] { 710 }, page.Items.Select(i => i.LetterId));
-        Assert.Equal(2, page.Items[0].ThreadCount);
-        Assert.Equal("thread", (string)c.ViewBag.ViewMode);
-        Assert.Equal(20, page.PageSize);
-        Assert.Equal(1, ((CartableCountsDto)c.ViewBag.Cartable).Trash);
-        Assert.Contains((IEnumerable<LetterTagNodeDto>)c.ViewBag.TagTree, n => n.Name == "Eng");
-
-        // an explicit URL parameter beats the saved setting; folder + sort + tag are passed through
-        var flat = Assert.IsType<ViewResult>(await c.Index(null, null, null, null, null, null, null, null, null, null, view: "flat", folder: "trash"));
-        Assert.Equal(new[] { 712 }, ((PagedResult<LetterDto>)flat.Model!).Items.Select(i => i.LetterId));
-        Assert.Equal("trash", (string)c.ViewBag.Folder);
-        Assert.True(((PagedResult<LetterDto>)flat.Model!).Items[0].IsTrashed);
-
-        var byTag = Assert.IsType<ViewResult>(await c.Index(null, null, null, null, null, null, null, null, null, null, view: "flat", tagId: 1, folder: "all"));
-        Assert.Equal(new[] { 712 }, ((PagedResult<LetterDto>)byTag.Model!).Items.Select(i => i.LetterId));
-
-        var sorted = Assert.IsType<ViewResult>(await c.Index(null, null, null, null, null, null, null, null, null, null, view: "flat", sort: "subject", dir: "asc"));
-        Assert.Equal(new[] { 710, 711 }, ((PagedResult<LetterDto>)sorted.Model!).Items.Select(i => i.LetterId));
-        Assert.Equal("subject", (string)c.ViewBag.Sort);
-        Assert.False((bool)c.ViewBag.SortDesc);
-
-        // a bogus folder falls back to the default view instead of failing
-        var bogus = Assert.IsType<ViewResult>(await c.Index(null, null, null, null, null, null, null, null, null, null, view: "flat", folder: "../etc"));
-        Assert.Null((string?)c.ViewBag.Folder);
-        Assert.Equal(2, ((PagedResult<LetterDto>)bogus.Model!).Items.Count);
-    }
-
     // ------------------------------------------------------------------ LetterCartableController
     private static LetterCartableController Cartable(string name, out PEMSDbContext ctx, ICurrentUserService? user = null)
     {

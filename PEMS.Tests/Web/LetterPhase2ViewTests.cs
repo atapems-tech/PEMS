@@ -230,18 +230,6 @@ public class LetterPhase2ViewTests
     }
 
     [Fact]
-    public void SetResponseDue_IsPostWithAntiForgery_AndDashboardIsReadOnly()
-    {
-        // SCRUM-716: the response requirement is the operation Letter.SetResponseDue, run by a shipped action definition (a post with the antiforgery token of the action host)
-        var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
-        Assert.NotNull(catalog.Get("Letter", "SetResponseDue"));
-
-        var dash = typeof(LetterController).GetMethod(nameof(LetterController.Dashboard))!;
-        Assert.Empty(dash.GetCustomAttributes(typeof(HttpPostAttribute), true));
-    }
-
-
-    [Fact]
     public void ControllerPageTitles_AreTranslated_AndLifecycleBulkStillExcludesApprove()
     {
         var fa = XDocument.Load(RepoFile("PEMS.Web/Resources/SharedResource.fa.resx")).Descendants("data").Select(d => (string?)d.Attribute("name")).ToHashSet();

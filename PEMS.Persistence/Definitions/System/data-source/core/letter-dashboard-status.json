@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-dashboard-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "By status",
+    "fa": "بر اساس وضعیت"
+  },
+  "description": {
+    "en": "By status",
+    "fa": "بر اساس وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "DashboardStatus"
+    }
+  }
+}

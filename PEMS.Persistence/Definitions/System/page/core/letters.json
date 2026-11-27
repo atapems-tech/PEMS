@@ -1,0 +1,580 @@
+{
+  "kind": "page",
+  "key": "letters",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondence",
+    "fa": "مکاتبات"
+  },
+  "description": {
+    "en": "Correspondence",
+    "fa": "مکاتبات"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "letters",
+    "regions": {
+      "content": [
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/Letter/Create?letterType=Incoming",
+                "text": {
+                  "en": "New incoming letter",
+                  "fa": "نامه‌ی وارده جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/Letter/Create?letterType=Outgoing",
+                "text": {
+                  "en": "New outgoing letter",
+                  "fa": "نامه‌ی صادره جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letter-dashboard",
+                "text": {
+                  "en": "Dashboard",
+                  "fa": "داشبورد"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letter-my-referrals",
+                "text": {
+                  "en": "My referrals",
+                  "fa": "ارجاع‌های من"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letter-templates",
+                "text": {
+                  "en": "Templates",
+                  "fa": "قالب‌ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/LetterCartable/Report",
+                "text": {
+                  "en": "Cartable report",
+                  "fa": "گزارش کارتابل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Inbox",
+                "text": {
+                  "en": "Inbox",
+                  "fa": "صندوق ورودی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Shared",
+                "text": {
+                  "en": "Shared",
+                  "fa": "اشتراکی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Sent",
+                "text": {
+                  "en": "Sent",
+                  "fa": "ارسال‌شده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Drafts",
+                "text": {
+                  "en": "Drafts",
+                  "fa": "پیش‌نویس"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Starred",
+                "text": {
+                  "en": "Starred",
+                  "fa": "ستاره‌دار"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Archive",
+                "text": {
+                  "en": "Archive",
+                  "fa": "آرشیو"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Trash",
+                "text": {
+                  "en": "Trash",
+                  "fa": "سطل زباله"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=All",
+                "text": {
+                  "en": "All",
+                  "fa": "همه"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/letters?folder=Delegated",
+                "text": {
+                  "en": "Delegated",
+                  "fa": "تفویض‌شده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "letter-counts",
+          "component": "data-grid",
+          "options": {
+            "id": "letter-counts",
+            "url": "/d/letter-counts",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "inbox",
+                "width": 90,
+                "type": "number",
+                "href": "/p/letters?folder=Inbox"
+              },
+              {
+                "key": "inboxUnread",
+                "width": 110,
+                "type": "number",
+                "href": "/p/letters?folder=Inbox&unread=true"
+              },
+              {
+                "key": "shared",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "sent",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "drafts",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "starred",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "archive",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "trash",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "all",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "delegated",
+                "width": 100,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "letters-filters",
+          "component": "page-filters",
+          "options": {
+            "id": "letters-filters",
+            "resetUrl": "/p/letters",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "letterType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                },
+                "kind": "select",
+                "value": "{{params.letterType}}",
+                "options": [
+                  {
+                    "value": "Incoming",
+                    "label": {
+                      "en": "Incoming",
+                      "fa": "وارده"
+                    }
+                  },
+                  {
+                    "value": "Outgoing",
+                    "label": {
+                      "en": "Outgoing",
+                      "fa": "صادره"
+                    }
+                  },
+                  {
+                    "value": "Internal",
+                    "label": {
+                      "en": "Internal",
+                      "fa": "داخلی"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}",
+                "options": [
+                  {
+                    "value": "Draft",
+                    "label": {
+                      "en": "Draft",
+                      "fa": "Draft"
+                    }
+                  },
+                  {
+                    "value": "PendingApproval",
+                    "label": {
+                      "en": "PendingApproval",
+                      "fa": "PendingApproval"
+                    }
+                  },
+                  {
+                    "value": "ReturnedForRevision",
+                    "label": {
+                      "en": "ReturnedForRevision",
+                      "fa": "ReturnedForRevision"
+                    }
+                  },
+                  {
+                    "value": "Approved",
+                    "label": {
+                      "en": "Approved",
+                      "fa": "Approved"
+                    }
+                  },
+                  {
+                    "value": "Issued",
+                    "label": {
+                      "en": "Issued",
+                      "fa": "Issued"
+                    }
+                  },
+                  {
+                    "value": "Sent",
+                    "label": {
+                      "en": "Sent",
+                      "fa": "Sent"
+                    }
+                  },
+                  {
+                    "value": "Closed",
+                    "label": {
+                      "en": "Closed",
+                      "fa": "Closed"
+                    }
+                  },
+                  {
+                    "value": "Rejected",
+                    "label": {
+                      "en": "Rejected",
+                      "fa": "Rejected"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "kind": "select",
+                "value": "{{params.priority}}",
+                "options": [
+                  {
+                    "value": "Low",
+                    "label": {
+                      "en": "Low",
+                      "fa": "Low"
+                    }
+                  },
+                  {
+                    "value": "Normal",
+                    "label": {
+                      "en": "Normal",
+                      "fa": "Normal"
+                    }
+                  },
+                  {
+                    "value": "High",
+                    "label": {
+                      "en": "High",
+                      "fa": "High"
+                    }
+                  },
+                  {
+                    "value": "Urgent",
+                    "label": {
+                      "en": "Urgent",
+                      "fa": "Urgent"
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}"
+              },
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}"
+              },
+              {
+                "name": "letterNumber",
+                "label": {
+                  "en": "Letter no.",
+                  "fa": "شماره نامه"
+                },
+                "kind": "text",
+                "value": "{{params.letterNumber}}"
+              },
+              {
+                "name": "subject",
+                "label": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "kind": "text",
+                "value": "{{params.subject}}"
+              },
+              {
+                "name": "sender",
+                "label": {
+                  "en": "Sender",
+                  "fa": "فرستنده"
+                },
+                "kind": "text",
+                "value": "{{params.sender}}"
+              },
+              {
+                "name": "receiver",
+                "label": {
+                  "en": "Receiver",
+                  "fa": "گیرنده"
+                },
+                "kind": "text",
+                "value": "{{params.receiver}}"
+              },
+              {
+                "name": "fromDate",
+                "label": {
+                  "en": "From",
+                  "fa": "از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.fromDate}}"
+              },
+              {
+                "name": "toDate",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.toDate}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/letter-projects",
+                "valueField": "value"
+              },
+              {
+                "field": "disciplineId",
+                "source": "/d/letter-disciplines",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "exports",
+          "component": "content-blocks",
+          "options": {
+            "id": "exports",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/x/letter-export?format=xlsx&letterType={{params.letterType|url}}&letterNumber={{params.letterNumber|url}}&subject={{params.subject|url}}&sender={{params.sender|url}}&receiver={{params.receiver|url}}&projectId={{params.projectId|url}}&disciplineId={{params.disciplineId|url}}&status={{params.status|url}}&fromDate={{params.fromDate|url}}&toDate={{params.toDate|url}}&starred={{params.starred|url}}&priority={{params.priority|url}}&hasAttachments={{params.hasAttachments|url}}&hasReferrals={{params.hasReferrals|url}}&overdueReferral={{params.overdueReferral|url}}&overdueResponse={{params.overdueResponse|url}}&unread={{params.unread|url}}&q={{params.q|url}}&folder={{params.folder|url}}&tagId={{params.tagId|url}}&confidentiality={{params.confidentiality|url}}",
+                "text": {
+                  "en": "Export to Excel",
+                  "fa": "خروجی Excel"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/letter-export?format=csv&letterType={{params.letterType|url}}&letterNumber={{params.letterNumber|url}}&subject={{params.subject|url}}&sender={{params.sender|url}}&receiver={{params.receiver|url}}&projectId={{params.projectId|url}}&disciplineId={{params.disciplineId|url}}&status={{params.status|url}}&fromDate={{params.fromDate|url}}&toDate={{params.toDate|url}}&starred={{params.starred|url}}&priority={{params.priority|url}}&hasAttachments={{params.hasAttachments|url}}&hasReferrals={{params.hasReferrals|url}}&overdueReferral={{params.overdueReferral|url}}&overdueResponse={{params.overdueResponse|url}}&unread={{params.unread|url}}&q={{params.q|url}}&folder={{params.folder|url}}&tagId={{params.tagId|url}}&confidentiality={{params.confidentiality|url}}",
+                "text": {
+                  "en": "Export to CSV",
+                  "fa": "خروجی CSV"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "letters",
+            "url": "/d/letter-list?f.letterType={{params.letterType|url}}&f.letterNumber={{params.letterNumber|url}}&f.subject={{params.subject|url}}&f.sender={{params.sender|url}}&f.receiver={{params.receiver|url}}&f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.status={{params.status|url}}&f.fromDate={{params.fromDate|url}}&f.toDate={{params.toDate|url}}&f.starred={{params.starred|url}}&f.priority={{params.priority|url}}&f.hasAttachments={{params.hasAttachments|url}}&f.hasReferrals={{params.hasReferrals|url}}&f.overdueReferral={{params.overdueReferral|url}}&f.overdueResponse={{params.overdueResponse|url}}&f.unread={{params.unread|url}}&f.q={{params.q|url}}&f.folder={{params.folder|url}}&f.tagId={{params.tagId|url}}&f.confidentiality={{params.confidentiality|url}}",
+            "idField": "id",
+            "viewsKey": "letters",
+            "columns": [
+              {
+                "key": "subject",
+                "width": 360,
+                "href": "/Letter/Details/{id}"
+              },
+              {
+                "key": "number",
+                "width": 130
+              },
+              {
+                "key": "type",
+                "width": 90
+              },
+              {
+                "key": "senderReceiver",
+                "width": 180
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "priority",
+                "width": 90
+              },
+              {
+                "key": "starred",
+                "width": 70,
+                "type": "bool"
+              },
+              {
+                "key": "unread",
+                "width": 70,
+                "type": "bool"
+              },
+              {
+                "key": "responseDue",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "responseOverdue",
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "date",
+                "width": 100,
+                "type": "date"
+              },
+              {
+                "key": "discipline",
+                "width": 130
+              },
+              {
+                "key": "attachments",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "lastActivity",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Letter/Details/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "star",
+                    "url": "/a/letter-toggle-star",
+                    "method": "post"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.View"
+  }
+}
