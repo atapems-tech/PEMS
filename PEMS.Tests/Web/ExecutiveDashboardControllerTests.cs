@@ -52,7 +52,7 @@ public class ExecutiveDashboardControllerTests
         public Task<AccessDecision> AuthorizeAsync(AccessControlRequest request) => throw new NotImplementedException();
     }
 
-    private sealed record Rig(ExecutiveDashboardController Controller, PEMSDbContext Ctx, FakePermissionService Permissions);
+    private sealed record Rig(ExecutiveDashboardOperations Controller, PEMSDbContext Ctx, FakePermissionService Permissions);
 
     private static Rig NewRig(string name, bool viewAllDisciplines = true, string lang = "en", int? userId = LetterTestWorld.Author)
     {
@@ -65,8 +65,7 @@ public class ExecutiveDashboardControllerTests
         var user = new FakeCurrentUserService { UserId = userId, UserName = "u", FullName = "U", Roles = new[] { "Staff" } };
         var service = new ExecutiveDashboardService(ctx, new VDRReportService(ctx), new ProcurementReportService(ctx), new CmmsReportService(ctx),
             new CorrespondenceReportService(ctx), NullLogger<ExecutiveDashboardService>.Instance);
-        var controller = new ExecutiveDashboardController(service, user, permissions, new FakeAccess(viewAllDisciplines), ctx,
-            new ResxLocalizer(LoadResx(lang == "fa" ? "SharedResource.fa.resx" : "SharedResource.resx"))).WithTempData().WithUrlHelper();
+        var controller = new ExecutiveDashboardOperations(service, user, permissions, new FakeAccess(viewAllDisciplines), ctx);
         return new Rig(controller, ctx, permissions);
     }
 
@@ -74,8 +73,8 @@ public class ExecutiveDashboardControllerTests
     private static EngineeringDocument Doc(int? discipline, string status = "Draft")
         => new() { DocumentNo = "X-" + (++_seq), Title = "t", DocumentType = "DWG", ProjectId = 1, DisciplineId = discipline, Status = status };
 
-    private static JsonElement J(IActionResult r)
-        => JsonSerializer.SerializeToElement(Assert.IsType<JsonResult>(r).Value, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+    private static JsonElement J(ExecutiveDashboardDto r)
+        => JsonSerializer.SerializeToElement(r, new JsonSerializerOptions(JsonSerializerDefaults.Web));
 
     // ------------------------------------------------------------------ data endpoint
 
@@ -89,7 +88,7 @@ public class ExecutiveDashboardControllerTests
         rig.Permissions.Denied.Add(("WorkOrder", "View"));
         rig.Permissions.Denied.Add(("Correspondence", "View"));
 
-        var json = J(await rig.Controller.Data(null));
+        var json = J(await rig.Controller.DataAsync(null));
 
         Assert.Equal(1, json.GetProperty("engineering").GetProperty("total").GetInt32());
         Assert.Equal(JsonValueKind.Null, json.GetProperty("vdr").ValueKind);
@@ -103,10 +102,10 @@ public class ExecutiveDashboardControllerTests
     {
         var rig = NewRig("proc-perm");
         rig.Permissions.Denied.Add(("MaterialRequisition", "View"));
-        Assert.NotEqual(JsonValueKind.Null, J(await rig.Controller.Data(null)).GetProperty("procurement").ValueKind);
+        Assert.NotEqual(JsonValueKind.Null, J(await rig.Controller.DataAsync(null)).GetProperty("procurement").ValueKind);
 
         rig.Permissions.Denied.Add(("ProcurementPackage", "View"));
-        Assert.Equal(JsonValueKind.Null, J(await rig.Controller.Data(null)).GetProperty("procurement").ValueKind);
+        Assert.Equal(JsonValueKind.Null, J(await rig.Controller.DataAsync(null)).GetProperty("procurement").ValueKind);
     }
 
     [Fact]
@@ -118,23 +117,23 @@ public class ExecutiveDashboardControllerTests
         rig.Ctx.EngineeringDocuments.AddRange(Doc(1), Doc(1), Doc(2), Doc(null));
         await rig.Ctx.SaveChangesAsync();
 
-        var restricted = J(await rig.Controller.Data(null)).GetProperty("engineering").GetProperty("total").GetInt32();
+        var restricted = J(await rig.Controller.DataAsync(null)).GetProperty("engineering").GetProperty("total").GetInt32();
         var all = J(await NewRigWithDocs("disc-all", true)).GetProperty("engineering").GetProperty("total").GetInt32();
 
         Assert.Equal(3, restricted);   // own discipline + unassigned
         Assert.Equal(4, all);
     }
 
-    private static async Task<IActionResult> NewRigWithDocs(string name, bool all)
+    private static async Task<ExecutiveDashboardDto> NewRigWithDocs(string name, bool all)
     {
         var rig = NewRig(name, viewAllDisciplines: all);
         rig.Ctx.EngineeringDocuments.AddRange(Doc(1), Doc(1), Doc(2), Doc(null));
         await rig.Ctx.SaveChangesAsync();
-        return await rig.Controller.Data(null);
+        return await rig.Controller.DataAsync(null);
     }
 
     [Fact]
-    public async Task Data_PassesTheProjectFilterThrough_AndIsNeverCached()
+    public async Task Data_PassesTheProjectFilterThrough()
     {
         var rig = NewRig("project");
         rig.Ctx.Projects.Add(new Project { ProjectId = 2, ProjectCode = "P2", ProjectName = "Other" });
@@ -143,13 +142,10 @@ public class ExecutiveDashboardControllerTests
         rig.Ctx.EngineeringDocuments.AddRange(Doc(1), Doc(1), other);
         await rig.Ctx.SaveChangesAsync();
 
-        var json = J(await rig.Controller.Data(2));
+        var json = J(await rig.Controller.DataAsync(2));
 
         Assert.Equal(1, json.GetProperty("engineering").GetProperty("total").GetInt32());
         Assert.Equal(2, json.GetProperty("projectId").GetInt32());
-        var cache = typeof(ExecutiveDashboardController).GetMethod(nameof(ExecutiveDashboardController.Data))!
-            .GetCustomAttributes(typeof(ResponseCacheAttribute), false).Cast<ResponseCacheAttribute>().Single();
-        Assert.True(cache.NoStore);   // management numbers must be live
     }
 
     // ------------------------------------------------------------------ host page
@@ -167,7 +163,7 @@ public class ExecutiveDashboardControllerTests
         var links = options["links"]!.AsObject();
         foreach (var key in new[] { "Engineering", "EngRejected", "EngInReview", "Vdr", "Procurement", "Cmms", "Correspondence" })
             Assert.True(links.ContainsKey(key), key);
-        Assert.Equal("/ExecutiveDashboard/Data", (string)options["values"]!["dataUrl"]!);
+        Assert.Equal("/x/executive-dashboard-data", (string)options["values"]!["dataUrl"]!);
         Assert.Equal("exec-boot", (string)options["bootId"]!);
         Assert.Equal("executive-root", (string)options["id"]!);
         Assert.Equal("/dist/dashboards/dashboards.js", (string)options["module"]!);

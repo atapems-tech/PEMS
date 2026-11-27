@@ -58,8 +58,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.ComingSoonController",
-      "status": "host",
-      "reason": "generic host, sign-in or infrastructure controller: code by decision"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
@@ -154,8 +154,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.ExecutiveDashboardController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "the type was deleted: converted to definitions"
     },
     {
       "kind": "controller",
