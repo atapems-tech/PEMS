@@ -1,0 +1,67 @@
+{
+  "kind": "form",
+  "key": "eng-doc-submit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submit for review",
+    "fa": "ارسال برای بازبینی"
+  },
+  "description": {
+    "en": "Submit for review",
+    "fa": "ارسال برای بازبینی"
+  },
+  "payload": {
+    "id": "eng-doc-submit",
+    "title": {
+      "en": "Submit for review",
+      "fa": "ارسال برای بازبینی"
+    },
+    "submitLabel": {
+      "en": "Submit for review",
+      "fa": "ارسال برای بازبینی"
+    },
+    "actionKey": "eng-doc-submit",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "idcDisciplineIds",
+        "label": {
+          "en": "Disciplines to review (IDC); none goes straight to the final approval after the check",
+          "fa": "دیسیپلین‌های بازبین (IDC)؛ بدون انتخاب بعد از Check مستقیم به تأیید نهایی می‌رود"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "eng-doc-submit-disciplines",
+        "optionsArgs": {
+          "id": "id"
+        },
+        "span": 2
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "textArea",
+        "span": 2
+      }
+    ]
+  }
+}

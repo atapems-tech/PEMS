@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "eng-doc-unfreeze",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unfreeze the document",
+    "fa": "رفع انجماد مدرک"
+  },
+  "description": {
+    "en": "Unfreeze the document",
+    "fa": "رفع انجماد مدرک"
+  },
+  "payload": {
+    "id": "eng-doc-unfreeze",
+    "title": {
+      "en": "Unfreeze the document",
+      "fa": "رفع انجماد مدرک"
+    },
+    "submitLabel": {
+      "en": "Unfreeze the document",
+      "fa": "رفع انجماد مدرک"
+    },
+    "actionKey": "eng-doc-unfreeze",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Unfreeze reason (required)",
+          "fa": "دلیل رفع انجماد (الزامی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

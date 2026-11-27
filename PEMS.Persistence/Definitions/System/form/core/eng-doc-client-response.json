@@ -1,0 +1,118 @@
+{
+  "kind": "form",
+  "key": "eng-doc-client-response",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the client response",
+    "fa": "ثبت پاسخ کارفرما"
+  },
+  "description": {
+    "en": "Record the client response",
+    "fa": "ثبت پاسخ کارفرما"
+  },
+  "payload": {
+    "id": "eng-doc-client-response",
+    "title": {
+      "en": "Record the client response",
+      "fa": "ثبت پاسخ کارفرما"
+    },
+    "submitLabel": {
+      "en": "Record the client response",
+      "fa": "ثبت پاسخ کارفرما"
+    },
+    "actionKey": "eng-doc-client-response",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "incomingLetterId",
+        "label": {
+          "en": "Incoming letter",
+          "fa": "نامه وارده"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "eng-doc-incoming-letters",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "clientStatus",
+        "label": {
+          "en": "Client status",
+          "fa": "وضعیت کارفرما"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "A",
+            "label": {
+              "en": "A - Approved",
+              "fa": "A - تأیید"
+            }
+          },
+          {
+            "value": "B",
+            "label": {
+              "en": "B - Approved with comments",
+              "fa": "B - تأیید با نظر"
+            }
+          },
+          {
+            "value": "C",
+            "label": {
+              "en": "C - Revise & resubmit",
+              "fa": "C - اصلاح و ارسال مجدد"
+            }
+          },
+          {
+            "value": "D",
+            "label": {
+              "en": "D - Rejected",
+              "fa": "D - رد"
+            }
+          }
+        ]
+      },
+      {
+        "name": "clientComment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "textArea",
+        "span": 2
+      }
+    ]
+  }
+}

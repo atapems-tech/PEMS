@@ -1,0 +1,134 @@
+{
+  "kind": "form",
+  "key": "eng-doc-create-revision",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New revision",
+    "fa": "ویرایش جدید"
+  },
+  "description": {
+    "en": "New revision",
+    "fa": "ویرایش جدید"
+  },
+  "payload": {
+    "id": "eng-doc-create-revision",
+    "title": {
+      "en": "New revision",
+      "fa": "ویرایش جدید"
+    },
+    "submitLabel": {
+      "en": "New revision",
+      "fa": "ویرایش جدید"
+    },
+    "actionKey": "eng-doc-create-revision",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Design Change",
+            "label": {
+              "en": "Design Change",
+              "fa": "Design Change"
+            }
+          },
+          {
+            "value": "Client Comment",
+            "label": {
+              "en": "Client Comment",
+              "fa": "Client Comment"
+            }
+          },
+          {
+            "value": "Vendor Update",
+            "label": {
+              "en": "Vendor Update",
+              "fa": "Vendor Update"
+            }
+          },
+          {
+            "value": "Internal Review",
+            "label": {
+              "en": "Internal Review",
+              "fa": "Internal Review"
+            }
+          },
+          {
+            "value": "Regulatory Requirement",
+            "label": {
+              "en": "Regulatory Requirement",
+              "fa": "Regulatory Requirement"
+            }
+          },
+          {
+            "value": "Other",
+            "label": {
+              "en": "Other",
+              "fa": "Other"
+            }
+          }
+        ]
+      },
+      {
+        "name": "changeDescription",
+        "label": {
+          "en": "What changed in this revision?",
+          "fa": "چه چیزی تغییر کرد؟"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "vendorComment",
+        "label": {
+          "en": "Vendor comment (if applicable)",
+          "fa": "نظر فروشنده (در صورت وجود)"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "triggeringCommentId",
+        "label": {
+          "en": "Closes a comment marked for revision (optional)",
+          "fa": "بستن نظر نیازمند ویرایش (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "eng-doc-open-comments",
+        "optionsArgs": {
+          "id": "id"
+        }
+      }
+    ]
+  }
+}

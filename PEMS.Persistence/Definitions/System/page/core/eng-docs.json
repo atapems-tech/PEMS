@@ -189,7 +189,7 @@
               {
                 "key": "documentNo",
                 "width": 170,
-                "href": "/EngineeringDocuments/Details/{id}"
+                "href": "/p/eng-doc-details?id={id}"
               },
               {
                 "key": "title",
@@ -248,7 +248,7 @@
                   },
                   {
                     "key": "open",
-                    "url": "/EngineeringDocuments/Details/{id}",
+                    "url": "/p/eng-doc-details?id={id}",
                     "method": "get"
                   },
                   {

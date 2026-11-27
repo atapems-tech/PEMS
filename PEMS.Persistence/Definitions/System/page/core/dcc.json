@@ -92,7 +92,7 @@
               {
                 "key": "documentNo",
                 "width": 160,
-                "href": "/EngineeringDocuments/Details/{id}"
+                "href": "/p/eng-doc-details?id={id}"
               },
               {
                 "key": "title",

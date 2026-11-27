@@ -30,6 +30,6 @@
       "en": "Document returned for revision.",
       "fa": "مدرک برای اصلاح بازگردانده شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

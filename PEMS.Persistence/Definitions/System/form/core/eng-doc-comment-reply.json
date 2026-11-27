@@ -1,0 +1,79 @@
+{
+  "kind": "form",
+  "key": "eng-doc-comment-reply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reply to the comment",
+    "fa": "پاسخ به نظر"
+  },
+  "description": {
+    "en": "Reply to the comment",
+    "fa": "پاسخ به نظر"
+  },
+  "payload": {
+    "id": "eng-doc-comment-reply",
+    "title": {
+      "en": "Reply to the comment",
+      "fa": "پاسخ به نظر"
+    },
+    "submitLabel": {
+      "en": "Reply to the comment",
+      "fa": "پاسخ به نظر"
+    },
+    "actionKey": "eng-doc-comment-reply",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "commentId",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "responseText",
+        "label": {
+          "en": "Reply",
+          "fa": "پاسخ"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "replyAttachment",
+        "label": {
+          "en": "Or attach the reply",
+          "fa": "یا پیوست پاسخ"
+        },
+        "kind": "file",
+        "span": 2
+      }
+    ]
+  }
+}

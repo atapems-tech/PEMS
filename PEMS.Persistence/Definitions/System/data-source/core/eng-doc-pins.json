@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-pins",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Pins of the viewer",
+    "fa": "پین‌های نمایشگر"
+  },
+  "description": {
+    "en": "Pins of the viewer",
+    "fa": "پین‌های نمایشگر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "Pins",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

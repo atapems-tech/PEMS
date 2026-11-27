@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "eng-doc-revise-resubmit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revise and resubmit",
+    "fa": "اصلاح و ارسال مجدد"
+  },
+  "description": {
+    "en": "Revise and resubmit",
+    "fa": "اصلاح و ارسال مجدد"
+  },
+  "payload": {
+    "id": "eng-doc-revise-resubmit",
+    "title": {
+      "en": "Revise and resubmit",
+      "fa": "اصلاح و ارسال مجدد"
+    },
+    "submitLabel": {
+      "en": "Revise and resubmit",
+      "fa": "اصلاح و ارسال مجدد"
+    },
+    "actionKey": "eng-doc-revise-resubmit",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

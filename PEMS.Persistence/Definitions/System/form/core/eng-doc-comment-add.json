@@ -1,0 +1,257 @@
+{
+  "kind": "form",
+  "key": "eng-doc-comment-add",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "description": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "payload": {
+    "id": "eng-doc-comment-add",
+    "title": {
+      "en": "Add a comment",
+      "fa": "افزودن نظر"
+    },
+    "submitLabel": {
+      "en": "Add a comment",
+      "fa": "افزودن نظر"
+    },
+    "actionKey": "eng-doc-comment-add",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "pageNumber",
+        "label": {
+          "en": "Page",
+          "fa": "صفحه"
+        },
+        "kind": "number",
+        "hidden": true
+      },
+      {
+        "name": "pinX",
+        "label": {
+          "en": "Pin x",
+          "fa": "x"
+        },
+        "kind": "text",
+        "hidden": true
+      },
+      {
+        "name": "pinY",
+        "label": {
+          "en": "Pin y",
+          "fa": "y"
+        },
+        "kind": "text",
+        "hidden": true
+      },
+      {
+        "name": "raisedByName",
+        "label": {
+          "en": "Raised by",
+          "fa": "ثبت‌کننده"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Technical",
+            "label": {
+              "en": "Technical",
+              "fa": "Technical"
+            }
+          },
+          {
+            "value": "Safety",
+            "label": {
+              "en": "Safety",
+              "fa": "Safety"
+            }
+          },
+          {
+            "value": "Constructability",
+            "label": {
+              "en": "Constructability",
+              "fa": "Constructability"
+            }
+          },
+          {
+            "value": "Documentation",
+            "label": {
+              "en": "Documentation",
+              "fa": "Documentation"
+            }
+          },
+          {
+            "value": "Specification",
+            "label": {
+              "en": "Specification",
+              "fa": "Specification"
+            }
+          },
+          {
+            "value": "Calculation",
+            "label": {
+              "en": "Calculation",
+              "fa": "Calculation"
+            }
+          },
+          {
+            "value": "Typographical",
+            "label": {
+              "en": "Typographical",
+              "fa": "Typographical"
+            }
+          },
+          {
+            "value": "Clarification",
+            "label": {
+              "en": "Clarification",
+              "fa": "Clarification"
+            }
+          }
+        ]
+      },
+      {
+        "name": "severity",
+        "label": {
+          "en": "Severity",
+          "fa": "شدت"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "Low"
+            }
+          },
+          {
+            "value": "Medium",
+            "label": {
+              "en": "Medium",
+              "fa": "Medium"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "High"
+            }
+          },
+          {
+            "value": "Critical",
+            "label": {
+              "en": "Critical",
+              "fa": "Critical"
+            }
+          }
+        ]
+      },
+      {
+        "name": "sheet",
+        "label": {
+          "en": "Sheet",
+          "fa": "برگه"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "zone",
+        "label": {
+          "en": "Zone",
+          "fa": "ناحیه"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "reference",
+        "label": {
+          "en": "Reference",
+          "fa": "مرجع"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "commentText",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2
+      },
+      {
+        "name": "requiredAction",
+        "label": {
+          "en": "Required action",
+          "fa": "اقدام لازم"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "dueDate",
+        "label": {
+          "en": "Due date",
+          "fa": "سررسید"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "marksRevisionRequired",
+        "label": {
+          "en": "Marks the document for revision",
+          "fa": "مدرک را نیازمند ویرایش علامت می‌زند"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "attachment",
+        "label": {
+          "en": "Attachment (optional)",
+          "fa": "پیوست (اختیاری)"
+        },
+        "kind": "file",
+        "span": 2
+      }
+    ]
+  }
+}

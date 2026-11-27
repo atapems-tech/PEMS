@@ -31,6 +31,6 @@
       "en": "Response recorded",
       "fa": "پاسخ ثبت شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{documentId}"
+    "redirect": "/p/eng-doc-details?id={documentId}"
   }
 }

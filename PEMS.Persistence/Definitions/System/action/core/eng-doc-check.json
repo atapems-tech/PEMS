@@ -30,6 +30,6 @@
       "en": "Document checked - ready for approval.",
       "fa": "مدرک بررسی شد؛ آماده‌ی تأیید."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

@@ -31,6 +31,6 @@
       "en": "The document was submitted for review.",
       "fa": "مدرک برای بازبینی ارسال شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

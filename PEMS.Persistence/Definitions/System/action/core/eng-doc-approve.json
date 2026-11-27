@@ -36,6 +36,6 @@
       "en": "Document approved.",
       "fa": "مدرک تأیید شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

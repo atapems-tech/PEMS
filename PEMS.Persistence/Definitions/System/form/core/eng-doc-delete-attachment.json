@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "eng-doc-delete-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete the attachment",
+    "fa": "حذف پیوست"
+  },
+  "description": {
+    "en": "Delete the attachment",
+    "fa": "حذف پیوست"
+  },
+  "payload": {
+    "id": "eng-doc-delete-attachment",
+    "title": {
+      "en": "Delete the attachment",
+      "fa": "حذف پیوست"
+    },
+    "submitLabel": {
+      "en": "Delete the attachment",
+      "fa": "حذف پیوست"
+    },
+    "actionKey": "eng-doc-delete-attachment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "attachmentId",
+        "label": {
+          "en": "Attachment",
+          "fa": "پیوست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

@@ -31,6 +31,6 @@
       "en": "Your review answer was recorded.",
       "fa": "پاسخ بازبینی شما ثبت شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

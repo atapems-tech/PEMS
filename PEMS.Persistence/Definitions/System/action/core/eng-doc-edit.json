@@ -39,6 +39,6 @@
       "en": "Document updated successfully",
       "fa": "مدرک با موفقیت به‌روزرسانی شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

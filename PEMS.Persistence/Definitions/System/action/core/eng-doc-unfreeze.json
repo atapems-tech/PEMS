@@ -27,6 +27,6 @@
       "en": "The document is unfrozen.",
       "fa": "انجماد مدرک برداشته شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

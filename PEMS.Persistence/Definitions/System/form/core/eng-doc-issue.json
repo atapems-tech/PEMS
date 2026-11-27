@@ -1,0 +1,146 @@
+{
+  "kind": "form",
+  "key": "eng-doc-issue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Issue the document",
+    "fa": "صدور مدرک"
+  },
+  "description": {
+    "en": "Issue the document",
+    "fa": "صدور مدرک"
+  },
+  "payload": {
+    "id": "eng-doc-issue",
+    "title": {
+      "en": "Issue the document",
+      "fa": "صدور مدرک"
+    },
+    "submitLabel": {
+      "en": "Issue the document",
+      "fa": "صدور مدرک"
+    },
+    "actionKey": "eng-doc-issue",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "issuePurpose",
+        "label": {
+          "en": "Issue purpose",
+          "fa": "هدف صدور"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "deliveryUnitType",
+        "label": {
+          "en": "Delivery unit",
+          "fa": "واحد تحویل"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "InternalDCC",
+        "options": [
+          {
+            "value": "InternalDCC",
+            "label": {
+              "en": "Internal DCC",
+              "fa": "DCC داخلی"
+            }
+          },
+          {
+            "value": "InternalDepartment",
+            "label": {
+              "en": "Internal department",
+              "fa": "واحد داخلی"
+            }
+          },
+          {
+            "value": "External",
+            "label": {
+              "en": "External",
+              "fa": "خارجی"
+            }
+          }
+        ]
+      },
+      {
+        "name": "deliveryDepartmentId",
+        "label": {
+          "en": "Internal department",
+          "fa": "واحد داخلی"
+        },
+        "kind": "select",
+        "optionsFrom": "eng-doc-departments",
+        "visible": "values.deliveryUnitType == 'InternalDepartment'"
+      },
+      {
+        "name": "externalReceiverName",
+        "label": {
+          "en": "External receiver",
+          "fa": "گیرنده بیرونی"
+        },
+        "kind": "text",
+        "visible": "values.deliveryUnitType == 'External'"
+      },
+      {
+        "name": "letterNumber",
+        "label": {
+          "en": "Letter number",
+          "fa": "شماره نامه"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "letterSubject",
+        "label": {
+          "en": "Letter subject",
+          "fa": "موضوع نامه"
+        },
+        "kind": "text",
+        "span": 2
+      },
+      {
+        "name": "letterBody",
+        "label": {
+          "en": "Letter body (optional)",
+          "fa": "متن نامه (اختیاری)"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "textArea",
+        "span": 2
+      }
+    ]
+  }
+}
