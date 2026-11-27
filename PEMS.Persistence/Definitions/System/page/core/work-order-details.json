@@ -1,0 +1,1026 @@
+{
+  "kind": "page",
+  "key": "work-order-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order details",
+    "fa": "جزئیات دستورکار"
+  },
+  "description": {
+    "en": "Work order details",
+    "fa": "جزئیات دستورکار"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "work-order-details",
+    "permission": "WorkOrder.View",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/work-orders"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "stepper",
+          "component": "stepper",
+          "options": {
+            "label": {
+              "en": "Work order stages",
+              "fa": "مراحل دستورکار"
+            }
+          },
+          "bindings": {
+            "steps": {
+              "source": "/d/work-order-stages?f.id={{params.id|url}}",
+              "labelField": "stepLabel",
+              "stateField": "step"
+            }
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "work-order-head",
+            "fields": [
+              {
+                "key": "workOrderNumber",
+                "label": {
+                  "en": "Work order",
+                  "fa": "دستورکار"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
+              },
+              {
+                "key": "workOrderType",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "equipmentTag",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "equipmentName",
+                "label": {
+                  "en": "Equipment name",
+                  "fa": "نام تجهیز"
+                }
+              },
+              {
+                "key": "assigned",
+                "label": {
+                  "en": "Assigned",
+                  "fa": "تخصیص"
+                }
+              },
+              {
+                "key": "plannedWindow",
+                "label": {
+                  "en": "Planned",
+                  "fa": "برنامه‌ریزی‌شده"
+                }
+              },
+              {
+                "key": "startDate",
+                "label": {
+                  "en": "Started",
+                  "fa": "شروع"
+                },
+                "type": "date"
+              },
+              {
+                "key": "completionDate",
+                "label": {
+                  "en": "Completed",
+                  "fa": "تکمیل"
+                },
+                "type": "date"
+              },
+              {
+                "key": "fromPlan",
+                "label": {
+                  "en": "From plan",
+                  "fa": "از برنامه"
+                },
+                "wide": true
+              },
+              {
+                "key": "originatingDiscipline",
+                "label": {
+                  "en": "Originating discipline",
+                  "fa": "دیسیپلین مبدأ"
+                }
+              },
+              {
+                "key": "responsibleDiscipline",
+                "label": {
+                  "en": "Responsible maintenance discipline",
+                  "fa": "دیسیپلین مسئول نگهداری"
+                }
+              },
+              {
+                "key": "failureAnalysis",
+                "label": {
+                  "en": "Failure analysis",
+                  "fa": "تحلیل خرابی"
+                },
+                "wide": true
+              },
+              {
+                "key": "warnings",
+                "label": {
+                  "en": "Workflow warnings",
+                  "fa": "هشدارهای گردش‌کار"
+                },
+                "wide": true
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              },
+              {
+                "key": "laborCost",
+                "label": {
+                  "en": "Labor cost",
+                  "fa": "هزینه ساعت‌کار"
+                },
+                "type": "number"
+              },
+              {
+                "key": "spareCost",
+                "label": {
+                  "en": "Spare cost",
+                  "fa": "هزینه قطعات"
+                },
+                "type": "number"
+              },
+              {
+                "key": "totalCost",
+                "label": {
+                  "en": "Total maintenance cost",
+                  "fa": "کل هزینه نگهداری"
+                },
+                "type": "number"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/work-order-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "work-order-actions",
+            "url": "/d/work-order-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 110,
+            "columns": [
+              {
+                "key": "status",
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 1500,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "advance",
+                    "url": "/f/{raw.advanceForm}?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canAdvanceLegacy == true"
+                  },
+                  {
+                    "key": "hold",
+                    "url": "/f/work-order-hold?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canHold == true"
+                  },
+                  {
+                    "key": "resume",
+                    "url": "/a/work-order-resume",
+                    "method": "post",
+                    "showWhen": "row.canResume == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/f/work-order-reject?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canReject == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "cancel",
+                    "url": "/f/work-order-cancel?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canCancel == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "reopen",
+                    "url": "/f/work-order-reopen?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canReopen == true"
+                  },
+                  {
+                    "key": "responsible-discipline",
+                    "url": "/f/work-order-set-planning?id={id}&responsibleDisciplineId={raw.responsibleDisciplineId}",
+                    "method": "get",
+                    "showWhen": "row.ctlResponsibleDiscipline == true"
+                  },
+                  {
+                    "key": "assign-executor",
+                    "url": "/f/work-order-assign-executor?id={id}",
+                    "method": "get",
+                    "showWhen": "row.ctlExecutor == true"
+                  },
+                  {
+                    "key": "schedule",
+                    "url": "/f/work-order-set-schedule?id={id}&plannedStart={raw.plannedStartInput}&plannedFinish={raw.plannedFinishInput}",
+                    "method": "get",
+                    "showWhen": "row.ctlSchedule == true"
+                  },
+                  {
+                    "key": "request-review",
+                    "url": "/f/work-order-request-review?workOrderId={id}",
+                    "method": "get",
+                    "showWhen": "row.ctlReview == true"
+                  },
+                  {
+                    "key": "add-labor",
+                    "url": "/f/work-order-add-labor?workOrderId={id}",
+                    "method": "get",
+                    "showWhen": "row.ctlLabor == true"
+                  },
+                  {
+                    "key": "add-spare",
+                    "url": "/f/work-order-add-spare-usage?workOrderId={id}",
+                    "method": "get",
+                    "showWhen": "row.ctlSpares == true"
+                  },
+                  {
+                    "key": "add-skill",
+                    "url": "/f/work-order-add-required-skill?workOrderId={id}",
+                    "method": "get",
+                    "showWhen": "row.ctlSkills == true"
+                  },
+                  {
+                    "key": "add-material",
+                    "url": "/f/work-order-add-required-material?workOrderId={id}",
+                    "method": "get",
+                    "showWhen": "row.ctlMaterials == true"
+                  },
+                  {
+                    "key": "create-crew",
+                    "url": "/f/work-order-create-crew?workOrderId={id}",
+                    "method": "get",
+                    "showWhen": "row.ctlCrew == true"
+                  },
+                  {
+                    "key": "equipment",
+                    "url": "/p/equipment-passport?id={raw.equipmentId}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "source-request",
+                    "url": "/p/work-request-details?id={raw.sourceWorkRequestId}",
+                    "method": "get",
+                    "showWhen": "row.sourceWorkRequestId != null"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-actions",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Workflow actions",
+                  "fa": "اقدام‌های گردش‌کار"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "workflow-actions",
+          "component": "def:related-table",
+          "options": {
+            "id": "workflow-actions",
+            "url": "/d/work-order-workflow-actions?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "label",
+                "width": 220
+              },
+              {
+                "key": "toStage",
+                "width": 200
+              },
+              {
+                "key": "allowed",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "deniedReason",
+                "width": 320
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "run",
+                    "url": "/f/{raw.formKey}?id={{params.id}}&actionType={id}",
+                    "method": "get",
+                    "showWhen": "row.allowed == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-workflow-history",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-workflow-history",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Workflow history",
+                  "fa": "تاریخچه‌ی گردش‌کار"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "workflow-history",
+          "component": "def:related-table",
+          "options": {
+            "id": "workflow-history",
+            "url": "/d/work-order-workflow-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "action",
+                "width": 140
+              },
+              {
+                "key": "from",
+                "width": 160
+              },
+              {
+                "key": "to",
+                "width": 160
+              },
+              {
+                "key": "by",
+                "width": 160
+              },
+              {
+                "key": "comment",
+                "width": 280
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-status-history",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-status-history",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Status history / business audit",
+                  "fa": "تاریخچه‌ی وضعیت / ممیزی کسب‌وکار"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "status-history",
+          "component": "def:related-table",
+          "options": {
+            "id": "status-history",
+            "url": "/d/work-order-status-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "fromStatus",
+                "width": 130
+              },
+              {
+                "key": "toStatus",
+                "width": 130
+              },
+              {
+                "key": "reason",
+                "width": 280
+              },
+              {
+                "key": "by",
+                "width": 160
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-review",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-review",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Multi-discipline review",
+                  "fa": "بازبینی چند-دیسیپلینه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "review",
+          "component": "def:related-table",
+          "options": {
+            "id": "review",
+            "url": "/d/work-order-review?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "discipline",
+                "width": 200
+              },
+              {
+                "key": "status",
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "respond",
+                    "url": "/f/work-order-respond-discipline-review?workOrderId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "findings",
+          "component": "def:related-table",
+          "options": {
+            "id": "findings",
+            "url": "/d/work-order-findings?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "discipline",
+                "width": 180
+              },
+              {
+                "key": "cycle",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "decision",
+                "width": 120
+              },
+              {
+                "key": "findings",
+                "width": 320
+              },
+              {
+                "key": "failureMode",
+                "width": 140
+              },
+              {
+                "key": "failureCause",
+                "width": 140
+              },
+              {
+                "key": "respondedDate",
+                "width": 150,
+                "type": "datetime"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-labor",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-labor",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Labor",
+                  "fa": "ساعت‌کار واقعی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "labor",
+          "component": "def:related-table",
+          "options": {
+            "id": "labor",
+            "url": "/d/work-order-labor?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "workDate",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "employee",
+                "width": 180
+              },
+              {
+                "key": "team",
+                "width": 150
+              },
+              {
+                "key": "regularHours",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "overtimeHours",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "cost",
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "notes",
+                "width": 240
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-spares",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-spares",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Spare parts used",
+                  "fa": "قطعات یدکی مصرفی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "spares",
+          "component": "def:related-table",
+          "options": {
+            "id": "spares",
+            "url": "/d/work-order-spares?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "material",
+                "width": 280
+              },
+              {
+                "key": "quantity",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "unitCost",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "totalCost",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "returnedQuantity",
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "usageDate",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "return",
+                    "url": "/f/work-order-return-spare-usage?workOrderId={{params.id}}&maintenanceSpareUsageId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReturn == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-tasks",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-tasks",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Tasks",
+                  "fa": "وظایف"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tasks",
+          "component": "def:related-table",
+          "options": {
+            "id": "tasks",
+            "url": "/d/work-order-tasks?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "number",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "title",
+                "width": 260
+              },
+              {
+                "key": "description",
+                "width": 280
+              },
+              {
+                "key": "done",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "completedBy",
+                "width": 150
+              },
+              {
+                "key": "completedDate",
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "complete",
+                    "url": "/f/work-order-complete-task?workOrderId={{params.id}}&workOrderTaskId={id}",
+                    "method": "get",
+                    "showWhen": "row.canComplete == true"
+                  },
+                  {
+                    "key": "reopen",
+                    "url": "/f/work-order-reopen-task?workOrderId={{params.id}}&workOrderTaskId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReopen == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-skills",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-skills",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Required skills",
+                  "fa": "مهارت‌های موردنیاز"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "skills",
+          "component": "def:related-table",
+          "options": {
+            "id": "skills",
+            "url": "/d/work-order-skills?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "skill",
+                "width": 220
+              },
+              {
+                "key": "minimumLevel",
+                "width": 140
+              },
+              {
+                "key": "plannedHours",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "url": "/f/work-order-remove-required-skill?workOrderId={{params.id}}&requiredSkillId={id}",
+                    "method": "get",
+                    "showWhen": "row.canRemove == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-materials",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-materials",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Required materials",
+                  "fa": "متریال موردنیاز"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "materials",
+          "component": "def:related-table",
+          "options": {
+            "id": "materials",
+            "url": "/d/work-order-materials?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "material",
+                "width": 280
+              },
+              {
+                "key": "requiredQuantity",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "supplyCode",
+                "width": 140
+              },
+              {
+                "key": "sourced",
+                "width": 120
+              },
+              {
+                "key": "requisitions",
+                "width": 260
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "supply-code",
+                    "url": "/f/work-order-set-supply-code?workOrderId={{params.id}}&workOrderMaterialId={id}",
+                    "method": "get",
+                    "showWhen": "row.canSetSupply == true"
+                  },
+                  {
+                    "key": "remove",
+                    "url": "/f/work-order-remove-required-material?workOrderId={{params.id}}&workOrderMaterialId={id}",
+                    "method": "get",
+                    "showWhen": "row.canRemove == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-intake",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-intake",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Warehouse intake",
+                  "fa": "دریافت از انبار"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "intake",
+          "component": "def:related-table",
+          "options": {
+            "id": "intake",
+            "url": "/d/work-order-intake?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "state",
+                "width": 220
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "request",
+                    "url": "/f/work-order-request-materials?workOrderId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canRequest == true"
+                  },
+                  {
+                    "key": "open",
+                    "url": "/p/warehouse-intake?id={id}",
+                    "method": "get",
+                    "showWhen": "row.isOpen == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-crew",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-crew",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Crew",
+                  "fa": "Crew"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "crews",
+          "component": "def:related-table",
+          "options": {
+            "id": "crews",
+            "url": "/d/work-order-crews?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "code",
+                "width": 120
+              },
+              {
+                "key": "name",
+                "width": 220
+              },
+              {
+                "key": "members",
+                "width": 400
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -143,6 +143,10 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
                 if (spec is null) return;   // not allowed or invalid: the part is hidden
                 options["spec"] = spec;
             }
+            if (instance["bindings"] is JsonObject stepBindings && stepBindings["steps"] is JsonObject stepSource)
+            {
+                if (!await ApplyStepsAsync(stepSource, options, request, appKey, id, problems, ct)) return;   // not allowed or invalid: the part is hidden
+            }
             if (instance["bindings"] is JsonObject matrixBindings && matrixBindings["matrix"] is JsonObject matrix)
             {
                 if (!await ApplyMatrixAsync(matrix, options, request, appKey, id, problems, ct)) return;   // not allowed or invalid: the part is hidden
@@ -206,6 +210,42 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         };
         if (kind == "donut" && outSeries.Count > 0) spec["centerLabel"] = (string?)outSeries[0]!["name"];
         return spec;
+    }
+
+    /// <summary>
+    /// SCRUM-835: the steps of a stepper from the rows of a grid data source: <c>{ "source": "/d/key?f.id={{params.id|url}}", "labelField": "stepLabel", "stateField": "step" }</c>; the state is done, current, upcoming or rejected (any other text is upcoming).
+    /// At most 50 rows are read through the same resolve and authorize steps as the grid; the label is the same text in both languages (the operation already answers in the language of the request).
+    /// </summary>
+    private async Task<bool> ApplyStepsAsync(JsonObject steps, JsonObject options, PipelineRequest request, string appKey, string id, List<string> problems, CancellationToken ct)
+    {
+        if (data is null) { problems.Add($"Instance \"{id}\": the steps cannot be read here."); return false; }
+        var source = RuntimeValues.Substitute(steps["source"]?.DeepClone(), request) is JsonValue sv0 && sv0.GetValueKind() == JsonValueKind.String ? (string?)sv0 : null;
+        var sourceQuery = "";
+        if (source is not null && source.IndexOf('?') is var qi and >= 0) { sourceQuery = source[(qi + 1)..]; source = source[..qi]; }
+        var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
+        var labelField = (string?)steps["labelField"];
+        var stateField = (string?)steps["stateField"];
+        if (key is null || string.IsNullOrWhiteSpace(labelField) || string.IsNullOrWhiteSpace(stateField)) { problems.Add($"Instance \"{id}\": the steps binding needs a /d/ source, a labelField and a stateField."); return false; }
+        var query = new List<KeyValuePair<string, string?>> { new("page", "1"), new("pageSize", "50") };
+        var extra = System.Web.HttpUtility.ParseQueryString(sourceQuery);
+        foreach (var name in extra.AllKeys.Where(n => n is not null && n.StartsWith("f.", StringComparison.Ordinal))) if (!string.IsNullOrEmpty(extra[name])) query.Add(new(name!, extra[name]));
+        var result = await data.QueryAsync(key, query, request.Culture, request.Roles, request.UserName, appKey, ct);
+        switch (result.Status)
+        {
+            case DataStatus.Forbidden: problems.Add($"Instance \"{id}\": the steps are not allowed for this user."); return false;
+            case DataStatus.NotFound: problems.Add($"Instance \"{id}\": the steps source \"{key}\" does not exist."); return false;
+            case DataStatus.Invalid: problems.Add($"Instance \"{id}\": the steps request is invalid: {result.Error}"); return false;
+        }
+        string Cell(JsonObject row, string field) => row[field] is JsonValue v ? (v.GetValueKind() == JsonValueKind.String ? (string?)v ?? "" : v.ToJsonString().Trim('"')) : "";
+        var list = new JsonArray();
+        foreach (var row in (result.Items ?? []).Select(i => JsonSerializer.SerializeToNode(i) as JsonObject).Where(r => r is not null).Cast<JsonObject>())
+        {
+            var label = Cell(row, labelField);
+            var state = Cell(row, stateField).ToLowerInvariant() is "done" or "current" or "rejected" ? Cell(row, stateField).ToLowerInvariant() : "upcoming";
+            list.Add(new JsonObject { ["label"] = new JsonObject { ["en"] = label, ["fa"] = label }, ["state"] = state });
+        }
+        options["steps"] = list;
+        return true;
     }
 
     /// <summary>

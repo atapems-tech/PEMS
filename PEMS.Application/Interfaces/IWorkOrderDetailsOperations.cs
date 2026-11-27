@@ -8,8 +8,8 @@ public sealed record WorkOrderHeadRow(int Id, string WorkOrderNumber, string Sta
     DateTime? StartDate, DateTime? CompletionDate, string? FromPlan, string? Description, string? OriginatingDiscipline, string? ResponsibleDiscipline, int? SourceWorkRequestId, string? FailureAnalysis, decimal LaborCost, decimal SpareCost,
     bool IsLegacy, bool HasPendingReview, string? NextStatus, string? Warnings, bool CanAdvanceLegacy, bool CanAdvanceToCompleted, bool CanHold, bool CanResume, bool CanReject, bool CanCancel, bool HasWorkflowActions, bool IsInProgress, bool IsCorrectiveType,
     bool CanReopen, bool CtlResponsibleDiscipline, bool CtlExecutor, bool CtlSchedule, bool CtlSkills, bool CtlMaterials, bool CtlCrew, bool CtlLabor, bool CtlSpares, bool CtlReview, bool CtlTasks,
-    string? AdvanceForm, int? ResponsibleDisciplineId, string? PlannedStartInput, string? PlannedFinishInput);
-public sealed record WorkOrderStageRow(int Id, int Order, string Stage, string State, string WaitingFor);
+    string? AdvanceForm, int? ResponsibleDisciplineId, string? PlannedStartInput, string? PlannedFinishInput, decimal TotalCost);
+public sealed record WorkOrderStageRow(int Id, int Order, string Stage, string State, string WaitingFor, string Step, string StepLabel);
 /// <summary>One action of the workflow; <c>FormKey</c> is the form that runs it: with or without the comment being required, and with the completion data (and the failure analysis for corrective and emergency work) while the work is in progress.</summary>
 public sealed record WorkOrderActionRow(string Id, string Label, string ToStage, bool Allowed, string? DeniedReason, bool NeedsReason, string FormKey);
 public sealed record WorkOrderWorkflowHistoryRow(int Id, DateTime When, string Action, string From, string To, string By, string? Comment);

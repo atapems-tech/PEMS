@@ -99,6 +99,8 @@
 .pems-stepper__step--done { color: var(--pems-text); }
 .pems-stepper__step--done .pems-stepper__mark { border-color: var(--pems-chart-positive-text); background: var(--pems-chart-positive-text); }
 .pems-stepper__step--current { color: var(--pems-text); font-weight: 600; }
+.pems-stepper__step--rejected { color: var(--pems-text); }
+.pems-stepper__step--rejected .pems-stepper__mark { border-color: var(--pems-chart-negative-text, #c0392b); background: var(--pems-chart-negative-text, #c0392b); }
 .pems-stepper__step--current .pems-stepper__mark { border-color: var(--pems-primary); }
 .pems-menu { position: relative; display: inline-block; }
 .pems-menu__trigger { list-style: none; cursor: pointer; }
