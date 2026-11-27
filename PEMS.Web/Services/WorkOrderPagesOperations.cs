@@ -24,12 +24,20 @@ public sealed class WorkOrderPagesOperations(PEMSDbContext context, ICurrentUser
         => q.OrderByDescending(x => x.CreatedDate).ThenByDescending(x => x.WorkOrderId).Take(Take).Select(x => new WorkOrderListRow(x.WorkOrderId, x.WorkOrderNumber, x.Equipment != null ? x.Equipment.TagNumber : null, x.WorkOrderType, x.Priority,
             x.AssignedTeam != null ? x.AssignedTeam.Name : null, x.AssignedEmployee != null ? x.AssignedEmployee.FirstName + " " + x.AssignedEmployee.LastName : null, x.AssignedTo, x.Status, x.CreatedDate));
 
-    public async Task<List<WorkOrderListRow>> ListAsync() => await Rows(Active()).ToListAsync();
+    // the filters of the address (?status=Open&equipmentId=7) keep working: the page passes them to the list; empty means no filter
+    private IQueryable<PEMS.Domain.Entities.WorkOrder> Filtered(IQueryable<PEMS.Domain.Entities.WorkOrder> q, string? status, string? equipmentId)
+    {
+        if (!string.IsNullOrWhiteSpace(status)) q = q.Where(x => x.Status == status);
+        if (int.TryParse(equipmentId, out var eq)) q = q.Where(x => x.EquipmentId == eq);
+        return q;
+    }
 
-    public async Task<List<WorkOrderListRow>> MineAsync()
+    public async Task<List<WorkOrderListRow>> ListAsync(string? status = null, string? equipmentId = null) => await Rows(Filtered(Active(), status, equipmentId)).ToListAsync();
+
+    public async Task<List<WorkOrderListRow>> MineAsync(string? status = null, string? equipmentId = null)
     {
         var employeeId = await EmployeeIdAsync();
-        return await Rows(Active().Where(x => x.AssignedEmployeeId == employeeId)).ToListAsync();
+        return await Rows(Filtered(Active().Where(x => x.AssignedEmployeeId == employeeId), status, equipmentId)).ToListAsync();
     }
 
     public async Task<List<WorkOrderCountsRow>> CountsAsync()
@@ -38,9 +46,6 @@ public sealed class WorkOrderPagesOperations(PEMSDbContext context, ICurrentUser
         return [new WorkOrderCountsRow(1, await q.CountAsync(x => x.Status == "Open"), await q.CountAsync(x => x.Status == "InProgress" || x.Status == "Assigned"),
             await q.CountAsync(x => x.Status == "Completed" || x.Status == "Closed"), await q.CountAsync(x => x.Priority == "Critical" && x.Status != "Completed" && x.Status != "Closed"))];
     }
-
-    public async Task<List<WorkOrderChoice>> EquipmentOptionsAsync()
-        => await context.Equipments.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.TagNumber).Take(Take).Select(x => new WorkOrderChoice(x.EquipmentId.ToString(), x.TagNumber + " - " + x.Name)).ToListAsync();
 
     public async Task<WorkOrderCreateAnswer> CreateAsync(int equipmentId, string workOrderType, string priority, string? description = null)
     {

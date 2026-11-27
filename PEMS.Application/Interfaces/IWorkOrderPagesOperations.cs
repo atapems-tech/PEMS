@@ -14,16 +14,13 @@ public sealed record WorkOrderCreateAnswer(bool Success, string? Error, int NewI
 public interface IWorkOrderPagesOperations
 {
     [PEMS.Application.Common.PemsOperation("WorkOrderPage", "List", "WorkOrder.View")]
-    Task<List<WorkOrderListRow>> ListAsync();
+    Task<List<WorkOrderListRow>> ListAsync(string? status = null, string? equipmentId = null);
 
     [PEMS.Application.Common.PemsOperation("WorkOrderPage", "Mine", "WorkOrder.View")]
-    Task<List<WorkOrderListRow>> MineAsync();
+    Task<List<WorkOrderListRow>> MineAsync(string? status = null, string? equipmentId = null);
 
     [PEMS.Application.Common.PemsOperation("WorkOrderPage", "Counts", "WorkOrder.View")]
     Task<List<WorkOrderCountsRow>> CountsAsync();
-
-    [PEMS.Application.Common.PemsOperation("WorkOrderPage", "EquipmentOptions", "WorkOrder.Create")]
-    Task<List<WorkOrderChoice>> EquipmentOptionsAsync();
 
     [PEMS.Application.Common.PemsOperation("WorkOrderPage", "Create", "WorkOrder.Create")]
     Task<WorkOrderCreateAnswer> CreateAsync(int equipmentId, string workOrderType, string priority, string? description = null);

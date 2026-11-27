@@ -30,17 +30,20 @@
               {
                 "key": "open",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "href": "/p/work-orders-mine?status=Open"
               },
               {
                 "key": "inProgress",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "href": "/p/work-orders-mine?status=InProgress"
               },
               {
                 "key": "completed",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "href": "/p/work-orders-mine?status=Completed"
               },
               {
                 "key": "criticalOpen",
@@ -80,7 +83,7 @@
           "component": "def:entity-list",
           "options": {
             "id": "work-orders-mine",
-            "url": "/d/work-order-mine",
+            "url": "/d/work-order-mine?f.status={{params.status|url}}&f.equipmentId={{params.equipmentId|url}}",
             "idField": "id",
             "viewsKey": "work-orders-mine",
             "columns": [
