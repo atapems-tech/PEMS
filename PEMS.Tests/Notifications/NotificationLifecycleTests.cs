@@ -233,40 +233,13 @@ public class NotificationLifecycleTests
     }
 
     [Fact]
-    public async Task Controller_CrossUser_MarkReadAndDismiss_ReturnNotFound()
+    public async Task UnreadCount_IsAuthoritativeAfterReconnect()
     {
-        var (svc, ctx, _) = Create(nameof(Controller_CrossUser_MarkReadAndDismiss_ReturnNotFound));
-        await svc.CreateAsync(2, "B's", "m");
-        var bId = (await svc.GetForUserAsync(2)).Single().NotificationId;
-        var attacker = NewController(svc, 1);
-
-        Assert.IsType<NotFoundResult>(await attacker.MarkRead(bId));
-        Assert.IsType<NotFoundResult>(await attacker.Dismiss(bId));
-        Assert.False((await ctx.Notifications.SingleAsync()).IsRead);
-    }
-
-    [Fact]
-    public async Task Controller_Anonymous_IsUnauthorized()
-    {
-        var (svc, _, _) = Create(nameof(Controller_Anonymous_IsUnauthorized));
-        var c = NewController(svc, null);
-
-        Assert.IsType<UnauthorizedResult>(await c.MarkRead(1));
-        Assert.IsType<UnauthorizedResult>(await c.Dismiss(1));
-        Assert.IsType<UnauthorizedResult>(await c.MarkAllRead());
-        Assert.IsType<UnauthorizedResult>(await c.UnreadCount());
-    }
-
-    [Fact]
-    public async Task Controller_UnreadCount_IsAuthoritativeAfterReconnect()
-    {
-        var (svc, _, _) = Create(nameof(Controller_UnreadCount_IsAuthoritativeAfterReconnect));
+        var (svc, _, _) = Create(nameof(UnreadCount_IsAuthoritativeAfterReconnect));
         await svc.CreateAsync(1, "missed while disconnected", "m");   // اعلانی که حین قطع بودن SignalR رسید
         await svc.CreateAsync(1, "second", "m");
 
-        var json = Assert.IsType<JsonResult>(await NewController(svc, 1).UnreadCount());
-
-        Assert.Equal(2, (int)json.Value!.GetType().GetProperty("unread")!.GetValue(json.Value)!);
+        Assert.Equal(2, await svc.GetUnreadCountAsync(1));
     }
 
     // ---------------- Resolve / Hook تولیدکننده‌ها ----------------

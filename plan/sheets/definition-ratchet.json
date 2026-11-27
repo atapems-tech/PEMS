@@ -141,7 +141,7 @@
     "PEMS.Web.Controllers.MaintenanceCalendarController": 1,
     "PEMS.Web.Controllers.MaintenanceStrategyController": 6,
     "PEMS.Web.Controllers.NavigationBadgeController": 1,
-    "PEMS.Web.Controllers.NotificationController": 7,
+    "PEMS.Web.Controllers.NotificationController": 2,
     "PEMS.Web.Controllers.PageHostController": 1,
     "PEMS.Web.Controllers.RecoveryCodesController": 2,
     "PEMS.Web.Controllers.SearchApiController": 4,

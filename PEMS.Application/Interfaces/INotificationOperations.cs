@@ -7,6 +7,8 @@ public sealed record NotificationRow(int NotificationId, string Title, string Me
 public sealed record NotificationActionResult(bool Success, string? ErrorKey);
 
 /// <summary>The notification inbox page as operations (SCRUM-731): only the notifications of the signed-in user, never an id from the input for the user; the user is the context user name.</summary>
+public sealed record NotificationCountAnswer(int Unread);
+
 public interface INotificationOperations
 {
     [PEMS.Application.Common.PemsOperation("Notification", "Inbox")]
@@ -23,4 +25,8 @@ public interface INotificationOperations
 
     [PEMS.Application.Common.PemsOperation("Notification", "DismissAll")]
     Task<NotificationActionResult> DismissAllAsync(string userName);
+
+    /// <summary>SCRUM-831: the unread count of the signed-in user for the bell (served as JSON at /x/notification-unread-count: { unread }).</summary>
+    [PEMS.Application.Common.PemsOperation("Notification", "UnreadCount")]
+    Task<NotificationCountAnswer> UnreadCountAsync(string userName);
 }
