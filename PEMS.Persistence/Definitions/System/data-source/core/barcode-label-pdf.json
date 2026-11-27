@@ -13,13 +13,82 @@
   },
   "payload": {
     "kind": "provider",
-    "provider": "operation-file",
+    "provider": "pdf",
     "parameters": {
-      "model": "Barcode",
-      "action": "LabelPdf",
-      "args": {
-        "id": "param:id"
+      "datasets": {
+        "labels": {
+          "model": "Barcode",
+          "action": "LabelPdf",
+          "args": {
+            "id": "param:id"
+          }
+        }
       },
+      "layout": {
+        "page": {
+          "size": "custom",
+          "width": 10,
+          "height": 6,
+          "margin": 0.4,
+          "fontSize": 9,
+          "contentPadding": 0
+        },
+        "direction": "ltr",
+        "pagePerRecord": "labels",
+        "body": [
+          {
+            "type": "text",
+            "text": "PEMS",
+            "size": 8,
+            "bold": true,
+            "paddingBottom": 4
+          },
+          {
+            "type": "text",
+            "text": "{{titleLine}}",
+            "size": 13,
+            "bold": true,
+            "paddingBottom": 4,
+            "showWhen": "titleLine"
+          },
+          {
+            "type": "text",
+            "text": "{{subtitleLine}}",
+            "size": 9,
+            "paddingBottom": 4,
+            "showWhen": "subtitleLine"
+          },
+          {
+            "type": "svg",
+            "field": "svg",
+            "height": 100,
+            "showWhen": "isQr"
+          },
+          {
+            "type": "svg",
+            "field": "svg",
+            "height": 55,
+            "showWhen": "isLinear"
+          },
+          {
+            "type": "text",
+            "text": "{{code}}",
+            "size": 9,
+            "align": "center",
+            "fontFamily": "Consolas",
+            "paddingTop": 4
+          },
+          {
+            "type": "text",
+            "text": "{{metaLine}}",
+            "size": 7.5,
+            "color": "#757575",
+            "paddingTop": 4,
+            "showWhen": "metaLine"
+          }
+        ]
+      },
+      "fileName": "barcode-label",
       "disposition": "attachment"
     }
   }

@@ -69,43 +69,4 @@ public class BarcodeRenderingService : IBarcodeRenderingService
 
         return images.First();
     }
-
-    public byte[] RenderLabelSheetPdf(List<BarcodeLabelContent> labels)
-    {
-        var document = Document.Create(container =>
-        {
-            foreach (var label in labels)
-            {
-                var svg = RenderSvg(label.Code, label.Symbology);
-
-                container.Page(page =>
-                {
-                    page.Size(10, 6, Unit.Centimetre);
-                    page.Margin(0.4f, Unit.Centimetre);
-                    page.DefaultTextStyle(x => x.FontSize(9));
-
-                    page.Content().Column(col =>
-                    {
-                        col.Spacing(4);
-                        col.Item().Text("PEMS").FontSize(8).SemiBold();
-
-                        if (!string.IsNullOrWhiteSpace(label.TitleLine))
-                            col.Item().Text(label.TitleLine).FontSize(13).Bold();
-
-                        if (!string.IsNullOrWhiteSpace(label.SubtitleLine))
-                            col.Item().Text(label.SubtitleLine).FontSize(9);
-
-                        col.Item().Height(label.Symbology == "QR" ? 100 : 55).AlignCenter().Svg(svg).FitArea();
-
-                        col.Item().AlignCenter().Text(label.Code).FontSize(9).FontFamily(Fonts.Consolas);
-
-                        if (!string.IsNullOrWhiteSpace(label.MetaLine))
-                            col.Item().Text(label.MetaLine).FontSize(7.5f).FontColor(Colors.Grey.Darken1);
-                    });
-                });
-            }
-        });
-
-        return document.GeneratePdf();
-    }
 }

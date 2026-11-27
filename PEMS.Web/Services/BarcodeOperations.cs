@@ -10,7 +10,6 @@ namespace PEMS.Web.Services;
 /// <summary>SCRUM-671: what BarcodeController showed, answered and did, as operations over IBarcodeService and IBarcodeRenderingService.</summary>
 public sealed class BarcodeOperations(IBarcodeService barcodes, IBarcodeRenderingService rendering, PEMSDbContext context) : IBarcodeOperations
 {
-    private const string Pdf = "application/pdf";
     private static BarcodeFileResult Refused(string error) => new(false, error, [], "", "text/plain");
 
     private static string TargetUrl(string? type, int? id) => type switch
@@ -48,21 +47,24 @@ public sealed class BarcodeOperations(IBarcodeService barcodes, IBarcodeRenderin
     public async Task<BarcodeFileResult> PngAsync(int id)
         => await barcodes.GetByIdAsync(id) is { } b ? new(true, null, rendering.RenderPng(b.Code, b.Symbology), $"{b.Code}.png", "image/png") : Refused("Barcode not found.");
 
-    public async Task<BarcodeFileResult> LabelPdfAsync(int id)
-        => await barcodes.GetByIdAsync(id) is { } b ? new(true, null, rendering.RenderLabelSheetPdf([Label(b)]), $"{b.Code}.pdf", Pdf) : Refused("Barcode not found.");
+    private static BarcodeLabelRow LabelRow(BarcodeLabelContent c, string svg)
+        => new(c.Code, c.Symbology == "QR", c.Symbology != "QR", c.TitleLine, c.SubtitleLine ?? "", c.MetaLine ?? "", svg);
+
+    public async Task<List<BarcodeLabelRow>> LabelPdfAsync(int id)
+        => await barcodes.GetByIdAsync(id) is { } b ? [LabelRow(Label(b), rendering.RenderSvg(b.Code, b.Symbology))] : [];
 
     private static List<int> Ids(string? text) => (text ?? "").Split(new[] { ',', ';', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out var n) ? n : 0).Where(n => n > 0).Distinct().ToList();
 
-    public async Task<BarcodeFileResult> LabelSheetAsync(string targetType, string ids)
+    public async Task<List<BarcodeLabelRow>> LabelSheetAsync(string targetType, string ids)
     {
-        var labels = new List<BarcodeLabelContent>();
+        var labels = new List<BarcodeLabelRow>();
         foreach (var id in Ids(ids))
         {
             if (await barcodes.GetByIdAsync(id) is not { } b) continue;
-            labels.Add(Label(b));
+            labels.Add(LabelRow(Label(b), rendering.RenderSvg(b.Code, b.Symbology)));
             await barcodes.RecordPrintAsync(id);
         }
-        return labels.Count == 0 ? Refused("No barcode found.") : new(true, null, rendering.RenderLabelSheetPdf(labels), $"barcodes-{targetType}-{DateTime.Now:yyyyMMddHHmm}.pdf", Pdf);
+        return labels;
     }
 
     public async Task<List<BarcodeCandidateRow>> CandidatesAsync(int? disciplineId = null, string? equipmentType = null, string? tagSearch = null)
@@ -94,18 +96,18 @@ public sealed class BarcodeOperations(IBarcodeService barcodes, IBarcodeRenderin
         catch (InvalidOperationException ex) { return (false, ex.Message); }
     }
 
-    public async Task<BarcodeFileResult> PrintAsync(int id)
+    public async Task<BarcodeCommandResult> PrintAsync(int id)
     {
         var (success, error) = await barcodes.RecordPrintAsync(id);
-        return success ? await LabelPdfAsync(id) : Refused(error ?? "Barcode not found.");
+        return new(success, success ? null : error ?? "Barcode not found.", id.ToString(CultureInfo.InvariantCulture));
     }
 
-    public async Task<BarcodeFileResult> BulkGenerateAsync(string equipmentIds, string symbology, int? employeeId)
+    public async Task<BarcodeCommandResult> BulkGenerateAsync(string equipmentIds, string symbology, int? employeeId)
     {
         var ids = Ids(equipmentIds);
-        if (ids.Count == 0) return Refused("Choose at least one equipment.");
+        if (ids.Count == 0) return new(false, "Choose at least one equipment.", "");
         var result = await barcodes.BulkGenerateAsync("Equipment", ids, string.IsNullOrWhiteSpace(symbology) ? "Code128" : symbology, employeeId);
-        return await LabelSheetAsync("Equipment", string.Join(",", result.BarcodeIdentityIds));
+        return new(true, null, string.Join(",", result.BarcodeIdentityIds));
     }
 
     public Task<(bool Success, string? Error)> DisableAsync(int id, string? reason, int? employeeId) => barcodes.DisableAsync(id, reason, employeeId);

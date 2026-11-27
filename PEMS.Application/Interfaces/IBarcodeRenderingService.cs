@@ -3,7 +3,7 @@ namespace PEMS.Application.Interfaces;
 /// <summary>
 /// طبق «PEMS — Enterprise Barcode System» بند «Rendering / Label Engine»: تولید محلی
 /// (On-Premises، بدون هیچ سرویس/SaaS بیرونی) - SVG (بردار، برای چاپ صنعتی)، PNG (پیش‌نمایش
-/// وب)، و PDF برچسب (تکی/دسته‌ای). موتور رمزنگاری واقعی نمادها (Code128/QR) از ZXing.Net است؛
+/// وب)؛ PDF برچسب یک تعریف چیدمان است (موتور PDF، SCRUM-839). موتور رمزنگاری واقعی نمادها (Code128/QR) از ZXing.Net است؛
 /// PDF/PNG با همون QuestPDF موجود در پروژه تولید می‌شود (بدون افزودن کتابخانه‌ی رندر جدید).
 /// </summary>
 public interface IBarcodeRenderingService
@@ -11,12 +11,6 @@ public interface IBarcodeRenderingService
     string RenderSvg(string code, string symbology, int moduleSizePx = 3);
 
     byte[] RenderPng(string code, string symbology, int widthPx = 400);
-
-    /// <summary>
-    /// طبق بند «Label Generation»/«Bulk»: یک یا چند برچسب صنعتی (هر برچسب: بارکد + شناسه‌ی
-    /// خوانا برای انسان + Metadata کوتاه) را در یک PDF واحد می‌چیند.
-    /// </summary>
-    byte[] RenderLabelSheetPdf(List<BarcodeLabelContent> labels);
 }
 
 /// <summary>

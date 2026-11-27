@@ -34,32 +34,4 @@ public class BarcodeRenderingServiceTests
         Assert.Equal((byte)'N', png[2]);
         Assert.Equal((byte)'G', png[3]);
     }
-
-    [Fact]
-    public void RenderLabelSheetPdf_SingleLabel_ProducesNonEmptyPdfBytes()
-    {
-        var pdf = _service.RenderLabelSheetPdf(new List<BarcodeLabelContent>
-        {
-            new() { Code = "PEMS-BR-TESTCODE1234", Symbology = "Code128", TitleLine = "EQ-1 - Test Pump", SubtitleLine = "Equipment", MetaLine = "Generated 2026-01-01" }
-        });
-
-        Assert.NotEmpty(pdf);
-        Assert.Equal((byte)'%', pdf[0]);
-        Assert.Equal((byte)'P', pdf[1]);
-        Assert.Equal((byte)'D', pdf[2]);
-        Assert.Equal((byte)'F', pdf[3]);
-    }
-
-    [Fact]
-    public void RenderLabelSheetPdf_MultipleLabels_ProducesOnePdfCoveringAll()
-    {
-        var pdf = _service.RenderLabelSheetPdf(new List<BarcodeLabelContent>
-        {
-            new() { Code = "PEMS-BR-AAAA1111", Symbology = "Code128", TitleLine = "EQ-1" },
-            new() { Code = "PEMS-BR-BBBB2222", Symbology = "QR", TitleLine = "EQ-2" },
-            new() { Code = "PEMS-BR-CCCC3333", Symbology = "Code128", TitleLine = "EQ-3" }
-        });
-
-        Assert.NotEmpty(pdf);
-    }
 }
