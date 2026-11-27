@@ -1,0 +1,583 @@
+{
+  "kind": "form",
+  "key": "strategy-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance strategy",
+    "fa": "استراتژی نگهداری"
+  },
+  "description": {
+    "en": "Maintenance strategy",
+    "fa": "استراتژی نگهداری"
+  },
+  "payload": {
+    "id": "strategy-edit",
+    "title": {
+      "en": "Maintenance strategy",
+      "fa": "استراتژی نگهداری"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "strategy-save",
+    "columns": 2,
+    "load": {
+      "model": "StrategyForm",
+      "action": "One",
+      "args": {
+        "id": "param:id"
+      }
+    },
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Strategy",
+          "fa": "استراتژی"
+        },
+        "kind": "number",
+        "hidden": true
+      },
+      {
+        "name": "rowVersion",
+        "label": {
+          "en": "Version",
+          "fa": "نسخه"
+        },
+        "kind": "text",
+        "hidden": true
+      },
+      {
+        "name": "equipmentClassId",
+        "label": {
+          "en": "Equipment class",
+          "fa": "کلاس تجهیز"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "strategy-form-classes-opts"
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "failureModeId",
+        "label": {
+          "en": "Failure mode",
+          "fa": "حالت خرابی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "strategy-form-modes-opts",
+        "dependsOn": "equipmentClassId",
+        "dependsSource": "strategy-form-modes",
+        "dependsArg": "classId"
+      },
+      {
+        "name": "failureCauseId",
+        "label": {
+          "en": "Failure cause",
+          "fa": "علت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "strategy-form-causes-opts",
+        "dependsOn": "failureModeId",
+        "dependsSource": "strategy-form-causes",
+        "dependsArg": "modeId"
+      },
+      {
+        "name": "functionalFailure",
+        "label": {
+          "en": "Functional failure",
+          "fa": "خرابی عملکردی"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "failureEffect",
+        "label": {
+          "en": "Failure effect",
+          "fa": "اثر خرابی"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "consequenceCategory",
+        "label": {
+          "en": "Consequence",
+          "fa": "پیامد"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Hidden",
+            "label": {
+              "en": "Hidden",
+              "fa": "Hidden"
+            }
+          },
+          {
+            "value": "Safety",
+            "label": {
+              "en": "Safety",
+              "fa": "Safety"
+            }
+          },
+          {
+            "value": "Environmental",
+            "label": {
+              "en": "Environmental",
+              "fa": "Environmental"
+            }
+          },
+          {
+            "value": "Operational",
+            "label": {
+              "en": "Operational",
+              "fa": "Operational"
+            }
+          },
+          {
+            "value": "NonOperational",
+            "label": {
+              "en": "NonOperational",
+              "fa": "NonOperational"
+            }
+          }
+        ],
+        "default": "Operational"
+      },
+      {
+        "name": "isHiddenFailure",
+        "label": {
+          "en": "Hidden failure",
+          "fa": "خرابی پنهان"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "strategyType",
+        "label": {
+          "en": "Strategy type",
+          "fa": "نوع استراتژی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Preventive",
+            "label": {
+              "en": "Preventive",
+              "fa": "Preventive"
+            }
+          },
+          {
+            "value": "Predictive",
+            "label": {
+              "en": "Predictive",
+              "fa": "Predictive"
+            }
+          },
+          {
+            "value": "CBM",
+            "label": {
+              "en": "CBM",
+              "fa": "CBM"
+            }
+          },
+          {
+            "value": "Corrective",
+            "label": {
+              "en": "Corrective",
+              "fa": "Corrective"
+            }
+          },
+          {
+            "value": "RunToFailure",
+            "label": {
+              "en": "RunToFailure",
+              "fa": "RunToFailure"
+            }
+          },
+          {
+            "value": "FailureFinding",
+            "label": {
+              "en": "FailureFinding",
+              "fa": "FailureFinding"
+            }
+          },
+          {
+            "value": "Redesign",
+            "label": {
+              "en": "Redesign",
+              "fa": "Redesign"
+            }
+          }
+        ]
+      },
+      {
+        "name": "source",
+        "label": {
+          "en": "Source",
+          "fa": "منبع"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "OEM",
+            "label": {
+              "en": "OEM",
+              "fa": "OEM"
+            }
+          },
+          {
+            "value": "RcmStudy",
+            "label": {
+              "en": "RcmStudy",
+              "fa": "RcmStudy"
+            }
+          },
+          {
+            "value": "History",
+            "label": {
+              "en": "History",
+              "fa": "History"
+            }
+          },
+          {
+            "value": "Standard",
+            "label": {
+              "en": "Standard",
+              "fa": "Standard"
+            }
+          },
+          {
+            "value": "Regulation",
+            "label": {
+              "en": "Regulation",
+              "fa": "Regulation"
+            }
+          }
+        ]
+      },
+      {
+        "name": "taskType",
+        "label": {
+          "en": "Task type",
+          "fa": "نوع وظیفه"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Inspection",
+            "label": {
+              "en": "Inspection",
+              "fa": "Inspection"
+            }
+          },
+          {
+            "value": "Lubrication",
+            "label": {
+              "en": "Lubrication",
+              "fa": "Lubrication"
+            }
+          },
+          {
+            "value": "Calibration",
+            "label": {
+              "en": "Calibration",
+              "fa": "Calibration"
+            }
+          },
+          {
+            "value": "FunctionTest",
+            "label": {
+              "en": "FunctionTest",
+              "fa": "FunctionTest"
+            }
+          },
+          {
+            "value": "Restoration",
+            "label": {
+              "en": "Restoration",
+              "fa": "Restoration"
+            }
+          },
+          {
+            "value": "Replacement",
+            "label": {
+              "en": "Replacement",
+              "fa": "Replacement"
+            }
+          },
+          {
+            "value": "ConditionMonitoring",
+            "label": {
+              "en": "ConditionMonitoring",
+              "fa": "ConditionMonitoring"
+            }
+          },
+          {
+            "value": "Overhaul",
+            "label": {
+              "en": "Overhaul",
+              "fa": "Overhaul"
+            }
+          }
+        ]
+      },
+      {
+        "name": "ownerDisciplineId",
+        "label": {
+          "en": "Owner discipline",
+          "fa": "دیسیپلین مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "strategy-form-disciplines-opts"
+      },
+      {
+        "name": "frequency",
+        "label": {
+          "en": "Frequency",
+          "fa": "دوره"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Daily",
+            "label": {
+              "en": "Daily",
+              "fa": "Daily"
+            }
+          },
+          {
+            "value": "Weekly",
+            "label": {
+              "en": "Weekly",
+              "fa": "Weekly"
+            }
+          },
+          {
+            "value": "Monthly",
+            "label": {
+              "en": "Monthly",
+              "fa": "Monthly"
+            }
+          },
+          {
+            "value": "Quarterly",
+            "label": {
+              "en": "Quarterly",
+              "fa": "Quarterly"
+            }
+          },
+          {
+            "value": "SemiAnnual",
+            "label": {
+              "en": "SemiAnnual",
+              "fa": "SemiAnnual"
+            }
+          },
+          {
+            "value": "Yearly",
+            "label": {
+              "en": "Yearly",
+              "fa": "Yearly"
+            }
+          }
+        ]
+      },
+      {
+        "name": "defaultIntervalDays",
+        "label": {
+          "en": "Default interval (days)",
+          "fa": "فاصله پیش‌فرض (روز)"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "recommendedTriggerType",
+        "label": {
+          "en": "Recommended trigger",
+          "fa": "محرک پیشنهادی"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Calendar",
+            "label": {
+              "en": "Calendar",
+              "fa": "Calendar"
+            }
+          },
+          {
+            "value": "Meter",
+            "label": {
+              "en": "Meter",
+              "fa": "Meter"
+            }
+          },
+          {
+            "value": "Both",
+            "label": {
+              "en": "Both",
+              "fa": "Both"
+            }
+          }
+        ],
+        "default": "Calendar"
+      },
+      {
+        "name": "requiredSkills",
+        "label": {
+          "en": "Required skills",
+          "fa": "مهارت‌های لازم"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "estimatedDurationHours",
+        "label": {
+          "en": "Estimated hours",
+          "fa": "ساعت تخمینی"
+        },
+        "kind": "number",
+        "step": "0.25",
+        "min": 0
+      },
+      {
+        "name": "reviewDate",
+        "label": {
+          "en": "Review date",
+          "fa": "تاریخ بازبینی"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "cbmParameter",
+        "label": {
+          "en": "Condition parameter",
+          "fa": "پارامتر وضعیت"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "thresholdUnit",
+        "label": {
+          "en": "Unit",
+          "fa": "واحد"
+        },
+        "kind": "text",
+        "maxLength": 30
+      },
+      {
+        "name": "alarmThreshold",
+        "label": {
+          "en": "Alarm threshold",
+          "fa": "آستانه هشدار"
+        },
+        "kind": "number",
+        "step": "any"
+      },
+      {
+        "name": "tripThreshold",
+        "label": {
+          "en": "Trip threshold",
+          "fa": "آستانه توقف"
+        },
+        "kind": "number",
+        "step": "any"
+      },
+      {
+        "name": "pfIntervalDays",
+        "label": {
+          "en": "P-F interval (days)",
+          "fa": "فاصله P-F (روز)"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "inspectionIntervalDays",
+        "label": {
+          "en": "Inspection interval (days)",
+          "fa": "فاصله بازرسی (روز)"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "justification",
+        "label": {
+          "en": "Justification (at least 20 characters)",
+          "fa": "توجیه (دست‌کم ۲۰ نویسه)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "minLength": 20,
+        "span": 2
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "span": 2
+      }
+    ]
+  }
+}

@@ -195,7 +195,10 @@
           "fa": "گروه کالا ۱"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-group1-opts"
+        "optionsFrom": "pc-form-group1-opts",
+        "dependsOn": "sectionId",
+        "dependsSource": "pc-form-group1",
+        "dependsArg": "sectionId"
       },
       {
         "name": "commodityGroup2Id",
@@ -204,7 +207,10 @@
           "fa": "گروه کالا ۲"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-group2-opts"
+        "optionsFrom": "pc-form-group2-opts",
+        "dependsOn": "commodityGroup1Id",
+        "dependsSource": "pc-form-group2",
+        "dependsArg": "group1Id"
       },
       {
         "name": "productFamilyId",

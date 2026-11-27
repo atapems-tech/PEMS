@@ -1,0 +1,58 @@
+{
+  "kind": "action",
+  "key": "strategy-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the strategy",
+    "fa": "ذخیره استراتژی"
+  },
+  "description": {
+    "en": "Save the strategy",
+    "fa": "ذخیره استراتژی"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Save",
+      "args": {
+        "id": "field:id",
+        "rowVersion": "field:rowVersion",
+        "equipmentClassId": "field:equipmentClassId",
+        "title": "field:title",
+        "failureModeId": "field:failureModeId",
+        "failureCauseId": "field:failureCauseId",
+        "functionalFailure": "field:functionalFailure",
+        "failureEffect": "field:failureEffect",
+        "consequenceCategory": "field:consequenceCategory",
+        "isHiddenFailure": "field:isHiddenFailure",
+        "strategyType": "field:strategyType",
+        "source": "field:source",
+        "taskType": "field:taskType",
+        "ownerDisciplineId": "field:ownerDisciplineId",
+        "frequency": "field:frequency",
+        "defaultIntervalDays": "field:defaultIntervalDays",
+        "recommendedTriggerType": "field:recommendedTriggerType",
+        "requiredSkills": "field:requiredSkills",
+        "estimatedDurationHours": "field:estimatedDurationHours",
+        "reviewDate": "field:reviewDate",
+        "cbmParameter": "field:cbmParameter",
+        "thresholdUnit": "field:thresholdUnit",
+        "alarmThreshold": "field:alarmThreshold",
+        "tripThreshold": "field:tripThreshold",
+        "pfIntervalDays": "field:pfIntervalDays",
+        "inspectionIntervalDays": "field:inspectionIntervalDays",
+        "startDate": "field:startDate",
+        "justification": "field:justification",
+        "description": "field:description"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/strategy-details?id={result}"
+  }
+}

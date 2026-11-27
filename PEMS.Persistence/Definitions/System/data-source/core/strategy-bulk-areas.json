@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-bulk-areas",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Areas",
+    "fa": "نواحی"
+  },
+  "description": {
+    "en": "Areas",
+    "fa": "نواحی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Areas"
+    }
+  }
+}

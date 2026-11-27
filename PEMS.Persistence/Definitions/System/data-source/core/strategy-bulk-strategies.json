@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-bulk-strategies",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Usable strategies",
+    "fa": "استراتژی‌ها"
+  },
+  "description": {
+    "en": "Usable strategies",
+    "fa": "استراتژی‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Strategies"
+    }
+  }
+}

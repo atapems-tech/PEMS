@@ -16,7 +16,10 @@
     "provider": "operation",
     "parameters": {
       "model": "PcForm",
-      "action": "Group1"
+      "action": "Group1",
+      "args": {
+        "sectionId": "param:sectionId"
+      }
     }
   }
 }

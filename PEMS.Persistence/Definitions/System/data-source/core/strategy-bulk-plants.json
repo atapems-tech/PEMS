@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-bulk-plants",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Plants",
+    "fa": "کارخانه‌ها"
+  },
+  "description": {
+    "en": "Plants",
+    "fa": "کارخانه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Plants"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "data-source",
+  "key": "strategy-candidates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Candidate equipment",
+    "fa": "تجهیزات نامزد"
+  },
+  "description": {
+    "en": "Candidate equipment",
+    "fa": "تجهیزات نامزد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Candidates",
+      "args": {
+        "strategyId": "param:strategyId",
+        "classId": "param:classId",
+        "disciplineId": "param:disciplineId",
+        "equipmentType": "param:equipmentType",
+        "plant": "param:plant",
+        "area": "param:area",
+        "unit": "param:unit",
+        "tagSearch": "param:tagSearch",
+        "tagList": "param:tagList"
+      }
+    }
+  }
+}

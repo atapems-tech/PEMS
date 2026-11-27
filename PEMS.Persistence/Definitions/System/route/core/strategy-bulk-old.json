@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "strategy-bulk-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Bulk define a maintenance strategy (old address)",
+    "fa": "تخصیص دسته‌جمعی استراتژی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Bulk define a maintenance strategy",
+    "fa": "تخصیص دسته‌جمعی استراتژی"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/BulkCreate",
+    "target": "/p/strategy-bulk-assign",
+    "permanent": false
+  }
+}

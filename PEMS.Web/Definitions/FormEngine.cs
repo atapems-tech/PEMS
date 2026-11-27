@@ -231,6 +231,11 @@ public static class FormEngine
             }
             if (!string.IsNullOrEmpty(f.SearchSource) && (f.Kind != FieldKind.Select || !string.IsNullOrEmpty(f.OptionsFrom) || f.Options is { Count: > 0 }))
                 errors.Add(new(at + "/searchSource", "overlap", "Def_Err_Overlap", "searchSource belongs to a select field and replaces options and optionsFrom."));
+            if (!string.IsNullOrEmpty(f.DependsOn) || !string.IsNullOrEmpty(f.DependsSource) || !string.IsNullOrEmpty(f.DependsArg))
+            {
+                if (f.Kind != FieldKind.Select || string.IsNullOrEmpty(f.DependsOn) || string.IsNullOrEmpty(f.DependsSource) || string.IsNullOrEmpty(f.DependsArg)) errors.Add(new(at + "/dependsOn", "field-not-allowed", "Def_Err_Type", "dependsOn, dependsSource and dependsArg belong together on a select field."));
+                else if (!names.Contains(f.DependsOn) || f.DependsOn == f.Name) errors.Add(new(at + "/dependsOn", "unknown-field", "Def_Err_UnknownField", $"The form has no other field '{f.DependsOn}'."));
+            }
             if (!string.IsNullOrEmpty(f.SearchSource) && !Regex.IsMatch(f.SearchSource, "^[A-Za-z][A-Za-z0-9]{0,40}$"))
                 errors.Add(new(at + "/searchSource", "pattern", "Def_Err_Pattern", "searchSource is the name of a search type (letters and digits)."));
             if (!string.IsNullOrEmpty(f.OptionsFrom) && f.Options is { Count: > 0 }) errors.Add(new(at + "/optionsFrom", "overlap", "Def_Err_Overlap", "A field takes its options from one place: options or optionsFrom, not both."));

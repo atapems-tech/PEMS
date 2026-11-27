@@ -94,6 +94,12 @@ public sealed record FieldDescriptor
     public string? Step { get; init; }
     /// <summary>SCRUM-830: the field is posted but not shown (a record id or a part code the form is opened for, filled from the link or the loaded record); the user sees no label and no input.</summary>
     public bool Hidden { get; init; }
+    /// <summary>SCRUM-826: a Select whose choices follow another field: the name of that field. The server still checks the posted value against <c>optionsFrom</c> (the full list); the page script reloads the choices from <see cref="DependsSource"/> when the other field changes.</summary>
+    public string? DependsOn { get; init; }
+    /// <summary>SCRUM-826: the key of a grid data source whose rows (<c>value</c>, <c>label</c>) are the choices for the value of the field named in <see cref="DependsOn"/>; the value is passed as <c>f.{DependsArg}</c>.</summary>
+    public string? DependsSource { get; init; }
+    /// <summary>SCRUM-826: the argument name of the data source that takes the value of the other field.</summary>
+    public string? DependsArg { get; init; }
     /// <summary>SCRUM-830: a File field that takes several files (the action reads them as a list).</summary>
     public bool Multiple { get; init; }
     /// <summary>SCRUM-830: a File field offers only these extensions in the file dialog (<c>.pdf,.xlsx</c>); the upload profile of the action still decides what is accepted.</summary>

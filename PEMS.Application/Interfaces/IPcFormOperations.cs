@@ -37,8 +37,8 @@ public interface IPcFormOperations
     Task<PcFormAnswer> RemoveAttachmentAsync(int id, int attachmentId);
 
     [PemsOperation("PcForm", "Sections")] Task<List<PcFormChoice>> SectionsAsync();
-    [PemsOperation("PcForm", "Group1")] Task<List<PcFormChoice>> Group1Async();
-    [PemsOperation("PcForm", "Group2")] Task<List<PcFormChoice>> Group2Async();
+    [PemsOperation("PcForm", "Group1")] Task<List<PcFormChoice>> Group1Async(string? sectionId = null);
+    [PemsOperation("PcForm", "Group2")] Task<List<PcFormChoice>> Group2Async(string? group1Id = null);
     [PemsOperation("PcForm", "Families")] Task<List<PcFormChoice>> FamiliesAsync();
     [PemsOperation("PcForm", "Units")] Task<List<PcFormChoice>> UnitsAsync();
     [PemsOperation("PcForm", "Currencies")] Task<List<PcFormChoice>> CurrenciesAsync();

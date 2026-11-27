@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-bulk-units",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Units",
+    "fa": "واحدها"
+  },
+  "description": {
+    "en": "Units",
+    "fa": "واحدها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Units"
+    }
+  }
+}

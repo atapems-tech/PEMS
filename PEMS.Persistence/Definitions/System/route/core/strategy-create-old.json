@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "strategy-create-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New maintenance strategy (old address)",
+    "fa": "استراتژی نگهداری جدید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New maintenance strategy",
+    "fa": "استراتژی نگهداری جدید"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/Create",
+    "target": "/f/strategy-create",
+    "permanent": false
+  }
+}

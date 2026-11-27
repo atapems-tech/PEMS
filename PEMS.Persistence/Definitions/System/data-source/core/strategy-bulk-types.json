@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-bulk-types",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Equipment types",
+    "fa": "انواع تجهیز"
+  },
+  "description": {
+    "en": "Equipment types",
+    "fa": "انواع تجهیز"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "EquipmentTypes"
+    }
+  }
+}

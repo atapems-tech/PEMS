@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-form-causes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure causes of the mode",
+    "fa": "علت‌های خرابی حالت"
+  },
+  "description": {
+    "en": "Failure causes of the mode",
+    "fa": "علت‌های خرابی حالت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Causes",
+      "args": {
+        "modeId": "param:modeId"
+      }
+    }
+  }
+}

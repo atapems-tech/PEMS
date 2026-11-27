@@ -1,0 +1,217 @@
+{
+  "kind": "page",
+  "key": "strategy-bulk-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Bulk define a maintenance strategy",
+    "fa": "تخصیص دسته‌جمعی استراتژی"
+  },
+  "description": {
+    "en": "Bulk define a maintenance strategy",
+    "fa": "تخصیص دسته‌جمعی استراتژی"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "strategy-bulk-assign",
+    "regions": {
+      "content": [
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "Narrow the equipment with at least one filter (at most 200 rows are shown), choose the strategy to see which tags would receive it, select the rows and assign.",
+                  "fa": "تجهیزات را با دست‌کم یک فیلتر محدود کنید (حداکثر ۲۰۰ ردیف)، استراتژی را برای دیدن تگ‌های دریافت‌کننده انتخاب کنید، ردیف‌ها را انتخاب و تخصیص دهید."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategy-bulk-filters",
+          "component": "page-filters",
+          "options": {
+            "id": "strategy-bulk-filters",
+            "resetUrl": "/p/strategy-bulk-assign",
+            "fields": [
+              {
+                "name": "strategyId",
+                "label": {
+                  "en": "Strategy",
+                  "fa": "استراتژی"
+                },
+                "kind": "select",
+                "value": "{{params.strategyId}}"
+              },
+              {
+                "name": "classId",
+                "label": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                },
+                "kind": "select",
+                "value": "{{params.classId}}"
+              },
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}"
+              },
+              {
+                "name": "equipmentType",
+                "label": {
+                  "en": "Equipment type",
+                  "fa": "نوع تجهیز"
+                },
+                "kind": "select",
+                "value": "{{params.equipmentType}}"
+              },
+              {
+                "name": "plant",
+                "label": {
+                  "en": "Plant",
+                  "fa": "کارخانه"
+                },
+                "kind": "select",
+                "value": "{{params.plant}}"
+              },
+              {
+                "name": "area",
+                "label": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                },
+                "kind": "select",
+                "value": "{{params.area}}"
+              },
+              {
+                "name": "unit",
+                "label": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                },
+                "kind": "select",
+                "value": "{{params.unit}}"
+              },
+              {
+                "name": "tagSearch",
+                "label": {
+                  "en": "Tag contains",
+                  "fa": "شامل تگ"
+                },
+                "kind": "text",
+                "value": "{{params.tagSearch}}"
+              },
+              {
+                "name": "tagList",
+                "label": {
+                  "en": "Tag list (comma or line separated)",
+                  "fa": "فهرست تگ‌ها (با ویرگول یا خط جدید)"
+                },
+                "kind": "text",
+                "value": "{{params.tagList}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "strategyId",
+                "source": "/d/strategy-bulk-strategies",
+                "valueField": "value"
+              },
+              {
+                "field": "classId",
+                "source": "/d/strategy-bulk-classes",
+                "valueField": "value"
+              },
+              {
+                "field": "disciplineId",
+                "source": "/d/strategy-bulk-disciplines",
+                "valueField": "value"
+              },
+              {
+                "field": "equipmentType",
+                "source": "/d/strategy-bulk-types",
+                "valueField": "value"
+              },
+              {
+                "field": "plant",
+                "source": "/d/strategy-bulk-plants",
+                "valueField": "value"
+              },
+              {
+                "field": "area",
+                "source": "/d/strategy-bulk-areas",
+                "valueField": "value"
+              },
+              {
+                "field": "unit",
+                "source": "/d/strategy-bulk-units",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "strategy-bulk-assign",
+            "url": "/d/strategy-candidates?f.strategyId={{params.strategyId|url}}&f.classId={{params.classId|url}}&f.disciplineId={{params.disciplineId|url}}&f.equipmentType={{params.equipmentType|url}}&f.plant={{params.plant|url}}&f.area={{params.area|url}}&f.unit={{params.unit|url}}&f.tagSearch={{params.tagSearch|url}}&f.tagList={{params.tagList|url}}",
+            "idField": "id",
+            "selectable": true,
+            "columns": [
+              {
+                "key": "tag",
+                "width": 160
+              },
+              {
+                "key": "name",
+                "width": 240
+              },
+              {
+                "key": "class",
+                "width": 180
+              },
+              {
+                "key": "criticality",
+                "width": 110
+              },
+              {
+                "key": "conflict",
+                "width": 200
+              },
+              {
+                "key": "willReceive",
+                "width": 110,
+                "type": "bool"
+              }
+            ],
+            "bulkActions": [
+              {
+                "key": "assign",
+                "label": {
+                  "en": "Assign the strategy",
+                  "fa": "تخصیص استراتژی"
+                },
+                "formUrl": "/f/strategy-assign?strategyId={{params.strategyId|url}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "MaintenanceStrategy.Approve"
+  }
+}
