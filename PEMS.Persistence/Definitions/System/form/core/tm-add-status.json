@@ -1,0 +1,86 @@
+{
+  "kind": "form",
+  "key": "tm-add-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a status",
+    "fa": "افزودن وضعیت"
+  },
+  "description": {
+    "en": "Add a status",
+    "fa": "افزودن وضعیت"
+  },
+  "payload": {
+    "id": "tm-add-status",
+    "title": {
+      "en": "Add a status",
+      "fa": "افزودن وضعیت"
+    },
+    "submitLabel": {
+      "en": "Add a status",
+      "fa": "افزودن وضعیت"
+    },
+    "actionKey": "tm-add-status",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workSpaceId",
+        "label": {
+          "en": "Space id",
+          "fa": "شناسه فضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name (Persian)",
+          "fa": "نام (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "گروه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-category-options",
+        "optionsArgs": {}
+      }
+    ]
+  }
+}

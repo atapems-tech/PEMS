@@ -64,4 +64,12 @@ public sealed class TaskManagerOperations(ITaskManagerService tasks, IWorkSpaceS
             ParentId = parentId, SprintId = sprintId, StoryPoints = storyPoints }, await ActorAsync());
         return r.Success && r.Id.HasValue ? new(true, null, r.Id.Value) : new(false, localizer[r.ErrorKey ?? "Tm_Err_SaveFailed"].Value, 0);
     }
+
+    public async Task<TaskManagerCreateAnswer> SaveSpaceAsync(int? id, string key, string name, string? nameFa = null, string? description = null, int? ownerDepartmentId = null, bool isActive = true)
+    {
+        var actor = await ActorAsync();
+        if (!actor.IsSystemAdmin) throw new UnauthorizedAccessException();
+        var r = await spaces.SaveSpaceAsync(new WorkSpaceInput { Id = id, Key = key ?? "", Name = name ?? "", NameFa = nameFa, Description = description, OwnerDepartmentId = ownerDepartmentId, IsActive = isActive }, actor);
+        return r.Success ? new(true, null, r.Id ?? id ?? 0) : new(false, localizer[r.ErrorKey ?? "Tm_Err_SaveFailed"].Value, 0);
+    }
 }

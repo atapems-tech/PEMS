@@ -8,7 +8,7 @@ using PEMS.Web.Resources;
 namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-831: the task manager start page as read operations over the same service as TaskManagerController.Index (see <see cref="ITaskManagerPagesOperations"/>).</summary>
-public sealed class TaskManagerPagesOperations(ITaskManagerService tasks, ICurrentUserService currentUser, IStringLocalizer<SharedResource> localizer) : ITaskManagerPagesOperations
+public sealed class TaskManagerPagesOperations(ITaskManagerService tasks, IWorkSpaceService spaces, ICurrentUserService currentUser, IStringLocalizer<SharedResource> localizer) : ITaskManagerPagesOperations
 {
     private Task<PEMS.Application.DTOs.TaskActor> ActorAsync() => tasks.ResolveActorAsync(currentUser.UserId, currentUser.Roles, currentUser.FullName);
 
@@ -166,4 +166,57 @@ y(localizer, p))).ToList());
 
     public Task<List<TaskChoice>> StatusCategoryOptionsAsync()
         => Task.FromResult(new[] { "", "NotDone", "ToDo", "InProgress", "Done" }.Select(c => new TaskChoice(c, c == "" ? localizer["Tm_Any"].Value : localizer["Tm_Category_" + c].Value)).ToList());
+
+    // the admin pages: system administrators only (the old controller answered Forbid)
+    private async Task<TaskActor> AdminActorAsync()
+    {
+        var actor = await ActorAsync();
+        if (!actor.IsSystemAdmin) throw new UnauthorizedAccessException();
+        return actor;
+    }
+
+    public async Task<List<TaskAdminSpaceRow>> AdminSpacesAsync()
+        => (await spaces.GetAllForAdminAsync(await AdminActorAsync())).Select(s => new TaskAdminSpaceRow(s.Id, s.Key, TaskManagerUi.Name(s.Name, s.NameFa), s.OwnerDepartmentName, s.MemberCount, s.OpenItemCount, s.IsActive)).ToList();
+
+    public async Task<List<TaskAdminSpaceHeadRow>> AdminSpaceHeadAsync(int id)
+    {
+        var m = await spaces.GetAdminAsync(id, await AdminActorAsync());
+        return m == null ? [] : [new TaskAdminSpaceHeadRow(m.Space.Id, m.Space.Key, m.Space.Name, m.Space.NameFa, m.Space.Description, m.Space.OwnerDepartmentId, m.Space.IsActive)];
+    }
+
+    public async Task<List<TaskAdminMemberRow>> AdminMembersAsync(int id)
+        => (await spaces.GetAdminAsync(id, await AdminActorAsync()))?.Members.Select(m => new TaskAdminMemberRow(m.Id, m.Name, localizer["Tm_Role_" + m.Role].Value, m.Role, m.IsActive)).ToList() ?? [];
+
+    public async Task<List<TaskAdminTypeRow>> AdminTypesAsync(int id)
+        => (await spaces.GetAdminAsync(id, await AdminActorAsync()))?.Types.Select(t => new TaskAdminTypeRow(t.Id, TaskManagerUi.Name(t.Name, t.NameFa), t.Icon, t.IsSubtask, t.IsActive, !t.IsActive)).ToList() ?? [];
+
+    public async Task<List<TaskAdminStatusRow>> AdminStatusesAsync(int id)
+        => (await spaces.GetAdminAsync(id, await AdminActorAsync()))?.Statuses.Select(s => new TaskAdminStatusRow(s.Id, s.Name, s.NameFa, localizer["Tm_Category_" + s.Category].Value, s.Category, s.SortOrder, s.IsActive)).ToList() ?? [];
+
+    // every pair of active statuses (not a status with itself) with "true" when the move is allowed: the cells of the transition matrix; the id of a cell is the space
+    public async Task<List<TaskAdminTransitionRow>> AdminTransitionsAsync(int id)
+    {
+        var m = await spaces.GetAdminAsync(id, await AdminActorAsync());
+        if (m == null) return [];
+        var active = m.Statuses.Where(x => x.IsActive).ToList();
+        return active.SelectMany(from => active.Where(to => to.Id != from.Id).Select(to => new TaskAdminTransitionRow(id, from.Id.ToString(), TaskManagerUi.Name(from.Name, from.NameFa), to.Id.ToString(), TaskManagerUi.Name(to.Name, to.NameFa),
+            m.Transitions.Contains((from.Id, to.Id)) ? "true" : "false"))).ToList();
+    }
+
+    public async Task<List<TaskChoice>> DepartmentOptionsAsync()
+    {
+        await AdminActorAsync();
+        return [new TaskChoice("", localizer["Tm_NoDepartment"].Value), .. (await spaces.GetDepartmentsAsync()).Select(d => new TaskChoice(d.Id.ToString(), d.Name))];
+    }
+
+    public async Task<List<TaskChoice>> NewMemberOptionsAsync(int id)
+    {
+        var actor = await AdminActorAsync();
+        var members = (await spaces.GetAdminAsync(id, actor))?.Members.Select(m => m.EmployeeId).ToHashSet() ?? [];
+        return (await spaces.GetActiveEmployeesAsync()).Where(e => !members.Contains(e.EmployeeId)).Select(e => new TaskChoice(e.EmployeeId.ToString(), e.Name)).ToList();
+    }
+
+    public Task<List<TaskChoice>> RoleOptionsAsync() => Task.FromResult(WorkSpaceMemberRoles.All.Select(r => new TaskChoice(r, localizer["Tm_Role_" + r].Value)).ToList());
+
+    public Task<List<TaskChoice>> CategoryOptionsAsync() => Task.FromResult(WorkItemStatusCategories.All.Select(c => new TaskChoice(c, localizer["Tm_Category_" + c].Value)).ToList());
 }

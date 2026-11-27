@@ -77,7 +77,7 @@ public class TaskManagerViewRenderTests
         var (tm, _) = Controllers(w.Ctx, 1, "Engineer");
 
         var member = new FakeCurrentUserService { UserId = 1, UserName = "u1", FullName = "User 1", Roles = new List<string> { "Engineer" } };
-        var ops = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), member, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
+        var ops = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), new WorkSpaceService(w.Ctx, new FakePermissionService()), member, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
         var sprints = await ops.BacklogSprintsAsync("MNT");
         Assert.Contains(sprints, x => x.Name == "Sprint 1");
         var items = await ops.BacklogItemsAsync("MNT");
@@ -86,7 +86,7 @@ public class TaskManagerViewRenderTests
         Assert.All(sprints, x => Assert.False(x.CanManage));                       // a plain member is not a lead: no sprint commands
 
         var member2 = new FakeCurrentUserService { UserId = 1, UserName = "u1", FullName = "User 1", Roles = new List<string> { "Engineer" } };
-        var ops2 = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), member2, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
+        var ops2 = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), new WorkSpaceService(w.Ctx, new FakePermissionService()), member2, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
         var all = await ops2.AllWorkAsync("MNT");
         Assert.Contains(all, x => x.Key == "MNT-2");
     }
@@ -99,7 +99,7 @@ public class TaskManagerViewRenderTests
         var other = (await new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService())
             .CreateAsync(new WorkItemCreateInput { WorkSpaceId = w.SpaceId, Title = "Not Bobs", SprintId = w.Ctx.Sprints.Single().SprintId }, new TaskActor(1, Alice, new[] { "Engineer" }, "Alice A"))).Id!.Value;
         var user = new FakeCurrentUserService { UserId = 2, UserName = "u2", FullName = "User 2", Roles = new List<string> { "Engineer" } };
-        var ops = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), user, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
+        var ops = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), new WorkSpaceService(w.Ctx, new FakePermissionService()), user, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
         var cards = await ops.BoardCardsAsync("MNT");
         Assert.Contains(cards, c => c.Id == w.ItemId);
         Assert.Equal("", cards.Single(c => c.Id == other).Allowed);                 // no move for a card of someone else
@@ -146,20 +146,16 @@ public class TaskManagerViewRenderTests
     }
 
     [Fact]
-    public async Task AdminPages_Render_ForSystemAdminOnly()
+    public async Task AdminOperations_AreForSystemAdminsOnly()
     {
-        var w = await SeedAsync(nameof(AdminPages_Render_ForSystemAdminOnly));
-        var (tm, _) = Controllers(w.Ctx, 9, TaskActor.SystemAdminRole);
-        var admin = await Render(tm, await tm.Admin(), "~/Views/TaskManager/Admin.cshtml");
-        Assert.Contains("MNT", admin);
-        var space = await Render(tm, await tm.AdminSpace(w.SpaceId), "~/Views/TaskManager/AdminSpace.cshtml");
-        Assert.Contains("name=\"fromStatusId\"", space);
-        Assert.Contains("Carol C", space);
-
-        var (asAlice, _) = Controllers(w.Ctx, 1, "Engineer");
-        Assert.IsType<ForbidResult>(await asAlice.Admin());
-        Assert.IsType<ForbidResult>(await asAlice.AdminSpace(w.SpaceId));
-        Assert.IsType<ForbidResult>(await asAlice.SaveSpace(new WorkSpaceInput { Key = "X1", Name = "x" }));
-        Assert.IsType<NotFoundResult>(await asAlice.Space("NOPE"));
+        var w = await SeedAsync(nameof(AdminOperations_AreForSystemAdminsOnly));
+        Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource> loc = new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>();
+        PEMS.Web.Services.TaskManagerPagesOperations Ops(int userId, string role) => new(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), new WorkSpaceService(w.Ctx, new FakePermissionService()),
+            new FakeCurrentUserService { UserId = userId, UserName = "u" + userId, FullName = "User " + userId, Roles = new List<string> { role } }, loc);
+        var admin = await Ops(9, TaskActor.SystemAdminRole).AdminSpacesAsync();
+        Assert.Contains(admin, x => x.Key == "MNT");
+        var transitions = await Ops(9, TaskActor.SystemAdminRole).AdminTransitionsAsync(w.SpaceId);
+        Assert.NotEmpty(transitions);
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => Ops(1, "Engineer").AdminSpacesAsync());
     }
 }

@@ -84,4 +84,8 @@ public interface ITaskManagerOperations
     [PEMS.Application.Common.PemsOperation("TaskManager", "CreateItem", "Task.Create")]
     Task<TaskManagerCreateAnswer> CreateItemAsync(int? workSpaceId, string title, string? description = null, int? typeId = null, string? priority = null, int? assigneeEmployeeId = null, DateTime? dueDate = null, DateTime? startDate = null,
         int? parentId = null, int? sprintId = null, decimal? storyPoints = null);
+
+    /// <summary>Creates (without an id) or saves a work space; system administrators only. <c>NewId</c> is the id of the space.</summary>
+    [PEMS.Application.Common.PemsOperation("TaskManager", "SaveSpace")]
+    Task<TaskManagerCreateAnswer> SaveSpaceAsync(int? id, string key, string name, string? nameFa = null, string? description = null, int? ownerDepartmentId = null, bool isActive = true);
 }

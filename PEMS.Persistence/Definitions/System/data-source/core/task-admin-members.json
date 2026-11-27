@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-admin-members",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Members of a space",
+    "fa": "اعضای فضا"
+  },
+  "description": {
+    "en": "Members of a space",
+    "fa": "اعضای فضا"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "AdminMembers",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

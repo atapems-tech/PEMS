@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "tm-role-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Member roles",
+    "fa": "نقش‌های عضو"
+  },
+  "description": {
+    "en": "Member roles",
+    "fa": "نقش‌های عضو"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "RoleOptions"
+    }
+  }
+}

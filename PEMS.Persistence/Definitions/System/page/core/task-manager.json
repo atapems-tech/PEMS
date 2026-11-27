@@ -82,7 +82,7 @@
                 "actions": [
                   {
                     "key": "admin",
-                    "url": "/TaskManager/Admin",
+                    "url": "/p/task-admin",
                     "method": "get",
                     "showWhen": "row.isAdmin == true"
                   }

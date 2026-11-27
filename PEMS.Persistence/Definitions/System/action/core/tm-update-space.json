@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "tm-update-space",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The change was saved.",
+    "fa": "تغییر ذخیره شد."
+  },
+  "description": {
+    "en": "The change was saved.",
+    "fa": "تغییر ذخیره شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "SaveSpace",
+      "args": {
+        "key": "field:key",
+        "name": "field:name",
+        "nameFa": "field:nameFa",
+        "description": "field:description",
+        "ownerDepartmentId": "field:ownerDepartmentId",
+        "isActive": "field:isActive",
+        "id": "field:id"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/p/task-admin-space?id={id}"
+  }
+}

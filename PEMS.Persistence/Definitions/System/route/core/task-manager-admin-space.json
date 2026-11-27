@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "task-manager-admin-space",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task manager administration (old address)",
+    "fa": "مدیریت وظایف (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Task manager administration (old address)",
+    "fa": "مدیریت وظایف (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "TaskManager/AdminSpace/{id}",
+    "target": "/p/task-admin-space?id={id}",
+    "permanent": false
+  }
+}

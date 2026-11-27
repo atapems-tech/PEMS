@@ -74,3 +74,9 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - Up to 500 tasks, no paging (the old page paged 50); the sort links are the grid column sorts.
 - The bulk bar showed status, assign and sprint only when one space was filtered; the four bulk actions are always offered and open forms whose choice lists need the space key of the filter (empty without it).
 - "My tasks" and the old address `TaskManager/AllWork` with `WorkSpaceId`, `Assignee`, `StatusCategory`: the page takes `spaceKey`, `assignee`, `statusCategory`; `WorkSpaceId` in an old link is not understood.
+
+### Task manager administration (SCRUM-831)
+- The inline row forms (member role and active, type toggle, status edit, every field editable in the row) are row actions that open forms; the transition matrix is the generic matrix with a select cell (allowed / not allowed) instead of a toggle icon per cell.
+- A non-administrator gets the refusal of the operation (the old pages answered Forbid).
+- The status edit form is prefilled from the address (values with special characters in a name may be cut); the generic fix is a form `load` by row id.
+- Engine: the matrix binding source takes the page filters (`?f.id=`).

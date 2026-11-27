@@ -1,0 +1,100 @@
+{
+  "kind": "form",
+  "key": "tm-create-space",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New space",
+    "fa": "فضای جدید"
+  },
+  "description": {
+    "en": "New space",
+    "fa": "فضای جدید"
+  },
+  "payload": {
+    "id": "tm-create-space",
+    "title": {
+      "en": "New space",
+      "fa": "فضای جدید"
+    },
+    "submitLabel": {
+      "en": "New space",
+      "fa": "فضای جدید"
+    },
+    "actionKey": "tm-create-space",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "key",
+        "label": {
+          "en": "Key",
+          "fa": "کلید"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 10,
+        "pattern": "^[A-Za-z][A-Za-z0-9]{1,9}$"
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 150
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name (Persian)",
+          "fa": "نام (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 150
+      },
+      {
+        "name": "ownerDepartmentId",
+        "label": {
+          "en": "Owner department",
+          "fa": "دپارتمان مالک"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-department-options",
+        "optionsArgs": {}
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "text",
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "checkbox",
+        "default": "true"
+      }
+    ]
+  }
+}

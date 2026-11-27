@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "tm-category-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Status categories",
+    "fa": "گروه‌های وضعیت"
+  },
+  "description": {
+    "en": "Status categories",
+    "fa": "گروه‌های وضعیت"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "CategoryOptions"
+    }
+  }
+}
