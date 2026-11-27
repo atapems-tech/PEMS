@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-strategy-index-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance strategies (old address)",
+    "fa": "استراتژی‌های نگهداری (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance strategies (old address)",
+    "fa": "استراتژی‌های نگهداری (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/Index",
+    "target": "/p/strategy-list",
+    "permanent": false
+  }
+}

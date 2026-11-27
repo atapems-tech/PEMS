@@ -1,0 +1,480 @@
+{
+  "kind": "page",
+  "key": "strategy-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance strategy",
+    "fa": "استراتژی نگهداری"
+  },
+  "description": {
+    "en": "Maintenance strategy",
+    "fa": "استراتژی نگهداری"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "strategy-details",
+    "permission": "MaintenanceStrategy.View",
+    "regions": {
+      "header": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/strategy-list"
+          }
+        }
+      ],
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "strategy-head",
+            "fields": [
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "version",
+                "label": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                },
+                "type": "number"
+              },
+              {
+                "key": "equipmentClass",
+                "label": {
+                  "en": "Equipment class",
+                  "fa": "کلاس تجهیز"
+                }
+              },
+              {
+                "key": "strategyType",
+                "label": {
+                  "en": "Strategy type",
+                  "fa": "نوع استراتژی"
+                }
+              },
+              {
+                "key": "failureMode",
+                "label": {
+                  "en": "Failure mode",
+                  "fa": "حالت خرابی"
+                }
+              },
+              {
+                "key": "consequence",
+                "label": {
+                  "en": "Consequence",
+                  "fa": "پیامد"
+                }
+              },
+              {
+                "key": "taskType",
+                "label": {
+                  "en": "Task type",
+                  "fa": "نوع وظیفه"
+                }
+              },
+              {
+                "key": "ownerDiscipline",
+                "label": {
+                  "en": "Owner discipline",
+                  "fa": "رشته‌ی مسئول"
+                }
+              },
+              {
+                "key": "frequency",
+                "label": {
+                  "en": "Frequency",
+                  "fa": "تناوب"
+                }
+              },
+              {
+                "key": "source",
+                "label": {
+                  "en": "Source",
+                  "fa": "منبع"
+                }
+              },
+              {
+                "key": "functionalFailure",
+                "label": {
+                  "en": "Functional failure",
+                  "fa": "خرابی کارکردی"
+                }
+              },
+              {
+                "key": "failureEffect",
+                "label": {
+                  "en": "Failure effect",
+                  "fa": "اثر خرابی"
+                }
+              },
+              {
+                "key": "cbm",
+                "label": {
+                  "en": "CBM parameter",
+                  "fa": "پارامتر CBM"
+                }
+              },
+              {
+                "key": "thresholds",
+                "label": {
+                  "en": "Alarm / trip",
+                  "fa": "هشدار / تریپ"
+                }
+              },
+              {
+                "key": "pfIntervalDays",
+                "label": {
+                  "en": "P-F interval",
+                  "fa": "فاصله‌ی P-F"
+                },
+                "type": "number"
+              },
+              {
+                "key": "inspectionIntervalDays",
+                "label": {
+                  "en": "Inspection interval",
+                  "fa": "فاصله‌ی بازرسی"
+                },
+                "type": "number"
+              },
+              {
+                "key": "justification",
+                "label": {
+                  "en": "Justification",
+                  "fa": "توجیه"
+                },
+                "wide": true
+              },
+              {
+                "key": "reviewDate",
+                "label": {
+                  "en": "Review date",
+                  "fa": "تاریخ بازبینی"
+                },
+                "type": "date"
+              },
+              {
+                "key": "approved",
+                "label": {
+                  "en": "Approved by",
+                  "fa": "تاییدکننده"
+                }
+              },
+              {
+                "key": "legacyTag",
+                "label": {
+                  "en": "Legacy tag",
+                  "fa": "تگ قدیمی"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/strategy-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "strategy-actions",
+            "url": "/d/strategy-head?f.id=eq:{{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "status",
+                "width": 140,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 900,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "url": "/MaintenanceStrategy/Edit/{id}",
+                    "method": "get",
+                    "showWhen": "row.canEdit == true"
+                  },
+                  {
+                    "key": "submit",
+                    "url": "/a/strategy-submit",
+                    "method": "post",
+                    "showWhen": "row.canSubmit == true"
+                  },
+                  {
+                    "key": "approve",
+                    "url": "/f/strategy-review-approve?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canReview == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/f/strategy-review-reject?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canReview == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "activate",
+                    "url": "/f/strategy-activate?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canActivate == true"
+                  },
+                  {
+                    "key": "assign",
+                    "url": "/f/strategy-assign?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canAssign == true"
+                  },
+                  {
+                    "key": "bulk-assign",
+                    "url": "/MaintenanceStrategy/BulkCreate?strategyId={id}",
+                    "method": "get",
+                    "showWhen": "row.canAssign == true"
+                  },
+                  {
+                    "key": "retire",
+                    "url": "/f/strategy-retire?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canRetire == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "versions",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-versions",
+            "url": "/d/strategy-versions?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "version",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "width": 140
+              },
+              {
+                "key": "approvedAt",
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/p/strategy-details?id={id}",
+                    "method": "get",
+                    "showWhen": "row.isCurrent == false"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "assignments",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-assignments",
+            "url": "/d/strategy-assignments?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "tag",
+                "width": 140
+              },
+              {
+                "key": "equipmentName",
+                "width": 220
+              },
+              {
+                "key": "equipmentClass",
+                "width": 160
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "override",
+                "width": 160
+              },
+              {
+                "key": "overrideJustification",
+                "width": 240
+              },
+              {
+                "key": "planCount",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "assignedDate",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 420,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "tag",
+                    "url": "/p/strategy-tag?equipmentId={raw.equipmentId}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "request-override",
+                    "url": "/f/strategy-override-request?assignmentId={id}&strategyId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canRequestOverride == true"
+                  },
+                  {
+                    "key": "approve-override",
+                    "url": "/f/strategy-override-approve?assignmentId={id}&strategyId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canDecideOverride == true"
+                  },
+                  {
+                    "key": "reject-override",
+                    "url": "/f/strategy-override-reject?assignmentId={id}&strategyId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canDecideOverride == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "unassign",
+                    "url": "/f/strategy-unassign?assignmentId={id}&strategyId={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.canUnassign == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "plans",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-plans",
+            "url": "/d/strategy-plans?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "planNumber",
+                "width": 140
+              },
+              {
+                "key": "tag",
+                "width": 140
+              },
+              {
+                "key": "title",
+                "width": 240
+              },
+              {
+                "key": "version",
+                "width": 80
+              },
+              {
+                "key": "outOfSync",
+                "width": 110,
+                "type": "bool"
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-history",
+            "url": "/d/strategy-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "who",
+                "width": 160
+              },
+              {
+                "key": "action",
+                "width": 140
+              },
+              {
+                "key": "fromStatus",
+                "width": 120
+              },
+              {
+                "key": "toStatus",
+                "width": 120
+              },
+              {
+                "key": "summary",
+                "width": 280
+              },
+              {
+                "key": "comment",
+                "width": 240
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

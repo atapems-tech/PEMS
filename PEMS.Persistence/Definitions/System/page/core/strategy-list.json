@@ -1,0 +1,140 @@
+{
+  "kind": "page",
+  "key": "strategy-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance strategies",
+    "fa": "استراتژی‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance strategies",
+    "fa": "استراتژی‌های نگهداری"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "strategy-list",
+    "permission": "MaintenanceStrategy.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "strategy-list-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/strategy-coverage",
+                "text": {
+                  "en": "Coverage",
+                  "fa": "پوشش"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/failure-mode-catalog",
+                "text": {
+                  "en": "Failure-mode catalogue",
+                  "fa": "کاتالوگ حالت‌های خرابی"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/MaintenanceStrategy/BulkCreate",
+                "text": {
+                  "en": "Bulk assignment",
+                  "fa": "تخصیص دسته‌جمعی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "strategy-list",
+            "url": "/d/strategy-list",
+            "idField": "id",
+            "viewsKey": "strategy-list",
+            "columns": [
+              {
+                "key": "equipmentClass",
+                "width": 170
+              },
+              {
+                "key": "equipmentTag",
+                "width": 140
+              },
+              {
+                "key": "strategyType",
+                "width": 130
+              },
+              {
+                "key": "failureMode",
+                "width": 200
+              },
+              {
+                "key": "consequence",
+                "width": 130
+              },
+              {
+                "key": "frequency",
+                "width": 110
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "version",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "assignedTags",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "reviewOverdue",
+                "width": 110,
+                "type": "bool"
+              },
+              {
+                "key": "justification",
+                "width": 280
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 180,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/p/strategy-details?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "edit",
+                    "url": "/MaintenanceStrategy/Edit/{id}",
+                    "method": "get",
+                    "showWhen": "row.status != 'Retired'"
+                  }
+                ]
+              }
+            ],
+            "newUrl": "/MaintenanceStrategy/Create",
+            "newLabel": {
+              "en": "New strategy",
+              "fa": "استراتژی جدید"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
