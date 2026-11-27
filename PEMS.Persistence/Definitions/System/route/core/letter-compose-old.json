@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-compose-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Compose a letter (old address)",
+    "fa": "نگارش نامه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Compose a letter",
+    "fa": "نگارش نامه"
+  },
+  "payload": {
+    "pattern": "LetterCompose/Compose",
+    "target": "/f/letter-compose",
+    "permanent": false
+  }
+}

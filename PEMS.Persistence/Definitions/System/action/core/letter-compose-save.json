@@ -1,0 +1,55 @@
+{
+  "kind": "action",
+  "key": "letter-compose-save",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the letter draft",
+    "fa": "ذخیره‌ی پیش‌نویس نامه"
+  },
+  "description": {
+    "en": "Save the letter draft",
+    "fa": "ذخیره‌ی پیش‌نویس نامه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Save",
+      "args": {
+        "letterId": "field:letterId",
+        "rowVersion": "field:rowVersion",
+        "parentLetterId": "field:parentLetterId",
+        "isReferral": "field:isReferral",
+        "letterType": "field:letterType",
+        "category": "field:category",
+        "subject": "field:subject",
+        "body": "field:body",
+        "priority": "field:priority",
+        "confidentialityLevel": "field:confidentialityLevel",
+        "letterDate": "field:letterDate",
+        "referenceNumber": "field:referenceNumber",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "relatedDepartmentId": "field:relatedDepartmentId",
+        "senderDepartmentId": "field:senderDepartmentId",
+        "toEmployeeIds": "field:toEmployeeIds",
+        "ccEmployeeIds": "field:ccEmployeeIds",
+        "bccEmployeeIds": "field:bccEmployeeIds",
+        "externalReceiver": "field:externalReceiver",
+        "correspondentPartyId": "field:correspondentPartyId",
+        "responseRequired": "field:responseRequired",
+        "responseDueDate": "field:responseDueDate",
+        "approvalRequired": "field:approvalRequired",
+        "approverUserIds": "field:approverUserIds",
+        "manualNumber": "field:manualNumber"
+      }
+    },
+    "success": {
+      "en": "The draft was saved.",
+      "fa": "پیش‌نویس ذخیره شد."
+    },
+    "redirect": "/f/letter-compose/{result}"
+  }
+}

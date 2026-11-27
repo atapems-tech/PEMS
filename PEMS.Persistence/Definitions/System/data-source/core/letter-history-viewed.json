@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-history-viewed",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Who viewed the letter",
+    "fa": "مشاهده‌کنندگان نامه"
+  },
+  "description": {
+    "en": "Who viewed the letter",
+    "fa": "مشاهده‌کنندگان نامه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Viewed",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

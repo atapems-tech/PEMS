@@ -15,6 +15,9 @@ public sealed record ButtonOptions
     public Size Size { get; init; } = Size.Medium;
     public bool Disabled { get; init; }
     public string Type { get; init; } = "button";
+    /// <summary>A submit button that names itself in the post (name and value): a form with several submit actions (SCRUM-840) tells them apart.</summary>
+    public string? Name { get; init; }
+    public string? Value { get; init; }
     public string? Href { get; init; }
     /// <summary>Id of a modal, drawer or confirm dialog this button opens (pems-overlay.js). The row key is copied into the dialog.</summary>
     public string? Opens { get; init; }

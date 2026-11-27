@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-compose-departments-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments (letter compose)",
+    "fa": "واحدها (نگارش نامه)"
+  },
+  "description": {
+    "en": "Departments (letter compose)",
+    "fa": "واحدها (نگارش نامه)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Departments",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

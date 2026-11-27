@@ -24,6 +24,8 @@ public sealed record FormDefinition
     public bool WarnOnLeave { get; init; }
     /// <summary>An edit form that loads its saved values from a read operation (SCRUM-818): <c>/f/{key}/{id}</c> runs it and fills the fields of the same name from the first row.</summary>
     public FormLoad? Load { get; init; }
+    /// <summary>More submit buttons besides the main one (SCRUM-840: save the draft, submit for approval): each runs its own action with the same values; the post names the chosen button in <c>__submit</c>.</summary>
+    public IReadOnlyList<FormSubmitAction>? SubmitActions { get; init; }
 }
 
 /// <summary>
@@ -53,4 +55,12 @@ public sealed record FormState
 
     public string? ValueOf(string name) => Values.TryGetValue(name, out var v) ? v : null;
     public TranslatableText? ErrorOf(string name) => Errors.TryGetValue(name, out var e) ? e : null;
+}
+
+/// <summary>A further submit button of a form: its key (posted), its label and the key of the action it runs.</summary>
+public sealed record FormSubmitAction
+{
+    public required string Key { get; init; }
+    public required TranslatableText Label { get; init; }
+    public required string ActionKey { get; init; }
 }

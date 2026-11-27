@@ -95,7 +95,7 @@
           "fa": "یا واحد"
         },
         "kind": "select",
-        "optionsFrom": "letter-departments"
+        "optionsFrom": "letter-departments-opts"
       },
       {
         "name": "externalName",

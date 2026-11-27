@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-compose-approvers-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approvers (letter compose)",
+    "fa": "تاییدکنندگان (نگارش نامه)"
+  },
+  "description": {
+    "en": "Approvers (letter compose)",
+    "fa": "تاییدکنندگان (نگارش نامه)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Approvers",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

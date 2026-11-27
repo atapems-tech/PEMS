@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-history-versions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter versions",
+    "fa": "نسخه‌های نامه"
+  },
+  "description": {
+    "en": "Letter versions",
+    "fa": "نسخه‌های نامه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Versions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

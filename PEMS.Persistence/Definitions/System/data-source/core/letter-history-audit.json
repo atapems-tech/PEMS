@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-history-audit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter audit trail",
+    "fa": "ردپای حسابرسی نامه"
+  },
+  "description": {
+    "en": "Letter audit trail",
+    "fa": "ردپای حسابرسی نامه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Audit",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

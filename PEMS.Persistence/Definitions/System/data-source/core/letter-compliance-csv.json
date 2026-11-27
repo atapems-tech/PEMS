@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "letter-compliance-csv",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter compliance CSV",
+    "fa": "CSV انطباق نامه"
+  },
+  "description": {
+    "en": "Letter compliance CSV",
+    "fa": "CSV انطباق نامه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "ComplianceCsv",
+      "args": {
+        "id": "param:id"
+      },
+      "disposition": "attachment"
+    }
+  }
+}

@@ -275,13 +275,13 @@
                   },
                   {
                     "key": "reply",
-                    "url": "/LetterCompose/Compose?replyTo={id}",
+                    "url": "/f/letter-compose?replyTo={id}",
                     "method": "get",
                     "showWhen": "row.canReplyRefer == true"
                   },
                   {
                     "key": "refer-compose",
-                    "url": "/LetterCompose/Compose?referTo={id}",
+                    "url": "/f/letter-compose?referTo={id}",
                     "method": "get",
                     "showWhen": "row.canReplyRefer == true"
                   },
@@ -324,7 +324,7 @@
                   },
                   {
                     "key": "history",
-                    "url": "/LetterCompose/History/{id}",
+                    "url": "/p/letter-history?id={id}",
                     "method": "get",
                     "showWhen": "row.canAudit == true"
                   }

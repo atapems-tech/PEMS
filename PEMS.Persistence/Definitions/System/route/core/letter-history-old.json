@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-history-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter history (old address)",
+    "fa": "تاریخچه‌ی نامه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter history",
+    "fa": "تاریخچه‌ی نامه"
+  },
+  "payload": {
+    "pattern": "LetterCompose/History/{id}",
+    "target": "/p/letter-history?id={id}",
+    "permanent": false
+  }
+}
