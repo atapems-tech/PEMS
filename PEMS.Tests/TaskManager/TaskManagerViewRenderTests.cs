@@ -105,44 +105,44 @@ public class TaskManagerViewRenderTests
         Assert.Equal("", cards.Single(c => c.Id == other).Allowed);                 // no move for a card of someone else
     }
 
+    private static PEMS.Web.Services.TaskManagerPagesOperations OpsFor(World w, int userId) => new(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), new WorkSpaceService(w.Ctx, new FakePermissionService()),
+        new FakeCurrentUserService { UserId = userId, UserName = "u" + userId, FullName = "User " + userId, Roles = new List<string> { "Engineer" } },
+        new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
+
     [Fact]
-    public async Task Details_EncodesUserText_AndShowsRestrictedLinks_AndHidesEditingForNonInvolvedMembers()
+    public async Task TaskDetailOperations_ShowRestrictedLinks_AndHideEditingForNonInvolvedMembers()
     {
-        var w = await SeedAsync(nameof(Details_EncodesUserText_AndShowsRestrictedLinks_AndHidesEditingForNonInvolvedMembers));
-        // عضو ضمنی دیگری (واحد ۱) که درگیر نیست
+        var w = await SeedAsync(nameof(TaskDetailOperations_ShowRestrictedLinks_AndHideEditingForNonInvolvedMembers));
         w.Ctx.Employees.Add(new Employee { EmployeeId = 20, FirstName = "Zed", LastName = "Z", DepartmentId = 1, DisciplineId = 1 });
         w.Ctx.Users.Add(new ApplicationUser { Id = 20, UserName = "zed", EmployeeId = 20 });
         await w.Ctx.SaveChangesAsync();
 
-        var (_, asZed) = Controllers(w.Ctx, 20, "Engineer");
-        var html = await Render(asZed, await asZed.Details(w.ItemId), "~/Views/Task/Details.cshtml");
-        Assert.Contains("&lt;img src=x onerror=alert(1)&gt;", html);
-        Assert.DoesNotContain("<img src=x", html);
-        Assert.DoesNotContain("Private prep", html);                               // عنوان مقصد پیوند غیرقابل‌دید
-        Assert.Contains("bi-lock", html);
-        Assert.DoesNotContain("name=\"Title\"", html);                             // فرم ویرایش ندارد
-        Assert.DoesNotContain("name=\"assigneeEmployeeId\"", html);
-        Assert.Contains("name=\"body\"", html);                                    // ولی می‌تواند نظر بدهد
+        var zed = OpsFor(w, 20);
+        var head = (await zed.TaskHeadAsync(w.ItemId)).Single();
+        Assert.False(head.CanEdit);                                                // no edit form for a member who is not involved
+        Assert.False(head.CanAssign);
+        Assert.True(head.CanComment);                                              // but may comment
+        var links = await zed.TaskLinksAsync(w.ItemId);
+        Assert.DoesNotContain(links, l => (l.OtherTitle ?? "").Contains("Private prep"));   // the title of an invisible target stays hidden
+        Assert.Contains(links, l => !l.Visible);
+        Assert.Contains(await zed.TaskCommentsAsync(w.ItemId), c => c.Body.Contains("<img src=x onerror=alert(1)>"));   // data here; the grid encodes it
 
-        var (_, asAlice) = Controllers(w.Ctx, 1, "Engineer");
-        var own = await Render(asAlice, await asAlice.Details(w.ItemId), "~/Views/Task/Details.cshtml");
-        Assert.Contains("Private prep", own);
-        Assert.Contains("name=\"Title\"", own);
-        Assert.Contains("name=\"assigneeEmployeeId\"", own);
-        Assert.Contains("name=\"statusId\"", own);
+        var alice = OpsFor(w, 1);
+        var own = (await alice.TaskHeadAsync(w.ItemId)).Single();
+        Assert.True(own.CanEdit); Assert.True(own.CanAssign); Assert.True(own.CanTransition);
+        Assert.Contains(await alice.TaskLinksAsync(w.ItemId), l => l.OtherTitle == "Private prep");
 
-        var (_, asErin) = Controllers(w.Ctx, 5, "Engineer");
-        Assert.IsType<NotFoundResult>(await asErin.Details(w.ItemId));
+        Assert.Empty(await OpsFor(w, 5).TaskHeadAsync(w.ItemId));                  // an item the user may not see gives no rows
     }
 
     [Fact]
-    public async Task LegacyAndMeetingTasks_RenderInTheExistingTaskPages()
+    public async Task LegacyAndMeetingTasks_AreServedByTheTaskDetailOperations()
     {
-        var w = await SeedAsync(nameof(LegacyAndMeetingTasks_RenderInTheExistingTaskPages));
-        var (_, asBob) = Controllers(w.Ctx, 2, "Engineer");
-        var details = await Render(asBob, await asBob.Details(w.LegacyId), "~/Views/Task/Details.cshtml");
-        Assert.Contains("name=\"legacyStatus\"", details);
-        Assert.Contains("Meeting", details);
+        var w = await SeedAsync(nameof(LegacyAndMeetingTasks_AreServedByTheTaskDetailOperations));
+        var head = (await OpsFor(w, 2).TaskHeadAsync(w.LegacyId)).Single();
+        Assert.True(head.IsLegacy);
+        Assert.Equal("tm-transition-legacy", head.TransitionForm);
+        Assert.Contains("Meeting", head.Related ?? "");
     }
 
     [Fact]

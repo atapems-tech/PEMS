@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "task-details-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task (old address)",
+    "fa": "وظیفه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Task (old address)",
+    "fa": "وظیفه (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Task/Details/{id}",
+    "target": "/p/task-details?id={id}",
+    "permanent": false
+  }
+}

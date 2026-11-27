@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "tm-delete-comment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete the comment",
+    "fa": "حذف نظر"
+  },
+  "description": {
+    "en": "Delete the comment",
+    "fa": "حذف نظر"
+  },
+  "payload": {
+    "id": "tm-delete-comment",
+    "title": {
+      "en": "Delete the comment",
+      "fa": "حذف نظر"
+    },
+    "submitLabel": {
+      "en": "Delete the comment",
+      "fa": "حذف نظر"
+    },
+    "actionKey": "tm-delete-comment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "commentId",
+        "label": {
+          "en": "Comment id",
+          "fa": "شناسه نظر"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

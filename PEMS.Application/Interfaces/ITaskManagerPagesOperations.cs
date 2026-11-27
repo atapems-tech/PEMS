@@ -23,6 +23,13 @@ public sealed record TaskAdminTypeRow(int Id, string Name, string Icon, bool Sub
 public sealed record TaskAdminStatusRow(int Id, string Name, string? NameFa, string Category, string CategoryCode, int SortOrder, bool Active);
 public sealed record TaskAdminTransitionRow(int Id, string From, string FromLabel, string To, string ToLabel, string Allowed);
 
+public sealed record TaskHeadRow(int Id, string Key, string Title, string? Type, string Space, string SpaceKey, string Status, string StatusCategory, bool Overdue, bool Archived, string? Description, string Priority, decimal? Points, DateTime? StartDate, DateTime? DueDate,
+    DateTime Created, DateTime? Completed, string Sprint, string Assignee, string Reporter, string? AssignedBy, string? Related, string? RelatedUrl, string Watchers, string? CompletionNote, string? RowVersion, int? TypeId, string PriorityCode, int? WorkSpaceId, int? SprintId, int? ParentId,
+    bool IsLegacy, bool CanEdit, bool CanTransition, bool CanAssign, bool CanComment, bool CanArchive, bool CanLink, bool IsWatching, string WatchNext, string ArchiveNext, bool CanCreateSubtask, int? SubtaskTypeId, string TransitionForm);
+public sealed record TaskLinkRow(int Id, string Type, string? OtherKey, string? OtherTitle, string? OtherStatus, int OtherId, bool Visible, bool CanRemove);
+public sealed record TaskCommentRow(int Id, string Author, DateTime Created, string Body, bool Deleted, bool CanDelete);
+public sealed record TaskHistoryRow(int Id, DateTime When, string? Who, string Action, string? Changes);
+
 /// <summary>SCRUM-831: the read side of TaskManagerController.Index (the spaces the user may see) as operations; Task.View is the right the controller checked.</summary>
 public interface ITaskManagerPagesOperations
 {
@@ -120,4 +127,32 @@ public interface ITaskManagerPagesOperations
 
     [PEMS.Application.Common.PemsOperation("TaskManagerPage", "CategoryOptions", "Task.View")]
     Task<List<TaskChoice>> CategoryOptionsAsync();
+
+    /// <summary>The details page of a task (personal, legacy or of a space): the head with every flag, the subtasks, links, comments, history and the choice lists of the forms. A task the user may not see gives no rows.</summary>
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskHead", "Task.View")]
+    Task<List<TaskHeadRow>> TaskHeadAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskSubtasks", "Task.View")]
+    Task<List<TaskWorkRow>> TaskSubtasksAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskLinks", "Task.View")]
+    Task<List<TaskLinkRow>> TaskLinksAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskComments", "Task.View")]
+    Task<List<TaskCommentRow>> TaskCommentsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskHistory", "Task.View")]
+    Task<List<TaskHistoryRow>> TaskHistoryAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskTypeOptions", "Task.View")]
+    Task<List<TaskChoice>> TaskTypeOptionsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskAssigneeOptions", "Task.View")]
+    Task<List<TaskChoice>> TaskAssigneeOptionsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "TaskTransitionOptions", "Task.View")]
+    Task<List<TaskChoice>> TaskTransitionOptionsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "LinkTypeOptions", "Task.View")]
+    Task<List<TaskChoice>> LinkTypeOptionsAsync();
 }

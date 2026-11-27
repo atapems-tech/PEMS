@@ -1,0 +1,77 @@
+{
+  "kind": "form",
+  "key": "tm-add-link",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a link",
+    "fa": "افزودن پیوند"
+  },
+  "description": {
+    "en": "Add a link",
+    "fa": "افزودن پیوند"
+  },
+  "payload": {
+    "id": "tm-add-link",
+    "title": {
+      "en": "Add a link",
+      "fa": "افزودن پیوند"
+    },
+    "submitLabel": {
+      "en": "Add a link",
+      "fa": "افزودن پیوند"
+    },
+    "actionKey": "tm-add-link",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "linkType",
+        "label": {
+          "en": "Link type",
+          "fa": "نوع پیوند"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-link-type-options",
+        "optionsArgs": {}
+      },
+      {
+        "name": "target",
+        "label": {
+          "en": "Target (key or #id)",
+          "fa": "مقصد (کلید یا #شناسه)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 30
+      }
+    ]
+  }
+}

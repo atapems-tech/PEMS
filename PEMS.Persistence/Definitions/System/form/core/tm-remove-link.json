@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "tm-remove-link",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove the link",
+    "fa": "حذف پیوند"
+  },
+  "description": {
+    "en": "Remove the link",
+    "fa": "حذف پیوند"
+  },
+  "payload": {
+    "id": "tm-remove-link",
+    "title": {
+      "en": "Remove the link",
+      "fa": "حذف پیوند"
+    },
+    "submitLabel": {
+      "en": "Remove the link",
+      "fa": "حذف پیوند"
+    },
+    "actionKey": "tm-remove-link",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "linkId",
+        "label": {
+          "en": "Link id",
+          "fa": "شناسه پیوند"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

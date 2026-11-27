@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-comments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Comments",
+    "fa": "نظرها"
+  },
+  "description": {
+    "en": "Comments",
+    "fa": "نظرها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "TaskComments",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -64,30 +64,4 @@ public class TaskManagerController : Controller
         => Redirect((view == "board" ? "/p/task-board?key=" : "/p/task-backlog?key=") + Uri.EscapeDataString(key ?? ""));
 
     // SCRUM-831: AllWork is the definition page /p/task-all-work over ITaskManagerPagesOperations.AllWorkAsync (also "my tasks").
-
-    // ==================================================================================== item writes
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(WorkItemCreateInput input, bool createAnother = false, string? returnUrl = null)
-    {
-        if (!await Can("Create")) return Forbid();
-        var r = await _tasks.CreateAsync(input, await ActorAsync());
-        if (WantsJson) return Done(r, returnUrl, "Tm_Msg_Created");
-        if (!r.Success) { TempData["Error"] = Text(r.ErrorKey!); return Back(returnUrl); }
-        TempData["Message"] = Text("Tm_Msg_Created");
-        if (createAnother) return Back(AppendQuery(returnUrl, "create=1"));
-        return RedirectToAction("Details", "Task", new { id = r.Id });
-    }
-
-    private static string? AppendQuery(string? url, string q) =>
-        string.IsNullOrEmpty(url) ? null : url + (url.Contains('?') ? "&" : "?") + q;
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Update(WorkItemUpdateInput input, string? returnUrl = null)
-    {
-        if (!await Can("Edit")) return Forbid();
-        return Done(await _tasks.UpdateAsync(input, await ActorAsync()), returnUrl);
-    }
 }

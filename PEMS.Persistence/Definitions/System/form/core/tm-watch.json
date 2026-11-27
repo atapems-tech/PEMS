@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "tm-watch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Watch or stop watching",
+    "fa": "پیگیری یا توقف پیگیری"
+  },
+  "description": {
+    "en": "Watch or stop watching",
+    "fa": "پیگیری یا توقف پیگیری"
+  },
+  "payload": {
+    "id": "tm-watch",
+    "title": {
+      "en": "Watch or stop watching",
+      "fa": "پیگیری یا توقف پیگیری"
+    },
+    "submitLabel": {
+      "en": "Watch or stop watching",
+      "fa": "پیگیری یا توقف پیگیری"
+    },
+    "actionKey": "tm-watch",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "watch",
+        "label": {
+          "en": "Watch (true) or stop (false)",
+          "fa": "پیگیری (true) یا توقف (false)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

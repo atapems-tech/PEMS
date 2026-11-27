@@ -88,4 +88,8 @@ public interface ITaskManagerOperations
     /// <summary>Creates (without an id) or saves a work space; system administrators only. <c>NewId</c> is the id of the space.</summary>
     [PEMS.Application.Common.PemsOperation("TaskManager", "SaveSpace")]
     Task<TaskManagerCreateAnswer> SaveSpaceAsync(int? id, string key, string name, string? nameFa = null, string? description = null, int? ownerDepartmentId = null, bool isActive = true);
+
+    /// <summary>The edit of a task (the description form of the details page); the row version refuses a stale edit.</summary>
+    [PEMS.Application.Common.PemsOperation("TaskManager", "UpdateItem", "Task.Edit")]
+    Task<(bool Success, string? Error)> UpdateItemAsync(int id, string title, string? description = null, int? typeId = null, string? priority = null, DateTime? dueDate = null, DateTime? startDate = null, int? parentId = null, decimal? storyPoints = null, string? rowVersion = null);
 }
