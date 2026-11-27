@@ -1,0 +1,373 @@
+{
+  "kind": "form",
+  "key": "dcc-register-incoming",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت مکاتبه‌ی وارده"
+  },
+  "description": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت مکاتبه‌ی وارده"
+  },
+  "payload": {
+    "id": "dcc-register-incoming",
+    "title": {
+      "en": "Register an incoming letter",
+      "fa": "ثبت مکاتبه‌ی وارده"
+    },
+    "submitLabel": {
+      "en": "Register an incoming letter",
+      "fa": "ثبت مکاتبه‌ی وارده"
+    },
+    "actionKey": "dcc-register-incoming",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "correspondentPartyId",
+        "label": {
+          "en": "Sender (existing party)",
+          "fa": "فرستنده (طرف موجود)"
+        },
+        "kind": "select",
+        "optionsFrom": "dcc-incoming-parties"
+      },
+      {
+        "name": "newPartyName",
+        "label": {
+          "en": "Or a new sender name",
+          "fa": "یا نام فرستنده‌ی جدید"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "newPartyType",
+        "label": {
+          "en": "New sender type",
+          "fa": "نوع فرستنده جدید"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Client",
+            "label": {
+              "en": "Client",
+              "fa": "Client"
+            }
+          },
+          {
+            "value": "Vendor",
+            "label": {
+              "en": "Vendor",
+              "fa": "Vendor"
+            }
+          },
+          {
+            "value": "Contractor",
+            "label": {
+              "en": "Contractor",
+              "fa": "Contractor"
+            }
+          },
+          {
+            "value": "Consultant",
+            "label": {
+              "en": "Consultant",
+              "fa": "Consultant"
+            }
+          },
+          {
+            "value": "Authority",
+            "label": {
+              "en": "Authority",
+              "fa": "Authority"
+            }
+          },
+          {
+            "value": "Other",
+            "label": {
+              "en": "Other",
+              "fa": "Other"
+            }
+          }
+        ]
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "optionsFrom": "dcc-incoming-projects"
+      },
+      {
+        "name": "senderReference",
+        "label": {
+          "en": "Sender reference number",
+          "fa": "شماره ارجاع فرستنده"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "receiptChannel",
+        "label": {
+          "en": "Receipt channel",
+          "fa": "کانال دریافت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "OfficialLetter",
+        "options": [
+          {
+            "value": "OfficialLetter",
+            "label": {
+              "en": "Official letter",
+              "fa": "نامه رسمی"
+            }
+          },
+          {
+            "value": "Email",
+            "label": {
+              "en": "Email",
+              "fa": "ایمیل"
+            }
+          },
+          {
+            "value": "Portal",
+            "label": {
+              "en": "Portal",
+              "fa": "پورتال"
+            }
+          },
+          {
+            "value": "Hand",
+            "label": {
+              "en": "Hand delivery",
+              "fa": "تحویل دستی"
+            }
+          }
+        ]
+      },
+      {
+        "name": "subject",
+        "label": {
+          "en": "Subject",
+          "fa": "موضوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2,
+        "maxLength": 300
+      },
+      {
+        "name": "documentDate",
+        "label": {
+          "en": "Letter date",
+          "fa": "تاریخ نامه"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "receivedDate",
+        "label": {
+          "en": "Received date",
+          "fa": "تاریخ دریافت"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "default": "Normal",
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "Low"
+            }
+          },
+          {
+            "value": "Normal",
+            "label": {
+              "en": "Normal",
+              "fa": "Normal"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "High"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "Urgent"
+            }
+          }
+        ]
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "دسته"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "confidentialityLevel",
+        "label": {
+          "en": "Confidentiality",
+          "fa": "محرمانگی"
+        },
+        "kind": "select",
+        "default": "Internal",
+        "options": [
+          {
+            "value": "Public",
+            "label": {
+              "en": "Public",
+              "fa": "Public"
+            }
+          },
+          {
+            "value": "Internal",
+            "label": {
+              "en": "Internal",
+              "fa": "Internal"
+            }
+          },
+          {
+            "value": "Confidential",
+            "label": {
+              "en": "Confidential",
+              "fa": "Confidential"
+            }
+          }
+        ]
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "dcc-incoming-disciplines"
+      },
+      {
+        "name": "parentLetterId",
+        "label": {
+          "en": "In reply to (letter id)",
+          "fa": "در پاسخ به (شناسه نامه)"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "summary",
+        "label": {
+          "en": "Summary",
+          "fa": "خلاصه"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "responseRequired",
+        "label": {
+          "en": "A response is required",
+          "fa": "نیاز به پاسخ"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "responseDueDate",
+        "label": {
+          "en": "Response due date",
+          "fa": "سررسید پاسخ"
+        },
+        "kind": "date",
+        "requiredWhen": "values.responseRequired == 'true'",
+        "visible": "values.responseRequired == 'true'"
+      },
+      {
+        "name": "ownerEmployeeId",
+        "label": {
+          "en": "Owner",
+          "fa": "مسئول"
+        },
+        "kind": "select",
+        "searchSource": "Employee"
+      },
+      {
+        "name": "ccEmployeeIds",
+        "label": {
+          "en": "Copy to",
+          "fa": "رونوشت"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "dcc-incoming-employees",
+        "span": 2
+      },
+      {
+        "name": "instruction",
+        "label": {
+          "en": "Instruction",
+          "fa": "دستور"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "files",
+        "label": {
+          "en": "Files",
+          "fa": "فایل‌ها"
+        },
+        "kind": "file",
+        "multiple": true,
+        "span": 2
+      },
+      {
+        "name": "links",
+        "label": {
+          "en": "Links (JSON list of {linkType, targetId})",
+          "fa": "پیوندها (فهرست JSON از {linkType, targetId})"
+        },
+        "kind": "text",
+        "span": 2
+      },
+      {
+        "name": "confirmDuplicate",
+        "label": {
+          "en": "Register even if the same letter was already registered",
+          "fa": "ثبت حتی اگر همین نامه قبلاً ثبت شده باشد"
+        },
+        "kind": "checkbox",
+        "span": 2
+      }
+    ]
+  }
+}

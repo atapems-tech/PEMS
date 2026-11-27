@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "dcc-register-incoming",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Register an incoming letter (old address)",
+    "fa": "ثبت مکاتبه‌ی وارده (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت مکاتبه‌ی وارده"
+  },
+  "payload": {
+    "pattern": "DCC/RegisterIncoming",
+    "target": "/f/dcc-register-incoming",
+    "permanent": false
+  }
+}

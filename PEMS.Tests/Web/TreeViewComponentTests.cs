@@ -111,7 +111,7 @@ public class TreeViewComponentTests
             },
             Edges = { new() { FromNodeId = "a", ToNodeId = "b", Label = "OK" }, new() { FromNodeId = "a", ToNodeId = "c", Label = "Comments" } }
         };
-        var controller = PEMS.Tests.TestSupport.ControllerTempDataExtensions.WithTempData(new PEMS.Web.Controllers.DCCController(null!, null!, null!, null!, null!));
+        var controller = PEMS.Tests.TestSupport.ControllerTempDataExtensions.WithTempData(new PEMS.Tests.TestSupport.TestHostController());
         var result = new Microsoft.AspNetCore.Mvc.ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(controller.ViewData) { Model = visual } };
         var html = await PEMS.Tests.TestSupport.RazorViewRenderer.RenderAsync(controller, result, "~/Views/Shared/_HelpNodeTree.cshtml");
 
