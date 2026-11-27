@@ -8,6 +8,12 @@ public sealed record LetterComposeFormRow(int? LetterId, string RowVersion, int?
 /// <summary>The answer of a compose command: NewId is the letter id (for the redirect); Error is the translated refusal (all the errors of the check, one per line).</summary>
 public sealed record LetterComposeCommandResult(bool Success, string? Error, int NewId);
 
+/// <summary>The starting values of the register-an-incoming-letter form (a template fills the subject, the body, the priority and the confidentiality).</summary>
+public sealed record LetterIncomingFormRow(DateTime LetterDate, string Subject, string Body, string Priority, string ConfidentialityLevel);
+
+/// <summary>The answer of the editor image upload: NewId is the address of the stored picture (the script reads it as the result).</summary>
+public sealed record LetterEditorImageResult(bool Success, string? Error, string NewId);
+
 public sealed record LetterVersionRow(int Id, int VersionNo, string Reason, string SavedBy, DateTime Saved, string Subject);
 public sealed record LetterViewedRow(int Id, string UserName, DateTime FirstViewed, DateTime LastViewed, int ViewCount);
 public sealed record LetterAuditRow(int Id, DateTime When, string Actor, string Category, string Event, string Detail);
@@ -64,4 +70,22 @@ public interface ILetterComposeFormOperations
 
     [PEMS.Application.Common.PemsOperation("LetterCompose", "ComplianceCsv", "Correspondence.View")]
     Task<BarcodeFileResult> ComplianceCsvAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("LetterCompose", "IncomingRecord", "Correspondence.Create")]
+    Task<List<LetterIncomingFormRow>> IncomingRecordAsync(int? templateId = null);
+
+    /// <summary>Registers an incoming letter (the number is generated unless the user may and wants to type it).</summary>
+    [PEMS.Application.Common.PemsOperation("LetterCompose", "RegisterIncoming", "Correspondence.Create")]
+    Task<LetterComposeCommandResult> RegisterIncomingAsync(string? letterNumber, DateTime? letterDate, string? sender, string? subject, string? body, string? priority, string? confidentialityLevel, int? projectId, int? disciplineId,
+        int? relatedDocumentId, int? relatedMRId, string? useManualNumber, string? responseRequired, DateTime? responseDueDate);
+
+    [PEMS.Application.Common.PemsOperation("LetterCompose", "Documents", "Correspondence.Create")]
+    Task<List<LetterOption>> DocumentsAsync();
+
+    [PEMS.Application.Common.PemsOperation("LetterCompose", "Requisitions", "Correspondence.Create")]
+    Task<List<LetterOption>> RequisitionsAsync();
+
+    /// <summary>Stores a picture chosen in the rich text editor of a letter (type, size and content are checked by the upload policy of the action) and answers its address.</summary>
+    [PEMS.Application.Common.PemsOperation("LetterCompose", "EditorImage", "Correspondence.Create")]
+    Task<LetterEditorImageResult> EditorImageAsync(PEMS.Application.Common.OperationFile? file);
 }

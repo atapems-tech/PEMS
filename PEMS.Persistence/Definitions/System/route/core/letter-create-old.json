@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-create-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New letter (old address)",
+    "fa": "نامه‌ی جدید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New letter",
+    "fa": "نامه‌ی جدید"
+  },
+  "payload": {
+    "pattern": "Letter/Create",
+    "target": "/f/letter-register-incoming",
+    "permanent": false
+  }
+}

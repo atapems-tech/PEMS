@@ -100,6 +100,8 @@ public sealed record FieldDescriptor
     public string? DependsSource { get; init; }
     /// <summary>SCRUM-826: the argument name of the data source that takes the value of the other field.</summary>
     public string? DependsArg { get; init; }
+    /// <summary>SCRUM-840: a richText field only: the address of the action that stores a picture chosen in the editor (<c>POST /a/{key}</c>, the file in <c>file</c>, answered as JSON with the address of the picture in <c>result</c>); without it the editor has no picture button.</summary>
+    public string? UploadUrl { get; init; }
     /// <summary>SCRUM-830: a File field that takes several files (the action reads them as a list).</summary>
     public bool Multiple { get; init; }
     /// <summary>SCRUM-830: a File field offers only these extensions in the file dialog (<c>.pdf,.xlsx</c>); the upload profile of the action still decides what is accepted.</summary>

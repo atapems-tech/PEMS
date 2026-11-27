@@ -24,7 +24,7 @@
             "blocks": [
               {
                 "type": "link",
-                "href": "/Letter/Create?letterType=Incoming",
+                "href": "/f/letter-register-incoming",
                 "text": {
                   "en": "New incoming letter",
                   "fa": "نامه‌ی وارده جدید"
@@ -32,7 +32,7 @@
               },
               {
                 "type": "link",
-                "href": "/Letter/Create?letterType=Outgoing",
+                "href": "/f/letter-compose?letterType=Outgoing",
                 "text": {
                   "en": "New outgoing letter",
                   "fa": "نامه‌ی صادره جدید"

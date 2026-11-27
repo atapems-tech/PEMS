@@ -152,11 +152,11 @@
                 var scope = textarea.closest('form') || document;
                 var token = scope.querySelector('input[name="__RequestVerificationToken"]');
                 if (token) data.append('__RequestVerificationToken', token.value);
-                fetch(url, { method: 'POST', body: data, credentials: 'same-origin' })
+                fetch(url, { method: 'POST', body: data, credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
                     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
                     .then(function (res) {
                         var range = quill.getSelection(true);
-                        quill.insertEmbed(range.index, 'image', res.url);
+                        quill.insertEmbed(range.index, 'image', res.url || res.result);
                     })
                     .catch(function () { if (window.PemsErrors) window.PemsErrors.show(t('uploadFailed')); });   // SCRUM-549: a toast, never a browser pop-up
             };

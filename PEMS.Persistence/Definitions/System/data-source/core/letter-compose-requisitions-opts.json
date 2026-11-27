@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-compose-requisitions-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Material requisitions (letter)",
+    "fa": "درخواست‌های مواد (نامه)"
+  },
+  "description": {
+    "en": "Material requisitions (letter)",
+    "fa": "درخواست‌های مواد (نامه)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Requisitions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

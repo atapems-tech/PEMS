@@ -1,0 +1,43 @@
+{
+  "kind": "action",
+  "key": "letter-register-incoming",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت نامه‌ی وارده"
+  },
+  "description": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت نامه‌ی وارده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "RegisterIncoming",
+      "args": {
+        "letterNumber": "field:letterNumber",
+        "letterDate": "field:letterDate",
+        "sender": "field:sender",
+        "subject": "field:subject",
+        "body": "field:body",
+        "priority": "field:priority",
+        "confidentialityLevel": "field:confidentialityLevel",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "relatedDocumentId": "field:relatedDocumentId",
+        "relatedMRId": "field:relatedMRId",
+        "useManualNumber": "field:useManualNumber",
+        "responseRequired": "field:responseRequired",
+        "responseDueDate": "field:responseDueDate"
+      }
+    },
+    "success": {
+      "en": "Letter registered successfully.",
+      "fa": "نامه با موفقیت ثبت شد."
+    },
+    "redirect": "/p/letter-details?id={result}"
+  }
+}
