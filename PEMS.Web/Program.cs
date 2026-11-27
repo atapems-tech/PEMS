@@ -277,6 +277,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IDccIncomingOperations, P
 builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterPagesOperations, PEMS.Web.Services.LetterPagesOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPcFormOperations, PEMS.Web.Services.PcFormOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.IStrategyFormOperations, PEMS.Web.Services.StrategyFormOperations>();   // SCRUM-830
+builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterPdfOperations, PEMS.Web.Services.LetterPdfOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.ILetterDetailsOperations, PEMS.Web.Services.LetterDetailsOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.IEngineeringDocumentFormOperations, PEMS.Web.Services.EngineeringDocumentFormOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITableExtractionPagesOperations, PEMS.Web.Services.TableExtractionPagesOperations>();   // SCRUM-830
@@ -314,6 +315,7 @@ builder.Services.AddSingleton<PEMS.Web.Definitions.OperationReader>();   // SCRU
 builder.Services.AddSingleton<PEMS.Web.Definitions.IGridDataProvider, PEMS.Web.Definitions.OperationGridProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.OperationOptionsProvider>();
 builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.OperationFileProvider>();   // 6b: a file or JSON from a read operation, served by GET /x/{key}
+builder.Services.AddSingleton<PEMS.Web.Definitions.IDataSourceProvider, PEMS.Web.Definitions.PdfLayoutProvider>();   // SCRUM-839: the PDF engine (a layout as a data source, served by /x/{key})
 builder.Services.AddScoped<PEMS.Web.Definitions.DataSourceExecutor>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionService, PEMS.Persistence.Services.DefinitionService>();
 builder.Services.AddScoped<PEMS.Application.Definitions.IDefinitionShipper>(sp => (PEMS.Persistence.Services.DefinitionService)sp.GetRequiredService<PEMS.Application.Definitions.IDefinitionService>());

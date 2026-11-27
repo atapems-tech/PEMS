@@ -1,0 +1,216 @@
+{
+  "kind": "data-source",
+  "key": "letter-pdf",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter PDF",
+    "fa": "PDF نامه"
+  },
+  "description": {
+    "en": "PDF layout of a letter (the PDF engine)",
+    "fa": "قالب PDF نامه (موتور PDF)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "pdf",
+    "parameters": {
+      "datasets": {
+        "letter": {
+          "model": "LetterPdf",
+          "action": "Record",
+          "args": {
+            "id": "param:id"
+          }
+        }
+      },
+      "layout": {
+        "page": {
+          "size": "A4",
+          "margin": 2,
+          "fontSize": 11
+        },
+        "direction": "auto",
+        "header": [
+          {
+            "type": "row",
+            "items": [
+              {
+                "width": 3,
+                "blocks": [
+                  {
+                    "type": "heading",
+                    "text": "{{letter.companyName}}",
+                    "size": 16
+                  },
+                  {
+                    "type": "text",
+                    "text": "{{letter.address}}",
+                    "size": 9
+                  },
+                  {
+                    "type": "text",
+                    "text": "{{letter.contact}}",
+                    "size": 9
+                  }
+                ]
+              },
+              {
+                "fixedWidth": 190,
+                "align": "end",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": {
+                      "en": "No: {{letter.number}}",
+                      "fa": "شماره: {{letter.number}}"
+                    },
+                    "bold": true
+                  },
+                  {
+                    "type": "text",
+                    "text": {
+                      "en": "Date: {{letter.date}}",
+                      "fa": "تاریخ: {{letter.date}}"
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": {
+                      "en": "Ref: {{letter.reference}}",
+                      "fa": "ارجاع: {{letter.reference}}"
+                    },
+                    "showWhen": "letter.reference"
+                  },
+                  {
+                    "type": "text",
+                    "text": {
+                      "en": "Category: {{letter.category}}",
+                      "fa": "دسته: {{letter.category}}"
+                    },
+                    "showWhen": "letter.category"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "line",
+            "thickness": 1.5,
+            "paddingTop": 6
+          }
+        ],
+        "body": [
+          {
+            "type": "keyValue",
+            "labelWidth": 1,
+            "valueWidth": 7,
+            "rows": [
+              {
+                "label": {
+                  "en": "From:",
+                  "fa": "از:"
+                },
+                "value": "{{letter.from}}"
+              },
+              {
+                "label": {
+                  "en": "To:",
+                  "fa": "به:"
+                },
+                "value": "{{letter.to}}"
+              },
+              {
+                "label": {
+                  "en": "Cc:",
+                  "fa": "رونوشت:"
+                },
+                "value": "{{letter.cc}}"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": {
+              "en": "Subject: {{letter.subject}}",
+              "fa": "موضوع: {{letter.subject}}"
+            },
+            "bold": true,
+            "size": 12,
+            "paddingTop": 8,
+            "paddingBottom": 8
+          },
+          {
+            "type": "html",
+            "text": "{{letter.body}}",
+            "paddingTop": 4
+          },
+          {
+            "type": "spacer",
+            "height": 28
+          },
+          {
+            "type": "text",
+            "text": "{{letter.senderName}}",
+            "bold": true
+          },
+          {
+            "type": "text",
+            "text": "{{letter.senderTitle}}"
+          },
+          {
+            "type": "text",
+            "text": "{{letter.senderDepartment}}"
+          },
+          {
+            "type": "text",
+            "text": {
+              "en": "Signed: {{letter.signed}}",
+              "fa": "امضا: {{letter.signed}}"
+            },
+            "size": 9,
+            "paddingTop": 4,
+            "showWhen": "letter.signed"
+          }
+        ],
+        "footer": [
+          {
+            "type": "row",
+            "items": [
+              {
+                "width": 1,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": {
+                      "en": "Confidentiality: {{letter.confidentiality}}  |  Priority: {{letter.priority}}",
+                      "fa": "محرمانگی: {{letter.confidentiality}}  |  اولویت: {{letter.priority}}"
+                    },
+                    "size": 8
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "align": "end",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "{{letter.printed}}",
+                    "size": 8
+                  },
+                  {
+                    "type": "pageNumber",
+                    "size": 8
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "fileName": "{{letter.number}}",
+      "disposition": "attachment"
+    }
+  }
+}
