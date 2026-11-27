@@ -29,6 +29,6 @@
       "en": "The task was created.",
       "fa": "وظیفه ساخته شد."
     },
-    "redirect": "/Task/Index"
+    "redirect": "/p/task-actions"
   }
 }

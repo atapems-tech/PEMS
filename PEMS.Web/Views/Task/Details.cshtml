@@ -17,7 +17,7 @@
     <nav aria-label="breadcrumb" class="small mb-1">
         @if (Model.IsLegacy)
         {
-            <pems-link asp-controller="Task" asp-action="Index">@Localizer["Tasks"]</pems-link>
+            <pems-link href="/p/task-actions">@Localizer["Tasks"]</pems-link>
         }
         else
         {

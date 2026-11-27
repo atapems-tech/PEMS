@@ -124,7 +124,7 @@ public static class NavigationMenuDefaults
 
         // ---- کنترل پروژه
         Section("sec.projctrl", 600, "ProjectControls", "bi-sliders", "Module:ProjectControls", "Task,TaskManager,Tag,Report,Meeting"),
-        Link("proj.tasks", "sec.projctrl", 10, "Tasks", "bi-check2-square", "Task", rule: "Perm:Task.View", badge: NavigationBadges.TasksOpen),
+        new("proj.tasks", "sec.projctrl", L, 10, "Tasks", "bi-check2-square", "Perm:Task.View", ExternalPath: "/p/task-actions", ExtraActiveControllers: "Task", BadgeKey: NavigationBadges.TasksOpen),
         Link("proj.taskmanager", "sec.projctrl", 15, "Nav_TaskManager", "bi-kanban", "TaskManager", rule: "Perm:Task.View"),
         new("proj.meetings", "sec.projctrl", L, 20, "Meetings", "bi-people", Always, ExternalPath: "/p/meetings"),   // SCRUM-728: a definition page (/p/...)
         new("proj.reports", "sec.projctrl", L, 30, "Reports", "bi-graph-up", Always, ExternalPath: "/p/report-correspondence"),   // SCRUM-747: a definition page (/p/...)

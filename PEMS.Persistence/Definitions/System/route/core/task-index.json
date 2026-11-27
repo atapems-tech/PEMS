@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "task-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tasks (old address)",
+    "fa": "وظایف (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Tasks (old address)",
+    "fa": "وظایف (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "Task",
+    "target": "/p/task-actions",
+    "permanent": false
+  }
+}

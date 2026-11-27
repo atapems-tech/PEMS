@@ -1,0 +1,119 @@
+{
+  "kind": "form",
+  "key": "task-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New personal task",
+    "fa": "وظیفه‌ی شخصی جدید"
+  },
+  "description": {
+    "en": "New personal task",
+    "fa": "وظیفه‌ی شخصی جدید"
+  },
+  "payload": {
+    "id": "task-create",
+    "title": {
+      "en": "New personal task",
+      "fa": "وظیفه‌ی شخصی جدید"
+    },
+    "submitLabel": {
+      "en": "New personal task",
+      "fa": "وظیفه‌ی شخصی جدید"
+    },
+    "actionKey": "task-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "maxLength": 300,
+        "span": 2,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "assignedToEmployeeId",
+        "label": {
+          "en": "Assigned to",
+          "fa": "ارجاع به"
+        },
+        "kind": "select",
+        "optionsFrom": "task-assignee-options"
+      },
+      {
+        "name": "dueDate",
+        "label": {
+          "en": "Due",
+          "fa": "سررسید"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "default": "Normal",
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "Normal",
+            "label": {
+              "en": "Normal",
+              "fa": "عادی"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description (optional)",
+          "fa": "توضیح (اختیاری)"
+        },
+        "kind": "textarea",
+        "maxLength": 8000,
+        "span": 2
+      }
+    ]
+  }
+}

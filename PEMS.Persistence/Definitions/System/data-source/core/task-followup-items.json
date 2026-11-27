@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "task-followup-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tasks I assigned",
+    "fa": "پیگیری وظایف"
+  },
+  "description": {
+    "en": "Tasks I assigned",
+    "fa": "پیگیری وظایف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskPage",
+      "action": "FollowUp"
+    }
+  }
+}

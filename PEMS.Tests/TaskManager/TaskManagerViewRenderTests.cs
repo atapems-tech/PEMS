@@ -147,12 +147,6 @@ public class TaskManagerViewRenderTests
         var details = await Render(asBob, await asBob.Details(w.LegacyId), "~/Views/Task/Details.cshtml");
         Assert.Contains("name=\"legacyStatus\"", details);
         Assert.Contains("Meeting", details);
-
-        var index = await Render(asBob, await asBob.Index(), "~/Views/Task/Index.cshtml");
-        Assert.Contains("Minutes follow-up", index);
-        Assert.Contains("MNT-1", index);                                          // وظیفه‌ی فضا در «اقدام وظایف» با کلید
-        Assert.Contains("value=\"InProgress\"", index);                           // فقط گذارهای مجاز
-        Assert.DoesNotContain("value=\"Open\" selected", index);
     }
 
     [Fact]
