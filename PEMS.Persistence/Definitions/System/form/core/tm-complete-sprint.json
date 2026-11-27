@@ -1,0 +1,71 @@
+{
+  "kind": "form",
+  "key": "tm-complete-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete the sprint",
+    "fa": "اتمام اسپرینت"
+  },
+  "description": {
+    "en": "Complete the sprint",
+    "fa": "اتمام اسپرینت"
+  },
+  "payload": {
+    "id": "tm-complete-sprint",
+    "title": {
+      "en": "Complete the sprint",
+      "fa": "اتمام اسپرینت"
+    },
+    "submitLabel": {
+      "en": "Complete the sprint",
+      "fa": "اتمام اسپرینت"
+    },
+    "actionKey": "tm-complete-sprint",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "sprintId",
+        "label": {
+          "en": "Sprint id",
+          "fa": "شناسه اسپرینت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Space key",
+          "fa": "کلید فضا"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "moveTo",
+        "label": {
+          "en": "Move the unfinished tasks to",
+          "fa": "انتقال کارهای ناتمام به"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-future-sprint-options",
+        "optionsArgs": {
+          "key": "key"
+        }
+      }
+    ]
+  }
+}

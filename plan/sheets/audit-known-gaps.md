@@ -61,3 +61,10 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - WorkOrderGridPaginationTests (whole file), WorkOrderDetailsRenderTests (whole file), the review-request guard test entry.
 - Task controller authorization (Index tests), TaskManager render test (index and board parts), Team authorization (members, tree), Notification controller tests (cross user, anonymous), ExecutiveDashboard no-cache test.
 - Write for each: the operation answers the same rows and refuses the same users (permission attribute), the page definitions ship and validate, the old addresses redirect.
+
+### Task manager backlog (SCRUM-831; this slice)
+- The sprint panels (one section per sprint with its own table) are a sprints table plus one task table with a sprint column and filter; sprint commands are row actions that open forms (start, complete with the move-to list, edit, new sprint).
+- The bulk bar (status, assign, sprint, archive) is the grid bulk action that opens a form with the selected ids (engine: `formUrl`); "select all matching" does not apply to these.
+- Drag and drop re-ordering of tasks inside a sprint or the backlog (`data-tm-reorder-url`) is not available; the up and down row actions and the move-to-sprint form remain. Needs a grid row-reorder option in the engine.
+- The old create modal opened from the backlog; the create button opens the new task form page.
+- The Backlog and space header views, and the backlog part of the member render test (replaced by operation assertions), are removed.

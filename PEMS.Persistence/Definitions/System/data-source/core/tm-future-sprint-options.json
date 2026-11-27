@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "tm-future-sprint-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Future sprints (with the backlog)",
+    "fa": "اسپرینت‌های آینده (با بک‌لاگ)"
+  },
+  "description": {
+    "en": "Future sprints (with the backlog)",
+    "fa": "اسپرینت‌های آینده (با بک‌لاگ)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "FutureSprintOptions",
+      "args": {
+        "key": "param:key"
+      }
+    }
+  }
+}

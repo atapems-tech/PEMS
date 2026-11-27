@@ -25,7 +25,7 @@
       "en": "The sprint was started.",
       "fa": "اسپرینت شروع شد."
     },
-    "redirect": "/TaskManager/Index",
+    "redirect": "/p/task-backlog?key={key}",
     "redirectBack": true
   }
 }

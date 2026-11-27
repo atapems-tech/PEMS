@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "tm-rank-up",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The task was moved up.",
+    "fa": "وظیفه بالاتر رفت."
+  },
+  "description": {
+    "en": "The task was moved up.",
+    "fa": "وظیفه بالاتر رفت."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Rank",
+      "args": {
+        "id": "field:id",
+        "up": "literal:true"
+      }
+    },
+    "success": {
+      "en": "The task was moved up.",
+      "fa": "وظیفه بالاتر رفت."
+    },
+    "redirect": "/TaskManager/Index"
+  }
+}

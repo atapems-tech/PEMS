@@ -42,7 +42,9 @@ public sealed record GridBulkAction
 {
     public required string Key { get; init; }
     public required TranslatableText Label { get; init; }
-    public required string Url { get; init; }
+    public string Url { get; init; } = "";
+    /// <summary>SCRUM-835: a form the selected ids are sent to (<c>?ids=1,2,3</c>) when the action needs a value the user picks; used instead of <see cref="Url"/>.</summary>
+    public string? FormUrl { get; init; }
     public TranslatableText? Confirm { get; init; }
     public string Tone { get; init; } = "primary";
 }

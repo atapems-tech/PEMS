@@ -1,0 +1,79 @@
+{
+  "kind": "form",
+  "key": "tm-bulk-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the status of the selected tasks",
+    "fa": "تغییر وضعیت وظایف انتخاب‌شده"
+  },
+  "description": {
+    "en": "Change the status of the selected tasks",
+    "fa": "تغییر وضعیت وظایف انتخاب‌شده"
+  },
+  "payload": {
+    "id": "tm-bulk-status",
+    "title": {
+      "en": "Change the status of the selected tasks",
+      "fa": "تغییر وضعیت وظایف انتخاب‌شده"
+    },
+    "submitLabel": {
+      "en": "Change the status of the selected tasks",
+      "fa": "تغییر وضعیت وظایف انتخاب‌شده"
+    },
+    "actionKey": "tm-bulk-status",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "ids",
+        "label": {
+          "en": "Task ids (comma separated)",
+          "fa": "شناسه وظایف (جدا شده با ویرگول)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Space key",
+          "fa": "کلید فضا"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Status",
+          "fa": "وضعیت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-status-options",
+        "optionsArgs": {
+          "key": "key"
+        }
+      }
+    ]
+  }
+}

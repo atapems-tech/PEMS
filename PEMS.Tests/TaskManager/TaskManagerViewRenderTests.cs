@@ -76,12 +76,14 @@ public class TaskManagerViewRenderTests
         var w = await SeedAsync(nameof(EveryTaskManagerPage_Renders_ForAMember));
         var (tm, _) = Controllers(w.Ctx, 1, "Engineer");
 
-        var backlog = await Render(tm, await tm.Space("MNT", "backlog"), "~/Views/TaskManager/Backlog.cshtml");
-        Assert.Contains("Sprint 1", backlog);
-        Assert.Contains("Backlog item", backlog);
-        Assert.Contains("Pump &lt;b&gt;P-101&lt;/b&gt; overhaul", backlog);        // متن کاربر encode می‌شود
-        Assert.DoesNotContain("name=\"sprintId\" class", backlog);                 // عضو عادی Lead نیست: انتقال Sprint/رتبه ندارد
-        Assert.Contains("id=\"tmCreateModal\"", backlog);
+        var member = new FakeCurrentUserService { UserId = 1, UserName = "u1", FullName = "User 1", Roles = new List<string> { "Engineer" } };
+        var ops = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), member, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
+        var sprints = await ops.BacklogSprintsAsync("MNT");
+        Assert.Contains(sprints, x => x.Name == "Sprint 1");
+        var items = await ops.BacklogItemsAsync("MNT");
+        Assert.Contains(items, x => x.Title == "Backlog item");
+        Assert.Contains(items, x => x.Title == "Pump <b>P-101</b> overhaul");       // the text is data here; the grid encodes it
+        Assert.All(sprints, x => Assert.False(x.CanManage));                       // a plain member is not a lead: no sprint commands
 
         var all = await Render(tm, await tm.AllWork(new WorkItemQuery { WorkSpaceId = w.SpaceId }), "~/Views/TaskManager/AllWork.cshtml");
         Assert.Contains("MNT-2", all);

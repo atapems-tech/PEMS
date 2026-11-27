@@ -1,0 +1,101 @@
+{
+  "kind": "form",
+  "key": "tm-update-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the sprint",
+    "fa": "ویرایش اسپرینت"
+  },
+  "description": {
+    "en": "Edit the sprint",
+    "fa": "ویرایش اسپرینت"
+  },
+  "payload": {
+    "id": "tm-update-sprint",
+    "title": {
+      "en": "Edit the sprint",
+      "fa": "ویرایش اسپرینت"
+    },
+    "submitLabel": {
+      "en": "Edit the sprint",
+      "fa": "ویرایش اسپرینت"
+    },
+    "actionKey": "tm-update-sprint",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "sprintId",
+        "label": {
+          "en": "Sprint id",
+          "fa": "شناسه اسپرینت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Space key",
+          "fa": "کلید فضا"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 150
+      },
+      {
+        "name": "goal",
+        "label": {
+          "en": "Goal",
+          "fa": "هدف"
+        },
+        "kind": "text",
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "endDate",
+        "label": {
+          "en": "End date",
+          "fa": "تاریخ پایان"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

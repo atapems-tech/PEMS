@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "tm-bulk-archive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Archive the selected tasks",
+    "fa": "بایگانی وظایف انتخاب‌شده"
+  },
+  "description": {
+    "en": "Archive the selected tasks",
+    "fa": "بایگانی وظایف انتخاب‌شده"
+  },
+  "payload": {
+    "id": "tm-bulk-archive",
+    "title": {
+      "en": "Archive the selected tasks",
+      "fa": "بایگانی وظایف انتخاب‌شده"
+    },
+    "submitLabel": {
+      "en": "Archive the selected tasks",
+      "fa": "بایگانی وظایف انتخاب‌شده"
+    },
+    "actionKey": "tm-bulk-archive",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "ids",
+        "label": {
+          "en": "Task ids (comma separated)",
+          "fa": "شناسه وظایف (جدا شده با ویرگول)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Space key",
+          "fa": "کلید فضا"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Archive (true) or restore (false)",
+          "fa": "بایگانی (true) یا بازگردانی (false)"
+        },
+        "kind": "text",
+        "default": "true"
+      }
+    ]
+  }
+}

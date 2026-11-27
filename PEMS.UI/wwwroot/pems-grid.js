@@ -306,6 +306,8 @@
             });
         }
         function runBulk(a) {
+            // SCRUM-835: a bulk action with formUrl opens that form with the selected ids (ids=1,2,3) instead of posting at once; the form asks for the value
+            if (a.formUrl && !allMatching) { location.href = a.formUrl + (a.formUrl.indexOf('?') < 0 ? '?' : '&') + 'ids=' + Object.keys(selection).map(encodeURIComponent).join(','); return; }
             var go = function () {
                 var body = { action: a.key, allMatching: allMatching, ids: allMatching ? null : Object.keys(selection), query: allMatching ? query(0).toString() : null };
                 fetch(a.url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify(body) })

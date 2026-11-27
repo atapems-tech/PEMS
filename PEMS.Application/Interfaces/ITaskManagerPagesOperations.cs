@@ -10,6 +10,10 @@ public sealed record TaskBoardHeadRow(int Id, string Key, string Name, string? R
 public sealed record TaskBoardGroupRow(string Value, string Label, string Tone);
 public sealed record TaskBoardCardRow(int Id, string Title, string Subtitle, string? Badge, string Status, string Allowed, string? RowVersion);
 
+public sealed record TaskBacklogHeadRow(int Id, string Key, string Name, string? Role, string? Description, string Hint, bool CanCreate, bool CanManageSprints, bool CanRank);
+public sealed record TaskSprintRow(int Id, string Name, string State, string StateCode, string Period, string Counts, string? Goal, bool CanStart, bool CanComplete, bool CanManage);
+public sealed record TaskBacklogItemRow(int Id, string Key, string Title, string? Type, string Status, string Priority, string Assignee, DateTime? DueDate, bool Overdue, decimal? Points, string Sprint, int SprintId, bool CanRank, bool Archived);
+
 /// <summary>SCRUM-831: the read side of TaskManagerController.Index (the spaces the user may see) as operations; Task.View is the right the controller checked.</summary>
 public interface ITaskManagerPagesOperations
 {
@@ -41,4 +45,26 @@ public interface ITaskManagerPagesOperations
 
     [PEMS.Application.Common.PemsOperation("TaskManagerPage", "PriorityOptions", "Task.Create")]
     Task<List<TaskChoice>> PriorityOptionsAsync();
+
+    /// <summary>The backlog of a space (the key in the address): the header with the rights, the sprints with their commands, every task in the order of the old panels (sprints first, then the backlog), and the choice lists of the bulk forms.</summary>
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "BacklogHead", "Task.View")]
+    Task<List<TaskBacklogHeadRow>> BacklogHeadAsync(string? key = null);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "BacklogSprints", "Task.View")]
+    Task<List<TaskSprintRow>> BacklogSprintsAsync(string? key = null);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "BacklogItems", "Task.View")]
+    Task<List<TaskBacklogItemRow>> BacklogItemsAsync(string? key = null);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "StatusOptionsByKey", "Task.View")]
+    Task<List<TaskChoice>> StatusOptionsByKeyAsync(string? key = null);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AssigneeOptionsByKey", "Task.View")]
+    Task<List<TaskChoice>> AssigneeOptionsByKeyAsync(string? key = null);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "SprintOptionsByKey", "Task.View")]
+    Task<List<TaskChoice>> SprintOptionsByKeyAsync(string? key = null);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "FutureSprintOptions", "Task.View")]
+    Task<List<TaskChoice>> FutureSprintOptionsAsync(string? key = null);
 }
