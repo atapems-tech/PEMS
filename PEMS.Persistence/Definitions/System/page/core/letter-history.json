@@ -1,0 +1,231 @@
+{
+  "kind": "page",
+  "key": "letter-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter history",
+    "fa": "تاریخچه‌ی نامه"
+  },
+  "description": {
+    "en": "Letter history",
+    "fa": "تاریخچه‌ی نامه"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "letter-history",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the letter",
+              "fa": "بازگشت به نامه"
+            },
+            "tone": "neutral",
+            "href": "/p/letter-details?id={{params.id|url}}"
+          }
+        },
+        {
+          "id": "csv",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Export CSV",
+              "fa": "خروجی CSV"
+            },
+            "tone": "primary",
+            "href": "/x/letter-compliance-csv?id={{params.id|url}}"
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "letter-history-head",
+            "fields": [
+              {
+                "key": "number",
+                "label": {
+                  "en": "Letter no.",
+                  "fa": "شماره نامه"
+                }
+              },
+              {
+                "key": "subject",
+                "label": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                },
+                "wide": true
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "confidentiality",
+                "label": {
+                  "en": "Confidentiality",
+                  "fa": "محرمانگی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-viewed",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-viewed",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Who viewed the letter",
+                  "fa": "چه کسانی نامه را دیده‌اند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "viewed",
+          "component": "def:related-table",
+          "options": {
+            "id": "viewed",
+            "url": "/d/letter-history-viewed?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "userName",
+                "width": 240
+              },
+              {
+                "key": "firstViewed",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "lastViewed",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "viewCount",
+                "width": 100,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-versions",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-versions",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Versions",
+                  "fa": "نسخه‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "versions",
+          "component": "def:related-table",
+          "options": {
+            "id": "versions",
+            "url": "/d/letter-history-versions?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "versionNo",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "reason",
+                "width": 160
+              },
+              {
+                "key": "savedBy",
+                "width": 180
+              },
+              {
+                "key": "saved",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "subject",
+                "width": 360
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-audit",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-audit",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Audit trail",
+                  "fa": "ردپای حسابرسی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "audit",
+          "component": "def:related-table",
+          "options": {
+            "id": "audit",
+            "url": "/d/letter-history-audit?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "actor",
+                "width": 180
+              },
+              {
+                "key": "category",
+                "width": 140
+              },
+              {
+                "key": "event",
+                "width": 200
+              },
+              {
+                "key": "detail",
+                "width": 360
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.View"
+  }
+}

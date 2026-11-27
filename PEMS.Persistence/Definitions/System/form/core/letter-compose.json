@@ -1,0 +1,460 @@
+{
+  "kind": "form",
+  "key": "letter-compose",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Compose a letter",
+    "fa": "نگارش نامه"
+  },
+  "description": {
+    "en": "Compose, reply to or refer a letter: save the draft or submit it (the composer form)",
+    "fa": "نگارش، پاسخ یا ارجاع نامه: ذخیره‌ی پیش‌نویس یا ارسال"
+  },
+  "payload": {
+    "id": "letter-compose",
+    "title": {
+      "en": "Compose a letter",
+      "fa": "نگارش نامه"
+    },
+    "submitLabel": {
+      "en": "Submit",
+      "fa": "ارسال"
+    },
+    "actionKey": "letter-compose-submit",
+    "submitActions": [
+      {
+        "key": "draft",
+        "label": {
+          "en": "Save the draft",
+          "fa": "ذخیره‌ی پیش‌نویس"
+        },
+        "actionKey": "letter-compose-save"
+      }
+    ],
+    "columns": 2,
+    "warnOnLeave": true,
+    "permission": "Correspondence.Create",
+    "load": {
+      "model": "LetterCompose",
+      "action": "Record",
+      "args": {
+        "id": "param:id",
+        "letterType": "param:letterType",
+        "templateId": "param:templateId",
+        "replyTo": "param:replyTo",
+        "referTo": "param:referTo"
+      }
+    },
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "hidden": true
+      },
+      {
+        "name": "rowVersion",
+        "label": {
+          "en": "Version",
+          "fa": "نسخه"
+        },
+        "kind": "text",
+        "hidden": true
+      },
+      {
+        "name": "parentLetterId",
+        "label": {
+          "en": "Parent letter",
+          "fa": "نامه‌ی اصلی"
+        },
+        "kind": "number",
+        "hidden": true
+      },
+      {
+        "name": "isReferral",
+        "label": {
+          "en": "Referral",
+          "fa": "ارجاع"
+        },
+        "kind": "text",
+        "hidden": true
+      },
+      {
+        "name": "letterType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "Internal",
+        "options": [
+          {
+            "value": "Internal",
+            "label": {
+              "en": "Internal",
+              "fa": "داخلی"
+            }
+          },
+          {
+            "value": "Outgoing",
+            "label": {
+              "en": "Outgoing",
+              "fa": "صادره"
+            }
+          }
+        ]
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "دسته‌بندی"
+        },
+        "kind": "select",
+        "visible": "values.isReferral != 'true'",
+        "options": [
+          {
+            "value": "",
+            "label": {
+              "en": "Choose a category",
+              "fa": "یک دسته انتخاب کنید"
+            }
+          },
+          {
+            "value": "Information",
+            "label": {
+              "en": "Information",
+              "fa": "اطلاع‌رسانی"
+            }
+          },
+          {
+            "value": "Request",
+            "label": {
+              "en": "Request",
+              "fa": "درخواست"
+            }
+          },
+          {
+            "value": "Instruction",
+            "label": {
+              "en": "Instruction",
+              "fa": "دستور"
+            }
+          },
+          {
+            "value": "Approval",
+            "label": {
+              "en": "Approval",
+              "fa": "تایید"
+            }
+          },
+          {
+            "value": "Recommendation",
+            "label": {
+              "en": "Recommendation",
+              "fa": "پیشنهاد"
+            }
+          },
+          {
+            "value": "Notice",
+            "label": {
+              "en": "Notice",
+              "fa": "ابلاغیه"
+            }
+          },
+          {
+            "value": "StatusReport",
+            "label": {
+              "en": "Status report",
+              "fa": "گزارش وضعیت"
+            }
+          }
+        ]
+      },
+      {
+        "name": "toEmployeeIds",
+        "label": {
+          "en": "To",
+          "fa": "گیرندگان (به)"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "letter-compose-employees-opts",
+        "span": 2
+      },
+      {
+        "name": "ccEmployeeIds",
+        "label": {
+          "en": "Cc",
+          "fa": "رونوشت"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "letter-compose-employees-opts",
+        "span": 2
+      },
+      {
+        "name": "bccEmployeeIds",
+        "label": {
+          "en": "Bcc",
+          "fa": "رونوشت پنهان"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "letter-compose-employees-opts",
+        "span": 2
+      },
+      {
+        "name": "externalReceiver",
+        "label": {
+          "en": "External receiver",
+          "fa": "گیرنده‌ی بیرونی"
+        },
+        "kind": "text",
+        "maxLength": 250,
+        "visible": "values.letterType == 'Outgoing'"
+      },
+      {
+        "name": "correspondentPartyId",
+        "label": {
+          "en": "Correspondent",
+          "fa": "طرف مکاتبه"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-parties-opts",
+        "visible": "values.letterType == 'Outgoing'"
+      },
+      {
+        "name": "subject",
+        "label": {
+          "en": "Subject",
+          "fa": "موضوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500,
+        "span": 2
+      },
+      {
+        "name": "body",
+        "label": {
+          "en": "Body",
+          "fa": "متن نامه"
+        },
+        "kind": "richText",
+        "span": 2
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "Normal",
+        "options": [
+          {
+            "value": "Low",
+            "label": {
+              "en": "Low",
+              "fa": "کم"
+            }
+          },
+          {
+            "value": "Normal",
+            "label": {
+              "en": "Normal",
+              "fa": "عادی"
+            }
+          },
+          {
+            "value": "High",
+            "label": {
+              "en": "High",
+              "fa": "زیاد"
+            }
+          },
+          {
+            "value": "Urgent",
+            "label": {
+              "en": "Urgent",
+              "fa": "فوری"
+            }
+          }
+        ]
+      },
+      {
+        "name": "confidentialityLevel",
+        "label": {
+          "en": "Confidentiality",
+          "fa": "سطح محرمانگی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "Internal",
+        "options": [
+          {
+            "value": "Public",
+            "label": {
+              "en": "Public",
+              "fa": "عمومی"
+            }
+          },
+          {
+            "value": "Internal",
+            "label": {
+              "en": "Internal",
+              "fa": "داخلی"
+            }
+          },
+          {
+            "value": "Confidential",
+            "label": {
+              "en": "Confidential",
+              "fa": "محرمانه"
+            }
+          },
+          {
+            "value": "Restricted",
+            "label": {
+              "en": "Restricted",
+              "fa": "محدود"
+            }
+          },
+          {
+            "value": "HighlyConfidential",
+            "label": {
+              "en": "Highly confidential",
+              "fa": "بسیار محرمانه"
+            }
+          }
+        ]
+      },
+      {
+        "name": "letterDate",
+        "label": {
+          "en": "Letter date",
+          "fa": "تاریخ نامه"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "referenceNumber",
+        "label": {
+          "en": "Reference number",
+          "fa": "شماره‌ی ارجاع"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "relatedDepartmentId",
+        "label": {
+          "en": "Related department",
+          "fa": "واحد مرتبط"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-departments-opts"
+      },
+      {
+        "name": "senderDepartmentId",
+        "label": {
+          "en": "Sender department",
+          "fa": "واحد فرستنده"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-departments-opts"
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-projects-opts"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-compose-disciplines-opts"
+      },
+      {
+        "name": "manualNumber",
+        "label": {
+          "en": "Manual number",
+          "fa": "شماره‌ی دستی"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "responseRequired",
+        "label": {
+          "en": "A response is required",
+          "fa": "پاسخ لازم است"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "responseDueDate",
+        "label": {
+          "en": "Response due date",
+          "fa": "مهلت پاسخ"
+        },
+        "kind": "date",
+        "visible": "values.responseRequired == 'true'"
+      },
+      {
+        "name": "approvalRequired",
+        "label": {
+          "en": "Approval is required",
+          "fa": "تایید لازم است"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "approverUserIds",
+        "label": {
+          "en": "Approval chain",
+          "fa": "زنجیره‌ی تایید"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "letter-compose-approvers-opts",
+        "span": 2,
+        "visible": "values.approvalRequired == 'true' || values.letterType == 'Outgoing'"
+      }
+    ]
+  }
+}

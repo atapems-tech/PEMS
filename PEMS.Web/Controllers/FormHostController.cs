@@ -35,21 +35,25 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
             if (current is null) return NotFound();
             foreach (var (name, v) in current) if (values.ContainsKey(name)) values[name] = v;
         }
-        if (loaded.Form.Load is { } load && reader is not null)
+        try   // SCRUM-840: a load that refuses the user (a letter he may not see) is a refusal, not a crash
         {
-            // SCRUM-818: the saved values come from a read operation (with the rights of the user); the first row fills the fields of the same name
-            var query = Request.Query.ToDictionary(q => q.Key, q => (string?)q.Value.ToString(), StringComparer.Ordinal);
-            if (id is not null) query["id"] = id;
-            var parameters = new Dictionary<string, string?>
+            if (loaded.Form.Load is { } load && reader is not null)
             {
-                ["model"] = load.Model, ["action"] = load.Action,
-                ["args"] = JsonSerializer.Serialize(load.Args ?? new Dictionary<string, string> { ["id"] = "param:id" })
-            };
-            var rows = await reader.ReadAsync(parameters, loaded.Context.Culture, loaded.Context.Roles, loaded.Context.UserName, ct, query);
-            if (rows is null) return Forbid();
-            if (rows.Count == 0 && id is not null) return NotFound();   // an id that gives no row is no record (without an id the form is a new one)
-            if (rows.Count > 0) foreach (var (name, v) in rows[0]) if (values.ContainsKey(name)) values[name] = ShowLoaded(v, loaded.Form.Fields.First(f => f.Name == name).Kind);
+                // SCRUM-818: the saved values come from a read operation (with the rights of the user); the first row fills the fields of the same name
+                var query = Request.Query.ToDictionary(q => q.Key, q => (string?)q.Value.ToString(), StringComparer.Ordinal);
+                if (id is not null) query["id"] = id;
+                var parameters = new Dictionary<string, string?>
+                {
+                    ["model"] = load.Model, ["action"] = load.Action,
+                    ["args"] = JsonSerializer.Serialize(load.Args ?? new Dictionary<string, string> { ["id"] = "param:id" })
+                };
+                var rows = await reader.ReadAsync(parameters, loaded.Context.Culture, loaded.Context.Roles, loaded.Context.UserName, ct, query);
+                if (rows is null) return Forbid();
+                if (rows.Count == 0 && id is not null) return NotFound();   // an id that gives no row is no record (without an id the form is a new one)
+                if (rows.Count > 0) foreach (var (name, v) in rows[0]) if (values.ContainsKey(name)) values[name] = ShowLoaded(v, loaded.Form.Fields.First(f => f.Name == name).Kind);
+            }
         }
+        catch (UnauthorizedAccessException) { return Forbid(); }
         foreach (var (name, v) in Request.Query) if (values.ContainsKey(name)) values[name] = v.ToString();   // a link may pre-fill a field
         foreach (var f in loaded.Form.Fields) if (!string.IsNullOrEmpty(f.Default) && values.TryGetValue(f.Name, out var current0) && string.IsNullOrEmpty(current0)) values[f.Name] = f.Default;   // SCRUM-835: the starting value of a field nothing else filled
         return await Show(key, loaded, values, new Dictionary<string, TranslatableText>(), []);
@@ -81,12 +85,14 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
         var validation = FormEngine.Validate(shown, posted, loaded.Context);
         if (!validation.IsValid) return await Show(key, loaded, posted, validation.Errors, validation.FormErrors);
 
-        if (string.IsNullOrEmpty(form.ActionKey)) return await Show(key, loaded, posted, validation.Errors, [TranslatableText.Of(("en", "This form has no action."), ("fa", "این فرم کنشی ندارد."))]);
-        var result = await actions.RunAsync(form.ActionKey, new ActionInvocation(id is null ? validation.Values : new Dictionary<string, string?>(validation.Values) { ["id"] = id }, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, loaded.Context.Roles, loaded.Context.UserName, null, HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers.UserAgent.ToString(), HostFiles.From(Request)), "core", ct);
+        var chosen = Request.Form.TryGetValue("__submit", out var picked) ? form.SubmitActions?.FirstOrDefault(a => a.Key == picked.ToString())?.ActionKey : null;   // SCRUM-840: only a button the definition names counts
+        var actionKey = chosen ?? form.ActionKey;
+        if (string.IsNullOrEmpty(actionKey)) return await Show(key, loaded, posted, validation.Errors, [TranslatableText.Of(("en", "This form has no action."), ("fa", "این فرم کنشی ندارد."))]);
+        var result = await actions.RunAsync(actionKey, new ActionInvocation(id is null ? validation.Values : new Dictionary<string, string?>(validation.Values) { ["id"] = id }, CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, loaded.Context.Roles, loaded.Context.UserName, null, HttpContext.Connection.RemoteIpAddress?.ToString(), Request.Headers.UserAgent.ToString(), HostFiles.From(Request)), "core", ct);
         switch (result.Status)
         {
             case ActionStatus.Forbidden: return Forbid();
-            case ActionStatus.NotFound: log.LogWarning("Form definition {Key}: the action \"{Action}\" does not exist.", key, form.ActionKey); return NotFound();
+            case ActionStatus.NotFound: log.LogWarning("Form definition {Key}: the action \"{Action}\" does not exist.", key, actionKey); return NotFound();
             case ActionStatus.StepUpRequired:
                 // SCRUM-817: the same form comes back with the marker; pems-form-stepup.js runs the security-key ceremony and posts the form again with the answer
                 return await Show(key, loaded, posted, new Dictionary<string, TranslatableText>(), [], stepUp: true);

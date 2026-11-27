@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-compose-projects-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Projects (letter compose)",
+    "fa": "پروژه‌ها (نگارش نامه)"
+  },
+  "description": {
+    "en": "Projects (letter compose)",
+    "fa": "پروژه‌ها (نگارش نامه)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Projects",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

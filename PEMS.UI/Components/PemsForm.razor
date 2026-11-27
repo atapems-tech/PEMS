@@ -15,6 +15,10 @@
     }
     @if (Definition.Columns > 1) { <div class="pems-form__grid">@Fields</div> } else { @Fields }
     <PemsButton Options="@(new ButtonOptions { Label = Definition.SubmitLabel, Type = "submit" })" />
+    @foreach (var other in Definition.SubmitActions ?? [])
+    {
+        <PemsButton Options="@(new ButtonOptions { Label = other.Label, Type = "submit", Name = "__submit", Value = other.Key, Outline = true, CssClass = "ms-2" })" />
+    }
 </form>
 @code {
     private RenderFragment Fields => @<text>

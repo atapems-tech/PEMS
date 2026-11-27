@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-approvers-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approvers (letter)",
+    "fa": "تاییدکنندگان (نامه)"
+  },
+  "description": {
+    "en": "Approvers (letter)",
+    "fa": "تاییدکنندگان (نامه)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Approvers",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

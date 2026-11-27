@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-compliance-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter compliance CSV (old address)",
+    "fa": "CSV انطباق نامه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter compliance CSV",
+    "fa": "CSV انطباق نامه"
+  },
+  "payload": {
+    "pattern": "LetterCompose/ComplianceExport",
+    "target": "/x/letter-compliance-csv",
+    "permanent": false
+  }
+}

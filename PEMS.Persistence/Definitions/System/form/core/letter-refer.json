@@ -56,7 +56,7 @@
           "fa": "یا به واحد"
         },
         "kind": "select",
-        "optionsFrom": "letter-departments"
+        "optionsFrom": "letter-departments-opts"
       },
       {
         "name": "instructions",

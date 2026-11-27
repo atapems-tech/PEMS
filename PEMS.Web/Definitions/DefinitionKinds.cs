@@ -90,6 +90,7 @@ public sealed class FormDefinitionKind(OperationReader? reader = null) : IDefini
             if (form is null) return Array.Empty<DefinitionRef>();
             var refs = form.Fields.Where(f => !string.IsNullOrEmpty(f.OptionsFrom)).Select(f => new DefinitionRef("data-source", f.OptionsFrom!, "options")).ToList();
             if (!string.IsNullOrEmpty(form.ActionKey)) refs.Add(new DefinitionRef("action", form.ActionKey, "submits"));
+            foreach (var other in form.SubmitActions ?? []) refs.Add(new DefinitionRef("action", other.ActionKey, "submits"));
             return refs;
         }
         catch (JsonException) { return Array.Empty<DefinitionRef>(); }

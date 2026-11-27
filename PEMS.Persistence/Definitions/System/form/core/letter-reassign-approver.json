@@ -70,7 +70,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "letter-approvers"
+        "optionsFrom": "letter-approvers-opts"
       }
     ]
   }

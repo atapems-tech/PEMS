@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-compose-parties-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondents (letter compose)",
+    "fa": "طرف‌های مکاتبه (نگارش نامه)"
+  },
+  "description": {
+    "en": "Correspondents (letter compose)",
+    "fa": "طرف‌های مکاتبه (نگارش نامه)"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterCompose",
+      "action": "Parties",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

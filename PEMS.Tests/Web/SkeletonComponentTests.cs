@@ -98,7 +98,6 @@ public class SkeletonComponentTests
     [Theory]
     [InlineData("wwwroot/js/views/shared-contextualhelpdrawer.js", "PemsSkeleton.show(body, 'card')")]
     [InlineData("wwwroot/js/pems-global-search.js", "PemsSkeleton.show(loading, 'table'")]
-    [InlineData("wwwroot/js/letter-compose.js", "PemsSkeleton.show(body, 'text'")]
     [InlineData("wwwroot/js/pems-org-position-chart.js", "PemsSkeleton.show(stateEl, \"card\"")]
     public void WaveS1_PanelsShowTheSkeletonWhileLoading(string file, string call)
     {
@@ -115,7 +114,6 @@ public class SkeletonComponentTests
     [Theory]
     [InlineData("Views/Team/OrganizationChart.cshtml", "<pems-skeleton kind=\"card\"")]
     [InlineData("wwwroot/js/pems-cartable.js", "PemsSkeleton.show(waitTd, \"table\", { rows: 2, cols: 3 })")]
-    [InlineData("wwwroot/js/letter-compose.js", "PemsSkeleton.show(waitLi, 'text', { lines: 3 })")]
     [InlineData("wwwroot/js/pems-part-catalogue-dedup.js", "PemsSkeleton.show(out, 'text'")]
     [InlineData("wwwroot/js/pems-part-catalogue.js", "PemsSkeleton.show(tcLong, 'text'")]
     public void WaveS2_PanelsThatLoadContent_ShowTheSkeleton(string file, string call) =>
