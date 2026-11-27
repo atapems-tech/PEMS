@@ -1,0 +1,434 @@
+{
+  "kind": "form",
+  "key": "pc-request-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part catalogue request",
+    "fa": "درخواست کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Part catalogue request",
+    "fa": "درخواست کاتالوگ قطعه"
+  },
+  "payload": {
+    "id": "pc-request-edit",
+    "title": {
+      "en": "Part catalogue request",
+      "fa": "درخواست کاتالوگ قطعه"
+    },
+    "submitLabel": {
+      "en": "Save",
+      "fa": "ذخیره"
+    },
+    "actionKey": "pc-request-edit",
+    "columns": 2,
+    "load": {
+      "model": "PcForm",
+      "action": "One",
+      "args": {
+        "id": "param:id"
+      }
+    },
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request",
+          "fa": "درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "rowVersion",
+        "label": {
+          "en": "Version",
+          "fa": "نسخه"
+        },
+        "kind": "text",
+        "hidden": true
+      },
+      {
+        "name": "requestType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "urgent",
+        "label": {
+          "en": "Urgent",
+          "fa": "فوری"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "sectionId",
+        "label": {
+          "en": "Section",
+          "fa": "بخش"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-sections"
+      },
+      {
+        "name": "isNewEquipment",
+        "label": {
+          "en": "The equipment is new",
+          "fa": "تجهیز جدید است"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "isRd",
+        "label": {
+          "en": "R&D",
+          "fa": "تحقیق و توسعه"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "existingPartNumber",
+        "label": {
+          "en": "Existing part number (change requests)",
+          "fa": "شماره قطعه موجود (درخواست تغییر)"
+        },
+        "kind": "text",
+        "maxLength": 50
+      },
+      {
+        "name": "changesMatchInventory",
+        "label": {
+          "en": "The changes match the inventory",
+          "fa": "تغییرات با موجودی مطابقت دارد"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "true",
+            "label": {
+              "en": "Yes",
+              "fa": "بله"
+            }
+          },
+          {
+            "value": "false",
+            "label": {
+              "en": "No",
+              "fa": "خیر"
+            }
+          }
+        ]
+      },
+      {
+        "name": "technicalClassId",
+        "label": {
+          "en": "Technical class",
+          "fa": "کلاس فنی"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-technical-classes"
+      },
+      {
+        "name": "attributes",
+        "label": {
+          "en": "Attributes (one per line: name = value; the first line is the free format text)",
+          "fa": "ویژگی‌ها (هر خط: نام = مقدار؛ خط اول متن آزاد است)"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "assetType",
+        "label": {
+          "en": "Asset type",
+          "fa": "نوع دارایی"
+        },
+        "kind": "select",
+        "default": "None",
+        "options": [
+          {
+            "value": "None",
+            "label": {
+              "en": "None",
+              "fa": "هیچ"
+            }
+          },
+          {
+            "value": "FixedAsset",
+            "label": {
+              "en": "Fixed asset",
+              "fa": "دارایی ثابت"
+            }
+          },
+          {
+            "value": "LowValueAsset",
+            "label": {
+              "en": "Low value asset",
+              "fa": "دارایی کم‌ارزش"
+            }
+          }
+        ]
+      },
+      {
+        "name": "commodityGroup1Id",
+        "label": {
+          "en": "Commodity group 1",
+          "fa": "گروه کالا ۱"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-group1"
+      },
+      {
+        "name": "commodityGroup2Id",
+        "label": {
+          "en": "Commodity group 2",
+          "fa": "گروه کالا ۲"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-group2"
+      },
+      {
+        "name": "productFamilyId",
+        "label": {
+          "en": "Product family",
+          "fa": "خانواده محصول"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-families"
+      },
+      {
+        "name": "unitOfMeasureId",
+        "label": {
+          "en": "Unit of measure",
+          "fa": "واحد اندازه‌گیری"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-units"
+      },
+      {
+        "name": "manufacturerId",
+        "label": {
+          "en": "Manufacturer",
+          "fa": "سازنده"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-manufacturers"
+      },
+      {
+        "name": "isNewManufacturer",
+        "label": {
+          "en": "The manufacturer is new",
+          "fa": "سازنده جدید است"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "newManufacturerName",
+        "label": {
+          "en": "New manufacturer name",
+          "fa": "نام سازنده جدید"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "manufacturerPartNumber",
+        "label": {
+          "en": "Manufacturer part number",
+          "fa": "شماره قطعه سازنده"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "supplierId",
+        "label": {
+          "en": "Supplier",
+          "fa": "تأمین‌کننده"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-suppliers"
+      },
+      {
+        "name": "supplierPartNumber",
+        "label": {
+          "en": "Supplier part number",
+          "fa": "شماره قطعه تأمین‌کننده"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "partPrice",
+        "label": {
+          "en": "Part price",
+          "fa": "قیمت قطعه"
+        },
+        "kind": "number",
+        "step": "0.01",
+        "min": 0
+      },
+      {
+        "name": "currencyId",
+        "label": {
+          "en": "Currency",
+          "fa": "ارز"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-currencies"
+      },
+      {
+        "name": "typeDesignationId",
+        "label": {
+          "en": "Type designation",
+          "fa": "تعیین نوع"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-type-designations"
+      },
+      {
+        "name": "sparePartSerialNo",
+        "label": {
+          "en": "Spare part serial no.",
+          "fa": "شماره سریال قطعه یدکی"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "equipmentSerialNo",
+        "label": {
+          "en": "Equipment serial no.",
+          "fa": "شماره سریال تجهیز"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "manufacturerDrawingNo",
+        "label": {
+          "en": "Manufacturer drawing no.",
+          "fa": "شماره نقشه سازنده"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "documentNo",
+        "label": {
+          "en": "Document no.",
+          "fa": "شماره مدرک"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "planningMethodId",
+        "label": {
+          "en": "Planning method",
+          "fa": "روش برنامه‌ریزی"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-planning-methods"
+      },
+      {
+        "name": "minimumStock",
+        "label": {
+          "en": "Minimum stock",
+          "fa": "حداقل موجودی"
+        },
+        "kind": "number",
+        "step": "0.0001",
+        "min": 0
+      },
+      {
+        "name": "maxConsumptionRate",
+        "label": {
+          "en": "Maximum consumption rate",
+          "fa": "حداکثر نرخ مصرف"
+        },
+        "kind": "number",
+        "step": "0.0001",
+        "min": 0
+      },
+      {
+        "name": "firstPurchaseQuantity",
+        "label": {
+          "en": "First purchase quantity",
+          "fa": "مقدار خرید اول"
+        },
+        "kind": "number",
+        "step": "0.0001",
+        "min": 0
+      },
+      {
+        "name": "primaryIssuedRequired",
+        "label": {
+          "en": "Primary issue required",
+          "fa": "صدور اولیه الزامی است"
+        },
+        "kind": "switch"
+      },
+      {
+        "name": "issuedQty",
+        "label": {
+          "en": "Issued quantity",
+          "fa": "مقدار صادرشده"
+        },
+        "kind": "number",
+        "step": "0.0001",
+        "min": 0
+      },
+      {
+        "name": "stockGradeId",
+        "label": {
+          "en": "Stock grade",
+          "fa": "درجه موجودی"
+        },
+        "kind": "select",
+        "optionsFrom": "pc-form-stock-grades"
+      },
+      {
+        "name": "wantedReceiptDate",
+        "label": {
+          "en": "Wanted receipt date",
+          "fa": "تاریخ دریافت مورد نیاز"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "storageVolume",
+        "label": {
+          "en": "Storage volume",
+          "fa": "حجم انبار"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "submitAfterSave",
+        "label": {
+          "en": "Save and submit for approval",
+          "fa": "ذخیره و ارسال برای تأیید"
+        },
+        "kind": "checkbox",
+        "span": 2
+      }
+    ]
+  }
+}

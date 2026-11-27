@@ -1,0 +1,99 @@
+{
+  "kind": "form",
+  "key": "pc-request-upload-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload an attachment",
+    "fa": "بارگذاری پیوست"
+  },
+  "description": {
+    "en": "Upload an attachment",
+    "fa": "بارگذاری پیوست"
+  },
+  "payload": {
+    "id": "pc-request-upload-attachment",
+    "title": {
+      "en": "Upload an attachment",
+      "fa": "بارگذاری پیوست"
+    },
+    "submitLabel": {
+      "en": "Upload an attachment",
+      "fa": "بارگذاری پیوست"
+    },
+    "actionKey": "pc-request-upload-attachment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request",
+          "fa": "درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "File",
+          "fa": "فایل"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "kind",
+        "label": {
+          "en": "Kind",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "default": "Document",
+        "options": [
+          {
+            "value": "Document",
+            "label": {
+              "en": "Document",
+              "fa": "Document"
+            }
+          },
+          {
+            "value": "Datasheet",
+            "label": {
+              "en": "Datasheet",
+              "fa": "Datasheet"
+            }
+          },
+          {
+            "value": "Drawing",
+            "label": {
+              "en": "Drawing",
+              "fa": "Drawing"
+            }
+          },
+          {
+            "value": "Image",
+            "label": {
+              "en": "Image",
+              "fa": "Image"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

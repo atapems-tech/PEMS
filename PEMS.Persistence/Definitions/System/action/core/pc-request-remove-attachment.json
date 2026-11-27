@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "pc-request-remove-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove the attachment",
+    "fa": "حذف پیوست"
+  },
+  "description": {
+    "en": "Remove the attachment",
+    "fa": "حذف پیوست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PcForm",
+      "action": "RemoveAttachment",
+      "args": {
+        "id": "field:id",
+        "attachmentId": "field:attachmentId"
+      }
+    },
+    "success": {
+      "en": "Removed.",
+      "fa": "حذف شد."
+    },
+    "redirect": "/f/pc-request-edit?id={id}"
+  }
+}

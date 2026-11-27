@@ -1,0 +1,68 @@
+{
+  "kind": "action",
+  "key": "pc-request-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Save the request",
+    "fa": "ذخیره درخواست"
+  },
+  "description": {
+    "en": "Save the request",
+    "fa": "ذخیره درخواست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Save",
+      "args": {
+        "id": "field:id",
+        "rowVersion": "field:rowVersion",
+        "requestType": "field:requestType",
+        "attributes": "field:attributes",
+        "submitAfterSave": "field:submitAfterSave",
+        "urgent": "field:urgent",
+        "sectionId": "field:sectionId",
+        "isNewEquipment": "field:isNewEquipment",
+        "isRd": "field:isRd",
+        "existingPartNumber": "field:existingPartNumber",
+        "changesMatchInventory": "field:changesMatchInventory",
+        "technicalClassId": "field:technicalClassId",
+        "assetType": "field:assetType",
+        "commodityGroup1Id": "field:commodityGroup1Id",
+        "commodityGroup2Id": "field:commodityGroup2Id",
+        "productFamilyId": "field:productFamilyId",
+        "unitOfMeasureId": "field:unitOfMeasureId",
+        "manufacturerId": "field:manufacturerId",
+        "isNewManufacturer": "field:isNewManufacturer",
+        "newManufacturerName": "field:newManufacturerName",
+        "manufacturerPartNumber": "field:manufacturerPartNumber",
+        "supplierId": "field:supplierId",
+        "supplierPartNumber": "field:supplierPartNumber",
+        "partPrice": "field:partPrice",
+        "currencyId": "field:currencyId",
+        "typeDesignationId": "field:typeDesignationId",
+        "sparePartSerialNo": "field:sparePartSerialNo",
+        "equipmentSerialNo": "field:equipmentSerialNo",
+        "manufacturerDrawingNo": "field:manufacturerDrawingNo",
+        "documentNo": "field:documentNo",
+        "planningMethodId": "field:planningMethodId",
+        "minimumStock": "field:minimumStock",
+        "maxConsumptionRate": "field:maxConsumptionRate",
+        "firstPurchaseQuantity": "field:firstPurchaseQuantity",
+        "primaryIssuedRequired": "field:primaryIssuedRequired",
+        "issuedQty": "field:issuedQty",
+        "stockGradeId": "field:stockGradeId",
+        "wantedReceiptDate": "field:wantedReceiptDate",
+        "storageVolume": "field:storageVolume"
+      }
+    },
+    "success": {
+      "en": "Saved.",
+      "fa": "ذخیره شد."
+    },
+    "redirect": "/p/pc-request-details?id={id}"
+  }
+}

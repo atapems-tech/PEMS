@@ -17,6 +17,47 @@
     "regions": {
       "content": [
         {
+          "id": "edit-tools",
+          "component": "content-blocks",
+          "options": {
+            "id": "edit-tools",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/pc-request-generate-number?id={{params.id}}",
+                "text": {
+                  "en": "Generate the request number",
+                  "fa": "تولید شماره درخواست"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-request-load-part?id={{params.id}}",
+                "text": {
+                  "en": "Load an existing part",
+                  "fa": "بارگذاری قطعه موجود"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-request-add-equipment?id={{params.id}}",
+                "text": {
+                  "en": "Add equipment",
+                  "fa": "افزودن تجهیز"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/f/pc-request-upload-attachment?id={{params.id}}",
+                "text": {
+                  "en": "Upload an attachment",
+                  "fa": "بارگذاری پیوست"
+                }
+              }
+            ]
+          }
+        },
+        {
           "id": "record",
           "component": "record-view",
           "options": {
@@ -333,7 +374,7 @@
               },
               {
                 "type": "link",
-                "href": "/Warehouse/PartCatalogueRequest/Edit/{{params.id}}",
+                "href": "/f/pc-request-edit?id={{params.id}}",
                 "text": {
                   "en": "Edit the draft",
                   "fa": "ویرایش پیش‌نویس"

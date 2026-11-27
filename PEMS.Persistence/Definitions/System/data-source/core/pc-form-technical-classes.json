@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-technical-classes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Technical classes",
+    "fa": "کلاس‌های فنی"
+  },
+  "description": {
+    "en": "Technical classes",
+    "fa": "کلاس‌های فنی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "TechnicalClasses"
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "pc-request-remove-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove the attachment",
+    "fa": "حذف پیوست"
+  },
+  "description": {
+    "en": "Remove the attachment",
+    "fa": "حذف پیوست"
+  },
+  "payload": {
+    "id": "pc-request-remove-attachment",
+    "title": {
+      "en": "Remove the attachment",
+      "fa": "حذف پیوست"
+    },
+    "submitLabel": {
+      "en": "Remove the attachment",
+      "fa": "حذف پیوست"
+    },
+    "actionKey": "pc-request-remove-attachment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request",
+          "fa": "درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "attachmentId",
+        "label": {
+          "en": "Attachment",
+          "fa": "پیوست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

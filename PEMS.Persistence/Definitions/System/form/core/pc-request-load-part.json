@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "pc-request-load-part",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Load an existing part",
+    "fa": "بارگذاری قطعه موجود"
+  },
+  "description": {
+    "en": "Load an existing part",
+    "fa": "بارگذاری قطعه موجود"
+  },
+  "payload": {
+    "id": "pc-request-load-part",
+    "title": {
+      "en": "Load an existing part",
+      "fa": "بارگذاری قطعه موجود"
+    },
+    "submitLabel": {
+      "en": "Load an existing part",
+      "fa": "بارگذاری قطعه موجود"
+    },
+    "actionKey": "pc-request-load-part",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request",
+          "fa": "درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "existingPartNumber",
+        "label": {
+          "en": "Existing part number",
+          "fa": "شماره قطعه موجود"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

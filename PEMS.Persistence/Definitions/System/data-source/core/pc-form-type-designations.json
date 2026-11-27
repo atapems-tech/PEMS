@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-type-designations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Type designations",
+    "fa": "تعیین نوع"
+  },
+  "description": {
+    "en": "Type designations",
+    "fa": "تعیین نوع"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "TypeDesignations"
+    }
+  }
+}

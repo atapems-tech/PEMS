@@ -1,0 +1,36 @@
+{
+  "kind": "action",
+  "key": "pc-request-upload-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload an attachment",
+    "fa": "بارگذاری پیوست"
+  },
+  "description": {
+    "en": "Upload an attachment",
+    "fa": "بارگذاری پیوست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PcForm",
+      "action": "UploadAttachment",
+      "args": {
+        "id": "field:id",
+        "file": "file:file",
+        "kind": "field:kind"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 25
+      }
+    },
+    "success": {
+      "en": "Attachment added.",
+      "fa": "پیوست افزوده شد."
+    },
+    "redirect": "/f/pc-request-edit?id={id}"
+  }
+}

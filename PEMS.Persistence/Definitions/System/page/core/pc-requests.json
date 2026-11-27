@@ -496,7 +496,7 @@
                       "en": "Edit (draft)",
                       "fa": "ویرایش (پیش‌نویس)"
                     },
-                    "url": "/Warehouse/PartCatalogueRequest/Edit/{id}",
+                    "url": "/f/pc-request-edit?id={id}",
                     "method": "get"
                   }
                 ]

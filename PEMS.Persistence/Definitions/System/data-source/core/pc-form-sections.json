@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-sections",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sections",
+    "fa": "بخش‌ها"
+  },
+  "description": {
+    "en": "Sections",
+    "fa": "بخش‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Sections"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-stock-grades",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Stock grades",
+    "fa": "درجه‌های موجودی"
+  },
+  "description": {
+    "en": "Stock grades",
+    "fa": "درجه‌های موجودی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "StockGrades"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-one",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part catalogue request",
+    "fa": "درخواست کاتالوگ قطعه"
+  },
+  "description": {
+    "en": "Part catalogue request",
+    "fa": "درخواست کاتالوگ قطعه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "One",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

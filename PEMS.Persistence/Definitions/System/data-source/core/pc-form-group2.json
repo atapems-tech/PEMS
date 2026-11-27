@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-group2",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Commodity groups 2",
+    "fa": "گروه‌های کالا ۲"
+  },
+  "description": {
+    "en": "Commodity groups 2",
+    "fa": "گروه‌های کالا ۲"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Group2"
+    }
+  }
+}

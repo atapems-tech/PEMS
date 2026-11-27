@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "pc-request-edit-old-id",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Part catalogue request (old address)",
+    "fa": "درخواست کاتالوگ قطعه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Part catalogue request",
+    "fa": "درخواست کاتالوگ قطعه"
+  },
+  "payload": {
+    "pattern": "Warehouse/PartCatalogueRequest/Edit/{id}",
+    "target": "/f/pc-request-edit?id={id}",
+    "permanent": false
+  }
+}
