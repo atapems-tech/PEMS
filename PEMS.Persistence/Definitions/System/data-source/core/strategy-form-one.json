@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-form-one",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy",
+    "fa": "استراتژی"
+  },
+  "description": {
+    "en": "Strategy",
+    "fa": "استراتژی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "One",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

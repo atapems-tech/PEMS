@@ -4,55 +4,57 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Assign a tag",
-    "fa": "تخصیص تگ"
+    "en": "Assign the strategy to the selected equipment",
+    "fa": "تخصیص استراتژی به تجهیزات انتخاب‌شده"
   },
   "description": {
-    "en": "Assign a tag",
-    "fa": "تخصیص تگ"
+    "en": "Assign the strategy to the selected equipment",
+    "fa": "تخصیص استراتژی به تجهیزات انتخاب‌شده"
   },
   "payload": {
     "id": "strategy-assign",
     "title": {
-      "en": "Assign a tag",
-      "fa": "تخصیص تگ"
+      "en": "Assign the strategy to the selected equipment",
+      "fa": "تخصیص استراتژی به تجهیزات انتخاب‌شده"
     },
     "submitLabel": {
-      "en": "Assign a tag",
-      "fa": "تخصیص تگ"
+      "en": "Assign the strategy to the selected equipment",
+      "fa": "تخصیص استراتژی به تجهیزات انتخاب‌شده"
     },
     "actionKey": "strategy-assign",
     "columns": 2,
     "fields": [
       {
-        "name": "id",
+        "name": "strategyId",
         "label": {
-          "en": "Strategy id",
-          "fa": "شناسه استراتژی"
+          "en": "Strategy",
+          "fa": "استراتژی"
         },
-        "kind": "number",
+        "kind": "select",
         "required": true,
         "messages": {
           "required": {
             "en": "This field is required.",
             "fa": "این فیلد الزامی است."
           }
-        }
+        },
+        "optionsFrom": "strategy-strategies-opts"
       },
       {
-        "name": "equipmentId",
+        "name": "ids",
         "label": {
-          "en": "Equipment id",
-          "fa": "شناسه تجهیز"
+          "en": "Equipment",
+          "fa": "تجهیزات"
         },
-        "kind": "number",
+        "kind": "text",
         "required": true,
         "messages": {
           "required": {
             "en": "This field is required.",
             "fa": "این فیلد الزامی است."
           }
-        }
+        },
+        "hidden": true
       }
     ]
   }

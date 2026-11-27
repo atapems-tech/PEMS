@@ -122,7 +122,7 @@
                           aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)">@Value</textarea>
                 break;
             case FieldKind.Select:
-                <select id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" required="@Descriptor.Required" data-pems-select-source="@Descriptor.SearchSource"
+                <select id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" required="@Descriptor.Required" data-pems-select-source="@Descriptor.SearchSource" data-pems-select="@(string.IsNullOrEmpty(Descriptor.DependsOn) ? null : "off")" data-pems-depends-on="@Descriptor.DependsOn" data-pems-depends-source="@Descriptor.DependsSource" data-pems-depends-arg="@Descriptor.DependsArg"
                         disabled="@Descriptor.ReadOnly" aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)">
                     @if (!string.IsNullOrEmpty(Descriptor.SearchSource) && !string.IsNullOrEmpty(Value) && (Descriptor.Options ?? []).All(x => x.Value != Value))
                     {

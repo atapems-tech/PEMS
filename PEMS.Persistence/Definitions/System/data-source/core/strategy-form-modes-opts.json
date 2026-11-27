@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "strategy-form-modes-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure modes",
+    "fa": "حالت‌های خرابی"
+  },
+  "description": {
+    "en": "Failure modes",
+    "fa": "حالت‌های خرابی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "StrategyForm",
+      "action": "Modes",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

@@ -75,8 +75,8 @@ public sealed class PcFormOperations(IPartCatalogueService service, IPartCatalog
 
     private static List<PcFormChoice> Pick(IEnumerable<PcLookupItem> items) => items.Select(x => new PcFormChoice(x.Id.ToString(), x.Text)).ToList();
     public async Task<List<PcFormChoice>> SectionsAsync() => Pick(await lookups.GetSectionsAsync());
-    public async Task<List<PcFormChoice>> Group1Async() => Pick(await lookups.GetCommodityGroup1Async(null));
-    public async Task<List<PcFormChoice>> Group2Async() => Pick(await lookups.GetCommodityGroup2Async(null));
+    public async Task<List<PcFormChoice>> Group1Async(string? sectionId = null) => Pick(await lookups.GetCommodityGroup1Async(Int(sectionId)));
+    public async Task<List<PcFormChoice>> Group2Async(string? group1Id = null) => Pick(await lookups.GetCommodityGroup2Async(Int(group1Id)));
     public async Task<List<PcFormChoice>> FamiliesAsync() => Pick(await lookups.GetProductFamiliesAsync());
     public async Task<List<PcFormChoice>> UnitsAsync() => Pick(await lookups.GetUnitsAsync());
     public async Task<List<PcFormChoice>> CurrenciesAsync() => Pick(await lookups.GetCurrenciesAsync());

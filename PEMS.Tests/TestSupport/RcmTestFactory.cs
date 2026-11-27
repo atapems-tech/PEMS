@@ -28,10 +28,6 @@ public sealed class RcmEnv
     public MaintenanceStrategyService Queries => new(Ctx);
     public MaintenancePlanCommandService Plans(INumberingService? numbering = null) => new(Ctx, numbering ?? new FakeNumberingService());
 
-    public MaintenanceStrategyController StrategyController() => new MaintenanceStrategyController(
-        Ctx, Queries, Commands, Assignments, new FailureModeCatalogService(Ctx), new StrategyCoverageService(Ctx),
-        new FunctionalLocationService(Ctx), User, Permissions).WithTempData();
-
     /// <summary>SCRUM-817: the plan create page is operations (formerly MaintenancePlanController.Create).</summary>
     public MaintenancePlanOperations PlanOperations(IPMGenerationService? pm = null) => new MaintenancePlanOperations(
         new MaintenancePlanService(Ctx), pm ?? new PMGenerationService(Ctx, new FakeNumberingService()), null!, Ctx, Plans(), Assignments);
