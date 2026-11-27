@@ -63,3 +63,5 @@ Screen code to convert: 132 actions and 72 views in 31 areas. Generic hosts and 
 
 
 - SCRUM-839: visual comparison of the PDF layouts (letter, part catalogue request) against the old output; see plan/rows/0839.md.
+
+- SCRUM-839: barcode label PDF layouts and the print/bulk redirects (see audit-known-gaps.md).

@@ -22,7 +22,7 @@ namespace PEMS.Web.Definitions;
 /// </summary>
 public static class PdfLayoutRenderer
 {
-    private static readonly string[] Types = ["text", "heading", "keyValue", "table", "html", "row", "line", "spacer", "pageNumber", "image"];
+    private static readonly string[] Types = ["text", "heading", "keyValue", "table", "html", "row", "line", "spacer", "pageNumber", "image", "svg"];
     private static readonly Regex Merge = new(@"\{\{([A-Za-z0-9_.]{1,80})\}\}", RegexOptions.Compiled);
     private static readonly JsonSerializerOptions Web = new(JsonSerializerDefaults.Web);
 
@@ -111,7 +111,7 @@ public static class PdfLayoutRenderer
     {
         QuestPDF.Settings.License = LicenseType.Community;
         var page = layout["page"] as JsonObject ?? [];
-        var size = Str(page["size"]) switch { "A3" => PageSizes.A3, "A5" => PageSizes.A5, "Letter" => PageSizes.Letter, _ => PageSizes.A4 };
+        var size = Str(page["size"]) switch { "A3" => PageSizes.A3, "A5" => PageSizes.A5, "Letter" => PageSizes.Letter, "custom" => new PageSize(Num(page["width"], 10f) * 28.3465f, Num(page["height"], 6f) * 28.3465f), _ => PageSizes.A4 };
         if (Str(page["orientation"]) == "landscape") size = size.Landscape();
         var margin = Num(page["margin"], 2f);
         var fontSize = Num(page["fontSize"], 10f);
@@ -120,16 +120,23 @@ public static class PdfLayoutRenderer
         var rtl = direction == "rtl" || direction == "auto" && culture.TextInfo.IsRightToLeft;
         var context = new Context(data, culture);
 
-        var document = Document.Create(container => container.Page(p =>
+        // a layout with pagePerRecord (a dataset name) draws the header, body and footer once for every row of that dataset, each row on its own page (labels, certificates)
+        var perRecord = Str(layout["pagePerRecord"]) is { } set && data.TryGetValue(set, out var records) ? records.OfType<JsonObject>().ToList() : null;
+        List<Context> contexts = perRecord is null ? new List<Context> { context } : perRecord.Select(r => new Context(data, culture) { Row = r }).ToList();
+        var document = Document.Create(container =>
         {
-            p.Size(size);
-            p.Margin(margin, Unit.Centimetre);
-            p.DefaultTextStyle(x => x.FontSize(fontSize).FontFamily(family));
-            if (rtl) p.ContentFromRightToLeft();
-            if (layout["header"] is JsonArray header && header.Count > 0) p.Header().Column(col => Blocks(col, header, context));
-            p.Content().PaddingVertical(Num(page["contentPadding"], 8f)).Column(col => Blocks(col, (JsonArray)layout["body"]!, context));
-            if (layout["footer"] is JsonArray footer && footer.Count > 0) p.Footer().Column(col => Blocks(col, footer, context));
-        }));
+            foreach (var ctx in contexts)
+                container.Page(p =>
+                {
+                    p.Size(size);
+                    p.Margin(margin, Unit.Centimetre);
+                    p.DefaultTextStyle(x => x.FontSize(fontSize).FontFamily(family));
+                    if (rtl) p.ContentFromRightToLeft();
+                    if (layout["header"] is JsonArray header && header.Count > 0) p.Header().Column(col => Blocks(col, header, ctx));
+                    p.Content().PaddingVertical(Num(page["contentPadding"], 8f)).Column(col => Blocks(col, (JsonArray)layout["body"]!, ctx));
+                    if (layout["footer"] is JsonArray footer && footer.Count > 0) p.Footer().Column(col => Blocks(col, footer, ctx));
+                });
+        });
         return document.GeneratePdf();
     }
 
@@ -169,6 +176,7 @@ public static class PdfLayoutRenderer
                 if (heading || Flag(b["bold"])) t.Bold();
                 if (Str(b["color"]) is { } color) t.FontColor(color);
                 if (Flag(b["italic"])) t.Italic();
+                if (Str(b["fontFamily"]) is { } fam) t.FontFamily(fam);
                 break;
             }
             case "html":
@@ -203,6 +211,7 @@ public static class PdfLayoutRenderer
                 {
                     t.ColumnsDefinition(c => { foreach (var col in columns) c.RelativeColumn(Num(col["width"], 1f)); });
                     foreach (var col in columns) t.Cell().Border(0.5f).Background(Colors.Grey.Lighten3).Padding(3).Text(ctx.Text(col["header"])).SemiBold();
+                    var outer = ctx.Row;
                     foreach (var row in rows.OfType<JsonObject>())
                     {
                         ctx.Row = row;
@@ -213,7 +222,7 @@ public static class PdfLayoutRenderer
                             var aligned = Str(col["align"]) switch { "center" => cell.AlignCenter(), "end" => cell.AlignRight(), _ => cell };
                             aligned.Text(string.IsNullOrEmpty(value) ? " " : value);
                         }
-                        ctx.Row = null;
+                        ctx.Row = outer;
                     }
                 });
                 break;
@@ -242,6 +251,12 @@ public static class PdfLayoutRenderer
             case "pageNumber":
                 container.AlignCenter().Text(t => { t.DefaultTextStyle(x => x.FontSize(Num(b["size"], 8f))); if (Str(b["prefix"]) is { } prefix) t.Span(ctx.Text(b["prefix"])); t.CurrentPageNumber(); t.Span(" / "); t.TotalPages(); });
                 break;
+            case "svg":
+            {
+                var raw = ctx.Value(Str(b["field"]) ?? "");
+                if (raw.Length > 0) container.Height(Num(b["height"], 55f)).AlignCenter().Svg(raw).FitArea();
+                break;
+            }
             case "image":
             {
                 var raw = ctx.Text(b["field"] is JsonValue ? JsonValue.Create("{{" + Str(b["field"]) + "}}") : null);

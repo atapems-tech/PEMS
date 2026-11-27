@@ -189,3 +189,7 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 
 ## SCRUM-839 part catalogue request PDF (layout definition)
 - `pc-request-pdf` is now a `pdf` layout; `PrintRecord` supplies the values (N/A fallbacks, ADD/CHANGE boxes, 5 signature columns). Renderer gained generic block `border`/`background`/`padding`/`minHeight`, `italic`, keyValue `border`/`labelBackground`. Not verified: pixel-level match with the hand-written QuestPDF page (border widths, column proportions, page fit on one A4). `BuildPdf` removed; the Excel template export is unchanged.
+
+## SCRUM-839 barcode labels (layout definition)
+- `barcode-label-pdf` and `barcode-label-sheet` are `pdf` layouts (10x6 cm page for every label via `pagePerRecord`, SVG symbol block); `RenderLabelSheetPdf` and its two tests are removed. Not verified: pixel match with the old label (spacing, QR/linear heights, Consolas font fallback on the server).
+- The actions `barcode-print` and `barcode-bulk-generate` now record/generate and redirect to `/x/barcode-label-pdf?id={result}` / `/x/barcode-label-sheet?...&ids={result}` instead of downloading the file inside the action; check in the browser that the redirect shows or downloads the PDF the same way. A refused print (unknown barcode) now shows the refusal message and no file.

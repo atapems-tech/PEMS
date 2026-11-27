@@ -24,6 +24,7 @@
     "success": {
       "en": "The print was recorded.",
       "fa": "چاپ ثبت شد."
-    }
+    },
+    "redirect": "/x/barcode-label-pdf?id={result}"
   }
 }

@@ -26,6 +26,7 @@
     "success": {
       "en": "The barcodes were generated.",
       "fa": "بارکدها ساخته شدند."
-    }
+    },
+    "redirect": "/x/barcode-label-sheet?targetType=Equipment&ids={result}"
   }
 }

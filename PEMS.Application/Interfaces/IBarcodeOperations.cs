@@ -12,6 +12,12 @@ public sealed record BarcodeCandidateRow(int EquipmentId, string TagNumber, stri
 /// <summary>A file an operation produced (an image, a label sheet): served by the file host or downloaded by an action; Success false is a refusal with the Error.</summary>
 public sealed record BarcodeFileResult(bool Success, string? Error, byte[] Bytes, string FileName, string ContentType);
 
+/// <summary>SCRUM-839: one label of the label PDF (the layout is the definition barcode-label-pdf): the code, the lines and the symbol as SVG.</summary>
+public sealed record BarcodeLabelRow(string Code, bool IsQr, bool IsLinear, string TitleLine, string SubtitleLine, string MetaLine, string Svg);
+
+/// <summary>The answer of a command that leads on to a file: NewId is the value for the redirect (the id, or the ids separated by commas).</summary>
+public sealed record BarcodeCommandResult(bool Success, string? Error, string NewId);
+
 /// <summary>
 /// The enterprise barcode (SCRUM-671) as operations: the reads and the machine answers of BarcodeController (the SVG, PNG and PDF label of a barcode, the label sheet of several, the resolution as JSON for the scan fields of
 /// other pages) are read operations served by the file host (GET /x/{key}); generating, printing (it records the print and downloads the label), bulk generation (it creates the barcodes and downloads the label sheet),
@@ -36,10 +42,10 @@ public interface IBarcodeOperations
     Task<BarcodeFileResult> PngAsync(int id);
 
     [PEMS.Application.Common.PemsOperation("Barcode", "LabelPdf", "Barcode.View")]
-    Task<BarcodeFileResult> LabelPdfAsync(int id);
+    Task<List<BarcodeLabelRow>> LabelPdfAsync(int id);
 
     [PEMS.Application.Common.PemsOperation("Barcode", "LabelSheet", "Barcode.View")]
-    Task<BarcodeFileResult> LabelSheetAsync(string targetType, string ids);
+    Task<List<BarcodeLabelRow>> LabelSheetAsync(string targetType, string ids);
 
     [PEMS.Application.Common.PemsOperation("Barcode", "Candidates", "Barcode.Approve")]
     Task<List<BarcodeCandidateRow>> CandidatesAsync(int? disciplineId = null, string? equipmentType = null, string? tagSearch = null);
@@ -53,13 +59,13 @@ public interface IBarcodeOperations
     [PEMS.Application.Common.PemsOperation("Barcode", "Generate", "Barcode.Create")]
     Task<(bool Success, string? Error)> GenerateAsync(string targetType, int targetId, string symbology, int? employeeId);
 
-    /// <summary>Records the print and downloads the label of one barcode.</summary>
+    /// <summary>Records the print and leads on to the label PDF (the action redirects to the file host).</summary>
     [PEMS.Application.Common.PemsOperation("Barcode", "Print", "Barcode.Create")]
-    Task<BarcodeFileResult> PrintAsync(int id);
+    Task<BarcodeCommandResult> PrintAsync(int id);
 
-    /// <summary>Creates the barcodes of the chosen equipment (ids separated by commas) and downloads their label sheet.</summary>
+    /// <summary>Creates the barcodes of the chosen equipment (ids separated by commas) and leads on to their label sheet (the action redirects to the file host).</summary>
     [PEMS.Application.Common.PemsOperation("Barcode", "BulkGenerate", "Barcode.Approve")]
-    Task<BarcodeFileResult> BulkGenerateAsync(string equipmentIds, string symbology, int? employeeId);
+    Task<BarcodeCommandResult> BulkGenerateAsync(string equipmentIds, string symbology, int? employeeId);
 
     [PEMS.Application.Common.PemsOperation("Barcode", "Disable", "Barcode.Delete")]
     Task<(bool Success, string? Error)> DisableAsync(int id, string? reason, int? employeeId);
