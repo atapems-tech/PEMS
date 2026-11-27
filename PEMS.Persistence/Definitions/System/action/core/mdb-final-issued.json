@@ -18,13 +18,13 @@
       "model": "Mdb",
       "action": "MarkFinalIssued",
       "args": {
-        "mdbId": "field:mdbId"
+        "mdbId": "field:id"
       }
     },
     "success": {
       "en": "MDB marked as Final Issued",
       "fa": "MDB به‌صورت صدور نهایی ثبت شد."
     },
-    "redirect": "/MDB/Details/{mdbId}"
+    "redirect": "/p/mdb-details?id={id}"
   }
 }

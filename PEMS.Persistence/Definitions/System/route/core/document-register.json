@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "document-register",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document register (old address)",
+    "fa": "ثبت مدارک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document register",
+    "fa": "ثبت مدارک"
+  },
+  "payload": {
+    "pattern": "DocumentRegister",
+    "target": "/p/document-register",
+    "permanent": false
+  }
+}

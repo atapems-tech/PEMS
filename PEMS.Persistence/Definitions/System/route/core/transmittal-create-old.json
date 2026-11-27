@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "transmittal-create-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New transmittal (old address)",
+    "fa": "ترنسمیتال جدید (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "New transmittal",
+    "fa": "ترنسمیتال جدید"
+  },
+  "payload": {
+    "pattern": "Transmittal/Create",
+    "target": "/f/transmittal-create",
+    "permanent": false
+  }
+}

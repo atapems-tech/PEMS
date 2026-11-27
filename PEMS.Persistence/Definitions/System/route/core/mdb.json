@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mdb",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Manufacturer data books (old address)",
+    "fa": "کتاب‌های اطلاعات سازنده (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Manufacturer data books",
+    "fa": "کتاب‌های اطلاعات سازنده"
+  },
+  "payload": {
+    "pattern": "MDB",
+    "target": "/p/mdb",
+    "permanent": false
+  }
+}

@@ -26,6 +26,6 @@
       "en": "Response recorded",
       "fa": "پاسخ ثبت شد."
     },
-    "redirect": "/Transmittal/Details/{id}"
+    "redirect": "/p/transmittal-details?id={id}"
   }
 }

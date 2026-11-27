@@ -26,6 +26,6 @@
       "en": "Draft created from cancelled transmittal - update transmittal number and re-send.",
       "fa": "پیش‌نویس جدید از ترانسمیتال لغوشده ساخته شد؛ شماره را اصلاح و دوباره ارسال کنید."
     },
-    "redirect": "/Transmittal/Details/{result}"
+    "redirect": "/p/transmittal-details?id={result}"
   }
 }

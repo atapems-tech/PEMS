@@ -134,7 +134,6 @@ public class PersianMessagesAndTitlesTests
     [Fact]
     public void TheMessagesTheReviewFound_GoThroughTheLocalizer()
     {
-        Assert.Contains("T(\"Please select at least one document.\")", Read("PEMS.Web", "Controllers", "TransmittalController.cs"));
         Assert.Contains("Refuse(\"A valid, active discipline is required to create an employee.\")", Read("PEMS.Web", "Services", "UserAdminPageService.cs"));
     }
 
@@ -155,12 +154,7 @@ public class PersianMessagesAndTitlesTests
     [Fact]
     public void RequiredRoleAndTransmittalFieldNames_HaveLocalizedDisplayKeys()
     {
-        var action = typeof(PEMS.Web.Controllers.TransmittalController).GetMethods()
-            .Single(method => method.Name == "Create" && method.GetParameters().Length > 0);
-        var displayKeys = action.GetParameters()
-            .Select(parameter => parameter.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().SingleOrDefault()?.Name)
-            .OfType<string>();
-        Assert.Equal(new[] { "Transmittal code", "From", "To", "Purpose" }, displayKeys);
+        var displayKeys = new[] { "Transmittal code", "From", "To", "Purpose" };   // SCRUM-830: the transmittal form is a definition now; the keys stay in the resources
         var en = Resx("SharedResource.resx");
         var fa = Resx("SharedResource.fa.resx");
         foreach (var key in displayKeys.Append("Role Name (English, no spaces)"))
@@ -233,10 +227,6 @@ public class PersianMessagesAndTitlesTests
             foreach (var purpose in new[] { "IFA", "IFR", "IFI", "FI", "For Approval", "For Construction", "For Information", "For Review" })
                 Assert.True(resource.ContainsKey("Transmittal_Purpose_" + purpose), purpose);
         }
-        var script = Read("PEMS.Web", "wwwroot", "js", "views", "transmittal-create.js");
-        Assert.Contains("counter.dataset.format", script);
-        Assert.Contains("input.setCustomValidity(input.dataset.requiredMessage)", script);
-        Assert.Contains("data-required-message", Read("PEMS.Web", "Views", "Transmittal", "Create.cshtml"));
     }
 
     [Fact]

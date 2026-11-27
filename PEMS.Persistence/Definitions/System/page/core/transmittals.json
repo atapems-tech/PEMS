@@ -1,0 +1,127 @@
+{
+  "kind": "page",
+  "key": "transmittals",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittal registry",
+    "fa": "ثبت ترنسمیتال‌ها"
+  },
+  "description": {
+    "en": "Transmittal registry",
+    "fa": "ثبت ترنسمیتال‌ها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "transmittals",
+    "regions": {
+      "content": [
+        {
+          "id": "nav",
+          "component": "content-blocks",
+          "options": {
+            "id": "nav",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/document-register",
+                "text": {
+                  "en": "Document register",
+                  "fa": "ثبت مدارک"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/vdr",
+                "text": {
+                  "en": "Vendor documents",
+                  "fa": "مدارک فروشندگان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/EngineeringDocuments",
+                "text": {
+                  "en": "Engineering documents",
+                  "fa": "مدارک مهندسی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "transmittals",
+            "url": "/d/transmittal-list",
+            "idField": "id",
+            "viewsKey": "transmittals",
+            "newUrl": "/f/transmittal-create",
+            "newLabel": {
+              "en": "New transmittal",
+              "fa": "ترنسمیتال جدید"
+            },
+            "columns": [
+              {
+                "key": "no",
+                "width": 140,
+                "href": "/Transmittal/Details/{id}"
+              },
+              {
+                "key": "project",
+                "width": 140
+              },
+              {
+                "key": "from",
+                "width": 110
+              },
+              {
+                "key": "to",
+                "width": 140
+              },
+              {
+                "key": "purpose",
+                "width": 140
+              },
+              {
+                "key": "items",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "width": 170
+              },
+              {
+                "key": "responseOverdue",
+                "width": 130,
+                "type": "bool"
+              },
+              {
+                "key": "date",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Transmittal/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Transmittal.View"
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "kind": "page",
+  "key": "dcc",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document Control Center (DCC)",
+    "fa": "مرکز کنترل مدارک (DCC)"
+  },
+  "description": {
+    "en": "Document Control Center (DCC)",
+    "fa": "مرکز کنترل مدارک (DCC)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "dcc",
+    "regions": {
+      "content": [
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/DCC/RegisterIncoming",
+                "text": {
+                  "en": "Register an incoming letter",
+                  "fa": "ثبت مکاتبه‌ی وارده"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/relationship-explorer",
+                "text": {
+                  "en": "Relationship Explorer",
+                  "fa": "Relationship Explorer"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "dcc-counts",
+          "component": "data-grid",
+          "options": {
+            "id": "dcc-counts",
+            "url": "/d/dcc-counts",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "pendingIssue",
+                "width": 200,
+                "type": "number"
+              },
+              {
+                "key": "unlinkedIncoming",
+                "width": 200,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-pending",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-pending",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Documents waiting for issue",
+                  "fa": "مدارک منتظر صدور"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "pending",
+          "component": "def:related-table",
+          "options": {
+            "id": "pending",
+            "url": "/d/dcc-pending-issue",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 160,
+                "href": "/EngineeringDocuments/Details/{id}"
+              },
+              {
+                "key": "title",
+                "width": 320
+              },
+              {
+                "key": "modified",
+                "width": 130,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-unlinked",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-unlinked",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Unlinked incoming letters",
+                  "fa": "مکاتبات وارده‌ی وصل‌نشده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "unlinked",
+          "component": "def:related-table",
+          "options": {
+            "id": "unlinked",
+            "url": "/d/dcc-unlinked",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "number",
+                "width": 160,
+                "href": "/Letter/Details/{id}"
+              },
+              {
+                "key": "sender",
+                "width": 200
+              },
+              {
+                "key": "subject",
+                "width": 320
+              },
+              {
+                "key": "date",
+                "width": 120,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-recent",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-recent",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Latest incoming letters",
+                  "fa": "آخرین مکاتبات وارده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "recent",
+          "component": "def:related-table",
+          "options": {
+            "id": "recent",
+            "url": "/d/dcc-recent",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "number",
+                "width": 160,
+                "href": "/Letter/Details/{id}"
+              },
+              {
+                "key": "sender",
+                "width": 200
+              },
+              {
+                "key": "subject",
+                "width": 320
+              },
+              {
+                "key": "date",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "link",
+                "width": 120
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "DCC.View"
+  }
+}

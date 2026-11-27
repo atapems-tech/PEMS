@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "eng-intel-stages",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents by workflow stage",
+    "fa": "مدارک بر اساس مرحله"
+  },
+  "description": {
+    "en": "Documents by workflow stage",
+    "fa": "مدارک بر اساس مرحله"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "IntelligenceStages"
+    }
+  }
+}

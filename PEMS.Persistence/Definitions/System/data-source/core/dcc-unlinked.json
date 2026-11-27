@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "dcc-unlinked",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unlinked incoming letters",
+    "fa": "مکاتبات وارده وصل‌نشده"
+  },
+  "description": {
+    "en": "Unlinked incoming letters",
+    "fa": "مکاتبات وارده وصل‌نشده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "DccUnlinked"
+    }
+  }
+}

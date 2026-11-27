@@ -113,33 +113,6 @@ public class InfoGridComponentTests
 
 
     [Fact]
-    public void WaveI3_ProcurementHeaders_TakeTheirLabelsFromTheComponent()
-    {
-        foreach (var view in new[]
-                 {
-                     "Views/Transmittal/Details.cshtml",
-                 })
-        {
-            var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-            Assert.DoesNotMatch(@"<strong>[^<]*:</strong>\s*@Model", text);
-            Assert.DoesNotMatch(@"class=""col-md-3""><div class=""text-muted small"">", text);
-            Assert.DoesNotMatch(@"label=""@Localizer\[""[^""]*:""\]""", text);
-        }
-    }
-
-    [Theory]
-    [InlineData("Views/Transmittal/Details.cshtml", 1, 6)]
-    public void WaveI4_CmmsAndDocumentHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid[ >]").Count);
-        Assert.Equal(items, Regex.Matches(text, "<pems-info-item ").Count);
-        Assert.DoesNotMatch(@"class=""col-[\w-]+""><strong>[^<]*:</strong>", text);
-        Assert.DoesNotMatch(@"class=""col-[\w-]+""><div class=""text-muted"">", text);
-        Assert.DoesNotMatch(@"label=""@Localizer\[""[^""]*:""\]""", text);
-    }
-
-    [Fact]
     public void WaveI4_NewLabels_AreTranslated()
     {
         var en = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", "Resources", "SharedResource.resx"));

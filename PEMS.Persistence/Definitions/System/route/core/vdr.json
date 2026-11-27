@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "vdr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor document register (old address)",
+    "fa": "ثبت مدارک فروشندگان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Vendor document register",
+    "fa": "ثبت مدارک فروشندگان"
+  },
+  "payload": {
+    "pattern": "VDR",
+    "target": "/p/vdr",
+    "permanent": false
+  }
+}

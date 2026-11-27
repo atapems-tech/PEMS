@@ -18,13 +18,13 @@
       "model": "Mdb",
       "action": "RemoveDocument",
       "args": {
-        "mdbDocumentId": "field:mdbDocumentId"
+        "mdbDocumentId": "field:id"
       }
     },
     "success": {
       "en": "Document removed from the MDB.",
       "fa": "مدرک از MDB حذف شد."
     },
-    "redirect": "/MDB/Details/{mdbId}"
+    "redirect": "/p/mdb"
   }
 }

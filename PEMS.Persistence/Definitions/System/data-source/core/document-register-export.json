@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "document-register-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document register export",
+    "fa": "خروجی ثبت مدارک"
+  },
+  "description": {
+    "en": "Document register export",
+    "fa": "خروجی ثبت مدارک"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "RegisterExport",
+      "disposition": "attachment",
+      "args": {
+        "project": "param:project",
+        "disciplines": "param:disciplines",
+        "status": "param:status",
+        "q": "param:q"
+      }
+    }
+  }
+}

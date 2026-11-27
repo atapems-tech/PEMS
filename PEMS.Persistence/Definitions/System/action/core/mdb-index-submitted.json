@@ -18,13 +18,13 @@
       "model": "Mdb",
       "action": "MarkIndexSubmitted",
       "args": {
-        "mdbId": "field:mdbId"
+        "mdbId": "field:id"
       }
     },
     "success": {
       "en": "Index of Contents marked as submitted",
       "fa": "فهرست محتوا ارسال‌شده ثبت شد."
     },
-    "redirect": "/MDB/Details/{mdbId}"
+    "redirect": "/p/mdb-details?id={id}"
   }
 }

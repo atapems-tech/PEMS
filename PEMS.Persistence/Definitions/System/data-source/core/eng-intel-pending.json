@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "eng-intel-pending",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents waiting for AI review",
+    "fa": "مدارک منتظر بازبینی هوشمند"
+  },
+  "description": {
+    "en": "Documents waiting for AI review",
+    "fa": "مدارک منتظر بازبینی هوشمند"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "IntelligencePending"
+    }
+  }
+}

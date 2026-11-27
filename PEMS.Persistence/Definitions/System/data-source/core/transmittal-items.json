@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "transmittal-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittal documents",
+    "fa": "مدارک ترنسمیتال"
+  },
+  "description": {
+    "en": "Transmittal documents",
+    "fa": "مدارک ترنسمیتال"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "TransmittalItems",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

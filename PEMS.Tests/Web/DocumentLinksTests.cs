@@ -32,8 +32,7 @@ public class DocumentLinksTests
         db.Add(new EngineeringDocument { DocumentId = 1, DocumentNo = "PEMS-001-PR-DWG-0001" });
         await db.SaveChangesAsync();
 
-        var controller = (DocumentRegisterController)System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(typeof(DocumentRegisterController));
-        typeof(DocumentRegisterController).GetField("_context", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(controller, db);
+        var controller = new DocumentRegisterController(db);
 
         var vdr = Assert.IsType<RedirectToActionResult>(await controller.Open(6));
         Assert.Equal(("Details", "VDR", 6), (vdr.ActionName, vdr.ControllerName, (int)vdr.RouteValues!["id"]!));

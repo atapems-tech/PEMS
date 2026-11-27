@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "transmittal-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittal",
+    "fa": "ترنسمیتال"
+  },
+  "description": {
+    "en": "Transmittal",
+    "fa": "ترنسمیتال"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "TransmittalHead",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

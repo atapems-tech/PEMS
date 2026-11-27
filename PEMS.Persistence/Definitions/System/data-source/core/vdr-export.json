@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "vdr-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor documents export",
+    "fa": "خروجی مدارک فروشندگان"
+  },
+  "description": {
+    "en": "Vendor documents export",
+    "fa": "خروجی مدارک فروشندگان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "VdrExport",
+      "disposition": "attachment",
+      "args": {
+        "projectId": "param:projectId",
+        "vendorId": "param:vendorId",
+        "status": "param:status",
+        "search": "param:search"
+      }
+    }
+  }
+}

@@ -177,16 +177,6 @@ public class VDRControllerAuthorizationTests
     // ==============================================================================
 
     [Fact]
-    public async Task Index_ViewerRole_StillAccessible_NoRegressionFromNewGates()
-    {
-        var (controller, _, _, _) = await CreateController(nameof(Index_ViewerRole_StillAccessible_NoRegressionFromNewGates), SystemRoles.Viewer);
-
-        var result = await controller.Index(null, null, null);
-
-        Assert.IsType<ViewResult>(result);
-    }
-
-    [Fact]
     public async Task Details_ViewerRole_StillAccessible_NoRegressionFromNewGates()
     {
         var (controller, _, _, vdr) = await CreateController(nameof(Details_ViewerRole_StillAccessible_NoRegressionFromNewGates), SystemRoles.Viewer);

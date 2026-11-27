@@ -94,7 +94,7 @@ public static class ImportCatalog
 
         // ---- AI intake: multi-file upload into the AI pipeline (page Index + POST Upload); same role gate enforced in the controller.
         new("DocumentUpload", Category.Ai, "DocumentUpload", "Index", LaunchMode.Page, ".pdf, .docx, .xlsx, images", null, false, Workflow.Intake, null,
-            Sets(MenuAccess.AIIntelligence), "bi-cloud-upload"),
+            Sets(MenuAccess.AIIntelligence), "bi-cloud-upload", Url: "/f/document-upload"),   // SCRUM-830: a definition form
     };
 
     /// <summary>ترتیب نمایش دسته‌ها.</summary>

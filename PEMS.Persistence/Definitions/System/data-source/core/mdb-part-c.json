@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "mdb-part-c",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Manufacturer data book documents, part C",
+    "fa": "مدارک کتاب اطلاعات سازنده، بخش C"
+  },
+  "description": {
+    "en": "Manufacturer data book documents, part C",
+    "fa": "مدارک کتاب اطلاعات سازنده، بخش C"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "MdbDocuments",
+      "args": {
+        "id": "param:id",
+        "part": "literal:C"
+      }
+    }
+  }
+}

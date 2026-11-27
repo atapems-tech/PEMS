@@ -37,9 +37,9 @@
     @* ناوبری ماژول: MDR/VDR/Transmittal زیرمجموعه‌ی همان هسته‌ی Document هستند - Import عمداً این‌جا نیست (فقط Import Center) *@
     <nav class="vs-subnav" aria-label="@Localizer["Ed_Documents"]">
         <pems-link asp-controller="EngineeringDocuments" asp-action="Index" class="active" aria-current="page">@Localizer["Ed_Documents"]</pems-link>
-        <pems-link asp-controller="DocumentRegister" asp-action="Index">@Localizer["Ed_Register"]</pems-link>
-        <pems-link asp-controller="VDR" asp-action="Index">@Localizer["Ed_VendorDocs"]</pems-link>
-        <pems-link asp-controller="Transmittal" asp-action="Index">@Localizer["Ed_Transmittals"]</pems-link>
+        <pems-link href="/p/document-register">@Localizer["Ed_Register"]</pems-link>
+        <pems-link href="/p/vdr">@Localizer["Ed_VendorDocs"]</pems-link>
+        <pems-link href="/p/transmittals">@Localizer["Ed_Transmittals"]</pems-link>
     </nav>
 
     <pems-list-panel>

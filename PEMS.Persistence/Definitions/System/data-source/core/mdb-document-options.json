@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mdb-document-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents of the project",
+    "fa": "مدارک پروژه"
+  },
+  "description": {
+    "en": "Documents of the project",
+    "fa": "مدارک پروژه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "MdbDocumentOptions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

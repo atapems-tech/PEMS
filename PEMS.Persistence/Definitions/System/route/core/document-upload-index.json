@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "document-upload-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document upload (old address)",
+    "fa": "بارگذاری مدرک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document upload",
+    "fa": "بارگذاری مدرک"
+  },
+  "payload": {
+    "pattern": "DocumentUpload/Index",
+    "target": "/f/document-upload",
+    "permanent": false
+  }
+}

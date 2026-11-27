@@ -38,22 +38,6 @@ public class EngineeringDocumentIntelligenceController : Controller
         _permissionService = permissionService;
     }
 
-    public async Task<IActionResult> Index()
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "View"))
-            return Forbid();
-
-        ViewData["Title"] = "Document Intelligence";
-        ViewData["Section"] = "AI Engineering Intelligence";
-
-        var dashboard = await _service.GetDashboardAsync();
-        var pending = await _service.GetPendingReviewAsync();
-
-        ViewBag.Dashboard = dashboard;
-
-        return View(pending);
-    }
-
     public async Task<IActionResult> Review(int id)
     {
         if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "EngineeringDocuments", "View"))

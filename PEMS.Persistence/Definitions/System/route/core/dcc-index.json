@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "dcc-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document Control Center (old address)",
+    "fa": "مرکز کنترل مدارک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document Control Center",
+    "fa": "مرکز کنترل مدارک"
+  },
+  "payload": {
+    "pattern": "DCC/Index",
+    "target": "/p/dcc",
+    "permanent": false
+  }
+}

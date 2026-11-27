@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "mdb-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Manufacturer data book",
+    "fa": "کتاب اطلاعات سازنده"
+  },
+  "description": {
+    "en": "Manufacturer data book",
+    "fa": "کتاب اطلاعات سازنده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "MdbHead",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

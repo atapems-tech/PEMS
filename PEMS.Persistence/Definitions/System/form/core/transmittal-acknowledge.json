@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "transmittal-acknowledge",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the acknowledgement",
+    "fa": "ثبت تأیید دریافت"
+  },
+  "description": {
+    "en": "Record the acknowledgement",
+    "fa": "ثبت تأیید دریافت"
+  },
+  "payload": {
+    "id": "transmittal-acknowledge",
+    "title": {
+      "en": "Record the acknowledgement",
+      "fa": "ثبت تأیید دریافت"
+    },
+    "submitLabel": {
+      "en": "Record the acknowledgement",
+      "fa": "ثبت تأیید دریافت"
+    },
+    "actionKey": "transmittal-acknowledge",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Transmittal",
+          "fa": "ترنسمیتال"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "recipientId",
+        "label": {
+          "en": "Recipient",
+          "fa": "گیرنده"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "note",
+        "label": {
+          "en": "Note",
+          "fa": "یادداشت"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

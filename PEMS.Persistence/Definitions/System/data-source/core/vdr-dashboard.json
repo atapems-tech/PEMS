@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vdr-dashboard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor documents figures",
+    "fa": "شاخص‌های مدارک فروشندگان"
+  },
+  "description": {
+    "en": "Vendor documents figures",
+    "fa": "شاخص‌های مدارک فروشندگان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "VdrDashboard",
+      "args": {
+        "projectId": "param:projectId"
+      }
+    }
+  }
+}

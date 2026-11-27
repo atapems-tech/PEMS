@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "transmittal-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the transmittal",
+    "fa": "لغو ترنسمیتال"
+  },
+  "description": {
+    "en": "Cancel the transmittal",
+    "fa": "لغو ترنسمیتال"
+  },
+  "payload": {
+    "id": "transmittal-cancel",
+    "title": {
+      "en": "Cancel the transmittal",
+      "fa": "لغو ترنسمیتال"
+    },
+    "submitLabel": {
+      "en": "Cancel the transmittal",
+      "fa": "لغو ترنسمیتال"
+    },
+    "actionKey": "transmittal-cancel",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Transmittal",
+          "fa": "ترنسمیتال"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

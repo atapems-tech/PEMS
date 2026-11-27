@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "dcc-pending-issue",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents waiting for issue",
+    "fa": "مدارک منتظر صدور"
+  },
+  "description": {
+    "en": "Documents waiting for issue",
+    "fa": "مدارک منتظر صدور"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "DccPendingIssue"
+    }
+  }
+}

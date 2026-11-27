@@ -1,0 +1,269 @@
+{
+  "kind": "page",
+  "key": "vdr",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor document register (VDR)",
+    "fa": "ثبت مدارک فروشندگان (VDR)"
+  },
+  "description": {
+    "en": "Vendor document register (VDR)",
+    "fa": "ثبت مدارک فروشندگان (VDR)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "vdr",
+    "regions": {
+      "content": [
+        {
+          "id": "nav",
+          "component": "content-blocks",
+          "options": {
+            "id": "nav",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/document-register",
+                "text": {
+                  "en": "Document register",
+                  "fa": "ثبت مدارک"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/vdr",
+                "text": {
+                  "en": "Vendor documents",
+                  "fa": "مدارک فروشندگان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/transmittals",
+                "text": {
+                  "en": "Transmittals",
+                  "fa": "ترنسمیتال‌ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/EngineeringDocuments",
+                "text": {
+                  "en": "Engineering documents",
+                  "fa": "مدارک مهندسی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "vdr-filters",
+          "component": "page-filters",
+          "options": {
+            "id": "vdr-filters",
+            "resetUrl": "/p/vdr",
+            "fields": [
+              {
+                "name": "search",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.search}}"
+              },
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}"
+              },
+              {
+                "name": "vendorId",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "kind": "select",
+                "value": "{{params.vendorId}}"
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/vdr-projects",
+                "valueField": "value"
+              },
+              {
+                "field": "vendorId",
+                "source": "/d/vdr-vendors",
+                "valueField": "value"
+              },
+              {
+                "field": "status",
+                "source": "/d/vdr-statuses",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "vdr-counts",
+          "component": "data-grid",
+          "options": {
+            "id": "vdr-counts",
+            "url": "/d/vdr-dashboard?f.projectId={{params.projectId|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "total",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "overdue",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "slaOverdue",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "onTimePercent",
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "vendorsAtRisk",
+                "width": 140,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "actions",
+          "component": "content-blocks",
+          "options": {
+            "id": "actions",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/vdr-create",
+                "text": {
+                  "en": "New vendor document",
+                  "fa": "مدرک فروشنده جدید"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/x/vdr-export?projectId={{params.projectId|url}}&vendorId={{params.vendorId|url}}&status={{params.status|url}}&search={{params.search|url}}",
+                "text": {
+                  "en": "Export to Excel",
+                  "fa": "خروجی Excel"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/vdr-import",
+                "text": {
+                  "en": "Import",
+                  "fa": "ورود از فایل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "vdr",
+            "url": "/d/vdr-list?f.projectId={{params.projectId|url}}&f.vendorId={{params.vendorId|url}}&f.status={{params.status|url}}&f.search={{params.search|url}}",
+            "idField": "id",
+            "viewsKey": "vdr",
+            "columns": [
+              {
+                "key": "documentNumber",
+                "width": 170,
+                "href": "/VDR/Details/{id}"
+              },
+              {
+                "key": "description",
+                "width": 280
+              },
+              {
+                "key": "type",
+                "width": 100
+              },
+              {
+                "key": "vendor",
+                "width": 160
+              },
+              {
+                "key": "project",
+                "width": 170
+              },
+              {
+                "key": "discipline",
+                "width": 130
+              },
+              {
+                "key": "revision",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "latestCategory",
+                "width": 120
+              },
+              {
+                "key": "status",
+                "width": 160
+              },
+              {
+                "key": "overdue",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/VDR/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "VDR.View"
+  }
+}

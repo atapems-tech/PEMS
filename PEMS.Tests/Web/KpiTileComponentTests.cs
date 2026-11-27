@@ -96,17 +96,6 @@ public class KpiTileComponentTests
         Assert.Contains("bg-icon-red", own);
     }
 
-    [Theory]
-    [InlineData("Views/EngineeringDocumentIntelligence/Index.cshtml", 4)]
-    public void WaveK2_TakesItsTilesFromTheComponent_AndThePartialIsGone(string view, int tags)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(tags, Regex.Matches(text, "<pems-kpi-tile[ >]").Count);
-        Assert.DoesNotContain("kpi-card", text);
-        Assert.DoesNotContain("_KpiCard", text);
-        Assert.False(File.Exists(Path.Combine(RepoRoot(), "PEMS.UI", "Views", "Shared", "_KpiCard.cshtml")));
-    }
-
     // ---- K3: small tiles on detail pages
     [Fact]
     public async Task Compact_AddsItsClass_AndToneColoursTheValue()
@@ -118,18 +107,6 @@ public class KpiTileComponentTests
         Assert.Contains(".kpi-card--compact .kpi-value { font-size: 18px; }", css);
     }
 
-
-    // ---- K4: dashboards with their own large-number tiles
-    [Theory]
-    [InlineData("Views/DCC/Index.cshtml", 2)]
-    public void WaveK4_Dashboards_TakeTheirTilesFromTheComponent(string view, int tiles)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(tiles, Regex.Matches(text, "<pems-kpi-tile ").Count);
-        // a large bold number over a muted label is a tile; the DCC navigation card (an icon, no number) is the one left
-        var left = Regex.Matches(text, @"<div class=""fs-[345] fw-bold[^""]*"">(?!<i |<pems-icon )").Count;
-        Assert.Equal(0, left);
-    }
 
     private static string RepoRoot()
     {

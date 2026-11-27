@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "document-register-export-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document register export (old address)",
+    "fa": "خروجی ثبت مدارک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document register export",
+    "fa": "خروجی ثبت مدارک"
+  },
+  "payload": {
+    "pattern": "DocumentRegister/ExportExcel",
+    "target": "/x/document-register-export",
+    "permanent": false
+  }
+}

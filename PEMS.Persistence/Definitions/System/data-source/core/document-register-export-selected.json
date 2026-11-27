@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "document-register-export-selected",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document register export of the selected rows",
+    "fa": "خروجی ردیف‌های انتخاب‌شده"
+  },
+  "description": {
+    "en": "Document register export of the selected rows",
+    "fa": "خروجی ردیف‌های انتخاب‌شده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "RegisterExportSelected",
+      "disposition": "attachment",
+      "args": {
+        "ids": "param:ids"
+      }
+    }
+  }
+}

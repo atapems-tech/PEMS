@@ -1,0 +1,427 @@
+{
+  "kind": "page",
+  "key": "mdb-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Manufacturer data book",
+    "fa": "کتاب اطلاعات سازنده"
+  },
+  "description": {
+    "en": "Manufacturer data book",
+    "fa": "کتاب اطلاعات سازنده"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mdb-details",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/mdb"
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "mdb-head",
+            "fields": [
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "po",
+                "label": {
+                  "en": "PO",
+                  "fa": "سفارش خرید"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "plannedIssue",
+                "label": {
+                  "en": "Planned final issue",
+                  "fa": "صدور نهایی برنامه‌ریزی‌شده"
+                },
+                "type": "date"
+              },
+              {
+                "key": "indexDue",
+                "label": {
+                  "en": "Index of contents due",
+                  "fa": "سررسید فهرست مطالب"
+                },
+                "type": "date"
+              },
+              {
+                "key": "indexOverdue",
+                "label": {
+                  "en": "Index overdue",
+                  "fa": "فهرست مطالب دیرکرد دارد"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "indexSubmitted",
+                "label": {
+                  "en": "Index submitted",
+                  "fa": "فهرست مطالب تحویل شد"
+                },
+                "type": "date"
+              },
+              {
+                "key": "hardCopy",
+                "label": {
+                  "en": "Hard copy",
+                  "fa": "نسخه کاغذی"
+                }
+              },
+              {
+                "key": "softCopy",
+                "label": {
+                  "en": "Soft copy",
+                  "fa": "نسخه الکترونیک"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mdb-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "mdb-actions",
+            "url": "/d/mdb-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 110,
+            "columns": [
+              {
+                "key": "status",
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 900,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "index-submitted",
+                    "url": "/a/mdb-index-submitted",
+                    "method": "post",
+                    "showWhen": "row.canIndex == true"
+                  },
+                  {
+                    "key": "final-issued",
+                    "url": "/a/mdb-final-issued",
+                    "method": "post",
+                    "showWhen": "row.canFinal == true"
+                  },
+                  {
+                    "key": "hard-copy-shipped",
+                    "url": "/f/mdb-hard-copy-shipped?mdbId={id}",
+                    "method": "get",
+                    "showWhen": "row.canHardCopy == true"
+                  },
+                  {
+                    "key": "soft-copy-delivered",
+                    "url": "/a/mdb-soft-copy-delivered",
+                    "method": "post",
+                    "showWhen": "row.canSoftCopy == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-a",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-a",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Part A - Engineering Dossier",
+                  "fa": "بخش A - پرونده مهندسی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "part-a",
+          "component": "def:related-table",
+          "options": {
+            "id": "part-a",
+            "url": "/d/mdb-part-a?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 160
+              },
+              {
+                "key": "title",
+                "width": 280
+              },
+              {
+                "key": "dvdVolume",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "notApplicable",
+                "width": 120
+              },
+              {
+                "key": "notes",
+                "width": 240
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "url": "/a/mdb-remove-document",
+                    "method": "post",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-a",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-a",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mdb-add-document?mdbId={{params.id|url}}&part=A",
+                "text": {
+                  "en": "Add a document to part A",
+                  "fa": "افزودن مدرک به بخش A"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-b",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-b",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Part B - Manufacturer's Inspection Data Book",
+                  "fa": "بخش B - کتاب بازرسی سازنده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "part-b",
+          "component": "def:related-table",
+          "options": {
+            "id": "part-b",
+            "url": "/d/mdb-part-b?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 160
+              },
+              {
+                "key": "title",
+                "width": 280
+              },
+              {
+                "key": "dvdVolume",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "notApplicable",
+                "width": 120
+              },
+              {
+                "key": "notes",
+                "width": 240
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "url": "/a/mdb-remove-document",
+                    "method": "post",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-b",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-b",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mdb-add-document?mdbId={{params.id|url}}&part=B",
+                "text": {
+                  "en": "Add a document to part B",
+                  "fa": "افزودن مدرک به بخش B"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-c",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-c",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Part C - Installation / Startup / Commissioning / O&M Manual",
+                  "fa": "بخش C - راهنمای نصب، راه‌اندازی، بهره‌برداری و نگهداری"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "part-c",
+          "component": "def:related-table",
+          "options": {
+            "id": "part-c",
+            "url": "/d/mdb-part-c?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 160
+              },
+              {
+                "key": "title",
+                "width": 280
+              },
+              {
+                "key": "dvdVolume",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "notApplicable",
+                "width": 120
+              },
+              {
+                "key": "notes",
+                "width": 240
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "remove",
+                    "url": "/a/mdb-remove-document",
+                    "method": "post",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "add-c",
+          "component": "content-blocks",
+          "options": {
+            "id": "add-c",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/mdb-add-document?mdbId={{params.id|url}}&part=C",
+                "text": {
+                  "en": "Add a document to part C",
+                  "fa": "افزودن مدرک به بخش C"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "MDB.View"
+  }
+}

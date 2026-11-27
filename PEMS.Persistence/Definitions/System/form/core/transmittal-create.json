@@ -1,0 +1,204 @@
+{
+  "kind": "form",
+  "key": "transmittal-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New transmittal",
+    "fa": "ترنسمیتال جدید"
+  },
+  "description": {
+    "en": "New transmittal",
+    "fa": "ترنسمیتال جدید"
+  },
+  "payload": {
+    "id": "transmittal-create",
+    "title": {
+      "en": "New transmittal",
+      "fa": "ترنسمیتال جدید"
+    },
+    "submitLabel": {
+      "en": "New transmittal",
+      "fa": "ترنسمیتال جدید"
+    },
+    "actionKey": "transmittal-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "transmittalNo",
+        "label": {
+          "en": "Transmittal code",
+          "fa": "کد ترنسمیتال"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "transmittal-projects"
+      },
+      {
+        "name": "from",
+        "label": {
+          "en": "From",
+          "fa": "از"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "to",
+        "label": {
+          "en": "To (or add recipients below)",
+          "fa": "به (یا گیرندگان را در پایین بنویسید)"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "purpose",
+        "label": {
+          "en": "Purpose",
+          "fa": "هدف"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "For Information",
+        "options": [
+          {
+            "value": "IFA",
+            "label": {
+              "en": "IFA - Issued for Approval",
+              "fa": "IFA - صدور برای تأیید"
+            }
+          },
+          {
+            "value": "IFR",
+            "label": {
+              "en": "IFR - Issue for Review and Comments",
+              "fa": "IFR - صدور برای بازبینی و نظر"
+            }
+          },
+          {
+            "value": "IFI",
+            "label": {
+              "en": "IFI - Issue for Information",
+              "fa": "IFI - صدور برای اطلاع"
+            }
+          },
+          {
+            "value": "FI",
+            "label": {
+              "en": "FI - Final Issue (without comments)",
+              "fa": "FI - صدور نهایی (بدون نظر)"
+            }
+          },
+          {
+            "value": "For Approval",
+            "label": {
+              "en": "For Approval (legacy)",
+              "fa": "برای تأیید (قدیمی)"
+            }
+          },
+          {
+            "value": "For Construction",
+            "label": {
+              "en": "For Construction (legacy)",
+              "fa": "برای ساخت (قدیمی)"
+            }
+          },
+          {
+            "value": "For Information",
+            "label": {
+              "en": "For Information (legacy)",
+              "fa": "برای اطلاع (قدیمی)"
+            }
+          },
+          {
+            "value": "For Review",
+            "label": {
+              "en": "For Review (legacy)",
+              "fa": "برای بازبینی (قدیمی)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "responseRequired",
+        "label": {
+          "en": "Response required",
+          "fa": "نیاز به پاسخ"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "recipients",
+        "label": {
+          "en": "Recipients (one per line: name | type | organization | yes when a response is required)",
+          "fa": "گیرندگان (هر خط یکی: نام | نوع | سازمان | yes اگر پاسخ لازم است)"
+        },
+        "kind": "textArea",
+        "span": 2,
+        "helpText": {
+          "en": "Type is External, Internal, Vendor or Client.",
+          "fa": "نوع: External، Internal، Vendor یا Client."
+        }
+      },
+      {
+        "name": "documentIds",
+        "label": {
+          "en": "Documents to include",
+          "fa": "مدارک برای درج"
+        },
+        "kind": "multiSelect",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "transmittal-documents",
+        "span": 2
+      }
+    ]
+  }
+}
