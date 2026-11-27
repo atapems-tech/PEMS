@@ -68,3 +68,9 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - Drag and drop re-ordering of tasks inside a sprint or the backlog (`data-tm-reorder-url`) is not available; the up and down row actions and the move-to-sprint form remain. Needs a grid row-reorder option in the engine.
 - The old create modal opened from the backlog; the create button opens the new task form page.
 - The Backlog and space header views, and the backlog part of the member render test (replaced by operation assertions), are removed.
+
+### Task manager AllWork (SCRUM-831)
+- The page filters are the select and text filters of the page-filters component; the assignee list is the broad list (not only the people of the chosen space); the type and sprint filters of the old page are column filters of the grid; "include archived" is a select.
+- Up to 500 tasks, no paging (the old page paged 50); the sort links are the grid column sorts.
+- The bulk bar showed status, assign and sprint only when one space was filtered; the four bulk actions are always offered and open forms whose choice lists need the space key of the filter (empty without it).
+- "My tasks" and the old address `TaskManager/AllWork` with `WorkSpaceId`, `Assignee`, `StatusCategory`: the page takes `spaceKey`, `assignee`, `statusCategory`; `WorkSpaceId` in an old link is not understood.

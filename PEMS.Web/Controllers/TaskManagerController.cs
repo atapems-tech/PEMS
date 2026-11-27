@@ -63,29 +63,7 @@ public class TaskManagerController : Controller
     public IActionResult Space(string key, string view = "backlog")
         => Redirect((view == "board" ? "/p/task-board?key=" : "/p/task-backlog?key=") + Uri.EscapeDataString(key ?? ""));
 
-    /// <summary>همه‌ی کارهای قابل‌دید کاربر با فیلتر بسته (همچنین «کارهای من» با assignee=me).</summary>
-    [HttpGet]
-    public async Task<IActionResult> AllWork([FromQuery] WorkItemQuery query)
-    {
-        if (!await Can("View")) return Forbid();
-        var actor = await ActorAsync();
-        ViewData["Title"] = Text(query.Assignee == "me" ? "Tm_MyTasks" : "Tm_AllWork");
-        ViewData["Section"] = "Task Manager";
-        ViewBag.Query = query;
-        var spaces = await _tasks.GetAccessibleSpacesAsync(actor);
-        ViewBag.Spaces = spaces;
-        ViewBag.CanEdit = await Can("Edit");
-        // با فیلتر یک فضا، نوار گروهی همان مقادیر فضا (وضعیت/مسئول/Sprint) را پیشنهاد می‌دهد؛ بدون آن فقط بایگانی
-        var space = spaces.FirstOrDefault(s => s.Id == query.WorkSpaceId);
-        if (space != null)
-        {
-            var view = await _tasks.GetSpaceViewAsync(space.Key, actor);
-            ViewBag.SpaceView = view;
-            ViewBag.Types = view?.Types;
-            ViewBag.Assignees = await _tasks.GetEligibleAssigneesAsync(space.Id, actor);
-        }
-        return View(await _tasks.QueryAsync(query, actor));
-    }
+    // SCRUM-831: AllWork is the definition page /p/task-all-work over ITaskManagerPagesOperations.AllWorkAsync (also "my tasks").
 
     // ==================================================================================== item writes
 

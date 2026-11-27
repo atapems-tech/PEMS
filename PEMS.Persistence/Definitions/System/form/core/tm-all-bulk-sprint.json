@@ -1,0 +1,72 @@
+{
+  "kind": "form",
+  "key": "tm-all-bulk-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Move the selected tasks to a sprint",
+    "fa": "انتقال وظایف انتخاب‌شده به اسپرینت"
+  },
+  "description": {
+    "en": "Move the selected tasks to a sprint",
+    "fa": "انتقال وظایف انتخاب‌شده به اسپرینت"
+  },
+  "payload": {
+    "id": "tm-all-bulk-sprint",
+    "title": {
+      "en": "Move the selected tasks to a sprint",
+      "fa": "انتقال وظایف انتخاب‌شده به اسپرینت"
+    },
+    "submitLabel": {
+      "en": "Move the selected tasks to a sprint",
+      "fa": "انتقال وظایف انتخاب‌شده به اسپرینت"
+    },
+    "actionKey": "tm-all-bulk-sprint",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "ids",
+        "label": {
+          "en": "Task ids (comma separated)",
+          "fa": "شناسه وظایف (جدا شده با ویرگول)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2
+      },
+      {
+        "name": "spaceKey",
+        "label": {
+          "en": "Space key (needed for status, assignee and sprint)",
+          "fa": "کلید فضا (برای وضعیت، مسئول و اسپرینت لازم است)"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Sprint",
+          "fa": "اسپرینت"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-sprint-key-options",
+        "optionsArgs": {
+          "key": "spaceKey"
+        }
+      }
+    ]
+  }
+}

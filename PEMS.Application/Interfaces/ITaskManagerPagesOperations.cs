@@ -14,6 +14,8 @@ public sealed record TaskBacklogHeadRow(int Id, string Key, string Name, string?
 public sealed record TaskSprintRow(int Id, string Name, string State, string StateCode, string Period, string Counts, string? Goal, bool CanStart, bool CanComplete, bool CanManage);
 public sealed record TaskBacklogItemRow(int Id, string Key, string Title, string? Type, string Status, string Priority, string Assignee, DateTime? DueDate, bool Overdue, decimal? Points, string Sprint, int SprintId, bool CanRank, bool Archived);
 
+public sealed record TaskWorkRow(int Id, string Key, string Space, string Title, string? Type, string Status, string Priority, string Assignee, DateTime? DueDate, bool Overdue, decimal? Points, bool Archived);
+
 /// <summary>SCRUM-831: the read side of TaskManagerController.Index (the spaces the user may see) as operations; Task.View is the right the controller checked.</summary>
 public interface ITaskManagerPagesOperations
 {
@@ -67,4 +69,17 @@ public interface ITaskManagerPagesOperations
 
     [PEMS.Application.Common.PemsOperation("TaskManagerPage", "FutureSprintOptions", "Task.View")]
     Task<List<TaskChoice>> FutureSprintOptionsAsync(string? key = null);
+
+    /// <summary>All work the user may see (AllWork): every filter of the old page is an optional text argument (<c>spaceKey</c>, <c>text</c>, <c>assignee</c> me, unassigned or an employee id, <c>statusCategory</c>, <c>priority</c>, <c>includeArchived</c> true); at most 500 tasks, newest changes first.</summary>
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AllWork", "Task.View")]
+    Task<List<TaskWorkRow>> AllWorkAsync(string? spaceKey = null, string? text = null, string? assignee = null, string? statusCategory = null, string? priority = null, string? includeArchived = null);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "SpaceOptions", "Task.View")]
+    Task<List<TaskChoice>> SpaceOptionsAsync();
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AllWorkAssigneeOptions", "Task.View")]
+    Task<List<TaskChoice>> AllWorkAssigneeOptionsAsync();
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "StatusCategoryOptions", "Task.View")]
+    Task<List<TaskChoice>> StatusCategoryOptionsAsync();
 }

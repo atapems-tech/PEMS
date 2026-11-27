@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "tm-space-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Spaces",
+    "fa": "فضاها"
+  },
+  "description": {
+    "en": "Spaces",
+    "fa": "فضاها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "SpaceOptions"
+    }
+  }
+}

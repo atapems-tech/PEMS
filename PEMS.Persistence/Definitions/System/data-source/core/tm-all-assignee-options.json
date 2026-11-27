@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "tm-all-assignee-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assignees",
+    "fa": "مسئول‌ها"
+  },
+  "description": {
+    "en": "Assignees",
+    "fa": "مسئول‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "AllWorkAssigneeOptions"
+    }
+  }
+}

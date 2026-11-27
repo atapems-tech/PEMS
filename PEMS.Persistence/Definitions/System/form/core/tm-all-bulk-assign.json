@@ -1,0 +1,65 @@
+{
+  "kind": "form",
+  "key": "tm-all-bulk-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign the selected tasks",
+    "fa": "تخصیص وظایف انتخاب‌شده"
+  },
+  "description": {
+    "en": "Assign the selected tasks",
+    "fa": "تخصیص وظایف انتخاب‌شده"
+  },
+  "payload": {
+    "id": "tm-all-bulk-assign",
+    "title": {
+      "en": "Assign the selected tasks",
+      "fa": "تخصیص وظایف انتخاب‌شده"
+    },
+    "submitLabel": {
+      "en": "Assign the selected tasks",
+      "fa": "تخصیص وظایف انتخاب‌شده"
+    },
+    "actionKey": "tm-all-bulk-assign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "ids",
+        "label": {
+          "en": "Task ids (comma separated)",
+          "fa": "شناسه وظایف (جدا شده با ویرگول)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2
+      },
+      {
+        "name": "spaceKey",
+        "label": {
+          "en": "Space key (needed for status, assignee and sprint)",
+          "fa": "کلید فضا (برای وضعیت، مسئول و اسپرینت لازم است)"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Assignee",
+          "fa": "مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-assignee-key-options",
+        "optionsArgs": {
+          "key": "spaceKey"
+        }
+      }
+    ]
+  }
+}
