@@ -1,0 +1,140 @@
+{
+  "kind": "page",
+  "key": "mdb",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Manufacturer data books (MDB)",
+    "fa": "کتاب‌های اطلاعات سازنده (MDB)"
+  },
+  "description": {
+    "en": "Manufacturer data books (MDB)",
+    "fa": "کتاب‌های اطلاعات سازنده (MDB)"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "mdb",
+    "regions": {
+      "content": [
+        {
+          "id": "mdb-filters",
+          "component": "page-filters",
+          "options": {
+            "id": "mdb-filters",
+            "resetUrl": "/p/mdb",
+            "fields": [
+              {
+                "name": "projectId",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.projectId}}"
+              },
+              {
+                "name": "vendorId",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                },
+                "kind": "select",
+                "value": "{{params.vendorId}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "projectId",
+                "source": "/d/mdb-projects",
+                "valueField": "value"
+              },
+              {
+                "field": "vendorId",
+                "source": "/d/mdb-vendors",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "mdb",
+            "url": "/d/mdb-list?f.projectId={{params.projectId|url}}&f.vendorId={{params.vendorId|url}}",
+            "idField": "id",
+            "viewsKey": "mdb",
+            "newUrl": "/f/mdb-create",
+            "newLabel": {
+              "en": "New data book",
+              "fa": "کتاب اطلاعات جدید"
+            },
+            "columns": [
+              {
+                "key": "equipment",
+                "width": 140,
+                "href": "/MDB/Details/{id}"
+              },
+              {
+                "key": "vendor",
+                "width": 140
+              },
+              {
+                "key": "po",
+                "width": 110
+              },
+              {
+                "key": "project",
+                "width": 140
+              },
+              {
+                "key": "plannedIssue",
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "indexDue",
+                "width": 150,
+                "type": "date"
+              },
+              {
+                "key": "indexOverdue",
+                "width": 110,
+                "type": "bool"
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "hardCopy",
+                "width": 100
+              },
+              {
+                "key": "softCopy",
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/MDB/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "MDB.View"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "transmittal-recipients",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittal recipients",
+    "fa": "گیرندگان ترنسمیتال"
+  },
+  "description": {
+    "en": "Transmittal recipients",
+    "fa": "گیرندگان ترنسمیتال"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "TransmittalRecipients",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

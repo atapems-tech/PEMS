@@ -1,0 +1,235 @@
+{
+  "kind": "page",
+  "key": "document-register",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document register",
+    "fa": "ثبت مدارک"
+  },
+  "description": {
+    "en": "Document register",
+    "fa": "ثبت مدارک"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "document-register",
+    "regions": {
+      "content": [
+        {
+          "id": "nav",
+          "component": "content-blocks",
+          "options": {
+            "id": "nav",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/document-register",
+                "text": {
+                  "en": "Document register",
+                  "fa": "ثبت مدارک"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/vdr",
+                "text": {
+                  "en": "Vendor documents",
+                  "fa": "مدارک فروشندگان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/transmittals",
+                "text": {
+                  "en": "Transmittals",
+                  "fa": "ترنسمیتال‌ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/EngineeringDocuments",
+                "text": {
+                  "en": "Engineering documents",
+                  "fa": "مدارک مهندسی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "document-register-filters",
+          "component": "page-filters",
+          "options": {
+            "id": "document-register-filters",
+            "resetUrl": "/p/document-register",
+            "fields": [
+              {
+                "name": "q",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.q}}"
+              },
+              {
+                "name": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                },
+                "kind": "select",
+                "value": "{{params.project}}"
+              },
+              {
+                "name": "disciplines",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplines}}"
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "project",
+                "source": "/d/document-register-projects",
+                "valueField": "value"
+              },
+              {
+                "field": "disciplines",
+                "source": "/d/document-register-disciplines",
+                "valueField": "value"
+              },
+              {
+                "field": "status",
+                "source": "/d/document-register-statuses",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "exports",
+          "component": "content-blocks",
+          "options": {
+            "id": "exports",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/x/document-register-export?project={{params.project|url}}&disciplines={{params.disciplines|url}}&status={{params.status|url}}&q={{params.q|url}}",
+                "text": {
+                  "en": "Export to Excel",
+                  "fa": "خروجی Excel"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "document-register",
+            "url": "/d/document-register-list?f.project={{params.project|url}}&f.disciplines={{params.disciplines|url}}&f.status={{params.status|url}}&f.q={{params.q|url}}",
+            "idField": "id",
+            "viewsKey": "document-register",
+            "selectable": true,
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 160,
+                "href": "/EngineeringDocuments/Details/{id}"
+              },
+              {
+                "key": "title",
+                "width": 300
+              },
+              {
+                "key": "documentType",
+                "width": 120
+              },
+              {
+                "key": "area",
+                "width": 110
+              },
+              {
+                "key": "discipline",
+                "width": 150
+              },
+              {
+                "key": "project",
+                "width": 160
+              },
+              {
+                "key": "revision",
+                "width": 80
+              },
+              {
+                "key": "status",
+                "width": 150
+              },
+              {
+                "key": "frozen",
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "commentStatus",
+                "width": 140
+              },
+              {
+                "key": "delayDays",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "created",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "bulkActions": [
+              {
+                "key": "export-selected",
+                "label": {
+                  "en": "Export selected",
+                  "fa": "خروجی انتخاب‌شده‌ها"
+                },
+                "formUrl": "/x/document-register-export-selected"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "DocumentRegister.View"
+  }
+}

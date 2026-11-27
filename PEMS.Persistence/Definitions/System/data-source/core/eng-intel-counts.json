@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "eng-intel-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document intelligence figures",
+    "fa": "شاخص‌های هوشمندسازی مدارک"
+  },
+  "description": {
+    "en": "Document intelligence figures",
+    "fa": "شاخص‌های هوشمندسازی مدارک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "IntelligenceCounts"
+    }
+  }
+}

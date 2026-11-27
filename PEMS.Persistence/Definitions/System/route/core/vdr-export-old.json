@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "vdr-export-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor documents export (old address)",
+    "fa": "خروجی مدارک فروشندگان (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Vendor documents export",
+    "fa": "خروجی مدارک فروشندگان"
+  },
+  "payload": {
+    "pattern": "VDR/Export",
+    "target": "/x/vdr-export",
+    "permanent": false
+  }
+}

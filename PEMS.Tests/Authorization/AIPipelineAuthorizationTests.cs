@@ -160,19 +160,6 @@ public class AIPipelineAuthorizationTests
     public async Task Relationship_Explore_WithoutAStartPoint_ReturnsNothing()
         => Assert.Null(await new PEMS.Web.Services.RelationshipPagesOperations(new FakeRelationshipService()).ExploreAsync("search", null, " "));
 
-    // ================= EngineeringDocumentIntelligence =================
-
-    [Fact]
-    public async Task EDI_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(EDI_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new EngineeringDocumentIntelligenceController(new FakeEngineeringDocumentIntelligenceService(), user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
     // ================= OCRProcessing =================
     // طبق ممیزی: OCRProcessingController.Retry مستقیم Hangfire.BackgroundJob.Enqueue (استاتیک، به
     // JobStorage.Current وابسته) را صدا می‌زند - در تست واحد بدون Storage واقعی قابل‌فراخوانی

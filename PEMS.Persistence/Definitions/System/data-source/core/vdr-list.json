@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "vdr-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor documents",
+    "fa": "مدارک فروشندگان"
+  },
+  "description": {
+    "en": "Vendor documents",
+    "fa": "مدارک فروشندگان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "VdrList",
+      "args": {
+        "projectId": "param:projectId",
+        "vendorId": "param:vendorId",
+        "status": "param:status",
+        "search": "param:search"
+      }
+    }
+  }
+}

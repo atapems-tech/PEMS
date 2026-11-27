@@ -1,0 +1,67 @@
+{
+  "kind": "form",
+  "key": "document-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload to the AI intake queue",
+    "fa": "بارگذاری در صف ورودی هوشمند"
+  },
+  "description": {
+    "en": "Upload to the AI intake queue",
+    "fa": "بارگذاری در صف ورودی هوشمند"
+  },
+  "payload": {
+    "id": "document-upload",
+    "title": {
+      "en": "Upload to the AI intake queue",
+      "fa": "بارگذاری در صف ورودی هوشمند"
+    },
+    "submitLabel": {
+      "en": "Upload to the AI intake queue",
+      "fa": "بارگذاری در صف ورودی هوشمند"
+    },
+    "actionKey": "document-upload",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "document-upload-projects"
+      },
+      {
+        "name": "files",
+        "label": {
+          "en": "Files",
+          "fa": "فایل‌ها"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "multiple": true,
+        "accept": ".pdf,.docx,.xlsx,.jpg,.jpeg,.png,.bmp,.tif,.tiff",
+        "helpText": {
+          "en": "Supported: PDF, Word (.docx), Excel (.xlsx), images/scans (OCR). Every file enters the AI intake queue first; the AI classifies it and routes it or leaves it for your review.",
+          "fa": "قالب‌های پشتیبانی‌شده: PDF، Word (.docx)، Excel (.xlsx)، تصویر/اسکن (OCR). هر فایل ابتدا وارد صف ورودی هوشمند می‌شود؛ هوش مصنوعی آن را طبقه‌بندی و مسیریابی می‌کند یا برای بازبینی شما نگه می‌دارد."
+        },
+        "span": 2
+      }
+    ]
+  }
+}

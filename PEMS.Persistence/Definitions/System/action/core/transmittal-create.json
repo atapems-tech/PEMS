@@ -1,0 +1,38 @@
+{
+  "kind": "action",
+  "key": "transmittal-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New transmittal",
+    "fa": "ترنسمیتال جدید"
+  },
+  "description": {
+    "en": "New transmittal",
+    "fa": "ترنسمیتال جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "TransmittalCreate",
+      "args": {
+        "transmittalNo": "field:transmittalNo",
+        "projectId": "field:projectId",
+        "from": "field:from",
+        "to": "field:to",
+        "purpose": "field:purpose",
+        "description": "field:description",
+        "responseRequired": "field:responseRequired",
+        "recipients": "field:recipients",
+        "documentIds": "field:documentIds"
+      }
+    },
+    "success": {
+      "en": "Transmittal created successfully",
+      "fa": "ترنسمیتال ایجاد شد."
+    },
+    "redirect": "/p/transmittal-details?id={result}"
+  }
+}

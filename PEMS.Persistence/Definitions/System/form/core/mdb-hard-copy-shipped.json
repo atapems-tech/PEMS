@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "mdb-hard-copy-shipped",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark hard copy shipped",
+    "fa": "ثبت ارسال نسخه کاغذی"
+  },
+  "description": {
+    "en": "Mark hard copy shipped",
+    "fa": "ثبت ارسال نسخه کاغذی"
+  },
+  "payload": {
+    "id": "mdb-hard-copy-shipped",
+    "title": {
+      "en": "Mark hard copy shipped",
+      "fa": "ثبت ارسال نسخه کاغذی"
+    },
+    "submitLabel": {
+      "en": "Mark hard copy shipped",
+      "fa": "ثبت ارسال نسخه کاغذی"
+    },
+    "actionKey": "mdb-hard-copy-shipped",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "mdbId",
+        "label": {
+          "en": "Data book",
+          "fa": "کتاب اطلاعات"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "hardCopyCount",
+        "label": {
+          "en": "Number of volumes",
+          "fa": "تعداد جلد"
+        },
+        "kind": "number"
+      }
+    ]
+  }
+}

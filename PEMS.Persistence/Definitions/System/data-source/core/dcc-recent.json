@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "dcc-recent",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recent incoming letters",
+    "fa": "آخرین مکاتبات وارده"
+  },
+  "description": {
+    "en": "Recent incoming letters",
+    "fa": "آخرین مکاتبات وارده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "DccRecent"
+    }
+  }
+}

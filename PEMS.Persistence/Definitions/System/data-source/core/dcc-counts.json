@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "dcc-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "DCC figures",
+    "fa": "شاخص‌های DCC"
+  },
+  "description": {
+    "en": "DCC figures",
+    "fa": "شاخص‌های DCC"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "DccCounts"
+    }
+  }
+}

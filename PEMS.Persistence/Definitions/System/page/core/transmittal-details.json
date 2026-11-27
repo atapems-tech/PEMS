@@ -1,0 +1,335 @@
+{
+  "kind": "page",
+  "key": "transmittal-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittal",
+    "fa": "ترنسمیتال"
+  },
+  "description": {
+    "en": "Transmittal",
+    "fa": "ترنسمیتال"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "transmittal-details",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/transmittals"
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "transmittal-head",
+            "fields": [
+              {
+                "key": "no",
+                "label": {
+                  "en": "Transmittal",
+                  "fa": "ترنسمیتال"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "from",
+                "label": {
+                  "en": "From",
+                  "fa": "از"
+                }
+              },
+              {
+                "key": "to",
+                "label": {
+                  "en": "To",
+                  "fa": "به"
+                }
+              },
+              {
+                "key": "purpose",
+                "label": {
+                  "en": "Purpose",
+                  "fa": "هدف"
+                }
+              },
+              {
+                "key": "created",
+                "label": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "date"
+              },
+              {
+                "key": "sent",
+                "label": {
+                  "en": "Sent",
+                  "fa": "ارسال"
+                },
+                "type": "date"
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              },
+              {
+                "key": "reissuedFrom",
+                "label": {
+                  "en": "Reissued from",
+                  "fa": "صدور مجدد از"
+                }
+              },
+              {
+                "key": "supersededBy",
+                "label": {
+                  "en": "Superseded by",
+                  "fa": "جایگزین‌شده با"
+                }
+              },
+              {
+                "key": "cancelled",
+                "label": {
+                  "en": "Cancelled",
+                  "fa": "لغو"
+                },
+                "wide": true
+              },
+              {
+                "key": "responseDue",
+                "label": {
+                  "en": "Response due",
+                  "fa": "سررسید پاسخ"
+                },
+                "type": "date"
+              },
+              {
+                "key": "responseOverdue",
+                "label": {
+                  "en": "Response overdue",
+                  "fa": "پاسخ دیرکرد دارد"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "responseReceived",
+                "label": {
+                  "en": "Response received",
+                  "fa": "دریافت پاسخ"
+                },
+                "type": "date"
+              },
+              {
+                "key": "responseNote",
+                "label": {
+                  "en": "Response note",
+                  "fa": "یادداشت پاسخ"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/transmittal-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "transmittal-actions",
+            "url": "/d/transmittal-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 110,
+            "columns": [
+              {
+                "key": "status",
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 900,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "mark-sent",
+                    "url": "/f/transmittal-mark-sent?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canSend == true"
+                  },
+                  {
+                    "key": "cancel",
+                    "url": "/f/transmittal-cancel?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canCancel == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "record-response",
+                    "url": "/f/transmittal-record-response?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canRecordResponse == true"
+                  },
+                  {
+                    "key": "reissue",
+                    "url": "/a/transmittal-reissue",
+                    "method": "post",
+                    "showWhen": "row.canReissue == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-recipients",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-recipients",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Recipients",
+                  "fa": "گیرندگان"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "recipients",
+          "component": "def:related-table",
+          "options": {
+            "id": "recipients",
+            "url": "/d/transmittal-recipients?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "width": 200
+              },
+              {
+                "key": "type",
+                "width": 110
+              },
+              {
+                "key": "organization",
+                "width": 180
+              },
+              {
+                "key": "responseRequired",
+                "width": 130
+              },
+              {
+                "key": "acknowledgement",
+                "width": 280
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 180,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "acknowledge",
+                    "url": "/f/transmittal-acknowledge?id={{params.id}}&recipientId={id}",
+                    "method": "get",
+                    "showWhen": "row.canAcknowledge == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-items",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-items",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Included documents",
+                  "fa": "مدارک شامل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "items",
+          "component": "def:related-table",
+          "options": {
+            "id": "items",
+            "url": "/d/transmittal-items?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 160
+              },
+              {
+                "key": "title",
+                "width": 300
+              },
+              {
+                "key": "revision",
+                "width": 90
+              },
+              {
+                "key": "file",
+                "width": 260
+              },
+              {
+                "key": "remarks",
+                "width": 240
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Transmittal.View"
+  }
+}

@@ -74,96 +74,12 @@ public class DocumentControlListPagesTests
         DisciplineName = "Mechanical", RevisionNo = "B", Status = "Approved", CreatedDate = new DateTime(2026, 10, 1), IsFrozen = id == 2
     };
 
-    [Fact]
-    public async Task Register_IsBuiltFromTheComponent_WithSearchFiltersSavedViewsExcelAndRowSelection()
-    {
-        var html = await Register(docs: new[] { Doc(1), Doc(2) });
-
-        AssertBuiltFromTheComponent(html, "DocumentRegister", 2);
-        Assert.Contains("aria-current=\"page\"", html);                        // the document sub-navigation, Register active
-        Assert.Contains("data-lp-search-open", html);
-        Assert.Contains("id=\"drFilterFormBtn\"", html);
-        Assert.Contains("id=\"drViewsBtn\"", html);                            // quick and saved filters in one menu
-        Assert.Contains("bi-file-earmark-excel", html);
-        Assert.Contains("data-bs-target=\"#saveFilterModal\"", html);
-        // row selection drives the shared bulk bar; the page posts the ticked ids to its own action
-        Assert.Contains("data-lp-select-all", html);
-        Assert.Equal(2, Regex.Matches(html, "data-lp-select(?!-)").Count);
-        var bulk = Regex.Match(html, "<div class=\"lp-bulk\"[^>]*>").Value;
-        Assert.Contains("data-lp-bulk=\"ids\"", bulk);
-        Assert.Contains("hidden=\"hidden\"", bulk);
-        Assert.Contains("data-count-text=", bulk);
-        Assert.DoesNotContain("selectAllDocs", html);                          // the page's own selection script is gone
-        Assert.Contains("bi-snow", html);                                      // frozen shown next to the status
-    }
-
-    [Fact]
-    public async Task Register_ActiveFilters_ShowBadgeAndChips_AndTheDisciplineChecksKeepTheirValues()
-    {
-        var html = await Register(project: "JPC", disciplines: new() { "Electrical" }, status: "Approved", q: "pump");
-
-        Assert.Matches("<span class=\"lp-badge\">3<", html);
-        var chips = Regex.Match(html, "<div class=\"lp-chips\">(.*?)</div>", RegexOptions.Singleline).Value;
-        Assert.Equal(3, Regex.Matches(chips, "class=\"pems-filter-chip\"").Count);
-        Assert.Contains("value=\"Electrical\"", html);
-        Assert.Matches("value=\"Electrical\"[^>]*checked=\"checked\"", html);
-        Assert.Contains("id=\"drDisciplines\" value=\"Electrical\"", html);
-        Assert.Contains("value=\"pump\"", html);                               // search term stays in the search field
-        Assert.Contains("class=\"lp-empty\"", html);                           // filtered and empty: clear-all offered
-        Assert.Contains("btn btn-sm btn-outline-secondary mt-2", html);
-    }
-
-    [Fact]
-    public async Task Register_SavedFilters_AreListedWithADeleteForm()
-    {
-        var html = await Register(saved: new() { new SavedFilterDto { SavedFilterId = 7, Name = "My pumps", QueryString = "status=Approved", IsDefault = true } });
-
-        var menu = Regex.Match(html, "<ul[^>]*lp-menu[^>]*>(.*?)</ul>", RegexOptions.Singleline).Value;
-        Assert.Contains("My pumps", menu);
-        Assert.Contains("?status=Approved", menu);
-        Assert.Contains("name=\"id\" value=\"7\"", menu);
-        Assert.Contains("bi-star-fill", menu);
-    }
-
     // ---------- DocumentRevisions ----------
 
     // ---------- TechnicalQuery ----------
 
     // ---------- MDB ----------
 
-    [Fact]
-    public async Task Mdb_FiltersByProjectAndVendor_AndShowsDeliveryAsPills()
-    {
-        var html = await Render<MDBController>("/Views/MDB/Index.cshtml",
-            Page(new ManufacturerDataBookDto { MDBId = 2, EquipmentTagNumber = "P-101A", VendorName = "KSB", Status = "Draft", IsIndexOverdue = true, HardCopyShippedDate = new DateTime(2026, 9, 1) }), v =>
-            {
-                v["Projects"] = Projects();
-                v["Vendors"] = new List<dynamic> { Obj(("VendorId", 4), ("Name", "KSB")) };
-                v["SelectedVendorId"] = 4;
-            });
-
-        AssertBuiltFromTheComponent(html, "MDB", 1);
-        Assert.Contains("name=\"vendorId\"", html);
-        Assert.Contains("KSB", Regex.Match(html, "<div class=\"lp-chips\">(.*?)</div>", RegexOptions.Singleline).Value);
-        Assert.Contains("vs-pill--success", html);                             // hard copy shipped
-        Assert.Contains("vs-pill--danger", html);                              // index overdue
-    }
-
     // ---------- DocumentWorkflow ----------
 
-    [Fact]
-    public void Dcc_IsADeskNotAList_AndStaysOutOfTheListComponent()
-    {
-        var dir = new DirectoryInfo(AppContext.BaseDirectory);
-        while (dir != null && !File.Exists(Path.Combine(dir.FullName, "PEMS.slnx"))) dir = dir.Parent;
-        Assert.NotNull(dir);
-        foreach (var page in new[] { "DocumentRegister", "Transmittal", "MDB" })
-        {
-            var view = File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", page, "Index.cshtml"));
-            Assert.Contains("<pems-list-page texts=", view);
-            Assert.Contains("~/_content/PEMS.UI/pems-list.css", view);
-            Assert.Contains("~/_content/PEMS.UI/pems-list.js", view);
-        }
-        Assert.DoesNotContain("<pems-list-page", File.ReadAllText(Path.Combine(dir!.FullName, "PEMS.Web", "Views", "DCC", "Index.cshtml")));
-    }
 }

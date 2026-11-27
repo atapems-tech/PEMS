@@ -144,7 +144,7 @@
                 <pems-icon name="bi-file-earmark-text" /> @Localizer["EngineeringDocuments"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("DocumentRegister"))" asp-controller="DocumentRegister" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/document-register" active="@(IsActive("DocumentRegister") || Context.Request.Path.StartsWithSegments("/p/document-register"))">
                 <pems-icon name="bi-journal-bookmark" /> @Localizer["DocumentRegister"]
             </pems-nav-link>
 
@@ -156,15 +156,15 @@
                 <pems-icon name="bi-diagram-2" /> @Localizer["Document Workflow"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("VDR"))" asp-controller="VDR" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/vdr" active="@(IsActive("VDR") || Context.Request.Path.StartsWithSegments("/p/vdr"))">
                 <pems-icon name="bi-journal-check" /> @Localizer["VDR"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("Transmittal"))" asp-controller="Transmittal" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/transmittals" active="@(IsActive("Transmittal") || Context.Request.Path.StartsWithSegments("/p/transmittals"))">
                 <pems-icon name="bi-send" /> @Localizer["Transmittal"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("MDB"))" asp-controller="MDB" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/mdb" active="@(IsActive("MDB") || Context.Request.Path.StartsWithSegments("/p/mdb"))">
                 <pems-icon name="bi-collection" /> @Localizer["MDB"]
             </pems-nav-link>
 
@@ -185,7 +185,7 @@
         </div>
         <div class="@SectionClass(active)" id="sec-ai">
 
-            <pems-nav-link item="false" active="@(IsActive("EngineeringDocumentIntelligence"))" asp-controller="EngineeringDocumentIntelligence" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/eng-intel" active="@(IsActive("EngineeringDocumentIntelligence") || Context.Request.Path.StartsWithSegments("/p/eng-intel"))">
                 <pems-icon name="bi-diagram-3-fill" /> @Localizer["DocumentIntelligence"]
             </pems-nav-link>
 
@@ -228,7 +228,7 @@
                 <pems-icon name="bi-person-check" /> @Localizer["MyReferrals"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("DCC"))" asp-controller="DCC" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/dcc" active="@(IsActive("DCC") || Context.Request.Path.StartsWithSegments("/p/dcc"))">
                 <pems-icon name="bi-building-gear" /> @Localizer["DCC"]
             </pems-nav-link>
 

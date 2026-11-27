@@ -45,48 +45,6 @@ public class DCCController : Controller
     }
 
 
-    public async Task<IActionResult> Index()
-    {
-        ViewData["Title"] = "Document Control Center (DCC)";
-        ViewData["Section"] = "DCC";
-
-        // مدارک آماده‌ی صدور (Approved، منتظر اقدام DCC)
-        ViewBag.PendingIssueCount = await _context.EngineeringDocuments
-            .CountAsync(x => x.IsActive && x.Status == "Approved");
-
-        var pendingIssueDocs = await _context.EngineeringDocuments
-            .Where(x => x.IsActive && x.Status == "Approved")
-            .OrderByDescending(x => x.ModifiedDate)
-            .Take(10)
-            .Select(x => new { x.DocumentId, x.DocumentNo, x.Title, x.ModifiedDate })
-            .ToListAsync();
-        ViewBag.PendingIssueDocs = pendingIssueDocs;
-
-        // مکاتبات وارده‌ای که هنوز به هیچ مدرک/MR/ترنسمیتال وصل نشده‌اند - نیاز به بررسی DCC دارند
-        var unlinked = _context.Letters
-            .Where(l => l.IsActive && l.LetterType == "Incoming"
-                        && l.RelatedDocumentId == null && l.RelatedMRId == null && !l.Links.Any());
-
-        // شمارش واقعی (قبلاً شمارنده همان ۱۵ ردیف نمایش‌داده‌شده بود)
-        ViewBag.UnlinkedIncomingCount = await unlinked.CountAsync();
-        ViewBag.UnlinkedIncoming = await unlinked
-            .OrderByDescending(l => l.LetterDate)
-            .Take(15)
-            .Select(l => new { l.LetterId, l.LetterNumber, l.Sender, l.Subject, l.LetterDate })
-            .ToListAsync();
-
-        // آخرین مکاتبات وارده (لینک‌شده یا نشده) برای دید کلی
-        ViewBag.RecentIncoming = await _context.Letters
-            .Where(l => l.IsActive && l.LetterType == "Incoming")
-            .OrderByDescending(l => l.LetterDate)
-            .Take(10)
-            .Select(l => new { l.LetterId, l.LetterNumber, l.Sender, l.Subject, l.LetterDate, l.RelatedDocumentId, l.RelatedMRId })
-            .ToListAsync();
-
-        return View();
-    }
-
-
     // ------------------------------------------------------------------ صفحه‌ی ثبت
 
     [HttpGet]

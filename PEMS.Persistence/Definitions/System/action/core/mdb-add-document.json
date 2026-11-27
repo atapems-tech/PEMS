@@ -31,6 +31,6 @@
       "en": "Document added to MDB",
       "fa": "مدرک به MDB افزوده شد."
     },
-    "redirect": "/MDB/Details/{mdbId}"
+    "redirect": "/p/mdb-details?id={mdbId}"
   }
 }

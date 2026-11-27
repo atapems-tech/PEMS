@@ -1,0 +1,28 @@
+{
+  "kind": "data-source",
+  "key": "document-register-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document register",
+    "fa": "ثبت مدارک"
+  },
+  "description": {
+    "en": "Document register",
+    "fa": "ثبت مدارک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "RegisterList",
+      "args": {
+        "project": "param:project",
+        "disciplines": "param:disciplines",
+        "status": "param:status",
+        "q": "param:q"
+      }
+    }
+  }
+}

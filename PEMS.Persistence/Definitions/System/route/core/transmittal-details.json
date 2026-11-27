@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "transmittal-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittal (old address)",
+    "fa": "ترنسمیتال (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Transmittal",
+    "fa": "ترنسمیتال"
+  },
+  "payload": {
+    "pattern": "Transmittal/Details/{id}",
+    "target": "/p/transmittal-details?id={id}",
+    "permanent": false
+  }
+}

@@ -26,6 +26,6 @@
       "en": "Hard copy shipment recorded",
       "fa": "ارسال نسخه‌ی چاپی ثبت شد."
     },
-    "redirect": "/MDB/Details/{mdbId}"
+    "redirect": "/p/mdb-details?id={mdbId}"
   }
 }

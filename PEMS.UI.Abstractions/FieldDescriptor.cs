@@ -92,6 +92,12 @@ public sealed record FieldDescriptor
     public string? Default { get; init; }
     /// <summary>SCRUM-835: the step of a number field (<c>0.5</c>, <c>0.01</c>, <c>any</c>); without it the browser accepts whole numbers only.</summary>
     public string? Step { get; init; }
+    /// <summary>SCRUM-830: the field is posted but not shown (a record id or a part code the form is opened for, filled from the link or the loaded record); the user sees no label and no input.</summary>
+    public bool Hidden { get; init; }
+    /// <summary>SCRUM-830: a File field that takes several files (the action reads them as a list).</summary>
+    public bool Multiple { get; init; }
+    /// <summary>SCRUM-830: a File field offers only these extensions in the file dialog (<c>.pdf,.xlsx</c>); the upload profile of the action still decides what is accepted.</summary>
+    public string? Accept { get; init; }
     /// <summary>
     /// SCRUM-820: the request values an <see cref="OptionsFrom"/> source reads: the key is the argument name the data source declares (<c>param:classId</c>), the value is the name of the query value of the form address
     /// (<c>/f/key?classId=5</c>; the record id of <c>/f/key/{id}</c> is <c>id</c>). Only these names reach the source and they only filter its choices; without a value the field has no choices.

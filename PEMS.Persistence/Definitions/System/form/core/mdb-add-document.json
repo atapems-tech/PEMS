@@ -1,0 +1,106 @@
+{
+  "kind": "form",
+  "key": "mdb-add-document",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a document",
+    "fa": "افزودن مدرک"
+  },
+  "description": {
+    "en": "Add a document",
+    "fa": "افزودن مدرک"
+  },
+  "payload": {
+    "id": "mdb-add-document",
+    "title": {
+      "en": "Add a document",
+      "fa": "افزودن مدرک"
+    },
+    "submitLabel": {
+      "en": "Add a document",
+      "fa": "افزودن مدرک"
+    },
+    "actionKey": "mdb-add-document",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "mdbId",
+        "label": {
+          "en": "Data book",
+          "fa": "کتاب اطلاعات"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "part",
+        "label": {
+          "en": "Part",
+          "fa": "بخش"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Link an existing document (optional)",
+          "fa": "پیوند به مدرک موجود (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "mdb-document-options",
+        "optionsArgs": {
+          "id": "mdbId"
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title (if no document is linked)",
+          "fa": "عنوان (اگر مدرکی وصل نمی‌شود)"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "dvdVolumeNo",
+        "label": {
+          "en": "DVD volume no.",
+          "fa": "شماره جلد DVD"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "isNotApplicable",
+        "label": {
+          "en": "Not applicable",
+          "fa": "قابل اجرا نیست"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes",
+          "fa": "توضیحات"
+        },
+        "kind": "textArea",
+        "span": 2
+      }
+    ]
+  }
+}

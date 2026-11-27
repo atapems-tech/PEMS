@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "transmittal-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittals",
+    "fa": "ترنسمیتال‌ها"
+  },
+  "description": {
+    "en": "Transmittals",
+    "fa": "ترنسمیتال‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "TransmittalList"
+    }
+  }
+}

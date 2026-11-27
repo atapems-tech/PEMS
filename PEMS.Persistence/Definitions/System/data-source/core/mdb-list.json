@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "mdb-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Manufacturer data books",
+    "fa": "کتاب‌های اطلاعات سازنده"
+  },
+  "description": {
+    "en": "Manufacturer data books",
+    "fa": "کتاب‌های اطلاعات سازنده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "MdbList",
+      "args": {
+        "projectId": "param:projectId",
+        "vendorId": "param:vendorId"
+      }
+    }
+  }
+}

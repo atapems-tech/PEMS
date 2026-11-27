@@ -1,0 +1,55 @@
+{
+  "kind": "form",
+  "key": "transmittal-mark-sent",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Mark as sent",
+    "fa": "ثبت ارسال"
+  },
+  "description": {
+    "en": "Mark as sent",
+    "fa": "ثبت ارسال"
+  },
+  "payload": {
+    "id": "transmittal-mark-sent",
+    "title": {
+      "en": "Mark as sent",
+      "fa": "ثبت ارسال"
+    },
+    "submitLabel": {
+      "en": "Mark as sent",
+      "fa": "ثبت ارسال"
+    },
+    "actionKey": "transmittal-mark-sent",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Transmittal",
+          "fa": "ترنسمیتال"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "responseDueWorkingDays",
+        "label": {
+          "en": "Response due (working days)",
+          "fa": "مهلت پاسخ (روز کاری)"
+        },
+        "kind": "number",
+        "default": "10",
+        "min": 1
+      }
+    ]
+  }
+}

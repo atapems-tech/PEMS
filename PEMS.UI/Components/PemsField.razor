@@ -14,6 +14,11 @@
         ? System.Text.Json.JsonSerializer.Serialize(mf.Select(m => new { name = m.Value, label = Locale.Text(m.Label) }))
         : null;
 }
+@if (Descriptor.Hidden)
+{
+    <input type="hidden" name="@Descriptor.Name" value="@Value" />
+    return;
+}
 <div class="pems-field">
     @if (Descriptor.Kind is FieldKind.Checkbox or FieldKind.Switch)
     {
@@ -130,7 +135,7 @@
                 </select>
                 break;
             case FieldKind.File:
-                <input type="file" id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" required="@Descriptor.Required"
+                <input type="file" id="@state.Id" name="@Descriptor.Name" class="@state.InputCss" required="@Descriptor.Required" multiple="@Descriptor.Multiple" accept="@Descriptor.Accept"
                        aria-describedby="@state.DescribedBy" aria-invalid="@(state.Invalid ? "true" : null)" />
                 break;
             default:

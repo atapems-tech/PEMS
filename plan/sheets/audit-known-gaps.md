@@ -98,3 +98,16 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - The three-step banner (upload, review, commit) is gone; the include toggle of a row is two row actions (include, exclude) that reload the grid; commit and discard are confirmation form pages; the MDR tools "fix discipline matching" and "fix status values" are links to forms with an optional project.
 - The batch figures are record fields; the colored validation badges and the red or yellow row tint are plain text columns; the MDR header warnings are one text field.
 - Commit goes to the document register and discard back to the import page through the existing action redirects (old addresses are routes).
+
+### Document pages (SCRUM-830, bunch 2)
+- Engine: form fields `hidden` (posted, not shown: an id or part the form is opened for), `multiple` and `accept` on a file field (several files, the file dialog filter).
+- Document register: the list is read whole (up to 20000 rows) by the grid instead of SQL paging; the discipline filter is one select (the address `disciplines=a,b` with several still works); the saved filters are the generic saved views of the grid; the quick filter "pending review" and the colored status pills and the frozen snowflake are plain columns; the "Open" redirect action stays a controller (SCRUM-837).
+- Document register Excel export of the selected rows is a link to the file source with the ids; no row-count message page: a too large filter answers the error text of the file source.
+- VDR list: the KPI chips and the vendor delay risk fold are one counts row; the top delayed vendors list is not shown; the search box has no autocomplete; paging is the grid (all rows up to 20000); the Create button is the form `vdr-create`.
+- MDB list and details: part tables are three related tables; "Mark hard copy shipped" is a form page (volumes), the other marks are row actions; the DVD volume and not-applicable checkbox are form fields; the overdue badge is a column.
+- Transmittal list and details: recipients on the create form are one text area, one recipient a line (name | type | organization | yes) instead of repeating rows; the document picker is a multi-select of all active documents not on hold (no project filter, no search box, no on-hold rows shown disabled, no counter); the details page actions are forms (send, cancel, record response, acknowledge) and the re-issue is a row action.
+- DCC dashboard: three tables and two counts; the KPI tile icons and the "relationship explorer" card are links; RegisterIncoming (the two-panel script page) stays a controller (SCRUM-828 family).
+- Document upload: the page is a form with a multi-file field; the explanation text is the help text; the old address is a route.
+- Document intelligence: the queue page is two tables and four counts; the Review page stays a controller (next bunch).
+- Tests removed with the screens: the list layout tests of the register, MDB, VDR list (the service-level VDR tests stay), the DCC and Transmittal view checks, the EDI index forbid test, the VDR index viewer test, the transmittal create script and controller checks.
+- The scripts `transmittal-create.js` is deleted; the old `Transmittal/Create`, `MDB/*`, `DCC`, `DocumentRegister`, `VDR`, `VDR/Export`, `DocumentUpload` and `EngineeringDocumentIntelligence` addresses are routes.

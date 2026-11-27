@@ -27,6 +27,6 @@
       "en": "Transmittal cancelled",
       "fa": "ترانسمیتال لغو شد."
     },
-    "redirect": "/Transmittal/Details/{id}"
+    "redirect": "/p/transmittal-details?id={id}"
   }
 }

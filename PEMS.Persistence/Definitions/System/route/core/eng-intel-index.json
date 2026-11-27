@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-intel-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document intelligence (old address)",
+    "fa": "هوشمندسازی مدارک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document intelligence",
+    "fa": "هوشمندسازی مدارک"
+  },
+  "payload": {
+    "pattern": "EngineeringDocumentIntelligence/Index",
+    "target": "/p/eng-intel",
+    "permanent": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "transmittal-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transmittals (old address)",
+    "fa": "ترنسمیتال‌ها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Transmittals",
+    "fa": "ترنسمیتال‌ها"
+  },
+  "payload": {
+    "pattern": "Transmittal/Index",
+    "target": "/p/transmittals",
+    "permanent": false
+  }
+}

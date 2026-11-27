@@ -1,0 +1,174 @@
+{
+  "kind": "page",
+  "key": "eng-intel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document intelligence",
+    "fa": "هوشمندسازی مدارک"
+  },
+  "description": {
+    "en": "Document intelligence",
+    "fa": "هوشمندسازی مدارک"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "eng-intel",
+    "regions": {
+      "content": [
+        {
+          "id": "eng-intel-counts",
+          "component": "data-grid",
+          "options": {
+            "id": "eng-intel-counts",
+            "url": "/d/eng-intel-counts",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "total",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "pendingClassification",
+                "width": 200,
+                "type": "number"
+              },
+              {
+                "key": "pendingTags",
+                "width": 160,
+                "type": "number"
+              },
+              {
+                "key": "openComments",
+                "width": 140,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-stages",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-stages",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Documents by workflow stage",
+                  "fa": "مدارک بر اساس مرحله گردش"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "stages",
+          "component": "def:related-table",
+          "options": {
+            "id": "stages",
+            "url": "/d/eng-intel-stages",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "stage",
+                "width": 220
+              },
+              {
+                "key": "count",
+                "width": 100,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/intake",
+                "text": {
+                  "en": "AI intake queue",
+                  "fa": "صف ورودی هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-pending",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-pending",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Documents waiting for engineering review",
+                  "fa": "مدارک منتظر بازبینی مهندسی"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "pending",
+          "component": "def:related-table",
+          "options": {
+            "id": "pending",
+            "url": "/d/eng-intel-pending",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 160
+              },
+              {
+                "key": "title",
+                "width": 300
+              },
+              {
+                "key": "stage",
+                "width": 160
+              },
+              {
+                "key": "pendingClassifications",
+                "width": 170,
+                "type": "number"
+              },
+              {
+                "key": "pendingTags",
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "review",
+                    "url": "/EngineeringDocumentIntelligence/Review/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "EngineeringDocuments.View"
+  }
+}

@@ -18,13 +18,13 @@
       "model": "Mdb",
       "action": "MarkSoftCopyDelivered",
       "args": {
-        "mdbId": "field:mdbId"
+        "mdbId": "field:id"
       }
     },
     "success": {
       "en": "Soft copy delivery recorded",
       "fa": "تحویل نسخه‌ی الکترونیکی ثبت شد."
     },
-    "redirect": "/MDB/Details/{mdbId}"
+    "redirect": "/p/mdb-details?id={id}"
   }
 }
