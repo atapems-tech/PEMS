@@ -152,19 +152,4 @@ public class RcmViewRenderTests
 
         Assert.Empty(await env.PlanOperations().FormOfAsync(424242));                       // the form host answers 404 for an id that gives no row
     }
-
-    [Fact]
-    public async Task TagCoverageAndCatalogPages_RenderWithoutErrors()
-    {
-        var f = await BuildAsync(nameof(TagCoverageAndCatalogPages_RenderWithoutErrors));
-        var c = f.Env.StrategyController();
-
-        var tag = await Render(c, await c.Tag(f.TagId), "/Views/MaintenanceStrategy/Tag.cshtml");
-        var coverage = await Render(c, await c.Coverage(), "/Views/MaintenanceStrategy/Coverage.cshtml");
-
-        Assert.Contains("Maintenance of tag", tag);
-        Assert.Contains("Strategy coverage", coverage);
-        Assert.Contains("Coverage by criticality", coverage);
-
-    }
 }

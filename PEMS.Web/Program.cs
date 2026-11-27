@@ -267,6 +267,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IPartCatalogueRequestOper
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPartCatalogueAdminOperations, PEMS.Web.Services.PartCatalogueAdminOperations>();   // SCRUM-658
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPartCatalogueOperations, PEMS.Web.Services.PartCatalogueOperations>();   // SCRUM-659, 660, 661
 builder.Services.AddScoped<PEMS.Application.Interfaces.IBarcodeOperations, PEMS.Web.Services.BarcodeOperations>();   // SCRUM-671
+builder.Services.AddScoped<PEMS.Application.Interfaces.IStrategyPagesOperations, PEMS.Web.Services.StrategyPagesOperations>();   // SCRUM-829
 builder.Services.AddScoped<PEMS.Application.Interfaces.IMrsImportOperations, PEMS.Web.Services.MrsImportOperations>();   // SCRUM-657
 builder.Services.AddScoped<PEMS.Application.Interfaces.IIrnReceiptOperations, PEMS.Web.Services.IrnReceiptOperations>();   // SCRUM-655
 builder.Services.AddScoped<PEMS.Application.Interfaces.IPurchaseOrderOperations, PEMS.Web.Services.PurchaseOrderOperations>();   // SCRUM-741

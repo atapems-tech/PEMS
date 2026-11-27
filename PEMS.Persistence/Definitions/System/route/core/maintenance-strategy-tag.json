@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-strategy-tag",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tag maintenance (old address)",
+    "fa": "نگهداری تگ (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Tag maintenance (old address)",
+    "fa": "نگهداری تگ (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/Tag",
+    "target": "/p/strategy-tag",
+    "permanent": false
+  }
+}

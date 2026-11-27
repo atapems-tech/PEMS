@@ -182,10 +182,6 @@ public class MaintenanceStrategyControllerAuthorizationTests
         var c = env.StrategyController();
 
         Assert.IsType<ForbidResult>(await c.Details(1));
-        Assert.IsType<ForbidResult>(await c.Tag(1));
-        Assert.IsType<ForbidResult>(await c.Coverage());
-        Assert.IsType<ForbidResult>(await c.ExportUncovered());
-        Assert.IsType<ForbidResult>(await c.FailureModes(null, null));
     }
 
     [Fact]
@@ -193,7 +189,6 @@ public class MaintenanceStrategyControllerAuthorizationTests
     {
         var env = await Env(nameof(Details_ForUnknownId_ReturnsNotFound_NotA500), SystemRoles.Viewer);
         Assert.IsType<NotFoundResult>(await env.StrategyController().Details(424242));
-        Assert.IsType<NotFoundResult>(await env.StrategyController().Tag(424242));
     }
 
     [Fact]

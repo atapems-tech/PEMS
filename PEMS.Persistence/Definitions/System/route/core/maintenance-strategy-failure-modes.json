@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-strategy-failure-modes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure-mode picker (old address)",
+    "fa": "انتخاب حالت خرابی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Failure-mode picker (old address)",
+    "fa": "انتخاب حالت خرابی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/FailureModes",
+    "target": "/x/strategy-failure-modes",
+    "permanent": false
+  }
+}

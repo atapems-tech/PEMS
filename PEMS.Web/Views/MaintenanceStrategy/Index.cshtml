@@ -71,7 +71,7 @@
                     </div>
                 </pems-list-filters>
                 <pems-list-menu id="msMoreBtn" icon="bi-three-dots" label="@Localizer["Lp_More"]">
-                    <pems-bullet><pems-link class="dropdown-item" asp-action="Coverage"><pems-icon name="bi-pie-chart" aria-hidden="true" /> @Localizer["Rcm_Coverage"]</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="/p/strategy-coverage"><pems-icon name="bi-pie-chart" aria-hidden="true" /> @Localizer["Rcm_Coverage"]</pems-link></pems-bullet>
                     <pems-bullet><pems-link class="dropdown-item" href="/p/failure-mode-catalog"><pems-icon name="bi-journal-text" aria-hidden="true" /> @Localizer["Rcm_FailureModeCatalog"]</pems-link></pems-bullet>
                     @if (Model.CanApprove)
                     {
@@ -126,7 +126,7 @@
                                 }
                                 @if (!string.IsNullOrEmpty(s.EquipmentTagNumber))
                                 {
-                                    <div class="text-muted"><pems-link asp-controller="MaintenanceStrategy" asp-action="Tag" asp-route-equipmentId="@s.EquipmentId">@s.EquipmentTagNumber</pems-link></div>
+                                    <div class="text-muted"><pems-link href="/p/strategy-tag?equipmentId=@s.EquipmentId">@s.EquipmentTagNumber</pems-link></div>
                                 }
                                 @if (string.IsNullOrEmpty(s.EquipmentClassName) && string.IsNullOrEmpty(s.EquipmentTagNumber)) { <span class="text-muted">-</span> }
                             </pems-table-cell>

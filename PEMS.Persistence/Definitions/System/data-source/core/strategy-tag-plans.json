@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-tag-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Plans of a tag",
+    "fa": "برنامه‌های تگ"
+  },
+  "description": {
+    "en": "Plans of a tag",
+    "fa": "برنامه‌های تگ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "TagPlans",
+      "args": {
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

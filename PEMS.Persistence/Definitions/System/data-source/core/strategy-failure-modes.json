@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "strategy-failure-modes",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure-mode picker",
+    "fa": "انتخاب حالت خرابی"
+  },
+  "description": {
+    "en": "Failure-mode picker",
+    "fa": "انتخاب حالت خرابی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "FailureModes",
+      "args": {
+        "classId": "param:classId",
+        "q": "param:q"
+      },
+      "disposition": "inline"
+    }
+  }
+}

@@ -53,7 +53,7 @@
         <pems-info-item label="@Localizer["Rcm_ApprovedBy"]">@(s.ApprovedBy) @(PemsDates.Date(s.ApprovedAt))</pems-info-item>
         @if (!string.IsNullOrEmpty(s.LegacyEquipmentTag))
         {
-            <pems-info-item label="@Localizer["Rcm_LegacyTag"]"><pems-link asp-action="Tag" asp-route-equipmentId="@s.LegacyEquipmentId">@s.LegacyEquipmentTag</pems-link></pems-info-item>
+            <pems-info-item label="@Localizer["Rcm_LegacyTag"]"><pems-link href="/p/strategy-tag?equipmentId=@s.LegacyEquipmentId">@s.LegacyEquipmentTag</pems-link></pems-info-item>
         }
     </pems-info-grid>
 

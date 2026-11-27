@@ -1,0 +1,209 @@
+{
+  "kind": "page",
+  "key": "strategy-tag",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tag maintenance",
+    "fa": "نگهداری تگ"
+  },
+  "description": {
+    "en": "Tag maintenance",
+    "fa": "نگهداری تگ"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "strategy-tag",
+    "permission": "MaintenanceStrategy.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "strategy-tag-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/MaintenanceStrategy?equipmentId={{params.equipmentId|url}}",
+                "text": {
+                  "en": "Back to the strategies",
+                  "fa": "بازگشت به استراتژی‌ها"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/equipment-passport?id={{params.equipmentId|url}}",
+                "text": {
+                  "en": "Equipment passport",
+                  "fa": "شناسنامه تجهیز"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategy-tag-identity",
+          "component": "record-view",
+          "options": {
+            "id": "strategy-tag-identity",
+            "fields": [
+              {
+                "key": "tag",
+                "label": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
+              },
+              {
+                "key": "name",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
+              },
+              {
+                "key": "equipmentClassName",
+                "label": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                }
+              },
+              {
+                "key": "areaUnit",
+                "label": {
+                  "en": "Area / unit",
+                  "fa": "ناحیه / واحد"
+                }
+              },
+              {
+                "key": "criticalityClass",
+                "label": {
+                  "en": "Criticality",
+                  "fa": "بحرانیت"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/strategy-tag-identity",
+              "idField": "equipmentId",
+              "id": "{{params.equipmentId}}"
+            }
+          }
+        },
+        {
+          "id": "strategy-tag-assignments",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-tag-assignments",
+            "url": "/d/strategy-tag-assignments?f.equipmentId={{params.equipmentId|url}}",
+            "idField": "assignmentId",
+            "columns": [
+              {
+                "key": "maintenanceStrategyId",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "strategyVersion",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "overrideStatus",
+                "width": 130
+              },
+              {
+                "key": "planCount",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/MaintenanceStrategy/Details/{raw.maintenanceStrategyId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategy-tag-plans",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-tag-plans",
+            "url": "/d/strategy-tag-plans?f.equipmentId={{params.equipmentId|url}}",
+            "idField": "maintenancePlanId",
+            "columns": [
+              {
+                "key": "planNumber",
+                "width": 140
+              },
+              {
+                "key": "title",
+                "width": 240
+              },
+              {
+                "key": "strategyVersion",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "nextDueDate",
+                "width": 120,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "strategy-tag-work-orders",
+          "component": "def:related-table",
+          "options": {
+            "id": "strategy-tag-work-orders",
+            "url": "/d/strategy-tag-work-orders?f.equipmentId={{params.equipmentId|url}}",
+            "idField": "workOrderId",
+            "columns": [
+              {
+                "key": "workOrderNumber",
+                "width": 150
+              },
+              {
+                "key": "status",
+                "width": 130
+              },
+              {
+                "key": "priority",
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/WorkOrder/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

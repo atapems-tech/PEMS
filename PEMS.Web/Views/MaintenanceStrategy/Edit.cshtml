@@ -55,7 +55,7 @@
         <pems-col md="6">
             <pems-label>@Localizer["Rcm_FailureMode"] <span class="text-danger">*</span></pems-label>
             <pems-input scale="small" css="mb-1" type="text" id="modeSearch" placeholder="@Localizer["Rcm_SearchFailureMode"]" autocomplete="off" />
-            <pems-select name="FailureModeId" id="modeSelect" size="5" required data-selected="@(i.FailureModeId?.ToString() ?? "")" data-url="@Url.Action("FailureModes")">
+            <pems-select name="FailureModeId" id="modeSelect" size="5" required data-selected="@(i.FailureModeId?.ToString() ?? "")" data-url="/x/strategy-failure-modes">
                 @if (i.FailureModeId.HasValue)
                 {
                     <option value="@i.FailureModeId" selected>@(Model.SelectedFailureModeLabel ?? i.FailureModeId.ToString())</option>

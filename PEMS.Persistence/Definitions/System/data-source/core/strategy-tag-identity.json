@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-tag-identity",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tag identity",
+    "fa": "هویت تگ"
+  },
+  "description": {
+    "en": "Tag identity",
+    "fa": "هویت تگ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "TagIdentity",
+      "args": {
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}

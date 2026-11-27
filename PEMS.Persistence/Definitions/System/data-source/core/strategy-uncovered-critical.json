@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-uncovered-critical",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Critical equipment without a strategy",
+    "fa": "تجهیزات بحرانی بدون استراتژی"
+  },
+  "description": {
+    "en": "Critical equipment without a strategy",
+    "fa": "تجهیزات بحرانی بدون استراتژی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "UncoveredCritical"
+    }
+  }
+}

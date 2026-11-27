@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-tag-assignments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategies assigned to a tag",
+    "fa": "استراتژی‌های تخصیص‌یافته به تگ"
+  },
+  "description": {
+    "en": "Strategies assigned to a tag",
+    "fa": "استراتژی‌های تخصیص‌یافته به تگ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "TagAssignments",
+      "args": {
+        "equipmentId": "param:equipmentId"
+      }
+    }
+  }
+}
