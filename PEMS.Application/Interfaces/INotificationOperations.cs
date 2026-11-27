@@ -9,6 +9,9 @@ public sealed record NotificationActionResult(bool Success, string? ErrorKey);
 /// <summary>The notification inbox page as operations (SCRUM-731): only the notifications of the signed-in user, never an id from the input for the user; the user is the context user name.</summary>
 public sealed record NotificationCountAnswer(int Unread);
 
+/// <summary>SCRUM-841: one line of the bell dropdown: the newest notifications of the signed-in user; OpenUrl marks it read and goes to its link (/x/notification-open).</summary>
+public sealed record NotificationItemRow(int NotificationId, string Title, string Message, string Created, bool IsRead, string OpenUrl);
+
 public interface INotificationOperations
 {
     [PEMS.Application.Common.PemsOperation("Notification", "Inbox")]
@@ -29,4 +32,8 @@ public interface INotificationOperations
     /// <summary>SCRUM-831: the unread count of the signed-in user for the bell (served as JSON at /x/notification-unread-count: { unread }).</summary>
     [PEMS.Application.Common.PemsOperation("Notification", "UnreadCount")]
     Task<NotificationCountAnswer> UnreadCountAsync(string userName);
+
+    /// <summary>SCRUM-841: the bell dropdown (the newest 15, served as JSON at /x/notification-dropdown).</summary>
+    [PEMS.Application.Common.PemsOperation("Notification", "Recent")]
+    Task<List<NotificationItemRow>> RecentAsync(string userName);
 }

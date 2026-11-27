@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "notification-dropdown",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Notifications of the bell",
+    "fa": "اعلان‌های زنگ"
+  },
+  "description": {
+    "en": "The newest notifications of the signed-in user",
+    "fa": "جدیدترین اعلان‌های کاربر واردشده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Notification",
+      "action": "Recent",
+      "args": {
+        "userName": "context:userName"
+      },
+      "disposition": "inline"
+    }
+  }
+}

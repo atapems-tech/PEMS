@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "home-error-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Error page (old address)",
+    "fa": "صفحه‌ی خطا (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Error page",
+    "fa": "صفحه‌ی خطا"
+  },
+  "payload": {
+    "pattern": "Home/Error",
+    "target": "/p/status-page",
+    "permanent": false
+  }
+}

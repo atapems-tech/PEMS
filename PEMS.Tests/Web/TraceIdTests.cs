@@ -95,9 +95,9 @@ public sealed class TraceIdTests
     public void The_pages_and_the_pipeline_use_the_one_helper()
     {
         var root = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Here())!, "..", ".."));
-        var home = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Controllers", "HomeController.cs"));
-        Assert.DoesNotContain("Activity.Current?.Id", home);
-        Assert.Contains("PemsTrace.Current(HttpContext)", home);
+        var panel = File.ReadAllText(Path.Combine(root, "PEMS.UI", "Components", "PemsStatusPanel.razor"));
+        Assert.DoesNotContain("Activity.Current?.Id", panel);
+        Assert.Contains("Activity.Current?.TraceId", panel);
         var program = File.ReadAllText(Path.Combine(root, "PEMS.Web", "Program.cs"));
         Assert.True(program.IndexOf("UsePemsTraceId(app)", StringComparison.Ordinal) < program.IndexOf("app.UseExceptionHandler", StringComparison.Ordinal),
             "the trace id middleware must run before the exception handler");

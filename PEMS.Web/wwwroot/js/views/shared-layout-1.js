@@ -1,6 +1,5 @@
         async function loadNotifDropdown() {
-            const res = await fetch('/Notification/Dropdown', { cache: 'no-store' });
-            PemsTemplate.html(document.getElementById('notifDropdownBody'), await res.text());
+            if (window.PemsNotificationList) await window.PemsNotificationList.load();
         }
 
         function showLiveToast(message, isError) {

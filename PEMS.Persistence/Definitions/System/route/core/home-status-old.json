@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "home-status-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Status page (old address)",
+    "fa": "صفحه‌ی وضعیت (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Status page",
+    "fa": "صفحه‌ی وضعیت"
+  },
+  "payload": {
+    "pattern": "Home/StatusPage",
+    "target": "/p/status-page",
+    "permanent": false
+  }
+}

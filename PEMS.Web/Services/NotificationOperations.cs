@@ -51,4 +51,8 @@ public sealed class NotificationOperations(INotificationService service, PEMSDbC
 
     private async Task<int?> UserIdAsync(string userName)
         => string.IsNullOrEmpty(userName) ? null : await context.Users.AsNoTracking().Where(u => u.UserName == userName).Select(u => (int?)u.Id).FirstOrDefaultAsync();
+
+    public async Task<List<NotificationItemRow>> RecentAsync(string userName)
+        => await UserIdAsync(userName) is not { } userId ? [] : (await service.GetForUserAsync(userId)).Take(15)
+            .Select(n => new NotificationItemRow(n.NotificationId, n.Title, n.Message, PEMS.UI.Dates.PemsDates.DateTime(n.CreatedDate), n.IsRead, "/x/notification-open?id=" + n.NotificationId)).ToList();
 }

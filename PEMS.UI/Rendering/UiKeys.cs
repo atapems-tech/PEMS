@@ -70,6 +70,8 @@ public static class UiKeys
     public const string SignaturePad = "signature-pad";
     public const string ChatPanel = "chat-panel";
     public const string OrgChart = "org-chart";
+    public const string StatusPanel = "status-panel";
+    public const string NotificationList = "notification-list";
     public const string Image = "image";
     public const string ScriptIsland = "script-island";
     public const string Date = "date";

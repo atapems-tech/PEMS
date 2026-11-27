@@ -1356,7 +1356,7 @@ PEMS.Web.Diagnostics.PemsTrace.UsePemsTraceId(app);
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/p/status-page");   // SCRUM-841: the status page is a public page definition
 
     app.UseHsts();
 }
@@ -1365,7 +1365,7 @@ if (!app.Environment.IsDevelopment())
 // (مثلاً BadRequest(new { error })) دست‌نخورده می‌مانند.
 // Not for /api: API errors are problem+json bodies (SCRUM-435).
 app.UseWhen(ctx => !PEMS.Web.Api.ApiServiceCollectionExtensions.IsApiRequest(ctx.Request.Path),
-    branch => branch.UseStatusCodePagesWithReExecute("/Home/StatusPage", "?code={0}"));
+    branch => branch.UseStatusCodePagesWithReExecute("/p/status-page", "?code={0}"));
 
 
 

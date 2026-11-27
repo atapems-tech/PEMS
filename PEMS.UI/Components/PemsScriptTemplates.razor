@@ -105,6 +105,8 @@
         break;
     case ScriptTemplateSet.Layout:
         <template data-pems-template="toast-notif-error"><div class="toast align-items-center border-0 text-bg-danger" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
+        <template data-pems-template="notif-item"><div class="d-flex align-items-start border-bottom" data-slot="row" role="listitem"><a class="dropdown-item small py-2 flex-grow-1 text-wrap" data-slot="link"><i class="bi bi-circle-fill text-primary me-1 pems-s-3494e7ef" aria-hidden="true" data-slot="dot"></i><strong data-slot="title"></strong><div class="text-muted" data-slot="message"></div><div class="text-muted pems-s-11a50812" data-slot="date"></div></a><button type="button" class="btn btn-link text-muted px-2 py-2" data-notif-action="dismiss" data-slot="dismiss"><i class="bi bi-x-lg" aria-hidden="true"></i></button></div></template>
+        <template data-pems-template="notif-empty"><span class="dropdown-item small text-muted" data-slot="text"></span></template>
         <template data-pems-template="toast-notif"><div class="toast align-items-center border-0 text-bg-primary" role="alert" data-slot="root"><div class="d-flex"><div class="toast-body"><i class="bi bi-bell-fill me-1"></i> <span class="toast-msg" data-slot="message"></span></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div></template>
         break;
     case ScriptTemplateSet.CartableSettings:

@@ -152,7 +152,7 @@ public class ShellAccessibilityTests
     {
         var program = Read("PEMS.Web/Program.cs");
 
-        Assert.Contains("UseStatusCodePagesWithReExecute(\"/Home/StatusPage\", \"?code={0}\")", program);   // inside the non-API branch since SCRUM-435
+        Assert.Contains("UseStatusCodePagesWithReExecute(\"/p/status-page\", \"?code={0}\")", program);   // inside the non-API branch since SCRUM-435
         // it must come after the exception handler and before routing/auth so every 4xx/5xx without a body is covered
         Assert.True(program.IndexOf("UseExceptionHandler", StringComparison.Ordinal) < program.IndexOf("UseStatusCodePagesWithReExecute", StringComparison.Ordinal));
         Assert.True(program.IndexOf("UseStatusCodePagesWithReExecute", StringComparison.Ordinal) < program.IndexOf("app.UseRouting()", StringComparison.Ordinal));
@@ -160,59 +160,15 @@ public class ShellAccessibilityTests
 
     // ------------------------------------------------------------------ status page
 
-    private static HomeController NewHome() => new()
-    {
-        ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
-    };
-
-    [Theory]
-    [InlineData(404, 404)]
-    [InlineData(403, 403)]
-    [InlineData(500, 500)]
-    [InlineData(99, 500)]       // out of range -> generic
-    [InlineData(200, 500)]
-    [InlineData(700, 500)]
-    public void StatusPage_ClampsTheCode_AndKeepsAValidOne(int requested, int expected)
-    {
-        var result = Assert.IsType<ViewResult>(NewHome().StatusPage(requested));
-        var model = Assert.IsType<StatusPageViewModel>(result.Model);
-
-        Assert.Equal(expected, model.Code);
-        Assert.False(string.IsNullOrEmpty(model.RequestId));
-    }
-
     [Fact]
-    public void StatusPage_IsAnonymousAccessible_SoA404DoesNotRedirectToLogin()
+    public void PageHost_IsAnonymousAccessible_ButChallengesAPageThatIsNotPublic()
     {
-        var method = typeof(HomeController).GetMethod(nameof(HomeController.StatusPage))!;
-
-        Assert.NotEmpty(method.GetCustomAttributes(typeof(Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute), inherit: true));
+        var method = typeof(PEMS.Web.Controllers.PageHostController).GetMethod("Index")!;
+        Assert.NotEmpty(method.GetCustomAttributes(typeof(Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute), inherit: true));   // so a 404 does not redirect to the login
+        Assert.Contains("Challenge()", Read("PEMS.Web/Controllers/PageHostController.cs"));
     }
 
-    [Theory]
-    [InlineData(404, "bi-compass")]
-    [InlineData(403, "bi-shield-lock")]
-    [InlineData(401, "bi-shield-lock")]
-    [InlineData(500, "bi-exclamation-triangle")]
-    [InlineData(503, "bi-cloud-slash")]
-    [InlineData(409, "bi-arrow-repeat")]
-    [InlineData(429, "bi-hourglass-split")]
-    public async Task StatusPage_Renders_ADistinctMessagePerKindOfError(int code, string expectedIcon)
-    {
-        var host = NewHome();
-        var result = new ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(host.ViewData) { Model = new StatusPageViewModel { Code = code, RequestId = "REQ-123" } } };
-
-        var html = await RazorViewRenderer.RenderAsync(host, result, "~/Views/Home/StatusPage.cshtml");
-
-        Assert.Contains($"data-status-code=\"{code}\"", html);
-        Assert.Contains(expectedIcon, html);
-        Assert.Contains("aria-labelledby=\"statusTitle\"", html);
-        Assert.Contains("id=\"statusTitle\"", html);
-        Assert.Contains("REQ-123", html);
-        Assert.Contains(">" + code + "<", html);
-    }
-
-    // ------------------------------------------------------------------ localization
+        // ------------------------------------------------------------------ localization
 
     [Theory]
     [InlineData("PEMS.Web/Resources/SharedResource.resx")]

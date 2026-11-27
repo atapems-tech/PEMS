@@ -116,6 +116,8 @@ public sealed class PemsComponentRegistry : IPemsComponentRegistry
         Register(UiKeys.SignaturePad, typeof(PemsSignaturePad));
         Register(UiKeys.ChatPanel, typeof(PemsChatPanel));
         Register(UiKeys.OrgChart, typeof(PemsOrgChart));
+        Register(UiKeys.StatusPanel, typeof(PemsStatusPanel));
+        Register(UiKeys.NotificationList, typeof(PemsNotificationList));
         Register(UiKeys.Image, typeof(PemsImage));
         Register(UiKeys.ScriptIsland, typeof(PemsScriptIsland));
         Register(UiKeys.WorkflowActionBar, typeof(PemsWorkflowActionBar));
