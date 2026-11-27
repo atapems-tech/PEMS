@@ -24,7 +24,7 @@
             "blocks": [
               {
                 "type": "link",
-                "href": "/DCC/RegisterIncoming",
+                "href": "/f/dcc-register-incoming",
                 "text": {
                   "en": "Register an incoming letter",
                   "fa": "ثبت مکاتبه‌ی وارده"

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "dcc-incoming-parties",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Correspondent parties",
+    "fa": "طرف‌های مکاتبه"
+  },
+  "description": {
+    "en": "Correspondent parties",
+    "fa": "طرف‌های مکاتبه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DccIncoming",
+      "action": "Parties"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "dcc-incoming-employees",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees",
+    "fa": "کارمندان"
+  },
+  "description": {
+    "en": "Employees",
+    "fa": "کارمندان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DccIncoming",
+      "action": "Employees"
+    }
+  }
+}

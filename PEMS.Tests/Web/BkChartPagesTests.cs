@@ -36,7 +36,7 @@ public class BkChartPagesTests
 
     private static Controller Host()
     {
-        var c = new DCCController(null!, null!, null!, null!, null!).WithTempData();
+        var c = new PEMS.Tests.TestSupport.TestHostController().WithTempData();
         c.ViewBag.Projects = new List<object>();
         c.ViewBag.Disciplines = new List<object>();
         return c;

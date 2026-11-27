@@ -1,0 +1,59 @@
+{
+  "kind": "action",
+  "key": "dcc-register-incoming",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت مکاتبه‌ی وارده"
+  },
+  "description": {
+    "en": "Register an incoming letter",
+    "fa": "ثبت مکاتبه‌ی وارده"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "DccIncoming",
+      "action": "Register",
+      "args": {
+        "correspondentPartyId": "field:correspondentPartyId",
+        "newPartyName": "field:newPartyName",
+        "newPartyType": "field:newPartyType",
+        "projectId": "field:projectId",
+        "contractId": "field:contractId",
+        "senderReference": "field:senderReference",
+        "documentDate": "field:documentDate",
+        "receivedDate": "field:receivedDate",
+        "receiptChannel": "field:receiptChannel",
+        "subject": "field:subject",
+        "summary": "field:summary",
+        "priority": "field:priority",
+        "category": "field:category",
+        "confidentialityLevel": "field:confidentialityLevel",
+        "disciplineId": "field:disciplineId",
+        "parentLetterId": "field:parentLetterId",
+        "responseRequired": "field:responseRequired",
+        "responseDueDate": "field:responseDueDate",
+        "ownerEmployeeId": "field:ownerEmployeeId",
+        "ccEmployeeIds": "field:ccEmployeeIds",
+        "instruction": "field:instruction",
+        "links": "field:links",
+        "confirmDuplicate": "field:confirmDuplicate",
+        "files": "file:files",
+        "employeeId": "context:employeeId",
+        "culture": "context:culture"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 100
+      }
+    },
+    "success": {
+      "en": "Registered.",
+      "fa": "ثبت شد."
+    },
+    "redirect": "/Letter/Details/{result}"
+  }
+}
