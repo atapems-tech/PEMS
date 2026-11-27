@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "cartable-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable contact groups",
+    "fa": "گروه‌های مخاطبین کارتابل"
+  },
+  "description": {
+    "en": "Cartable contact groups",
+    "fa": "گروه‌های مخاطبین کارتابل"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Cartable",
+      "action": "Groups",
+      "disposition": "inline"
+    }
+  }
+}

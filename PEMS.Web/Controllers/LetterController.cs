@@ -196,21 +196,6 @@ public class LetterController : Controller
     private async Task<bool> CanViewConfidentialAsync()
         => _currentUser.Roles.Contains("SystemAdmin") || await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
 
-    // اعضای رشته‌ی گفتگو برای باز شدن ردیف در «نمای رشته‌ای»؛ حق دیدن خودِ نامه اول سنجیده می‌شود
-    [HttpGet]
-    public async Task<IActionResult> ThreadMembers(int id)
-    {
-        if (_cartable == null) return NotFound();
-        if (!await _letterService.CanViewAsync(id, await BuildViewerAsync())) return Forbid();
-        var members = await _cartable.GetThreadAsync(id, _currentUser.UserId, await CanViewConfidentialAsync());
-        return Json(members.Select(m => new
-        {
-            m.LetterId, m.ParentLetterId, m.Depth, m.LetterNumber, m.Subject, m.LetterType, m.Status, m.SenderName, m.IsCurrent,
-            Date = m.LetterDate.ToString("yyyy-MM-dd"),
-            Url = Url.Action(nameof(Details), new { id = m.LetterId })
-        }));
-    }
-
     // داشبورد اختصاصی مکاتبات (Phase 2): فقط داده‌ی واقعی و با همان قانون محرمانگی فهرست
     public async Task<IActionResult> Dashboard()
     {
@@ -636,16 +621,5 @@ public class LetterController : Controller
             .Select(x => new { x.DepartmentId, x.Name }).ToListAsync();
 
         ViewBag.AllTags = await _tagService.GetAllAsync(_currentUser.UserId);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetEmployeesForPicker()
-    {
-        var employees = await _context.Employees.Where(x => x.IsActive)
-            .OrderBy(x => x.FirstName).ThenBy(x => x.LastName)
-            .Select(x => new { x.EmployeeId, Name = x.FirstName + " " + x.LastName })
-            .ToListAsync();
-
-        return Json(employees);
     }
 }

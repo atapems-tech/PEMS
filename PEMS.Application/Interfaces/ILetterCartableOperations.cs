@@ -5,9 +5,13 @@ namespace PEMS.Application.Interfaces;
 /// <summary>
 /// SCRUM-714: the writes of the personal correspondence cartable (display settings, tags, delegations, routing rules, contact groups, reminders) as operations, with the rules and the texts of
 /// LetterCartableController: every record is the personal data of the signed-in user, the organizational ones need the Correspondence Approve permission (or a system administrator). A refused
-/// command answers its text in the language of the page. The reads (settings, tag tree, delegations, rules, contacts, groups, reminders) and the report stay on the controller until a data
-/// source can answer one object instead of rows.
+/// command answers its text in the language of the page. The reads (settings, tag tree, delegations, rules, contacts, groups, reminders; SCRUM-8c) are operations too and are served as JSON at /x/cartable-*.
 /// </summary>
+public sealed record CartableDelegationsAnswer(List<LetterDelegationDto> Given, List<LetterDelegationDto> Received, List<DelegateCandidateDto> Candidates);
+public sealed record CartableLookup(int Id, string Name);
+public sealed record CartableRulesAnswer(List<LetterRoutingRuleDto> Rules, CartableRuleLookups Lookups);
+public sealed record CartableRuleLookups(List<CartableLookup> Projects, List<CartableLookup> Disciplines);
+
 public interface ILetterCartableOperations
 {
     /// <summary>Saves the display settings; the hidden columns arrive as one comma separated text.</summary>
@@ -49,4 +53,27 @@ public interface ILetterCartableOperations
 
     [PEMS.Application.Common.PemsOperation("Cartable", "DeleteReminder")]
     Task<(bool Success, string? Error)> DeleteReminderAsync(int id);
+
+    /// <summary>The display settings of the signed-in user.</summary>
+    [PEMS.Application.Common.PemsOperation("Cartable", "Settings")]
+    Task<PEMS.Application.Common.LetterUserSettingsRules.Settings> SettingsAsync();
+
+    /// <summary>The tag tree with counts; the organizational tags and the confidential counts need the Correspondence Approve permission.</summary>
+    [PEMS.Application.Common.PemsOperation("Cartable", "Tags")]
+    Task<List<LetterTagNodeDto>> TagsAsync();
+
+    [PEMS.Application.Common.PemsOperation("Cartable", "Delegations")]
+    Task<CartableDelegationsAnswer> DelegationsAsync();
+
+    [PEMS.Application.Common.PemsOperation("Cartable", "Rules")]
+    Task<CartableRulesAnswer> RulesAsync();
+
+    [PEMS.Application.Common.PemsOperation("Cartable", "Contacts")]
+    Task<List<LetterContactDto>> ContactsAsync(string? q = null);
+
+    [PEMS.Application.Common.PemsOperation("Cartable", "Groups")]
+    Task<List<LetterContactGroupDto>> GroupsAsync();
+
+    [PEMS.Application.Common.PemsOperation("Cartable", "Reminders")]
+    Task<List<LetterReminderDto>> RemindersAsync(bool includeDone = false);
 }

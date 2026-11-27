@@ -871,13 +871,13 @@
     settings = new { settings.View, settings.Density, settings.HiddenColumns, settings.FrozenColumns, settings.OpenPreviewPane, settings.ConfirmTrash, settings.MarkReadOnOpen, settings.PageSize },
     urls = new
     {
-        threadMembers = Url.Action("ThreadMembers"),
+        threadMembers = "/x/letter-thread-members",
         settingsSave = "/a/cartable-settings-save",
-        tags = Url.Action("Tags", "LetterCartable"), tagSave = "/a/cartable-tag-save", tagDelete = "/a/cartable-tag-delete",
-        delegations = Url.Action("Delegations", "LetterCartable"), delegationCreate = "/a/cartable-delegation-create", delegationRevoke = "/a/cartable-delegation-revoke",
-        rules = Url.Action("Rules", "LetterCartable"), ruleSave = "/a/cartable-rule-save", ruleToggle = "/a/cartable-rule-toggle", ruleDelete = "/a/cartable-rule-delete",
-        contacts = Url.Action("Contacts", "LetterCartable"), groups = Url.Action("Groups", "LetterCartable"), groupSave = "/a/cartable-group-save", groupDelete = "/a/cartable-group-delete",
-        reminders = Url.Action("Reminders", "LetterCartable"), reminderAdd = "/a/cartable-reminder-add", reminderComplete = "/a/cartable-reminder-complete", reminderDelete = "/a/cartable-reminder-delete"
+        tags = "/x/cartable-tags", tagSave = "/a/cartable-tag-save", tagDelete = "/a/cartable-tag-delete",
+        delegations = "/x/cartable-delegations", delegationCreate = "/a/cartable-delegation-create", delegationRevoke = "/a/cartable-delegation-revoke",
+        rules = "/x/cartable-rules", ruleSave = "/a/cartable-rule-save", ruleToggle = "/a/cartable-rule-toggle", ruleDelete = "/a/cartable-rule-delete",
+        contacts = "/x/cartable-contacts", groups = "/x/cartable-groups", groupSave = "/a/cartable-group-save", groupDelete = "/a/cartable-group-delete",
+        reminders = "/x/cartable-reminders", reminderAdd = "/a/cartable-reminder-add", reminderComplete = "/a/cartable-reminder-complete", reminderDelete = "/a/cartable-reminder-delete"
     }
 }))</script>
 

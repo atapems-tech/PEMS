@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "letter-thread-members",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter thread members",
+    "fa": "اعضای رشته‌ی نامه"
+  },
+  "description": {
+    "en": "Letter thread members",
+    "fa": "اعضای رشته‌ی نامه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Letter",
+      "action": "ThreadMembers",
+      "args": {
+        "id": "param:id"
+      },
+      "disposition": "inline"
+    }
+  }
+}

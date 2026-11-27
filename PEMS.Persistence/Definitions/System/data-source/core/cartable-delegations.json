@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "cartable-delegations",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable delegations",
+    "fa": "تفویض‌های کارتابل"
+  },
+  "description": {
+    "en": "Cartable delegations",
+    "fa": "تفویض‌های کارتابل"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Cartable",
+      "action": "Delegations",
+      "disposition": "inline"
+    }
+  }
+}

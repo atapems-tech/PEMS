@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "cartable-rules",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable routing rules",
+    "fa": "قانون‌های مسیریابی کارتابل"
+  },
+  "description": {
+    "en": "Cartable routing rules",
+    "fa": "قانون‌های مسیریابی کارتابل"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Cartable",
+      "action": "Rules",
+      "disposition": "inline"
+    }
+  }
+}

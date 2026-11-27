@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "cartable-settings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable settings",
+    "fa": "تنظیمات کارتابل"
+  },
+  "description": {
+    "en": "Cartable settings",
+    "fa": "تنظیمات کارتابل"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Cartable",
+      "action": "Settings",
+      "disposition": "inline"
+    }
+  }
+}

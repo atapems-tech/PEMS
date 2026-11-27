@@ -1,0 +1,23 @@
+{
+  "kind": "data-source",
+  "key": "letter-employee-picker",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter employee picker",
+    "fa": "انتخاب‌گر کارکنان نامه"
+  },
+  "description": {
+    "en": "Letter employee picker",
+    "fa": "انتخاب‌گر کارکنان نامه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Letter",
+      "action": "EmployeePicker",
+      "disposition": "inline"
+    }
+  }
+}
