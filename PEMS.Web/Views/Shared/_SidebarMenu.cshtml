@@ -60,7 +60,7 @@
         currentArea.Equals(area, StringComparison.OrdinalIgnoreCase);
 
     string ComingSoon(string title, string section) =>
-        Url.Action("Index", "ComingSoon", new { area = "", title, section }) ?? "#";
+        "/ComingSoon?title=" + Uri.EscapeDataString(title) + "&section=" + Uri.EscapeDataString(section);
 
     // بخش‌های سایدبار حالا کشویی (Accordion) هستند تا اسکرول طولانی نداشته باشیم -
     // فقط بخشی که صفحه‌ی جاری در آن است باز باز می‌شود، بقیه بسته‌اند.

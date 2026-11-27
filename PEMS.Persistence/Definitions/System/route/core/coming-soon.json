@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "coming-soon",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Coming soon (old address)",
+    "fa": "به‌زودی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Coming soon (old address)",
+    "fa": "به‌زودی (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "ComingSoon",
+    "target": "/p/coming-soon",
+    "permanent": false
+  }
+}

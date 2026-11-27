@@ -29,7 +29,7 @@
             ],
             "css": "bk-scope exec-host",
             "values": {
-              "dataUrl": "/ExecutiveDashboard/Data"
+              "dataUrl": "/x/executive-dashboard-data"
             },
             "links": {
               "Engineering": "/EngineeringDocuments",

@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "executive-dashboard-data",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executive dashboard data",
+    "fa": "داده‌ی داشبورد مدیریتی"
+  },
+  "description": {
+    "en": "Executive dashboard data",
+    "fa": "داده‌ی داشبورد مدیریتی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "ExecutiveDashboard",
+      "action": "Data",
+      "args": {
+        "projectId": "param:projectId"
+      },
+      "disposition": "inline"
+    }
+  }
+}

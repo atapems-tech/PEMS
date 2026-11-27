@@ -1,0 +1,61 @@
+{
+  "kind": "page",
+  "key": "coming-soon",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Coming soon",
+    "fa": "به‌زودی"
+  },
+  "description": {
+    "en": "Coming soon",
+    "fa": "به‌زودی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "coming-soon",
+    "regions": {
+      "content": [
+        {
+          "id": "note",
+          "component": "content-blocks",
+          "options": {
+            "id": "coming-soon-note",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 5,
+                "text": {
+                  "en": "{{params.title}}",
+                  "fa": "{{params.title}}"
+                }
+              },
+              {
+                "type": "text",
+                "text": {
+                  "en": "This module is built in the next phase.",
+                  "fa": "این ماژول در فاز بعدی توسعه پیاده‌سازی می‌شود."
+                }
+              },
+              {
+                "type": "text",
+                "text": {
+                  "en": "Section: {{params.section}}",
+                  "fa": "بخش: {{params.section}}"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/home",
+                "text": {
+                  "en": "Back to the dashboard",
+                  "fa": "بازگشت به داشبورد"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
