@@ -61,3 +61,5 @@ Source: plan/sheets/definition-ratchet.json (controller actions and compiled vie
 
 Screen code to convert: 132 actions and 72 views in 31 areas. Generic hosts and APIs that stay: 47 actions.
 
+
+- SCRUM-839: visual comparison of the PDF layouts (letter, part catalogue request) against the old output; see plan/rows/0839.md.

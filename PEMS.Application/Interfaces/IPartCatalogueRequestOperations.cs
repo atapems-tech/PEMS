@@ -26,6 +26,8 @@ public sealed record PcRequestAttachmentRow(int Id, string FileName, string Kind
 /// cancel, register the part number, retry the routing, add a note) and the files (an attachment, the INWH-PLA-FO-001 workbook and PDF). The same IPartCatalogueService calls as the old controller; the service checks the rule of
 /// every step again. The users need an employee record, as before. The edit page (the long form) stays on the controller until a form can be loaded from an operation.
 /// </summary>
+public sealed record PcPrintRow(int Id, string RequestNumber, string AddBox, string ChangeBox, string PartNumber, string TechnicalClass, string Material, string Attributes, string EquipmentSerial, string SparePartSerial, string EquipmentDocNo, string ManufacturerName, string ManufacturerPartNo, string ManufacturerDwgNo, string SupplierName, string SupplierPartNo, string RelatedTags, string Unit, string CommodityGroup1, string ProductFamily, string MinStock, string MaxConsumption, string InstalledQuantity, string WantedReceiptDate, string StorageVolume, string StockGrade, string Critical, string OriginatorName, string OriginatorDate, string OriginatorTel, string SpareSpecialistName, string SpareSpecialistDate, string SpareSpecialistTel, string MaintPlanningName, string MaintPlanningDate, string MaintPlanningTel, string PartCataloguerName, string PartCataloguerDate, string PartCataloguerTel, string InventoryControllerName, string InventoryControllerDate, string InventoryControllerTel);
+
 public interface IPartCatalogueRequestOperations
 {
     [PEMS.Application.Common.PemsOperation("PartCatalogueRequest", "List")]
@@ -78,6 +80,9 @@ public interface IPartCatalogueRequestOperations
     [PEMS.Application.Common.PemsOperation("PartCatalogueRequest", "ExportXlsx")]
     Task<PcFileResult> ExportXlsxAsync(List<string> userRoles, int? employeeId, int? userId, int id);
 
-    [PEMS.Application.Common.PemsOperation("PartCatalogueRequest", "ExportPdf")]
-    Task<PcFileResult> ExportPdfAsync(List<string> userRoles, int? employeeId, int? userId, int id);
+
+
+    /// <summary>SCRUM-839: the data of the print of a request (the model of the printed form, every value already its final text with N/A where empty); the layout of the PDF is the definition pc-request-pdf.</summary>
+    [PEMS.Application.Common.PemsOperation("PartCatalogueRequest", "PrintRecord")]
+    Task<List<PcPrintRow>> PrintRecordAsync(List<string> userRoles, int? employeeId, int? userId, int id);
 }

@@ -4,25 +4,462 @@
   "appKey": "core",
   "version": 1,
   "title": {
-    "en": "Part Catalogue request form (PDF)",
-    "fa": "فرم درخواست کاتالوگ قطعه (PDF)"
+    "en": "Part catalogue request PDF",
+    "fa": "PDF درخواست کاتالوگ قطعه"
   },
   "description": {
-    "en": "Part Catalogue request form (PDF)",
-    "fa": "فرم درخواست کاتالوگ قطعه (PDF)"
+    "en": "PDF layout of the printed request form (the PDF engine)",
+    "fa": "قالب PDF فرم چاپی درخواست (موتور PDF)"
   },
   "payload": {
     "kind": "provider",
-    "provider": "operation-file",
+    "provider": "pdf",
     "parameters": {
-      "model": "PartCatalogueRequest",
-      "action": "ExportPdf",
-      "args": {
-        "userRoles": "context:roles",
-        "employeeId": "context:employeeId",
-        "userId": "context:userId",
-        "id": "param:id"
+      "datasets": {
+        "print": {
+          "model": "PartCatalogueRequest",
+          "action": "PrintRecord",
+          "args": {
+            "userRoles": "context:roles",
+            "employeeId": "context:employeeId",
+            "userId": "context:userId",
+            "id": "param:id"
+          }
+        }
       },
+      "layout": {
+        "page": {
+          "size": "A4",
+          "margin": 1.2,
+          "fontSize": 9
+        },
+        "direction": "ltr",
+        "header": [
+          {
+            "type": "row",
+            "border": 1,
+            "padding": 4,
+            "items": [
+              {
+                "width": 1,
+                "blocks": [
+                  {
+                    "type": "heading",
+                    "text": "Warehouse Department",
+                    "size": 11
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "align": "center",
+                "blocks": [
+                  {
+                    "type": "heading",
+                    "text": "Part Catalogue Application",
+                    "size": 12
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "align": "end",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Doc. No. INWH-PLA-FO-001"
+                  },
+                  {
+                    "type": "text",
+                    "text": "Rev.3"
+                  },
+                  {
+                    "type": "text",
+                    "text": "Request: {{print.requestNumber}}",
+                    "showWhen": "print.requestNumber"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "* Please attach all supporting documentation and Drawings to this application",
+            "size": 8,
+            "italic": true,
+            "paddingTop": 3
+          },
+          {
+            "type": "row",
+            "items": [
+              {
+                "fixedWidth": 80,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "{{print.addBox}}",
+                    "bold": true
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "{{print.changeBox}}",
+                    "bold": true
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "body": [
+          {
+            "type": "keyValue",
+            "labelWidth": 2,
+            "valueWidth": 5,
+            "border": 0.5,
+            "labelBackground": "#f3f3f3",
+            "rows": [
+              {
+                "label": "MESD Part Number",
+                "value": "{{print.partNumber}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Name (Technical Class)",
+                "value": "{{print.technicalClass}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Material",
+                "value": "{{print.material}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Description / Other Information (Attributes)",
+                "value": "{{print.attributes}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Serial No. (Equipment)",
+                "value": "{{print.equipmentSerial}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Serial No. (Spare Part)",
+                "value": "{{print.sparePartSerial}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Doc. No. (Equipment tag No)",
+                "value": "{{print.equipmentDocNo}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Manufacturer - Name",
+                "value": "{{print.manufacturerName}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Manufacturer - Part No.",
+                "value": "{{print.manufacturerPartNo}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Manufacturer - Dwg. No.",
+                "value": "{{print.manufacturerDwgNo}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Supplier - Name",
+                "value": "{{print.supplierName}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Supplier - Part No.",
+                "value": "{{print.supplierPartNo}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Related Equipment TAG No (Object ID)",
+                "value": "{{print.relatedTags}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Unit",
+                "value": "{{print.unit}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Commodity Group 1",
+                "value": "{{print.commodityGroup1}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Product Family",
+                "value": "{{print.productFamily}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Min Stock",
+                "value": "{{print.minStock}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Max Consumption Rate (one year)",
+                "value": "{{print.maxConsumption}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Installed quantity on equipment",
+                "value": "{{print.installedQuantity}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Wanted Receipt Date",
+                "value": "{{print.wantedReceiptDate}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Storage Volume",
+                "value": "{{print.storageVolume}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Stock Grade",
+                "value": "{{print.stockGrade}}",
+                "keepEmpty": true
+              },
+              {
+                "label": "Critical",
+                "value": "{{print.critical}}",
+                "keepEmpty": true
+              }
+            ]
+          }
+        ],
+        "footer": [
+          {
+            "type": "text",
+            "text": "Approval Process",
+            "bold": true
+          },
+          {
+            "type": "row",
+            "items": [
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 2,
+                "background": "#e0e0e0",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Originator",
+                    "bold": true,
+                    "size": 8
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 2,
+                "background": "#e0e0e0",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Spare Specialist",
+                    "bold": true,
+                    "size": 8
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 2,
+                "background": "#e0e0e0",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Maint. Planning",
+                    "bold": true,
+                    "size": 8
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 2,
+                "background": "#e0e0e0",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Part Cataloguer",
+                    "bold": true,
+                    "size": 8
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 2,
+                "background": "#e0e0e0",
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Inventory Controller",
+                    "bold": true,
+                    "size": 8
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "row",
+            "items": [
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 3,
+                "minHeight": 46,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Name: {{print.originatorName}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Date: {{print.originatorDate}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Tel No: {{print.originatorTel}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 3,
+                "minHeight": 46,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Name: {{print.spareSpecialistName}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Date: {{print.spareSpecialistDate}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Tel No: {{print.spareSpecialistTel}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 3,
+                "minHeight": 46,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Name: {{print.maintPlanningName}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Date: {{print.maintPlanningDate}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Tel No: {{print.maintPlanningTel}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 3,
+                "minHeight": 46,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Name: {{print.partCataloguerName}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Date: {{print.partCataloguerDate}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Tel No: {{print.partCataloguerTel}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  }
+                ]
+              },
+              {
+                "width": 1,
+                "border": 0.5,
+                "padding": 3,
+                "minHeight": 46,
+                "blocks": [
+                  {
+                    "type": "text",
+                    "text": "Name: {{print.inventoryControllerName}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Date: {{print.inventoryControllerDate}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Tel No: {{print.inventoryControllerTel}}",
+                    "size": 8,
+                    "keepEmpty": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "fileName": "{{print.requestNumber}}",
       "disposition": "attachment"
     }
   }

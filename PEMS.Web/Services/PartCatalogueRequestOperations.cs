@@ -126,11 +126,14 @@ public sealed class PartCatalogueRequestOperations(IPartCatalogueService service
         return new PcFileResult(true, null, PartCataloguePrintExport.BuildXlsx(model), name + ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     }
 
-    public async Task<PcFileResult> ExportPdfAsync(List<string> userRoles, int? employeeId, int? userId, int id)
+
+    private static string Or(string? s, string fallback) => string.IsNullOrWhiteSpace(s) ? fallback : s.Trim();
+
+    public async Task<List<PcPrintRow>> PrintRecordAsync(List<string> userRoles, int? employeeId, int? userId, int id)
     {
-        var model = await service.GetPrintModelAsync(id, await ActorAsync(userRoles, employeeId, userId));
-        if (model is null) return Missing();
-        var name = string.IsNullOrWhiteSpace(model.RequestNumber) ? $"PCR-{id}" : model.RequestNumber;
-        return new PcFileResult(true, null, PartCataloguePrintExport.BuildPdf(model), name + ".pdf", "application/pdf");
+        var m = await service.GetPrintModelAsync(id, await ActorAsync(userRoles, employeeId, userId));
+        if (m is null) return [];
+        PrintSignature? Sig(string role) => m.Signatures.FirstOrDefault(x => x.Role == role);
+        return [new PcPrintRow(id, m.RequestNumber ?? "", m.IsChange ? "\u2610 ADD" : "\u2612 ADD", m.IsChange ? "\u2612 CHANGE" : "\u2610 CHANGE", m.PartNumber, m.TechnicalClassName, Or(m.Material, "N/A"), Or(m.Attributes, "N/A"), Or(m.EquipmentSerial, "N/A"), Or(m.SparePartSerial, "N/A"), Or(m.EquipmentDocNo, "N/A"), Or(m.ManufacturerName, "N/A"), Or(m.ManufacturerPartNo, "N/A"), Or(m.ManufacturerDwgNo, "N/A"), Or(m.SupplierName, "N/A"), Or(m.SupplierPartNo, "N/A"), Or(m.RelatedEquipmentTags, "N/A"), m.Unit, m.CommodityGroup1, m.ProductFamily, m.MinStock, m.MaxConsumptionRate, m.InstalledQuantity, m.WantedReceiptDate?.ToString("yyyy-MM-dd") ?? "UnPlaned", m.StorageVolume, m.StockGrade, m.IsCritical ? "YES" : "NO", Sig("Originator")?.Name ?? "", Sig("Originator")?.Date?.ToString("yyyy-MM-dd") ?? "", Sig("Originator")?.Tel ?? "", Sig("SpareSpecialist")?.Name ?? "", Sig("SpareSpecialist")?.Date?.ToString("yyyy-MM-dd") ?? "", Sig("SpareSpecialist")?.Tel ?? "", Sig("MaintPlanning")?.Name ?? "", Sig("MaintPlanning")?.Date?.ToString("yyyy-MM-dd") ?? "", Sig("MaintPlanning")?.Tel ?? "", Sig("PartCataloguer")?.Name ?? "", Sig("PartCataloguer")?.Date?.ToString("yyyy-MM-dd") ?? "", Sig("PartCataloguer")?.Tel ?? "", Sig("InventoryController")?.Name ?? "", Sig("InventoryController")?.Date?.ToString("yyyy-MM-dd") ?? "", Sig("InventoryController")?.Tel ?? "")];
     }
 }

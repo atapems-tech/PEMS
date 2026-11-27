@@ -186,3 +186,6 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 
 ### PDF engine and the letter PDF (SCRUM-839)
 - The letter PDF is the layout `letter-pdf` over the record operation `LetterPdf.Record`; the page, the letterhead, the lines, the subject, the plain body, the signature and the footer follow the old drawing; the labels are in both languages (the old PDF was English only), the direction follows the language, the date and time of printing are in the footer text with the page number below it. `LetterController.ExportPdf` is deleted and `Letter/ExportPdf/{id}` is a route. PDFs still to convert to layouts: the part catalogue request print (its Excel template stays), the barcode labels, the PDF format of the grid export (`file.export`); each needs its record or rows as read operations.
+
+## SCRUM-839 part catalogue request PDF (layout definition)
+- `pc-request-pdf` is now a `pdf` layout; `PrintRecord` supplies the values (N/A fallbacks, ADD/CHANGE boxes, 5 signature columns). Renderer gained generic block `border`/`background`/`padding`/`minHeight`, `italic`, keyValue `border`/`labelBackground`. Not verified: pixel-level match with the hand-written QuestPDF page (border widths, column proportions, page fit on one A4). `BuildPdf` removed; the Excel template export is unchanged.
