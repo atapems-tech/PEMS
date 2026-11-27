@@ -11,6 +11,18 @@ public sealed class LetterTemplateOperations(ILetterTemplateService templates) :
 
     public Task<LetterTemplateDto?> TemplateAsync(int id) => templates.GetAsync(id);
 
+    public async Task<List<LetterTemplatePreviewRow>> PreviewAsync(int id)
+    {
+        var t = await templates.GetAsync(id);
+        if (t == null) return [];
+        var sample = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Date"] = DateTime.Today.ToString("yyyy-MM-dd"), ["UserName"] = "Sample User", ["LetterType"] = t.LetterType ?? "Outgoing", ["ParentNumber"] = "LTR-0001", ["ParentSubject"] = "Sample subject",
+            ["ParentDate"] = DateTime.Today.ToString("yyyy-MM-dd"), ["Counterparty"] = "Sample Company", ["ParentProject"] = "Sample Project"
+        };
+        return [new LetterTemplatePreviewRow(t.LetterTemplateId, t.Name, t.LetterType ?? "", t.Priority, t.ConfidentialityLevel, PEMS.Application.Common.LetterTemplatePlaceholders.Apply(t.Subject, sample, htmlEncode: false), PEMS.Application.Common.LetterTemplatePlaceholders.Apply(t.Body, sample, htmlEncode: true) ?? "")];
+    }
+
     public async Task<(bool Success, string? Error)> SaveAsync(int? id, string name, string? letterType, string subject, string? body, string priority, string confidentialityLevel, bool isActive = true)
     {
         var (success, error, _) = await templates.SaveAsync(new LetterTemplateDto

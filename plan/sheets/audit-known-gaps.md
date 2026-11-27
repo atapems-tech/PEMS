@@ -132,3 +132,7 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - The status select and the disabled revision box of the create form are gone (the status was always Draft, the revision 00); the manual-number box is always shown and ignored without the right (as before it only worked with the right); related equipment is the server-searched select; the validation summary is the form's own errors.
 - Edit changes only the fields of its form (the old action copied the whole posted entity); the access-control record carries no client address when it cannot be read.
 - The old addresses `EngineeringDocuments/Create`, `Edit/{id}` and `UploadAttachment/{id}` are routes. The controller keeps Details and the redirect of the download (SCRUM-837 decision on the viewer).
+
+### Letter template preview (SCRUM-830, 832)
+- The preview is a record page over `LetterTemplatePage.Preview` (sample values put in the tokens, values encoded); the engine got the record-view field type `html` for the template body (markup the operation already sanitized or encoded). The controller and the view are deleted; the old address `LetterTemplate/Preview/{id}` is a route. The test of the controller attribute and the view render are replaced by catalog and operation checks.
+- The Admin area redirect `Admin/Employee` is a route to the employees page (the role gate of the redirect is the page permission now).

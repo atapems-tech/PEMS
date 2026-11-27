@@ -201,10 +201,6 @@ public class LetterPhase2ViewTests
 
     // ------------------------------------------------------------------ template manager
 
-    private static LetterTemplateController NewTemplateController() => new(null!)
-    {
-        ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
-    };
 
 
 
@@ -227,18 +223,9 @@ public class LetterPhase2ViewTests
     [Fact]
     public void TemplateManagement_RequiresTheApprovePermission_AndHasNoDeleteAction()
     {
-        var attr = typeof(LetterTemplateController).GetCustomAttribute<RequirePermissionAttribute>();
-        Assert.NotNull(attr);
-        Assert.Equal("Correspondence", typeof(RequirePermissionAttribute).GetField("_module", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(attr));
-        Assert.Equal("Approve", typeof(RequirePermissionAttribute).GetField("_action", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(attr));
-
-        var actions = typeof(LetterTemplateController).GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
-            .Select(m => m.Name).ToList();
-        Assert.DoesNotContain(actions, n => n.Contains("Delete", StringComparison.OrdinalIgnoreCase));
-
         // SCRUM-717: the list, the load, the save and the switch are operations; the floor of every one is the Approve of the module (the shipped actions are posts with the antiforgery token of the action host)
         var catalog = PEMS.Web.Definitions.OperationCatalog.Scan(typeof(PEMS.Application.Common.PemsOperationAttribute).Assembly);
-        foreach (var op in new[] { "List", "One", "Save", "SetActive" })
+        foreach (var op in new[] { "List", "One", "Preview", "Save", "SetActive" })
             Assert.Equal("Correspondence.Approve", catalog.Get("LetterTemplatePage", op)!.Permission);
     }
 
