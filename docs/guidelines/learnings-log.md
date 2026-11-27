@@ -3,6 +3,8 @@
 Append-only while a lesson is young; promote into a chapter when it becomes a rule. Format:
 `YYYY-MM-DD | SCRUM-n | area | lesson | what to do`. Newest first. Cross-cutting history before this log is in the plan page *Lessons* (`plan/sheets/lessons.md`, 29 entries).
 
+2026-11-27 | SCRUM-827 | PRC | A conversion slice (PR 548) was shipped under "SCRUM-8c", a batch name that is not a Jira key, and the follow-on areas (letters, strategy, engineering documents, tasks, small screens, account decision) had no issues, only a controller inventory. | Create the Jira issue and plan row before the first line of code (chapter 00 section 0, anti-patterns); batch names are not keys; the remaining screens are SCRUM-828 to 833.
+
 2026-11-08 | SCRUM-525 | PRC | The sprint review put its bugs into the closing sprint (Sprint 1, end date 2026-11-06), so the closed sprint kept filling with new work; the team moved the open review bugs to Sprint 2 instead, and 18 of the 19 review bugs (SCRUM-539 to 557) had no plan row. | Review bugs go into the next sprint with a plan row (guideline 07 section 7a step 6); the closing sprint waits only for their re-check before step 7.
 
 2026-11-04 | SCRUM-503 | PRC | Pull requests sat open waiting for a browser check or the SQL tests, so main drifted, conflicts piled up and the team worked on stale code. | Merge as soon as the quick gates pass; put every unrun test on the In Review checklist (chapter 00, chapter 07 section 2b).
