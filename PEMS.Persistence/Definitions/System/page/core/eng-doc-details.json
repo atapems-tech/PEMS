@@ -1,0 +1,989 @@
+{
+  "kind": "page",
+  "key": "eng-doc-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering document",
+    "fa": "مدرک مهندسی"
+  },
+  "description": {
+    "en": "Engineering document",
+    "fa": "مدرک مهندسی"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "eng-doc-details",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/eng-docs"
+          }
+        },
+        {
+          "id": "stepper",
+          "component": "stepper",
+          "options": {
+            "label": {
+              "en": "Approval workflow",
+              "fa": "گردش تأیید"
+            }
+          },
+          "bindings": {
+            "steps": {
+              "source": "/d/eng-doc-stages?f.id={{params.id|url}}",
+              "labelField": "stepLabel",
+              "stateField": "step"
+            }
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "eng-doc-head",
+            "fields": [
+              {
+                "key": "documentNo",
+                "label": {
+                  "en": "Document no.",
+                  "fa": "شماره مدرک"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "revision",
+                "label": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "key": "frozen",
+                "label": {
+                  "en": "Frozen",
+                  "fa": "منجمد"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "onHold",
+                "label": {
+                  "en": "On hold",
+                  "fa": "در انتظار"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "frozenNote",
+                "label": {
+                  "en": "Frozen note",
+                  "fa": "یادداشت انجماد"
+                },
+                "wide": true
+              },
+              {
+                "key": "nextStep",
+                "label": {
+                  "en": "Next step",
+                  "fa": "مرحله بعد"
+                },
+                "wide": true
+              },
+              {
+                "key": "pidOf",
+                "label": {
+                  "en": "This is the P&ID of",
+                  "fa": "این مدرک P&ID تجهیزات زیر است"
+                },
+                "wide": true
+              },
+              {
+                "key": "type",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "area",
+                "label": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                }
+              },
+              {
+                "key": "created",
+                "label": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "date"
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              },
+              {
+                "key": "issuePurpose",
+                "label": {
+                  "en": "Issue purpose",
+                  "fa": "هدف صدور"
+                }
+              },
+              {
+                "key": "preparedBy",
+                "label": {
+                  "en": "Prepared by",
+                  "fa": "تهیه‌کننده"
+                }
+              },
+              {
+                "key": "checkedBy",
+                "label": {
+                  "en": "Checked by",
+                  "fa": "بررسی‌کننده"
+                }
+              },
+              {
+                "key": "approvedBy",
+                "label": {
+                  "en": "Approved by",
+                  "fa": "تأییدکننده"
+                }
+              },
+              {
+                "key": "commentStatus",
+                "label": {
+                  "en": "Comment status",
+                  "fa": "وضعیت نظرات"
+                }
+              },
+              {
+                "key": "clientResponse",
+                "label": {
+                  "en": "Client response",
+                  "fa": "پاسخ کارفرما"
+                },
+                "wide": true
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Related equipment",
+                  "fa": "تجهیز مرتبط"
+                }
+              },
+              {
+                "key": "contract",
+                "label": {
+                  "en": "Related contract",
+                  "fa": "قرارداد مرتبط"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-doc-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "eng-doc-actions",
+            "url": "/d/eng-doc-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 110,
+            "columns": [
+              {
+                "key": "waiting",
+                "width": 260,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 2400,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "submit",
+                    "url": "/f/eng-doc-submit?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canSubmit == true"
+                  },
+                  {
+                    "key": "check",
+                    "url": "/a/eng-doc-check",
+                    "method": "post",
+                    "showWhen": "row.canCheck == true"
+                  },
+                  {
+                    "key": "approve",
+                    "url": "/a/eng-doc-approve",
+                    "method": "post",
+                    "showWhen": "row.canApprove == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/a/eng-doc-reject",
+                    "method": "post",
+                    "showWhen": "row.canReject == true"
+                  },
+                  {
+                    "key": "revise",
+                    "url": "/f/eng-doc-revise-resubmit?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canRevise == true"
+                  },
+                  {
+                    "key": "idc-approve",
+                    "url": "/f/eng-doc-idc-approve?id={id}&decision=Approve",
+                    "method": "get",
+                    "showWhen": "row.canIdc == true"
+                  },
+                  {
+                    "key": "idc-comment",
+                    "url": "/f/eng-doc-idc-comment?id={id}&decision=Comment",
+                    "method": "get",
+                    "showWhen": "row.canIdc == true"
+                  },
+                  {
+                    "key": "idc-reject",
+                    "url": "/f/eng-doc-idc-reject?id={id}&decision=Reject",
+                    "method": "get",
+                    "showWhen": "row.canIdc == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "issue",
+                    "url": "/f/eng-doc-issue?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canIssue == true"
+                  },
+                  {
+                    "key": "client-response",
+                    "url": "/f/eng-doc-client-response?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canClient == true"
+                  },
+                  {
+                    "key": "new-revision",
+                    "url": "/f/eng-doc-create-revision?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canNewRevision == true"
+                  },
+                  {
+                    "key": "edit",
+                    "url": "/f/eng-doc-edit?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canAssign == true"
+                  },
+                  {
+                    "key": "analyze",
+                    "url": "/a/eng-doc-analyze",
+                    "method": "post",
+                    "showWhen": "row.canAssign == true"
+                  },
+                  {
+                    "key": "freeze",
+                    "url": "/f/eng-doc-freeze?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canFreeze == true"
+                  },
+                  {
+                    "key": "unfreeze",
+                    "url": "/f/eng-doc-unfreeze?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canUnfreeze == true"
+                  },
+                  {
+                    "key": "hold",
+                    "url": "/f/eng-doc-hold?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canHold == true"
+                  },
+                  {
+                    "key": "release",
+                    "url": "/f/eng-doc-release-hold?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canRelease == true"
+                  },
+                  {
+                    "key": "upload",
+                    "url": "/f/eng-doc-upload-attachment?documentId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "add-comment",
+                    "url": "/f/eng-doc-comment-add?documentId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "equipment",
+                    "url": "/p/equipment-passport?id={raw.equipmentId}",
+                    "method": "get",
+                    "showWhen": "row.equipmentId != null"
+                  },
+                  {
+                    "key": "contract",
+                    "url": "/p/contract-details?id={raw.contractId}",
+                    "method": "get",
+                    "showWhen": "row.contractId != null"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-files",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-files",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Files",
+                  "fa": "فایل‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "files",
+          "component": "def:related-table",
+          "options": {
+            "id": "files",
+            "url": "/d/eng-doc-files?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "fileName",
+                "width": 280
+              },
+              {
+                "key": "revision",
+                "width": 90
+              },
+              {
+                "key": "role",
+                "width": 130
+              },
+              {
+                "key": "official",
+                "width": 90
+              },
+              {
+                "key": "size",
+                "width": 90
+              },
+              {
+                "key": "aiStatus",
+                "width": 110
+              },
+              {
+                "key": "uploaded",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "verified",
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 520,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "download",
+                    "url": "/Files/Download/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "ai-data",
+                    "url": "/p/ai-extraction-review?id={id}",
+                    "method": "get",
+                    "showWhen": "row.aiDone == true"
+                  },
+                  {
+                    "key": "intelligence",
+                    "url": "/p/eng-intel-review?id={{params.id}}",
+                    "method": "get",
+                    "showWhen": "row.aiDone == true"
+                  },
+                  {
+                    "key": "reanalyze",
+                    "url": "/a/ocr-retry",
+                    "method": "post"
+                  },
+                  {
+                    "key": "delete",
+                    "url": "/f/eng-doc-delete-attachment?attachmentId={id}&documentId={{params.id}}",
+                    "method": "get",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-idc",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-idc",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Inter-discipline check (IDC)",
+                  "fa": "بازبینی بین‌دیسیپلینی (IDC)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "idc",
+          "component": "def:related-table",
+          "options": {
+            "id": "idc",
+            "url": "/d/eng-doc-idc?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "discipline",
+                "width": 200
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "comment",
+                "width": 320
+              },
+              {
+                "key": "respondedBy",
+                "width": 160
+              },
+              {
+                "key": "responded",
+                "width": 140,
+                "type": "date"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-revisions",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-revisions",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Revision history",
+                  "fa": "تاریخچه ویرایش‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "revisions",
+          "component": "def:related-table",
+          "options": {
+            "id": "revisions",
+            "url": "/d/eng-doc-revisions?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "revision",
+                "width": 90
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "reason",
+                "width": 160
+              },
+              {
+                "key": "createdBy",
+                "width": 140
+              },
+              {
+                "key": "reviewer",
+                "width": 140
+              },
+              {
+                "key": "approvedBy",
+                "width": 140
+              },
+              {
+                "key": "created",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "issued",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "effective",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "supersedes",
+                "width": 100
+              },
+              {
+                "key": "change",
+                "width": 240
+              },
+              {
+                "key": "vendorComment",
+                "width": 240
+              },
+              {
+                "key": "clientReview",
+                "width": 200
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-history",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-history",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Workflow history",
+                  "fa": "تاریخچه گردش"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "history",
+            "url": "/d/eng-doc-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "action",
+                "width": 140
+              },
+              {
+                "key": "from",
+                "width": 140
+              },
+              {
+                "key": "to",
+                "width": 140
+              },
+              {
+                "key": "decision",
+                "width": 110
+              },
+              {
+                "key": "by",
+                "width": 160
+              },
+              {
+                "key": "comment",
+                "width": 300
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-holds",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-holds",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Hold history",
+                  "fa": "تاریخچه نگه‌داشتن"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "holds",
+          "component": "def:related-table",
+          "options": {
+            "id": "holds",
+            "url": "/d/eng-doc-holds?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "reason",
+                "width": 240
+              },
+              {
+                "key": "held",
+                "width": 130,
+                "type": "datetime"
+              },
+              {
+                "key": "by",
+                "width": 140
+              },
+              {
+                "key": "discipline",
+                "width": 140
+              },
+              {
+                "key": "released",
+                "width": 130,
+                "type": "datetime"
+              },
+              {
+                "key": "releasedBy",
+                "width": 140
+              },
+              {
+                "key": "releaseReason",
+                "width": 240
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-transmittals",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-transmittals",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Transmittals",
+                  "fa": "ترنسمیتال‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "transmittals",
+          "component": "def:related-table",
+          "options": {
+            "id": "transmittals",
+            "url": "/d/eng-doc-transmittals?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "no",
+                "width": 150,
+                "href": "/Transmittal/Details/{id}"
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "date",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "sent",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "purpose",
+                "width": 120
+              },
+              {
+                "key": "revision",
+                "width": 90
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-letters",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-letters",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Correspondence",
+                  "fa": "مکاتبات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "letters",
+          "component": "def:related-table",
+          "options": {
+            "id": "letters",
+            "url": "/d/eng-doc-letters?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "type",
+                "width": 100
+              },
+              {
+                "key": "number",
+                "width": 150
+              },
+              {
+                "key": "subject",
+                "width": 320
+              },
+              {
+                "key": "date",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Letter/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-viewer",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-viewer",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Document viewer (click a page to pin a comment)",
+                  "fa": "نمایشگر مدرک (برای پین نظر روی صفحه کلیک کنید)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "viewer",
+          "component": "def:entity-file-preview",
+          "options": {
+            "id": "eng-doc-viewer",
+            "url": "/d/eng-doc-preview?f.id={{params.id|url}}",
+            "idField": "id",
+            "srcField": "src",
+            "titleField": "title",
+            "annotationsUrl": "/d/eng-doc-pins?f.id={{params.id|url}}",
+            "saveUrl": "/a/eng-doc-comment-pin"
+          }
+        },
+        {
+          "id": "h-comments",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-comments",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Comment management",
+                  "fa": "مدیریت نظرات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "comments",
+          "component": "def:related-table",
+          "options": {
+            "id": "comments",
+            "url": "/d/eng-doc-comments?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "no",
+                "width": 90
+              },
+              {
+                "key": "category",
+                "width": 120
+              },
+              {
+                "key": "severity",
+                "width": 100
+              },
+              {
+                "key": "location",
+                "width": 140
+              },
+              {
+                "key": "comment",
+                "width": 320
+              },
+              {
+                "key": "requiredAction",
+                "width": 200
+              },
+              {
+                "key": "raisedBy",
+                "width": 140
+              },
+              {
+                "key": "raised",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "width": 150
+              },
+              {
+                "key": "marksRevision",
+                "width": 120,
+                "type": "bool"
+              },
+              {
+                "key": "response",
+                "width": 260
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 320,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "status",
+                    "url": "/f/eng-doc-comment-action?documentId={{params.id}}&commentId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "reply",
+                    "url": "/f/eng-doc-comment-reply?documentId={{params.id}}&commentId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReply == true"
+                  },
+                  {
+                    "key": "attachment",
+                    "url": "{raw.attachmentUrl}",
+                    "method": "get",
+                    "showWhen": "row.attachmentUrl != null"
+                  },
+                  {
+                    "key": "reply-attachment",
+                    "url": "{raw.replyAttachmentUrl}",
+                    "method": "get",
+                    "showWhen": "row.replyAttachmentUrl != null"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "EngineeringDocuments.View"
+  }
+}

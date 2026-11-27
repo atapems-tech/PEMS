@@ -27,6 +27,6 @@
       "en": "The hold of the document is released.",
       "fa": "Hold مدرک رفع شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

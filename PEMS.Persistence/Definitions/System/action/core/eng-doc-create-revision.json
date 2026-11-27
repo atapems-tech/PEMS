@@ -30,6 +30,6 @@
       "en": "The new revision was created.",
       "fa": "رویژن جدید ایجاد شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

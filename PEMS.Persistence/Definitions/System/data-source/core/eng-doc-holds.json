@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-holds",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Hold history",
+    "fa": "تاریخچه نگه‌داشتن"
+  },
+  "description": {
+    "en": "Hold history",
+    "fa": "تاریخچه نگه‌داشتن"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "Holds",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

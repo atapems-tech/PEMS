@@ -43,6 +43,6 @@
       "en": "Comment recorded",
       "fa": "نظر ثبت شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{documentId}"
+    "redirect": "/p/eng-doc-details?id={documentId}"
   }
 }

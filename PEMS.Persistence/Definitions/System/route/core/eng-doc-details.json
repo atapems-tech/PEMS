@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-doc-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering document (old address)",
+    "fa": "مدرک مهندسی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Engineering document",
+    "fa": "مدرک مهندسی"
+  },
+  "payload": {
+    "pattern": "EngineeringDocuments/Details/{id}",
+    "target": "/p/eng-doc-details?id={id}",
+    "permanent": false
+  }
+}

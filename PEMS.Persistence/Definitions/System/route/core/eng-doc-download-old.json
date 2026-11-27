@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-doc-download-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering document file (old address)",
+    "fa": "فایل مدرک مهندسی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Engineering document file",
+    "fa": "فایل مدرک مهندسی"
+  },
+  "payload": {
+    "pattern": "EngineeringDocuments/DownloadAttachment/{id}",
+    "target": "/Files/Download/{id}",
+    "permanent": false
+  }
+}

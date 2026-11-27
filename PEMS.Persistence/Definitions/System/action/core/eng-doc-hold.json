@@ -28,6 +28,6 @@
       "en": "The document is on hold.",
       "fa": "مدرک در وضعیت Hold قرار گرفت."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

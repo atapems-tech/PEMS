@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-stages",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Workflow stages",
+    "fa": "مراحل گردش"
+  },
+  "description": {
+    "en": "Workflow stages",
+    "fa": "مراحل گردش"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "Stages",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-idc",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "IDC review",
+    "fa": "بازبینی IDC"
+  },
+  "description": {
+    "en": "IDC review",
+    "fa": "بازبینی IDC"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "Idc",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -32,6 +32,6 @@
       "en": "Uploaded.",
       "fa": "بارگذاری شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{documentId}"
+    "redirect": "/p/eng-doc-details?id={documentId}"
   }
 }

@@ -37,6 +37,6 @@
       "en": "Document issued.",
       "fa": "مدرک صادر شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

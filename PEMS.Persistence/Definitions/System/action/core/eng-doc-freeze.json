@@ -27,6 +27,6 @@
       "en": "The document is frozen.",
       "fa": "مدرک منجمد (Frozen) شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

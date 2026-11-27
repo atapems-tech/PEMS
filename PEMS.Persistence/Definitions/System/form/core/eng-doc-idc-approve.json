@@ -1,0 +1,70 @@
+{
+  "kind": "form",
+  "key": "eng-doc-idc-approve",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "No comment",
+    "fa": "بدون نظر"
+  },
+  "description": {
+    "en": "No comment",
+    "fa": "بدون نظر"
+  },
+  "payload": {
+    "id": "eng-doc-idc-approve",
+    "title": {
+      "en": "No comment",
+      "fa": "بدون نظر"
+    },
+    "submitLabel": {
+      "en": "No comment",
+      "fa": "بدون نظر"
+    },
+    "actionKey": "eng-doc-idc-respond",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true,
+        "default": "Approve"
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "textArea"
+      }
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "eng-doc-release-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the hold",
+    "fa": "رفع نگه‌داشتن"
+  },
+  "description": {
+    "en": "Release the hold",
+    "fa": "رفع نگه‌داشتن"
+  },
+  "payload": {
+    "id": "eng-doc-release-hold",
+    "title": {
+      "en": "Release the hold",
+      "fa": "رفع نگه‌داشتن"
+    },
+    "submitLabel": {
+      "en": "Release the hold",
+      "fa": "رفع نگه‌داشتن"
+    },
+    "actionKey": "eng-doc-release-hold",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Release reason (required)",
+          "fa": "دلیل رفع (الزامی)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

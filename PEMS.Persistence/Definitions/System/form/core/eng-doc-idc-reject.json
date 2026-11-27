@@ -1,0 +1,77 @@
+{
+  "kind": "form",
+  "key": "eng-doc-idc-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revision required",
+    "fa": "نیاز به ویرایش"
+  },
+  "description": {
+    "en": "Revision required",
+    "fa": "نیاز به ویرایش"
+  },
+  "payload": {
+    "id": "eng-doc-idc-reject",
+    "title": {
+      "en": "Revision required",
+      "fa": "نیاز به ویرایش"
+    },
+    "submitLabel": {
+      "en": "Revision required",
+      "fa": "نیاز به ویرایش"
+    },
+    "actionKey": "eng-doc-idc-respond",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true,
+        "default": "Reject"
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

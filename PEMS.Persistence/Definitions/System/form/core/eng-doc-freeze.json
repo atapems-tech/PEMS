@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "eng-doc-freeze",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Freeze the document",
+    "fa": "انجماد مدرک"
+  },
+  "description": {
+    "en": "Freeze the document",
+    "fa": "انجماد مدرک"
+  },
+  "payload": {
+    "id": "eng-doc-freeze",
+    "title": {
+      "en": "Freeze the document",
+      "fa": "انجماد مدرک"
+    },
+    "submitLabel": {
+      "en": "Freeze the document",
+      "fa": "انجماد مدرک"
+    },
+    "actionKey": "eng-doc-freeze",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

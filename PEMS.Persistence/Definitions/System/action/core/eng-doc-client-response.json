@@ -32,6 +32,6 @@
       "en": "Client response recorded.",
       "fa": "پاسخ کارفرما ثبت شد."
     },
-    "redirect": "/EngineeringDocuments/Details/{id}"
+    "redirect": "/p/eng-doc-details?id={id}"
   }
 }

@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "eng-doc-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Put the document on hold",
+    "fa": "نگه‌داشتن مدرک"
+  },
+  "description": {
+    "en": "Put the document on hold",
+    "fa": "نگه‌داشتن مدرک"
+  },
+  "payload": {
+    "id": "eng-doc-hold",
+    "title": {
+      "en": "Put the document on hold",
+      "fa": "نگه‌داشتن مدرک"
+    },
+    "submitLabel": {
+      "en": "Put the document on hold",
+      "fa": "نگه‌داشتن مدرک"
+    },
+    "actionKey": "eng-doc-hold",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "responsibleDisciplineId",
+        "label": {
+          "en": "Responsible discipline",
+          "fa": "دیسیپلین مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "eng-doc-all-disciplines"
+      }
+    ]
+  }
+}
