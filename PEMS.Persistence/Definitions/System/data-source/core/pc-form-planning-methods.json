@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-planning-methods",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Planning methods",
+    "fa": "روش‌های برنامه‌ریزی"
+  },
+  "description": {
+    "en": "Planning methods",
+    "fa": "روش‌های برنامه‌ریزی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "PlanningMethods"
+    }
+  }
+}

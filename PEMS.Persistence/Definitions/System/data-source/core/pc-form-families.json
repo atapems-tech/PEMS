@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-families",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Product families",
+    "fa": "خانواده‌های محصول"
+  },
+  "description": {
+    "en": "Product families",
+    "fa": "خانواده‌های محصول"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Families"
+    }
+  }
+}

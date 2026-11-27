@@ -1,0 +1,33 @@
+{
+  "kind": "action",
+  "key": "pc-request-add-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add equipment",
+    "fa": "افزودن تجهیز"
+  },
+  "description": {
+    "en": "Add equipment",
+    "fa": "افزودن تجهیز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PcForm",
+      "action": "AddEquipment",
+      "args": {
+        "id": "field:id",
+        "equipmentId": "field:equipmentId",
+        "equipmentText": "field:equipmentText",
+        "installedQuantity": "field:installedQuantity"
+      }
+    },
+    "success": {
+      "en": "Equipment added.",
+      "fa": "تجهیز افزوده شد."
+    },
+    "redirect": "/f/pc-request-edit?id={id}"
+  }
+}

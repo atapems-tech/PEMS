@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "pc-request-generate-number",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Generate the request number",
+    "fa": "تولید شماره درخواست"
+  },
+  "description": {
+    "en": "Generate the request number",
+    "fa": "تولید شماره درخواست"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PcForm",
+      "action": "GenerateNumber",
+      "args": {
+        "id": "field:id",
+        "rowVersion": "field:rowVersion"
+      }
+    },
+    "success": {
+      "en": "Number generated.",
+      "fa": "شماره تولید شد."
+    },
+    "redirect": "/f/pc-request-edit?id={id}"
+  }
+}

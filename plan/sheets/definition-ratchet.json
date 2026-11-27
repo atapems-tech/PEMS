@@ -3,7 +3,6 @@
   "views": [
     "PEMS.Web/Areas/Admin/Views/_ViewImports.cshtml",
     "PEMS.Web/Areas/Admin/Views/_ViewStart.cshtml",
-    "PEMS.Web/Areas/Warehouse/Views/PartCatalogueRequest/Edit.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/_ViewImports.cshtml",
     "PEMS.Web/Areas/Warehouse/Views/_ViewStart.cshtml",
     "PEMS.Web/Views/Account/AccessDenied.cshtml",
@@ -62,7 +61,7 @@
   "actions": {
     "PEMS.Web.Api.V1.DefinitionsApiController": 20,
     "PEMS.Web.Api.V1.DisciplinesApiController": 6,
-    "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController": 10,
+    "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController": 1,
     "PEMS.Web.Controllers.AccountController": 9,
     "PEMS.Web.Controllers.AccountRecoveryController": 2,
     "PEMS.Web.Controllers.ActionHostController": 1,

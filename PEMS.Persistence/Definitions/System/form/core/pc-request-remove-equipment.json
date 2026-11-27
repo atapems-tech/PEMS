@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "pc-request-remove-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove the equipment line",
+    "fa": "حذف خط تجهیز"
+  },
+  "description": {
+    "en": "Remove the equipment line",
+    "fa": "حذف خط تجهیز"
+  },
+  "payload": {
+    "id": "pc-request-remove-equipment",
+    "title": {
+      "en": "Remove the equipment line",
+      "fa": "حذف خط تجهیز"
+    },
+    "submitLabel": {
+      "en": "Remove the equipment line",
+      "fa": "حذف خط تجهیز"
+    },
+    "actionKey": "pc-request-remove-equipment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request",
+          "fa": "درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "lineId",
+        "label": {
+          "en": "Line",
+          "fa": "خط"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

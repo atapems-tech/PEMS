@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "pc-request-remove-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove the equipment line",
+    "fa": "حذف خط تجهیز"
+  },
+  "description": {
+    "en": "Remove the equipment line",
+    "fa": "حذف خط تجهیز"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PcForm",
+      "action": "RemoveEquipment",
+      "args": {
+        "id": "field:id",
+        "lineId": "field:lineId"
+      }
+    },
+    "success": {
+      "en": "Removed.",
+      "fa": "حذف شد."
+    },
+    "redirect": "/f/pc-request-edit?id={id}"
+  }
+}

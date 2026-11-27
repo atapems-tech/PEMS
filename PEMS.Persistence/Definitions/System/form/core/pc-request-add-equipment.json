@@ -1,0 +1,71 @@
+{
+  "kind": "form",
+  "key": "pc-request-add-equipment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add equipment",
+    "fa": "افزودن تجهیز"
+  },
+  "description": {
+    "en": "Add equipment",
+    "fa": "افزودن تجهیز"
+  },
+  "payload": {
+    "id": "pc-request-add-equipment",
+    "title": {
+      "en": "Add equipment",
+      "fa": "افزودن تجهیز"
+    },
+    "submitLabel": {
+      "en": "Add equipment",
+      "fa": "افزودن تجهیز"
+    },
+    "actionKey": "pc-request-add-equipment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Request",
+          "fa": "درخواست"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "select",
+        "searchSource": "Equipment"
+      },
+      {
+        "name": "equipmentText",
+        "label": {
+          "en": "Or equipment as text",
+          "fa": "یا تجهیز به صورت متن"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "installedQuantity",
+        "label": {
+          "en": "Installed quantity",
+          "fa": "تعداد نصب‌شده"
+        },
+        "kind": "number",
+        "step": "any"
+      }
+    ]
+  }
+}

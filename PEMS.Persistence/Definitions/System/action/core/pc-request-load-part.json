@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "pc-request-load-part",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Load an existing part",
+    "fa": "بارگذاری قطعه موجود"
+  },
+  "description": {
+    "en": "Load an existing part",
+    "fa": "بارگذاری قطعه موجود"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "PcForm",
+      "action": "LoadPart",
+      "args": {
+        "id": "field:id",
+        "existingPartNumber": "field:existingPartNumber"
+      }
+    },
+    "success": {
+      "en": "Part loaded.",
+      "fa": "قطعه بارگذاری شد."
+    },
+    "redirect": "/f/pc-request-edit?id={id}"
+  }
+}
