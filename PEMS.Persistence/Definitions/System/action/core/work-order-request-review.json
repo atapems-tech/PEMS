@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "work-order-request-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The multi-discipline review was started.",
+    "fa": "بازبینی چند-دیسیپلینه شروع شد."
+  },
+  "description": {
+    "en": "The multi-discipline review was started.",
+    "fa": "بازبینی چند-دیسیپلینه شروع شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderReview",
+      "action": "Request",
+      "args": {
+        "workOrderId": "field:workOrderId",
+        "disciplineIds": "field:disciplineIds",
+        "actionByEmployeeId": "context:employeeId",
+        "ipAddress": "context:ip",
+        "userAgent": "context:userAgent"
+      },
+      "sectionGuard": {
+        "section": "DisciplineReview",
+        "action": "Add",
+        "workOrderId": "field:workOrderId",
+        "audit": "DisciplineIds={disciplineIds}"
+      }
+    },
+    "success": {
+      "en": "The multi-discipline review was started.",
+      "fa": "بازبینی چند-دیسیپلینه شروع شد."
+    },
+    "redirect": "/WorkOrder/Details/{workOrderId}"
+  }
+}

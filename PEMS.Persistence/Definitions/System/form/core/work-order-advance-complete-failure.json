@@ -1,0 +1,131 @@
+{
+  "kind": "form",
+  "key": "work-order-advance-complete-failure",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Completion information",
+    "fa": "ثبت اطلاعات تکمیل"
+  },
+  "description": {
+    "en": "Completion information",
+    "fa": "ثبت اطلاعات تکمیل"
+  },
+  "payload": {
+    "id": "work-order-advance-complete-failure",
+    "title": {
+      "en": "Completion information",
+      "fa": "ثبت اطلاعات تکمیل"
+    },
+    "submitLabel": {
+      "en": "Completion information",
+      "fa": "ثبت اطلاعات تکمیل"
+    },
+    "actionKey": "work-order-advance",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "failureModeCode",
+        "label": {
+          "en": "Failure mode",
+          "fa": "حالت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-failure-mode-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "failureCauseCode",
+        "label": {
+          "en": "Failure cause",
+          "fa": "علت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-failure-cause-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "failureEffect",
+        "label": {
+          "en": "Failure effect",
+          "fa": "اثر خرابی"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "rootCause",
+        "label": {
+          "en": "Root cause",
+          "fa": "ریشه‌ی مشکل"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      },
+      {
+        "name": "correctiveAction",
+        "label": {
+          "en": "Corrective action",
+          "fa": "اقدام اصلاحی"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      },
+      {
+        "name": "downtimeHours",
+        "label": {
+          "en": "Actual downtime (hours)",
+          "fa": "Downtime واقعی (ساعت)"
+        },
+        "kind": "number",
+        "step": "0.1"
+      },
+      {
+        "name": "contractorName",
+        "label": {
+          "en": "Contractor",
+          "fa": "نام پیمانکار"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "contractorCost",
+        "label": {
+          "en": "Contractor cost",
+          "fa": "هزینه پیمانکار"
+        },
+        "kind": "number",
+        "step": "0.01"
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason (optional)",
+          "fa": "دلیل (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

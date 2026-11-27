@@ -46,7 +46,7 @@
           "fa": "انتقال تگ‌های نسخه‌ی قبلی به این نسخه"
         },
         "kind": "checkbox",
-        "default": true
+        "default": "true"
       }
     ]
   }

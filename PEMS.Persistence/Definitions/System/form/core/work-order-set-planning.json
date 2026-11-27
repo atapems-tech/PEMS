@@ -1,0 +1,63 @@
+{
+  "kind": "form",
+  "key": "work-order-set-planning",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Responsible maintenance discipline",
+    "fa": "دیسیپلین مسئول نگهداری"
+  },
+  "description": {
+    "en": "Responsible maintenance discipline",
+    "fa": "دیسیپلین مسئول نگهداری"
+  },
+  "payload": {
+    "id": "work-order-set-planning",
+    "title": {
+      "en": "Responsible maintenance discipline",
+      "fa": "دیسیپلین مسئول نگهداری"
+    },
+    "submitLabel": {
+      "en": "Responsible maintenance discipline",
+      "fa": "دیسیپلین مسئول نگهداری"
+    },
+    "actionKey": "work-order-set-planning",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "responsibleDisciplineId",
+        "label": {
+          "en": "Responsible maintenance discipline",
+          "fa": "دیسیپلین مسئول نگهداری"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-discipline-options",
+        "optionsArgs": {
+          "id": "id"
+        },
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

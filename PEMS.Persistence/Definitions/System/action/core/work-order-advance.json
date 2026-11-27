@@ -1,0 +1,40 @@
+{
+  "kind": "action",
+  "key": "work-order-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The work order was advanced.",
+    "fa": "دستورکار پیش رفت."
+  },
+  "description": {
+    "en": "The work order was advanced.",
+    "fa": "دستورکار پیش رفت."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "LegacyAdvance",
+      "args": {
+        "id": "field:id",
+        "assignedTeamId": "field:assignedTeamId",
+        "failureModeCode": "field:failureModeCode",
+        "failureCauseCode": "field:failureCauseCode",
+        "rootCause": "field:rootCause",
+        "downtimeHours": "field:downtimeHours",
+        "reason": "field:reason",
+        "failureEffect": "field:failureEffect",
+        "correctiveAction": "field:correctiveAction",
+        "contractorCost": "field:contractorCost",
+        "contractorName": "field:contractorName"
+      }
+    },
+    "success": {
+      "en": "The work order was advanced.",
+      "fa": "دستورکار پیش رفت."
+    },
+    "redirect": "/WorkOrder/Details/{id}"
+  }
+}

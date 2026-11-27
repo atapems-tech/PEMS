@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "work-order-advance",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Advance the work order",
+    "fa": "پیشروی دستورکار"
+  },
+  "description": {
+    "en": "Advance the work order",
+    "fa": "پیشروی دستورکار"
+  },
+  "payload": {
+    "id": "work-order-advance",
+    "title": {
+      "en": "Advance the work order",
+      "fa": "پیشروی دستورکار"
+    },
+    "submitLabel": {
+      "en": "Advance the work order",
+      "fa": "پیشروی دستورکار"
+    },
+    "actionKey": "work-order-advance",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason (optional)",
+          "fa": "دلیل (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

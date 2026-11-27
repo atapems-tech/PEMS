@@ -1,0 +1,74 @@
+{
+  "kind": "form",
+  "key": "work-order-set-schedule",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Planned schedule",
+    "fa": "زمان‌بندی برنامه‌ریزی‌شده"
+  },
+  "description": {
+    "en": "Planned schedule",
+    "fa": "زمان‌بندی برنامه‌ریزی‌شده"
+  },
+  "payload": {
+    "id": "work-order-set-schedule",
+    "title": {
+      "en": "Planned schedule",
+      "fa": "زمان‌بندی برنامه‌ریزی‌شده"
+    },
+    "submitLabel": {
+      "en": "Planned schedule",
+      "fa": "زمان‌بندی برنامه‌ریزی‌شده"
+    },
+    "actionKey": "work-order-set-schedule",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "plannedStart",
+        "label": {
+          "en": "Planned start",
+          "fa": "شروع برنامه‌ریزی‌شده"
+        },
+        "kind": "dateTime",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "plannedFinish",
+        "label": {
+          "en": "Planned finish",
+          "fa": "پایان برنامه‌ریزی‌شده"
+        },
+        "kind": "dateTime",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}
