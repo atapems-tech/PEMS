@@ -62,7 +62,7 @@
           "fa": "دیسیپلین مسئول"
         },
         "kind": "select",
-        "optionsFrom": "eng-doc-all-disciplines"
+        "optionsFrom": "eng-doc-all-disciplines-opts"
       }
     ]
   }

@@ -53,7 +53,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "tm-new-member-options",
+        "optionsFrom": "tm-new-member-options-opts",
         "optionsArgs": {
           "id": "workSpaceId"
         }
@@ -72,7 +72,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "tm-role-options",
+        "optionsFrom": "tm-role-options-opts",
         "optionsArgs": {}
       }
     ]

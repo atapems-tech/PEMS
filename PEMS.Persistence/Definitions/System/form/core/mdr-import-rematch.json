@@ -31,7 +31,7 @@
           "fa": "پروژه (اختیاری، خالی = همه)"
         },
         "kind": "select",
-        "optionsFrom": "mdr-import-project-options"
+        "optionsFrom": "mdr-import-project-options-opts"
       }
     ]
   }

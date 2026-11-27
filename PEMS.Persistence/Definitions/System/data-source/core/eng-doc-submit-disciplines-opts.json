@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-submit-disciplines-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Disciplines for the IDC",
+    "fa": "دیسیپلین‌های IDC"
+  },
+  "description": {
+    "en": "Disciplines for the IDC",
+    "fa": "دیسیپلین‌های IDC"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "SubmitDisciplines",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "work-order-team-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Teams for the work order",
+    "fa": "تیم‌ها"
+  },
+  "description": {
+    "en": "Teams for the work order",
+    "fa": "تیم‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "TeamOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

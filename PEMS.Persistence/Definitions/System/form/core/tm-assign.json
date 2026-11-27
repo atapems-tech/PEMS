@@ -55,7 +55,7 @@
           "fa": "مسئول"
         },
         "kind": "select",
-        "optionsFrom": "tm-item-assignee-options",
+        "optionsFrom": "tm-item-assignee-options-opts",
         "optionsArgs": {
           "id": "id"
         }

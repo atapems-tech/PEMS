@@ -90,7 +90,7 @@
           "fa": "نوع"
         },
         "kind": "select",
-        "optionsFrom": "tm-item-type-options",
+        "optionsFrom": "tm-item-type-options-opts",
         "optionsArgs": {
           "id": "id"
         }
@@ -102,7 +102,7 @@
           "fa": "اولویت"
         },
         "kind": "select",
-        "optionsFrom": "tm-priority-options",
+        "optionsFrom": "tm-priority-options-opts",
         "optionsArgs": {}
       },
       {

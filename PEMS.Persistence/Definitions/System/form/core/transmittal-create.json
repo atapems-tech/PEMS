@@ -53,7 +53,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "transmittal-projects"
+        "optionsFrom": "transmittal-projects-opts"
       },
       {
         "name": "from",
@@ -196,7 +196,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "transmittal-documents",
+        "optionsFrom": "transmittal-documents-opts",
         "span": 2
       }
     ]

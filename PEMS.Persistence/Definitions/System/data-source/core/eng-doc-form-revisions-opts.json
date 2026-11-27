@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-form-revisions-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Revisions of the document",
+    "fa": "ویرایش‌های مدرک"
+  },
+  "description": {
+    "en": "Revisions of the document",
+    "fa": "ویرایش‌های مدرک"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EngDocForm",
+      "action": "Revisions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "documentId": "param:documentId"
+      }
+    }
+  }
+}

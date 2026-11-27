@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "mdb-document-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents of the project",
+    "fa": "مدارک پروژه"
+  },
+  "description": {
+    "en": "Documents of the project",
+    "fa": "مدارک پروژه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "MdbDocumentOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "transmittal-documents-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents",
+    "fa": "مدارک"
+  },
+  "description": {
+    "en": "Documents",
+    "fa": "مدارک"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "TransmittalDocuments",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

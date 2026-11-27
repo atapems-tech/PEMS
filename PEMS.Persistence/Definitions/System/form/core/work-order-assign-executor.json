@@ -46,7 +46,7 @@
           "fa": "تیم"
         },
         "kind": "select",
-        "optionsFrom": "work-order-team-options",
+        "optionsFrom": "work-order-team-options-opts",
         "optionsArgs": {
           "id": "id"
         }
@@ -58,7 +58,7 @@
           "fa": "مجری"
         },
         "kind": "select",
-        "optionsFrom": "work-order-employee-options",
+        "optionsFrom": "work-order-employee-options-opts",
         "optionsArgs": {
           "id": "id"
         }

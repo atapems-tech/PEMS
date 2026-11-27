@@ -61,7 +61,7 @@
           "fa": "انتقال کارهای ناتمام به"
         },
         "kind": "select",
-        "optionsFrom": "tm-future-sprint-options",
+        "optionsFrom": "tm-future-sprint-options-opts",
         "optionsArgs": {
           "key": "key"
         }

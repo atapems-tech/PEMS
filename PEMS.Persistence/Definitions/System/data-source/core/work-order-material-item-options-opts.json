@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "work-order-material-item-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Stock material items",
+    "fa": "اقلام انباری"
+  },
+  "description": {
+    "en": "Stock material items",
+    "fa": "اقلام انباری"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "MaterialItemOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

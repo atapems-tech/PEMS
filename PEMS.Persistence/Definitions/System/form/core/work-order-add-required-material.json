@@ -46,7 +46,7 @@
           "fa": "متریال"
         },
         "kind": "select",
-        "optionsFrom": "work-order-material-item-options",
+        "optionsFrom": "work-order-material-item-options-opts",
         "optionsArgs": {
           "id": "workOrderId"
         },

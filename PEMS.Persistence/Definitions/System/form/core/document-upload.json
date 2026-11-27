@@ -38,7 +38,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "document-upload-projects"
+        "optionsFrom": "document-upload-projects-opts"
       },
       {
         "name": "files",

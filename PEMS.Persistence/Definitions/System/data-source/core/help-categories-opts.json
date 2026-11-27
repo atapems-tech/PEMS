@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "help-categories-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Help categories",
+    "fa": "دسته‌های راهنما"
+  },
+  "description": {
+    "en": "Help categories",
+    "fa": "دسته‌های راهنما"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "Help",
+      "action": "Categories",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "culture": "context:culture"
+      }
+    }
+  }
+}

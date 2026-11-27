@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-units-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Units",
+    "fa": "واحدها"
+  },
+  "description": {
+    "en": "Units",
+    "fa": "واحدها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Units",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

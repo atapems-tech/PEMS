@@ -31,7 +31,7 @@
           "fa": "فرستنده (طرف موجود)"
         },
         "kind": "select",
-        "optionsFrom": "dcc-incoming-parties"
+        "optionsFrom": "dcc-incoming-parties-opts"
       },
       {
         "name": "newPartyName",
@@ -100,7 +100,7 @@
           "fa": "پروژه"
         },
         "kind": "select",
-        "optionsFrom": "dcc-incoming-projects"
+        "optionsFrom": "dcc-incoming-projects-opts"
       },
       {
         "name": "senderReference",
@@ -275,7 +275,7 @@
           "fa": "دیسیپلین"
         },
         "kind": "select",
-        "optionsFrom": "dcc-incoming-disciplines"
+        "optionsFrom": "dcc-incoming-disciplines-opts"
       },
       {
         "name": "parentLetterId",
@@ -328,7 +328,7 @@
           "fa": "رونوشت"
         },
         "kind": "multiSelect",
-        "optionsFrom": "dcc-incoming-employees",
+        "optionsFrom": "dcc-incoming-employees-opts",
         "span": 2
       },
       {

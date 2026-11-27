@@ -68,7 +68,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "tm-role-options",
+        "optionsFrom": "tm-role-options-opts",
         "optionsArgs": {}
       },
       {

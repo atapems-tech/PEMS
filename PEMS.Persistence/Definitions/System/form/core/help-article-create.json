@@ -42,7 +42,7 @@
         },
         "kind": "select",
         "required": true,
-        "optionsFrom": "help-categories"
+        "optionsFrom": "help-categories-opts"
       },
       {
         "name": "articleType",

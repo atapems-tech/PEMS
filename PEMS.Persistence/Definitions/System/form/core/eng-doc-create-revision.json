@@ -124,7 +124,7 @@
           "fa": "بستن نظر نیازمند ویرایش (اختیاری)"
         },
         "kind": "select",
-        "optionsFrom": "eng-doc-open-comments",
+        "optionsFrom": "eng-doc-open-comments-opts",
         "optionsArgs": {
           "id": "id"
         }

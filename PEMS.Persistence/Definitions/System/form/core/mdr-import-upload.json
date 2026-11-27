@@ -38,7 +38,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "mdr-import-project-options"
+        "optionsFrom": "mdr-import-project-options-opts"
       },
       {
         "name": "file",

@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tm-type-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Types of a space",
+    "fa": "انواع فضا"
+  },
+  "description": {
+    "en": "Types of a space",
+    "fa": "انواع فضا"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "TypeOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

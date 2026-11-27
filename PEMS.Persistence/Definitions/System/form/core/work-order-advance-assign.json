@@ -46,7 +46,7 @@
           "fa": "گروه کاری"
         },
         "kind": "select",
-        "optionsFrom": "work-order-team-options",
+        "optionsFrom": "work-order-team-options-opts",
         "optionsArgs": {
           "id": "id"
         },

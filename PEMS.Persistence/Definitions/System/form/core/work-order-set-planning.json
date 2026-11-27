@@ -46,7 +46,7 @@
           "fa": "دیسیپلین مسئول نگهداری"
         },
         "kind": "select",
-        "optionsFrom": "work-order-discipline-options",
+        "optionsFrom": "work-order-discipline-options-opts",
         "optionsArgs": {
           "id": "id"
         },

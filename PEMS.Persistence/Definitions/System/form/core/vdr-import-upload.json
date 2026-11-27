@@ -38,7 +38,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "vdr-import-project-options"
+        "optionsFrom": "vdr-import-project-options-opts"
       },
       {
         "name": "file",

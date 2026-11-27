@@ -55,7 +55,7 @@
           "fa": "کارمند"
         },
         "kind": "select",
-        "optionsFrom": "work-order-employee-options",
+        "optionsFrom": "work-order-employee-options-opts",
         "optionsArgs": {
           "id": "workOrderId"
         },
@@ -74,7 +74,7 @@
           "fa": "تیم (اختیاری)"
         },
         "kind": "select",
-        "optionsFrom": "work-order-team-options",
+        "optionsFrom": "work-order-team-options-opts",
         "optionsArgs": {
           "id": "workOrderId"
         }

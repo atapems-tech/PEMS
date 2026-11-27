@@ -94,7 +94,7 @@
           "fa": "واحد داخلی"
         },
         "kind": "select",
-        "optionsFrom": "eng-doc-departments",
+        "optionsFrom": "eng-doc-departments-opts",
         "visible": "values.deliveryUnitType == 'InternalDepartment'"
       },
       {

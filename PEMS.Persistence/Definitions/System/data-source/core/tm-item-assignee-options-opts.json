@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tm-item-assignee-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assignees of a task",
+    "fa": "مسئول‌های وظیفه"
+  },
+  "description": {
+    "en": "Assignees of a task",
+    "fa": "مسئول‌های وظیفه"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "TaskAssigneeOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

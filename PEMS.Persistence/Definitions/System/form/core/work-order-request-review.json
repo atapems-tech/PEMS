@@ -46,7 +46,7 @@
           "fa": "دیسیپلین‌ها"
         },
         "kind": "multiSelect",
-        "optionsFrom": "work-order-discipline-options",
+        "optionsFrom": "work-order-discipline-options-opts",
         "optionsArgs": {
           "id": "workOrderId"
         },
