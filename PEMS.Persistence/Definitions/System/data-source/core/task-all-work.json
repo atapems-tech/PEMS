@@ -1,0 +1,30 @@
+{
+  "kind": "data-source",
+  "key": "task-all-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "All work",
+    "fa": "همه‌ی کارها"
+  },
+  "description": {
+    "en": "All work",
+    "fa": "همه‌ی کارها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "AllWork",
+      "args": {
+        "spaceKey": "param:spaceKey",
+        "text": "param:text",
+        "assignee": "param:assignee",
+        "statusCategory": "param:statusCategory",
+        "priority": "param:priority",
+        "includeArchived": "param:includeArchived"
+      }
+    }
+  }
+}

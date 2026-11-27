@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-all-bulk-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The selected tasks were changed.",
+    "fa": "وظایف انتخاب‌شده تغییر کرد."
+  },
+  "description": {
+    "en": "The selected tasks were changed.",
+    "fa": "وظایف انتخاب‌شده تغییر کرد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Bulk",
+      "args": {
+        "ids": "field:ids",
+        "bulkAction": "literal:status",
+        "value": "field:value"
+      }
+    },
+    "success": {
+      "en": "The selected tasks were changed.",
+      "fa": "وظایف انتخاب‌شده تغییر کرد."
+    },
+    "redirect": "/p/task-all-work?spaceKey={spaceKey}"
+  }
+}

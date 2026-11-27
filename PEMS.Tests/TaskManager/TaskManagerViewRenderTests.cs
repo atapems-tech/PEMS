@@ -85,9 +85,10 @@ public class TaskManagerViewRenderTests
         Assert.Contains(items, x => x.Title == "Pump <b>P-101</b> overhaul");       // the text is data here; the grid encodes it
         Assert.All(sprints, x => Assert.False(x.CanManage));                       // a plain member is not a lead: no sprint commands
 
-        var all = await Render(tm, await tm.AllWork(new WorkItemQuery { WorkSpaceId = w.SpaceId }), "~/Views/TaskManager/AllWork.cshtml");
-        Assert.Contains("MNT-2", all);
-        Assert.Contains("data-tm-bulk-value=\"status\"", all);
+        var member2 = new FakeCurrentUserService { UserId = 1, UserName = "u1", FullName = "User 1", Roles = new List<string> { "Engineer" } };
+        var ops2 = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), member2, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
+        var all = await ops2.AllWorkAsync("MNT");
+        Assert.Contains(all, x => x.Key == "MNT-2");
     }
 
     [Fact]

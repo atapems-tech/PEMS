@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "task-manager-all-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "All work (old address)",
+    "fa": "همه‌ی کارها (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "All work (old address)",
+    "fa": "همه‌ی کارها (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "TaskManager/AllWork",
+    "target": "/p/task-all-work",
+    "permanent": false
+  }
+}

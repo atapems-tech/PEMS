@@ -1,0 +1,237 @@
+{
+  "kind": "page",
+  "key": "task-all-work",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "All work",
+    "fa": "همه‌ی کارها"
+  },
+  "description": {
+    "en": "All work",
+    "fa": "همه‌ی کارها"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "task-all-work",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "task-all-work-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/task-manager",
+                "text": {
+                  "en": "Task manager",
+                  "fa": "مدیریت وظایف"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "task-all-work-filters",
+            "resetUrl": "/p/task-all-work",
+            "fields": [
+              {
+                "name": "text",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.text}}"
+              },
+              {
+                "name": "spaceKey",
+                "label": {
+                  "en": "Space",
+                  "fa": "فضا"
+                },
+                "kind": "select",
+                "value": "{{params.spaceKey}}"
+              },
+              {
+                "name": "assignee",
+                "label": {
+                  "en": "Assignee",
+                  "fa": "مسئول"
+                },
+                "kind": "select",
+                "value": "{{params.assignee}}"
+              },
+              {
+                "name": "statusCategory",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.statusCategory}}"
+              },
+              {
+                "name": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                },
+                "kind": "select",
+                "value": "{{params.priority}}"
+              },
+              {
+                "name": "includeArchived",
+                "label": {
+                  "en": "Include archived",
+                  "fa": "شامل بایگانی‌شده"
+                },
+                "kind": "select",
+                "value": "{{params.includeArchived}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "spaceKey",
+                "source": "/d/tm-space-options",
+                "valueField": "value"
+              },
+              {
+                "field": "assignee",
+                "source": "/d/tm-all-assignee-options",
+                "valueField": "value"
+              },
+              {
+                "field": "statusCategory",
+                "source": "/d/tm-status-category-options",
+                "valueField": "value"
+              },
+              {
+                "field": "priority",
+                "source": "/d/tm-priority-options",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "items",
+          "component": "data-grid",
+          "options": {
+            "id": "task-all-work",
+            "url": "/d/task-all-work?f.spaceKey={{params.spaceKey|url}}&f.text={{params.text|url}}&f.assignee={{params.assignee|url}}&f.statusCategory={{params.statusCategory|url}}&f.priority={{params.priority|url}}&f.includeArchived={{params.includeArchived|url}}",
+            "idField": "id",
+            "viewsKey": "task-all-work",
+            "selectable": true,
+            "columns": [
+              {
+                "key": "key",
+                "width": 110
+              },
+              {
+                "key": "space",
+                "width": 100
+              },
+              {
+                "key": "title",
+                "width": 320
+              },
+              {
+                "key": "type",
+                "width": 110
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "priority",
+                "width": 100
+              },
+              {
+                "key": "assignee",
+                "width": 160
+              },
+              {
+                "key": "dueDate",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "overdue",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "points",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "archived",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Task/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "bulkActions": [
+              {
+                "key": "status",
+                "label": {
+                  "en": "Change status",
+                  "fa": "تغییر وضعیت"
+                },
+                "formUrl": "/f/tm-all-bulk-status?spaceKey={{params.spaceKey|url}}"
+              },
+              {
+                "key": "assign",
+                "label": {
+                  "en": "Assign",
+                  "fa": "تخصیص"
+                },
+                "formUrl": "/f/tm-all-bulk-assign?spaceKey={{params.spaceKey|url}}"
+              },
+              {
+                "key": "sprint",
+                "label": {
+                  "en": "Move to sprint",
+                  "fa": "انتقال به اسپرینت"
+                },
+                "formUrl": "/f/tm-all-bulk-sprint?spaceKey={{params.spaceKey|url}}"
+              },
+              {
+                "key": "archive",
+                "label": {
+                  "en": "Archive",
+                  "fa": "بایگانی"
+                },
+                "formUrl": "/f/tm-all-bulk-archive?spaceKey={{params.spaceKey|url}}"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

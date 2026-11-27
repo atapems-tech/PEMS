@@ -100,7 +100,7 @@
                   },
                   {
                     "key": "filter",
-                    "url": "/TaskManager/AllWork?WorkSpaceId={raw.id}&StatusCategory=NotDone",
+                    "url": "/p/task-all-work?spaceKey={raw.key}&statusCategory=NotDone",
                     "method": "get"
                   },
                   {

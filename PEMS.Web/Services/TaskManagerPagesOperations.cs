@@ -140,4 +140,30 @@ public sealed class TaskManagerPagesOperations(ITaskManagerService tasks, ICurre
         return view == null ? [] : [new TaskChoice("0", localizer["Tm_Backlog"].Value), .. view.Sprints.Where(s => s.State == SprintStates.Future).Select(s => new TaskChoice(s.Id.ToString(), s.Name))];
     }
 y(localizer, p))).ToList());
+
+    public async Task<List<TaskWorkRow>> AllWorkAsync(string? spaceKey = null, string? text = null, string? assignee = null, string? statusCategory = null, string? priority = null, string? includeArchived = null)
+    {
+        var actor = await ActorAsync();
+        int? spaceId = null;
+        if (!string.IsNullOrWhiteSpace(spaceKey)) spaceId = (await tasks.GetAccessibleSpacesAsync(actor)).FirstOrDefault(x => string.Equals(x.Key, spaceKey, StringComparison.OrdinalIgnoreCase))?.Id;
+        if (!string.IsNullOrWhiteSpace(spaceKey) && spaceId == null) return [];
+        var query = new WorkItemQuery
+        {
+            WorkSpaceId = spaceId, Text = string.IsNullOrWhiteSpace(text) ? null : text, Assignee = string.IsNullOrWhiteSpace(assignee) ? null : assignee, StatusCategory = string.IsNullOrWhiteSpace(statusCategory) ? null : statusCategory,
+            Priority = string.IsNullOrWhiteSpace(priority) ? null : priority, IncludeArchived = string.Equals(includeArchived, "true", StringComparison.OrdinalIgnoreCase), Page = 1, PageSize = 500
+        };
+        var result = await tasks.QueryAsync(query, actor);
+        return result.Items.Select(i => new TaskWorkRow(i.Id, i.Key ?? "#" + i.Id, i.WorkSpaceKey ?? localizer["Tm_Personal"].Value, i.Title, i.TypeName == null ? null : TaskManagerUi.Name(i.TypeName, i.TypeNameFa), TaskManagerUi.StatusLabel(localizer, i),
+            TaskManagerUi.Priority(localizer, i.Priority), i.AssigneeName ?? localizer["Tm_Unassigned"].Value, i.DueDate, i.IsOverdue, i.StoryPoints, !i.IsActive)).ToList();
+    }
+
+    public async Task<List<TaskChoice>> SpaceOptionsAsync()
+        => [new TaskChoice("", localizer["Tm_Any"].Value), .. (await tasks.GetAccessibleSpacesAsync(await ActorAsync())).Select(s => new TaskChoice(s.Key, s.Key + " - " + TaskManagerUi.Name(s.Name, s.NameFa)))];
+
+    public async Task<List<TaskChoice>> AllWorkAssigneeOptionsAsync()
+        => [new TaskChoice("", localizer["Tm_Any"].Value), new TaskChoice("me", localizer["Tm_Me"].Value), new TaskChoice("unassigned", localizer["Tm_Unassigned"].Value),
+            .. (await tasks.GetEligibleAssigneesAsync(null, await ActorAsync())).Candidates.Select(e => new TaskChoice(e.EmployeeId.ToString(), e.Name))];
+
+    public Task<List<TaskChoice>> StatusCategoryOptionsAsync()
+        => Task.FromResult(new[] { "", "NotDone", "ToDo", "InProgress", "Done" }.Select(c => new TaskChoice(c, c == "" ? localizer["Tm_Any"].Value : localizer["Tm_Category_" + c].Value)).ToList());
 }

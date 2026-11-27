@@ -32,7 +32,7 @@
               },
               {
                 "type": "link",
-                "href": "/TaskManager/AllWork?Assignee=me&StatusCategory=NotDone",
+                "href": "/p/task-all-work?assignee=me&statusCategory=NotDone",
                 "text": {
                   "en": "My tasks",
                   "fa": "کارهای من"
@@ -48,7 +48,7 @@
               },
               {
                 "type": "link",
-                "href": "/TaskManager/AllWork?StatusCategory=NotDone",
+                "href": "/p/task-all-work?statusCategory=NotDone",
                 "text": {
                   "en": "All work",
                   "fa": "همه‌ی کارها"
