@@ -1,0 +1,254 @@
+{
+  "kind": "page",
+  "key": "mdr-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review the MDR import",
+    "fa": "بازبینی ورود MDR"
+  },
+  "description": {
+    "en": "Review the MDR import",
+    "fa": "بازبینی ورود MDR"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "mdr-import-review",
+    "permission": "MDRImport.View",
+    "regions": {
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "mdr-import-head",
+            "fields": [
+              {
+                "key": "file",
+                "label": {
+                  "en": "File",
+                  "fa": "فایل"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "total",
+                "label": {
+                  "en": "Total",
+                  "fa": "کل"
+                },
+                "type": "number"
+              },
+              {
+                "key": "valid",
+                "label": {
+                  "en": "Valid",
+                  "fa": "معتبر"
+                },
+                "type": "number"
+              },
+              {
+                "key": "warning",
+                "label": {
+                  "en": "Warning",
+                  "fa": "هشدار"
+                },
+                "type": "number"
+              },
+              {
+                "key": "error",
+                "label": {
+                  "en": "Error",
+                  "fa": "خطا"
+                },
+                "type": "number"
+              },
+              {
+                "key": "duplicate",
+                "label": {
+                  "en": "Duplicates",
+                  "fa": "تکراری"
+                },
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "headerWarnings",
+                "label": {
+                  "en": "Columns not recognized in the workbook",
+                  "fa": "ستون‌های شناسایی‌نشده در فایل اکسل"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/mdr-import-batch",
+              "idField": "id",
+              "id": "{{params.batchId}}"
+            }
+          }
+        },
+        {
+          "id": "tools",
+          "component": "data-grid",
+          "options": {
+            "id": "mdr-import-tools",
+            "url": "/d/mdr-import-batch?f.batchId={{params.batchId|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "status",
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 520,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "commit",
+                    "url": "/f/mdr-import-commit?batchId={id}",
+                    "method": "get",
+                    "showWhen": "row.staged == true"
+                  },
+                  {
+                    "key": "discard",
+                    "url": "/f/mdr-import-discard?batchId={id}",
+                    "method": "get",
+                    "showWhen": "row.staged == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "back",
+                    "url": "/p/mdr-import",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "rows",
+          "component": "data-grid",
+          "options": {
+            "id": "mdr-import-rows",
+            "url": "/d/mdr-import-rows?f.batchId={{params.batchId|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "rowNumber",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "include",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "sheet",
+                "width": 120
+              },
+              {
+                "key": "documentNumber",
+                "width": 200
+              },
+              {
+                "key": "title",
+                "width": 260
+              },
+              {
+                "key": "scope",
+                "width": 100
+              },
+              {
+                "key": "area",
+                "width": 100
+              },
+              {
+                "key": "discipline",
+                "width": 110
+              },
+              {
+                "key": "revision",
+                "width": 80
+              },
+              {
+                "key": "commentStatus",
+                "width": 120
+              },
+              {
+                "key": "finalStatus",
+                "width": 120
+              },
+              {
+                "key": "remark",
+                "width": 200
+              },
+              {
+                "key": "frozen",
+                "width": 80
+              },
+              {
+                "key": "validation",
+                "width": 110
+              },
+              {
+                "key": "message",
+                "width": 260
+              },
+              {
+                "key": "duplicate",
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "include",
+                    "url": "/a/mdr-import-include",
+                    "method": "post",
+                    "showWhen": "row.canInclude == true"
+                  },
+                  {
+                    "key": "exclude",
+                    "url": "/a/mdr-import-exclude",
+                    "method": "post",
+                    "showWhen": "row.canExclude == true"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 100,
+            "height": 640
+          }
+        }
+      ]
+    }
+  }
+}

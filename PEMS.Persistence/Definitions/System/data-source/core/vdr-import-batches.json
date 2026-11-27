@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "vdr-import-batches",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR import batches",
+    "fa": "بسته‌های ورود VDR"
+  },
+  "description": {
+    "en": "VDR import batches",
+    "fa": "بسته‌های ورود VDR"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocImportPage",
+      "action": "VdrBatches"
+    }
+  }
+}

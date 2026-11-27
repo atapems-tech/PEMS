@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "mdr-import-fix-statuses",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Fix status values",
+    "fa": "اصلاح مقادیر وضعیت"
+  },
+  "description": {
+    "en": "Fix status values",
+    "fa": "اصلاح مقادیر وضعیت"
+  },
+  "payload": {
+    "id": "mdr-import-fix-statuses",
+    "title": {
+      "en": "Fix status values",
+      "fa": "اصلاح مقادیر وضعیت"
+    },
+    "submitLabel": {
+      "en": "Fix status values",
+      "fa": "اصلاح مقادیر وضعیت"
+    },
+    "actionKey": "mdr-import-fix-statuses",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project (optional, empty = all)",
+          "fa": "پروژه (اختیاری، خالی = همه)"
+        },
+        "kind": "select",
+        "optionsFrom": "mdr-import-project-options"
+      }
+    ]
+  }
+}

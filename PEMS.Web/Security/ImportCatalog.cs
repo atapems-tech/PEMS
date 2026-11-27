@@ -53,9 +53,9 @@ public static class ImportCatalog
     {
         // ---- Engineering (Views/MDRImport, Views/VDRImport)
         new("Mdr", Category.Engineering, "MDRImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "MDRImport",
-            Sets(MenuAccess.EngineeringManagement, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up"),
+            Sets(MenuAccess.EngineeringManagement, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up", Url: "/p/mdr-import"),   // SCRUM-830: a definition page
         new("Vdr", Category.Engineering, "VDRImport", "Index", LaunchMode.Page, ".xlsx", null, true, Workflow.StagedReview, "VDR",
-            Sets(MenuAccess.EngineeringManagement, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up"),
+            Sets(MenuAccess.EngineeringManagement, MenuAccess.ImportCenter), "bi-file-earmark-arrow-up", Url: "/p/vdr-import"),   // SCRUM-830: a definition page
 
         // ---- CMMS
         new("Equipment", Category.Cmms, "EquipmentImport", "Index", LaunchMode.Page, ".xlsx, .pdf (tag scan)", null, true, Workflow.StagedReview, "EquipmentImport",

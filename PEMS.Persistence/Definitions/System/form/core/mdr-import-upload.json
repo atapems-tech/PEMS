@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "mdr-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a MDR workbook",
+    "fa": "بارگذاری فایل MDR"
+  },
+  "description": {
+    "en": "Upload a MDR workbook",
+    "fa": "بارگذاری فایل MDR"
+  },
+  "payload": {
+    "id": "mdr-import-upload",
+    "title": {
+      "en": "Upload a MDR workbook",
+      "fa": "بارگذاری فایل MDR"
+    },
+    "submitLabel": {
+      "en": "Upload a MDR workbook",
+      "fa": "بارگذاری فایل MDR"
+    },
+    "actionKey": "mdr-import-upload",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "mdr-import-project-options"
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "Excel file (.xlsx)",
+          "fa": "فایل Excel (.xlsx)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

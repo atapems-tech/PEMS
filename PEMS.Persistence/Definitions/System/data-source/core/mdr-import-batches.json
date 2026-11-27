@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "mdr-import-batches",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MDR import batches",
+    "fa": "بسته‌های ورود MDR"
+  },
+  "description": {
+    "en": "MDR import batches",
+    "fa": "بسته‌های ورود MDR"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocImportPage",
+      "action": "MdrBatches"
+    }
+  }
+}

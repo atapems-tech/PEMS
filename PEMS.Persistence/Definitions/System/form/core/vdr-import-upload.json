@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "vdr-import-upload",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a VDR workbook",
+    "fa": "بارگذاری فایل VDR"
+  },
+  "description": {
+    "en": "Upload a VDR workbook",
+    "fa": "بارگذاری فایل VDR"
+  },
+  "payload": {
+    "id": "vdr-import-upload",
+    "title": {
+      "en": "Upload a VDR workbook",
+      "fa": "بارگذاری فایل VDR"
+    },
+    "submitLabel": {
+      "en": "Upload a VDR workbook",
+      "fa": "بارگذاری فایل VDR"
+    },
+    "actionKey": "vdr-import-upload",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "vdr-import-project-options"
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "Excel file (.xlsx)",
+          "fa": "فایل Excel (.xlsx)"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "kind": "page",
+  "key": "vdr-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR import",
+    "fa": "ورود VDR"
+  },
+  "description": {
+    "en": "VDR import",
+    "fa": "ورود VDR"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "vdr-import",
+    "permission": "VDR.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "vdr-import-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/vdr-import-upload",
+                "text": {
+                  "en": "Upload a workbook",
+                  "fa": "بارگذاری فایل"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/import-center",
+                "text": {
+                  "en": "Import center",
+                  "fa": "مرکز ورود داده"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "batches",
+          "component": "data-grid",
+          "options": {
+            "id": "vdr-import-batches",
+            "url": "/d/vdr-import-batches",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "file",
+                "width": 240
+              },
+              {
+                "key": "project",
+                "width": 180
+              },
+              {
+                "key": "importDate",
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "total",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "valid",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "warning",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "error",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "duplicate",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "review",
+                    "url": "/p/vdr-import-review?batchId={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
