@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "tm-priority-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Priorities",
+    "fa": "اولویت‌ها"
+  },
+  "description": {
+    "en": "Priorities",
+    "fa": "اولویت‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "PriorityOptions"
+    }
+  }
+}

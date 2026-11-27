@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-board-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Board of a space",
+    "fa": "بُرد فضا"
+  },
+  "description": {
+    "en": "Board of a space",
+    "fa": "بُرد فضا"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "BoardHead",
+      "args": {
+        "key": "param:key"
+      }
+    }
+  }
+}

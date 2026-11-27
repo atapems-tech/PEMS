@@ -18,10 +18,11 @@
             url = Options.Url, view = Options.View, fields = Options.Fields, calendar = Options.Calendar, weekStart = Options.WeekStart, itemUrl = Options.ItemUrl, moveUrl = Options.MoveUrl,
             pageSize = Options.PageSize, height = Options.Height, locale = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
             groups = Options.Groups.Select(g => new { value = g.Value, label = T(g.Label), tone = g.Tone }),
+            groupsUrl = Options.GroupsUrl, allowedField = Options.AllowedField, moveFields = Options.MoveFields,
             texts = new
             {
                 loading = T(t.Loading), empty = T(t.Empty), error = T(t.Error), more = T(t.More), today = T(t.Today), previous = T(t.Previous), next = T(t.Next),
-                jalali = T(t.Jalali), gregorian = T(t.Gregorian), uncategorized = T(t.Uncategorized), moreItems = T(t.MoreItems), collapse = T(t.Collapse), expand = T(t.Expand)
+                jalali = T(t.Jalali), gregorian = T(t.Gregorian), uncategorized = T(t.Uncategorized), invalidMove = T(t.InvalidMove), moreItems = T(t.MoreItems), collapse = T(t.Collapse), expand = T(t.Expand)
             }
         };
         return JsonSerializer.Serialize(config, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull });

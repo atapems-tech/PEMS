@@ -44,6 +44,8 @@ public sealed record ViewTexts
     public required TranslatableText Jalali { get; init; }
     public required TranslatableText Gregorian { get; init; }
     public required TranslatableText Uncategorized { get; init; }
+    /// <summary>SCRUM-835: shown when a card is dropped on a column the card may not go to.</summary>
+    public TranslatableText InvalidMove { get; init; } = TranslatableText.Of(("en", "This move is not allowed."), ("fa", "این انتقال مجاز نیست."));
     /// <summary>The "and {0} more" line of a crowded calendar day.</summary>
     public required TranslatableText MoreItems { get; init; }
     /// <summary>The toggle of a tree node (collapse, expand): the text a screen reader hears.</summary>
@@ -61,6 +63,12 @@ public sealed record DataViewOptions : FrameOptions
     public required ViewTexts Texts { get; init; }
     /// <summary>Kanban columns, in order; rows with another value fall into an "uncategorized" column.</summary>
     public IReadOnlyList<ViewGroup> Groups { get; init; } = [];
+    /// <summary>SCRUM-835 (kanban): the columns come from a data source (/d/key, rows { value, label, tone }) instead of <see cref="Groups"/>: the statuses of a work space differ from space to space.</summary>
+    public string? GroupsUrl { get; init; }
+    /// <summary>SCRUM-835 (kanban): the row property that lists the columns the card may be moved to (an array or comma separated values); a card without a target cannot be dragged and a drop on another column is refused.</summary>
+    public string? AllowedField { get; init; }
+    /// <summary>SCRUM-835 (kanban): row properties sent with the move (for example the row version of the card, so a stale move is refused by the server).</summary>
+    public IReadOnlyList<string> MoveFields { get; init; } = [];
     /// <summary>gregorian or jalali: the calendar the month grid starts in (the user can switch).</summary>
     public string Calendar { get; init; } = "gregorian";
     /// <summary>First day of the week, 0 = Sunday ... 6 = Saturday.</summary>

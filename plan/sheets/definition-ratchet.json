@@ -84,7 +84,6 @@
     "PEMS.Web/Views/TaskManager/AdminSpace.cshtml",
     "PEMS.Web/Views/TaskManager/AllWork.cshtml",
     "PEMS.Web/Views/TaskManager/Backlog.cshtml",
-    "PEMS.Web/Views/TaskManager/Board.cshtml",
     "PEMS.Web/Views/TaskManager/_BulkBar.cshtml",
     "PEMS.Web/Views/TaskManager/_CreateModal.cshtml",
     "PEMS.Web/Views/TaskManager/_ItemRow.cshtml",

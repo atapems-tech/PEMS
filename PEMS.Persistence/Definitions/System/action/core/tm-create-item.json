@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "tm-create-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The task was created.",
+    "fa": "وظیفه ایجاد شد."
+  },
+  "description": {
+    "en": "The task was created.",
+    "fa": "وظیفه ایجاد شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "CreateItem",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "title": "field:title",
+        "description": "field:description",
+        "typeId": "field:typeId",
+        "priority": "field:priority",
+        "assigneeEmployeeId": "field:assigneeEmployeeId",
+        "dueDate": "field:dueDate",
+        "startDate": "field:startDate",
+        "sprintId": "field:sprintId",
+        "storyPoints": "field:storyPoints"
+      }
+    },
+    "success": {
+      "en": "The task was created.",
+      "fa": "وظیفه ایجاد شد."
+    },
+    "redirect": "/Task/Details/{result}"
+  }
+}
