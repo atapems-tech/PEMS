@@ -1,3 +1,4 @@
+using PEMS.Web.Security;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Common;
 using PEMS.Application.DTOs;
@@ -48,7 +49,7 @@ public sealed class EngineeringDocumentFormOperations(IEngineeringDocumentServic
     }
 
     public async Task<List<EngDocEditRow>> OneAsync(int id)
-        => await service.GetEntityByIdAsync(id) is { } d ? [new EngDocEditRow(d.DocumentId, d.DocumentNo, d.DocumentType, d.Title, d.Description, d.ProjectId, d.DisciplineId, d.Area, d.IssuePurpose, d.PreparedBy, d.CheckedBy, d.ApprovedBy, d.EquipmentId, d.ContractId, d.RelatedMRId)] : [];
+        => await service.GetEntityByIdAsync(id) is { } d ? [new EngDocEditRow(d.DocumentId, d.DocumentNo, d.DocumentType, d.Title, d.Description, d.ProjectId, d.DisciplineId ?? 0, d.Area, d.IssuePurpose, d.PreparedBy, d.CheckedBy, d.ApprovedBy, d.EquipmentId, d.ContractId, d.RelatedMRId)] : [];
 
     public async Task<EngDocSaveAnswer> EditAsync(int id, string documentNo, string documentType, string title, string? description, int projectId, int disciplineId, string? area, string? issuePurpose, string? preparedBy, string? checkedBy, string? approvedBy, int? equipmentId, int? contractId, int? relatedMRId)
     {

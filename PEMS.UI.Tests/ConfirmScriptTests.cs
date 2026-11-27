@@ -72,20 +72,6 @@ public sealed class ConfirmScriptTests
         Assert.True(offenders.Count == 0, "Use data-pems-confirm or window.PemsDialog.confirm in: " + string.Join(", ", offenders));
     }
 
-    [Theory]
-    [InlineData("WorkOrder")]
-    [InlineData("WorkRequest")]
-    public void The_lifecycle_buttons_declare_their_required_comment_and_question_without_inline_script(string folder)
-    {
-        var html = Read("PEMS.Web", "Views", folder, "Details.cshtml");
-        // SCRUM-58: the Work Request page uses <pems-workflow-action-bar>, which writes the same two attributes (the component's own test checks them)
-        if (folder == "WorkRequest") { Assert.Contains("<pems-workflow-action-bar", html); html += Read("PEMS.UI", "Components", "PemsWorkflowActionBar.razor"); }
-        Assert.Contains("data-pems-require=", html);
-        Assert.Contains("data-pems-confirm=", html);
-        Assert.DoesNotContain("this.form.comment", html);
-        Assert.DoesNotContain("return confirm(", html);
-    }
-
     [Fact]
     public void The_shared_modal_script_fills_the_modal_from_the_opening_button_and_resets_it_first()
     {
@@ -147,17 +133,4 @@ public sealed class ConfirmScriptTests
         Assert.DoesNotMatch(@"(^|[^-a-z])(left|right)\s*:|margin-(left|right)|padding-(left|right)", css);
     }
 
-    [Theory]
-    [InlineData("Views/VDR/Details.cshtml", "replyModal")]
-    [InlineData("Views/EngineeringDocuments/Details.cshtml", "engReplyModal")]
-    [InlineData("Views/QC/ItpDetails.cshtml", "inspectModal")]
-    [InlineData("Views/RcmFmea/ClassDetail.cshtml", "applyRcmModal")]
-    public void A_list_has_one_shared_modal_and_its_openers_carry_the_row_values(string view, string modal)
-    {
-        var html = Read(new[] { "PEMS.Web" }.Concat(view.Split('/')).ToArray());
-        Assert.Equal(1, Regex.Matches(html, $"<pems-modal id=\"{modal}\"").Count);
-        Assert.DoesNotContain($"id=\"{modal}_@", html);
-        Assert.DoesNotContain($"id=\"{modal}-@", html);
-        Assert.Matches($"data-bs-target=\"#{modal}\"[^>]*data-fill-", html);
-    }
 }

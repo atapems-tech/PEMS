@@ -10,7 +10,6 @@ using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Admin.Controllers;
 
 namespace PEMS.Tests.Organization;
 

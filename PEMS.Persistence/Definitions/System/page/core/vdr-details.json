@@ -194,7 +194,11 @@
                 "key": "stage",
                 "width": 160,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                }
               },
               {
                 "key": "_actions",
@@ -207,88 +211,148 @@
                     "key": "start",
                     "url": "/f/vdr-submit-review?vdrItemId={id}&revisionNo={raw.nextRevision}",
                     "method": "get",
-                    "showWhen": "row.canStart == true"
+                    "showWhen": "row.canStart == true",
+                    "label": {
+                      "en": "Start",
+                      "fa": "شروع"
+                    }
                   },
                   {
                     "key": "approve",
                     "url": "/f/vdr-discipline-approve?vdrItemId={id}&decision=Approve",
                     "method": "get",
-                    "showWhen": "row.canRespond == true"
+                    "showWhen": "row.canRespond == true",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    }
                   },
                   {
                     "key": "comment",
                     "url": "/f/vdr-discipline-comment?vdrItemId={id}&decision=Comment",
                     "method": "get",
-                    "showWhen": "row.canRespond == true"
+                    "showWhen": "row.canRespond == true",
+                    "label": {
+                      "en": "Comment",
+                      "fa": "نظر"
+                    }
                   },
                   {
                     "key": "reject",
                     "url": "/f/vdr-discipline-reject?vdrItemId={id}&decision=Reject",
                     "method": "get",
                     "showWhen": "row.canRespond == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   },
                   {
                     "key": "final",
                     "url": "/f/vdr-lead-review?vdrItemId={id}",
                     "method": "get",
-                    "showWhen": "row.canLead == true"
+                    "showWhen": "row.canLead == true",
+                    "label": {
+                      "en": "Final",
+                      "fa": "نهایی"
+                    }
                   },
                   {
                     "key": "return",
                     "url": "/f/vdr-return-to-vendor?vdrItemId={id}",
                     "method": "get",
-                    "showWhen": "row.canReturn == true"
+                    "showWhen": "row.canReturn == true",
+                    "label": {
+                      "en": "Return",
+                      "fa": "بازگرداندن"
+                    }
                   },
                   {
                     "key": "edit",
                     "url": "/f/vdr-update-details?vdrItemId={id}&documentDescription={raw.editDescription}&documentClass={raw.editClass}&plannedFirstIssueDate={raw.plannedIso}&equipmentTag={raw.editEquipment}&disciplineCodeRaw={raw.editDiscipline}",
                     "method": "get",
-                    "showWhen": "row.canEdit == true"
+                    "showWhen": "row.canEdit == true",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   },
                   {
                     "key": "hold",
                     "url": "/f/vdr-hold?vdrItemId={id}",
                     "method": "get",
-                    "showWhen": "row.canHold == true"
+                    "showWhen": "row.canHold == true",
+                    "label": {
+                      "en": "Hold",
+                      "fa": "نگه‌داشتن"
+                    }
                   },
                   {
                     "key": "release",
                     "url": "/f/vdr-release-hold?vdrItemId={id}",
                     "method": "get",
-                    "showWhen": "row.canRelease == true"
+                    "showWhen": "row.canRelease == true",
+                    "label": {
+                      "en": "Release",
+                      "fa": "آزادسازی"
+                    }
                   },
                   {
                     "key": "deactivate",
                     "url": "/f/vdr-deactivate?vdrItemId={id}",
                     "method": "get",
                     "showWhen": "row.canDeactivate == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Deactivate",
+                      "fa": "غیرفعال‌سازی"
+                    }
                   },
                   {
                     "key": "add-comment",
                     "url": "/f/vdr-comment-add?vdrItemId={id}",
                     "method": "get",
-                    "showWhen": "row.canAddComment == true"
+                    "showWhen": "row.canAddComment == true",
+                    "label": {
+                      "en": "Add a comment",
+                      "fa": "افزودن نظر"
+                    }
                   },
                   {
                     "key": "upload-file",
                     "url": "/f/vdr-submission-file?vdrItemId={id}",
                     "method": "get",
-                    "showWhen": "row.canAddComment == true"
+                    "showWhen": "row.canAddComment == true",
+                    "label": {
+                      "en": "Upload a file",
+                      "fa": "بارگذاری فایل"
+                    }
                   },
                   {
                     "key": "equipment",
                     "url": "/p/equipment-passport?id={raw.equipmentId}",
                     "method": "get",
-                    "showWhen": "row.equipmentId != null"
+                    "showWhen": "row.equipmentId != null",
+                    "label": {
+                      "en": "Equipment",
+                      "fa": "تجهیز"
+                    }
                   },
                   {
                     "key": "vendor",
                     "url": "/p/vendor-details?id={raw.vendorId}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Vendor",
+                      "fa": "فروشنده"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -320,11 +384,19 @@
             "columns": [
               {
                 "key": "discipline",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "status",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               }
             ]
           }
@@ -357,7 +429,11 @@
               {
                 "key": "revision",
                 "width": 70,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "vendorTransmittal",
@@ -433,7 +509,11 @@
                     "method": "get",
                     "showWhen": "row.canReplySheet == false"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -470,7 +550,11 @@
               {
                 "key": "revision",
                 "width": 70,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "kind",
@@ -494,7 +578,11 @@
                     "url": "{raw.downloadUrl}",
                     "method": "get"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -561,7 +649,11 @@
               {
                 "key": "revision",
                 "width": 70,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "category",
@@ -594,7 +686,11 @@
               },
               {
                 "key": "status",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "response",
@@ -610,13 +706,21 @@
                   {
                     "key": "status",
                     "url": "/f/vdr-comment-action?vdrItemId={{params.id}}&commentId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Status",
+                      "fa": "وضعیت"
+                    }
                   },
                   {
                     "key": "reply",
                     "url": "/f/vdr-comment-reply?vdrItemId={{params.id}}&commentId={id}",
                     "method": "get",
-                    "showWhen": "row.canReply == true"
+                    "showWhen": "row.canReply == true",
+                    "label": {
+                      "en": "Reply",
+                      "fa": "پاسخ"
+                    }
                   },
                   {
                     "key": "attachment",
@@ -630,7 +734,11 @@
                     "method": "get",
                     "showWhen": "row.replyAttachmentUrl != null"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -715,7 +823,11 @@
             "columns": [
               {
                 "key": "type",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "number",
@@ -732,7 +844,11 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -744,9 +860,17 @@
                   {
                     "key": "open",
                     "url": "/Letter/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

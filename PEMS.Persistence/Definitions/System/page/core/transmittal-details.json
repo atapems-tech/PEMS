@@ -178,7 +178,11 @@
                 "key": "status",
                 "width": 120,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -191,28 +195,48 @@
                     "key": "mark-sent",
                     "url": "/f/transmittal-mark-sent?id={id}",
                     "method": "get",
-                    "showWhen": "row.canSend == true"
+                    "showWhen": "row.canSend == true",
+                    "label": {
+                      "en": "Mark as sent",
+                      "fa": "علامت ارسال"
+                    }
                   },
                   {
                     "key": "cancel",
                     "url": "/f/transmittal-cancel?id={id}",
                     "method": "get",
                     "showWhen": "row.canCancel == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Cancel",
+                      "fa": "لغو"
+                    }
                   },
                   {
                     "key": "record-response",
                     "url": "/f/transmittal-record-response?id={id}",
                     "method": "get",
-                    "showWhen": "row.canRecordResponse == true"
+                    "showWhen": "row.canRecordResponse == true",
+                    "label": {
+                      "en": "Record the response",
+                      "fa": "ثبت پاسخ"
+                    }
                   },
                   {
                     "key": "reissue",
                     "url": "/a/transmittal-reissue",
                     "method": "post",
-                    "showWhen": "row.canReissue == true"
+                    "showWhen": "row.canReissue == true",
+                    "label": {
+                      "en": "Reissue",
+                      "fa": "صدور مجدد"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -244,11 +268,19 @@
             "columns": [
               {
                 "key": "name",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "type",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "organization",
@@ -256,7 +288,11 @@
               },
               {
                 "key": "responseRequired",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Response required",
+                  "fa": "نیازمند پاسخ"
+                }
               },
               {
                 "key": "acknowledgement",
@@ -275,7 +311,11 @@
                     "method": "get",
                     "showWhen": "row.canAcknowledge == true"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -311,15 +351,27 @@
               },
               {
                 "key": "title",
-                "width": 300
+                "width": 300,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "revision",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "file",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                }
               },
               {
                 "key": "remarks",

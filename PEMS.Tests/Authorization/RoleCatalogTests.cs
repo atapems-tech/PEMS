@@ -8,7 +8,6 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Admin.Controllers;
 using PEMS.Web.Security;
 
 namespace PEMS.Tests.Authorization;

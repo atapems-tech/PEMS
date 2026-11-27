@@ -28,18 +28,4 @@ public class NoNativeDateTimeInputTests
         Assert.Empty(offenders);
     }
 
-    [Theory]
-    [InlineData("Letter", "Index.cshtml", "id=\"ctReminderAt\"")]
-    [InlineData("WorkOrder", "Details.cshtml", "name=\"plannedStart\"")]
-    [InlineData("WorkOrder", "Details.cshtml", "name=\"plannedFinish\"")]
-    public void TheEightFields_UseTheDateTimeMode(string folder, string file, string field)
-        => Assert.Matches("<pems-date time=\"true\"[^>]*" + Regex.Escape(field), SourceTree.Text(Path.Combine(Web(), "Views", folder, file)));
-
-    [Fact]
-    public void TheLetterReminderScript_ReadsAndWritesThroughPemsDate()
-    {
-        var js = SourceTree.Text(Path.Combine(Web(), "wwwroot", "js", "pems-cartable.js"));
-        Assert.Contains("window.PemsDate.setValue(remAt, iso)", js);
-        Assert.Contains("window.PemsDate.value(remAt)", js);
-    }
 }

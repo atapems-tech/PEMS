@@ -2,7 +2,6 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Admin.Controllers;
 using PEMS.Web.Security;
 
 namespace PEMS.Tests.Web;

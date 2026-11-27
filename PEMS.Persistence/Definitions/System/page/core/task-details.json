@@ -205,7 +205,11 @@
                 "key": "key",
                 "width": 120,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "_actions",
@@ -218,69 +222,117 @@
                     "key": "edit",
                     "url": "/f/tm-update-item?id={id}&rowVersion={raw.rowVersion}&parentId={raw.parentId}&title={raw.title}&description={raw.description}&typeId={raw.typeId}&priority={raw.priorityCode}&storyPoints={raw.points}&startDate={raw.startDate}&dueDate={raw.dueDate}",
                     "method": "get",
-                    "showWhen": "row.canEdit == true"
+                    "showWhen": "row.canEdit == true",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   },
                   {
                     "key": "status",
                     "url": "/f/{raw.transitionForm}?id={id}&rowVersion={raw.rowVersion}",
                     "method": "get",
-                    "showWhen": "row.canTransition == true"
+                    "showWhen": "row.canTransition == true",
+                    "label": {
+                      "en": "Status",
+                      "fa": "وضعیت"
+                    }
                   },
                   {
                     "key": "assign",
                     "url": "/f/tm-assign?id={id}&rowVersion={raw.rowVersion}&assigneeEmployeeId={raw.assigneeId}",
                     "method": "get",
-                    "showWhen": "row.canAssign == true"
+                    "showWhen": "row.canAssign == true",
+                    "label": {
+                      "en": "Assign",
+                      "fa": "تخصیص"
+                    }
                   },
                   {
                     "key": "comment",
                     "url": "/f/tm-comment?id={id}",
                     "method": "get",
-                    "showWhen": "row.canComment == true"
+                    "showWhen": "row.canComment == true",
+                    "label": {
+                      "en": "Comment",
+                      "fa": "نظر"
+                    }
                   },
                   {
                     "key": "link",
                     "url": "/f/tm-add-link?id={id}",
                     "method": "get",
-                    "showWhen": "row.canLink == true"
+                    "showWhen": "row.canLink == true",
+                    "label": {
+                      "en": "Link",
+                      "fa": "پیوند"
+                    }
                   },
                   {
                     "key": "subtask",
                     "url": "/f/tm-create-subtask?parentId={id}&workSpaceId={raw.workSpaceId}&typeId={raw.subtaskTypeId}&sprintId={raw.sprintId}",
                     "method": "get",
-                    "showWhen": "row.canCreateSubtask == true"
+                    "showWhen": "row.canCreateSubtask == true",
+                    "label": {
+                      "en": "Subtask",
+                      "fa": "زیروظیفه"
+                    }
                   },
                   {
                     "key": "watch",
                     "url": "/f/tm-watch?id={id}&watch={raw.watchNext}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Watch",
+                      "fa": "پیگیری"
+                    }
                   },
                   {
                     "key": "archive",
                     "url": "/f/tm-archive?id={id}&archived={raw.archiveNext}",
                     "method": "get",
                     "showWhen": "row.canArchive == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Archive",
+                      "fa": "بایگانی"
+                    }
                   },
                   {
                     "key": "related",
                     "url": "{raw.relatedUrl}",
                     "method": "get",
-                    "showWhen": "row.relatedUrl != null"
+                    "showWhen": "row.relatedUrl != null",
+                    "label": {
+                      "en": "Related",
+                      "fa": "مرتبط"
+                    }
                   },
                   {
                     "key": "space",
                     "url": "/p/task-backlog?key={raw.spaceKey}",
                     "method": "get",
-                    "showWhen": "row.isLegacy == false"
+                    "showWhen": "row.isLegacy == false",
+                    "label": {
+                      "en": "Space",
+                      "fa": "فضا"
+                    }
                   },
                   {
                     "key": "list",
                     "url": "/p/task-actions",
                     "method": "get",
-                    "showWhen": "row.isLegacy == true"
+                    "showWhen": "row.isLegacy == true",
+                    "label": {
+                      "en": "List",
+                      "fa": "فهرست"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -312,37 +364,69 @@
             "columns": [
               {
                 "key": "key",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "title",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "type",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "priority",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "assignee",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Assignee",
+                  "fa": "مسئول"
+                }
               },
               {
                 "key": "dueDate",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Due date",
+                  "fa": "مهلت"
+                }
               },
               {
                 "key": "points",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Points",
+                  "fa": "امتیاز"
+                }
               },
               {
                 "key": "_actions",
@@ -354,9 +438,17 @@
                   {
                     "key": "open",
                     "url": "/p/task-details?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -388,7 +480,11 @@
             "columns": [
               {
                 "key": "type",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "otherKey",
@@ -413,7 +509,11 @@
                     "key": "open",
                     "url": "/p/task-details?id={raw.otherId}",
                     "method": "get",
-                    "showWhen": "row.visible == true"
+                    "showWhen": "row.visible == true",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   },
                   {
                     "key": "remove",
@@ -422,7 +522,11 @@
                     "showWhen": "row.canRemove == true",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -479,7 +583,11 @@
                     "showWhen": "row.canDelete == true",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

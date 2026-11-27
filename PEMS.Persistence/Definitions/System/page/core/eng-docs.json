@@ -123,34 +123,58 @@
                 "key": "total",
                 "width": 110,
                 "type": "number",
-                "href": "/p/eng-docs"
+                "href": "/p/eng-docs",
+                "header": {
+                  "en": "Total",
+                  "fa": "جمع"
+                }
               },
               {
                 "key": "approved",
                 "width": 110,
                 "type": "number",
-                "href": "/p/eng-docs?status=Approved"
+                "href": "/p/eng-docs?status=Approved",
+                "header": {
+                  "en": "Approved",
+                  "fa": "تأییدشده"
+                }
               },
               {
                 "key": "pending",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Pending",
+                  "fa": "در انتظار"
+                }
               },
               {
                 "key": "rejected",
                 "width": 110,
                 "type": "number",
-                "href": "/p/eng-docs?status=Rejected"
+                "href": "/p/eng-docs?status=Rejected",
+                "header": {
+                  "en": "Rejected",
+                  "fa": "ردشده"
+                }
               },
               {
                 "key": "frozen",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Frozen",
+                  "fa": "منجمد"
+                }
               },
               {
                 "key": "overdue",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                }
               }
             ]
           }
@@ -193,36 +217,68 @@
               },
               {
                 "key": "title",
-                "width": 340
+                "width": 340,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "project",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
               },
               {
                 "key": "area",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                }
               },
               {
                 "key": "type",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "discipline",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "revision",
-                "width": 70
+                "width": 70,
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "status",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "frozen",
                 "width": 80,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Frozen",
+                  "fa": "منجمد"
+                }
               },
               {
                 "key": "delayDays",
@@ -244,12 +300,20 @@
                   {
                     "key": "edit",
                     "url": "/f/eng-doc-edit?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   },
                   {
                     "key": "open",
                     "url": "/p/eng-doc-details?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   },
                   {
                     "key": "delete",
@@ -257,7 +321,11 @@
                     "method": "get",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

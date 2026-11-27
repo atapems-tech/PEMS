@@ -215,7 +215,11 @@
                 "key": "status",
                 "width": 140,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -228,107 +232,183 @@
                     "key": "submit",
                     "url": "/a/letter-submit-review",
                     "method": "post",
-                    "showWhen": "row.canSubmit == true"
+                    "showWhen": "row.canSubmit == true",
+                    "label": {
+                      "en": "Submit",
+                      "fa": "ارسال"
+                    }
                   },
                   {
                     "key": "approve",
                     "url": "/a/letter-approve",
                     "method": "post",
-                    "showWhen": "row.canApprove == true"
+                    "showWhen": "row.canApprove == true",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    }
                   },
                   {
                     "key": "return",
                     "url": "/f/letter-return-revision?letterId={id}",
                     "method": "get",
-                    "showWhen": "row.canApprove == true"
+                    "showWhen": "row.canApprove == true",
+                    "label": {
+                      "en": "Return",
+                      "fa": "بازگرداندن"
+                    }
                   },
                   {
                     "key": "reject",
                     "url": "/f/letter-reject?letterId={id}",
                     "method": "get",
                     "showWhen": "row.canApprove == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   },
                   {
                     "key": "issue",
                     "url": "/a/letter-issue",
                     "method": "post",
-                    "showWhen": "row.canIssue == true"
+                    "showWhen": "row.canIssue == true",
+                    "label": {
+                      "en": "Issue",
+                      "fa": "صدور"
+                    }
                   },
                   {
                     "key": "close",
                     "url": "/a/letter-close",
                     "method": "post",
-                    "showWhen": "row.canClose == true"
+                    "showWhen": "row.canClose == true",
+                    "label": {
+                      "en": "Close",
+                      "fa": "بستن"
+                    }
                   },
                   {
                     "key": "send",
                     "url": "/a/letter-send",
                     "method": "post",
-                    "showWhen": "row.canSend == true"
+                    "showWhen": "row.canSend == true",
+                    "label": {
+                      "en": "Send",
+                      "fa": "ارسال"
+                    }
                   },
                   {
                     "key": "archive",
                     "url": "/a/letter-archive",
                     "method": "post",
-                    "showWhen": "row.canArchive == true"
+                    "showWhen": "row.canArchive == true",
+                    "label": {
+                      "en": "Archive",
+                      "fa": "بایگانی"
+                    }
                   },
                   {
                     "key": "reply",
                     "url": "/f/letter-compose?replyTo={id}",
                     "method": "get",
-                    "showWhen": "row.canReplyRefer == true"
+                    "showWhen": "row.canReplyRefer == true",
+                    "label": {
+                      "en": "Reply",
+                      "fa": "پاسخ"
+                    }
                   },
                   {
                     "key": "refer-compose",
                     "url": "/f/letter-compose?referTo={id}",
                     "method": "get",
-                    "showWhen": "row.canReplyRefer == true"
+                    "showWhen": "row.canReplyRefer == true",
+                    "label": {
+                      "en": "Refer in the composer",
+                      "fa": "ارجاع با نگارش"
+                    }
                   },
                   {
                     "key": "sign",
                     "url": "/f/letter-sign?letterId={id}",
                     "method": "get",
-                    "showWhen": "row.canSign == true"
+                    "showWhen": "row.canSign == true",
+                    "label": {
+                      "en": "Sign",
+                      "fa": "امضا"
+                    }
                   },
                   {
                     "key": "response",
                     "url": "/f/letter-response-due?letterId={id}&responseRequired={raw.responseRequired}&responseDueDate={raw.responseDue}",
                     "method": "get",
-                    "showWhen": "row.canResponse == true"
+                    "showWhen": "row.canResponse == true",
+                    "label": {
+                      "en": "Response",
+                      "fa": "پاسخ"
+                    }
                   },
                   {
                     "key": "refer",
                     "url": "/f/letter-refer?letterId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Refer",
+                      "fa": "ارجاع"
+                    }
                   },
                   {
                     "key": "add-recipient",
                     "url": "/f/letter-add-recipient?letterId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Add a recipient",
+                      "fa": "افزودن گیرنده"
+                    }
                   },
                   {
                     "key": "tag",
                     "url": "/f/letter-attach-tag?letterId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Tag",
+                      "fa": "برچسب"
+                    }
                   },
                   {
                     "key": "upload",
                     "url": "/f/letter-upload-attachment?letterId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Upload",
+                      "fa": "بارگذاری"
+                    }
                   },
                   {
                     "key": "pdf",
                     "url": "/x/letter-pdf?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "PDF",
+                      "fa": "PDF"
+                    }
                   },
                   {
                     "key": "history",
                     "url": "/p/letter-history?id={id}",
                     "method": "get",
-                    "showWhen": "row.canAudit == true"
+                    "showWhen": "row.canAudit == true",
+                    "label": {
+                      "en": "History",
+                      "fa": "تاریخچه"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -360,11 +440,19 @@
             "columns": [
               {
                 "key": "type",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "name",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "read",
@@ -413,7 +501,11 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "referredBy",
@@ -431,7 +523,11 @@
               {
                 "key": "overdue",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                }
               },
               {
                 "key": "_actions",
@@ -446,7 +542,11 @@
                     "method": "get",
                     "showWhen": "row.canComplete == true"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -478,7 +578,11 @@
             "columns": [
               {
                 "key": "file",
-                "width": 360
+                "width": 360,
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                }
               },
               {
                 "key": "_actions",
@@ -492,7 +596,11 @@
                     "url": "/Files/Download/{id}",
                     "method": "get"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -533,7 +641,11 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "decided",
@@ -562,7 +674,11 @@
                     "method": "get",
                     "showWhen": "row.canReassign == true"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -639,7 +755,11 @@
             "columns": [
               {
                 "key": "name",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "_actions",
@@ -654,7 +774,11 @@
                     "method": "get",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -691,7 +815,11 @@
               },
               {
                 "key": "type",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "description",

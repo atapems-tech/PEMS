@@ -1,3 +1,4 @@
+using PEMS.Web.Security;
 using Microsoft.Extensions.Localization;
 using PEMS.Application.DTOs;
 using PEMS.Application.Interfaces;
@@ -77,7 +78,7 @@ public sealed class TaskManagerPagesOperations(ITaskManagerService tasks, IWorkS
         return [new TaskChoice("", localizer["Tm_Backlog"].Value), .. view?.Sprints.Select(s => new TaskChoice(s.Id.ToString(), s.Name)) ?? []];
     }
 
-    public Task<List<TaskChoice>> PriorityOptionsAsync() => Task.FromResult(TaskItemPriorities.All.Select(p => new TaskChoice(p, TaskManagerUi.Priorit
+    public Task<List<TaskChoice>> PriorityOptionsAsync() => Task.FromResult(TaskItemPriorities.All.Select(p => new TaskChoice(p, TaskManagerUi.Priority(localizer, p))).ToList());
     public async Task<List<TaskBacklogHeadRow>> BacklogHeadAsync(string? key = null)
     {
         if (string.IsNullOrWhiteSpace(key)) return [];
@@ -139,7 +140,6 @@ public sealed class TaskManagerPagesOperations(ITaskManagerService tasks, IWorkS
         var view = string.IsNullOrWhiteSpace(key) ? null : await tasks.GetSpaceViewAsync(key, await ActorAsync());
         return view == null ? [] : [new TaskChoice("0", localizer["Tm_Backlog"].Value), .. view.Sprints.Where(s => s.State == SprintStates.Future).Select(s => new TaskChoice(s.Id.ToString(), s.Name))];
     }
-y(localizer, p))).ToList());
 
     public async Task<List<TaskWorkRow>> AllWorkAsync(string? spaceKey = null, string? text = null, string? assignee = null, string? statusCategory = null, string? priority = null, string? includeArchived = null)
     {

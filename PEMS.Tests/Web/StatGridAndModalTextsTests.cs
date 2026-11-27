@@ -22,13 +22,6 @@ public class StatGridAndModalTextsTests
         Assert.Contains("@media (max-width: 576px) { .admin-kpi-grid { grid-template-columns: 1fr; } }", css);
     }
 
-    [Theory]
-    public void TheReviewedTexts_AreNoLongerHardCoded(string view, params string[] literals)
-    {
-        var text = Read(["PEMS.Web", .. view.Split('/')]);
-        foreach (var literal in literals) Assert.DoesNotContain(literal, text);
-    }
-
     [Fact]
     public void TheMixedPersianEnglishTitles_HaveRealPersianValues()
     {

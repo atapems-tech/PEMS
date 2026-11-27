@@ -52,7 +52,7 @@ public interface IDocumentPagesOperations
     Task<DocFileResult> RegisterExportAsync(string? project = null, string? disciplines = null, string? status = null, string? q = null);
 
     [PEMS.Application.Common.PemsOperation("DocumentPage", "RegisterExportSelected", "DocumentRegister.View")]
-    Task<DocFileResult> RegisterExportSelectedAsync(List<int> ids);
+    Task<DocFileResult> RegisterExportSelectedAsync(string? ids);
 
     // ---- vendor document register
     [PEMS.Application.Common.PemsOperation("DocumentPage", "VdrList", "VDR.View")]

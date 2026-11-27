@@ -138,7 +138,7 @@ public sealed class PageRendererTests : IDisposable
         var pipeline = new DefinitionPipeline(new OneDefinition(definition), new Allow(allowed), []);
         var controller = new PageHostController(pipeline, _renderer, new FakeCurrentUserService { UserName = "hamid" }, Microsoft.Extensions.Logging.Abstractions.NullLogger<PageHostController>.Instance)
         {
-            ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext { HttpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext() }
+            ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext { HttpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext { User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity([new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, "hamid")], "test")) } }
         };
         return controller;
     }
@@ -154,5 +154,13 @@ public sealed class PageRendererTests : IDisposable
         Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundResult>(await Host(true).Index("other-page", CancellationToken.None));
         Assert.IsType<Microsoft.AspNetCore.Mvc.NotFoundResult>(await Host(true).Index("../secret", CancellationToken.None));   // a key has a fixed shape
         Assert.IsType<Microsoft.AspNetCore.Mvc.ForbidResult>(await Host(allowed: false, permissionInPayload: "Equipment.View").Index("demo", CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task An_anonymous_visitor_is_challenged_unless_the_page_is_public()
+    {
+        var anonymous = Host(allowed: true);
+        anonymous.ControllerContext = new Microsoft.AspNetCore.Mvc.ControllerContext { HttpContext = new Microsoft.AspNetCore.Http.DefaultHttpContext() };
+        Assert.IsType<Microsoft.AspNetCore.Mvc.ChallengeResult>(await anonymous.Index("demo", CancellationToken.None));
     }
 }

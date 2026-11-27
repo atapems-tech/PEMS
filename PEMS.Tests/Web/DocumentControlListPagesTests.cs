@@ -52,21 +52,6 @@ public class DocumentControlListPagesTests
         Assert.DoesNotContain("class=\"badge ", html);
     }
 
-    // ---------- DocumentRegister ----------
-
-    private static Task<string> Register(string? project = null, List<string>? disciplines = null, string? status = null, string? q = null,
-        List<SavedFilterDto>? saved = null, params EngineeringDocumentDto[] docs)
-        => Render<DocumentRegisterController>("/Views/DocumentRegister/Index.cshtml", Page(docs), v =>
-        {
-            v["Projects"] = new List<string> { "JPC", "BIDBOLAND" };
-            v["Disciplines"] = new List<string> { "Mechanical", "Electrical" };
-            v["Statuses"] = new List<string> { "Approved", "Submitted" };
-            v["SelectedProject"] = project;
-            v["SelectedDisciplines"] = disciplines ?? new List<string>();
-            v["SelectedStatus"] = status;
-            v["SearchTerm"] = q;
-            v["SavedFilters"] = saved ?? new List<SavedFilterDto>();
-        });
 
     private static EngineeringDocumentDto Doc(int id) => new()
     {

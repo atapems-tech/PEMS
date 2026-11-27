@@ -54,12 +54,20 @@
               {
                 "key": "pendingIssue",
                 "width": 200,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Pending issue",
+                  "fa": "در انتظار صدور"
+                }
               },
               {
                 "key": "unlinkedIncoming",
                 "width": 200,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Unlinked incoming",
+                  "fa": "وارده‌های بدون پیوند"
+                }
               }
             ]
           }
@@ -96,7 +104,11 @@
               },
               {
                 "key": "title",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "modified",

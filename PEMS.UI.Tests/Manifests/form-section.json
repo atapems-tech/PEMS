@@ -79,7 +79,8 @@
                     "switch",
                     "tags",
                     "checkboxMatrix",
-                    "dateTime"
+                    "dateTime",
+                    "multiSelect"
                   ]
                 },
                 "required": {
@@ -385,6 +386,69 @@
                     "string",
                     "null"
                   ]
+                },
+                "searchSource": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "default": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "step": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "hidden": {
+                  "type": "boolean"
+                },
+                "dependsOn": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "dependsSource": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "dependsArg": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "uploadUrl": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "multiple": {
+                  "type": "boolean"
+                },
+                "accept": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "optionsArgs": {
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "additionalProperties": {
+                    "type": "string"
+                  }
                 },
                 "span": {
                   "type": [

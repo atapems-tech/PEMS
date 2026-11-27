@@ -108,7 +108,11 @@
                 "key": "status",
                 "width": 120,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -121,21 +125,37 @@
                     "key": "commit",
                     "url": "/f/vdr-import-commit?batchId={id}",
                     "method": "get",
-                    "showWhen": "row.staged == true"
+                    "showWhen": "row.staged == true",
+                    "label": {
+                      "en": "Commit",
+                      "fa": "تأیید نهایی"
+                    }
                   },
                   {
                     "key": "discard",
                     "url": "/f/vdr-import-discard?batchId={id}",
                     "method": "get",
                     "showWhen": "row.staged == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Discard",
+                      "fa": "دور انداختن"
+                    }
                   },
                   {
                     "key": "back",
                     "url": "/p/vdr-import",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Back",
+                      "fa": "بازگشت"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -151,45 +171,85 @@
               {
                 "key": "rowNumber",
                 "width": 70,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Row",
+                  "fa": "ردیف"
+                }
               },
               {
                 "key": "include",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Include",
+                  "fa": "شامل"
+                }
               },
               {
                 "key": "documentNumber",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Document number",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "vendor",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
               },
               {
                 "key": "type",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "discipline",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "revisions",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Revisions",
+                  "fa": "ویرایش‌ها"
+                }
               },
               {
                 "key": "validation",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Validation",
+                  "fa": "اعتبارسنجی"
+                }
               },
               {
                 "key": "message",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Message",
+                  "fa": "پیام"
+                }
               },
               {
                 "key": "duplicate",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Duplicate",
+                  "fa": "تکراری"
+                }
               },
               {
                 "key": "_actions",
@@ -202,15 +262,27 @@
                     "key": "include",
                     "url": "/a/vdr-import-include",
                     "method": "post",
-                    "showWhen": "row.canInclude == true"
+                    "showWhen": "row.canInclude == true",
+                    "label": {
+                      "en": "Include",
+                      "fa": "شمول"
+                    }
                   },
                   {
                     "key": "exclude",
                     "url": "/a/vdr-import-exclude",
                     "method": "post",
-                    "showWhen": "row.canExclude == true"
+                    "showWhen": "row.canExclude == true",
+                    "label": {
+                      "en": "Exclude",
+                      "fa": "حذف از شمول"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "pageSize": 100,

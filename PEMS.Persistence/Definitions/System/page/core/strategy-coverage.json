@@ -110,7 +110,11 @@
             "columns": [
               {
                 "key": "key",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "totalEquipment",
@@ -145,7 +149,11 @@
             "columns": [
               {
                 "key": "key",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "totalEquipment",
@@ -184,7 +192,11 @@
               },
               {
                 "key": "name",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "equipmentClassName",
@@ -192,7 +204,11 @@
               },
               {
                 "key": "area",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                }
               },
               {
                 "key": "unit",
@@ -212,9 +228,17 @@
                   {
                     "key": "open",
                     "url": "/p/strategy-tag?equipmentId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

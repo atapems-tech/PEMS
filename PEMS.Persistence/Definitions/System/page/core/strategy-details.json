@@ -213,7 +213,11 @@
                 "key": "status",
                 "width": 140,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -226,53 +230,89 @@
                     "key": "edit",
                     "url": "/MaintenanceStrategy/Edit/{id}",
                     "method": "get",
-                    "showWhen": "row.canEdit == true"
+                    "showWhen": "row.canEdit == true",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   },
                   {
                     "key": "submit",
                     "url": "/a/strategy-submit",
                     "method": "post",
-                    "showWhen": "row.canSubmit == true"
+                    "showWhen": "row.canSubmit == true",
+                    "label": {
+                      "en": "Submit",
+                      "fa": "ارسال"
+                    }
                   },
                   {
                     "key": "approve",
                     "url": "/f/strategy-review-approve?id={id}",
                     "method": "get",
-                    "showWhen": "row.canReview == true"
+                    "showWhen": "row.canReview == true",
+                    "label": {
+                      "en": "Approve",
+                      "fa": "تأیید"
+                    }
                   },
                   {
                     "key": "reject",
                     "url": "/f/strategy-review-reject?id={id}",
                     "method": "get",
                     "showWhen": "row.canReview == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   },
                   {
                     "key": "activate",
                     "url": "/f/strategy-activate?id={id}",
                     "method": "get",
-                    "showWhen": "row.canActivate == true"
+                    "showWhen": "row.canActivate == true",
+                    "label": {
+                      "en": "Activate",
+                      "fa": "فعال‌سازی"
+                    }
                   },
                   {
                     "key": "assign",
                     "url": "/f/strategy-assign?id={id}",
                     "method": "get",
-                    "showWhen": "row.canAssign == true"
+                    "showWhen": "row.canAssign == true",
+                    "label": {
+                      "en": "Assign",
+                      "fa": "تخصیص"
+                    }
                   },
                   {
                     "key": "bulk-assign",
                     "url": "/MaintenanceStrategy/BulkCreate?strategyId={id}",
                     "method": "get",
-                    "showWhen": "row.canAssign == true"
+                    "showWhen": "row.canAssign == true",
+                    "label": {
+                      "en": "Assign in bulk",
+                      "fa": "تخصیص گروهی"
+                    }
                   },
                   {
                     "key": "retire",
                     "url": "/f/strategy-retire?id={id}",
                     "method": "get",
                     "showWhen": "row.canRetire == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Retire",
+                      "fa": "بازنشسته کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -292,7 +332,11 @@
               },
               {
                 "key": "status",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "approvedAt",
@@ -310,9 +354,17 @@
                     "key": "open",
                     "url": "/p/strategy-details?id={id}",
                     "method": "get",
-                    "showWhen": "row.isCurrent == false"
+                    "showWhen": "row.isCurrent == false",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -339,7 +391,11 @@
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "override",
@@ -369,7 +425,11 @@
                   {
                     "key": "tag",
                     "url": "/p/strategy-tag?equipmentId={raw.equipmentId}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Tag",
+                      "fa": "برچسب"
+                    }
                   },
                   {
                     "key": "request-override",
@@ -397,7 +457,11 @@
                     "showWhen": "row.canUnassign == true",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -420,7 +484,11 @@
               },
               {
                 "key": "title",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "version",

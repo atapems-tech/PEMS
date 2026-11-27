@@ -117,7 +117,7 @@ public class ShellAccessibilityTests
 
     [Theory]
     [InlineData("PEMS.Web/wwwroot/css/pems-kpi-dashboard.css")]
-    [InlineData("PEMS.Web/wwwroot/css/pems-org-chart.css")]
+    [InlineData("PEMS.UI/wwwroot/pems-org-chart.css")]
     [InlineData("PEMS.Web/wwwroot/css/pems-permission-matrix.css")]
     public void FeatureCss_NeverUsesTheRawFillColoursAsTextColour(string file)
     {

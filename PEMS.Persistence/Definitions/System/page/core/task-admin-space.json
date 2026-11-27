@@ -84,7 +84,11 @@
                 "key": "name",
                 "width": 240,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "_actions",
@@ -96,29 +100,53 @@
                   {
                     "key": "edit",
                     "url": "/f/tm-update-space?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   },
                   {
                     "key": "add-member",
                     "url": "/f/tm-add-member?workSpaceId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Add a member",
+                      "fa": "افزودن عضو"
+                    }
                   },
                   {
                     "key": "add-type",
                     "url": "/f/tm-add-type?workSpaceId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Add a type",
+                      "fa": "افزودن نوع"
+                    }
                   },
                   {
                     "key": "add-status",
                     "url": "/f/tm-add-status?workSpaceId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Add a status",
+                      "fa": "افزودن وضعیت"
+                    }
                   },
                   {
                     "key": "list",
                     "url": "/p/task-admin",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "List",
+                      "fa": "فهرست"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -150,7 +178,11 @@
             "columns": [
               {
                 "key": "name",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "role",
@@ -173,7 +205,11 @@
                     "url": "/f/tm-set-member?workSpaceId={{params.id}}&memberId={id}&role={raw.roleCode}&isActive={raw.active}",
                     "method": "get"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -205,7 +241,11 @@
             "columns": [
               {
                 "key": "name",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "icon",
@@ -233,7 +273,11 @@
                     "url": "/f/tm-set-type-active?workSpaceId={{params.id}}&typeId={id}&isActive={raw.nextActive}",
                     "method": "get"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -265,7 +309,11 @@
             "columns": [
               {
                 "key": "name",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "nameFa",
@@ -295,9 +343,17 @@
                   {
                     "key": "edit",
                     "url": "/f/tm-edit-status?workSpaceId={{params.id}}&statusId={id}&name={raw.name}&nameFa={raw.nameFa}&category={raw.categoryCode}&sortOrder={raw.sortOrder}&isActive={raw.active}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Edit",
+                      "fa": "ویرایش"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

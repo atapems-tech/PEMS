@@ -52,45 +52,81 @@
             "columns": [
               {
                 "key": "file",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "File",
+                  "fa": "فایل"
+                }
               },
               {
                 "key": "project",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
               },
               {
                 "key": "importDate",
                 "width": 140,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Import date",
+                  "fa": "تاریخ ورود"
+                }
               },
               {
                 "key": "total",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Total",
+                  "fa": "جمع"
+                }
               },
               {
                 "key": "valid",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Valid",
+                  "fa": "معتبر"
+                }
               },
               {
                 "key": "warning",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Warning",
+                  "fa": "هشدار"
+                }
               },
               {
                 "key": "error",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Error",
+                  "fa": "خطا"
+                }
               },
               {
                 "key": "duplicate",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Duplicate",
+                  "fa": "تکراری"
+                }
               },
               {
                 "key": "status",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -102,9 +138,17 @@
                   {
                     "key": "review",
                     "url": "/p/vdr-import-review?batchId={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Review",
+                      "fa": "بازبینی"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

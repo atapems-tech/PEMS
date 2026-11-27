@@ -92,7 +92,11 @@
                 "key": "name",
                 "width": 240,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "_actions",
@@ -104,25 +108,45 @@
                   {
                     "key": "backlog",
                     "url": "/p/task-backlog?key={raw.key}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Backlog",
+                      "fa": "بک‌لاگ"
+                    }
                   },
                   {
                     "key": "filter",
                     "url": "/p/task-all-work?spaceKey={raw.key}&statusCategory=NotDone",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Filter",
+                      "fa": "فیلتر"
+                    }
                   },
                   {
                     "key": "create",
                     "url": "/f/tm-create-item?workSpaceId={raw.id}",
                     "method": "get",
-                    "showWhen": "row.canCreate == true"
+                    "showWhen": "row.canCreate == true",
+                    "label": {
+                      "en": "Create",
+                      "fa": "ایجاد"
+                    }
                   },
                   {
                     "key": "spaces",
                     "url": "/p/task-manager",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Spaces",
+                      "fa": "فضاها"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

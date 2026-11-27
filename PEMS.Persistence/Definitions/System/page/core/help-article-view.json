@@ -122,11 +122,19 @@
             "columns": [
               {
                 "key": "title",
-                "width": 360
+                "width": 360,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "type",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "_actions",
@@ -144,7 +152,11 @@
                     "url": "/p/help-article-view?code={code}",
                     "method": "get"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

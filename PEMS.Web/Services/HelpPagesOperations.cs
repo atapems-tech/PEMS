@@ -1,3 +1,4 @@
+using PEMS.Web.Security;
 using System.Globalization;
 using PEMS.Application.Interfaces;
 
@@ -20,8 +21,8 @@ public sealed class HelpPagesOperations(IHelpService help, IHelpVisualService vi
             article.RelatedArticles.Select(r => new HelpRelatedLink(r.Code, r.Title)).ToList(), "/Help/Article?code=" + Uri.EscapeDataString(article.Code), hasVisual);
     }
 
-    public async Task<List<HelpArticleRow>> ArticleAsync(string? code = null)
-        => string.IsNullOrWhiteSpace(code) || await help.GetArticleByCodeAsync(code, Language) is not { } a ? [] : [new HelpArticleRow(a.HelpArticleId, a.Code, a.Title, a.CategoryName, a.HelpCategoryId, a.ArticleType, a.Summary, a.Content, a.ModifiedDate)];
+    public async Task<List<HelpArticleViewRow>> ArticleAsync(string? code = null)
+        => string.IsNullOrWhiteSpace(code) || await help.GetArticleByCodeAsync(code, Language) is not { } a ? [] : [new HelpArticleViewRow(a.HelpArticleId, a.Code, a.Title, a.CategoryName, a.HelpCategoryId, a.ArticleType, a.Summary, a.Content, a.ModifiedDate)];
 
     public async Task<List<HelpRelatedRow>> RelatedAsync(string? code = null)
         => string.IsNullOrWhiteSpace(code) || await help.GetArticleByCodeAsync(code, Language) is not { } a ? [] : a.RelatedArticles.Select(r => new HelpRelatedRow(r.Code, r.Code, r.Title, r.ArticleType)).ToList();

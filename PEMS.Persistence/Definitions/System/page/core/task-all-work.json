@@ -134,51 +134,95 @@
             "columns": [
               {
                 "key": "key",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "space",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Space",
+                  "fa": "فضا"
+                }
               },
               {
                 "key": "title",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "type",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
               },
               {
                 "key": "status",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "priority",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "assignee",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Assignee",
+                  "fa": "مسئول"
+                }
               },
               {
                 "key": "dueDate",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Due date",
+                  "fa": "مهلت"
+                }
               },
               {
                 "key": "overdue",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                }
               },
               {
                 "key": "points",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Points",
+                  "fa": "امتیاز"
+                }
               },
               {
                 "key": "archived",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Archived",
+                  "fa": "بایگانی‌شده"
+                }
               },
               {
                 "key": "_actions",
@@ -190,9 +234,17 @@
                   {
                     "key": "open",
                     "url": "/Task/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "bulkActions": [

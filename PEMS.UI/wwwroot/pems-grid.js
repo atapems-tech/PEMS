@@ -262,11 +262,7 @@
                 cell = tpl('dg-cell', { text: text });
                 // SCRUM-835: a column with href shows its value as a link; {value} and {id} are replaced (a KPI count that opens the filtered list)
                 if (c.href && item && text) {
-                    var a = document.createElement('a');
-                    a.textContent = text;
-                    a.href = c.href.replace('{value}', encodeURIComponent(String(v))).replace('{id}', encodeURIComponent(String(item[cfg.idField])));
-                    cell.textContent = '';
-                    cell.appendChild(a);
+                    cell = tpl('dg-cell-link', { text: { text: text, attrs: { href: c.href.replace('{value}', encodeURIComponent(String(v))).replace('{id}', encodeURIComponent(String(item[cfg.idField]))) } } });
                 }
                 if (text) cell.setAttribute('title', text);
             }

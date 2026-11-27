@@ -120,7 +120,7 @@ public sealed class FileDefinitionStoreTests : IDisposable
         var shipped = Path.Combine(AppContext.BaseDirectory, "definitions-system");
         Assert.True(Directory.Exists(shipped), "the definitions folder was not copied next to the application: " + shipped);
         using var store = new FileDefinitionStore(Kinds(), new DefinitionLimits(), new DefinitionFileOptions { Folder = shipped, Watch = false }, FilesOwnership.For(Kinds()));
-        Assert.Empty(store.Problems);
+        Assert.True(store.Problems.Count == 0, "invalid shipped definitions: " + string.Join(" || ", store.Problems.Select(p => $"{p.File}{p.Pointer}: {p.Message}")));
         Assert.Equal(new[] { "dashboard-page", "detail-page", "form-page", "list-page", "print-page" }, store.All.Where(d => d.Kind == "layout").Select(d => d.Key));
         // SCRUM-437/578 pilot: the department create form, its data source and its action
         Assert.Contains(store.All, d => d.Kind == "form" && d.Key == "departments-create");

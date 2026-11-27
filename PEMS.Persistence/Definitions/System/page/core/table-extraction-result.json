@@ -222,7 +222,11 @@
                 "width": 100,
                 "type": "bool",
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Success",
+                  "fa": "موفق"
+                }
               },
               {
                 "key": "_actions",
@@ -235,9 +239,17 @@
                     "key": "stage",
                     "url": "/a/table-extraction-stage",
                     "method": "post",
-                    "showWhen": "row.canStage == true"
+                    "showWhen": "row.canStage == true",
+                    "label": {
+                      "en": "Stage",
+                      "fa": "مرحله"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -269,7 +281,11 @@
             "columns": [
               {
                 "key": "warning",
-                "width": 600
+                "width": 600,
+                "header": {
+                  "en": "Warning",
+                  "fa": "هشدار"
+                }
               }
             ]
           }

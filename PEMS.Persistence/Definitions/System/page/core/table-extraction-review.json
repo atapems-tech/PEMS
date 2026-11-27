@@ -153,11 +153,19 @@
               },
               {
                 "key": "status",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "equipment",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
               },
               {
                 "key": "instrument",
@@ -181,15 +189,27 @@
                     "url": "/f/table-extraction-reject-row?rowId={id}&batchId={{params.batchId}}",
                     "method": "get",
                     "showWhen": "row.canConfirm == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject",
+                      "fa": "رد"
+                    }
                   },
                   {
                     "key": "link",
                     "url": "/f/table-extraction-confirm-row-manual?rowId={id}&batchId={{params.batchId}}",
                     "method": "get",
-                    "showWhen": "row.canLink == true"
+                    "showWhen": "row.canLink == true",
+                    "label": {
+                      "en": "Link",
+                      "fa": "پیوند"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "bulkActions": [

@@ -156,7 +156,11 @@
               },
               {
                 "key": "title",
-                "width": 300
+                "width": 300,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "documentType",
@@ -164,32 +168,60 @@
               },
               {
                 "key": "area",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                }
               },
               {
                 "key": "discipline",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
               },
               {
                 "key": "project",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
               },
               {
                 "key": "revision",
-                "width": 80
+                "width": 80,
+                "header": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
               },
               {
                 "key": "status",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "frozen",
                 "width": 80,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Frozen",
+                  "fa": "منجمد"
+                }
               },
               {
                 "key": "commentStatus",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Comment status",
+                  "fa": "وضعیت نظر"
+                }
               },
               {
                 "key": "delayDays",
@@ -211,9 +243,17 @@
                   {
                     "key": "open",
                     "url": "/p/eng-doc-details?id={id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "bulkActions": [

@@ -53,11 +53,19 @@
             "columns": [
               {
                 "key": "key",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "title",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "assignedTo",
@@ -70,16 +78,28 @@
               },
               {
                 "key": "priority",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
               },
               {
                 "key": "status",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "overdue",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                }
               },
               {
                 "key": "related",
@@ -99,7 +119,11 @@
                   {
                     "key": "open",
                     "url": "/Task/Details/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Open",
+                      "fa": "باز کردن"
+                    }
                   },
                   {
                     "key": "move",
@@ -107,7 +131,11 @@
                     "method": "get",
                     "showWhen": "row.canMove == true"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ],
             "newUrl": "/f/task-create",

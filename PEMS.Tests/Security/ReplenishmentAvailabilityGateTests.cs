@@ -25,7 +25,6 @@ using PEMS.Persistence.Context;
 using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
-using PEMS.Web.Areas.Warehouse.Controllers;
 using PEMS.Web.Security;
 
 namespace PEMS.Tests.Security;

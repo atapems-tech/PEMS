@@ -6,7 +6,7 @@ public sealed record HelpRelatedLink(string Code, string Title);
 public sealed record HelpContextAnswer(bool Found, string? Code = null, string? Title = null, string? Summary = null, string? Content = null, string? LanguageCode = null,
     IReadOnlyList<HelpRelatedLink>? RelatedArticles = null, string? ArticleUrl = null, bool HasVisual = false);
 
-public sealed record HelpArticleRow(int Id, string Code, string Title, string Category, int CategoryId, string Type, string Summary, string Content, DateTime Modified);
+public sealed record HelpArticleViewRow(int Id, string Code, string Title, string Category, int CategoryId, string Type, string Summary, string Content, DateTime Modified);
 public sealed record HelpRelatedRow(string Id, string Code, string Title, string Type);
 
 /// <summary>The answer of the AI question: the answer is a value shown once on its own page (the secret page of the form host) with a way back to the article.</summary>
@@ -20,7 +20,7 @@ public interface IHelpPagesOperations
 
     /// <summary>SCRUM-841: the article of the Help Center (what HelpController.Article showed), in the language of the request; nothing for an unknown or unpublished code.</summary>
     [PEMS.Application.Common.PemsOperation("Help", "Article")]
-    Task<List<HelpArticleRow>> ArticleAsync(string? code = null);
+    Task<List<HelpArticleViewRow>> ArticleAsync(string? code = null);
 
     [PEMS.Application.Common.PemsOperation("Help", "Related")]
     Task<List<HelpRelatedRow>> RelatedAsync(string? code = null);

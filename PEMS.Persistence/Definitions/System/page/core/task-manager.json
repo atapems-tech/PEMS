@@ -71,7 +71,11 @@
                 "key": "notice",
                 "width": 480,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Notice",
+                  "fa": "تذکر"
+                }
               },
               {
                 "key": "_actions",
@@ -84,9 +88,17 @@
                     "key": "admin",
                     "url": "/p/task-admin",
                     "method": "get",
-                    "showWhen": "row.isAdmin == true"
+                    "showWhen": "row.isAdmin == true",
+                    "label": {
+                      "en": "Administration",
+                      "fa": "مدیریت"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -102,11 +114,19 @@
             "columns": [
               {
                 "key": "key",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
               },
               {
                 "key": "name",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "ownerDepartment",
@@ -136,14 +156,26 @@
                   {
                     "key": "backlog",
                     "url": "/p/task-backlog?key={raw.key}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Backlog",
+                      "fa": "بک‌لاگ"
+                    }
                   },
                   {
                     "key": "board",
                     "url": "/p/task-board?key={raw.key}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Board",
+                      "fa": "برد"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

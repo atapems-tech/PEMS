@@ -139,7 +139,11 @@
                 "key": "status",
                 "width": 120,
                 "sortable": false,
-                "filterable": false
+                "filterable": false,
+                "header": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
               },
               {
                 "key": "_actions",
@@ -152,27 +156,47 @@
                     "key": "index-submitted",
                     "url": "/a/mdb-index-submitted",
                     "method": "post",
-                    "showWhen": "row.canIndex == true"
+                    "showWhen": "row.canIndex == true",
+                    "label": {
+                      "en": "Index submitted",
+                      "fa": "ثبت اندیس"
+                    }
                   },
                   {
                     "key": "final-issued",
                     "url": "/a/mdb-final-issued",
                     "method": "post",
-                    "showWhen": "row.canFinal == true"
+                    "showWhen": "row.canFinal == true",
+                    "label": {
+                      "en": "Final issued",
+                      "fa": "صدور نهایی"
+                    }
                   },
                   {
                     "key": "hard-copy-shipped",
                     "url": "/f/mdb-hard-copy-shipped?mdbId={id}",
                     "method": "get",
-                    "showWhen": "row.canHardCopy == true"
+                    "showWhen": "row.canHardCopy == true",
+                    "label": {
+                      "en": "Hard copy shipped",
+                      "fa": "نسخه‌ی کاغذی ارسال شد"
+                    }
                   },
                   {
                     "key": "soft-copy-delivered",
                     "url": "/a/mdb-soft-copy-delivered",
                     "method": "post",
-                    "showWhen": "row.canSoftCopy == true"
+                    "showWhen": "row.canSoftCopy == true",
+                    "label": {
+                      "en": "Soft copy delivered",
+                      "fa": "نسخه‌ی نرم تحویل شد"
+                    }
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -208,7 +232,11 @@
               },
               {
                 "key": "title",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "dvdVolume",
@@ -236,7 +264,11 @@
                     "method": "post",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -289,7 +321,11 @@
               },
               {
                 "key": "title",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "dvdVolume",
@@ -317,7 +353,11 @@
                     "method": "post",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }
@@ -370,7 +410,11 @@
               },
               {
                 "key": "title",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
               },
               {
                 "key": "dvdVolume",
@@ -398,7 +442,11 @@
                     "method": "post",
                     "tone": "danger"
                   }
-                ]
+                ],
+                "header": {
+                  "en": "Actions",
+                  "fa": "عملیات"
+                }
               }
             ]
           }

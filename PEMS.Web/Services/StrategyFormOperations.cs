@@ -95,11 +95,11 @@ public sealed class StrategyFormOperations(PEMSDbContext context, IMaintenanceSt
         }
         if (requestedTags.Count > 0)
             foreach (var id in await context.Equipments.Where(x => x.IsActive && requestedTags.Contains(x.TagNumber)).Select(x => x.EquipmentId).ToListAsync()) ids.Add(id);
-        var list = await context.Equipments.AsNoTracking().Include(x => x.EquipmentClass).Where(x => ids.Contains(x.EquipmentId)).OrderBy(x => x.TagNumber).Take(maxResults).ToListAsync();
+        var list = await context.Equipments.AsNoTracking().Include(x => x.EquipmentClassRef).Where(x => ids.Contains(x.EquipmentId)).OrderBy(x => x.TagNumber).Take(maxResults).ToListAsync();
         var equipmentIds = list.Select(x => x.EquipmentId).ToList();
         var criticality = await context.EquipmentCriticalities.Where(x => x.IsActive && equipmentIds.Contains(x.EquipmentId)).ToDictionaryAsync(x => x.EquipmentId, x => x.CriticalityClass);
         var candidates = Int(strategyId) is { } sid && equipmentIds.Count > 0 ? (await assignments.EvaluateAsync(sid, equipmentIds)).ToDictionary(c => c.Equipment.EquipmentId) : [];
-        return list.Select(x => new StrategyCandidateRow(x.EquipmentId, x.TagNumber, x.Name, x.EquipmentClass?.Name, null, null, criticality.GetValueOrDefault(x.EquipmentId),
+        return list.Select(x => new StrategyCandidateRow(x.EquipmentId, x.TagNumber, x.Name, x.EquipmentClassRef?.Name, null, null, criticality.GetValueOrDefault(x.EquipmentId),
             candidates.TryGetValue(x.EquipmentId, out var c) ? c.Conflict : "", !candidates.TryGetValue(x.EquipmentId, out var c2) || c2.WillReceive)).ToList();
     }
 

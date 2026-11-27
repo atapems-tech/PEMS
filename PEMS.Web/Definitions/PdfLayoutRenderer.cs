@@ -140,7 +140,7 @@ public static class PdfLayoutRenderer
         return document.GeneratePdf();
     }
 
-    private static void Blocks(ColumnDescriptor column, JsonArray blocks, Context ctx)
+    private static void Blocks(QuestPDF.Fluent.ColumnDescriptor column, JsonArray blocks, Context ctx)
     {
         foreach (var node in blocks.OfType<JsonObject>())
         {
@@ -193,7 +193,7 @@ public static class PdfLayoutRenderer
                     t.ColumnsDefinition(c => { c.RelativeColumn(Num(b["labelWidth"], 1f)); c.RelativeColumn(Num(b["valueWidth"], 3f)); });
                     foreach (var r in rows)
                     {
-                        var left = t.Cell(); var right = t.Cell();
+                        IContainer left = t.Cell(); IContainer right = t.Cell();
                         if (edge > 0) { left = left.Border(edge); right = right.Border(edge); }
                         if (shade is not null) left = left.Background(shade);
                         left.Padding(3).Text(ctx.Text(r["label"])).SemiBold();

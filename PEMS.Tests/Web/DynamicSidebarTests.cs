@@ -20,7 +20,6 @@ using PEMS.Persistence.Identity;
 using PEMS.Persistence.Seed;
 using PEMS.Persistence.Services;
 using PEMS.Tests.TestSupport;
-using PEMS.Web.Areas.Admin.Controllers;
 using PEMS.Web.Navigation;
 using PEMS.Web.Security;
 
@@ -426,8 +425,6 @@ public class DynamicSidebarTests
     }
 
     [Theory]
-    [InlineData("Letter", "MyReferrals", null, "corr.referrals", "corr.letters")]
-    [InlineData("Letter", "Details", null, "corr.letters", "corr.referrals")]
     [InlineData("Tender", "Details", null, "proc.tender", "proc.package")]
     public async Task ActiveLink_FollowsControllerActionAndDefaultRules(string controller, string action, string? area, string active, string inactive)
     {

@@ -54,9 +54,6 @@
                 "value": "{{params.to}}"
               }
             ]
-          },
-          "bindings": {
-            "filterOptions": []
           }
         },
         {
@@ -72,55 +69,99 @@
               {
                 "key": "received",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Received",
+                  "fa": "دریافت‌شده"
+                }
               },
               {
                 "key": "unread",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Unread",
+                  "fa": "خوانده‌نشده"
+                }
               },
               {
                 "key": "sent",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Sent",
+                  "fa": "ارسال‌شده"
+                }
               },
               {
                 "key": "openReferrals",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open referrals",
+                  "fa": "ارجاع‌های باز"
+                }
               },
               {
                 "key": "overdueReferrals",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Overdue referrals",
+                  "fa": "ارجاع‌های عقب‌افتاده"
+                }
               },
               {
                 "key": "completedReferrals",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Completed referrals",
+                  "fa": "ارجاع‌های انجام‌شده"
+                }
               },
               {
                 "key": "avgReferralDays",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Average referral days",
+                  "fa": "میانگین روز ارجاع"
+                }
               },
               {
                 "key": "responseRequired",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Response required",
+                  "fa": "نیازمند پاسخ"
+                }
               },
               {
                 "key": "avgResponseDays",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Average response days",
+                  "fa": "میانگین روز پاسخ"
+                }
               },
               {
                 "key": "onTimePercent",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "On time %",
+                  "fa": "درصد به‌موقع"
+                }
               },
               {
                 "key": "openOverdue",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open and overdue",
+                  "fa": "باز و عقب‌افتاده"
+                }
               }
             ]
           }
@@ -263,7 +304,11 @@
             "columns": [
               {
                 "key": "name",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
               },
               {
                 "key": "position",
@@ -272,31 +317,55 @@
               {
                 "key": "received",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Received",
+                  "fa": "دریافت‌شده"
+                }
               },
               {
                 "key": "unread",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Unread",
+                  "fa": "خوانده‌نشده"
+                }
               },
               {
                 "key": "openReferrals",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open referrals",
+                  "fa": "ارجاع‌های باز"
+                }
               },
               {
                 "key": "overdueReferrals",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Overdue referrals",
+                  "fa": "ارجاع‌های عقب‌افتاده"
+                }
               },
               {
                 "key": "completedReferrals",
                 "width": 140,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Completed referrals",
+                  "fa": "ارجاع‌های انجام‌شده"
+                }
               },
               {
                 "key": "avgReferralDays",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Average referral days",
+                  "fa": "میانگین روز ارجاع"
+                }
               }
             ]
           }

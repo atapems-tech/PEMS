@@ -58,14 +58,6 @@ public class ChartComponentTests
         Assert.False(File.Exists(Path.Combine(RepoRoot(), "PEMS.Web", "Views", "Shared", "_BkChart.cshtml")));
     }
 
-    [Theory]
-    public void WaveC1_PagesTakeTheirChartsFromTheComponent(string view, int charts)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(charts, Regex.Matches(text, "<pems-chart spec=").Count);
-        Assert.DoesNotContain("_BkChart\"", text);
-    }
-
     // ---- C2: line charts, Chart.js retired
     [Fact]
     public void Line_LabelsAreInvariantIsoTimes_AndCarryTheDecimals()

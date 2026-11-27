@@ -1,3 +1,4 @@
+using PEMS.Web.Security;
 using Microsoft.EntityFrameworkCore;
 using PEMS.Application.Interfaces;
 using PEMS.Persistence.Context;
@@ -12,7 +13,7 @@ public sealed class ShellOperations(INotificationService notifications, ICurrent
     {
         if (currentUser.UserId is not { } userId) return new(false, "Sign in first.", "");
         var link = await notifications.OpenAsync(userId, id);
-        return new(true, null, !string.IsNullOrWhiteSpace(link) && link.StartsWith('/') && !link.StartsWith("//") && !link.Contains('\') ? link : "/p/notifications");   // SCRUM-731: the inbox is a definition page
+        return new(true, null, !string.IsNullOrWhiteSpace(link) && link.StartsWith('/') && !link.StartsWith("//") && !link.Contains('\\') ? link : "/p/notifications");   // SCRUM-731: the inbox is a definition page
     }
 
     public async Task<ShellRedirect> OpenDocumentAsync(int id)

@@ -35,7 +35,16 @@ public sealed class ComponentManifestCatalog(IPemsComponentRegistry registry)
         return (manifest, new JsonValidator(manifest.Options.ToJsonString()), type);
     });
 
-    public OptionsValidationResult Validate(string key, string optionsJson)
+    /// <summary>The schema of a component without the required properties a binding of the page supplies at render time (SCRUM-835/836: the steps of a stepper, the rows and columns of a matrix).</summary>
+    private JsonValidator Relaxed(string key, ComponentManifest manifest, IReadOnlyCollection<string> supplied)
+    {
+        var copy = JsonNode.Parse(manifest.Options.ToJsonString())!.AsObject();
+        if (copy["required"] is JsonArray req)
+            copy["required"] = new JsonArray(req.Where(r => r is not null && !supplied.Contains((string?)r ?? "")).Select(r => (JsonNode?)JsonValue.Create((string?)r)).ToArray());
+        return new JsonValidator(copy.ToJsonString());
+    }
+
+    public OptionsValidationResult Validate(string key, string optionsJson, IReadOnlyCollection<string>? suppliedByBindings = null)
     {
         JsonNode? instance;
         try { instance = JsonNode.Parse(optionsJson); }
@@ -43,6 +52,7 @@ public sealed class ComponentManifestCatalog(IPemsComponentRegistry registry)
         if (instance is null) return new OptionsValidationResult(false, [new OptionsError("", "type", "validation.type", "The options must be a JSON object.")]);
 
         var (manifest, validator, _) = Entry(key);
+        if (suppliedByBindings is { Count: > 0 }) validator = Relaxed(key, manifest, suppliedByBindings);
         var result = validator.Validate(optionsJson, new JsonSchemaOptions { OutputFormat = OutputFormat.List, GenerateErrorMessages = true });
         if (result.IsValid) return OptionsValidationResult.Ok;
 
