@@ -35,10 +35,10 @@ public class TaskManagerController : Controller
     private string Text(string key) => _l != null ? _l[key].Value : key;
     private bool WantsJson => string.Equals(Request?.Headers["X-Requested-With"].ToString(), "fetch", StringComparison.Ordinal);
 
-    private IActionResult Back(string? returnUrl, string fallbackAction = nameof(Index), object? routeValues = null) =>
+    private IActionResult Back(string? returnUrl, string fallbackAction = "Index", object? routeValues = null) =>
         !string.IsNullOrEmpty(returnUrl) && Url != null && Url.IsLocalUrl(returnUrl)
             ? LocalRedirect(returnUrl)
-            : RedirectToAction(fallbackAction, routeValues);
+            : fallbackAction == "Index" ? Redirect("/p/task-manager") : RedirectToAction(fallbackAction, routeValues);
 
     /// <summary>نتیجه‌ی یکسان: JSON برای fetch (Board/DnD)، Flash + Redirect برای فرم. NotFound = 404 (بدون افشا).</summary>
     private IActionResult Done(TmResult r, string? returnUrl, string okKey = "Tm_Msg_Saved")
@@ -56,17 +56,7 @@ public class TaskManagerController : Controller
 
     // ==================================================================================== pages
 
-    [HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        if (!await Can("View")) return Forbid();
-        var actor = await ActorAsync();
-        ViewData["Title"] = Text("Tm_Title");
-        ViewData["Section"] = "Task Manager";
-        ViewBag.IsAdmin = actor.IsSystemAdmin;
-        ViewBag.HasEmployee = actor.EmployeeId != null;
-        return View(await _tasks.GetAccessibleSpacesAsync(actor));
-    }
+    // SCRUM-831: the start page (the spaces of the user) is the definition /p/task-manager over ITaskManagerPagesOperations.
 
     [HttpGet]
     public async Task<IActionResult> Space(string key, string view = "backlog")
