@@ -1,0 +1,67 @@
+{
+  "kind": "form",
+  "key": "strategy-unassign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Remove the tag from the strategy",
+    "fa": "حذف تگ از استراتژی"
+  },
+  "description": {
+    "en": "Remove the tag from the strategy",
+    "fa": "حذف تگ از استراتژی"
+  },
+  "payload": {
+    "id": "strategy-unassign",
+    "title": {
+      "en": "Remove the tag from the strategy",
+      "fa": "حذف تگ از استراتژی"
+    },
+    "submitLabel": {
+      "en": "Remove the tag from the strategy",
+      "fa": "حذف تگ از استراتژی"
+    },
+    "actionKey": "strategy-unassign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "assignmentId",
+        "label": {
+          "en": "Assignment id",
+          "fa": "شناسه تخصیص"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "strategyId",
+        "label": {
+          "en": "Strategy id",
+          "fa": "شناسه استراتژی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

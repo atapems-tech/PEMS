@@ -1,0 +1,52 @@
+{
+  "kind": "form",
+  "key": "strategy-review-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the strategy",
+    "fa": "رد استراتژی"
+  },
+  "description": {
+    "en": "Reject the strategy",
+    "fa": "رد استراتژی"
+  },
+  "payload": {
+    "id": "strategy-review-reject",
+    "title": {
+      "en": "Reject the strategy",
+      "fa": "رد استراتژی"
+    },
+    "submitLabel": {
+      "en": "Reject the strategy",
+      "fa": "رد استراتژی"
+    },
+    "actionKey": "strategy-review-reject",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Strategy id",
+          "fa": "شناسه استراتژی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

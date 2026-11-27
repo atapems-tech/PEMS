@@ -1,0 +1,96 @@
+{
+  "kind": "form",
+  "key": "strategy-override-request",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Request an override",
+    "fa": "درخواست Override"
+  },
+  "description": {
+    "en": "Request an override",
+    "fa": "درخواست Override"
+  },
+  "payload": {
+    "id": "strategy-override-request",
+    "title": {
+      "en": "Request an override",
+      "fa": "درخواست Override"
+    },
+    "submitLabel": {
+      "en": "Request an override",
+      "fa": "درخواست Override"
+    },
+    "actionKey": "strategy-override-request",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "assignmentId",
+        "label": {
+          "en": "Assignment id",
+          "fa": "شناسه تخصیص"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "strategyId",
+        "label": {
+          "en": "Strategy id",
+          "fa": "شناسه استراتژی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "overrideIntervalDays",
+        "label": {
+          "en": "Interval (days)",
+          "fa": "فاصله (روز)"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "overrideTaskNote",
+        "label": {
+          "en": "Task note",
+          "fa": "یادداشت وظیفه"
+        },
+        "kind": "textarea",
+        "maxLength": 1000,
+        "span": 2
+      },
+      {
+        "name": "overrideJustification",
+        "label": {
+          "en": "Justification",
+          "fa": "توجیه"
+        },
+        "kind": "textarea",
+        "maxLength": 1000,
+        "span": 2,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "minLength": 20
+      }
+    ]
+  }
+}

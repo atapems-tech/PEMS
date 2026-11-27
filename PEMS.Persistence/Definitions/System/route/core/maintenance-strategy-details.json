@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "maintenance-strategy-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance strategy (old address)",
+    "fa": "استراتژی نگهداری (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Maintenance strategy (old address)",
+    "fa": "استراتژی نگهداری (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MaintenanceStrategy/Details/{id}",
+    "target": "/p/strategy-details?id={id}",
+    "permanent": false
+  }
+}

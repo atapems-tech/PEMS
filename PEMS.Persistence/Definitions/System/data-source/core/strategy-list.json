@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "strategy-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance strategies",
+    "fa": "استراتژی‌های نگهداری"
+  },
+  "description": {
+    "en": "Maintenance strategies",
+    "fa": "استراتژی‌های نگهداری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "List"
+    }
+  }
+}
