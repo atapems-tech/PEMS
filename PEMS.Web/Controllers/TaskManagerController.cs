@@ -90,49 +90,4 @@ public class TaskManagerController : Controller
         if (!await Can("Edit")) return Forbid();
         return Done(await _tasks.UpdateAsync(input, await ActorAsync()), returnUrl);
     }
-
-    // ==================================================================================== sprints (Lead)
-
-    // ==================================================================================== admin (SystemAdmin)
-
-    [HttpGet]
-    public async Task<IActionResult> Admin()
-    {
-        var actor = await ActorAsync();
-        if (!actor.IsSystemAdmin) return Forbid();
-        ViewData["Title"] = Text("Tm_Admin_Title");
-        ViewData["Section"] = "Administration";
-        ViewBag.Departments = await _spaces.GetDepartmentsAsync();
-        return View(await _spaces.GetAllForAdminAsync(actor));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> AdminSpace(int id)
-    {
-        var actor = await ActorAsync();
-        if (!actor.IsSystemAdmin) return Forbid();
-        var model = await _spaces.GetAdminAsync(id, actor);
-        if (model == null) return NotFound();
-        ViewData["Title"] = model.Space.Name;
-        ViewData["Section"] = "Administration";
-        ViewBag.Departments = await _spaces.GetDepartmentsAsync();
-        ViewBag.Employees = await _spaces.GetActiveEmployeesAsync();
-        return View(model);
-    }
-
-    private async Task<IActionResult> AdminDone(Func<TaskActor, Task<TmResult>> op, int? spaceId)
-    {
-        var actor = await ActorAsync();
-        if (!actor.IsSystemAdmin) return Forbid();
-        var r = await op(actor);
-        if (r.Success) TempData["Message"] = Text("Tm_Msg_Saved");
-        else if (r.ErrorKey == "Tm_Err_NotFound") return NotFound();
-        else TempData["Error"] = Text(r.ErrorKey!);
-        var target = r.Success && spaceId == null ? r.Id : spaceId;
-        return target is int sid ? RedirectToAction(nameof(AdminSpace), new { id = sid }) : RedirectToAction(nameof(Admin));
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public Task<IActionResult> SaveSpace(WorkSpaceInput input) => AdminDone(a => _spaces.SaveSpaceAsync(input, a), input.Id);
 }

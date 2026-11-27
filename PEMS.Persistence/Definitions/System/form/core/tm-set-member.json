@@ -1,0 +1,84 @@
+{
+  "kind": "form",
+  "key": "tm-set-member",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change a member",
+    "fa": "تغییر عضو"
+  },
+  "description": {
+    "en": "Change a member",
+    "fa": "تغییر عضو"
+  },
+  "payload": {
+    "id": "tm-set-member",
+    "title": {
+      "en": "Change a member",
+      "fa": "تغییر عضو"
+    },
+    "submitLabel": {
+      "en": "Change a member",
+      "fa": "تغییر عضو"
+    },
+    "actionKey": "tm-set-member",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workSpaceId",
+        "label": {
+          "en": "Space id",
+          "fa": "شناسه فضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "memberId",
+        "label": {
+          "en": "Member id",
+          "fa": "شناسه عضو"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "role",
+        "label": {
+          "en": "Role",
+          "fa": "نقش"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-role-options",
+        "optionsArgs": {}
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

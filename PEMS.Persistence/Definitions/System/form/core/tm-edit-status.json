@@ -1,0 +1,119 @@
+{
+  "kind": "form",
+  "key": "tm-edit-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the status",
+    "fa": "ویرایش وضعیت"
+  },
+  "description": {
+    "en": "Edit the status",
+    "fa": "ویرایش وضعیت"
+  },
+  "payload": {
+    "id": "tm-edit-status",
+    "title": {
+      "en": "Edit the status",
+      "fa": "ویرایش وضعیت"
+    },
+    "submitLabel": {
+      "en": "Edit the status",
+      "fa": "ویرایش وضعیت"
+    },
+    "actionKey": "tm-edit-status",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workSpaceId",
+        "label": {
+          "en": "Space id",
+          "fa": "شناسه فضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "statusId",
+        "label": {
+          "en": "Status id",
+          "fa": "شناسه وضعیت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name (Persian)",
+          "fa": "نام (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "category",
+        "label": {
+          "en": "Category",
+          "fa": "گروه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-category-options",
+        "optionsArgs": {}
+      },
+      {
+        "name": "sortOrder",
+        "label": {
+          "en": "Order",
+          "fa": "ترتیب"
+        },
+        "kind": "number",
+        "min": 0,
+        "max": 999
+      },
+      {
+        "name": "isActive",
+        "label": {
+          "en": "Active",
+          "fa": "فعال"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

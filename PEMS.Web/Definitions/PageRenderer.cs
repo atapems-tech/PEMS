@@ -255,7 +255,9 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
     private async Task<bool> ApplyMatrixAsync(JsonObject matrix, JsonObject options, PipelineRequest request, string appKey, string id, List<string> problems, CancellationToken ct)
     {
         if (data is null) { problems.Add($"Instance \"{id}\": the matrix cannot be read here."); return false; }
-        var source = (string?)matrix["source"];
+        var source = RuntimeValues.Substitute(matrix["source"]?.DeepClone(), request) is JsonValue sv0 && sv0.GetValueKind() == JsonValueKind.String ? (string?)sv0 : null;
+        var sourceQuery = "";   // SCRUM-835: the filters of the page travel with the source, as with a chart
+        if (source is not null && source.IndexOf('?') is var qi and >= 0) { sourceQuery = source[(qi + 1)..]; source = source[..qi]; }
         var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
         string? F(string n) => matrix[n] is JsonValue v && v.GetValueKind() == JsonValueKind.String ? (string?)v : null;
         var rowField = F("rowField"); var colField = F("columnField"); var valueField = F("valueField");
@@ -263,6 +265,8 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         { problems.Add($"Instance \"{id}\": the matrix binding needs a /d/ source, rowField, columnField and valueField."); return false; }
         var query = new List<KeyValuePair<string, string?>> { new("page", "1"), new("pageSize", "500") };
         if (F("sort") is { } sort) query.Add(new("sort", sort));
+        var extra = System.Web.HttpUtility.ParseQueryString(sourceQuery);
+        foreach (var name in extra.AllKeys.Where(n => n is not null && n.StartsWith("f.", StringComparison.Ordinal))) if (!string.IsNullOrEmpty(extra[name])) query.Add(new(name!, extra[name]));
         var result = await data.QueryAsync(key, query, request.Culture, request.Roles, request.UserName, appKey, ct);
         switch (result.Status)
         {

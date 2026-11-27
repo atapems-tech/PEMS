@@ -16,6 +16,13 @@ public sealed record TaskBacklogItemRow(int Id, string Key, string Title, string
 
 public sealed record TaskWorkRow(int Id, string Key, string Space, string Title, string? Type, string Status, string Priority, string Assignee, DateTime? DueDate, bool Overdue, decimal? Points, bool Archived);
 
+public sealed record TaskAdminSpaceRow(int Id, string Key, string Name, string? Department, int Members, int OpenItems, bool Active);
+public sealed record TaskAdminSpaceHeadRow(int Id, string Key, string Name, string? NameFa, string? Description, int? OwnerDepartmentId, bool IsActive);
+public sealed record TaskAdminMemberRow(int Id, string Name, string Role, string RoleCode, bool Active);
+public sealed record TaskAdminTypeRow(int Id, string Name, string Icon, bool Subtask, bool Active, bool NextActive);
+public sealed record TaskAdminStatusRow(int Id, string Name, string? NameFa, string Category, string CategoryCode, int SortOrder, bool Active);
+public sealed record TaskAdminTransitionRow(int Id, string From, string FromLabel, string To, string ToLabel, string Allowed);
+
 /// <summary>SCRUM-831: the read side of TaskManagerController.Index (the spaces the user may see) as operations; Task.View is the right the controller checked.</summary>
 public interface ITaskManagerPagesOperations
 {
@@ -82,4 +89,35 @@ public interface ITaskManagerPagesOperations
 
     [PEMS.Application.Common.PemsOperation("TaskManagerPage", "StatusCategoryOptions", "Task.View")]
     Task<List<TaskChoice>> StatusCategoryOptionsAsync();
+
+    /// <summary>The space administration pages (system administrators only; another user is refused like the old pages did).</summary>
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AdminSpaces", "Task.View")]
+    Task<List<TaskAdminSpaceRow>> AdminSpacesAsync();
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AdminSpaceHead", "Task.View")]
+    Task<List<TaskAdminSpaceHeadRow>> AdminSpaceHeadAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AdminMembers", "Task.View")]
+    Task<List<TaskAdminMemberRow>> AdminMembersAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AdminTypes", "Task.View")]
+    Task<List<TaskAdminTypeRow>> AdminTypesAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AdminStatuses", "Task.View")]
+    Task<List<TaskAdminStatusRow>> AdminStatusesAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "AdminTransitions", "Task.View")]
+    Task<List<TaskAdminTransitionRow>> AdminTransitionsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "DepartmentOptions", "Task.View")]
+    Task<List<TaskChoice>> DepartmentOptionsAsync();
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "NewMemberOptions", "Task.View")]
+    Task<List<TaskChoice>> NewMemberOptionsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "RoleOptions", "Task.View")]
+    Task<List<TaskChoice>> RoleOptionsAsync();
+
+    [PEMS.Application.Common.PemsOperation("TaskManagerPage", "CategoryOptions", "Task.View")]
+    Task<List<TaskChoice>> CategoryOptionsAsync();
 }

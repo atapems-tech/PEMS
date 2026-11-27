@@ -1,0 +1,94 @@
+{
+  "kind": "form",
+  "key": "tm-add-type",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a type",
+    "fa": "افزودن نوع"
+  },
+  "description": {
+    "en": "Add a type",
+    "fa": "افزودن نوع"
+  },
+  "payload": {
+    "id": "tm-add-type",
+    "title": {
+      "en": "Add a type",
+      "fa": "افزودن نوع"
+    },
+    "submitLabel": {
+      "en": "Add a type",
+      "fa": "افزودن نوع"
+    },
+    "actionKey": "tm-add-type",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workSpaceId",
+        "label": {
+          "en": "Space id",
+          "fa": "شناسه فضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "name",
+        "label": {
+          "en": "Name",
+          "fa": "نام"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 100
+      },
+      {
+        "name": "nameFa",
+        "label": {
+          "en": "Name (Persian)",
+          "fa": "نام (فارسی)"
+        },
+        "kind": "text",
+        "maxLength": 100
+      },
+      {
+        "name": "icon",
+        "label": {
+          "en": "Icon",
+          "fa": "آیکون"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "bi-check2-square",
+        "pattern": "^bi-[a-z0-9-]+$"
+      },
+      {
+        "name": "isSubtask",
+        "label": {
+          "en": "Subtask",
+          "fa": "زیروظیفه"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

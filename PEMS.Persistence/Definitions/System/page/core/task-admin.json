@@ -1,0 +1,98 @@
+{
+  "kind": "page",
+  "key": "task-admin",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task manager administration",
+    "fa": "مدیریت فضاهای کاری"
+  },
+  "description": {
+    "en": "Task manager administration",
+    "fa": "مدیریت فضاهای کاری"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "task-admin",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "task-admin-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/task-manager",
+                "text": {
+                  "en": "Task manager",
+                  "fa": "مدیریت وظایف"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "spaces",
+          "component": "def:entity-list",
+          "options": {
+            "id": "task-admin-spaces",
+            "url": "/d/task-admin-spaces",
+            "idField": "id",
+            "viewsKey": "task-admin-spaces",
+            "columns": [
+              {
+                "key": "key",
+                "width": 100
+              },
+              {
+                "key": "name",
+                "width": 260
+              },
+              {
+                "key": "department",
+                "width": 200
+              },
+              {
+                "key": "members",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "openItems",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "active",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/p/task-admin-space?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ],
+            "newUrl": "/f/tm-create-space",
+            "newLabel": {
+              "en": "New space",
+              "fa": "فضای جدید"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

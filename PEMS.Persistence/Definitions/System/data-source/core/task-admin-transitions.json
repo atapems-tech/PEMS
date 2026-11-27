@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-admin-transitions",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Transitions of a space",
+    "fa": "گذارهای فضا"
+  },
+  "description": {
+    "en": "Transitions of a space",
+    "fa": "گذارهای فضا"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "AdminTransitions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

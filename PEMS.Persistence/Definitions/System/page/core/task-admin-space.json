@@ -1,0 +1,361 @@
+{
+  "kind": "page",
+  "key": "task-admin-space",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Space administration",
+    "fa": "مدیریت فضا"
+  },
+  "description": {
+    "en": "Space administration",
+    "fa": "مدیریت فضا"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "task-admin-space",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "task-admin-space-head",
+            "fields": [
+              {
+                "key": "key",
+                "label": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
+              },
+              {
+                "key": "name",
+                "label": {
+                  "en": "Name",
+                  "fa": "نام"
+                }
+              },
+              {
+                "key": "nameFa",
+                "label": {
+                  "en": "Name (Persian)",
+                  "fa": "نام (فارسی)"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              },
+              {
+                "key": "isActive",
+                "label": {
+                  "en": "Active",
+                  "fa": "فعال"
+                },
+                "type": "bool"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/task-admin-space-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "tools",
+          "component": "data-grid",
+          "options": {
+            "id": "task-admin-tools",
+            "url": "/d/task-admin-space-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "name",
+                "width": 240,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 900,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "url": "/f/tm-update-space?id={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "add-member",
+                    "url": "/f/tm-add-member?workSpaceId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "add-type",
+                    "url": "/f/tm-add-type?workSpaceId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "add-status",
+                    "url": "/f/tm-add-status?workSpaceId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "list",
+                    "url": "/p/task-admin",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-members",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-members",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "members",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-admin-members",
+            "url": "/d/task-admin-members?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "width": 240
+              },
+              {
+                "key": "role",
+                "width": 140
+              },
+              {
+                "key": "active",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "change",
+                    "url": "/f/tm-set-member?workSpaceId={{params.id}}&memberId={id}&role={raw.roleCode}&isActive={raw.active}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-types",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-types",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Types",
+                  "fa": "انواع"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "types",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-admin-types",
+            "url": "/d/task-admin-types?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "width": 240
+              },
+              {
+                "key": "icon",
+                "width": 160
+              },
+              {
+                "key": "subtask",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "active",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 200,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "toggle",
+                    "url": "/f/tm-set-type-active?workSpaceId={{params.id}}&typeId={id}&isActive={raw.nextActive}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-statuses",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-statuses",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Statuses",
+                  "fa": "وضعیت‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "statuses",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-admin-statuses",
+            "url": "/d/task-admin-statuses?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "width": 200
+              },
+              {
+                "key": "nameFa",
+                "width": 200
+              },
+              {
+                "key": "category",
+                "width": 140
+              },
+              {
+                "key": "sortOrder",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "active",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "url": "/f/tm-edit-status?workSpaceId={{params.id}}&statusId={id}&name={raw.name}&nameFa={raw.nameFa}&category={raw.categoryCode}&sortOrder={raw.sortOrder}&isActive={raw.active}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-transitions",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-transitions",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Transitions",
+                  "fa": "گذارها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "transitions",
+          "component": "matrix",
+          "options": {
+            "id": "task-admin-transitions",
+            "cellType": "select",
+            "actionUrl": "/a/tm-matrix-transition",
+            "choices": [
+              {
+                "value": "true",
+                "label": {
+                  "en": "Allowed",
+                  "fa": "مجاز"
+                }
+              },
+              {
+                "value": "false",
+                "label": {
+                  "en": "Not allowed",
+                  "fa": "غیرمجاز"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "matrix": {
+              "source": "/d/task-admin-transitions?f.id={{params.id|url}}",
+              "rowField": "from",
+              "columnField": "to",
+              "valueField": "allowed",
+              "rowLabelField": "fromLabel",
+              "columnLabelField": "toLabel",
+              "idField": "id"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

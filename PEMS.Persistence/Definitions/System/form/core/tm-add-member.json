@@ -1,0 +1,80 @@
+{
+  "kind": "form",
+  "key": "tm-add-member",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a member",
+    "fa": "افزودن عضو"
+  },
+  "description": {
+    "en": "Add a member",
+    "fa": "افزودن عضو"
+  },
+  "payload": {
+    "id": "tm-add-member",
+    "title": {
+      "en": "Add a member",
+      "fa": "افزودن عضو"
+    },
+    "submitLabel": {
+      "en": "Add a member",
+      "fa": "افزودن عضو"
+    },
+    "actionKey": "tm-add-member",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workSpaceId",
+        "label": {
+          "en": "Space id",
+          "fa": "شناسه فضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee",
+          "fa": "کارمند"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-new-member-options",
+        "optionsArgs": {
+          "id": "workSpaceId"
+        }
+      },
+      {
+        "name": "role",
+        "label": {
+          "en": "Role",
+          "fa": "نقش"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-role-options",
+        "optionsArgs": {}
+      }
+    ]
+  }
+}

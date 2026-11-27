@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "task-admin-spaces",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work spaces (administration)",
+    "fa": "فضاهای کاری (مدیریت)"
+  },
+  "description": {
+    "en": "Work spaces (administration)",
+    "fa": "فضاهای کاری (مدیریت)"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "AdminSpaces"
+    }
+  }
+}
