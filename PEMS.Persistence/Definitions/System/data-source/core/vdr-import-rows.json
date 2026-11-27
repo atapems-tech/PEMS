@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vdr-import-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR import rows",
+    "fa": "ردیف‌های ورود VDR"
+  },
+  "description": {
+    "en": "VDR import rows",
+    "fa": "ردیف‌های ورود VDR"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocImportPage",
+      "action": "VdrRows",
+      "args": {
+        "batchId": "param:batchId"
+      }
+    }
+  }
+}

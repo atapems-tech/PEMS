@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "mdr-import-review-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "MDR import (old address)",
+    "fa": "ورود MDR (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "MDR import (old address)",
+    "fa": "ورود MDR (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "MDRImport/Review",
+    "target": "/p/mdr-import-review",
+    "permanent": false
+  }
+}

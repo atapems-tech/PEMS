@@ -1,0 +1,31 @@
+{
+  "kind": "action",
+  "key": "mdr-import-exclude",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Done.",
+    "fa": "انجام شد."
+  },
+  "description": {
+    "en": "Done.",
+    "fa": "انجام شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MdrImport",
+      "action": "ToggleRow",
+      "args": {
+        "rowId": "field:id",
+        "include": "literal:false"
+      }
+    },
+    "success": {
+      "en": "Done.",
+      "fa": "انجام شد."
+    },
+    "redirect": "/p/mdr-import"
+  }
+}

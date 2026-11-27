@@ -1,0 +1,223 @@
+{
+  "kind": "page",
+  "key": "vdr-import-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review the VDR import",
+    "fa": "بازبینی ورود VDR"
+  },
+  "description": {
+    "en": "Review the VDR import",
+    "fa": "بازبینی ورود VDR"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "vdr-import-review",
+    "permission": "VDR.View",
+    "regions": {
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "vdr-import-head",
+            "fields": [
+              {
+                "key": "file",
+                "label": {
+                  "en": "File",
+                  "fa": "فایل"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "total",
+                "label": {
+                  "en": "Total",
+                  "fa": "کل"
+                },
+                "type": "number"
+              },
+              {
+                "key": "valid",
+                "label": {
+                  "en": "Valid",
+                  "fa": "معتبر"
+                },
+                "type": "number"
+              },
+              {
+                "key": "warning",
+                "label": {
+                  "en": "Warning",
+                  "fa": "هشدار"
+                },
+                "type": "number"
+              },
+              {
+                "key": "error",
+                "label": {
+                  "en": "Error",
+                  "fa": "خطا"
+                },
+                "type": "number"
+              },
+              {
+                "key": "duplicate",
+                "label": {
+                  "en": "Duplicates",
+                  "fa": "تکراری"
+                },
+                "type": "number"
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/vdr-import-batch",
+              "idField": "id",
+              "id": "{{params.batchId}}"
+            }
+          }
+        },
+        {
+          "id": "tools",
+          "component": "data-grid",
+          "options": {
+            "id": "vdr-import-tools",
+            "url": "/d/vdr-import-batch?f.batchId={{params.batchId|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "status",
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 520,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "commit",
+                    "url": "/f/vdr-import-commit?batchId={id}",
+                    "method": "get",
+                    "showWhen": "row.staged == true"
+                  },
+                  {
+                    "key": "discard",
+                    "url": "/f/vdr-import-discard?batchId={id}",
+                    "method": "get",
+                    "showWhen": "row.staged == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "back",
+                    "url": "/p/vdr-import",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "rows",
+          "component": "data-grid",
+          "options": {
+            "id": "vdr-import-rows",
+            "url": "/d/vdr-import-rows?f.batchId={{params.batchId|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "rowNumber",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "include",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "documentNumber",
+                "width": 200
+              },
+              {
+                "key": "vendor",
+                "width": 180
+              },
+              {
+                "key": "type",
+                "width": 100
+              },
+              {
+                "key": "discipline",
+                "width": 110
+              },
+              {
+                "key": "revisions",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "validation",
+                "width": 110
+              },
+              {
+                "key": "message",
+                "width": 260
+              },
+              {
+                "key": "duplicate",
+                "width": 130
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "include",
+                    "url": "/a/vdr-import-include",
+                    "method": "post",
+                    "showWhen": "row.canInclude == true"
+                  },
+                  {
+                    "key": "exclude",
+                    "url": "/a/vdr-import-exclude",
+                    "method": "post",
+                    "showWhen": "row.canExclude == true"
+                  }
+                ]
+              }
+            ],
+            "pageSize": 100,
+            "height": 640
+          }
+        }
+      ]
+    }
+  }
+}

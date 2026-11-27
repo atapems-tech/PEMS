@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "vdr-import",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "VDR import (old address)",
+    "fa": "ورود VDR (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "VDR import (old address)",
+    "fa": "ورود VDR (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "VDRImport",
+    "target": "/p/vdr-import",
+    "permanent": false
+  }
+}

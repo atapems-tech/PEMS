@@ -1,0 +1,44 @@
+{
+  "kind": "form",
+  "key": "mdr-import-discard",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Discard this import batch",
+    "fa": "دور انداختن این بسته"
+  },
+  "description": {
+    "en": "Discard this import batch",
+    "fa": "دور انداختن این بسته"
+  },
+  "payload": {
+    "id": "mdr-import-discard",
+    "title": {
+      "en": "Discard this import batch",
+      "fa": "دور انداختن این بسته"
+    },
+    "submitLabel": {
+      "en": "Discard this import batch",
+      "fa": "دور انداختن این بسته"
+    },
+    "actionKey": "mdr-import-discard",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch id",
+          "fa": "شناسه بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

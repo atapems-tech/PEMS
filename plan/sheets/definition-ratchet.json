@@ -45,8 +45,6 @@
     "PEMS.Web/Views/LetterTemplate/Preview.cshtml",
     "PEMS.Web/Views/MDB/Details.cshtml",
     "PEMS.Web/Views/MDB/Index.cshtml",
-    "PEMS.Web/Views/MDRImport/Index.cshtml",
-    "PEMS.Web/Views/MDRImport/Review.cshtml",
     "PEMS.Web/Views/MaintenanceStrategy/BulkCreate.cshtml",
     "PEMS.Web/Views/MaintenanceStrategy/Edit.cshtml",
     "PEMS.Web/Views/Notification/_NotificationDropdown.cshtml",
@@ -84,8 +82,6 @@
     "PEMS.Web/Views/Transmittal/Index.cshtml",
     "PEMS.Web/Views/VDR/Details.cshtml",
     "PEMS.Web/Views/VDR/Index.cshtml",
-    "PEMS.Web/Views/VDRImport/Index.cshtml",
-    "PEMS.Web/Views/VDRImport/Review.cshtml",
     "PEMS.Web/Views/_ViewImports.cshtml",
     "PEMS.Web/Views/_ViewStart.cshtml"
   ],
@@ -117,7 +113,6 @@
     "PEMS.Web.Controllers.LetterController": 11,
     "PEMS.Web.Controllers.LetterTemplateController": 1,
     "PEMS.Web.Controllers.MDBController": 2,
-    "PEMS.Web.Controllers.MDRImportController": 2,
     "PEMS.Web.Controllers.MaintenanceStrategyController": 6,
     "PEMS.Web.Controllers.NavigationBadgeController": 1,
     "PEMS.Web.Controllers.NotificationController": 2,
@@ -130,7 +125,6 @@
     "PEMS.Web.Controllers.ThemeController": 1,
     "PEMS.Web.Controllers.TransmittalController": 4,
     "PEMS.Web.Controllers.VDRController": 3,
-    "PEMS.Web.Controllers.VDRImportController": 2,
     "PEMS.Web.Controllers.WebAuthnController": 3
   }
 }

@@ -1,0 +1,38 @@
+{
+  "kind": "form",
+  "key": "mdr-import-rematch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Fix discipline matching",
+    "fa": "اصلاح تطبیق دیسیپلین"
+  },
+  "description": {
+    "en": "Fix discipline matching",
+    "fa": "اصلاح تطبیق دیسیپلین"
+  },
+  "payload": {
+    "id": "mdr-import-rematch",
+    "title": {
+      "en": "Fix discipline matching",
+      "fa": "اصلاح تطبیق دیسیپلین"
+    },
+    "submitLabel": {
+      "en": "Fix discipline matching",
+      "fa": "اصلاح تطبیق دیسیپلین"
+    },
+    "actionKey": "mdr-import-rematch",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project (optional, empty = all)",
+          "fa": "پروژه (اختیاری، خالی = همه)"
+        },
+        "kind": "select",
+        "optionsFrom": "mdr-import-project-options"
+      }
+    ]
+  }
+}

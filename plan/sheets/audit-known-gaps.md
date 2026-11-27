@@ -93,3 +93,8 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - Moving a card to another day keeps its time and length (operation MoveDay, guarded as the schedule action); the day-by-day view moves with its start and end through the existing schedule action.
 - Items shown: planned from 90 days back to a year ahead (the old page asked for the visible range); the filters are text selects of the page filters.
 - The script `pems-maintenance-calendar.js`, its templates and the controller are unused now; delete them with the audit.
+
+### VDR and MDR import (SCRUM-830)
+- The three-step banner (upload, review, commit) is gone; the include toggle of a row is two row actions (include, exclude) that reload the grid; commit and discard are confirmation form pages; the MDR tools "fix discipline matching" and "fix status values" are links to forms with an optional project.
+- The batch figures are record fields; the colored validation badges and the red or yellow row tint are plain text columns; the MDR header warnings are one text field.
+- Commit goes to the document register and discard back to the import page through the existing action redirects (old addresses are routes).
