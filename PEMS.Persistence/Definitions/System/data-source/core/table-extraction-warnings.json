@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "table-extraction-warnings",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Extraction warnings",
+    "fa": "هشدارهای استخراج"
+  },
+  "description": {
+    "en": "Extraction warnings",
+    "fa": "هشدارهای استخراج"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TablePage",
+      "action": "AnalysisWarnings",
+      "args": {
+        "attachmentId": "param:attachmentId",
+        "mode": "param:mode",
+        "hint": "param:hint"
+      }
+    }
+  }
+}

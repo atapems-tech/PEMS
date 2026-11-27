@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "table-extraction-confirm-row-manual",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Link the row to an equipment",
+    "fa": "اتصال ردیف به تجهیز"
+  },
+  "description": {
+    "en": "Link the row to an equipment",
+    "fa": "اتصال ردیف به تجهیز"
+  },
+  "payload": {
+    "id": "table-extraction-confirm-row-manual",
+    "title": {
+      "en": "Link the row to an equipment",
+      "fa": "اتصال ردیف به تجهیز"
+    },
+    "submitLabel": {
+      "en": "Link the row to an equipment",
+      "fa": "اتصال ردیف به تجهیز"
+    },
+    "actionKey": "table-extraction-confirm-row-manual",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "rowId",
+        "label": {
+          "en": "Row",
+          "fa": "ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch",
+          "fa": "بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "equipmentTagNumber",
+        "label": {
+          "en": "Equipment tag",
+          "fa": "تگ تجهیز"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

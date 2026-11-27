@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "table-extraction-batch",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review batch",
+    "fa": "بسته بازبینی"
+  },
+  "description": {
+    "en": "Review batch",
+    "fa": "بسته بازبینی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TablePage",
+      "action": "BatchHead",
+      "args": {
+        "batchId": "param:batchId"
+      }
+    }
+  }
+}

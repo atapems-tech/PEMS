@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-docs-export-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering documents export (old address)",
+    "fa": "خروجی مدارک مهندسی (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Engineering documents export",
+    "fa": "خروجی مدارک مهندسی"
+  },
+  "payload": {
+    "pattern": "EngineeringDocuments/Export",
+    "target": "/x/eng-docs-export",
+    "permanent": false
+  }
+}

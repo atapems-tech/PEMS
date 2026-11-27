@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "table-extraction-review-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Table extraction review (old address)",
+    "fa": "بازبینی استخراج جدول (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Table extraction review",
+    "fa": "بازبینی استخراج جدول"
+  },
+  "payload": {
+    "pattern": "TableExtraction/Review",
+    "target": "/p/table-extraction-review",
+    "permanent": false
+  }
+}

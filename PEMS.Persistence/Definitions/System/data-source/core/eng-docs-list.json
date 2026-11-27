@@ -1,0 +1,30 @@
+{
+  "kind": "data-source",
+  "key": "eng-docs-list",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering documents",
+    "fa": "مدارک مهندسی"
+  },
+  "description": {
+    "en": "Engineering documents",
+    "fa": "مدارک مهندسی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "EngDocsList",
+      "args": {
+        "search": "param:search",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "status": "param:status",
+        "area": "param:area",
+        "minRevisionCount": "param:minRevisionCount"
+      }
+    }
+  }
+}

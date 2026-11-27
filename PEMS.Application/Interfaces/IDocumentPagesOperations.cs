@@ -3,6 +3,8 @@ namespace PEMS.Application.Interfaces;
 public sealed record DocFileResult(bool Success, string? Error, byte[] Bytes, string FileName, string ContentType);
 public sealed record DocChoice(string Value, string Label);
 public sealed record DocRegisterRow(int Id, string DocumentNo, string Title, string? DocumentType, string? Area, string Discipline, string Project, string Revision, string Status, bool Frozen, string? CommentStatus, int? DelayDays, DateTime? Created);
+public sealed record EngDocRow(int Id, string DocumentNo, string Title, string? Project, string? Area, string? CommentStatus, string? Type, string Discipline, string Revision, string Status, bool Frozen, int? DelayDays, DateTime Created);
+public sealed record EngDocCountsRow(int Id, int Total, int Approved, int Pending, int Rejected, int Frozen, int Overdue);
 public sealed record VdrListRow(int Id, string DocumentNumber, string? Description, string? Type, string Vendor, string Project, string? Discipline, int? Revision, string? LatestCategory, string Status, bool Overdue);
 public sealed record VdrDashboardRow(int Id, int Total, int Overdue, int SlaOverdue, int OnTimePercent, int VendorsAtRisk);
 public sealed record MdbListRow(int Id, string Equipment, string Vendor, string? Po, string Project, DateTime? PlannedIssue, DateTime? IndexDue, bool IndexOverdue, string Status, string HardCopy, string SoftCopy);
@@ -107,6 +109,23 @@ public interface IDocumentPagesOperations
     /// <summary>One recipient per line of <paramref name="recipients"/>: name | type (External, Internal, Vendor, Client) | organization | yes when a response is required.</summary>
     [PEMS.Application.Common.PemsOperation("DocumentPage", "TransmittalCreate", "Transmittal.Create")]
     Task<TransmittalCreateAnswer> TransmittalCreateAsync(string transmittalNo, int projectId, string from, string? to, string purpose, string? description, bool responseRequired, string? recipients, List<int> documentIds);
+
+
+    // ---- engineering documents list
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "EngDocsList", "EngineeringDocuments.View")]
+    Task<List<EngDocRow>> EngDocsListAsync(string? search = null, string? projectId = null, string? disciplineId = null, string? status = null, string? area = null, string? minRevisionCount = null);
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "EngDocsCounts", "EngineeringDocuments.View")]
+    Task<List<EngDocCountsRow>> EngDocsCountsAsync();
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "EngDocsDisciplines", "EngineeringDocuments.View")]
+    Task<List<DocChoice>> EngDocsDisciplinesAsync();
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "EngDocsStatuses", "EngineeringDocuments.View")]
+    Task<List<DocChoice>> EngDocsStatusesAsync();
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "EngDocsExport", "EngineeringDocuments.View")]
+    Task<DocFileResult> EngDocsExportAsync(string? search = null, string? projectId = null, string? disciplineId = null, string? status = null, string? area = null, string? minRevisionCount = null);
 
     // ---- document control center
     [PEMS.Application.Common.PemsOperation("DocumentPage", "DccCounts", "DCC.View")]

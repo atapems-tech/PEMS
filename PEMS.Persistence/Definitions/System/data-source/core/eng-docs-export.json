@@ -1,0 +1,31 @@
+{
+  "kind": "data-source",
+  "key": "eng-docs-export",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering documents export",
+    "fa": "خروجی مدارک مهندسی"
+  },
+  "description": {
+    "en": "Engineering documents export",
+    "fa": "خروجی مدارک مهندسی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "EngDocsExport",
+      "disposition": "attachment",
+      "args": {
+        "search": "param:search",
+        "projectId": "param:projectId",
+        "disciplineId": "param:disciplineId",
+        "status": "param:status",
+        "area": "param:area",
+        "minRevisionCount": "param:minRevisionCount"
+      }
+    }
+  }
+}

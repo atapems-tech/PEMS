@@ -26,6 +26,6 @@
       "en": "Done.",
       "fa": "انجام شد."
     },
-    "redirect": "/TableExtraction/Review?batchId={result}"
+    "redirect": "/p/table-extraction-review?batchId={result}"
   }
 }

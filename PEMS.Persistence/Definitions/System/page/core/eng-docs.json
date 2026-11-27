@@ -1,0 +1,269 @@
+{
+  "kind": "page",
+  "key": "eng-docs",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering documents",
+    "fa": "مدارک مهندسی"
+  },
+  "description": {
+    "en": "Engineering documents",
+    "fa": "مدارک مهندسی"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "eng-docs",
+    "regions": {
+      "content": [
+        {
+          "id": "nav",
+          "component": "content-blocks",
+          "options": {
+            "id": "nav",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/document-register",
+                "text": {
+                  "en": "Document register",
+                  "fa": "ثبت مدارک"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/vdr",
+                "text": {
+                  "en": "Vendor documents",
+                  "fa": "مدارک فروشندگان"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/transmittals",
+                "text": {
+                  "en": "Transmittals",
+                  "fa": "ترنسمیتال‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "eng-docs-filters",
+          "component": "page-filters",
+          "options": {
+            "id": "eng-docs-filters",
+            "resetUrl": "/p/eng-docs",
+            "fields": [
+              {
+                "name": "search",
+                "label": {
+                  "en": "Search",
+                  "fa": "جستجو"
+                },
+                "kind": "text",
+                "value": "{{params.search}}"
+              },
+              {
+                "name": "disciplineId",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                },
+                "kind": "select",
+                "value": "{{params.disciplineId}}"
+              },
+              {
+                "name": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                },
+                "kind": "select",
+                "value": "{{params.status}}"
+              },
+              {
+                "name": "area",
+                "label": {
+                  "en": "Area",
+                  "fa": "ناحیه"
+                },
+                "kind": "text",
+                "value": "{{params.area}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": [
+              {
+                "field": "disciplineId",
+                "source": "/d/eng-docs-disciplines",
+                "valueField": "value"
+              },
+              {
+                "field": "status",
+                "source": "/d/eng-docs-statuses",
+                "valueField": "value"
+              }
+            ]
+          }
+        },
+        {
+          "id": "eng-docs-counts",
+          "component": "data-grid",
+          "options": {
+            "id": "eng-docs-counts",
+            "url": "/d/eng-docs-counts",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "total",
+                "width": 110,
+                "type": "number",
+                "href": "/p/eng-docs"
+              },
+              {
+                "key": "approved",
+                "width": 110,
+                "type": "number",
+                "href": "/p/eng-docs?status=Approved"
+              },
+              {
+                "key": "pending",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "rejected",
+                "width": 110,
+                "type": "number",
+                "href": "/p/eng-docs?status=Rejected"
+              },
+              {
+                "key": "frozen",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "overdue",
+                "width": 110,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "exports",
+          "component": "content-blocks",
+          "options": {
+            "id": "exports",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/x/eng-docs-export?search={{params.search|url}}&projectId={{params.projectId|url}}&disciplineId={{params.disciplineId|url}}&status={{params.status|url}}&area={{params.area|url}}&minRevisionCount={{params.minRevisionCount|url}}",
+                "text": {
+                  "en": "Export to Excel",
+                  "fa": "خروجی Excel"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "eng-docs",
+            "url": "/d/eng-docs-list?f.search={{params.search|url}}&f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.status={{params.status|url}}&f.area={{params.area|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
+            "idField": "id",
+            "viewsKey": "eng-docs",
+            "newUrl": "/EngineeringDocuments/Create",
+            "newLabel": {
+              "en": "New document",
+              "fa": "مدرک جدید"
+            },
+            "columns": [
+              {
+                "key": "documentNo",
+                "width": 170,
+                "href": "/EngineeringDocuments/Details/{id}"
+              },
+              {
+                "key": "title",
+                "width": 340
+              },
+              {
+                "key": "project",
+                "width": 150
+              },
+              {
+                "key": "area",
+                "width": 110
+              },
+              {
+                "key": "type",
+                "width": 110
+              },
+              {
+                "key": "discipline",
+                "width": 150
+              },
+              {
+                "key": "revision",
+                "width": 70
+              },
+              {
+                "key": "status",
+                "width": 160
+              },
+              {
+                "key": "frozen",
+                "width": 80,
+                "type": "bool"
+              },
+              {
+                "key": "delayDays",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "created",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "url": "/EngineeringDocuments/Edit/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "open",
+                    "url": "/EngineeringDocuments/Details/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "delete",
+                    "url": "/f/eng-doc-delete?id={id}",
+                    "method": "get",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "EngineeringDocuments.View"
+  }
+}

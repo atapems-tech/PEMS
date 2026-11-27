@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "table-extraction-attachments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Uploaded files",
+    "fa": "فایل‌های بارگذاری‌شده"
+  },
+  "description": {
+    "en": "Uploaded files",
+    "fa": "فایل‌های بارگذاری‌شده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TablePage",
+      "action": "Attachments"
+    }
+  }
+}

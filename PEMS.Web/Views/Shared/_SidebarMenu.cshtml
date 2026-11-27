@@ -139,8 +139,7 @@
                 <pems-icon name="bi-kanban" /> @Localizer["Projects"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("EngineeringDocuments"))"
-               asp-controller="EngineeringDocuments" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/eng-docs" active="@(IsActive("EngineeringDocuments") || Context.Request.Path.StartsWithSegments("/p/eng-docs"))">
                 <pems-icon name="bi-file-earmark-text" /> @Localizer["EngineeringDocuments"]
             </pems-nav-link>
 

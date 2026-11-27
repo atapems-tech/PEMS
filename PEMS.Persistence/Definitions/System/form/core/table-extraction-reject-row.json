@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "table-extraction-reject-row",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the row",
+    "fa": "رد ردیف"
+  },
+  "description": {
+    "en": "Reject the row",
+    "fa": "رد ردیف"
+  },
+  "payload": {
+    "id": "table-extraction-reject-row",
+    "title": {
+      "en": "Reject the row",
+      "fa": "رد ردیف"
+    },
+    "submitLabel": {
+      "en": "Reject the row",
+      "fa": "رد ردیف"
+    },
+    "actionKey": "table-extraction-reject-row",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "rowId",
+        "label": {
+          "en": "Row",
+          "fa": "ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch",
+          "fa": "بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

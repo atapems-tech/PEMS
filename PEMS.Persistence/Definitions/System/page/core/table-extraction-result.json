@@ -1,0 +1,357 @@
+{
+  "kind": "page",
+  "key": "table-extraction-result",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Table extraction result",
+    "fa": "نتیجه استخراج جدول"
+  },
+  "description": {
+    "en": "Table extraction result",
+    "fa": "نتیجه استخراج جدول"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "table-extraction-result",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back",
+              "fa": "بازگشت"
+            },
+            "tone": "neutral",
+            "href": "/p/table-extraction"
+          }
+        },
+        {
+          "id": "note",
+          "component": "content-blocks",
+          "options": {
+            "id": "note",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "Table extraction test result - nothing was saved to the database.",
+                  "fa": "نتیجه آزمایش استخراج جدول - چیزی در پایگاه‌داده ذخیره نشد."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "filters",
+          "component": "page-filters",
+          "options": {
+            "id": "table-extraction-hint",
+            "resetUrl": "/p/table-extraction",
+            "fields": [
+              {
+                "name": "attachmentId",
+                "label": {
+                  "en": "File id",
+                  "fa": "شناسه فایل"
+                },
+                "kind": "text",
+                "value": "{{params.attachmentId}}"
+              },
+              {
+                "name": "mode",
+                "label": {
+                  "en": "Mode (ai or nai)",
+                  "fa": "حالت (ai یا nai)"
+                },
+                "kind": "text",
+                "value": "{{params.mode}}"
+              },
+              {
+                "name": "hint",
+                "label": {
+                  "en": "Document hint (optional)",
+                  "fa": "راهنمای مدرک (اختیاری)"
+                },
+                "kind": "text",
+                "value": "{{params.hint}}"
+              }
+            ]
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "table-extraction-head",
+            "fields": [
+              {
+                "key": "file",
+                "label": {
+                  "en": "File",
+                  "fa": "فایل"
+                }
+              },
+              {
+                "key": "error",
+                "label": {
+                  "en": "Error",
+                  "fa": "خطا"
+                },
+                "wide": true
+              },
+              {
+                "key": "rows",
+                "label": {
+                  "en": "Rows extracted",
+                  "fa": "ردیف‌های استخراج‌شده"
+                },
+                "type": "number"
+              },
+              {
+                "key": "confidence",
+                "label": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                }
+              },
+              {
+                "key": "usedOcr",
+                "label": {
+                  "en": "Used OCR",
+                  "fa": "OCR"
+                }
+              },
+              {
+                "key": "warnings",
+                "label": {
+                  "en": "Warnings",
+                  "fa": "هشدارها"
+                },
+                "type": "number"
+              },
+              {
+                "key": "summary",
+                "label": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                },
+                "wide": true
+              },
+              {
+                "key": "documentNo",
+                "label": {
+                  "en": "Document no.",
+                  "fa": "شماره مدرک"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "type",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "revision",
+                "label": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                }
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "areaUnit",
+                "label": {
+                  "en": "Area / Unit",
+                  "fa": "ناحیه / واحد"
+                }
+              },
+              {
+                "key": "system",
+                "label": {
+                  "en": "System",
+                  "fa": "سیستم"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/table-extraction-analysis?f.attachmentId={{params.attachmentId|url}}&f.mode={{params.mode|url}}&f.hint={{params.hint|url}}",
+              "idField": "id",
+              "id": "{{params.attachmentId}}"
+            }
+          }
+        },
+        {
+          "id": "stage",
+          "component": "data-grid",
+          "options": {
+            "id": "table-extraction-stage",
+            "url": "/d/table-extraction-analysis?f.attachmentId={{params.attachmentId|url}}&f.mode={{params.mode|url}}&f.hint={{params.hint|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "success",
+                "width": 100,
+                "type": "bool",
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 400,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "stage",
+                    "url": "/a/table-extraction-stage",
+                    "method": "post",
+                    "showWhen": "row.canStage == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-warnings",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-warnings",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Warnings reported by the model",
+                  "fa": "هشدارهای گزارش‌شده توسط مدل"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "warnings",
+          "component": "def:related-table",
+          "options": {
+            "id": "warnings",
+            "url": "/d/table-extraction-warnings?f.attachmentId={{params.attachmentId|url}}&f.mode={{params.mode|url}}&f.hint={{params.hint|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "warning",
+                "width": 600
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-rows",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-rows",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Rows",
+                  "fa": "ردیف‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "rows",
+          "component": "def:related-table",
+          "options": {
+            "id": "rows",
+            "url": "/d/table-extraction-rows?f.attachmentId={{params.attachmentId|url}}&f.mode={{params.mode|url}}&f.hint={{params.hint|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "tag",
+                "width": 140
+              },
+              {
+                "key": "description",
+                "width": 240
+              },
+              {
+                "key": "signal",
+                "width": 140
+              },
+              {
+                "key": "junctionBoxTerminal",
+                "width": 160
+              },
+              {
+                "key": "cable",
+                "width": 120
+              },
+              {
+                "key": "marshalling",
+                "width": 160
+              },
+              {
+                "key": "ioCard",
+                "width": 140
+              },
+              {
+                "key": "loop",
+                "width": 100
+              },
+              {
+                "key": "system",
+                "width": 100
+              },
+              {
+                "key": "spare",
+                "width": 80
+              },
+              {
+                "key": "remarks",
+                "width": 200
+              },
+              {
+                "key": "rawExtra",
+                "width": 240
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "TableExtraction.View"
+  }
+}
