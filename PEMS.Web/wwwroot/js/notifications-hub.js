@@ -15,7 +15,7 @@
 
     // شمارنده‌ی مرجع همیشه از سرور (دیتابیس) می‌آید؛ شمارش محلی (+1) قابل اتکا نیست
     function refreshCount() {
-        return fetch('/Notification/UnreadCount', { cache: 'no-store', credentials: 'same-origin' })
+        return fetch('/x/notification-unread-count', { cache: 'no-store', credentials: 'same-origin' })
             .then(function (r) { return r.ok ? r.json() : null; })
             .then(function (d) { if (d) setBadge(d.unread); })
             .catch(function () { });
@@ -33,7 +33,7 @@
         return fetch(url, {
             method: 'POST',
             credentials: 'same-origin',
-            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
             body: body.toString()
         }).then(function (r) { return r.ok ? r.json() : null; });
     }
@@ -47,16 +47,16 @@
         var action = btn.getAttribute('data-notif-action');
         if (action === 'dismiss') {
             var id = btn.getAttribute('data-notif-id');
-            post('/Notification/Dismiss', id).then(function (d) {
+            post('/a/notification-dismiss', id).then(function (d) {
                 if (!d) return;
                 var row = btn.closest('[data-notif-id]');
                 if (row) row.remove();
-                setBadge(d.unread);
+                refreshCount();
             });
         } else if (action === 'markAll') {
-            post('/Notification/MarkAllRead').then(function (d) {
+            post('/a/notification-mark-all-read').then(function (d) {
                 if (!d) return;
-                setBadge(d.unread);
+                refreshCount();
                 if (typeof loadNotifDropdown === 'function') loadNotifDropdown();
             });
         }

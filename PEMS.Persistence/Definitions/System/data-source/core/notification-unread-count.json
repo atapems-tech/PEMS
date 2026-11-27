@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "notification-unread-count",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unread notifications count",
+    "fa": "تعداد اعلان‌های خوانده‌نشده"
+  },
+  "description": {
+    "en": "Unread notifications count",
+    "fa": "تعداد اعلان‌های خوانده‌نشده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Notification",
+      "action": "UnreadCount",
+      "args": {
+        "userName": "context:userName"
+      },
+      "disposition": "inline"
+    }
+  }
+}

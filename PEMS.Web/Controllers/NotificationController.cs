@@ -20,8 +20,6 @@ public class NotificationController : Controller
         _currentUser = currentUser;
     }
 
-    private bool IsAjax => Request.Headers.XRequestedWith == "XMLHttpRequest";
-
     [HttpGet]
     public async Task<IActionResult> Dropdown()
     {
@@ -29,14 +27,6 @@ public class NotificationController : Controller
 
         var items = await _service.GetForUserAsync(_currentUser.UserId.Value);
         return PartialView("_NotificationDropdown", items.Take(15).ToList());
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> UnreadCount()
-    {
-        if (_currentUser.UserId == null) return Unauthorized();
-
-        return Json(new { unread = await _service.GetUnreadCountAsync(_currentUser.UserId.Value) });
     }
 
     // کلیک روی اعلان: Read → ناوبری. فقط مسیر داخلی برنامه (جلوگیری از Open Redirect)
@@ -51,54 +41,5 @@ public class NotificationController : Controller
             return LocalRedirect(linkUrl);
 
         return Redirect("/p/notifications");   // SCRUM-731: the inbox is a definition page
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkRead(int id)
-    {
-        if (_currentUser.UserId == null) return Unauthorized();
-
-        if (!await _service.MarkAsReadAsync(_currentUser.UserId.Value, id)) return NotFound();
-
-        return await Done();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Dismiss(int id)
-    {
-        if (_currentUser.UserId == null) return Unauthorized();
-
-        if (!await _service.DismissAsync(_currentUser.UserId.Value, id)) return NotFound();
-
-        return await Done();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> MarkAllRead()
-    {
-        if (_currentUser.UserId == null) return Unauthorized();
-
-        await _service.MarkAllAsReadAsync(_currentUser.UserId.Value);
-        return await Done();
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DismissAll()
-    {
-        if (_currentUser.UserId == null) return Unauthorized();
-
-        await _service.DismissAllAsync(_currentUser.UserId.Value);
-        return await Done();
-    }
-
-    private async Task<IActionResult> Done()
-    {
-        if (!IsAjax) return Redirect("/p/notifications");
-
-        return Json(new { unread = await _service.GetUnreadCountAsync(_currentUser.UserId!.Value) });
     }
 }

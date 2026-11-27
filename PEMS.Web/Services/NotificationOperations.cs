@@ -46,6 +46,9 @@ public sealed class NotificationOperations(INotificationService service, PEMSDbC
         return new(true, null);
     }
 
+    public async Task<NotificationCountAnswer> UnreadCountAsync(string userName)
+        => new(await UserIdAsync(userName) is { } userId ? await service.GetUnreadCountAsync(userId) : 0);
+
     private async Task<int?> UserIdAsync(string userName)
         => string.IsNullOrEmpty(userName) ? null : await context.Users.AsNoTracking().Where(u => u.UserName == userName).Select(u => (int?)u.Id).FirstOrDefaultAsync();
 }
