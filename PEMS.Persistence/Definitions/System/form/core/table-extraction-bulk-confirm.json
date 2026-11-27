@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "table-extraction-bulk-confirm",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm the selected rows",
+    "fa": "تأیید ردیف‌های انتخاب‌شده"
+  },
+  "description": {
+    "en": "Confirm the selected rows",
+    "fa": "تأیید ردیف‌های انتخاب‌شده"
+  },
+  "payload": {
+    "id": "table-extraction-bulk-confirm",
+    "title": {
+      "en": "Confirm the selected rows",
+      "fa": "تأیید ردیف‌های انتخاب‌شده"
+    },
+    "submitLabel": {
+      "en": "Confirm the selected rows",
+      "fa": "تأیید ردیف‌های انتخاب‌شده"
+    },
+    "actionKey": "table-extraction-bulk-confirm",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "ids",
+        "label": {
+          "en": "Rows",
+          "fa": "ردیف‌ها"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch",
+          "fa": "بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

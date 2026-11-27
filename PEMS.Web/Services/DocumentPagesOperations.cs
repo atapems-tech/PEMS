@@ -92,6 +92,37 @@ public sealed class DocumentPagesOperations(
         return new(true, null, excel.ExportDocumentRegister(selected), $"DocumentRegister_Selected_{DateTime.Now:yyyyMMdd_HHmm}.xlsx", Xlsx);
     }
 
+    // ---------------------------------------------------------------- engineering documents list
+    private static EngineeringDocumentListFilter ListFilter(string? search, string? projectId, string? disciplineId, string? status, string? area, string? minRevisionCount)
+        => new() { Search = string.IsNullOrWhiteSpace(search) ? null : search, ProjectId = Int(projectId), DisciplineId = Int(disciplineId), Status = string.IsNullOrWhiteSpace(status) ? null : status, Area = string.IsNullOrWhiteSpace(area) ? null : area, MinRevisionCount = Int(minRevisionCount), Page = 1, PageSize = 100 };
+
+    public async Task<List<EngDocRow>> EngDocsListAsync(string? search = null, string? projectId = null, string? disciplineId = null, string? status = null, string? area = null, string? minRevisionCount = null)
+    {
+        var (restricted, mine) = await ScopeAsync();
+        var (items, _) = await documents.GetAllMatchingAsync(ListFilter(search, projectId, disciplineId, status, area, minRevisionCount), restricted, mine, MaxExportRows);
+        return items.Select(d => new EngDocRow(d.DocumentId, d.DocumentNo, d.Title, d.ProjectName, d.Area, d.CommentStatus, d.DocumentType, d.DisciplineName, d.RevisionNo, StatusText(d.Status), d.IsFrozen, d.DelayDays is > 0 ? d.DelayDays : null, d.CreatedDate)).ToList();
+    }
+
+    public async Task<List<EngDocCountsRow>> EngDocsCountsAsync()
+    {
+        var (restricted, mine) = await ScopeAsync();
+        var c = await documents.GetSummaryCountsAsync(restricted, mine);
+        return [new EngDocCountsRow(1, c.Total, c.Approved, c.Pending, c.Rejected, c.Frozen, c.Overdue)];
+    }
+
+    public async Task<List<DocChoice>> EngDocsDisciplinesAsync() => await context.Disciplines.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new DocChoice(x.DisciplineId.ToString(), x.Name)).ToListAsync();
+
+    public Task<List<DocChoice>> EngDocsStatusesAsync()
+        => Task.FromResult(new[] { "Draft", "Submitted", "IDC Review", "Checked", "Approved", "Issued", "Rejected", "Revise & Resubmit", "Client Approved" }.Select(s => new DocChoice(s, StatusText(s))).ToList());
+
+    public async Task<DocFileResult> EngDocsExportAsync(string? search = null, string? projectId = null, string? disciplineId = null, string? status = null, string? area = null, string? minRevisionCount = null)
+    {
+        var (restricted, mine) = await ScopeAsync();
+        var (items, total) = await documents.GetAllMatchingAsync(ListFilter(search, projectId, disciplineId, status, area, minRevisionCount), restricted, mine, MaxExportRows);
+        if (total > MaxExportRows) return new(false, $"Export limited to {MaxExportRows:N0} rows; the current filter matches {total:N0}. Narrow the filter and try again.", [], "", "");
+        return new(true, null, EngineeringDocumentListExport.Build(items), $"EngineeringDocuments_{DateTime.Now:yyyyMMdd}.xlsx", Xlsx);
+    }
+
     // ---------------------------------------------------------------- vendor document register
     public async Task<List<VdrListRow>> VdrListAsync(string? projectId = null, string? vendorId = null, string? status = null, string? search = null)
     {

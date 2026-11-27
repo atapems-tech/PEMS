@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "table-extraction-index",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Table extraction (old address)",
+    "fa": "استخراج جدول (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Table extraction",
+    "fa": "استخراج جدول"
+  },
+  "payload": {
+    "pattern": "TableExtraction/Index",
+    "target": "/p/table-extraction",
+    "permanent": false
+  }
+}

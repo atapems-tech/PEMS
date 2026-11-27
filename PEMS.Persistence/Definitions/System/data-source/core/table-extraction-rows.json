@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "table-extraction-rows",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Extracted rows",
+    "fa": "ردیف‌های استخراج‌شده"
+  },
+  "description": {
+    "en": "Extracted rows",
+    "fa": "ردیف‌های استخراج‌شده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TablePage",
+      "action": "AnalysisRows",
+      "args": {
+        "attachmentId": "param:attachmentId",
+        "mode": "param:mode",
+        "hint": "param:hint"
+      }
+    }
+  }
+}

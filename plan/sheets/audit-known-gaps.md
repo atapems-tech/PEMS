@@ -111,3 +111,15 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - Document intelligence: the queue page is two tables and four counts; the Review page stays a controller (next bunch).
 - Tests removed with the screens: the list layout tests of the register, MDB, VDR list (the service-level VDR tests stay), the DCC and Transmittal view checks, the EDI index forbid test, the VDR index viewer test, the transmittal create script and controller checks.
 - The scripts `transmittal-create.js` is deleted; the old `Transmittal/Create`, `MDB/*`, `DCC`, `DocumentRegister`, `VDR`, `VDR/Export`, `DocumentUpload` and `EngineeringDocumentIntelligence` addresses are routes.
+
+### Table extraction (SCRUM-830)
+- The attachment list is one grid of up to 2000 files without paging; the hint box of each row is a filter field of the result page (file id, mode `ai` or `nai`, hint), so the AI run starts at once without a hint and is run again with Apply; the result is kept ten minutes per user, file, mode and hint so its three reads extract once.
+- The result page shows the counts, document info and warnings as one record, a warnings table and the rows table; the stage button is a row action of a one-row grid; nothing is saved by the page.
+- The review page: the filter buttons and the tag search are the grid's own filters; every row can be selected (the service skips rows that cannot be confirmed); confirm, reject and link are small form pages with hidden fields; the bulk confirm asks on a form page instead of the browser confirm.
+- The scripts `tableextraction-index.js` and `tableextraction-review.js` are deleted; the old addresses `TableExtraction`, `TableExtraction/Index` and `TableExtraction/Review` are routes.
+- Tests removed with the screens: the Table extraction list paging tests and the index forbid test.
+
+### Engineering documents list (SCRUM-830)
+- The list, its counters (total, approved and rejected are links), search, discipline, status and area filters, saved views and the Excel export are the definition page `eng-docs`; paging is the grid (rows up to 20000); the project and the minimum revision count filters work from the address only; the delete is a confirmation form page (`eng-doc-delete`).
+- Create, Edit, Details, UploadAttachment and the file download stay in the controller until the document viewer with comment pins, the revision modals and the attachment workflow have components (SCRUM-837 decision).
+- Tests removed with the screen: the engineering documents list layout tests.

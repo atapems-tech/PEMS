@@ -1,0 +1,211 @@
+{
+  "kind": "page",
+  "key": "table-extraction-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Table extraction review",
+    "fa": "بازبینی استخراج جدول"
+  },
+  "description": {
+    "en": "Table extraction review",
+    "fa": "بازبینی استخراج جدول"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "table-extraction-review",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back",
+              "fa": "بازگشت"
+            },
+            "tone": "neutral",
+            "href": "/p/table-extraction"
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "table-extraction-batch",
+            "fields": [
+              {
+                "key": "file",
+                "label": {
+                  "en": "File",
+                  "fa": "فایل"
+                }
+              },
+              {
+                "key": "batchNumber",
+                "label": {
+                  "en": "Batch",
+                  "fa": "بسته"
+                },
+                "type": "number"
+              },
+              {
+                "key": "method",
+                "label": {
+                  "en": "Method",
+                  "fa": "روش"
+                }
+              },
+              {
+                "key": "rows",
+                "label": {
+                  "en": "Rows",
+                  "fa": "ردیف‌ها"
+                },
+                "type": "number"
+              },
+              {
+                "key": "created",
+                "label": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "datetime"
+              },
+              {
+                "key": "unmatched",
+                "label": {
+                  "en": "Unmatched",
+                  "fa": "بدون تطبیق"
+                },
+                "type": "number"
+              },
+              {
+                "key": "matchedNoInstrument",
+                "label": {
+                  "en": "Matched - no Instrument yet",
+                  "fa": "تطبیق‌یافته - هنوز بدون Instrument"
+                },
+                "type": "number"
+              },
+              {
+                "key": "matchedHasInstrument",
+                "label": {
+                  "en": "Matched - has Instrument",
+                  "fa": "تطبیق‌یافته - دارای Instrument"
+                },
+                "type": "number"
+              },
+              {
+                "key": "confirmed",
+                "label": {
+                  "en": "Confirmed",
+                  "fa": "تأییدشده"
+                },
+                "type": "number"
+              },
+              {
+                "key": "rejected",
+                "label": {
+                  "en": "Rejected",
+                  "fa": "ردشده"
+                },
+                "type": "number"
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/table-extraction-batch",
+              "idField": "id",
+              "id": "{{params.batchId}}"
+            }
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "table-extraction-review",
+            "url": "/d/table-extraction-batch-rows?f.batchId={{params.batchId|url}}",
+            "idField": "id",
+            "selectable": true,
+            "columns": [
+              {
+                "key": "tag",
+                "width": 140
+              },
+              {
+                "key": "description",
+                "width": 260
+              },
+              {
+                "key": "junctionBox",
+                "width": 120
+              },
+              {
+                "key": "cableNo",
+                "width": 110
+              },
+              {
+                "key": "dcsTag",
+                "width": 110
+              },
+              {
+                "key": "status",
+                "width": 160
+              },
+              {
+                "key": "equipment",
+                "width": 140
+              },
+              {
+                "key": "instrument",
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "confirm",
+                    "url": "/f/table-extraction-confirm-row?rowId={id}&equipmentId={raw.equipmentId}&batchId={{params.batchId}}",
+                    "method": "get",
+                    "showWhen": "row.canConfirm == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/f/table-extraction-reject-row?rowId={id}&batchId={{params.batchId}}",
+                    "method": "get",
+                    "showWhen": "row.canConfirm == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "link",
+                    "url": "/f/table-extraction-confirm-row-manual?rowId={id}&batchId={{params.batchId}}",
+                    "method": "get",
+                    "showWhen": "row.canLink == true"
+                  }
+                ]
+              }
+            ],
+            "bulkActions": [
+              {
+                "key": "confirm-selected",
+                "label": {
+                  "en": "Confirm selected",
+                  "fa": "تأیید انتخاب‌شده‌ها"
+                },
+                "formUrl": "/f/table-extraction-bulk-confirm?batchId={{params.batchId|url}}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "TableExtraction.View"
+  }
+}

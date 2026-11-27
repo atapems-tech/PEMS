@@ -1,0 +1,45 @@
+{
+  "kind": "form",
+  "key": "eng-doc-delete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Delete the document",
+    "fa": "حذف مدرک"
+  },
+  "description": {
+    "en": "Delete the document",
+    "fa": "حذف مدرک"
+  },
+  "payload": {
+    "id": "eng-doc-delete",
+    "title": {
+      "en": "Delete the document",
+      "fa": "حذف مدرک"
+    },
+    "submitLabel": {
+      "en": "Delete the document",
+      "fa": "حذف مدرک"
+    },
+    "actionKey": "eng-doc-delete",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

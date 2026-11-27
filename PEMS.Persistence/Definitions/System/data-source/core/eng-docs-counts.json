@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "eng-docs-counts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Engineering documents figures",
+    "fa": "شاخص‌های مدارک مهندسی"
+  },
+  "description": {
+    "en": "Engineering documents figures",
+    "fa": "شاخص‌های مدارک مهندسی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentPage",
+      "action": "EngDocsCounts"
+    }
+  }
+}

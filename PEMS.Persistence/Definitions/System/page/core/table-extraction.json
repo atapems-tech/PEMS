@@ -1,0 +1,89 @@
+{
+  "kind": "page",
+  "key": "table-extraction",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Table extraction",
+    "fa": "استخراج جدول"
+  },
+  "description": {
+    "en": "Table extraction",
+    "fa": "استخراج جدول"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "table-extraction",
+    "regions": {
+      "content": [
+        {
+          "id": "intro",
+          "component": "content-blocks",
+          "options": {
+            "id": "intro",
+            "blocks": [
+              {
+                "type": "text",
+                "css": "text-muted small",
+                "text": {
+                  "en": "A tool to test the table extraction prompt (wiring connection diagram, instrument index, marshalling list, I/O list, loop drawing) on uploaded files. It is separate from the automatic AI intake line and saves nothing: it only shows the output of the model.",
+                  "fa": "ابزار آزمایش پرامپت استخراج جدولی (Wiring Connection Diagram, Instrument Index, Marshalling List, I/O List, Loop Drawing) روی فایل‌های آپلودشده. این صفحه مستقل از خط پردازش خودکار AI Intake است و هیچ نتیجه‌ای را در پایگاه‌داده ذخیره نمی‌کند - فقط خروجی مدل را برای بررسی نمایش می‌دهد."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "table-extraction",
+            "url": "/d/table-extraction-attachments",
+            "idField": "id",
+            "viewsKey": "table-extraction",
+            "columns": [
+              {
+                "key": "file",
+                "width": 280
+              },
+              {
+                "key": "extension",
+                "width": 90
+              },
+              {
+                "key": "uploaded",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "aiStatus",
+                "width": 120
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "with-ai",
+                    "url": "/p/table-extraction-result?attachmentId={id}&mode=ai",
+                    "method": "get"
+                  },
+                  {
+                    "key": "no-ai",
+                    "url": "/p/table-extraction-result?attachmentId={id}&mode=nai",
+                    "method": "get",
+                    "showWhen": "row.canNoAi == true"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "TableExtraction.View"
+  }
+}

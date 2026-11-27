@@ -1,0 +1,77 @@
+{
+  "kind": "form",
+  "key": "table-extraction-confirm-row",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Confirm the row",
+    "fa": "تأیید ردیف"
+  },
+  "description": {
+    "en": "Confirm the row",
+    "fa": "تأیید ردیف"
+  },
+  "payload": {
+    "id": "table-extraction-confirm-row",
+    "title": {
+      "en": "Confirm the row",
+      "fa": "تأیید ردیف"
+    },
+    "submitLabel": {
+      "en": "Confirm the row",
+      "fa": "تأیید ردیف"
+    },
+    "actionKey": "table-extraction-confirm-row",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "rowId",
+        "label": {
+          "en": "Row",
+          "fa": "ردیف"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment",
+          "fa": "تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "batchId",
+        "label": {
+          "en": "Batch",
+          "fa": "بسته"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      }
+    ]
+  }
+}

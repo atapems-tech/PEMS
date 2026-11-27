@@ -100,19 +100,6 @@ public class AIPipelineAuthorizationTests
         public Task RecordCommentResponseAsync(int commentId, string responseText) => Task.CompletedTask;
     }
 
-    // ================= TableExtraction =================
-
-    [Fact]
-    public async Task TableExtraction_Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(TableExtraction_Index_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new TableExtractionController(ctx, null!, new FakeTableExtractionImportService(), user, perms).WithTempData();
-
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
     // ================= Relationship =================
 
 

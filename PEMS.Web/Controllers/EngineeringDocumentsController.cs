@@ -67,27 +67,6 @@ public class EngineeringDocumentsController : Controller
     // LIST
     // =========================
 
-    public async Task<IActionResult> Index(PEMS.Application.DTOs.EngineeringDocumentListFilter filter)
-    {
-        ViewData["Title"] = "Engineering Documents";
-        ViewData["Section"] = "Engineering Management";
-        ViewData["HelpKey"] = "EngineeringDocuments.Index";
-
-        var (isRestricted, myDisciplineId) = await ResolveListScopeAsync();
-
-        // طبق سند Global Data Grid Standard بند ۴: فقط ۲۰/۵۰/۱۰۰ پذیرفته می‌شود
-        filter.PageSize = PEMS.Application.Common.DataGridPageSize.Normalize(filter.PageSize);
-
-        var result = await _service.GetPagedAsync(filter, isRestricted, myDisciplineId);
-        var summary = await _service.GetSummaryCountsAsync(isRestricted, myDisciplineId);
-
-        ViewBag.Filter = filter;
-        ViewBag.Summary = summary;
-        ViewBag.Disciplines = await _context.Disciplines.Where(x => x.IsActive).OrderBy(x => x.Name).ToListAsync();
-
-        return View(result);
-    }
-
     // محدودیت دیسیپلین فهرست - یک‌جا برای Index و Export تا Export هرگز بیش از آنچه کاربر در فهرست می‌بیند خارج نکند
     private async Task<(bool IsRestricted, int? MyDisciplineId)> ResolveListScopeAsync()
     {
@@ -115,34 +94,6 @@ public class EngineeringDocumentsController : Controller
         }
 
         return (isRestricted, myDisciplineId);
-    }
-
-    // سقف ردیف Export - همان مقدار Export رجیستر (DocumentRegisterController.MaxExportRows)
-    private const int MaxListExportRows = 20000;
-
-    /// <summary>
-    /// Export فهرست فعلی Index به Excel: همان EngineeringDocumentListFilter (Search/Discipline/Status/Area/
-    /// Project/MinRevisionCount) و همان محدودیت دیسیپلین Index، بدون صفحه‌بندی. کاربر دقیقاً همان ردیف‌هایی را
-    /// می‌گیرد که با این فیلتر در فهرست می‌بیند (نه کل پایگاه‌داده)؛ ستون‌ها = ستون‌های فهرست.
-    /// </summary>
-    [HttpGet]
-    public async Task<IActionResult> Export(PEMS.Application.DTOs.EngineeringDocumentListFilter filter)
-    {
-        var (isRestricted, myDisciplineId) = await ResolveListScopeAsync();
-
-        var (items, total) = await _service.GetAllMatchingAsync(filter, isRestricted, myDisciplineId, MaxListExportRows);
-        if (total > MaxListExportRows)
-        {
-            TempData["Error"] = $"Export limited to {MaxListExportRows:N0} rows; the current filter matches {total:N0}. Narrow the filter and try again.";
-            return RedirectToAction(nameof(Index), new
-            {
-                filter.Search, filter.ProjectId, filter.DisciplineId, filter.Status, filter.Area, filter.MinRevisionCount
-            });
-        }
-
-        var bytes = PEMS.Web.Helpers.EngineeringDocumentListExport.Build(items);
-        return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            $"EngineeringDocuments_{DateTime.Now:yyyyMMdd}.xlsx");
     }
 
     // طبق دانش سیستم‌های EDMS معتبر (AVEVA Engineering / Aconex / Bentley ProjectWise):
@@ -407,7 +358,7 @@ public class EngineeringDocumentsController : Controller
             });
         }
 
-        return RedirectToAction(nameof(Index));
+        return Redirect("/p/eng-docs");
 
     }
 

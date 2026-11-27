@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "table-extraction-analysis",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Extraction result",
+    "fa": "نتیجه استخراج"
+  },
+  "description": {
+    "en": "Extraction result",
+    "fa": "نتیجه استخراج"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TablePage",
+      "action": "Analysis",
+      "args": {
+        "attachmentId": "param:attachmentId",
+        "mode": "param:mode",
+        "hint": "param:hint"
+      }
+    }
+  }
+}
