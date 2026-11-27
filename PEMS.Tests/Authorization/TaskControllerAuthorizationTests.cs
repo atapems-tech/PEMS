@@ -117,13 +117,4 @@ public class TaskControllerAuthorizationTests
         Assert.Equal("Completed", ctx.TaskItems.Single().Status);
     }
 
-    [Fact]
-    public async Task Details_ForATaskTheUserIsNotInvolvedIn_ReturnsNotFound()
-    {
-        var (controller, ctx) = await CreateController(nameof(Details_ForATaskTheUserIsNotInvolvedIn_ReturnsNotFound));
-        ctx.TaskItems.Add(new PEMS.Domain.Entities.TaskItem { TaskItemId = 1, Title = "T", Status = "Open", CreatedDate = DateTime.Now, AssignedByApplicationUserId = 42 });
-        await ctx.SaveChangesAsync();
-
-        Assert.IsType<NotFoundResult>(await controller.Details(1));
-    }
 }

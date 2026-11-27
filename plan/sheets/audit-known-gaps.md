@@ -80,3 +80,10 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 - A non-administrator gets the refusal of the operation (the old pages answered Forbid).
 - The status edit form is prefilled from the address (values with special characters in a name may be cut); the generic fix is a form `load` by row id.
 - Engine: the matrix binding source takes the page filters (`?f.id=`).
+
+### Task details (SCRUM-831)
+- The inline forms of the old page (edit with dirty guard and Ctrl+Enter, assign select, status select with note, comment box, link form, subtask quick add, watch and archive buttons) are row actions that open form pages; each form comes back to the details page.
+- The edit form is prefilled from the address (a title or description with special characters or longer than the address limit may be cut); the generic fix is a form `load` by id.
+- The breadcrumb, the restricted-item lock icon, the "not eligible" assignee hint text, the sprint select of the create modal and the people-diagnostic help text of the assignee list are not shown.
+- Quick add of a subtask no longer chains ("create another"); the old address `Task/Details/{id}` is a route.
+- TaskManager `Create` and `Update` controller actions and the item row and table partials are removed (their users are gone).

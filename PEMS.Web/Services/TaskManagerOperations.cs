@@ -72,4 +72,7 @@ public sealed class TaskManagerOperations(ITaskManagerService tasks, IWorkSpaceS
         var r = await spaces.SaveSpaceAsync(new WorkSpaceInput { Id = id, Key = key ?? "", Name = name ?? "", NameFa = nameFa, Description = description, OwnerDepartmentId = ownerDepartmentId, IsActive = isActive }, actor);
         return r.Success ? new(true, null, r.Id ?? id ?? 0) : new(false, localizer[r.ErrorKey ?? "Tm_Err_SaveFailed"].Value, 0);
     }
+
+    public async Task<(bool Success, string? Error)> UpdateItemAsync(int id, string title, string? description = null, int? typeId = null, string? priority = null, DateTime? dueDate = null, DateTime? startDate = null, int? parentId = null, decimal? storyPoints = null, string? rowVersion = null)
+        => Outcome(await tasks.UpdateAsync(new WorkItemUpdateInput { Id = id, Title = title ?? "", Description = description, TypeId = typeId, Priority = priority, DueDate = dueDate, StartDate = startDate, ParentId = parentId, StoryPoints = storyPoints, RowVersion = rowVersion }, await ActorAsync()));
 }

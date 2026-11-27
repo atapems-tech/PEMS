@@ -111,15 +111,6 @@ public class InfoGridComponentTests
         Assert.DoesNotContain("vs-info", text);
     }
 
-    [Theory]
-    [InlineData("Views/Task/Details.cshtml", 1)]
-    public void WaveI2_TheDescriptionListPagesUseTheRowsLayout(string view, int grids)
-    {
-        var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
-        Assert.Equal(grids, Regex.Matches(text, "<pems-info-grid layout=\"rows\"").Count);
-        Assert.DoesNotContain("<dl", text);
-        Assert.DoesNotContain("<dt", text);
-    }
 
     [Fact]
     public void WaveI3_ProcurementHeaders_TakeTheirLabelsFromTheComponent()

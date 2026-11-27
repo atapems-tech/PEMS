@@ -1,0 +1,535 @@
+{
+  "kind": "page",
+  "key": "task-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task",
+    "fa": "وظیفه"
+  },
+  "description": {
+    "en": "Task",
+    "fa": "وظیفه"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "task-details",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "task-head",
+            "fields": [
+              {
+                "key": "key",
+                "label": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                },
+                "wide": true
+              },
+              {
+                "key": "type",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "space",
+                "label": {
+                  "en": "Space",
+                  "fa": "فضا"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "priority",
+                "label": {
+                  "en": "Priority",
+                  "fa": "اولویت"
+                }
+              },
+              {
+                "key": "assignee",
+                "label": {
+                  "en": "Assignee",
+                  "fa": "مسئول"
+                }
+              },
+              {
+                "key": "reporter",
+                "label": {
+                  "en": "Reporter",
+                  "fa": "گزارش‌دهنده"
+                }
+              },
+              {
+                "key": "assignedBy",
+                "label": {
+                  "en": "Assigned by",
+                  "fa": "ارجاع‌دهنده"
+                }
+              },
+              {
+                "key": "sprint",
+                "label": {
+                  "en": "Sprint",
+                  "fa": "اسپرینت"
+                }
+              },
+              {
+                "key": "points",
+                "label": {
+                  "en": "Story points",
+                  "fa": "امتیاز"
+                },
+                "type": "number"
+              },
+              {
+                "key": "startDate",
+                "label": {
+                  "en": "Start date",
+                  "fa": "تاریخ شروع"
+                },
+                "type": "date"
+              },
+              {
+                "key": "dueDate",
+                "label": {
+                  "en": "Due date",
+                  "fa": "سررسید"
+                },
+                "type": "date"
+              },
+              {
+                "key": "overdue",
+                "label": {
+                  "en": "Overdue",
+                  "fa": "عقب‌افتاده"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "archived",
+                "label": {
+                  "en": "Archived",
+                  "fa": "بایگانی‌شده"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "created",
+                "label": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                },
+                "type": "date"
+              },
+              {
+                "key": "completed",
+                "label": {
+                  "en": "Completed",
+                  "fa": "تکمیل"
+                },
+                "type": "date"
+              },
+              {
+                "key": "related",
+                "label": {
+                  "en": "Related",
+                  "fa": "مرتبط"
+                }
+              },
+              {
+                "key": "watchers",
+                "label": {
+                  "en": "Watchers",
+                  "fa": "ناظران"
+                },
+                "wide": true
+              },
+              {
+                "key": "completionNote",
+                "label": {
+                  "en": "Completion note",
+                  "fa": "یادداشت پایان"
+                },
+                "wide": true
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/task-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "tools",
+          "component": "data-grid",
+          "options": {
+            "id": "task-tools",
+            "url": "/d/task-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 110,
+            "columns": [
+              {
+                "key": "key",
+                "width": 120,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 1600,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "edit",
+                    "url": "/f/tm-update-item?id={id}&rowVersion={raw.rowVersion}&parentId={raw.parentId}&title={raw.title}&description={raw.description}&typeId={raw.typeId}&priority={raw.priorityCode}&storyPoints={raw.points}&startDate={raw.startDate}&dueDate={raw.dueDate}",
+                    "method": "get",
+                    "showWhen": "row.canEdit == true"
+                  },
+                  {
+                    "key": "status",
+                    "url": "/f/{raw.transitionForm}?id={id}&rowVersion={raw.rowVersion}",
+                    "method": "get",
+                    "showWhen": "row.canTransition == true"
+                  },
+                  {
+                    "key": "assign",
+                    "url": "/f/tm-assign?id={id}&rowVersion={raw.rowVersion}&assigneeEmployeeId={raw.assigneeId}",
+                    "method": "get",
+                    "showWhen": "row.canAssign == true"
+                  },
+                  {
+                    "key": "comment",
+                    "url": "/f/tm-comment?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canComment == true"
+                  },
+                  {
+                    "key": "link",
+                    "url": "/f/tm-add-link?id={id}",
+                    "method": "get",
+                    "showWhen": "row.canLink == true"
+                  },
+                  {
+                    "key": "subtask",
+                    "url": "/f/tm-create-subtask?parentId={id}&workSpaceId={raw.workSpaceId}&typeId={raw.subtaskTypeId}&sprintId={raw.sprintId}",
+                    "method": "get",
+                    "showWhen": "row.canCreateSubtask == true"
+                  },
+                  {
+                    "key": "watch",
+                    "url": "/f/tm-watch?id={id}&watch={raw.watchNext}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "archive",
+                    "url": "/f/tm-archive?id={id}&archived={raw.archiveNext}",
+                    "method": "get",
+                    "showWhen": "row.canArchive == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "related",
+                    "url": "{raw.relatedUrl}",
+                    "method": "get",
+                    "showWhen": "row.relatedUrl != null"
+                  },
+                  {
+                    "key": "space",
+                    "url": "/TaskManager/Space?key={raw.spaceKey}",
+                    "method": "get",
+                    "showWhen": "row.isLegacy == false"
+                  },
+                  {
+                    "key": "list",
+                    "url": "/p/task-actions",
+                    "method": "get",
+                    "showWhen": "row.isLegacy == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-subtasks",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-subtasks",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Subtasks",
+                  "fa": "زیروظیفه‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "task-subtasks",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-subtasks",
+            "url": "/d/task-subtasks?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "key",
+                "width": 110
+              },
+              {
+                "key": "title",
+                "width": 320
+              },
+              {
+                "key": "type",
+                "width": 110
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "priority",
+                "width": 100
+              },
+              {
+                "key": "assignee",
+                "width": 160
+              },
+              {
+                "key": "dueDate",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "points",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 120,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/p/task-details?id={id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-links",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-links",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Links",
+                  "fa": "پیوندها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "task-links",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-links",
+            "url": "/d/task-links?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "type",
+                "width": 200
+              },
+              {
+                "key": "otherKey",
+                "width": 120
+              },
+              {
+                "key": "otherTitle",
+                "width": 320
+              },
+              {
+                "key": "otherStatus",
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 240,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/p/task-details?id={raw.otherId}",
+                    "method": "get",
+                    "showWhen": "row.visible == true"
+                  },
+                  {
+                    "key": "remove",
+                    "url": "/f/tm-remove-link?id={{params.id}}&linkId={id}",
+                    "method": "get",
+                    "showWhen": "row.canRemove == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-comments",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-comments",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Comments",
+                  "fa": "نظرها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "task-comments",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-comments",
+            "url": "/d/task-comments?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "author",
+                "width": 180
+              },
+              {
+                "key": "created",
+                "width": 150,
+                "type": "datetime"
+              },
+              {
+                "key": "body",
+                "width": 480
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 160,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "delete",
+                    "url": "/f/tm-delete-comment?id={{params.id}}&commentId={id}",
+                    "method": "get",
+                    "showWhen": "row.canDelete == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-history",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-history",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "History",
+                  "fa": "تاریخچه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "task-history",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-history",
+            "url": "/d/task-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "who",
+                "width": 160
+              },
+              {
+                "key": "action",
+                "width": 160
+              },
+              {
+                "key": "changes",
+                "width": 480
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

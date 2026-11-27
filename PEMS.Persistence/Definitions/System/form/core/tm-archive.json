@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "tm-archive",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Archive or restore the task",
+    "fa": "بایگانی یا بازگردانی وظیفه"
+  },
+  "description": {
+    "en": "Archive or restore the task",
+    "fa": "بایگانی یا بازگردانی وظیفه"
+  },
+  "payload": {
+    "id": "tm-archive",
+    "title": {
+      "en": "Archive or restore the task",
+      "fa": "بایگانی یا بازگردانی وظیفه"
+    },
+    "submitLabel": {
+      "en": "Archive or restore the task",
+      "fa": "بایگانی یا بازگردانی وظیفه"
+    },
+    "actionKey": "tm-archive",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "archived",
+        "label": {
+          "en": "Archive (true) or restore (false)",
+          "fa": "بایگانی (true) یا بازگردانی (false)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

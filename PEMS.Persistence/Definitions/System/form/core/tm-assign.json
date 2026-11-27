@@ -1,0 +1,65 @@
+{
+  "kind": "form",
+  "key": "tm-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign the task",
+    "fa": "تخصیص وظیفه"
+  },
+  "description": {
+    "en": "Assign the task",
+    "fa": "تخصیص وظیفه"
+  },
+  "payload": {
+    "id": "tm-assign",
+    "title": {
+      "en": "Assign the task",
+      "fa": "تخصیص وظیفه"
+    },
+    "submitLabel": {
+      "en": "Assign the task",
+      "fa": "تخصیص وظیفه"
+    },
+    "actionKey": "tm-assign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rowVersion",
+        "label": {
+          "en": "Row version",
+          "fa": "نسخه‌ی رکورد"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "assigneeEmployeeId",
+        "label": {
+          "en": "Assignee",
+          "fa": "مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-item-assignee-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      }
+    ]
+  }
+}

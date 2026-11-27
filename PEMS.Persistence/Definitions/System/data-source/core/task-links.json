@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-links",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Links",
+    "fa": "پیوندها"
+  },
+  "description": {
+    "en": "Links",
+    "fa": "پیوندها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "TaskLinks",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

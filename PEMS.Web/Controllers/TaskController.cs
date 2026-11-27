@@ -33,24 +33,4 @@ public class TaskController : Controller
     }
 
     private Task<TaskActor> ActorAsync() => _manager.ResolveActorAsync(_currentUser.UserId, _currentUser.Roles, _currentUser.FullName);
-
-
-    /// <summary>صفحه‌ی جزئیات وظیفه (شخصی یا فضا). وظیفه‌ی غیرقابل‌دید = 404 (وجودش افشا نمی‌شود).</summary>
-    [HttpGet]
-    public async Task<IActionResult> Details(int id)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Task", "View"))
-            return Forbid();
-        var actor = await ActorAsync();
-        var detail = await _manager.GetDetailAsync(id, actor);
-        if (detail == null) return NotFound();
-
-        ViewData["Title"] = detail.Item.Key ?? $"#{detail.Item.Id}";
-        ViewData["Section"] = "Task Manager";
-        ViewBag.History = await _manager.GetHistoryAsync(id, actor) ?? new List<WorkItemHistoryEntryDto>();
-        ViewBag.Assignees = detail.CanAssign
-            ? await _manager.GetEligibleAssigneesAsync(detail.Item.WorkSpaceId, actor)
-            : new AssigneeResolutionDto();
-        return View(detail);
-    }
 }

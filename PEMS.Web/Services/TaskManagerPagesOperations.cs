@@ -219,4 +219,65 @@ y(localizer, p))).ToList());
     public Task<List<TaskChoice>> RoleOptionsAsync() => Task.FromResult(WorkSpaceMemberRoles.All.Select(r => new TaskChoice(r, localizer["Tm_Role_" + r].Value)).ToList());
 
     public Task<List<TaskChoice>> CategoryOptionsAsync() => Task.FromResult(WorkItemStatusCategories.All.Select(c => new TaskChoice(c, localizer["Tm_Category_" + c].Value)).ToList());
+
+    private async Task<WorkItemDetailDto?> DetailAsync(int id) => await tasks.GetDetailAsync(id, await ActorAsync());
+
+    private static string Iso(DateTime d) => d.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+
+    public async Task<List<TaskHeadRow>> TaskHeadAsync(int id)
+    {
+        var d = await DetailAsync(id);
+        if (d == null) return [];
+        var i = d.Item;
+        var subtaskType = d.Types.FirstOrDefault(t => t.IsSubtask);
+        string? related = string.IsNullOrEmpty(d.RelatedType) ? null : d.RelatedType == "Letter" ? localizer["Tm_Related_Letter"].Value + " #" + d.RelatedId : d.RelatedType == "Meeting" ? localizer["Tm_Related_Meeting"].Value + " #" + d.RelatedId : d.RelatedType + " #" + d.RelatedId;
+        string? relatedUrl = d.RelatedType == "Letter" ? "/Letter/Details/" + d.RelatedId : d.RelatedType == "Meeting" ? "/p/meeting-details?id=" + d.RelatedId : null;
+        return [new TaskHeadRow(i.Id, i.Key ?? "#" + i.Id, i.Title, i.TypeName == null ? localizer["Tm_Personal"].Value : TaskManagerUi.Name(i.TypeName, i.TypeNameFa), TaskManagerUi.Name(d.WorkSpaceName, d.WorkSpaceNameFa), i.WorkSpaceKey ?? "",
+            TaskManagerUi.StatusLabel(localizer, i), i.StatusCategory, i.IsOverdue, !i.IsActive, d.Description, TaskManagerUi.Priority(localizer, i.Priority), i.StoryPoints, i.StartDate, i.DueDate, i.CreatedDate, d.CompletedDate,
+            d.SprintName ?? localizer["Tm_Backlog"].Value, i.AssigneeName ?? localizer["Tm_Unassigned"].Value, i.ReporterName ?? "-", d.AssignedByName != null && d.AssignedByName != i.ReporterName ? d.AssignedByName : null, related, relatedUrl,
+            d.Watchers.Count > 0 ? string.Join(TaskManagerUi.IsFa ? "، " : ", ", d.Watchers) : "-", d.CompletionNote, i.RowVersion, i.TypeId, i.Priority, i.WorkSpaceId, i.SprintId, i.ParentId,
+            d.IsLegacy, d.CanEdit, d.CanTransition && d.AllowedTransitions.Count > 0, d.CanAssign, d.CanComment, d.CanArchive, d.CanLink, d.IsWatching, d.IsWatching ? "false" : "true", i.IsActive ? "true" : "false",
+            d.CanEdit && subtaskType != null && i.ParentId == null && !d.IsLegacy, subtaskType?.Id, d.IsLegacy ? "tm-transition-legacy" : "tm-transition-item")];
+    }
+
+    public async Task<List<TaskWorkRow>> TaskSubtasksAsync(int id)
+        => (await DetailAsync(id))?.Subtasks.Select(i => new TaskWorkRow(i.Id, i.Key ?? "#" + i.Id, i.WorkSpaceKey ?? localizer["Tm_Personal"].Value, i.Title, i.TypeName == null ? null : TaskManagerUi.Name(i.TypeName, i.TypeNameFa), TaskManagerUi.StatusLabel(localizer, i),
+            TaskManagerUi.Priority(localizer, i.Priority), i.AssigneeName ?? localizer["Tm_Unassigned"].Value, i.DueDate, i.IsOverdue, i.StoryPoints, !i.IsActive)).ToList() ?? [];
+
+    public async Task<List<TaskLinkRow>> TaskLinksAsync(int id)
+        => (await DetailAsync(id))?.Links.Select(l => new TaskLinkRow(l.Id, TaskManagerUi.LinkType(localizer, l.LinkType, l.Outward), l.OtherVisible ? l.OtherKey ?? "#" + l.OtherId : null, l.OtherVisible ? l.OtherTitle : localizer["Tm_RestrictedItem"].Value,
+            l.OtherVisible ? localizer["Tm_Category_" + l.OtherStatusCategory].Value : null, l.OtherId, l.OtherVisible, l.CanRemove)).ToList() ?? [];
+
+    public async Task<List<TaskCommentRow>> TaskCommentsAsync(int id)
+        => (await DetailAsync(id))?.Comments.Select(c => new TaskCommentRow(c.Id, c.AuthorName, c.CreatedDate, c.IsDeleted ? localizer["Tm_CommentDeleted"].Value : c.Body, c.IsDeleted, c.CanDelete)).ToList() ?? [];
+
+    public async Task<List<TaskHistoryRow>> TaskHistoryAsync(int id)
+        => (await tasks.GetHistoryAsync(id, await ActorAsync()))?.Select((h, n) => new TaskHistoryRow(n + 1, h.Timestamp, h.UserName, h.Action, h.Changes)).ToList() ?? [];
+
+    public async Task<List<TaskChoice>> TaskTypeOptionsAsync(int id)
+    {
+        var d = await DetailAsync(id);
+        return d == null ? [] : d.Types.Where(t => !t.IsSubtask || d.Item.ParentId != null || t.Id == d.Item.TypeId).Select(t => new TaskChoice(t.Id.ToString(), TaskManagerUi.Name(t.Name, t.NameFa))).ToList();
+    }
+
+    public async Task<List<TaskChoice>> TaskAssigneeOptionsAsync(int id)
+    {
+        var d = await DetailAsync(id);
+        if (d == null) return [];
+        var candidates = (await tasks.GetEligibleAssigneesAsync(d.Item.WorkSpaceId, await ActorAsync())).Candidates;
+        var rows = new List<TaskChoice> { new("", localizer["Tm_Unassigned"].Value) };
+        rows.AddRange(candidates.Select(e => new TaskChoice(e.EmployeeId.ToString(), e.Name)));
+        if (d.Item.AssigneeEmployeeId != null && candidates.All(e => e.EmployeeId != d.Item.AssigneeEmployeeId)) rows.Add(new TaskChoice(d.Item.AssigneeEmployeeId.ToString()!, d.Item.AssigneeName + " (" + localizer["Tm_NotEligible"].Value + ")"));
+        return rows;
+    }
+
+    public async Task<List<TaskChoice>> TaskTransitionOptionsAsync(int id)
+    {
+        var d = await DetailAsync(id);
+        if (d == null) return [];
+        return d.IsLegacy ? d.AllowedTransitions.Select(o => new TaskChoice(o.Value, TaskManagerUi.LegacyStatus(localizer, o.Value))).ToList()
+            : d.AllowedTransitions.Select(o => new TaskChoice((o.StatusId ?? 0).ToString(), TaskManagerUi.Name(o.Name, o.NameFa))).ToList();
+    }
+
+    public Task<List<TaskChoice>> LinkTypeOptionsAsync() => Task.FromResult(WorkItemLinkTypes.All.Select(lt => new TaskChoice(lt, TaskManagerUi.LinkType(localizer, lt, true))).ToList());
 }

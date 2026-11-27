@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "tm-create-subtask",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The task was created.",
+    "fa": "وظیفه ایجاد شد."
+  },
+  "description": {
+    "en": "The task was created.",
+    "fa": "وظیفه ایجاد شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "CreateItem",
+      "args": {
+        "workSpaceId": "field:workSpaceId",
+        "parentId": "field:parentId",
+        "typeId": "field:typeId",
+        "sprintId": "field:sprintId",
+        "title": "field:title"
+      }
+    },
+    "success": {
+      "en": "The task was created.",
+      "fa": "وظیفه ایجاد شد."
+    },
+    "redirect": "/p/task-details?id={parentId}"
+  }
+}

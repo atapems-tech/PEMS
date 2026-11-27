@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-subtasks",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Subtasks",
+    "fa": "زیروظیفه‌ها"
+  },
+  "description": {
+    "en": "Subtasks",
+    "fa": "زیروظیفه‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "TaskSubtasks",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

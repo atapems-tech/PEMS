@@ -1,0 +1,99 @@
+{
+  "kind": "form",
+  "key": "tm-create-subtask",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New subtask",
+    "fa": "زیروظیفه‌ی جدید"
+  },
+  "description": {
+    "en": "New subtask",
+    "fa": "زیروظیفه‌ی جدید"
+  },
+  "payload": {
+    "id": "tm-create-subtask",
+    "title": {
+      "en": "New subtask",
+      "fa": "زیروظیفه‌ی جدید"
+    },
+    "submitLabel": {
+      "en": "New subtask",
+      "fa": "زیروظیفه‌ی جدید"
+    },
+    "actionKey": "tm-create-subtask",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "parentId",
+        "label": {
+          "en": "Parent id",
+          "fa": "شناسه والد"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "workSpaceId",
+        "label": {
+          "en": "Space id",
+          "fa": "شناسه فضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "typeId",
+        "label": {
+          "en": "Type id",
+          "fa": "شناسه نوع"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "sprintId",
+        "label": {
+          "en": "Sprint id",
+          "fa": "شناسه اسپرینت"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "span": 2
+      }
+    ]
+  }
+}

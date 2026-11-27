@@ -1,0 +1,137 @@
+{
+  "kind": "form",
+  "key": "tm-update-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the task",
+    "fa": "ویرایش وظیفه"
+  },
+  "description": {
+    "en": "Edit the task",
+    "fa": "ویرایش وظیفه"
+  },
+  "payload": {
+    "id": "tm-update-item",
+    "title": {
+      "en": "Edit the task",
+      "fa": "ویرایش وظیفه"
+    },
+    "submitLabel": {
+      "en": "Edit the task",
+      "fa": "ویرایش وظیفه"
+    },
+    "actionKey": "tm-update-item",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rowVersion",
+        "label": {
+          "en": "Row version",
+          "fa": "نسخه‌ی رکورد"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "parentId",
+        "label": {
+          "en": "Parent id",
+          "fa": "شناسه والد"
+        },
+        "kind": "number"
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 300,
+        "span": 2
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textarea",
+        "maxLength": 8000,
+        "span": 2
+      },
+      {
+        "name": "typeId",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-item-type-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-priority-options",
+        "optionsArgs": {}
+      },
+      {
+        "name": "storyPoints",
+        "label": {
+          "en": "Story points",
+          "fa": "امتیاز"
+        },
+        "kind": "number",
+        "min": 0,
+        "max": 1000,
+        "step": "0.5"
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "dueDate",
+        "label": {
+          "en": "Due date",
+          "fa": "سررسید"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "tm-comment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "description": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "payload": {
+    "id": "tm-comment",
+    "title": {
+      "en": "Add a comment",
+      "fa": "افزودن نظر"
+    },
+    "submitLabel": {
+      "en": "Add a comment",
+      "fa": "افزودن نظر"
+    },
+    "actionKey": "tm-comment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "body",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "textarea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 5000,
+        "span": 2
+      }
+    ]
+  }
+}

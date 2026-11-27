@@ -1,0 +1,82 @@
+{
+  "kind": "form",
+  "key": "tm-transition-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the status",
+    "fa": "تغییر وضعیت"
+  },
+  "description": {
+    "en": "Change the status",
+    "fa": "تغییر وضعیت"
+  },
+  "payload": {
+    "id": "tm-transition-item",
+    "title": {
+      "en": "Change the status",
+      "fa": "تغییر وضعیت"
+    },
+    "submitLabel": {
+      "en": "Change the status",
+      "fa": "تغییر وضعیت"
+    },
+    "actionKey": "tm-transition",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "rowVersion",
+        "label": {
+          "en": "Row version",
+          "fa": "نسخه‌ی رکورد"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "statusId",
+        "label": {
+          "en": "Move to",
+          "fa": "انتقال به"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "tm-item-transition-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "note",
+        "label": {
+          "en": "Completion note (optional)",
+          "fa": "یادداشت پایان (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 2000,
+        "span": 2
+      }
+    ]
+  }
+}
