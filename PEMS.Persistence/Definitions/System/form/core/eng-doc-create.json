@@ -1,0 +1,172 @@
+{
+  "kind": "form",
+  "key": "eng-doc-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New engineering document",
+    "fa": "مدرک مهندسی جدید"
+  },
+  "description": {
+    "en": "New engineering document",
+    "fa": "مدرک مهندسی جدید"
+  },
+  "payload": {
+    "id": "eng-doc-create",
+    "title": {
+      "en": "New engineering document",
+      "fa": "مدرک مهندسی جدید"
+    },
+    "submitLabel": {
+      "en": "New engineering document",
+      "fa": "مدرک مهندسی جدید"
+    },
+    "actionKey": "eng-doc-create",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentNo",
+        "label": {
+          "en": "Document no. (automatic unless you may type it)",
+          "fa": "شماره مدرک (خودکار مگر اجازه‌ی ورود دستی دارید)"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "useManualNumber",
+        "label": {
+          "en": "Use the number I typed",
+          "fa": "استفاده از شماره‌ی واردشده"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "documentType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Drawing",
+            "label": {
+              "en": "Drawing",
+              "fa": "نقشه"
+            }
+          },
+          {
+            "value": "Datasheet",
+            "label": {
+              "en": "Datasheet",
+              "fa": "دیتاشیت"
+            }
+          },
+          {
+            "value": "Calculation",
+            "label": {
+              "en": "Calculation",
+              "fa": "محاسبات"
+            }
+          },
+          {
+            "value": "Specification",
+            "label": {
+              "en": "Specification",
+              "fa": "مشخصات فنی"
+            }
+          }
+        ]
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "projectId",
+        "label": {
+          "en": "Project",
+          "fa": "پروژه"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "eng-doc-form-projects"
+      },
+      {
+        "name": "disciplineId",
+        "label": {
+          "en": "Discipline",
+          "fa": "دیسیپلین"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "eng-doc-form-disciplines"
+      },
+      {
+        "name": "area",
+        "label": {
+          "en": "Area (optional)",
+          "fa": "ناحیه (اختیاری)"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Related equipment (optional)",
+          "fa": "تجهیز مرتبط (اختیاری)"
+        },
+        "kind": "select",
+        "searchSource": "Equipment"
+      },
+      {
+        "name": "contractId",
+        "label": {
+          "en": "Related contract (optional)",
+          "fa": "قرارداد مرتبط (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "eng-doc-form-contracts"
+      }
+    ]
+  }
+}

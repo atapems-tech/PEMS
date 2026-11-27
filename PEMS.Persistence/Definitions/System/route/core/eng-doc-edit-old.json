@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-doc-edit-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the document (old address)",
+    "fa": "ویرایش مدرک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Edit the document",
+    "fa": "ویرایش مدرک"
+  },
+  "payload": {
+    "pattern": "EngineeringDocuments/Edit/{id}",
+    "target": "/f/eng-doc-edit?id={id}",
+    "permanent": false
+  }
+}

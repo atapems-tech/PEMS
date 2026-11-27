@@ -1,0 +1,39 @@
+{
+  "kind": "action",
+  "key": "eng-doc-create",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New engineering document",
+    "fa": "مدرک مهندسی جدید"
+  },
+  "description": {
+    "en": "New engineering document",
+    "fa": "مدرک مهندسی جدید"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngDocForm",
+      "action": "Create",
+      "args": {
+        "documentNo": "field:documentNo",
+        "useManualNumber": "field:useManualNumber",
+        "title": "field:title",
+        "description": "field:description",
+        "documentType": "field:documentType",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "area": "field:area",
+        "equipmentId": "field:equipmentId",
+        "contractId": "field:contractId"
+      }
+    },
+    "success": {
+      "en": "Document created.",
+      "fa": "مدرک ایجاد شد."
+    },
+    "redirect": "/p/eng-docs"
+  }
+}

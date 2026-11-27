@@ -271,6 +271,7 @@ builder.Services.AddScoped<PEMS.Application.Interfaces.IStrategyPagesOperations,
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskPagesOperations, PEMS.Web.Services.TaskPagesOperations>();   // SCRUM-831
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDocImportPagesOperations, PEMS.Web.Services.DocImportPagesOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.IDocumentPagesOperations, PEMS.Web.Services.DocumentPagesOperations>();   // SCRUM-830
+builder.Services.AddScoped<PEMS.Application.Interfaces.IEngineeringDocumentFormOperations, PEMS.Web.Services.EngineeringDocumentFormOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITableExtractionPagesOperations, PEMS.Web.Services.TableExtractionPagesOperations>();   // SCRUM-830
 builder.Services.AddScoped<PEMS.Application.Interfaces.ITaskManagerPagesOperations, PEMS.Web.Services.TaskManagerPagesOperations>();   // SCRUM-831
 builder.Services.AddScoped<PEMS.Application.Interfaces.IWorkOrderPagesOperations, PEMS.Web.Services.WorkOrderPagesOperations>();   // SCRUM-831

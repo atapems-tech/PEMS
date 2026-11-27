@@ -1,0 +1,121 @@
+{
+  "kind": "form",
+  "key": "eng-doc-upload-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a document attachment",
+    "fa": "بارگذاری پیوست مدرک"
+  },
+  "description": {
+    "en": "Upload a document attachment",
+    "fa": "بارگذاری پیوست مدرک"
+  },
+  "payload": {
+    "id": "eng-doc-upload-attachment",
+    "title": {
+      "en": "Upload a document attachment",
+      "fa": "بارگذاری پیوست مدرک"
+    },
+    "submitLabel": {
+      "en": "Upload a document attachment",
+      "fa": "بارگذاری پیوست مدرک"
+    },
+    "actionKey": "eng-doc-upload-attachment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "File",
+          "fa": "فایل"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "revisionId",
+        "label": {
+          "en": "Revision (optional: leave blank for a document-level attachment)",
+          "fa": "ویرایش (اختیاری: خالی یعنی پیوست سطح مدرک)"
+        },
+        "kind": "select",
+        "optionsFrom": "eng-doc-form-revisions",
+        "optionsArgs": {
+          "documentId": "documentId"
+        }
+      },
+      {
+        "name": "fileRole",
+        "label": {
+          "en": "File role (optional)",
+          "fa": "نقش فایل (اختیاری)"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Native",
+            "label": {
+              "en": "Native / Source File",
+              "fa": "فایل اصلی / مبدأ"
+            }
+          },
+          {
+            "value": "PdfRendition",
+            "label": {
+              "en": "PDF Rendition",
+              "fa": "نسخه PDF"
+            }
+          },
+          {
+            "value": "MarkedUp",
+            "label": {
+              "en": "Marked-up File",
+              "fa": "فایل علامت‌گذاری‌شده"
+            }
+          },
+          {
+            "value": "ReviewCopy",
+            "label": {
+              "en": "Review Copy",
+              "fa": "نسخه بازبینی"
+            }
+          },
+          {
+            "value": "SupportingAttachment",
+            "label": {
+              "en": "Supporting Attachment",
+              "fa": "پیوست پشتیبان"
+            }
+          }
+        ],
+        "helpText": {
+          "en": "If this revision has no official file yet, the first upload for it becomes official automatically.",
+          "fa": "اگر این ویرایش هنوز فایل رسمی ندارد، اولین فایل بارگذاری‌شده به‌طور خودکار رسمی می‌شود."
+        }
+      }
+    ]
+  }
+}

@@ -180,7 +180,7 @@
             "url": "/d/eng-docs-list?f.search={{params.search|url}}&f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.status={{params.status|url}}&f.area={{params.area|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
             "idField": "id",
             "viewsKey": "eng-docs",
-            "newUrl": "/EngineeringDocuments/Create",
+            "newUrl": "/f/eng-doc-create",
             "newLabel": {
               "en": "New document",
               "fa": "مدرک جدید"
@@ -243,7 +243,7 @@
                 "actions": [
                   {
                     "key": "edit",
-                    "url": "/EngineeringDocuments/Edit/{id}",
+                    "url": "/f/eng-doc-edit?id={id}",
                     "method": "get"
                   },
                   {

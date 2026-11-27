@@ -126,3 +126,9 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 
 ### Document intelligence review (SCRUM-830)
 - The review page is a record, a stage table (set the stage from a form page), the classification, tag and comment tables with their commands as small form pages; the approve form has one checkbox per field to apply, prefilled from the suggestion; the status badges and the inline response box are plain columns and form pages; the controller is deleted and the old address `EngineeringDocumentIntelligence/Review/{id}` is a route.
+
+### Engineering document create, edit and upload (SCRUM-830)
+- Create, Edit and UploadAttachment are the forms `eng-doc-create`, `eng-doc-edit` (loaded by the operation `EngDocForm.One`) and `eng-doc-upload-attachment` over `IEngineeringDocumentFormOperations`, which carries the old logic (numbering, first revision, workflow row, access-control record, duplicate-number and frozen messages, hashed storage, first official file, background processing).
+- The status select and the disabled revision box of the create form are gone (the status was always Draft, the revision 00); the manual-number box is always shown and ignored without the right (as before it only worked with the right); related equipment is the server-searched select; the validation summary is the form's own errors.
+- Edit changes only the fields of its form (the old action copied the whole posted entity); the access-control record carries no client address when it cannot be read.
+- The old addresses `EngineeringDocuments/Create`, `Edit/{id}` and `UploadAttachment/{id}` are routes. The controller keeps Details and the redirect of the download (SCRUM-837 decision on the viewer).

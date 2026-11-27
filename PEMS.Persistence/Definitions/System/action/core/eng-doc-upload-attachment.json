@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "eng-doc-upload-attachment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a document attachment",
+    "fa": "بارگذاری پیوست مدرک"
+  },
+  "description": {
+    "en": "Upload a document attachment",
+    "fa": "بارگذاری پیوست مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngDocForm",
+      "action": "UploadAttachment",
+      "args": {
+        "documentId": "field:documentId",
+        "file": "file:file",
+        "revisionId": "field:revisionId",
+        "fileRole": "field:fileRole"
+      },
+      "upload": {
+        "profile": "attachment",
+        "maxFileMb": 50
+      }
+    },
+    "success": {
+      "en": "Uploaded.",
+      "fa": "بارگذاری شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{documentId}"
+  }
+}

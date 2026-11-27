@@ -1,0 +1,44 @@
+{
+  "kind": "action",
+  "key": "eng-doc-edit",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the document",
+    "fa": "ویرایش مدرک"
+  },
+  "description": {
+    "en": "Edit the document",
+    "fa": "ویرایش مدرک"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "EngDocForm",
+      "action": "Edit",
+      "args": {
+        "id": "field:id",
+        "documentNo": "field:documentNo",
+        "documentType": "field:documentType",
+        "title": "field:title",
+        "description": "field:description",
+        "projectId": "field:projectId",
+        "disciplineId": "field:disciplineId",
+        "area": "field:area",
+        "issuePurpose": "field:issuePurpose",
+        "preparedBy": "field:preparedBy",
+        "checkedBy": "field:checkedBy",
+        "approvedBy": "field:approvedBy",
+        "equipmentId": "field:equipmentId",
+        "contractId": "field:contractId",
+        "relatedMRId": "field:relatedMRId"
+      }
+    },
+    "success": {
+      "en": "Document updated successfully",
+      "fa": "مدرک با موفقیت به‌روزرسانی شد."
+    },
+    "redirect": "/EngineeringDocuments/Details/{id}"
+  }
+}

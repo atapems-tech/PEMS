@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-form-one",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The document",
+    "fa": "مدرک"
+  },
+  "description": {
+    "en": "The document",
+    "fa": "مدرک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "EngDocForm",
+      "action": "One",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

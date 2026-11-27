@@ -206,7 +206,7 @@
                     @Localizer["Ed_MoreActions"]
                 </pems-button>
                 <pems-dropdown-menu end="true">
-                    <pems-bullet><pems-link class="dropdown-item" asp-action="Edit" asp-route-id="@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-link></pems-bullet>
+                    <pems-bullet><pems-link class="dropdown-item" href="/f/eng-doc-edit?id=@Model.DocumentId"><pems-icon name="bi-pencil" /> @Localizer["Edit"]</pems-link></pems-bullet>
                     @if (Model.Status == "Approved" || Model.Status == "Issued")
                     {
                         <pems-bullet><pems-button plain="true" type="button" css="dropdown-item" data-bs-toggle="modal" data-bs-target="#newRevisionModal"><pems-icon name="bi-file-earmark-plus" /> @Localizer["Create New Revision"]</pems-button></pems-bullet>
@@ -384,7 +384,7 @@
                         @if (string.IsNullOrEmpty(Model.PreparedBy))
                         {
                             <span class="text-muted">@Localizer["Ed_NotSet"]</span>
-                            @if (canAssignSignoff) { <text> &middot; <pems-link asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
+                            @if (canAssignSignoff) { <text> &middot; <pems-link href="/f/eng-doc-edit?id=@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
                         }
                         else { @Model.PreparedBy }
                 </pems-info-item>
@@ -392,7 +392,7 @@
                         @if (string.IsNullOrEmpty(Model.CheckedBy))
                         {
                             <span class="text-muted">@Localizer["Ed_NotSet"]</span>
-                            @if (canAssignSignoff) { <text> &middot; <pems-link asp-action="Edit" asp-route-id="@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
+                            @if (canAssignSignoff) { <text> &middot; <pems-link href="/f/eng-doc-edit?id=@Model.DocumentId">@Localizer["Ed_Assign"]</pems-link></text> }
                         }
                         else { @Model.CheckedBy }
                         @(Model.CheckedDate.HasValue ? $"({Model.CheckedDate:yyyy-MM-dd})" : "")
@@ -449,7 +449,7 @@
                 <pems-heading level="2" class="vs-section__title"><pems-icon name="bi-paperclip" /> @Localizer["Ed_TabFiles"]</pems-heading>
                 <pems-text class="small text-muted mb-2">@((Model.Attachments?.Count ?? 0) == 0 ? Localizer["Ed_NoFilesHint"].Value : string.Format(Localizer["Ed_FilesCount"].Value, Model.Attachments!.Count))</pems-text>
                 <pems-flex wrap="true" gap="2">
-                    <pems-button tone="neutral" size="small" outline="true" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId"><pems-icon name="bi-upload" aria-hidden="true" /> @Localizer["Ed_Upload"]</pems-button>
+                    <pems-button tone="neutral" size="small" outline="true" as="a" href="/f/eng-doc-upload-attachment?documentId=@Model.DocumentId"><pems-icon name="bi-upload" aria-hidden="true" /> @Localizer["Ed_Upload"]</pems-button>
                     @if ((Model.Attachments?.Count ?? 0) > 0)
                     {
                         <pems-button tone="neutral" size="small" outline="true" type="button" data-bs-toggle="tab" data-bs-target="#tab-attachments">@Localizer["Ed_ViewAll"]</pems-button>
@@ -465,7 +465,7 @@
         <div class="vs-section">
             <pems-flex justify="between" align="center" css="mb-3">
                 <pems-heading level="6" class="mb-0">@Localizer["Ed_SecFiles"]</pems-heading>
-                <pems-button tone="primary" size="small" as="a" asp-action="UploadAttachment" asp-route-id="@Model.DocumentId">
+                <pems-button tone="primary" size="small" as="a" href="/f/eng-doc-upload-attachment?documentId=@Model.DocumentId">
                     <pems-icon name="bi-upload" /> @Localizer["Ed_Upload"]
                 </pems-button>
             </pems-flex>
