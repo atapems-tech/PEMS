@@ -249,4 +249,8 @@ public sealed class TeamOperations(PEMSDbContext context, ITeamService teams, IO
     public async Task<List<TeamMemberChoice>> MembersOfAsync(int teamId)
         => await context.TeamMembers.AsNoTracking().Where(x => x.TeamId == teamId && x.IsActive)
             .Select(x => new TeamMemberChoice(x.EmployeeId, x.Employee!.FirstName + " " + x.Employee.LastName, x.Role!.Name)).ToListAsync();
+
+    public async Task<List<TeamChartChoice>> ChartDisciplinesAsync()
+        => (await context.Disciplines.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new { x.DisciplineId, x.Name }).ToListAsync())
+            .Select(x => new TeamChartChoice(x.DisciplineId.ToString(System.Globalization.CultureInfo.InvariantCulture), x.Name)).ToList();
 }

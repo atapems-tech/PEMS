@@ -24,6 +24,7 @@ public sealed record TeamResult(bool Success, string? Error);
 /// employee record (fail closed). The organization chart shell stays in the controller; its JSON reads are operations served at /x/team-* (SCRUM-831).
 /// </summary>
 public sealed record TeamMemberChoice(int EmployeeId, string Name, string Role);
+public sealed record TeamChartChoice(string Value, string Label);
 
 public interface ITeamOperations
 {
@@ -112,4 +113,8 @@ public interface ITeamOperations
     /// <summary>The active members of a team with their role, for the work order forms (served at /x/team-members-of).</summary>
     [PEMS.Application.Common.PemsOperation("Team", "MembersOf", "Team.View")]
     Task<List<TeamMemberChoice>> MembersOfAsync(int teamId);
+
+    /// <summary>SCRUM-841: the active disciplines for the filter of the organization chart (served at /x/team-chart-disciplines).</summary>
+    [PEMS.Application.Common.PemsOperation("Team", "ChartDisciplines", "Team.View")]
+    Task<List<TeamChartChoice>> ChartDisciplinesAsync();
 }

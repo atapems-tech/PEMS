@@ -1,0 +1,33 @@
+{
+  "kind": "page",
+  "key": "team-org-chart",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Maintenance organization chart",
+    "fa": "نمودار سازمانی تعمیرونگهداری"
+  },
+  "description": {
+    "en": "Maintenance organization chart",
+    "fa": "نمودار سازمانی تعمیرونگهداری"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "team-org-chart",
+    "regions": {
+      "content": [
+        {
+          "id": "chart",
+          "component": "org-chart",
+          "options": {
+            "treeUrl": "/x/team-organization-tree",
+            "disciplinesUrl": "/x/team-chart-disciplines",
+            "detailsUrl": "/p/team-details",
+            "backUrl": "/p/teams"
+          }
+        }
+      ]
+    },
+    "permission": "Team.View"
+  }
+}
