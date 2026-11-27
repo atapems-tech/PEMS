@@ -38,6 +38,6 @@
       "en": "VDR item created",
       "fa": "مدرک VDR ثبت شد."
     },
-    "redirect": "/VDR/Details/{result}"
+    "redirect": "/p/vdr-details?id={result}"
   }
 }

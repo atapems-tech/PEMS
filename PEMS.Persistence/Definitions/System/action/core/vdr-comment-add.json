@@ -43,6 +43,6 @@
       "en": "Comment recorded",
       "fa": "نظر ثبت شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

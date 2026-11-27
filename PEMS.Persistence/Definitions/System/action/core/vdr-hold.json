@@ -27,6 +27,6 @@
       "en": "The document is on hold.",
       "fa": "مدرک در وضعیت Hold قرار گرفت."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

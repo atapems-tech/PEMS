@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "vdr-release-hold",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Release the hold",
+    "fa": "رفع نگه‌داشتن"
+  },
+  "description": {
+    "en": "Release the hold",
+    "fa": "رفع نگه‌داشتن"
+  },
+  "payload": {
+    "id": "vdr-release-hold",
+    "title": {
+      "en": "Release the hold",
+      "fa": "رفع نگه‌داشتن"
+    },
+    "submitLabel": {
+      "en": "Release the hold",
+      "fa": "رفع نگه‌داشتن"
+    },
+    "actionKey": "vdr-release-hold",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

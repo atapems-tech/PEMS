@@ -1,0 +1,117 @@
+{
+  "kind": "form",
+  "key": "vdr-submission-file",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload a file to a submission",
+    "fa": "بارگذاری فایل برای ارسال"
+  },
+  "description": {
+    "en": "Upload a file to a submission",
+    "fa": "بارگذاری فایل برای ارسال"
+  },
+  "payload": {
+    "id": "vdr-submission-file",
+    "title": {
+      "en": "Upload a file to a submission",
+      "fa": "بارگذاری فایل برای ارسال"
+    },
+    "submitLabel": {
+      "en": "Upload a file to a submission",
+      "fa": "بارگذاری فایل برای ارسال"
+    },
+    "actionKey": "vdr-submission-file",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "submissionId",
+        "label": {
+          "en": "Revision",
+          "fa": "ویرایش"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "optionsFrom": "vdr-submission-options",
+        "optionsArgs": {
+          "id": "vdrItemId"
+        }
+      },
+      {
+        "name": "kind",
+        "label": {
+          "en": "File kind",
+          "fa": "نوع فایل"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "Main",
+            "label": {
+              "en": "Main file",
+              "fa": "فایل اصلی"
+            }
+          },
+          {
+            "value": "CommentSheet",
+            "label": {
+              "en": "Comment sheet",
+              "fa": "برگه نظر"
+            }
+          },
+          {
+            "value": "ReplySheet",
+            "label": {
+              "en": "Reply sheet",
+              "fa": "برگه پاسخ"
+            }
+          }
+        ]
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "File",
+          "fa": "فایل"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

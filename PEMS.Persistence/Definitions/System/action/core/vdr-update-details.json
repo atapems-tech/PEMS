@@ -32,6 +32,6 @@
       "en": "Saved.",
       "fa": "ذخیره شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

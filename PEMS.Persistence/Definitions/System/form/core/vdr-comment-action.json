@@ -1,0 +1,113 @@
+{
+  "kind": "form",
+  "key": "vdr-comment-action",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the action status",
+    "fa": "تغییر وضعیت اقدام"
+  },
+  "description": {
+    "en": "Change the action status",
+    "fa": "تغییر وضعیت اقدام"
+  },
+  "payload": {
+    "id": "vdr-comment-action",
+    "title": {
+      "en": "Change the action status",
+      "fa": "تغییر وضعیت اقدام"
+    },
+    "submitLabel": {
+      "en": "Change the action status",
+      "fa": "تغییر وضعیت اقدام"
+    },
+    "actionKey": "vdr-comment-action",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "commentId",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "actionStatus",
+        "label": {
+          "en": "Action status",
+          "fa": "وضعیت اقدام"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "OpenComment",
+            "label": {
+              "en": "OpenComment",
+              "fa": "OpenComment"
+            }
+          },
+          {
+            "value": "VendorResponsePending",
+            "label": {
+              "en": "VendorResponsePending",
+              "fa": "VendorResponsePending"
+            }
+          },
+          {
+            "value": "Verified",
+            "label": {
+              "en": "Verified",
+              "fa": "Verified"
+            }
+          },
+          {
+            "value": "Closed",
+            "label": {
+              "en": "Closed",
+              "fa": "Closed"
+            }
+          },
+          {
+            "value": "NoActionRequired",
+            "label": {
+              "en": "NoActionRequired",
+              "fa": "NoActionRequired"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

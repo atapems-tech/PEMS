@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vdr-stages",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Review stages",
+    "fa": "مراحل بازبینی"
+  },
+  "description": {
+    "en": "Review stages",
+    "fa": "مراحل بازبینی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "VdrDetail",
+      "action": "Stages",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

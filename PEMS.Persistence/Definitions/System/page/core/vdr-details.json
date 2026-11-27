@@ -1,0 +1,758 @@
+{
+  "kind": "page",
+  "key": "vdr-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor document",
+    "fa": "مدرک فروشنده"
+  },
+  "description": {
+    "en": "Vendor document",
+    "fa": "مدرک فروشنده"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "vdr-details",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the list",
+              "fa": "بازگشت به فهرست"
+            },
+            "tone": "neutral",
+            "href": "/p/vdr"
+          }
+        },
+        {
+          "id": "stepper",
+          "component": "stepper",
+          "options": {
+            "label": {
+              "en": "Review stages",
+              "fa": "مراحل بازبینی"
+            }
+          },
+          "bindings": {
+            "steps": {
+              "source": "/d/vdr-stages?f.id={{params.id|url}}",
+              "labelField": "stepLabel",
+              "stateField": "step"
+            }
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "vdr-head",
+            "fields": [
+              {
+                "key": "documentNumber",
+                "label": {
+                  "en": "Document no.",
+                  "fa": "شماره مدرک"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "overdue",
+                "label": {
+                  "en": "Overdue",
+                  "fa": "دیرکرد"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "revision",
+                "label": {
+                  "en": "Revision",
+                  "fa": "ویرایش"
+                },
+                "type": "number"
+              },
+              {
+                "key": "vendor",
+                "label": {
+                  "en": "Vendor",
+                  "fa": "فروشنده"
+                }
+              },
+              {
+                "key": "project",
+                "label": {
+                  "en": "Project",
+                  "fa": "پروژه"
+                }
+              },
+              {
+                "key": "type",
+                "label": {
+                  "en": "Type",
+                  "fa": "نوع"
+                }
+              },
+              {
+                "key": "po",
+                "label": {
+                  "en": "PO",
+                  "fa": "سفارش خرید"
+                }
+              },
+              {
+                "key": "equipment",
+                "label": {
+                  "en": "Equipment",
+                  "fa": "تجهیز"
+                }
+              },
+              {
+                "key": "discipline",
+                "label": {
+                  "en": "Discipline",
+                  "fa": "دیسیپلین"
+                }
+              },
+              {
+                "key": "class",
+                "label": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                },
+                "type": "number"
+              },
+              {
+                "key": "plannedFirstIssue",
+                "label": {
+                  "en": "Planned first issue",
+                  "fa": "اولین صدور برنامه‌ریزی‌شده"
+                },
+                "type": "date"
+              },
+              {
+                "key": "vendorFormatNo",
+                "label": {
+                  "en": "Vendor format no.",
+                  "fa": "شماره با قالب فروشنده"
+                },
+                "mono": true
+              },
+              {
+                "key": "onHold",
+                "label": {
+                  "en": "On hold",
+                  "fa": "در انتظار"
+                },
+                "type": "bool"
+              },
+              {
+                "key": "holdReason",
+                "label": {
+                  "en": "Hold reason",
+                  "fa": "دلیل نگه‌داشتن"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "شرح"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/vdr-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "actions",
+          "component": "data-grid",
+          "options": {
+            "id": "vdr-actions",
+            "url": "/d/vdr-head?f.id={{params.id|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 110,
+            "columns": [
+              {
+                "key": "stage",
+                "width": 160,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 1800,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "start",
+                    "url": "/f/vdr-submit-review?vdrItemId={id}&revisionNo={raw.nextRevision}",
+                    "method": "get",
+                    "showWhen": "row.canStart == true"
+                  },
+                  {
+                    "key": "approve",
+                    "url": "/f/vdr-discipline-approve?vdrItemId={id}&decision=Approve",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true"
+                  },
+                  {
+                    "key": "comment",
+                    "url": "/f/vdr-discipline-comment?vdrItemId={id}&decision=Comment",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/f/vdr-discipline-reject?vdrItemId={id}&decision=Reject",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "final",
+                    "url": "/f/vdr-lead-review?vdrItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canLead == true"
+                  },
+                  {
+                    "key": "return",
+                    "url": "/f/vdr-return-to-vendor?vdrItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReturn == true"
+                  },
+                  {
+                    "key": "edit",
+                    "url": "/f/vdr-update-details?vdrItemId={id}&documentDescription={raw.editDescription}&documentClass={raw.editClass}&plannedFirstIssueDate={raw.plannedIso}&equipmentTag={raw.editEquipment}&disciplineCodeRaw={raw.editDiscipline}",
+                    "method": "get",
+                    "showWhen": "row.canEdit == true"
+                  },
+                  {
+                    "key": "hold",
+                    "url": "/f/vdr-hold?vdrItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canHold == true"
+                  },
+                  {
+                    "key": "release",
+                    "url": "/f/vdr-release-hold?vdrItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canRelease == true"
+                  },
+                  {
+                    "key": "deactivate",
+                    "url": "/f/vdr-deactivate?vdrItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canDeactivate == true",
+                    "tone": "danger"
+                  },
+                  {
+                    "key": "add-comment",
+                    "url": "/f/vdr-comment-add?vdrItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canAddComment == true"
+                  },
+                  {
+                    "key": "upload-file",
+                    "url": "/f/vdr-submission-file?vdrItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canAddComment == true"
+                  },
+                  {
+                    "key": "equipment",
+                    "url": "/p/equipment-passport?id={raw.equipmentId}",
+                    "method": "get",
+                    "showWhen": "row.equipmentId != null"
+                  },
+                  {
+                    "key": "vendor",
+                    "url": "/p/vendor-details?id={raw.vendorId}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-review",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-review",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Parallel discipline review",
+                  "fa": "بازبینی موازی دیسیپلین‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "review",
+          "component": "def:related-table",
+          "options": {
+            "id": "review",
+            "url": "/d/vdr-review?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "discipline",
+                "width": 240
+              },
+              {
+                "key": "status",
+                "width": 160
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-sub",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-sub",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Submission history",
+                  "fa": "تاریخچه ارسال‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "submissions",
+          "component": "def:related-table",
+          "options": {
+            "id": "submissions",
+            "url": "/d/vdr-submissions?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "revision",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "vendorTransmittal",
+                "width": 150
+              },
+              {
+                "key": "clientTransmittal",
+                "width": 150
+              },
+              {
+                "key": "vendorIssued",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "purpose",
+                "width": 90
+              },
+              {
+                "key": "due",
+                "width": 220
+              },
+              {
+                "key": "ftp",
+                "width": 110
+              },
+              {
+                "key": "commentSheetNo",
+                "width": 120
+              },
+              {
+                "key": "commentDate",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "category",
+                "width": 90
+              },
+              {
+                "key": "resubmission",
+                "width": 110,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "comment-sheet",
+                    "url": "/f/vdr-comment-sheet?vdrItemId={{params.id}}&submissionId={id}",
+                    "method": "get",
+                    "showWhen": "row.canCommentSheet == true"
+                  },
+                  {
+                    "key": "reply-sheet",
+                    "url": "/f/vdr-reply-sheet?vdrItemId={{params.id}}&submissionId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReplySheet == true"
+                  },
+                  {
+                    "key": "comment-sheet-file",
+                    "url": "/Files/Download/{raw.commentSheetFile}",
+                    "method": "get",
+                    "showWhen": "row.canCommentSheet == false"
+                  },
+                  {
+                    "key": "reply-sheet-file",
+                    "url": "/Files/Download/{raw.replySheetFile}",
+                    "method": "get",
+                    "showWhen": "row.canReplySheet == false"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-files",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-files",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Files",
+                  "fa": "فایل‌ها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "files",
+          "component": "def:related-table",
+          "options": {
+            "id": "files",
+            "url": "/d/vdr-files?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "fileName",
+                "width": 300
+              },
+              {
+                "key": "revision",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "kind",
+                "width": 150
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 220,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "preview",
+                    "url": "{raw.previewUrl}",
+                    "method": "get",
+                    "showWhen": "row.canPreview == true"
+                  },
+                  {
+                    "key": "download",
+                    "url": "{raw.downloadUrl}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-viewer",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-viewer",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Document viewer (click a page to pin a comment)",
+                  "fa": "نمایشگر مدرک (برای پین نظر روی صفحه کلیک کنید)"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "viewer",
+          "component": "def:entity-file-preview",
+          "options": {
+            "id": "vdr-viewer",
+            "url": "/d/vdr-preview?f.id={{params.id|url}}",
+            "idField": "id",
+            "srcField": "src",
+            "titleField": "title",
+            "annotationsUrl": "/d/vdr-pins?f.id={{params.id|url}}",
+            "saveUrl": "/a/vdr-comment-pin"
+          }
+        },
+        {
+          "id": "h-comments",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-comments",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Comment management",
+                  "fa": "مدیریت نظرات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "comments",
+          "component": "def:related-table",
+          "options": {
+            "id": "comments",
+            "url": "/d/vdr-comments?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "no",
+                "width": 90
+              },
+              {
+                "key": "revision",
+                "width": 70,
+                "type": "number"
+              },
+              {
+                "key": "category",
+                "width": 120
+              },
+              {
+                "key": "severity",
+                "width": 100
+              },
+              {
+                "key": "location",
+                "width": 140
+              },
+              {
+                "key": "comment",
+                "width": 320
+              },
+              {
+                "key": "requiredAction",
+                "width": 200
+              },
+              {
+                "key": "raisedBy",
+                "width": 140
+              },
+              {
+                "key": "raised",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "width": 160
+              },
+              {
+                "key": "response",
+                "width": 260
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 320,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "status",
+                    "url": "/f/vdr-comment-action?vdrItemId={{params.id}}&commentId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "reply",
+                    "url": "/f/vdr-comment-reply?vdrItemId={{params.id}}&commentId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReply == true"
+                  },
+                  {
+                    "key": "attachment",
+                    "url": "{raw.attachmentUrl}",
+                    "method": "get",
+                    "showWhen": "row.attachmentUrl != null"
+                  },
+                  {
+                    "key": "reply-attachment",
+                    "url": "{raw.replyAttachmentUrl}",
+                    "method": "get",
+                    "showWhen": "row.replyAttachmentUrl != null"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-history",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-history",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Workflow history",
+                  "fa": "تاریخچه گردش‌کار"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "history",
+          "component": "def:related-table",
+          "options": {
+            "id": "history",
+            "url": "/d/vdr-history?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "when",
+                "width": 160,
+                "type": "datetime"
+              },
+              {
+                "key": "action",
+                "width": 140
+              },
+              {
+                "key": "from",
+                "width": 160
+              },
+              {
+                "key": "to",
+                "width": 160
+              },
+              {
+                "key": "decision",
+                "width": 120
+              },
+              {
+                "key": "comment",
+                "width": 300
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-letters",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-letters",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Related correspondence",
+                  "fa": "مکاتبات مرتبط"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "letters",
+          "component": "def:related-table",
+          "options": {
+            "id": "letters",
+            "url": "/d/vdr-letters?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "type",
+                "width": 100
+              },
+              {
+                "key": "number",
+                "width": 150
+              },
+              {
+                "key": "subject",
+                "width": 320
+              },
+              {
+                "key": "date",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 100,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Letter/Details/{id}",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "VDR.View"
+  }
+}

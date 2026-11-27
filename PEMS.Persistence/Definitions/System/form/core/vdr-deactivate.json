@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "vdr-deactivate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Deactivate",
+    "fa": "غیرفعال‌سازی"
+  },
+  "description": {
+    "en": "Deactivate",
+    "fa": "غیرفعال‌سازی"
+  },
+  "payload": {
+    "id": "vdr-deactivate",
+    "title": {
+      "en": "Deactivate",
+      "fa": "غیرفعال‌سازی"
+    },
+    "submitLabel": {
+      "en": "Deactivate",
+      "fa": "غیرفعال‌سازی"
+    },
+    "actionKey": "vdr-deactivate",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

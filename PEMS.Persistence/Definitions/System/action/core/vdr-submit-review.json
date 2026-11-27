@@ -34,6 +34,6 @@
       "en": "The review cycle started.",
       "fa": "چرخه‌ی بازبینی شروع شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }
