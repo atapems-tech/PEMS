@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "eng-intel-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document intelligence review (old address)",
+    "fa": "بازبینی هوشمندسازی مدرک (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Document intelligence review",
+    "fa": "بازبینی هوشمندسازی مدرک"
+  },
+  "payload": {
+    "pattern": "EngineeringDocumentIntelligence/Review/{id}",
+    "target": "/p/eng-intel-review?id={id}",
+    "permanent": false
+  }
+}

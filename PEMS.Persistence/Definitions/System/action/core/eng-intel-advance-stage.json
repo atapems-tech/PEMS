@@ -26,6 +26,6 @@
       "en": "The document stage was changed.",
       "fa": "مرحله‌ی مدرک تغییر کرد."
     },
-    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+    "redirect": "/p/eng-intel-review?id={documentId}"
   }
 }

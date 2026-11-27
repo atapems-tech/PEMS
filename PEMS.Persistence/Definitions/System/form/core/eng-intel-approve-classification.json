@@ -1,0 +1,101 @@
+{
+  "kind": "form",
+  "key": "eng-intel-approve-classification",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Approve and apply the classification",
+    "fa": "تأیید و اعمال طبقه‌بندی"
+  },
+  "description": {
+    "en": "Approve and apply the classification",
+    "fa": "تأیید و اعمال طبقه‌بندی"
+  },
+  "payload": {
+    "id": "eng-intel-approve-classification",
+    "title": {
+      "en": "Approve and apply the classification",
+      "fa": "تأیید و اعمال طبقه‌بندی"
+    },
+    "submitLabel": {
+      "en": "Approve and apply the classification",
+      "fa": "تأیید و اعمال طبقه‌بندی"
+    },
+    "actionKey": "eng-intel-approve-classification",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "classificationId",
+        "label": {
+          "en": "Classification",
+          "fa": "طبقه‌بندی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "applyDiscipline",
+        "label": {
+          "en": "Apply the discipline",
+          "fa": "اعمال دیسیپلین"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "applyVendor",
+        "label": {
+          "en": "Apply the vendor",
+          "fa": "اعمال فروشنده"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "applyMR",
+        "label": {
+          "en": "Apply the related MR",
+          "fa": "اعمال MR مرتبط"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "applyRevision",
+        "label": {
+          "en": "Apply the revision",
+          "fa": "اعمال ویرایش"
+        },
+        "kind": "checkbox"
+      },
+      {
+        "name": "applyIssuePurpose",
+        "label": {
+          "en": "Apply the issue purpose",
+          "fa": "اعمال هدف صدور"
+        },
+        "kind": "checkbox"
+      }
+    ]
+  }
+}

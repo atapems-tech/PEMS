@@ -1,0 +1,389 @@
+{
+  "kind": "page",
+  "key": "eng-intel-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Document intelligence review",
+    "fa": "بازبینی هوشمندسازی مدرک"
+  },
+  "description": {
+    "en": "Document intelligence review",
+    "fa": "بازبینی هوشمندسازی مدرک"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "eng-intel-review",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Back to the queue",
+              "fa": "بازگشت به صف"
+            },
+            "tone": "neutral",
+            "href": "/p/eng-intel"
+          }
+        },
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "eng-intel-review-head",
+            "fields": [
+              {
+                "key": "documentNo",
+                "label": {
+                  "en": "Document no.",
+                  "fa": "شماره مدرک"
+                }
+              },
+              {
+                "key": "title",
+                "label": {
+                  "en": "Title",
+                  "fa": "عنوان"
+                }
+              },
+              {
+                "key": "stage",
+                "label": {
+                  "en": "Stage",
+                  "fa": "مرحله"
+                }
+              },
+              {
+                "key": "status",
+                "label": {
+                  "en": "Status",
+                  "fa": "وضعیت"
+                }
+              },
+              {
+                "key": "aiStatus",
+                "label": {
+                  "en": "AI",
+                  "fa": "هوش مصنوعی"
+                }
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/eng-intel-review-head",
+              "idField": "id",
+              "id": "{{params.id}}"
+            }
+          }
+        },
+        {
+          "id": "open",
+          "component": "content-blocks",
+          "options": {
+            "id": "open",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/EngineeringDocuments/Details/{{params.id|url}}",
+                "text": {
+                  "en": "Open the document",
+                  "fa": "باز کردن مدرک"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-stages",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-stages",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Workflow stage",
+                  "fa": "مرحله گردش"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "stages",
+          "component": "def:related-table",
+          "options": {
+            "id": "stages",
+            "url": "/d/eng-intel-review-stages?f.id={{params.id|url}}",
+            "idField": "stage",
+            "columns": [
+              {
+                "key": "stage",
+                "width": 220
+              },
+              {
+                "key": "current",
+                "width": 100,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 200,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "set",
+                    "url": "/f/eng-intel-advance-stage?documentId={{params.id}}&newStage={id}",
+                    "method": "get",
+                    "showWhen": "row.current == false"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-class",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-class",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "AI classification suggestions",
+                  "fa": "پیشنهادهای طبقه‌بندی هوشمند"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "classifications",
+          "component": "def:related-table",
+          "options": {
+            "id": "classifications",
+            "url": "/d/eng-intel-review-classifications?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "confidence",
+                "width": 110
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "discipline",
+                "width": 120
+              },
+              {
+                "key": "vendor",
+                "width": 160
+              },
+              {
+                "key": "mr",
+                "width": 120
+              },
+              {
+                "key": "revision",
+                "width": 90
+              },
+              {
+                "key": "purpose",
+                "width": 120
+              },
+              {
+                "key": "type",
+                "width": 140
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "url": "/f/eng-intel-approve-classification?documentId={{params.id}}&classificationId={id}&applyDiscipline=true&applyVendor={raw.hasVendor}&applyMR={raw.hasMr}&applyRevision={raw.hasRevision}&applyIssuePurpose={raw.hasPurpose}",
+                    "method": "get",
+                    "showWhen": "row.canReview == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/f/eng-intel-reject-classification?documentId={{params.id}}&classificationId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReview == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-tags",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-tags",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Related equipment tags",
+                  "fa": "تگ‌های مرتبط تجهیز"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "tags",
+          "component": "def:related-table",
+          "options": {
+            "id": "tags",
+            "url": "/d/eng-intel-review-tags?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "tag",
+                "width": 160
+              },
+              {
+                "key": "source",
+                "width": 120
+              },
+              {
+                "key": "status",
+                "width": 110
+              },
+              {
+                "key": "confidence",
+                "width": 100
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "approve",
+                    "url": "/f/eng-intel-approve-tag-link?documentId={{params.id}}&tagLinkId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReview == true"
+                  },
+                  {
+                    "key": "reject",
+                    "url": "/f/eng-intel-reject-tag-link?documentId={{params.id}}&tagLinkId={id}",
+                    "method": "get",
+                    "showWhen": "row.canReview == true",
+                    "tone": "danger"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-comments",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-comments",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Comment management",
+                  "fa": "مدیریت نظرات"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "comments",
+          "component": "def:related-table",
+          "options": {
+            "id": "comments",
+            "url": "/d/eng-intel-review-comments?f.id={{params.id|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "comment",
+                "width": 320
+              },
+              {
+                "key": "raisedBy",
+                "width": 140
+              },
+              {
+                "key": "raised",
+                "width": 140,
+                "type": "date"
+              },
+              {
+                "key": "status",
+                "width": 140
+              },
+              {
+                "key": "response",
+                "width": 260
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "status",
+                    "url": "/f/eng-intel-comment-action?documentId={{params.id}}&commentId={id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "respond",
+                    "url": "/f/eng-intel-comment-response?documentId={{params.id}}&commentId={id}",
+                    "method": "get",
+                    "showWhen": "row.canRespond == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "add",
+          "component": "content-blocks",
+          "options": {
+            "id": "add",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/f/eng-intel-add-comment?documentId={{params.id|url}}",
+                "text": {
+                  "en": "Add a comment",
+                  "fa": "افزودن نظر"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "EngineeringDocuments.View"
+  }
+}

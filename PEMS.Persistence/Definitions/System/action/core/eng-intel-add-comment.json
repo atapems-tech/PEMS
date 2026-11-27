@@ -27,6 +27,6 @@
       "en": "Comment added.",
       "fa": "نظر افزوده شد."
     },
-    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+    "redirect": "/p/eng-intel-review?id={documentId}"
   }
 }

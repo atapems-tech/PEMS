@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "eng-intel-add-comment",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "description": {
+    "en": "Add a comment",
+    "fa": "افزودن نظر"
+  },
+  "payload": {
+    "id": "eng-intel-add-comment",
+    "title": {
+      "en": "Add a comment",
+      "fa": "افزودن نظر"
+    },
+    "submitLabel": {
+      "en": "Add a comment",
+      "fa": "افزودن نظر"
+    },
+    "actionKey": "eng-intel-add-comment",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "documentId",
+        "label": {
+          "en": "Document",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "commentText",
+        "label": {
+          "en": "New comment",
+          "fa": "نظر جدید"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

@@ -159,7 +159,7 @@
                 "actions": [
                   {
                     "key": "review",
-                    "url": "/EngineeringDocumentIntelligence/Review/{id}",
+                    "url": "/p/eng-intel-review?id={id}",
                     "method": "get"
                   }
                 ]

@@ -5,6 +5,11 @@ public sealed record DocChoice(string Value, string Label);
 public sealed record DocRegisterRow(int Id, string DocumentNo, string Title, string? DocumentType, string? Area, string Discipline, string Project, string Revision, string Status, bool Frozen, string? CommentStatus, int? DelayDays, DateTime? Created);
 public sealed record EngDocRow(int Id, string DocumentNo, string Title, string? Project, string? Area, string? CommentStatus, string? Type, string Discipline, string Revision, string Status, bool Frozen, int? DelayDays, DateTime Created);
 public sealed record EngDocCountsRow(int Id, int Total, int Approved, int Pending, int Rejected, int Frozen, int Overdue);
+public sealed record ReviewHeadRow(int Id, string DocumentNo, string Title, string Stage, string Status, string? AiStatus);
+public sealed record ReviewStageRow(string Stage, bool Current);
+public sealed record ReviewClassificationRow(int Id, string Confidence, string Status, string? Discipline, string? Vendor, string? Mr, string? Revision, string? Purpose, string? Type, bool CanReview, string HasVendor, string HasMr, string HasRevision, string HasPurpose);
+public sealed record ReviewTagRow(int Id, string Tag, string Source, string Status, string Confidence, bool CanReview);
+public sealed record ReviewCommentRow(int Id, string Comment, string? RaisedBy, DateTime Raised, string Status, string? Response, bool CanRespond);
 public sealed record VdrListRow(int Id, string DocumentNumber, string? Description, string? Type, string Vendor, string Project, string? Discipline, int? Revision, string? LatestCategory, string Status, bool Overdue);
 public sealed record VdrDashboardRow(int Id, int Total, int Overdue, int SlaOverdue, int OnTimePercent, int VendorsAtRisk);
 public sealed record MdbListRow(int Id, string Equipment, string Vendor, string? Po, string Project, DateTime? PlannedIssue, DateTime? IndexDue, bool IndexOverdue, string Status, string HardCopy, string SoftCopy);
@@ -126,6 +131,23 @@ public interface IDocumentPagesOperations
 
     [PEMS.Application.Common.PemsOperation("DocumentPage", "EngDocsExport", "EngineeringDocuments.View")]
     Task<DocFileResult> EngDocsExportAsync(string? search = null, string? projectId = null, string? disciplineId = null, string? status = null, string? area = null, string? minRevisionCount = null);
+
+
+    // ---- document intelligence review of one document
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "ReviewHead", "EngineeringDocuments.View")]
+    Task<List<ReviewHeadRow>> ReviewHeadAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "ReviewStages", "EngineeringDocuments.View")]
+    Task<List<ReviewStageRow>> ReviewStagesAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "ReviewClassifications", "EngineeringDocuments.View")]
+    Task<List<ReviewClassificationRow>> ReviewClassificationsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "ReviewTags", "EngineeringDocuments.View")]
+    Task<List<ReviewTagRow>> ReviewTagsAsync(int id);
+
+    [PEMS.Application.Common.PemsOperation("DocumentPage", "ReviewComments", "EngineeringDocuments.View")]
+    Task<List<ReviewCommentRow>> ReviewCommentsAsync(int id);
 
     // ---- document control center
     [PEMS.Application.Common.PemsOperation("DocumentPage", "DccCounts", "DCC.View")]

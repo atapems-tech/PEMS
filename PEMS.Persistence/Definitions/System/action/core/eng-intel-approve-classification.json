@@ -31,6 +31,6 @@
       "en": "Classification approved and applied to the document",
       "fa": "طبقه‌بندی تأیید و روی مدرک اعمال شد."
     },
-    "redirect": "/EngineeringDocumentIntelligence/Review/{documentId}"
+    "redirect": "/p/eng-intel-review?id={documentId}"
   }
 }
