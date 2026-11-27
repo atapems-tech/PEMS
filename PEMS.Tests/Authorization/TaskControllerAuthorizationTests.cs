@@ -62,26 +62,7 @@ public class TaskControllerAuthorizationTests
         return (controller, ctx);
     }
 
-    [Fact]
-    public async Task Index_WithoutViewPermission_ReturnsForbid()
-    {
-        var (controller, _) = await CreateController(nameof(Index_WithoutViewPermission_ReturnsForbid), role: null);
 
-        var result = await controller.Index();
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Index_WithViewPermission_ReturnsView()
-    {
-        var (controller, _) = await CreateController(nameof(Index_WithViewPermission_ReturnsView), role: SystemRoles.Viewer);
-
-        var result = await controller.Index();
-
-        var view = Assert.IsType<ViewResult>(result);
-        Assert.IsType<PagedResult<TaskItemDto>>(view.Model);
-    }
 
     [Fact]
     public async Task Create_Operation_CreatesTask()

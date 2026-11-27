@@ -28,6 +28,6 @@
       "en": "The status was changed.",
       "fa": "وضعیت تغییر کرد."
     },
-    "redirect": "/Task/Index?tab={tab}"
+    "redirect": "/p/task-actions"
   }
 }

@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "task-action-items",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tasks assigned to me",
+    "fa": "وظایف اقدام"
+  },
+  "description": {
+    "en": "Tasks assigned to me",
+    "fa": "وظایف اقدام"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskPage",
+      "action": "ActionItems"
+    }
+  }
+}

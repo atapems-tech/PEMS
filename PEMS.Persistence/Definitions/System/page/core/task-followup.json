@@ -1,0 +1,118 @@
+{
+  "kind": "page",
+  "key": "task-followup",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Follow-up of tasks",
+    "fa": "پیگیری وظایف"
+  },
+  "description": {
+    "en": "Follow-up of tasks",
+    "fa": "پیگیری وظایف"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "task-followup",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "task-followup-links",
+            "blocks": [
+              {
+                "type": "link",
+                "href": "/p/task-actions",
+                "text": {
+                  "en": "Tasks to do",
+                  "fa": "اقدام وظایف"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/TaskManager",
+                "text": {
+                  "en": "Task manager",
+                  "fa": "مدیریت وظایف"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "list",
+          "component": "def:entity-list",
+          "options": {
+            "id": "task-followup",
+            "url": "/d/task-followup-items",
+            "idField": "id",
+            "viewsKey": "task-followup",
+            "columns": [
+              {
+                "key": "key",
+                "width": 100
+              },
+              {
+                "key": "title",
+                "width": 260
+              },
+              {
+                "key": "assignedTo",
+                "width": 160
+              },
+              {
+                "key": "due",
+                "width": 120,
+                "type": "date"
+              },
+              {
+                "key": "priority",
+                "width": 100
+              },
+              {
+                "key": "status",
+                "width": 130
+              },
+              {
+                "key": "overdue",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "related",
+                "width": 140
+              },
+              {
+                "key": "completionNote",
+                "width": 200
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Task/Details/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "move",
+                    "url": "/f/task-update-status?taskItemId={id}",
+                    "method": "get",
+                    "showWhen": "row.canMove == true"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

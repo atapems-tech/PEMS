@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "task-assignee-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assignees of a new task",
+    "fa": "گیرندگان وظیفه‌ی جدید"
+  },
+  "description": {
+    "en": "Assignees of a new task",
+    "fa": "گیرندگان وظیفه‌ی جدید"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskPage",
+      "action": "AssigneeOptions"
+    }
+  }
+}

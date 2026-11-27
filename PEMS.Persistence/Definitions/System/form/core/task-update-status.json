@@ -1,0 +1,99 @@
+{
+  "kind": "form",
+  "key": "task-update-status",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Change the status",
+    "fa": "تغییر وضعیت"
+  },
+  "description": {
+    "en": "Change the status",
+    "fa": "تغییر وضعیت"
+  },
+  "payload": {
+    "id": "task-update-status",
+    "title": {
+      "en": "Change the status",
+      "fa": "تغییر وضعیت"
+    },
+    "submitLabel": {
+      "en": "Change the status",
+      "fa": "تغییر وضعیت"
+    },
+    "actionKey": "task-update-status",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "taskItemId",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "status",
+        "label": {
+          "en": "Status",
+          "fa": "وضعیت"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Open",
+            "label": {
+              "en": "Open",
+              "fa": "باز"
+            }
+          },
+          {
+            "value": "InProgress",
+            "label": {
+              "en": "In progress",
+              "fa": "در حال انجام"
+            }
+          },
+          {
+            "value": "Completed",
+            "label": {
+              "en": "Completed",
+              "fa": "انجام‌شده"
+            }
+          },
+          {
+            "value": "Cancelled",
+            "label": {
+              "en": "Cancelled",
+              "fa": "لغو"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "completionNote",
+        "label": {
+          "en": "Completion note",
+          "fa": "یادداشت پایان"
+        },
+        "kind": "textarea",
+        "maxLength": 2000,
+        "span": 2
+      }
+    ]
+  }
+}

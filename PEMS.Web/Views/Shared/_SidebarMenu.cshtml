@@ -399,7 +399,7 @@
         </div>
         <div class="@SectionClass(active)" id="sec-projctrl">
 
-            <pems-nav-link item="false" active="@(IsActive("Task"))" asp-controller="Task" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/task-actions" active="@(IsActive("Task") || Context.Request.Path.StartsWithSegments("/p/task-"))">
                 <pems-icon name="bi-check2-square" /> @Localizer["Tasks"]
             </pems-nav-link>
 
