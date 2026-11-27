@@ -73,7 +73,7 @@
           "fa": "دپارتمان مالک"
         },
         "kind": "select",
-        "optionsFrom": "tm-department-options",
+        "optionsFrom": "tm-department-options-opts",
         "optionsArgs": {}
       },
       {

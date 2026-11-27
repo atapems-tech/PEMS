@@ -63,7 +63,7 @@
           "fa": "پیوند به مدرک موجود (اختیاری)"
         },
         "kind": "select",
-        "optionsFrom": "mdb-document-options",
+        "optionsFrom": "mdb-document-options-opts",
         "optionsArgs": {
           "id": "mdbId"
         }

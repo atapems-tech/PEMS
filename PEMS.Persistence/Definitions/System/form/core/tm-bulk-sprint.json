@@ -69,7 +69,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "tm-sprint-key-options",
+        "optionsFrom": "tm-sprint-key-options-opts",
         "optionsArgs": {
           "key": "key"
         }

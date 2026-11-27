@@ -62,7 +62,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "tm-status-options",
+        "optionsFrom": "tm-status-options-opts",
         "optionsArgs": {
           "key": "spaceKey"
         }

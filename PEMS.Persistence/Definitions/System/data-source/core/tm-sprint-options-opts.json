@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tm-sprint-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Sprints of a space",
+    "fa": "اسپرینت‌های فضا"
+  },
+  "description": {
+    "en": "Sprints of a space",
+    "fa": "اسپرینت‌های فضا"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "SprintOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

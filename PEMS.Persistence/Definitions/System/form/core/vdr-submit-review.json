@@ -138,7 +138,7 @@
           "fa": "دیسیپلین‌های بازبین (اختیاری)"
         },
         "kind": "multiSelect",
-        "optionsFrom": "vdr-disciplines",
+        "optionsFrom": "vdr-disciplines-opts",
         "span": 2
       }
     ]

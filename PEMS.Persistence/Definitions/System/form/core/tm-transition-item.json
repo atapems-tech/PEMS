@@ -62,7 +62,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "tm-item-transition-options",
+        "optionsFrom": "tm-item-transition-options-opts",
         "optionsArgs": {
           "id": "id"
         }

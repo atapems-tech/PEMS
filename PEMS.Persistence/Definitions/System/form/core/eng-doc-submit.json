@@ -47,7 +47,7 @@
           "fa": "دیسیپلین‌های بازبین (IDC)؛ بدون انتخاب بعد از Check مستقیم به تأیید نهایی می‌رود"
         },
         "kind": "multiSelect",
-        "optionsFrom": "eng-doc-submit-disciplines",
+        "optionsFrom": "eng-doc-submit-disciplines-opts",
         "optionsArgs": {
           "id": "id"
         },

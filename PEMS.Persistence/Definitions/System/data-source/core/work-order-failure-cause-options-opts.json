@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "work-order-failure-cause-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Failure causes",
+    "fa": "علت‌های خرابی"
+  },
+  "description": {
+    "en": "Failure causes",
+    "fa": "علت‌های خرابی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "FailureCauseOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

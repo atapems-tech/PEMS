@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-currencies-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Currencies",
+    "fa": "ارزها"
+  },
+  "description": {
+    "en": "Currencies",
+    "fa": "ارزها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Currencies",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

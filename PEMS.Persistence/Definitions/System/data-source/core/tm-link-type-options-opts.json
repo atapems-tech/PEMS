@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "tm-link-type-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Link types",
+    "fa": "انواع پیوند"
+  },
+  "description": {
+    "en": "Link types",
+    "fa": "انواع پیوند"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "LinkTypeOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

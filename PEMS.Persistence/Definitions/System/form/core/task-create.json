@@ -48,7 +48,7 @@
           "fa": "ارجاع به"
         },
         "kind": "select",
-        "optionsFrom": "task-assignee-options"
+        "optionsFrom": "task-assignee-options-opts"
       },
       {
         "name": "dueDate",

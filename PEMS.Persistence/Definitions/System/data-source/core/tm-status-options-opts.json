@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tm-status-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Statuses of a space",
+    "fa": "وضعیت‌های فضا"
+  },
+  "description": {
+    "en": "Statuses of a space",
+    "fa": "وضعیت‌های فضا"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "StatusOptionsByKey",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "key": "param:key"
+      }
+    }
+  }
+}

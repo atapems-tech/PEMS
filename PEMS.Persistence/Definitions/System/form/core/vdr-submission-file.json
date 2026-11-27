@@ -54,7 +54,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "vdr-submission-options",
+        "optionsFrom": "vdr-submission-options-opts",
         "optionsArgs": {
           "id": "vdrItemId"
         }

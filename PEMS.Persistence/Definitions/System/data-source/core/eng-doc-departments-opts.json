@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-departments-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments",
+    "fa": "واحدها"
+  },
+  "description": {
+    "en": "Departments",
+    "fa": "واحدها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "Departments",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

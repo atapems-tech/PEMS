@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "tm-department-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments",
+    "fa": "دپارتمان‌ها"
+  },
+  "description": {
+    "en": "Departments",
+    "fa": "دپارتمان‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "DepartmentOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

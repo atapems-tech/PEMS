@@ -63,7 +63,7 @@
           "fa": "نوع"
         },
         "kind": "select",
-        "optionsFrom": "tm-type-options",
+        "optionsFrom": "tm-type-options-opts",
         "optionsArgs": {
           "id": "workSpaceId"
         }
@@ -75,7 +75,7 @@
           "fa": "اولویت"
         },
         "kind": "select",
-        "optionsFrom": "tm-priority-options",
+        "optionsFrom": "tm-priority-options-opts",
         "default": "Normal"
       },
       {
@@ -95,7 +95,7 @@
           "fa": "مسئول"
         },
         "kind": "select",
-        "optionsFrom": "tm-assignee-options",
+        "optionsFrom": "tm-assignee-options-opts",
         "optionsArgs": {
           "id": "workSpaceId"
         }
@@ -107,7 +107,7 @@
           "fa": "اسپرینت"
         },
         "kind": "select",
-        "optionsFrom": "tm-sprint-options",
+        "optionsFrom": "tm-sprint-options-opts",
         "optionsArgs": {
           "id": "workSpaceId"
         }

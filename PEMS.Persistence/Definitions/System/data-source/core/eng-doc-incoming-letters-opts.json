@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-incoming-letters-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Incoming letters",
+    "fa": "نامه‌های وارده"
+  },
+  "description": {
+    "en": "Incoming letters",
+    "fa": "نامه‌های وارده"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "IncomingLetters",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

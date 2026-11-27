@@ -54,7 +54,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "eng-doc-incoming-letters",
+        "optionsFrom": "eng-doc-incoming-letters-opts",
         "optionsArgs": {
           "id": "id"
         }

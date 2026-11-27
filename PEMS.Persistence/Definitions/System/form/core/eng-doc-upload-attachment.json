@@ -62,7 +62,7 @@
           "fa": "ویرایش (اختیاری: خالی یعنی پیوست سطح مدرک)"
         },
         "kind": "select",
-        "optionsFrom": "eng-doc-form-revisions",
+        "optionsFrom": "eng-doc-form-revisions-opts",
         "optionsArgs": {
           "documentId": "documentId"
         }

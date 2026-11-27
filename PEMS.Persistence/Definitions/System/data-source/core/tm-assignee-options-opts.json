@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "tm-assignee-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assignees of a space",
+    "fa": "مسئول‌های فضا"
+  },
+  "description": {
+    "en": "Assignees of a space",
+    "fa": "مسئول‌های فضا"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "AssigneeOptions",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

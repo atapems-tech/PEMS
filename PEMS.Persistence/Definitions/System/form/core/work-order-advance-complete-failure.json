@@ -46,7 +46,7 @@
           "fa": "حالت خرابی"
         },
         "kind": "select",
-        "optionsFrom": "work-order-failure-mode-options",
+        "optionsFrom": "work-order-failure-mode-options-opts",
         "optionsArgs": {
           "id": "id"
         }
@@ -58,7 +58,7 @@
           "fa": "علت خرابی"
         },
         "kind": "select",
-        "optionsFrom": "work-order-failure-cause-options",
+        "optionsFrom": "work-order-failure-cause-options-opts",
         "optionsArgs": {
           "id": "id"
         }

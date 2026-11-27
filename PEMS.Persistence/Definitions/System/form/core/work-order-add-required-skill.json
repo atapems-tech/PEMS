@@ -46,7 +46,7 @@
           "fa": "مهارت"
         },
         "kind": "select",
-        "optionsFrom": "work-order-skill-options",
+        "optionsFrom": "work-order-skill-options-opts",
         "optionsArgs": {
           "id": "workOrderId"
         },

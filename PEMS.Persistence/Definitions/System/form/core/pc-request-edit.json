@@ -87,7 +87,7 @@
           "fa": "بخش"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-sections"
+        "optionsFrom": "pc-form-sections-opts"
       },
       {
         "name": "isNewEquipment",
@@ -145,7 +145,7 @@
           "fa": "کلاس فنی"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-technical-classes"
+        "optionsFrom": "pc-form-technical-classes-opts"
       },
       {
         "name": "attributes",
@@ -195,7 +195,7 @@
           "fa": "گروه کالا ۱"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-group1"
+        "optionsFrom": "pc-form-group1-opts"
       },
       {
         "name": "commodityGroup2Id",
@@ -204,7 +204,7 @@
           "fa": "گروه کالا ۲"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-group2"
+        "optionsFrom": "pc-form-group2-opts"
       },
       {
         "name": "productFamilyId",
@@ -213,7 +213,7 @@
           "fa": "خانواده محصول"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-families"
+        "optionsFrom": "pc-form-families-opts"
       },
       {
         "name": "unitOfMeasureId",
@@ -222,7 +222,7 @@
           "fa": "واحد اندازه‌گیری"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-units"
+        "optionsFrom": "pc-form-units-opts"
       },
       {
         "name": "manufacturerId",
@@ -231,7 +231,7 @@
           "fa": "سازنده"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-manufacturers"
+        "optionsFrom": "pc-form-manufacturers-opts"
       },
       {
         "name": "isNewManufacturer",
@@ -266,7 +266,7 @@
           "fa": "تأمین‌کننده"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-suppliers"
+        "optionsFrom": "pc-form-suppliers-opts"
       },
       {
         "name": "supplierPartNumber",
@@ -294,7 +294,7 @@
           "fa": "ارز"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-currencies"
+        "optionsFrom": "pc-form-currencies-opts"
       },
       {
         "name": "typeDesignationId",
@@ -303,7 +303,7 @@
           "fa": "تعیین نوع"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-type-designations"
+        "optionsFrom": "pc-form-type-designations-opts"
       },
       {
         "name": "sparePartSerialNo",
@@ -344,7 +344,7 @@
           "fa": "روش برنامه‌ریزی"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-planning-methods"
+        "optionsFrom": "pc-form-planning-methods-opts"
       },
       {
         "name": "minimumStock",
@@ -401,7 +401,7 @@
           "fa": "درجه موجودی"
         },
         "kind": "select",
-        "optionsFrom": "pc-form-stock-grades"
+        "optionsFrom": "pc-form-stock-grades-opts"
       },
       {
         "name": "wantedReceiptDate",

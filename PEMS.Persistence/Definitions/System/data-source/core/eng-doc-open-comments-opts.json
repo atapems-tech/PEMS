@@ -1,0 +1,27 @@
+{
+  "kind": "data-source",
+  "key": "eng-doc-open-comments-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Comments marked for revision",
+    "fa": "نظرات نیازمند ویرایش"
+  },
+  "description": {
+    "en": "Comments marked for revision",
+    "fa": "نظرات نیازمند ویرایش"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "EngDocDetail",
+      "action": "OpenComments",
+      "value": "value",
+      "label": "label",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

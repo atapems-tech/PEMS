@@ -74,7 +74,7 @@
           "fa": "ویرایش"
         },
         "kind": "select",
-        "optionsFrom": "vdr-submission-options",
+        "optionsFrom": "vdr-submission-options-opts",
         "optionsArgs": {
           "id": "vdrItemId"
         }

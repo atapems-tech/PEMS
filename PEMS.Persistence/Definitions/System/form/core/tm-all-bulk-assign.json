@@ -55,7 +55,7 @@
           "fa": "مسئول"
         },
         "kind": "select",
-        "optionsFrom": "tm-assignee-key-options",
+        "optionsFrom": "tm-assignee-key-options-opts",
         "optionsArgs": {
           "key": "spaceKey"
         }

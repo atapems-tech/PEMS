@@ -123,7 +123,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "eng-doc-form-projects"
+        "optionsFrom": "eng-doc-form-projects-opts"
       },
       {
         "name": "disciplineId",
@@ -139,7 +139,7 @@
             "fa": "این فیلد الزامی است."
           }
         },
-        "optionsFrom": "eng-doc-form-disciplines"
+        "optionsFrom": "eng-doc-form-disciplines-opts"
       },
       {
         "name": "area",
@@ -165,7 +165,7 @@
           "fa": "قرارداد مرتبط (اختیاری)"
         },
         "kind": "select",
-        "optionsFrom": "eng-doc-form-contracts"
+        "optionsFrom": "eng-doc-form-contracts-opts"
       }
     ]
   }

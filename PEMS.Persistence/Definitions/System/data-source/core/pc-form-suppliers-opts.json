@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-suppliers-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Suppliers",
+    "fa": "تأمین‌کنندگان"
+  },
+  "description": {
+    "en": "Suppliers",
+    "fa": "تأمین‌کنندگان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Suppliers",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

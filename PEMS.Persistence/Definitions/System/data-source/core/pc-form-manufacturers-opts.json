@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "pc-form-manufacturers-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Manufacturers",
+    "fa": "سازندگان"
+  },
+  "description": {
+    "en": "Manufacturers",
+    "fa": "سازندگان"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "PcForm",
+      "action": "Manufacturers",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}
