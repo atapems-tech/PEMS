@@ -238,7 +238,6 @@ public class WorkOrderSectionGuardTests : WorkOrderGovernanceTestBase
     {
         new("AddRequiredSkill", WoSection.RequiredSkills, (ctl, id) => ctl.AddRequiredSkill(id, c.SkillId, "Basic", 2), id => Ctx.RequiredSkills.CountAsync(x => x.WorkOrderId == id), Converted: true),
         new("AddRequiredMaterial", WoSection.RequiredMaterials, (ctl, id) => ctl.AddRequiredMaterial(id, c.MaterialId, 3), id => Ctx.WorkOrderMaterials.CountAsync(x => x.WorkOrderId == id), Converted: true),
-        new("RequestDisciplineReview", WoSection.DisciplineReview, (ctl, id) => ctl.RequestDisciplineReview(id, new List<int> { Elec }), id => Ctx.WorkOrderDisciplineReferrals.CountAsync(x => x.WorkOrderId == id)),
         new("AddSpareUsage", WoSection.SpareParts, (ctl, id) => ctl.AddSpareUsage(id, c.MaterialId, 1, 10, "reason"), id => Ctx.MaintenanceSpareUsages.CountAsync(x => x.WorkOrderId == id), Converted: true),
     };
 

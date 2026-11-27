@@ -57,25 +57,40 @@ public sealed class WorkOrderDetailsOperations(PEMSDbContext context, ICurrentUs
         if (assigned.Length == 0) assigned = wo.AssignedTo ?? "";
         var failure = string.IsNullOrWhiteSpace(wo.FailureModeCode) && string.IsNullOrWhiteSpace(wo.RootCause) ? null
             : $"{wo.FailureModeCode} / {wo.FailureCauseCode}" + (wo.DowntimeHours.HasValue ? $" - Downtime: {wo.DowntimeHours}" : "") + (string.IsNullOrWhiteSpace(wo.RootCause) ? "" : " - Root Cause: " + wo.RootCause);
+        var laborCost = await labor.GetTotalLaborCostAsync(id);
         var spareCost = (await context.MaintenanceSpareUsages.AsNoTracking().Where(x => x.WorkOrderId == id && x.IsActive).ToListAsync()).Sum(x => x.TotalCost ?? 0);
         var planned = wo.PlannedStart.HasValue && wo.PlannedFinish.HasValue ? wo.PlannedStart.Value.ToString("yyyy-MM-dd HH:mm") + " -> " + wo.PlannedFinish.Value.ToString("yyyy-MM-dd HH:mm") : null;
         return [new WorkOrderHeadRow(wo.WorkOrderId, wo.WorkOrderNumber, T(wo.Status), wo.Status, T(wo.Priority), T(wo.WorkOrderType), wo.EquipmentId, wo.Equipment?.TagNumber, wo.Equipment?.Name, assigned, planned,
             wo.StartDate, wo.CompletionDate, wo.MaintenancePlan == null ? null : wo.MaintenancePlan.PlanNumber + " - " + wo.MaintenancePlan.Title, wo.Description, origin, responsible, wo.SourceWorkRequestId, failure,
-            await labor.GetTotalLaborCostAsync(id), spareCost, legacy, hasPendingReview, next, wf == null ? null : string.Join(" | ", wf.Warnings),
+            laborCost, spareCost, legacy, hasPendingReview, next, wf == null ? null : string.Join(" | ", wf.Warnings),
             legacy && next != null && canEdit, legacy && next == "Completed" && canEdit, legacy && canEdit && wo.Status is "Assigned" or "InProgress", legacy && canEdit && wo.Status == "OnHold", legacy && canApprove && wo.Status == "Open",
             legacy && canApprove && wo.Status is "Open" or "Assigned" or "InProgress" or "OnHold", !legacy && (wf?.AvailableActions.Count ?? 0) > 0, wo.Status == "InProgress", wo.WorkOrderType is "Corrective" or "Emergency",
             page?.CanReopen ?? false, Ctl(WoSection.ResponsibleDiscipline), Ctl(WoSection.ExecutorAssignment), Ctl(WoSection.Schedule), Ctl(WoSection.RequiredSkills), Ctl(WoSection.RequiredMaterials), Ctl(WoSection.Crew),
             Ctl(WoSection.Labor), Ctl(WoSection.SpareParts), Ctl(WoSection.DisciplineReview), Ctl(WoSection.JobPlanTasks),
             legacy && next != null && canEdit ? (next == "Completed" ? (wo.WorkOrderType is "Corrective" or "Emergency" ? "work-order-advance-complete-failure" : "work-order-advance-complete") : next == "Assigned" ? "work-order-advance-assign" : "work-order-advance") : null,
-            wo.ResponsibleDisciplineId, wo.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"), wo.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))];
+            wo.ResponsibleDisciplineId, wo.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"), wo.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"), laborCost + spareCost)];
     }
 
     public async Task<List<WorkOrderStageRow>> StagesAsync(int id)
     {
         var wf = await WorkflowAsync(id);
-        if (wf == null) return [];
-        return wf.Stages.OrderBy(x => x.Order).Select(st => new WorkOrderStageRow(st.StageId, st.Order, StageName(st), st.Status,
-            st.Status == "Current" ? string.Join(", ", st.Participants.Where(x => x.Status == "Pending").Select(p => (p.Role ?? "").Replace("Permission:", "").Replace(",", " / ")).Distinct()) : "")).ToList();
+        if (wf != null)
+            return wf.Stages.OrderBy(x => x.Order).Select(st =>
+            {
+                var waiting = st.Status == "Current" ? string.Join(", ", st.Participants.Where(x => x.Status == "Pending").Select(p => (p.Role ?? "").Replace("Permission:", T("Permission") + ": ").Replace(",", " / ")).Distinct()) : "";
+                var step = st.Status switch { "Current" => "current", "Completed" or "Skipped" => "done", "Rejected" or "Cancelled" => "rejected", _ => "upcoming" };
+                return new WorkOrderStageRow(st.StageId, st.Order, StageName(st), st.Status, waiting, step, StageName(st) + (waiting.Length > 0 ? " (" + waiting + ")" : ""));
+            }).ToList();
+        // a legacy work order (no workflow instance): the fixed cycle, a pending multi-discipline review adds its own stage
+        var status = await context.WorkOrders.AsNoTracking().Where(x => x.WorkOrderId == id).Select(x => x.Status).FirstOrDefaultAsync();
+        if (status == null) return [];
+        var pending = await review.HasPendingDisciplineReviewAsync(id);
+        var order = pending ? new[] { "Open", "Assigned", "InProgress", "DisciplineReview", "Completed", "Closed" } : new[] { "Open", "Assigned", "InProgress", "Completed", "Closed" };
+        var labels = new Dictionary<string, string> { ["Open"] = "ثبت شده", ["Assigned"] = "تخصیص‌یافته", ["InProgress"] = "در حال انجام", ["DisciplineReview"] = "بازبینی چند-دیسیپلینه", ["Completed"] = "تکمیل‌شده", ["Closed"] = "بسته‌شده" };
+        var current = Array.IndexOf(order, status);
+        if (current < 0) current = 0;
+        if (pending && status == "InProgress") current = Array.IndexOf(order, "DisciplineReview");
+        return order.Select((key, i) => new WorkOrderStageRow(i + 1, i + 1, labels[key], key, "", i < current ? "done" : i == current ? "current" : "upcoming", labels[key])).ToList();
     }
 
     public async Task<List<WorkOrderActionRow>> WorkflowActionsAsync(int id)

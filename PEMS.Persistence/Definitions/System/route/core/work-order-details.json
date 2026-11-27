@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "work-order-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order details (old address)",
+    "fa": "جزئیات دستورکار (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Work order details (old address)",
+    "fa": "جزئیات دستورکار (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "WorkOrder/Details/{id}",
+    "target": "/p/work-order-details?id={id}",
+    "permanent": false
+  }
+}

@@ -125,7 +125,7 @@ public sealed record BreadcrumbOptions
     public required IReadOnlyList<Crumb> Items { get; init; }
 }
 
-public enum StepState { Done, Current, Upcoming }
+public enum StepState { Done, Current, Upcoming, Rejected }
 
 public sealed record Step
 {

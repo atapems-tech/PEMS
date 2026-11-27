@@ -127,7 +127,6 @@ public class InfoGridComponentTests
         foreach (var view in new[]
                  {
                      "Views/Transmittal/Details.cshtml",
-                     "Views/WorkOrder/Details.cshtml"
                  })
         {
             var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
@@ -139,7 +138,6 @@ public class InfoGridComponentTests
 
     [Theory]
     [InlineData("Views/Transmittal/Details.cshtml", 1, 6)]
-    [InlineData("Views/WorkOrder/Details.cshtml", 1, 7)]
     public void WaveI4_CmmsAndDocumentHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));
