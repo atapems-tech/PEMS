@@ -1,0 +1,128 @@
+{
+  "kind": "form",
+  "key": "work-order-add-labor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a labor entry",
+    "fa": "ثبت ساعت‌کار"
+  },
+  "description": {
+    "en": "Add a labor entry",
+    "fa": "ثبت ساعت‌کار"
+  },
+  "payload": {
+    "id": "work-order-add-labor",
+    "title": {
+      "en": "Add a labor entry",
+      "fa": "ثبت ساعت‌کار"
+    },
+    "submitLabel": {
+      "en": "Add a labor entry",
+      "fa": "ثبت ساعت‌کار"
+    },
+    "actionKey": "work-order-add-labor",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workOrderId",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "correctionReason",
+        "label": {
+          "en": "Correction reason (required after execution)",
+          "fa": "دلیل اصلاح (پس از شروع اجرا الزامی است)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee",
+          "fa": "کارمند"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-employee-options",
+        "optionsArgs": {
+          "id": "workOrderId"
+        },
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "teamId",
+        "label": {
+          "en": "Team (optional)",
+          "fa": "تیم (اختیاری)"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-team-options",
+        "optionsArgs": {
+          "id": "workOrderId"
+        }
+      },
+      {
+        "name": "workDate",
+        "label": {
+          "en": "Work date",
+          "fa": "تاریخ کار"
+        },
+        "kind": "date",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "regularHours",
+        "label": {
+          "en": "Regular hours",
+          "fa": "ساعت عادی"
+        },
+        "kind": "number",
+        "step": "0.5",
+        "min": 0
+      },
+      {
+        "name": "overtimeHours",
+        "label": {
+          "en": "Overtime hours",
+          "fa": "اضافه‌کار"
+        },
+        "kind": "number",
+        "step": "0.5",
+        "min": 0
+      },
+      {
+        "name": "notes",
+        "label": {
+          "en": "Notes (optional)",
+          "fa": "توضیحات (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

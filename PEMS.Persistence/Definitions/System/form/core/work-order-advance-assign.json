@@ -1,0 +1,72 @@
+{
+  "kind": "form",
+  "key": "work-order-advance-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Advance to Assigned",
+    "fa": "پیشروی به تخصیص‌یافته"
+  },
+  "description": {
+    "en": "Advance to Assigned",
+    "fa": "پیشروی به تخصیص‌یافته"
+  },
+  "payload": {
+    "id": "work-order-advance-assign",
+    "title": {
+      "en": "Advance to Assigned",
+      "fa": "پیشروی به تخصیص‌یافته"
+    },
+    "submitLabel": {
+      "en": "Advance to Assigned",
+      "fa": "پیشروی به تخصیص‌یافته"
+    },
+    "actionKey": "work-order-advance-assign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "assignedTeamId",
+        "label": {
+          "en": "Team",
+          "fa": "گروه کاری"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-team-options",
+        "optionsArgs": {
+          "id": "id"
+        },
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason (optional)",
+          "fa": "دلیل (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "work-order-reopen-task",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen the task",
+    "fa": "بازگشایی وظیفه"
+  },
+  "description": {
+    "en": "Reopen the task",
+    "fa": "بازگشایی وظیفه"
+  },
+  "payload": {
+    "id": "work-order-reopen-task",
+    "title": {
+      "en": "Reopen the task",
+      "fa": "بازگشایی وظیفه"
+    },
+    "submitLabel": {
+      "en": "Reopen the task",
+      "fa": "بازگشایی وظیفه"
+    },
+    "actionKey": "work-order-reopen-task",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workOrderId",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "workOrderTaskId",
+        "label": {
+          "en": "Task id",
+          "fa": "شناسه وظیفه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

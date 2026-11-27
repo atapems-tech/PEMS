@@ -1,0 +1,68 @@
+{
+  "kind": "form",
+  "key": "work-order-assign-executor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign the executor",
+    "fa": "تخصیص مجری"
+  },
+  "description": {
+    "en": "Assign the executor",
+    "fa": "تخصیص مجری"
+  },
+  "payload": {
+    "id": "work-order-assign-executor",
+    "title": {
+      "en": "Assign the executor",
+      "fa": "تخصیص مجری"
+    },
+    "submitLabel": {
+      "en": "Assign the executor",
+      "fa": "تخصیص مجری"
+    },
+    "actionKey": "work-order-assign-executor",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "teamId",
+        "label": {
+          "en": "Team",
+          "fa": "تیم"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-team-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Executor",
+          "fa": "مجری"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-employee-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      }
+    ]
+  }
+}

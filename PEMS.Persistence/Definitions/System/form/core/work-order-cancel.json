@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "work-order-cancel",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cancel the work order",
+    "fa": "لغو دستورکار"
+  },
+  "description": {
+    "en": "Cancel the work order",
+    "fa": "لغو دستورکار"
+  },
+  "payload": {
+    "id": "work-order-cancel",
+    "title": {
+      "en": "Cancel the work order",
+      "fa": "لغو دستورکار"
+    },
+    "submitLabel": {
+      "en": "Cancel the work order",
+      "fa": "لغو دستورکار"
+    },
+    "actionKey": "work-order-cancel",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

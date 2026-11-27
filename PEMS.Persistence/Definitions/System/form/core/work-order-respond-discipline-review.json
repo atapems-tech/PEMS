@@ -1,0 +1,224 @@
+{
+  "kind": "form",
+  "key": "work-order-respond-discipline-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the opinion of my discipline",
+    "fa": "ثبت نظر دیسیپلین من"
+  },
+  "description": {
+    "en": "Record the opinion of my discipline",
+    "fa": "ثبت نظر دیسیپلین من"
+  },
+  "payload": {
+    "id": "work-order-respond-discipline-review",
+    "title": {
+      "en": "Record the opinion of my discipline",
+      "fa": "ثبت نظر دیسیپلین من"
+    },
+    "submitLabel": {
+      "en": "Record the opinion of my discipline",
+      "fa": "ثبت نظر دیسیپلین من"
+    },
+    "actionKey": "work-order-respond-discipline-review",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workOrderId",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "decision",
+        "label": {
+          "en": "Decision",
+          "fa": "تصمیم"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "Approve",
+            "label": {
+              "en": "Approve (no objection)",
+              "fa": "تایید (بدون ایراد)"
+            }
+          },
+          {
+            "value": "Comment",
+            "label": {
+              "en": "Approve with a note",
+              "fa": "تایید با یادداشت"
+            }
+          },
+          {
+            "value": "Reject",
+            "label": {
+              "en": "Serious objection",
+              "fa": "ایراد جدی دارد"
+            }
+          }
+        ],
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "findings",
+        "label": {
+          "en": "Findings / explanation",
+          "fa": "یافته / توضیح"
+        },
+        "kind": "textarea",
+        "maxLength": 2000,
+        "span": 2
+      },
+      {
+        "name": "failureModeCode",
+        "label": {
+          "en": "Failure mode (from this discipline, optional)",
+          "fa": "حالت خرابی (از دید این دیسیپلین - اختیاری)"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "",
+            "label": {
+              "en": "-",
+              "fa": "-"
+            }
+          },
+          {
+            "value": "Leakage",
+            "label": {
+              "en": "Leakage",
+              "fa": "Leakage"
+            }
+          },
+          {
+            "value": "Fracture",
+            "label": {
+              "en": "Fracture",
+              "fa": "Fracture"
+            }
+          },
+          {
+            "value": "Vibration",
+            "label": {
+              "en": "Vibration",
+              "fa": "Vibration"
+            }
+          },
+          {
+            "value": "Overheating",
+            "label": {
+              "en": "Overheating",
+              "fa": "Overheating"
+            }
+          },
+          {
+            "value": "Blockage",
+            "label": {
+              "en": "Blockage",
+              "fa": "Blockage"
+            }
+          },
+          {
+            "value": "ElectricalFault",
+            "label": {
+              "en": "ElectricalFault",
+              "fa": "ElectricalFault"
+            }
+          },
+          {
+            "value": "Other",
+            "label": {
+              "en": "Other",
+              "fa": "Other"
+            }
+          }
+        ]
+      },
+      {
+        "name": "failureCauseCode",
+        "label": {
+          "en": "Failure cause (from this discipline, optional)",
+          "fa": "علت خرابی (از دید این دیسیپلین - اختیاری)"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "",
+            "label": {
+              "en": "-",
+              "fa": "-"
+            }
+          },
+          {
+            "value": "Corrosion",
+            "label": {
+              "en": "Corrosion",
+              "fa": "Corrosion"
+            }
+          },
+          {
+            "value": "Fatigue",
+            "label": {
+              "en": "Fatigue",
+              "fa": "Fatigue"
+            }
+          },
+          {
+            "value": "Wear",
+            "label": {
+              "en": "Wear",
+              "fa": "Wear"
+            }
+          },
+          {
+            "value": "OperatorError",
+            "label": {
+              "en": "OperatorError",
+              "fa": "OperatorError"
+            }
+          },
+          {
+            "value": "DesignDeficiency",
+            "label": {
+              "en": "DesignDeficiency",
+              "fa": "DesignDeficiency"
+            }
+          },
+          {
+            "value": "MaterialDefect",
+            "label": {
+              "en": "MaterialDefect",
+              "fa": "MaterialDefect"
+            }
+          },
+          {
+            "value": "Other",
+            "label": {
+              "en": "Other",
+              "fa": "Other"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

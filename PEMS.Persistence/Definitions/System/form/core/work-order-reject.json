@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "work-order-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the work order",
+    "fa": "رد دستورکار"
+  },
+  "description": {
+    "en": "Reject the work order",
+    "fa": "رد دستورکار"
+  },
+  "payload": {
+    "id": "work-order-reject",
+    "title": {
+      "en": "Reject the work order",
+      "fa": "رد دستورکار"
+    },
+    "submitLabel": {
+      "en": "Reject the work order",
+      "fa": "رد دستورکار"
+    },
+    "actionKey": "work-order-reject",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason",
+          "fa": "دلیل"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

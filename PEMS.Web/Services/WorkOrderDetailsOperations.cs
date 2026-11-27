@@ -65,7 +65,9 @@ public sealed class WorkOrderDetailsOperations(PEMSDbContext context, ICurrentUs
             legacy && next != null && canEdit, legacy && next == "Completed" && canEdit, legacy && canEdit && wo.Status is "Assigned" or "InProgress", legacy && canEdit && wo.Status == "OnHold", legacy && canApprove && wo.Status == "Open",
             legacy && canApprove && wo.Status is "Open" or "Assigned" or "InProgress" or "OnHold", !legacy && (wf?.AvailableActions.Count ?? 0) > 0, wo.Status == "InProgress", wo.WorkOrderType is "Corrective" or "Emergency",
             page?.CanReopen ?? false, Ctl(WoSection.ResponsibleDiscipline), Ctl(WoSection.ExecutorAssignment), Ctl(WoSection.Schedule), Ctl(WoSection.RequiredSkills), Ctl(WoSection.RequiredMaterials), Ctl(WoSection.Crew),
-            Ctl(WoSection.Labor), Ctl(WoSection.SpareParts), Ctl(WoSection.DisciplineReview), Ctl(WoSection.JobPlanTasks))];
+            Ctl(WoSection.Labor), Ctl(WoSection.SpareParts), Ctl(WoSection.DisciplineReview), Ctl(WoSection.JobPlanTasks),
+            legacy && next != null && canEdit ? (next == "Completed" ? (wo.WorkOrderType is "Corrective" or "Emergency" ? "work-order-advance-complete-failure" : "work-order-advance-complete") : next == "Assigned" ? "work-order-advance-assign" : "work-order-advance") : null,
+            wo.ResponsibleDisciplineId, wo.PlannedStart?.ToString("yyyy-MM-ddTHH:mm"), wo.PlannedFinish?.ToString("yyyy-MM-ddTHH:mm"))];
     }
 
     public async Task<List<WorkOrderStageRow>> StagesAsync(int id)
@@ -80,8 +82,12 @@ public sealed class WorkOrderDetailsOperations(PEMSDbContext context, ICurrentUs
     {
         var wf = await WorkflowAsync(id);
         if (wf == null) return [];
+        var info = await context.WorkOrders.AsNoTracking().Where(x => x.WorkOrderId == id).Select(x => new { x.Status, x.WorkOrderType }).FirstOrDefaultAsync();
+        var inProgress = info?.Status == "InProgress";
+        var failure = info?.WorkOrderType is "Corrective" or "Emergency";
+        string FormKey(bool reason) => "work-order-wf" + (reason ? "-reason" : "") + (inProgress ? (failure ? "-completion-failure" : "-completion") : "");
         return wf.AvailableActions.Select(a => new WorkOrderActionRow(a.ActionType, Fa && !string.IsNullOrWhiteSpace(a.LabelFa) ? a.LabelFa! : !string.IsNullOrWhiteSpace(a.Label) ? a.Label! : a.ActionType,
-            string.IsNullOrWhiteSpace(a.ToStageName) ? "" : StageByName(wf, a.ToStageName), a.IsAllowed, a.IsAllowed ? null : a.DeniedReason, WorkflowActionRules.ActionRequiresReason(a.ActionType))).ToList();
+            string.IsNullOrWhiteSpace(a.ToStageName) ? "" : StageByName(wf, a.ToStageName), a.IsAllowed, a.IsAllowed ? null : a.DeniedReason, WorkflowActionRules.ActionRequiresReason(a.ActionType), FormKey(WorkflowActionRules.ActionRequiresReason(a.ActionType)))).ToList();
     }
 
     public async Task<List<WorkOrderWorkflowHistoryRow>> WorkflowHistoryAsync(int id)
@@ -220,4 +226,17 @@ public sealed class WorkOrderDetailsOperations(PEMSDbContext context, ICurrentUs
 
     public async Task<List<WorkOrderChoiceRow>> FailureCauseOptionsAsync(int id)
         => await context.FailureCauses.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.DisplayOrder).ThenBy(x => x.Name).Select(x => new WorkOrderChoiceRow(x.Code, x.Code + " - " + x.Name)).ToListAsync();
+
+    public async Task<(bool Success, string? Error)> LegacyAdvanceAsync(int id, int? assignedTeamId = null, string? failureModeCode = null, string? failureCauseCode = null, string? rootCause = null, decimal? downtimeHours = null, string? reason = null,
+        string? failureEffect = null, string? correctiveAction = null, decimal? contractorCost = null, string? contractorName = null)
+    {
+        var wo = await context.WorkOrders.AsNoTracking().FirstOrDefaultAsync(x => x.WorkOrderId == id);
+        if (wo == null) return (false, T("Not found"));
+        var next = NextStatus(wo.Status);
+        if (next == null) return (false, "This work order is already at its final status");
+        if (next == "Closed" && !await permissions.HasPermissionAsync(currentUser.Roles, "WorkOrder", "Approve")) return (false, "برای بستن نهایی WorkOrder مجوز کافی نداری.");
+        if (next == "Completed" && await review.HasPendingDisciplineReviewAsync(id))
+            return (false, "این WorkOrder یک بازبینی چند-دیسیپلینه‌ی باز داره - قبل از تکمیل، همه‌ی دیسیپلین‌های ارجاع‌شده باید نظرشون رو ثبت کنن.");
+        return await lifecycle.AdvanceStatusAsync(id, next, reason, await EmployeeIdAsync(), assignedTeamId, null, failureModeCode, failureCauseCode, rootCause, downtimeHours, failureEffect, correctiveAction, contractorCost, contractorName);
+    }
 }

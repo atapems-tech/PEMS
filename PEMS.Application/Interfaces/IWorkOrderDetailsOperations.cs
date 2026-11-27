@@ -7,9 +7,11 @@ namespace PEMS.Application.Interfaces;
 public sealed record WorkOrderHeadRow(int Id, string WorkOrderNumber, string Status, string StatusCode, string Priority, string WorkOrderType, int EquipmentId, string? EquipmentTag, string? EquipmentName, string? Assigned, string? PlannedWindow,
     DateTime? StartDate, DateTime? CompletionDate, string? FromPlan, string? Description, string? OriginatingDiscipline, string? ResponsibleDiscipline, int? SourceWorkRequestId, string? FailureAnalysis, decimal LaborCost, decimal SpareCost,
     bool IsLegacy, bool HasPendingReview, string? NextStatus, string? Warnings, bool CanAdvanceLegacy, bool CanAdvanceToCompleted, bool CanHold, bool CanResume, bool CanReject, bool CanCancel, bool HasWorkflowActions, bool IsInProgress, bool IsCorrectiveType,
-    bool CanReopen, bool CtlResponsibleDiscipline, bool CtlExecutor, bool CtlSchedule, bool CtlSkills, bool CtlMaterials, bool CtlCrew, bool CtlLabor, bool CtlSpares, bool CtlReview, bool CtlTasks);
+    bool CanReopen, bool CtlResponsibleDiscipline, bool CtlExecutor, bool CtlSchedule, bool CtlSkills, bool CtlMaterials, bool CtlCrew, bool CtlLabor, bool CtlSpares, bool CtlReview, bool CtlTasks,
+    string? AdvanceForm, int? ResponsibleDisciplineId, string? PlannedStartInput, string? PlannedFinishInput);
 public sealed record WorkOrderStageRow(int Id, int Order, string Stage, string State, string WaitingFor);
-public sealed record WorkOrderActionRow(string Id, string Label, string ToStage, bool Allowed, string? DeniedReason, bool NeedsReason);
+/// <summary>One action of the workflow; <c>FormKey</c> is the form that runs it: with or without the comment being required, and with the completion data (and the failure analysis for corrective and emergency work) while the work is in progress.</summary>
+public sealed record WorkOrderActionRow(string Id, string Label, string ToStage, bool Allowed, string? DeniedReason, bool NeedsReason, string FormKey);
 public sealed record WorkOrderWorkflowHistoryRow(int Id, DateTime When, string Action, string From, string To, string By, string? Comment);
 public sealed record WorkOrderStatusHistoryRow(int Id, DateTime When, string FromStatus, string ToStatus, string? Reason, string By);
 
@@ -89,4 +91,9 @@ public interface IWorkOrderDetailsOperations
 
     [PEMS.Application.Common.PemsOperation("WorkOrderDetail", "FailureCauseOptions", "WorkOrder.View")]
     Task<List<WorkOrderChoiceRow>> FailureCauseOptionsAsync(int id);
+
+    /// <summary>The linear step of a legacy work order (no workflow instance): the next status of the flow, with the rules of the old controller (Edit; closing needs Approve; completing waits for an open discipline review).</summary>
+    [PEMS.Application.Common.PemsOperation("WorkOrderDetail", "LegacyAdvance", "WorkOrder.Edit")]
+    Task<(bool Success, string? Error)> LegacyAdvanceAsync(int id, int? assignedTeamId = null, string? failureModeCode = null, string? failureCauseCode = null, string? rootCause = null, decimal? downtimeHours = null, string? reason = null,
+        string? failureEffect = null, string? correctiveAction = null, decimal? contractorCost = null, string? contractorName = null);
 }

@@ -5,6 +5,7 @@ namespace PEMS.Application.Interfaces;
 public interface IWorkOrderReviewService
 {
     // ارجاع WorkOrder به چند دیسیپلین برای ثبت نظر - شروع گردش‌کار موازی
+    [PEMS.Application.Common.PemsOperation("WorkOrderReview", "Request", "WorkOrder.Edit")]
     Task RequestDisciplineReviewAsync(
         int workOrderId, IReadOnlyList<int> disciplineIds,
         int? actionByEmployeeId, string? ipAddress = null, string? userAgent = null);

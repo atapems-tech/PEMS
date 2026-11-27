@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "work-order-reopen",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reopen the work order",
+    "fa": "بازگشایی دستورکار"
+  },
+  "description": {
+    "en": "Reopen the work order",
+    "fa": "بازگشایی دستورکار"
+  },
+  "payload": {
+    "id": "work-order-reopen",
+    "title": {
+      "en": "Reopen the work order",
+      "fa": "بازگشایی دستورکار"
+    },
+    "submitLabel": {
+      "en": "Reopen the work order",
+      "fa": "بازگشایی دستورکار"
+    },
+    "actionKey": "work-order-reopen",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason for reopening",
+          "fa": "دلیل بازگشایی"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 500
+      }
+    ]
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "kind": "form",
+  "key": "work-order-wf-reason-completion-failure",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Run the workflow action",
+    "fa": "اجرای اقدام گردش‌کار"
+  },
+  "description": {
+    "en": "Run the workflow action",
+    "fa": "اجرای اقدام گردش‌کار"
+  },
+  "payload": {
+    "id": "work-order-wf-reason-completion-failure",
+    "title": {
+      "en": "Run the workflow action",
+      "fa": "اجرای اقدام گردش‌کار"
+    },
+    "submitLabel": {
+      "en": "Run the workflow action",
+      "fa": "اجرای اقدام گردش‌کار"
+    },
+    "actionKey": "work-order-workflow-action",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "actionType",
+        "label": {
+          "en": "Action",
+          "fa": "اقدام"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment (required for Reject / Cancel / Hold / Return)",
+          "fa": "توضیح (برای رد، لغو، توقف و بازگشت الزامی است)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "maxLength": 1000
+      },
+      {
+        "name": "failureModeCode",
+        "label": {
+          "en": "Failure mode",
+          "fa": "حالت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-failure-mode-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "failureCauseCode",
+        "label": {
+          "en": "Failure cause",
+          "fa": "علت خرابی"
+        },
+        "kind": "select",
+        "optionsFrom": "work-order-failure-cause-options",
+        "optionsArgs": {
+          "id": "id"
+        }
+      },
+      {
+        "name": "rootCause",
+        "label": {
+          "en": "Root cause",
+          "fa": "ریشه‌ی مشکل"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      },
+      {
+        "name": "downtimeHours",
+        "label": {
+          "en": "Downtime hours",
+          "fa": "ساعت توقف"
+        },
+        "kind": "number",
+        "step": "0.1"
+      },
+      {
+        "name": "failureEffect",
+        "label": {
+          "en": "Failure effect",
+          "fa": "اثر خرابی"
+        },
+        "kind": "text",
+        "maxLength": 500
+      },
+      {
+        "name": "correctiveAction",
+        "label": {
+          "en": "Corrective action",
+          "fa": "اقدام اصلاحی"
+        },
+        "kind": "text",
+        "maxLength": 1000
+      },
+      {
+        "name": "contractorName",
+        "label": {
+          "en": "Contractor",
+          "fa": "پیمانکار"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "contractorCost",
+        "label": {
+          "en": "Contractor cost",
+          "fa": "هزینه پیمانکار"
+        },
+        "kind": "number",
+        "step": "0.01"
+      }
+    ]
+  }
+}

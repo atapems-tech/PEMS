@@ -51,6 +51,7 @@ public sealed class FormHostController(DefinitionPipeline pipeline, ActionExecut
             if (rows.Count > 0) foreach (var (name, v) in rows[0]) if (values.ContainsKey(name)) values[name] = ShowLoaded(v, loaded.Form.Fields.First(f => f.Name == name).Kind);
         }
         foreach (var (name, v) in Request.Query) if (values.ContainsKey(name)) values[name] = v.ToString();   // a link may pre-fill a field
+        foreach (var f in loaded.Form.Fields) if (!string.IsNullOrEmpty(f.Default) && values.TryGetValue(f.Name, out var current0) && string.IsNullOrEmpty(current0)) values[f.Name] = f.Default;   // SCRUM-835: the starting value of a field nothing else filled
         return await Show(key, loaded, values, new Dictionary<string, TranslatableText>(), []);
     }
 

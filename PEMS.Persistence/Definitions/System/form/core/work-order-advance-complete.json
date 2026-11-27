@@ -1,0 +1,71 @@
+{
+  "kind": "form",
+  "key": "work-order-advance-complete",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Completion information",
+    "fa": "ثبت اطلاعات تکمیل"
+  },
+  "description": {
+    "en": "Completion information",
+    "fa": "ثبت اطلاعات تکمیل"
+  },
+  "payload": {
+    "id": "work-order-advance-complete",
+    "title": {
+      "en": "Completion information",
+      "fa": "ثبت اطلاعات تکمیل"
+    },
+    "submitLabel": {
+      "en": "Completion information",
+      "fa": "ثبت اطلاعات تکمیل"
+    },
+    "actionKey": "work-order-advance",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Work order id",
+          "fa": "شناسه دستورکار"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "contractorName",
+        "label": {
+          "en": "Contractor",
+          "fa": "نام پیمانکار"
+        },
+        "kind": "text",
+        "maxLength": 200
+      },
+      {
+        "name": "contractorCost",
+        "label": {
+          "en": "Contractor cost",
+          "fa": "هزینه پیمانکار"
+        },
+        "kind": "number",
+        "step": "0.01"
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason (optional)",
+          "fa": "دلیل (اختیاری)"
+        },
+        "kind": "text",
+        "maxLength": 500
+      }
+    ]
+  }
+}
