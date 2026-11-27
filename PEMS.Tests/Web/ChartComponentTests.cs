@@ -59,7 +59,6 @@ public class ChartComponentTests
     }
 
     [Theory]
-    [InlineData("Views/LetterCartable/Report.cshtml", 4)]
     public void WaveC1_PagesTakeTheirChartsFromTheComponent(string view, int charts)
     {
         var text = File.ReadAllText(Path.Combine(RepoRoot(), "PEMS.Web", view));

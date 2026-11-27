@@ -1,0 +1,308 @@
+{
+  "kind": "page",
+  "key": "letter-cartable-report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable report",
+    "fa": "گزارش کارتابل"
+  },
+  "description": {
+    "en": "Cartable report",
+    "fa": "گزارش کارتابل"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "letter-cartable-report",
+    "regions": {
+      "content": [
+        {
+          "id": "back",
+          "component": "button",
+          "options": {
+            "label": {
+              "en": "Correspondence",
+              "fa": "مکاتبات"
+            },
+            "tone": "neutral",
+            "href": "/p/letters"
+          }
+        },
+        {
+          "id": "letter-report-filters",
+          "component": "page-filters",
+          "options": {
+            "id": "letter-report-filters",
+            "resetUrl": "/p/letter-cartable-report",
+            "fields": [
+              {
+                "name": "from",
+                "label": {
+                  "en": "From",
+                  "fa": "از تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.from}}"
+              },
+              {
+                "name": "to",
+                "label": {
+                  "en": "To",
+                  "fa": "تا تاریخ"
+                },
+                "kind": "date",
+                "value": "{{params.to}}"
+              }
+            ]
+          },
+          "bindings": {
+            "filterOptions": []
+          }
+        },
+        {
+          "id": "letter-report",
+          "component": "data-grid",
+          "options": {
+            "id": "letter-report",
+            "url": "/d/letter-report?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "received",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "unread",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "sent",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "openReferrals",
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "overdueReferrals",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "completedReferrals",
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "avgReferralDays",
+                "width": 130
+              },
+              {
+                "key": "responseRequired",
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "avgResponseDays",
+                "width": 130
+              },
+              {
+                "key": "onTimePercent",
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "openOverdue",
+                "width": 120,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-sla",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-sla",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Response SLA",
+                  "fa": "SLA پاسخ"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "sla",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/letter-report-sla?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "labelField": "label",
+            "series": [
+              {
+                "field": "count",
+                "name": "Letters",
+                "color": "#2563eb"
+              }
+            ],
+            "kind": "donut",
+            "ariaLabel": {
+              "en": "Response SLA",
+              "fa": "SLA پاسخ"
+            }
+          }
+        },
+        {
+          "id": "h-month",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-month",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Received by month",
+                  "fa": "دریافتی به تفکیک ماه"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "months",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/letter-report-months?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "labelField": "label",
+            "series": [
+              {
+                "field": "count",
+                "name": "Received",
+                "color": "#2563eb"
+              }
+            ],
+            "kind": "bar",
+            "ariaLabel": {
+              "en": "Received by month",
+              "fa": "دریافتی به تفکیک ماه"
+            }
+          }
+        },
+        {
+          "id": "h-disc",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-disc",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Received by discipline",
+                  "fa": "دریافتی به تفکیک دیسیپلین"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "disciplines",
+          "component": "def:entity-chart",
+          "options": {
+            "url": "/d/letter-report-disciplines?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "labelField": "label",
+            "series": [
+              {
+                "field": "count",
+                "name": "Received",
+                "color": "#0f766e"
+              }
+            ],
+            "kind": "hbar",
+            "ariaLabel": {
+              "en": "Received by discipline",
+              "fa": "دریافتی به تفکیک دیسیپلین"
+            }
+          }
+        },
+        {
+          "id": "h-sub",
+          "component": "content-blocks",
+          "options": {
+            "id": "h-sub",
+            "blocks": [
+              {
+                "type": "heading",
+                "level": 6,
+                "text": {
+                  "en": "Subordinates",
+                  "fa": "زیردستان"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "subordinates",
+          "component": "def:related-table",
+          "options": {
+            "id": "subordinates",
+            "url": "/d/letter-report-subordinates?f.from={{params.from|url}}&f.to={{params.to|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "width": 240
+              },
+              {
+                "key": "position",
+                "width": 180
+              },
+              {
+                "key": "received",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "unread",
+                "width": 90,
+                "type": "number"
+              },
+              {
+                "key": "openReferrals",
+                "width": 120,
+                "type": "number"
+              },
+              {
+                "key": "overdueReferrals",
+                "width": 130,
+                "type": "number"
+              },
+              {
+                "key": "completedReferrals",
+                "width": 140,
+                "type": "number"
+              },
+              {
+                "key": "avgReferralDays",
+                "width": 130
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "permission": "Correspondence.View"
+  }
+}

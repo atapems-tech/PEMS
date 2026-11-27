@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "letter-report-subordinates",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Subordinates",
+    "fa": "زیردستان"
+  },
+  "description": {
+    "en": "Subordinates",
+    "fa": "زیردستان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "ReportSubordinates",
+      "args": {
+        "from": "param:from",
+        "to": "param:to"
+      }
+    }
+  }
+}

@@ -10,7 +10,7 @@ using PEMS.Web.Security;
 namespace PEMS.Web.Services;
 
 /// <summary>SCRUM-828: the letter list, counters, export, dashboard and my referrals as operations (see <see cref="ILetterPagesOperations"/>).</summary>
-public sealed class LetterPagesOperations(ILetterService letters, ILetterReferralService referrals, ILetterCartableService cartable, IPermissionService permissions, ICurrentUserService currentUser, PEMSDbContext context) : ILetterPagesOperations
+public sealed class LetterPagesOperations(ILetterService letters, ILetterReferralService referrals, ILetterCartableService cartable, ILetterReportService reports, IPermissionService permissions, ICurrentUserService currentUser, PEMSDbContext context) : ILetterPagesOperations
 {
     private static readonly string[] KnownPriorities = ["Low", "Normal", "High", "Urgent"];
     private static int? Int(string? s) => int.TryParse(s, out var v) ? v : null;
@@ -76,4 +76,34 @@ public sealed class LetterPagesOperations(ILetterService letters, ILetterReferra
 
     public async Task<List<LetterChoice>> ProjectsAsync() => await context.Projects.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.ProjectName).Select(x => new LetterChoice(x.ProjectId.ToString(), x.ProjectName)).ToListAsync();
     public async Task<List<LetterChoice>> DisciplinesAsync() => await context.Disciplines.AsNoTracking().Where(x => x.IsActive).OrderBy(x => x.Name).Select(x => new LetterChoice(x.DisciplineId.ToString(), x.Name)).ToListAsync();
+
+    // ---------------------------------------------------------------- cartable report
+    private async Task<CartableReportDto> ReportDtoAsync(string? from, string? to)
+    {
+        var end = (Date(to) ?? DateTime.Today).Date;
+        var start = (Date(from) ?? end.AddDays(-89)).Date;
+        if (end < start) (start, end) = (end, start);
+        if ((end - start).TotalDays > 730) start = end.AddDays(-730);
+        return await reports.GetAsync(currentUser.UserId ?? 0, start, end, await ConfidentialAsync());
+    }
+
+    private static string Days(double? d) => d.HasValue ? d.Value.ToString("0.0", CultureInfo.InvariantCulture) : "-";
+
+    public async Task<List<LetterReportRow>> ReportAsync(string? from = null, string? to = null)
+    {
+        var r = await ReportDtoAsync(from, to);
+        return [new LetterReportRow(1, r.Received, r.Unread, r.Sent, r.OpenReferrals, r.OverdueReferrals, r.CompletedReferrals, Days(r.AvgReferralDays), r.ResponseRequired, Days(r.AvgResponseDays), (int)Math.Round(r.OnTimePercent), r.AnsweredOnTime, r.AnsweredLate, r.OpenOverdue, r.OpenWithinSla)];
+    }
+
+    public async Task<List<LetterBucketRow>> ReportMonthsAsync(string? from = null, string? to = null) => (await ReportDtoAsync(from, to)).ByMonth.Select(b => new LetterBucketRow(b.Label, b.Count)).ToList();
+    public async Task<List<LetterBucketRow>> ReportDisciplinesAsync(string? from = null, string? to = null) => (await ReportDtoAsync(from, to)).ByDiscipline.Select(b => new LetterBucketRow(b.Label, b.Count)).ToList();
+
+    public async Task<List<LetterBucketRow>> ReportSlaAsync(string? from = null, string? to = null)
+    {
+        var r = await ReportDtoAsync(from, to);
+        return [new("Answered on time", r.AnsweredOnTime), new("Answered late", r.AnsweredLate), new("Open and overdue", r.OpenOverdue), new("Open within the SLA", r.OpenWithinSla)];
+    }
+
+    public async Task<List<LetterSubordinateRow>> ReportSubordinatesAsync(string? from = null, string? to = null)
+        => (await ReportDtoAsync(from, to)).Subordinates.Select(s => new LetterSubordinateRow(s.EmployeeId, new string('-', Math.Max(0, s.Depth - 1)) + (s.Depth > 1 ? " " : "") + s.Name, s.Position, s.Received, s.Unread, s.OpenReferrals, s.OverdueReferrals, s.CompletedReferrals, Days(s.AvgReferralDays))).ToList();
 }
