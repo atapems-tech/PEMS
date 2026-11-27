@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "team-members-of",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Members of a team",
+    "fa": "اعضای تیم"
+  },
+  "description": {
+    "en": "Members of a team",
+    "fa": "اعضای تیم"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Team",
+      "action": "MembersOf",
+      "args": {
+        "teamId": "param:teamId"
+      },
+      "disposition": "inline"
+    }
+  }
+}

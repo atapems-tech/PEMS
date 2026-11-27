@@ -78,30 +78,7 @@ public class OrganizationMasterDataAuthorizationTests
 
     // ================= Team =================
 
-    [Fact]
-    public async Task Team_GetTeamMembers_WithoutViewPermission_ReturnsForbid()
-    {
-        // ContractManager/QAManager هیچ Grant ای روی "Team" ندارند - حتی View
-        var (ctx, perms, user) = await CreateInfra(nameof(Team_GetTeamMembers_WithoutViewPermission_ReturnsForbid), role: SystemRoles.QAManager);
-        var controller = new TeamController(ctx, new FakeTeamService(), new OrganizationStructureService(ctx), user, perms).WithTempData();
 
-        var result = await controller.GetTeamMembers(1);
-
-        Assert.IsType<ForbidResult>(result);
-    }
-
-    [Fact]
-    public async Task Team_GetTeamMembers_DisciplineEngineer_HasViewOnly_CanRead()
-    {
-        // DisciplineEngineer باید بتواند این AJAX را برای بازبینی WorkOrder فراخوانی کند (View)،
-        // حتی اگرچه اجازه‌ی مدیریت ترکیب تیم (Edit) را ندارد.
-        var (ctx, perms, user) = await CreateInfra(nameof(Team_GetTeamMembers_DisciplineEngineer_HasViewOnly_CanRead), role: SystemRoles.DisciplineEngineer);
-        var controller = new TeamController(ctx, new FakeTeamService(), new OrganizationStructureService(ctx), user, perms).WithTempData();
-
-        var result = await controller.GetTeamMembers(1);
-
-        Assert.IsType<JsonResult>(result);
-    }
 
     // ================= Crew =================
 
@@ -125,16 +102,6 @@ public class OrganizationMasterDataAuthorizationTests
     // طبق «PEMS Dynamic Maintenance Organization»: همون الگوی دقیق بالا - فقط Permission، نه
     // Scope دیسیپلینی (که با SystemAdmin دور زده می‌شود؛ Scope واقعی تست نمی‌شود این‌جا).
 
-    [Fact]
-    public async Task Team_OrganizationTree_WithoutViewPermission_ReturnsForbid()
-    {
-        var (ctx, perms, user) = await CreateInfra(nameof(Team_OrganizationTree_WithoutViewPermission_ReturnsForbid), role: null);
-        var controller = new TeamController(ctx, new FakeTeamService(), new OrganizationStructureService(ctx), user, perms).WithTempData();
-
-        var result = await controller.OrganizationTree(null);
-
-        Assert.IsType<ForbidResult>(result);
-    }
 
     [Fact]
     public async Task Team_OrganizationChart_WithoutViewPermission_ReturnsForbid()

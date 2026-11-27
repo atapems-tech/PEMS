@@ -77,56 +77,5 @@ public class TeamController : Controller
         return View();
     }
 
-    // SCRUM-757: the team list, the team page and every write are the definition pages /p/teams and /p/team-details over ITeamOperations; the chart shell and its JSON reads stay (the chart script).
-
-    // طبق بخش ۲۰/۲۶ سند: مدل خواندنیِ درخت سازمانی - پایه‌ی داده‌ای برای نمودار سازمانی
-    // آینده (فاز جداگانه‌ی UI)؛ این‌جا فقط API خواندنی JSON عرضه می‌شود.
-    [HttpGet]
-    public async Task<IActionResult> OrganizationTree(int? disciplineId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Team", "View"))
-            return Forbid();
-
-        var tree = await _organizationService.GetOrganizationTreeAsync(disciplineId);
-        return Json(tree);
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> TeamNodeDetails(int teamId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Team", "View"))
-            return Forbid();
-
-        var details = await _organizationService.GetTeamDetailsAsync(teamId);
-        if (details == null) return NotFound();
-        return Json(details);
-    }
-
-    // ==============================================================================
-    // برای فرم Work Order: با انتخاب تیم، فقط اعضای همون تیم (با نقششون) برگردونده بشه -
-    // نه لیست کامل کارمندها
-    // ==============================================================================
-    // طبق ممیزی: این AJAX توسط فرم ساخت/جزئیات WorkOrder هم مصرف می‌شود (نه فقط صفحه‌ی Team) -
-    // به همون سطح دسترسی View که ماژول WorkOrder به DisciplineEngineer/Viewer می‌دهد نیاز دارد؛
-    // وگرنه بازبینی WorkOrder برای این دو نقش، اعضای تیم را نشان نمی‌دهد (Case C - لینک مرده).
-    [HttpGet]
-    public async Task<IActionResult> GetTeamMembers(int teamId)
-    {
-        if (!await _permissionService.HasPermissionAsync(_currentUser.Roles, "Team", "View"))
-            return Forbid();
-
-        var members = await _context.TeamMembers
-            .Include(x => x.Employee)
-            .Include(x => x.Role)
-            .Where(x => x.TeamId == teamId && x.IsActive)
-            .Select(x => new
-            {
-                employeeId = x.EmployeeId,
-                name = x.Employee!.FirstName + " " + x.Employee.LastName,
-                role = x.Role!.Name
-            })
-            .ToListAsync();
-
-        return Json(members);
-    }
+    // SCRUM-757, 831: the team list, the team page and every write are the definition pages /p/teams and /p/team-details over ITeamOperations; the JSON reads of the chart are /x/team-* (SCRUM-831); only the chart shell stays.
 }

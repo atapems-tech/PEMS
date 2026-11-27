@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "team-node-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Team node details",
+    "fa": "جزئیات گره تیم"
+  },
+  "description": {
+    "en": "Team node details",
+    "fa": "جزئیات گره تیم"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Team",
+      "action": "TeamNodeDetails",
+      "args": {
+        "teamId": "param:teamId"
+      },
+      "disposition": "inline"
+    }
+  }
+}

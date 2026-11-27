@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "team-organization-tree",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Organization tree",
+    "fa": "درخت سازمانی"
+  },
+  "description": {
+    "en": "Organization tree",
+    "fa": "درخت سازمانی"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-file",
+    "parameters": {
+      "model": "Team",
+      "action": "OrganizationTree",
+      "args": {
+        "disciplineId": "param:disciplineId"
+      },
+      "disposition": "inline"
+    }
+  }
+}
