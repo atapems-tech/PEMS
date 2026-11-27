@@ -63,83 +63,6 @@ public class MaintenanceStrategyController : Controller
 
     private Task<StrategyActor> ActorAsync() => _context.ResolveStrategyActorAsync(_currentUser);
 
-    // ==================== List ====================
-
-    public async Task<IActionResult> Index(int? equipmentId, int? classId = null, string? status = null,
-        string? type = null, string? q = null, int page = 1, int? pageSize = null)
-    {
-        if (!await Can("View")) return Forbid();
-
-        ViewData["HelpKey"] = "MaintenanceStrategies.Index";
-        ViewData["Title"] = "Maintenance Strategies";
-        ViewData["Section"] = "CMMS Integration";
-
-        var filter = new StrategyListFilter
-        {
-            Page = page,
-            PageSize = DataGridPageSize.Normalize(pageSize),
-            EquipmentId = equipmentId,
-            EquipmentClassId = classId,
-            Status = RcmCodes.Status.All.Contains(status ?? "") ? status : null,
-            StrategyType = RcmCodes.StrategyType.IsValid(type) ? type : null,
-            Search = q,
-            // پیش‌فرض: نسخه‌های جایگزین‌شده/بایگانی‌شده در فهرست اصلی نیستند (فیلتر Status آن‌ها را نشان می‌دهد)
-            IncludeInactive = status is RcmCodes.Status.Retired or RcmCodes.Status.Superseded
-        };
-        var result = await _strategyService.GetListAsync(filter);
-        if (string.IsNullOrEmpty(filter.Status))
-            result.Items = result.Items.Where(x => x.Status != RcmCodes.Status.Superseded).ToList();
-
-        var vm = new StrategyIndexViewModel
-        {
-            Page = result,
-            Filter = filter,
-            Classes = await ClassLookupAsync(),
-            CanCreate = await Can("Create"),
-            CanEdit = await Can("Edit"),
-            CanApprove = await Can("Approve")
-        };
-
-        if (equipmentId.HasValue)
-        {
-            vm.SelectedEquipmentLabel = await _context.Equipments
-                .Where(x => x.EquipmentId == equipmentId.Value)
-                .Select(x => x.TagNumber + " - " + x.Name)
-                .FirstOrDefaultAsync();
-        }
-
-        ViewBag.SelectedEquipmentId = equipmentId;
-        ViewBag.SelectedEquipmentLabel = vm.SelectedEquipmentLabel;
-        return View(vm);
-    }
-
-    // ==================== Details ====================
-
-    public async Task<IActionResult> Details(int id)
-    {
-        if (!await Can("View")) return Forbid();
-
-        var detail = await _strategyService.GetDetailAsync(id);
-        if (detail == null) return NotFound();
-
-        ViewData["Title"] = "Maintenance Strategy";
-        ViewData["Section"] = "CMMS Integration";
-
-        var actor = await ActorAsync();
-        var vm = new StrategyDetailsViewModel
-        {
-            Strategy = detail,
-            CanEdit = await Can("Edit"),
-            CanApprove = await Can("Approve"),
-            IsAuthorOrSubmitter = actor.EmployeeId.HasValue && detail.AuthorEmployeeId == actor.EmployeeId
-        };
-        if (TempData["RcmErrors"] is string joined && joined.Length > 0)
-            vm.Errors = joined.Split('\n', StringSplitOptions.RemoveEmptyEntries).ToList();
-        if (TempData["RcmAssignReport"] is string report && report.Length > 0)
-            vm.AssignReport = report.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(l => l.Split('|')).Where(p => p.Length >= 2).ToList();
-        return View(vm);
-    }
-
     // ==================== Create / Edit ====================
 
     [HttpGet]
@@ -175,7 +98,7 @@ public class MaintenanceStrategyController : Controller
             return await FormWithErrorsAsync(null, input, result.Errors);
 
         TempData["Message"] = T("Rcm_Info_StrategyCreated");
-        return RedirectToAction(nameof(Details), new { id = result.Id });
+        return Redirect("/p/strategy-details?id=" + result.Id);
     }
 
     [HttpGet]
@@ -209,7 +132,7 @@ public class MaintenanceStrategyController : Controller
             return await FormWithErrorsAsync(id, input, result.Errors);
 
         TempData["Message"] = T(result.InfoCode ?? "Rcm_Info_StrategySaved");
-        return RedirectToAction(nameof(Details), new { id = result.Id ?? id });
+        return Redirect("/p/strategy-details?id=" + (result.Id ?? id));
     }
 
     // ==================== Bulk (class-level) assignment ====================
@@ -440,7 +363,7 @@ public class MaintenanceStrategyController : Controller
         {
             TempData["Error"] = string.Join(" | ", _l.TranslateAll(result.Errors));
             if (result.Errors.Any(e => e.Code == "Rcm_Err_StrategyNotFound")) return NotFound();
-            return RedirectToAction(nameof(Details), new { id = strategyId });
+            return Redirect("/p/strategy-details?id=" + strategyId);
         }
 
         var parts = new List<string> { T("Rcm_Info_AssignedCount", result.Assigned) };
@@ -448,10 +371,11 @@ public class MaintenanceStrategyController : Controller
         if (result.SkippedConflict > 0) parts.Add(T("Rcm_Info_SkippedConflict", result.SkippedConflict));
         if (result.SkippedCriticality > 0) parts.Add(T("Rcm_Info_SkippedCriticality", result.SkippedCriticality));
         if (result.SkippedNotFound > 0) parts.Add(T("Rcm_Info_SkippedNotFound", result.SkippedNotFound));
-        TempData["Message"] = string.Join(" · ", parts);
+        // the details page is a definition now and has no place for the skip report: the first skipped tags go into the message
         if (result.Skipped.Count > 0)
-            TempData["RcmAssignReport"] = string.Join("\n", result.Skipped.Take(200).Select(s => $"{s.Tag}|{s.Reason}|{s.OtherStrategyId}"));
-        return RedirectToAction(nameof(Details), new { id = strategyId });
+            parts.Add(string.Join(", ", result.Skipped.Take(20).Select(s => $"{s.Tag} ({s.Reason})")) + (result.Skipped.Count > 20 ? " ..." : ""));
+        TempData["Message"] = string.Join(" · ", parts);
+        return Redirect("/p/strategy-details?id=" + strategyId);
     }
 
     private async Task<IActionResult> FormWithErrorsAsync(int? id, StrategyInputDto input, IEnumerable<RuleError> errors)

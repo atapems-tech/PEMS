@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "strategy-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign a tag",
+    "fa": "تخصیص تگ"
+  },
+  "description": {
+    "en": "Assign a tag",
+    "fa": "تخصیص تگ"
+  },
+  "payload": {
+    "id": "strategy-assign",
+    "title": {
+      "en": "Assign a tag",
+      "fa": "تخصیص تگ"
+    },
+    "submitLabel": {
+      "en": "Assign a tag",
+      "fa": "تخصیص تگ"
+    },
+    "actionKey": "strategy-assign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Strategy id",
+          "fa": "شناسه استراتژی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "equipmentId",
+        "label": {
+          "en": "Equipment id",
+          "fa": "شناسه تجهیز"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

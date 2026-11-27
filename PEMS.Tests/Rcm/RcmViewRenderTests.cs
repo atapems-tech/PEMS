@@ -35,37 +35,8 @@ public class RcmViewRenderTests
         var assignmentId = env.Ctx.MaintenanceStrategyAssignments.Single().MaintenanceStrategyAssignmentId;
         return new Fixture(env, strategyId, classId, modeId, tag.EquipmentId, assignmentId);
     }
-
-    [Fact]
-    public async Task StrategyIndex_ShowsLocalizedLabels_NotRawCodes()
-    {
-        var f = await BuildAsync(nameof(StrategyIndex_ShowsLocalizedLabels_NotRawCodes));
-        var c = f.Env.StrategyController();
-
-        var html = await Render(c, await c.Index(null), "/Views/MaintenanceStrategy/Index.cshtml");
-
-        Assert.Contains("Leakage PUMP_T", html);                       // نام حالت خرابی کاتالوگ
-        Assert.Contains("Preventive (scheduled restoration/discard)", html); // برچسب ترجمه‌شده‌ی نوع، نه "Preventive"
-        Assert.Contains("Operational", html);
-        Assert.Contains("Active", html);
-        Assert.DoesNotContain(">RunToFailure<", html);                 // کد خام هرگز به‌عنوان متن نمایش داده نمی‌شود
-        Assert.Contains("Test PUMP_T", html);                          // کلاس تجهیز
-    }
-
-    [Fact]
-    public async Task StrategyDetails_ShowsTagIdentityVersionsHistoryAndAssignmentActions()
-    {
-        var f = await BuildAsync(nameof(StrategyDetails_ShowsTagIdentityVersionsHistoryAndAssignmentActions));
-        var c = f.Env.StrategyController();
-
-        var html = await Render(c, await c.Details(f.StrategyId), "/Views/MaintenanceStrategy/Details.cshtml");
-
-        Assert.Contains("80-FT-6001", html);
-        Assert.Contains("A – critical", html);
-        Assert.Contains("Change history", html);
-        Assert.Contains("Activated", html);
-        Assert.Contains("name=\"overrideJustification\"", html);
-    }
+
+
 
     [Fact]
     public async Task StrategyForm_HasMandatoryRcmFields_AndNoTagFreeTextField()

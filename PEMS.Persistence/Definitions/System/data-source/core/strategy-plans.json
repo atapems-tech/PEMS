@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-plans",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Plans by strategy version",
+    "fa": "برنامه‌ها بر اساس نسخه"
+  },
+  "description": {
+    "en": "Plans by strategy version",
+    "fa": "برنامه‌ها بر اساس نسخه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "Plans",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

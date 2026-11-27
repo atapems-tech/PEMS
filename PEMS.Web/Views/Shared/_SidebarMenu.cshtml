@@ -463,7 +463,7 @@
 
                 @if (navVisibility.IsCmmsItemVisible("MaintenanceStrategy"))
                 {
-                    <pems-nav-link item="false" sub="true" active="@(IsActive("MaintenanceStrategy"))" asp-controller="MaintenanceStrategy" asp-action="Index" asp-area="">
+                    <pems-nav-link item="false" sub="true" href="/p/strategy-list" active="@(IsActive("MaintenanceStrategy") || Context.Request.Path.StartsWithSegments("/p/strategy"))">
                         <pems-icon name="bi-diagram-2" /> @Localizer["Maintenance Strategy"]
                     </pems-nav-link>
                 }

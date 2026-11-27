@@ -25,7 +25,6 @@ public class CmmsListPagesTests
     private static readonly string[] Pages =
     {
         "WorkOrder",
-        "MaintenanceStrategy",
         // wave 2b
     };
 
@@ -133,31 +132,7 @@ public class CmmsListPagesTests
 
     // ---------- Maintenance strategies ----------
 
-    private static Task<string> Strategies(bool canCreate, bool canApprove)
-        => Render<MaintenanceStrategyController>("/Views/MaintenanceStrategy/Index.cshtml", new StrategyIndexViewModel
-        {
-            Page = Page(new MaintenanceStrategyListDto { MaintenanceStrategyId = 1, VersionNumber = 2, Status = "Active", EquipmentClassName = "Centrifugal pump", EquipmentTagNumber = "", StrategyType = "TimeBased", ConsequenceCategory = "Operational", Frequency = "Monthly" }),
-            Filter = new StrategyListFilter { EquipmentClassId = 4 },
-            Classes = new() { new LookupItem { Id = 4, Text = "Centrifugal pump" } },
-            CanCreate = canCreate, CanApprove = canApprove, CanEdit = true,
-        }, _ => { });
-
-    [Fact]
-    public async Task MaintenanceStrategies_KeepTheirPermissions_AndMoveTheExtraLinksIntoTheMoreMenu()
-    {
-        var full = await Strategies(true, true);
-        AssertBuiltFromTheComponent(full, "MaintenanceStrategy", 1, keepsDataBadges: true);
-        var menu = Regex.Match(full, "<ul[^>]*lp-menu[^>]*>(.*?)</ul>", RegexOptions.Singleline).Value;
-        Assert.Contains("bi-pie-chart", menu);                                  // coverage
-        Assert.Contains("bi-journal-text", menu);                               // failure-mode catalogue
-        Assert.Contains("bi-collection", menu);                                 // bulk assign (approvers only)
-        Assert.Contains("lp-compose", full);
-        Assert.Contains("Centrifugal pump", Chips(full));
-
-        var readOnly = await Strategies(false, false);
-        Assert.DoesNotContain("bi-collection", readOnly);
-        Assert.DoesNotContain("lp-compose", readOnly);
-    }
+
 
     // ---------- Spare parts ----------
 

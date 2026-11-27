@@ -126,7 +126,6 @@ public class InfoGridComponentTests
     {
         foreach (var view in new[]
                  {
-                     "Views/MaintenanceStrategy/Details.cshtml",
                      "Views/Transmittal/Details.cshtml",
                      "Views/WorkOrder/Details.cshtml"
                  })
@@ -139,7 +138,6 @@ public class InfoGridComponentTests
     }
 
     [Theory]
-    [InlineData("Views/MaintenanceStrategy/Details.cshtml", 1, 18)]
     [InlineData("Views/Transmittal/Details.cshtml", 1, 6)]
     [InlineData("Views/WorkOrder/Details.cshtml", 1, 7)]
     public void WaveI4_CmmsAndDocumentHeaders_TakeTheirLabelsFromTheComponent(string view, int grids, int items)

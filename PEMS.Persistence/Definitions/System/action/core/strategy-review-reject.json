@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "strategy-review-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The review was recorded.",
+    "fa": "نتیجه‌ی بازبینی ثبت شد."
+  },
+  "description": {
+    "en": "The review was recorded.",
+    "fa": "نتیجه‌ی بازبینی ثبت شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "MaintenanceStrategy",
+      "action": "Review",
+      "args": {
+        "id": "field:id",
+        "approve": "literal:false",
+        "comment": "field:comment"
+      }
+    },
+    "success": {
+      "en": "The review was recorded.",
+      "fa": "نتیجه‌ی بازبینی ثبت شد."
+    },
+    "redirect": "/MaintenanceStrategy/Details/{id}"
+  }
+}

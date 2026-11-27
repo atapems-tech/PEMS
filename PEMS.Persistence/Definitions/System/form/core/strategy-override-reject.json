@@ -1,0 +1,67 @@
+{
+  "kind": "form",
+  "key": "strategy-override-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the override",
+    "fa": "رد Override"
+  },
+  "description": {
+    "en": "Reject the override",
+    "fa": "رد Override"
+  },
+  "payload": {
+    "id": "strategy-override-reject",
+    "title": {
+      "en": "Reject the override",
+      "fa": "رد Override"
+    },
+    "submitLabel": {
+      "en": "Reject the override",
+      "fa": "رد Override"
+    },
+    "actionKey": "strategy-override-reject",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "assignmentId",
+        "label": {
+          "en": "Assignment id",
+          "fa": "شناسه تخصیص"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "strategyId",
+        "label": {
+          "en": "Strategy id",
+          "fa": "شناسه استراتژی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "comment",
+        "label": {
+          "en": "Comment",
+          "fa": "توضیح"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

@@ -136,7 +136,7 @@ public static class NavigationMenuDefaults
         new("cmms.instrument", "sec.cmms", L, 20, "Instrument Passport", "bi-cpu", "CmmsItem:Instrument", ExternalPath: "/p/instruments", ExtraActiveControllers: "Instrument"),   // SCRUM-708: a definition page (/p/...)
         new("cmms.asset", "sec.cmms", L, 30, "Assets", "bi-diagram-2", "CmmsItem:Asset", ExternalPath: "/p/assets", ExtraActiveControllers: "Asset"),   // SCRUM-670: a definition page (/p/...)
         Sub("cmms.sub.planning", "sec.cmms", 40, "Maintenance Planning"),
-        Link("cmms.strategy", "cmms.sub.planning", 10, "Maintenance Strategy", "bi-diagram-2", "MaintenanceStrategy", rule: "CmmsItem:MaintenanceStrategy"),
+        new("cmms.strategy", "cmms.sub.planning", L, 10, "Maintenance Strategy", "bi-diagram-2", "CmmsItem:MaintenanceStrategy", ExternalPath: "/p/strategy-list", ExtraActiveControllers: "MaintenanceStrategy"),
         new("cmms.plan", "cmms.sub.planning", L, 20, "Maintenance Plan", "bi-calendar-check", "CmmsItem:MaintenancePlan", ExternalPath: "/p/maintenance-plans", ExtraActiveControllers: "MaintenancePlan"),   // SCRUM-724: a definition page (/p/...)
         new("cmms.backlog", "cmms.sub.planning", L, 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsItem:CmmsOperations", ExternalPath: "/p/maintenance-backlog"),   // SCRUM-673: a definition page (/p/...)
         Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "strategy-assignments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Strategy assignments",
+    "fa": "تخصیص‌های استراتژی"
+  },
+  "description": {
+    "en": "Strategy assignments",
+    "fa": "تخصیص‌های استراتژی"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "StrategyPage",
+      "action": "Assignments",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

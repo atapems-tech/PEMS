@@ -1,0 +1,53 @@
+{
+  "kind": "form",
+  "key": "strategy-activate",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Activate the strategy",
+    "fa": "فعال‌سازی استراتژی"
+  },
+  "description": {
+    "en": "Activate the strategy",
+    "fa": "فعال‌سازی استراتژی"
+  },
+  "payload": {
+    "id": "strategy-activate",
+    "title": {
+      "en": "Activate the strategy",
+      "fa": "فعال‌سازی استراتژی"
+    },
+    "submitLabel": {
+      "en": "Activate the strategy",
+      "fa": "فعال‌سازی استراتژی"
+    },
+    "actionKey": "strategy-activate",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "id",
+        "label": {
+          "en": "Strategy id",
+          "fa": "شناسه استراتژی"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "moveAssignments",
+        "label": {
+          "en": "Move the tags of the older version to this one",
+          "fa": "انتقال تگ‌های نسخه‌ی قبلی به این نسخه"
+        },
+        "kind": "checkbox",
+        "default": true
+      }
+    ]
+  }
+}
