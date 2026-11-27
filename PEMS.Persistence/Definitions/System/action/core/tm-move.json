@@ -1,0 +1,32 @@
+{
+  "kind": "action",
+  "key": "tm-move",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The change was saved.",
+    "fa": "تغییر ذخیره شد."
+  },
+  "description": {
+    "en": "The change was saved.",
+    "fa": "تغییر ذخیره شد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "TaskManager",
+      "action": "Transition",
+      "args": {
+        "id": "field:id",
+        "statusId": "field:to",
+        "rowVersion": "field:rowVersion"
+      }
+    },
+    "success": {
+      "en": "The change was saved.",
+      "fa": "تغییر ذخیره شد."
+    },
+    "redirect": "/TaskManager/Index"
+  }
+}

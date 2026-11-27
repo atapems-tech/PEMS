@@ -1,0 +1,144 @@
+{
+  "kind": "form",
+  "key": "tm-create-item",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "New task",
+    "fa": "وظیفه‌ی جدید"
+  },
+  "description": {
+    "en": "New task",
+    "fa": "وظیفه‌ی جدید"
+  },
+  "payload": {
+    "id": "tm-create-item",
+    "title": {
+      "en": "New task",
+      "fa": "وظیفه‌ی جدید"
+    },
+    "submitLabel": {
+      "en": "Create",
+      "fa": "ایجاد"
+    },
+    "actionKey": "tm-create-item",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "workSpaceId",
+        "label": {
+          "en": "Space id",
+          "fa": "شناسه فضا"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "title",
+        "label": {
+          "en": "Title",
+          "fa": "عنوان"
+        },
+        "kind": "text",
+        "maxLength": 300,
+        "span": 2,
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "typeId",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-type-options",
+        "optionsArgs": {
+          "id": "workSpaceId"
+        }
+      },
+      {
+        "name": "priority",
+        "label": {
+          "en": "Priority",
+          "fa": "اولویت"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-priority-options",
+        "default": "Normal"
+      },
+      {
+        "name": "description",
+        "label": {
+          "en": "Description",
+          "fa": "توضیحات"
+        },
+        "kind": "textarea",
+        "maxLength": 8000,
+        "span": 2
+      },
+      {
+        "name": "assigneeEmployeeId",
+        "label": {
+          "en": "Assignee",
+          "fa": "مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-assignee-options",
+        "optionsArgs": {
+          "id": "workSpaceId"
+        }
+      },
+      {
+        "name": "sprintId",
+        "label": {
+          "en": "Sprint",
+          "fa": "اسپرینت"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-sprint-options",
+        "optionsArgs": {
+          "id": "workSpaceId"
+        }
+      },
+      {
+        "name": "startDate",
+        "label": {
+          "en": "Start date",
+          "fa": "تاریخ شروع"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "dueDate",
+        "label": {
+          "en": "Due date",
+          "fa": "سررسید"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "storyPoints",
+        "label": {
+          "en": "Story points",
+          "fa": "امتیاز"
+        },
+        "kind": "number",
+        "min": 0,
+        "max": 1000,
+        "step": "0.5"
+      }
+    ]
+  }
+}

@@ -56,4 +56,12 @@ public sealed class TaskManagerOperations(ITaskManagerService tasks, IWorkSpaceS
     public Task<(bool Success, string? Error)> SetTransitionAsync(int workSpaceId, int fromStatusId, int toStatusId, bool allowed = false) => AdminAsync(a => spaces.SetTransitionAsync(workSpaceId, fromStatusId, toStatusId, allowed, a));
     public Task<(bool Success, string? Error)> AddTypeAsync(int workSpaceId, string name, string icon, string? nameFa = null, bool isSubtask = false) => AdminAsync(a => spaces.AddTypeAsync(workSpaceId, name ?? "", nameFa, icon ?? "", isSubtask, a));
     public Task<(bool Success, string? Error)> SetTypeActiveAsync(int typeId, bool isActive = false) => AdminAsync(a => spaces.SetTypeActiveAsync(typeId, isActive, a));
+
+    public async Task<TaskManagerCreateAnswer> CreateItemAsync(int? workSpaceId, string title, string? description = null, int? typeId = null, string? priority = null, int? assigneeEmployeeId = null, DateTime? dueDate = null, DateTime? startDate = null,
+        int? parentId = null, int? sprintId = null, decimal? storyPoints = null)
+    {
+        var r = await tasks.CreateAsync(new WorkItemCreateInput { WorkSpaceId = workSpaceId, Title = title ?? "", Description = description, TypeId = typeId, Priority = priority, AssigneeEmployeeId = assigneeEmployeeId, DueDate = dueDate, StartDate = startDate,
+            ParentId = parentId, SprintId = sprintId, StoryPoints = storyPoints }, await ActorAsync());
+        return r.Success && r.Id.HasValue ? new(true, null, r.Id.Value) : new(false, localizer[r.ErrorKey ?? "Tm_Err_SaveFailed"].Value, 0);
+    }
 }

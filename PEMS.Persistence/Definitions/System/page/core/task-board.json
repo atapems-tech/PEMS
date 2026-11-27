@@ -1,0 +1,208 @@
+{
+  "kind": "page",
+  "key": "task-board",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Board",
+    "fa": "بُرد"
+  },
+  "description": {
+    "en": "Board",
+    "fa": "بُرد"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "task-board",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "task-board-head",
+            "fields": [
+              {
+                "key": "name",
+                "label": {
+                  "en": "Space",
+                  "fa": "فضا"
+                }
+              },
+              {
+                "key": "key",
+                "label": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
+              },
+              {
+                "key": "role",
+                "label": {
+                  "en": "Role",
+                  "fa": "نقش"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              },
+              {
+                "key": "sprint",
+                "label": {
+                  "en": "Sprint",
+                  "fa": "اسپرینت"
+                },
+                "wide": true
+              },
+              {
+                "key": "hint",
+                "label": {
+                  "en": "Hint",
+                  "fa": "راهنما"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/task-board-head",
+              "idField": "key",
+              "id": "{{params.key}}"
+            }
+          }
+        },
+        {
+          "id": "tools",
+          "component": "data-grid",
+          "options": {
+            "id": "task-board-tools",
+            "url": "/d/task-board-head?f.key={{params.key|url}}",
+            "idField": "key",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "name",
+                "width": 240,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 600,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "backlog",
+                    "url": "/TaskManager/Space?key={raw.key}&view=backlog",
+                    "method": "get"
+                  },
+                  {
+                    "key": "filter",
+                    "url": "/TaskManager/AllWork?WorkSpaceId={raw.id}&StatusCategory=NotDone",
+                    "method": "get"
+                  },
+                  {
+                    "key": "create",
+                    "url": "/f/tm-create-item?workSpaceId={raw.id}",
+                    "method": "get",
+                    "showWhen": "row.canCreate == true"
+                  },
+                  {
+                    "key": "spaces",
+                    "url": "/p/task-manager",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "board",
+          "component": "data-view",
+          "options": {
+            "id": "task-board",
+            "url": "/d/task-board-cards?f.key={{params.key|url}}",
+            "view": "kanban",
+            "fields": {
+              "id": "id",
+              "title": "title",
+              "subtitle": "subtitle",
+              "badge": "badge",
+              "group": "status"
+            },
+            "texts": {
+              "loading": {
+                "en": "Loading",
+                "fa": "در حال بارگذاری"
+              },
+              "empty": {
+                "en": "Nothing here",
+                "fa": "موردی نیست"
+              },
+              "error": {
+                "en": "Could not load",
+                "fa": "بارگذاری نشد"
+              },
+              "more": {
+                "en": "More",
+                "fa": "بیشتر"
+              },
+              "today": {
+                "en": "Today",
+                "fa": "امروز"
+              },
+              "previous": {
+                "en": "Previous",
+                "fa": "قبلی"
+              },
+              "next": {
+                "en": "Next",
+                "fa": "بعدی"
+              },
+              "jalali": {
+                "en": "Jalali",
+                "fa": "شمسی"
+              },
+              "gregorian": {
+                "en": "Gregorian",
+                "fa": "میلادی"
+              },
+              "uncategorized": {
+                "en": "Other",
+                "fa": "سایر"
+              },
+              "moreItems": {
+                "en": "+{0} more",
+                "fa": "{0}+ مورد دیگر"
+              },
+              "invalidMove": {
+                "en": "Only allowed transitions are accepted.",
+                "fa": "فقط گذارهای مجاز پذیرفته می‌شود."
+              }
+            },
+            "groups": [],
+            "groupsUrl": "/d/task-board-groups?f.key={{params.key|url}}",
+            "allowedField": "allowed",
+            "moveFields": [
+              "rowVersion"
+            ],
+            "moveUrl": "/a/tm-move",
+            "itemUrl": "/Task/Details/{id}",
+            "height": 640
+          }
+        }
+      ]
+    }
+  }
+}

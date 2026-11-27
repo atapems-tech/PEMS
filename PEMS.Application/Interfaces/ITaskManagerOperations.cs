@@ -5,6 +5,8 @@ namespace PEMS.Application.Interfaces;
 /// the board and backlog ordering, the bulk bar, the sprint commands and the space administration (members, statuses, transitions, types; system administrators only). The actor is the current user and the
 /// error keys of the services are translated. The create and update of a task (an input object) and the save of a space stay on the controller together with the pages.
 /// </summary>
+public sealed record TaskManagerCreateAnswer(bool Success, string? Error, int NewId);
+
 public interface ITaskManagerOperations
 {
     [PEMS.Application.Common.PemsOperation("TaskManager", "Assign", "Task.Edit")]
@@ -77,4 +79,9 @@ public interface ITaskManagerOperations
 
     [PEMS.Application.Common.PemsOperation("TaskManager", "SetTypeActive")]
     Task<(bool Success, string? Error)> SetTypeActiveAsync(int typeId, bool isActive = false);
+
+    /// <summary>A new task of a space (the rules and messages of the task manager service); <c>NewId</c> opens the new task.</summary>
+    [PEMS.Application.Common.PemsOperation("TaskManager", "CreateItem", "Task.Create")]
+    Task<TaskManagerCreateAnswer> CreateItemAsync(int? workSpaceId, string title, string? description = null, int? typeId = null, string? priority = null, int? assigneeEmployeeId = null, DateTime? dueDate = null, DateTime? startDate = null,
+        int? parentId = null, int? sprintId = null, decimal? storyPoints = null);
 }

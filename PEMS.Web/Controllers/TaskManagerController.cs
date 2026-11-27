@@ -66,16 +66,7 @@ public class TaskManagerController : Controller
         view = view == "board" ? "board" : "backlog";
         ViewBag.ViewMode = view;
 
-        if (view == "board")
-        {
-            var board = await _tasks.GetBoardAsync(key, actor);
-            if (board == null) return NotFound();
-            ViewData["Title"] = board.View.Space.Name;
-            ViewData["Section"] = "Task Manager";
-            ViewBag.Assignees = await _tasks.GetEligibleAssigneesAsync(board.View.Space.Id, actor);
-            ViewBag.SpaceView = board.View;
-            return View("Board", board);
-        }
+        if (view == "board") return Redirect("/p/task-board?key=" + Uri.EscapeDataString(key));   // SCRUM-831: the board is the definition page /p/task-board
 
         var backlog = await _tasks.GetBacklogAsync(key, actor);
         if (backlog == null) return NotFound();

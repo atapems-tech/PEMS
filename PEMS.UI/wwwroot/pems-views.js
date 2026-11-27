@@ -67,6 +67,8 @@
             var h = href(item);
             if (h) c.setAttribute('href', h); else c.removeAttribute('href');
             c.setAttribute('data-id', String(item[F.id || 'id']));
+            if (cfg.allowedField) { var al = item[cfg.allowedField]; c.setAttribute('data-allowed', (Array.isArray(al) ? al : String(al == null ? '' : al).split(',')).map(function (x) { return String(x).trim(); }).filter(Boolean).join(',')); }
+            if (cfg.moveFields && cfg.moveFields.length) { var mv = {}; cfg.moveFields.forEach(function (k) { mv[k] = item[k]; }); c.setAttribute('data-move', JSON.stringify(mv)); }
             return c;
         }
         function paged(render, sortKey) {
@@ -155,7 +157,7 @@
         // Every change posts { id, start, end } (ISO dates, JSON, antiforgery token) to cfg.moveUrl, an /a/{action} of a stored definition: the guards of the edit form (permission, state, date order)
         // are that action's, a refused post puts the bar back and shows the error text.
         function postSchedule(id, start, end) {
-            return fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify({ id: id, start: start, end: end }) })
+            return fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify({ id: id, start: start, end: end }) })
                 .then(function (res) { if (!res.ok) throw new Error(String(res.status)); });
         }
         function wireBar(bar, track, r, lo, days, from0, span0, name) {
@@ -307,9 +309,17 @@
         }
 
         // ---- kanban: one request for the board, grouped by the group field
+        var groupsLoaded = null;
+        function loadGroups() {
+            if (!cfg.groupsUrl) return Promise.resolve();
+            if (!groupsLoaded) groupsLoaded = fetch(cfg.groupsUrl + (cfg.groupsUrl.indexOf('?') < 0 ? '?' : '&') + 'page=1&pageSize=200', { headers: { 'Accept': 'application/json' }, credentials: 'same-origin' })
+                .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+                .then(function (d) { cfg.groups = (d.items || []).map(function (g) { return { value: String(g.value), label: String(g.label), tone: g.tone || 'secondary' }; }); });
+            return groupsLoaded;
+        }
         function showBoard() {
             var mine = ++generation; say(T.loading); body.textContent = '';
-            request({ page: '1', pageSize: String(BOARD_LIMIT) }).then(function (data) {
+            loadGroups().then(function () { return request({ page: '1', pageSize: String(BOARD_LIMIT) }); }).then(function (data) {
                 if (mine !== generation) return;
                 var items = data.items || [], board = tpl('dv-board'), cols = {};
                 var known = {};
@@ -338,13 +348,15 @@
         function moveCard(card, col) {
             var from = card.parentNode, board = col.closest('.pems-view__board');
             if (from === slot(col, 'list')) return;
+            var allowed = card.getAttribute('data-allowed');
+            if (allowed !== null && allowed.split(',').indexOf(col.getAttribute('data-value')) < 0) { say(T.invalidMove || T.error); return; }
             slot(col, 'list').appendChild(card); counts(board);
-            fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify({ id: card.getAttribute('data-id'), to: col.getAttribute('data-value') }) })
+            fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify(Object.assign({}, JSON.parse(card.getAttribute('data-move') || '{}'), { id: card.getAttribute('data-id'), to: col.getAttribute('data-value') })) })
                 .then(function (r) { if (!r.ok) throw new Error(String(r.status)); })
                 .catch(function () { from.appendChild(card); counts(board); say(T.error); });
         }
         function wireDrag(card) {
-            card.setAttribute('draggable', 'true');
+            card.setAttribute('draggable', card.getAttribute('data-allowed') === '' ? 'false' : 'true');
             card.addEventListener('dragstart', function (e) { e.dataTransfer.setData('text/plain', card.getAttribute('data-id')); card.classList.add('is-dragging'); root.__dragging = card; });
             card.addEventListener('dragend', function () { card.classList.remove('is-dragging'); root.__dragging = null; });
             card.addEventListener('keydown', function (e) {
@@ -369,7 +381,7 @@
             var from = chip.parentNode, target = slot(cell, 'items');
             if (!target || from === target) return;
             target.appendChild(chip);
-            fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify({ id: chip.getAttribute('data-id'), date: cell.getAttribute('data-date') }) })
+            fetch(cfg.moveUrl, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'RequestVerificationToken': token() }, body: JSON.stringify({ id: chip.getAttribute('data-id'), date: cell.getAttribute('data-date') }) })
                 .then(function (r) { if (!r.ok) throw new Error(String(r.status)); })
                 .catch(function () { from.appendChild(chip); say(T.error); });
         }

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-board-groups",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Columns of the board",
+    "fa": "ستون‌های بُرد"
+  },
+  "description": {
+    "en": "Columns of the board",
+    "fa": "ستون‌های بُرد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "BoardGroups",
+      "args": {
+        "key": "param:key"
+      }
+    }
+  }
+}

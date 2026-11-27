@@ -83,27 +83,23 @@ public class TaskManagerViewRenderTests
         Assert.DoesNotContain("name=\"sprintId\" class", backlog);                 // عضو عادی Lead نیست: انتقال Sprint/رتبه ندارد
         Assert.Contains("id=\"tmCreateModal\"", backlog);
 
-        var board = await Render(tm, await tm.Space("MNT", "board"), "~/Views/TaskManager/Board.cshtml");
-        Assert.Contains("data-tm-board", board);
-        Assert.Contains("MNT-1", board);
-        Assert.Contains("name=\"statusId\"", board);                                // Alice گزارش‌دهنده است ⇒ کنترل انتقال
-
         var all = await Render(tm, await tm.AllWork(new WorkItemQuery { WorkSpaceId = w.SpaceId }), "~/Views/TaskManager/AllWork.cshtml");
         Assert.Contains("MNT-2", all);
         Assert.Contains("data-tm-bulk-value=\"status\"", all);
     }
 
     [Fact]
-    public async Task Board_ShowsNoMoveControls_ForAMemberWhoIsNotInvolved()
+    public async Task BoardCards_HaveNoTargets_ForAMemberWhoIsNotInvolved()
     {
-        var w = await SeedAsync(nameof(Board_ShowsNoMoveControls_ForAMemberWhoIsNotInvolved));
+        var w = await SeedAsync(nameof(BoardCards_HaveNoTargets_ForAMemberWhoIsNotInvolved));
         // Bob مسئول MNT-1 است ولی MNT-2 را نه؛ Sprint فعال فقط MNT-1 را دارد
         var other = (await new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService())
             .CreateAsync(new WorkItemCreateInput { WorkSpaceId = w.SpaceId, Title = "Not Bobs", SprintId = w.Ctx.Sprints.Single().SprintId }, new TaskActor(1, Alice, new[] { "Engineer" }, "Alice A"))).Id!.Value;
-        var (tm, _) = Controllers(w.Ctx, 2, "Engineer");
-        var board = await Render(tm, await tm.Space("MNT", "board"), "~/Views/TaskManager/Board.cshtml");
-        Assert.Contains($"data-tm-id=\"{w.ItemId}\"", board);
-        Assert.Contains($"draggable=\"false\" data-tm-card data-tm-id=\"{other}\"", board);
+        var user = new FakeCurrentUserService { UserId = 2, UserName = "u2", FullName = "User 2", Roles = new List<string> { "Engineer" } };
+        var ops = new PEMS.Web.Services.TaskManagerPagesOperations(new TaskManagerService(w.Ctx, new FakePermissionService(), new FakeNumberingService()), user, new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<Microsoft.Extensions.Localization.IStringLocalizer<PEMS.Web.Resources.SharedResource>>());
+        var cards = await ops.BoardCardsAsync("MNT");
+        Assert.Contains(cards, c => c.Id == w.ItemId);
+        Assert.Equal("", cards.Single(c => c.Id == other).Allowed);                 // no move for a card of someone else
     }
 
     [Fact]
