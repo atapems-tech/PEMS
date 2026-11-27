@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-export-pdf-old",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter PDF (old address)",
+    "fa": "PDF نامه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter PDF",
+    "fa": "PDF نامه"
+  },
+  "payload": {
+    "pattern": "Letter/ExportPdf/{id}",
+    "target": "/x/letter-pdf?id={id}",
+    "permanent": false
+  }
+}

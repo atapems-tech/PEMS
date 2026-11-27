@@ -319,7 +319,7 @@
                   },
                   {
                     "key": "pdf",
-                    "url": "/Letter/ExportPdf/{id}",
+                    "url": "/x/letter-pdf?id={id}",
                     "method": "get"
                   },
                   {

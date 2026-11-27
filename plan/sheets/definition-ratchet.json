@@ -74,7 +74,7 @@
     "PEMS.Web.Controllers.HelpController": 2,
     "PEMS.Web.Controllers.HomeController": 4,
     "PEMS.Web.Controllers.LetterComposeController": 10,
-    "PEMS.Web.Controllers.LetterController": 6,
+    "PEMS.Web.Controllers.LetterController": 5,
     "PEMS.Web.Controllers.NavigationBadgeController": 1,
     "PEMS.Web.Controllers.NotificationController": 2,
     "PEMS.Web.Controllers.PageHostController": 1,
