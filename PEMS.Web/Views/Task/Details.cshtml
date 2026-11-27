@@ -21,7 +21,7 @@
         }
         else
         {
-            <pems-link asp-controller="TaskManager" asp-action="Index">@Localizer["Tm_Title"]</pems-link> <span>/</span>
+            <pems-link href="/p/task-manager">@Localizer["Tm_Title"]</pems-link> <span>/</span>
             <pems-link asp-controller="TaskManager" asp-action="Space" asp-route-key="@i.WorkSpaceKey">@TaskManagerUi.Name(Model.WorkSpaceName, Model.WorkSpaceNameFa)</pems-link>
             @if (i.ParentKey != null) { <span>/</span> <pems-link asp-action="Details" asp-route-id="@i.ParentId">@i.ParentKey</pems-link> }
         }

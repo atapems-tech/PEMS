@@ -1,0 +1,154 @@
+{
+  "kind": "page",
+  "key": "task-manager",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task manager",
+    "fa": "مدیریت وظایف"
+  },
+  "description": {
+    "en": "Task manager",
+    "fa": "مدیریت وظایف"
+  },
+  "payload": {
+    "layout": "list-page",
+    "route": "task-manager",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "links",
+          "component": "content-blocks",
+          "options": {
+            "id": "task-manager-links",
+            "blocks": [
+              {
+                "type": "text",
+                "text": {
+                  "en": "Pick a space to open its backlog or board, or see your own work across all spaces.",
+                  "fa": "یک فضا را برای دیدن بک‌لاگ یا بُرد باز کنید، یا کارهای خودتان را در همه‌ی فضاها ببینید."
+                }
+              },
+              {
+                "type": "link",
+                "href": "/TaskManager/AllWork?Assignee=me&StatusCategory=NotDone",
+                "text": {
+                  "en": "My tasks",
+                  "fa": "کارهای من"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/p/task-followup",
+                "text": {
+                  "en": "Tasks I assigned",
+                  "fa": "کارهای ارجاع‌شده توسط من"
+                }
+              },
+              {
+                "type": "link",
+                "href": "/TaskManager/AllWork?StatusCategory=NotDone",
+                "text": {
+                  "en": "All work",
+                  "fa": "همه‌ی کارها"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "head",
+          "component": "data-grid",
+          "options": {
+            "id": "task-manager-head",
+            "url": "/d/task-manager-head",
+            "idField": "id",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "notice",
+                "width": 480,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 260,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "admin",
+                    "url": "/TaskManager/Admin",
+                    "method": "get",
+                    "showWhen": "row.isAdmin == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "spaces",
+          "component": "def:entity-list",
+          "options": {
+            "id": "task-manager-spaces",
+            "url": "/d/task-manager-spaces",
+            "idField": "id",
+            "viewsKey": "task-manager-spaces",
+            "columns": [
+              {
+                "key": "key",
+                "width": 100
+              },
+              {
+                "key": "name",
+                "width": 260
+              },
+              {
+                "key": "ownerDepartment",
+                "width": 200
+              },
+              {
+                "key": "role",
+                "width": 100
+              },
+              {
+                "key": "openItems",
+                "width": 110,
+                "type": "number"
+              },
+              {
+                "key": "members",
+                "width": 100,
+                "type": "number"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 300,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "backlog",
+                    "url": "/TaskManager/Space?key={raw.key}&view=backlog",
+                    "method": "get"
+                  },
+                  {
+                    "key": "board",
+                    "url": "/TaskManager/Space?key={raw.key}&view=board",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

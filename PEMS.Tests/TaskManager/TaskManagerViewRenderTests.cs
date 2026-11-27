@@ -76,9 +76,6 @@ public class TaskManagerViewRenderTests
         var w = await SeedAsync(nameof(EveryTaskManagerPage_Renders_ForAMember));
         var (tm, _) = Controllers(w.Ctx, 1, "Engineer");
 
-        var index = await Render(tm, await tm.Index(), "~/Views/TaskManager/Index.cshtml");
-        Assert.Contains("MNT", index);
-
         var backlog = await Render(tm, await tm.Space("MNT", "backlog"), "~/Views/TaskManager/Backlog.cshtml");
         Assert.Contains("Sprint 1", backlog);
         Assert.Contains("Backlog item", backlog);

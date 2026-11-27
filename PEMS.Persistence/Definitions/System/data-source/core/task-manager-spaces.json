@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "task-manager-spaces",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work spaces",
+    "fa": "فضاهای کاری"
+  },
+  "description": {
+    "en": "Work spaces",
+    "fa": "فضاهای کاری"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "Spaces"
+    }
+  }
+}

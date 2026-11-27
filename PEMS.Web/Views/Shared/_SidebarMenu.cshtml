@@ -403,7 +403,7 @@
                 <pems-icon name="bi-check2-square" /> @Localizer["Tasks"]
             </pems-nav-link>
 
-            <pems-nav-link item="false" active="@(IsActive("TaskManager"))" asp-controller="TaskManager" asp-action="Index" asp-area="">
+            <pems-nav-link item="false" href="/p/task-manager" active="@(IsActive("TaskManager") || Context.Request.Path.StartsWithSegments("/p/task-manager"))">
                 <pems-icon name="bi-kanban" /> @Localizer["Nav_TaskManager"]
             </pems-nav-link>
 

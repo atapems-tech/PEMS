@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "task-manager",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task manager (old address)",
+    "fa": "مدیریت وظایف (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Task manager (old address)",
+    "fa": "مدیریت وظایف (نشانی قدیمی)"
+  },
+  "payload": {
+    "pattern": "TaskManager",
+    "target": "/p/task-manager",
+    "permanent": false
+  }
+}

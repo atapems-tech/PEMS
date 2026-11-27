@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "task-manager-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Task manager",
+    "fa": "مدیریت وظایف"
+  },
+  "description": {
+    "en": "Task manager",
+    "fa": "مدیریت وظایف"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "Head"
+    }
+  }
+}
