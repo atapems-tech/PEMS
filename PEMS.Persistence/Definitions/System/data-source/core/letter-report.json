@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "letter-report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable report",
+    "fa": "گزارش کارتابل"
+  },
+  "description": {
+    "en": "Cartable report",
+    "fa": "گزارش کارتابل"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "Report",
+      "args": {
+        "from": "param:from",
+        "to": "param:to"
+      }
+    }
+  }
+}

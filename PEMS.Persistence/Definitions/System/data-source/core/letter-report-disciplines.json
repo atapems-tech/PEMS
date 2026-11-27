@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "letter-report-disciplines",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Received by discipline",
+    "fa": "دریافتی به تفکیک دیسیپلین"
+  },
+  "description": {
+    "en": "Received by discipline",
+    "fa": "دریافتی به تفکیک دیسیپلین"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "ReportDisciplines",
+      "args": {
+        "from": "param:from",
+        "to": "param:to"
+      }
+    }
+  }
+}

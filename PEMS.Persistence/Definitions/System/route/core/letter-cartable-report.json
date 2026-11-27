@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-cartable-report",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Cartable report (old address)",
+    "fa": "گزارش کارتابل (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Cartable report",
+    "fa": "گزارش کارتابل"
+  },
+  "payload": {
+    "pattern": "LetterCartable/Report",
+    "target": "/p/letter-cartable-report",
+    "permanent": false
+  }
+}

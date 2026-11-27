@@ -457,35 +457,6 @@ public class CartableWebTests
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() => ops.ThreadMembersAsync(secret.LetterId));
     }
 
-    // ------------------------------------------------------------------ LetterCartableController
-    private static LetterCartableController Cartable(string name, out PEMSDbContext ctx, ICurrentUserService? user = null)
-    {
-        ctx = LetterTestWorld.NewContext("CartCtl_" + name);
-        var org = new OrganizationSubordinateResolver(ctx);
-        var localizer = new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<IStringLocalizer<SharedResource>>();
-        return new LetterCartableController(new LetterTagTreeService(ctx), new LetterUserSettingsService(ctx), new LetterDelegationService(ctx, org),
-            new LetterRoutingRuleService(ctx, org), new LetterContactService(ctx), new LetterPersonalReminderService(ctx), new LetterReportService(ctx, org),
-            user ?? new FakeUser(), new FakePermissionService { AllowAll = false }, ctx, localizer)
-        { ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() } };
-    }
-
-    private static T Value<T>(IActionResult r, string prop)
-    {
-        var json = JsonSerializer.Serialize(Assert.IsType<JsonResult>(r).Value);
-        using var doc = JsonDocument.Parse(json);
-        return doc.RootElement.GetProperty(prop).Deserialize<T>()!;
-    }
-
-    // SCRUM-714: the writes of the cartable are the operations of ILetterCartableOperations (the reads stay on the controller)
-    private static PEMS.Web.Services.LetterCartableOperations CartableOps(string name, out PEMSDbContext ctx, ICurrentUserService? user = null)
-    {
-        ctx = LetterTestWorld.NewContext("CartOps_" + name);
-        var org = new OrganizationSubordinateResolver(ctx);
-        var localizer = new Microsoft.Extensions.DependencyInjection.ServiceCollection().AddLogging().AddLocalization().BuildServiceProvider().GetRequiredService<IStringLocalizer<SharedResource>>();
-        return new PEMS.Web.Services.LetterCartableOperations(new LetterTagTreeService(ctx), new LetterUserSettingsService(ctx), new LetterDelegationService(ctx, org), new LetterRoutingRuleService(ctx, org),
-            new LetterContactService(ctx), new LetterPersonalReminderService(ctx), user ?? new FakeUser(), new FakePermissionService { AllowAll = false }, localizer, ctx);
-    }
-
     [Fact]
     public async Task CartableOperations_TagCreateReturnsLocalizedErrors_AndOkOnSuccess()
     {
@@ -540,34 +511,6 @@ public class CartableWebTests
         Assert.DoesNotContain("bogus", json);
     }
 
-    [Fact]
-    public async Task ReportPage_RendersKpisSlaAndTheSubordinateTable()
-    {
-        var c = Cartable(nameof(ReportPage_RendersKpisSlaAndTheSubordinateTable), out _);
-        var model = new CartableReportDto
-        {
-            FromDate = new DateTime(2026, 1, 1), ToDate = new DateTime(2026, 3, 31), Received = 12, Unread = 3, Sent = 4, OpenReferrals = 2, OverdueReferrals = 1, CompletedReferrals = 5,
-            ResponseRequired = 6, AnsweredOnTime = 3, AnsweredLate = 1, OpenOverdue = 1, OpenWithinSla = 1, AvgResponseDays = 2.5, AvgReferralDays = 1.5, HasSubordinates = true,
-            ByMonth = new() { new("2026-01", 5), new("2026-02", 7) }, ByDiscipline = new() { new("Mech", 8) },
-            Subordinates = new() { new SubordinateReportRowDto { EmployeeId = 3, Name = "Sam <Eng>", Position = "Engineer", Depth = 1, Received = 4, OverdueReferrals = 2 } }
-        };
-        var result = new ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(c.ViewData) { Model = model } };
-        var html = await RazorViewRenderer.RenderAsync(c, result, "~/Views/LetterCartable/Report.cshtml");
-
-        Assert.Contains("Response SLA", html);
-        Assert.Contains("Subordinates&#x27; performance", html.Replace("&#39;", "&#x27;"));
-        Assert.Contains("Sam &lt;Eng&gt;", html);                       // user text is encoded
-        Assert.Matches(@"class=""num bad"">2</td>", html);              // overdue referrals stand out
-        Assert.Contains("data-bk-chart", html);
-        Assert.True(Regex.Matches(html, "data-bk-chart").Count >= 3);   // SLA donut + gauge + monthly bars + discipline bars
-        Assert.Contains("name=\"from\"", html);
-        Assert.Contains("name=\"to\"", html);
-
-        model.HasSubordinates = false; model.Subordinates = new();
-        var without = await RazorViewRenderer.RenderAsync(c, new ViewResult { ViewData = new Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary(c.ViewData) { Model = model } }, "~/Views/LetterCartable/Report.cshtml");
-        Assert.DoesNotContain("Subordinates&#x27; performance", without.Replace("&#39;", "&#x27;"));
-    }
-
     // ------------------------------------------------------------------ static guarantees on the front-end files
     [Fact]
     public void SettingsScript_NeverUsesInnerHtml_AndSendsTheAntiforgeryHeader()
@@ -616,11 +559,7 @@ public class CartableWebTests
         var resourcesDir = Path.Combine(Root(), "PEMS.Web", "Resources");
         var en = File.ReadAllText(Path.Combine(resourcesDir, "SharedResource.resx"));
         var fa = File.ReadAllText(Path.Combine(resourcesDir, "SharedResource.fa.resx"));
-        var sources = new[]
-        {
-            Web("Views", "Letter", "Index.cshtml"), Web("Views", "Letter", "Details.cshtml"), Web("Views", "LetterCartable", "Report.cshtml"),
-            Web("Controllers", "LetterCartableController.cs")
-        }.Concat(Directory.GetFiles(Path.Combine(Root(), "PEMS.Application"), "*.cs", SearchOption.AllDirectories).Select(File.ReadAllText)).ToList();
+        var sources = Enumerable.Empty<string>().Concat(Directory.GetFiles(Path.Combine(Root(), "PEMS.Application"), "*.cs", SearchOption.AllDirectories).Select(File.ReadAllText)).ToList();
         var keys = sources.SelectMany(s => Regex.Matches(s, "\"((?:Ct|Cart|Tag|Del|Rule|Grp|Rem)_(?:Err_)?[A-Za-z]+)\"").Select(m => m.Groups[1].Value))
             .Where(k => !k.EndsWith("_")).Distinct().ToList();
         Assert.True(keys.Count > 50);

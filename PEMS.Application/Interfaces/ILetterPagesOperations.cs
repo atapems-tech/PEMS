@@ -5,6 +5,9 @@ public sealed record LetterCountsRow(int Id, int Inbox, int InboxUnread, int Sha
 public sealed record LetterDashboardRow(int Id, int TotalActive, int OpenLetters, int Received30, int Issued30, int OpenReferrals, int OverdueReferrals, int OverdueResponses, int AwaitingApproval, int MyDrafts, int MyReturned, int MyOpenReferrals);
 public sealed record LetterBreakdownRow(string Key, int Count);
 public sealed record LetterAttentionRow(int Id, string Number, string Subject, string Reason, DateTime Due, int DaysOverdue);
+public sealed record LetterReportRow(int Id, int Received, int Unread, int Sent, int OpenReferrals, int OverdueReferrals, int CompletedReferrals, string AvgReferralDays, int ResponseRequired, string AvgResponseDays, int OnTimePercent, int AnsweredOnTime, int AnsweredLate, int OpenOverdue, int OpenWithinSla);
+public sealed record LetterBucketRow(string Label, int Count);
+public sealed record LetterSubordinateRow(int Id, string Name, string? Position, int Received, int Unread, int OpenReferrals, int OverdueReferrals, int CompletedReferrals, string AvgReferralDays);
 public sealed record LetterFileResult(bool Success, string? Error, byte[] Bytes, string FileName, string ContentType);
 public sealed record LetterChoice(string Value, string Label);
 
@@ -47,4 +50,21 @@ public interface ILetterPagesOperations
 
     [PEMS.Application.Common.PemsOperation("LetterPage", "Disciplines", "Correspondence.View")]
     Task<List<LetterChoice>> DisciplinesAsync();
+
+    // ---- cartable report (SCRUM-828)
+    [PEMS.Application.Common.PemsOperation("LetterPage", "Report", "Correspondence.View")]
+    Task<List<LetterReportRow>> ReportAsync(string? from = null, string? to = null);
+
+    [PEMS.Application.Common.PemsOperation("LetterPage", "ReportMonths", "Correspondence.View")]
+    Task<List<LetterBucketRow>> ReportMonthsAsync(string? from = null, string? to = null);
+
+    [PEMS.Application.Common.PemsOperation("LetterPage", "ReportDisciplines", "Correspondence.View")]
+    Task<List<LetterBucketRow>> ReportDisciplinesAsync(string? from = null, string? to = null);
+
+    [PEMS.Application.Common.PemsOperation("LetterPage", "ReportSla", "Correspondence.View")]
+    Task<List<LetterBucketRow>> ReportSlaAsync(string? from = null, string? to = null);
+
+    [PEMS.Application.Common.PemsOperation("LetterPage", "ReportSubordinates", "Correspondence.View")]
+    Task<List<LetterSubordinateRow>> ReportSubordinatesAsync(string? from = null, string? to = null);
+
 }

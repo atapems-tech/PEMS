@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "letter-report-months",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Received by month",
+    "fa": "دریافتی به تفکیک ماه"
+  },
+  "description": {
+    "en": "Received by month",
+    "fa": "دریافتی به تفکیک ماه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "ReportMonths",
+      "args": {
+        "from": "param:from",
+        "to": "param:to"
+      }
+    }
+  }
+}

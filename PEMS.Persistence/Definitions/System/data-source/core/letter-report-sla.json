@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "letter-report-sla",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Response SLA",
+    "fa": "SLA پاسخ"
+  },
+  "description": {
+    "en": "Response SLA",
+    "fa": "SLA پاسخ"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterPage",
+      "action": "ReportSla",
+      "args": {
+        "from": "param:from",
+        "to": "param:to"
+      }
+    }
+  }
+}
