@@ -112,56 +112,6 @@ public class ReferralWebTests
         new() { LetterId = 7, LetterNumber = "LTR-7", Kind = "Reply", SenderName = "Joe", Body = "<p>Done</p>", LetterDate = new DateTime(2026, 3, 1), IsCurrent = true }
     };
 
-    [Fact]
-    public async Task Details_ShowsThePreviousMessagesWithTheirFullText_KindChipsAndAMarkerForThisLetter()
-    {
-        var html = await RenderDetails("Sent", Flow());
-
-        Assert.Contains("id=\"conversationPanel\"", html);
-        Assert.Contains("Message flow (3)", html);
-        Assert.Contains("Please revise the datasheet.", html);
-        Assert.Contains("Please check P-101", html);
-        Assert.Matches(@"cv-kind cv-kind--original", html);
-        Assert.Matches(@"cv-kind cv-kind--referral", html);
-        Assert.Matches(@"<details open>", html);                        // previous messages open by default, text included
-        Assert.Contains("→ Joe", html.Replace("&rarr;", "→"));
-        Assert.Contains("Cc: Mina", html);
-        Assert.Contains("This letter", html);
-        Assert.Equal(1, Regex.Matches(html, "aria-current=\"true\"").Count);
-        Assert.Contains("data-cv-toggle=\"open\"", html);
-    }
-
-    [Fact]
-    public async Task Details_WithASingleMessage_HasNoConversationPanel_AndFallsBackToTheOldThreadOtherwise()
-    {
-        Assert.DoesNotContain("id=\"conversationPanel\"", await RenderDetails("Sent", Flow().Take(1).ToList()));
-        Assert.DoesNotContain("id=\"conversationPanel\"", await RenderDetails("Sent", null));
-    }
-
-    [Fact]
-    public async Task Details_OffersReplyAndReferralTogether_OnlyOnceTheLetterIsOut_AndReferralsOfPeopleGoThroughTheComposer()
-    {
-        var sent = await RenderDetails("Sent", null);
-        var source = Web("Views", "Letter", "Details.cshtml");
-
-        Assert.Contains("asp-route-replyTo=\"@l.LetterId\"", source);
-        Assert.Contains("asp-route-referTo=\"@l.LetterId\"", source);
-        Assert.Contains("Reply</a>", sent.Replace("</i> Reply", "Reply"));
-        Assert.Matches(@">\s*Refer\s*</a>", sent);
-        foreach (var pre in new[] { "Draft", "PendingApproval", "Rejected" })
-        {
-            var html = await RenderDetails(pre, null);
-            Assert.DoesNotMatch(@">\s*Refer\s*</a>", html);
-        }
-
-        // the quick form is for departments only: no employee picker any more in the referral form
-        var referralForm = Regex.Match(sent, "<form[^>]*>\\s*(?:<div class=\"row[^\"]*\">)?\\s*<input[^>]*name=\"letterId\"[^>]*/?>\\s*<div class=\"col-md-6\">\\s*<select[^>]*name=\"referredToDepartmentId\".*?</form>", RegexOptions.Singleline).Value;
-        Assert.NotEmpty(referralForm);
-        Assert.DoesNotContain("referredToEmployeeId", referralForm);
-        Assert.Contains("Refer to a person", sent);
-    }
-
-
     // ------------------------------------------------------------------ designated approver authority
     private static (LetterController Ctl, PEMSDbContext Ctx) Controller(string name, int userId, bool allowAll = false)
     {

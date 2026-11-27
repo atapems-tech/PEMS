@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "letter-return-revision",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Return for revision",
+    "fa": "بازگشت برای اصلاح"
+  },
+  "description": {
+    "en": "Return for revision",
+    "fa": "بازگشت برای اصلاح"
+  },
+  "payload": {
+    "id": "letter-return-revision",
+    "title": {
+      "en": "Return for revision",
+      "fa": "بازگشت برای اصلاح"
+    },
+    "submitLabel": {
+      "en": "Return for revision",
+      "fa": "بازگشت برای اصلاح"
+    },
+    "actionKey": "letter-return-revision",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason (required)",
+          "fa": "دلیل (الزامی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

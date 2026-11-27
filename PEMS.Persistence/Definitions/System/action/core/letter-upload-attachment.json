@@ -23,13 +23,13 @@
       },
       "upload": {
         "profile": "attachment",
-        "maxFileMb": 25
+        "maxFileMb": 50
       }
     },
     "success": {
       "en": "Attachment uploaded",
       "fa": "پیوست بارگذاری شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

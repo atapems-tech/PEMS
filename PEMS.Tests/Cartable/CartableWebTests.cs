@@ -321,27 +321,6 @@ public class CartableWebTests
         return await RazorViewRenderer.RenderAsync(c, result, "~/Views/Letter/Details.cshtml");
     }
 
-    [Fact]
-    public async Task Details_HistoryOptions_ReflectTheChosenOrderAndRole_AndStayInsideThePane()
-    {
-        var html = await RenderDetails(embed: true, role: "manager", order: "desc");
-        Assert.Contains("name=\"historyOrder\"", html);
-        Assert.Contains("name=\"historyRole\"", html);
-        Assert.Matches(@"<option value=""desc"" selected", html);
-        Assert.Matches(@"<option value=""manager"" selected", html);
-        foreach (var role in new[] { "all", "me", "manager", "subordinates" }) Assert.Contains($"<option value=\"{role}\"", html);
-        Assert.Contains("name=\"embed\" value=\"true\"", html);             // the pane keeps its embed flag across the filter
-        Assert.Contains("target=\"_self\"", html);                          // and the filter form reloads inside the pane
-    }
-
-    [Fact]
-    public async Task Details_FullPage_HasNoEmbedFlag()
-    {
-        var html = await RenderDetails(embed: false);
-        Assert.DoesNotContain("name=\"embed\"", html);
-        Assert.Contains("name=\"historyRole\"", html);
-    }
-
     // ------------------------------------------------------------------ LetterController (cartable operations)
     private static (LetterController Ctl, PEMSDbContext Ctx, LetterCartableService Cart) Controller(string name, ICurrentUserService? user = null)
     {

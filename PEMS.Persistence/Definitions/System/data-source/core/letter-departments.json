@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "letter-departments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Departments",
+    "fa": "واحدها"
+  },
+  "description": {
+    "en": "Departments",
+    "fa": "واحدها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Departments"
+    }
+  }
+}

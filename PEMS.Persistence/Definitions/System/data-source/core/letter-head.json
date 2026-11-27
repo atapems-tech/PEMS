@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter",
+    "fa": "نامه"
+  },
+  "description": {
+    "en": "Letter",
+    "fa": "نامه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Head",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

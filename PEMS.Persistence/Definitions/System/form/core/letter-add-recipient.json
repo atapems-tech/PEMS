@@ -1,0 +1,110 @@
+{
+  "kind": "form",
+  "key": "letter-add-recipient",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Add a recipient",
+    "fa": "افزودن گیرنده"
+  },
+  "description": {
+    "en": "Add a recipient",
+    "fa": "افزودن گیرنده"
+  },
+  "payload": {
+    "id": "letter-add-recipient",
+    "title": {
+      "en": "Add a recipient",
+      "fa": "افزودن گیرنده"
+    },
+    "submitLabel": {
+      "en": "Add a recipient",
+      "fa": "افزودن گیرنده"
+    },
+    "actionKey": "letter-add-recipient",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "recipientType",
+        "label": {
+          "en": "Type",
+          "fa": "نوع"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "default": "To",
+        "options": [
+          {
+            "value": "To",
+            "label": {
+              "en": "To",
+              "fa": "To"
+            }
+          },
+          {
+            "value": "Cc",
+            "label": {
+              "en": "Cc",
+              "fa": "Cc"
+            }
+          },
+          {
+            "value": "Bcc",
+            "label": {
+              "en": "Bcc",
+              "fa": "Bcc"
+            }
+          }
+        ]
+      },
+      {
+        "name": "employeeId",
+        "label": {
+          "en": "Employee",
+          "fa": "کارمند"
+        },
+        "kind": "select",
+        "searchSource": "Employee"
+      },
+      {
+        "name": "departmentId",
+        "label": {
+          "en": "Or a department",
+          "fa": "یا واحد"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-departments"
+      },
+      {
+        "name": "externalName",
+        "label": {
+          "en": "Or an external name",
+          "fa": "یا نام بیرونی"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

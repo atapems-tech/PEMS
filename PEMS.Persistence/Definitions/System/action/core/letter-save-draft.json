@@ -28,6 +28,6 @@
       "en": "Draft saved.",
       "fa": "پیش‌نویس ذخیره شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

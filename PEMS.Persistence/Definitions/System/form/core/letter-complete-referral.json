@@ -1,0 +1,69 @@
+{
+  "kind": "form",
+  "key": "letter-complete-referral",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Complete the referral",
+    "fa": "تکمیل ارجاع"
+  },
+  "description": {
+    "en": "Complete the referral",
+    "fa": "تکمیل ارجاع"
+  },
+  "payload": {
+    "id": "letter-complete-referral",
+    "title": {
+      "en": "Complete the referral",
+      "fa": "تکمیل ارجاع"
+    },
+    "submitLabel": {
+      "en": "Complete the referral",
+      "fa": "تکمیل ارجاع"
+    },
+    "actionKey": "letter-complete-referral",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "referralId",
+        "label": {
+          "en": "Referral",
+          "fa": "ارجاع"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "responseNote",
+        "label": {
+          "en": "Response note",
+          "fa": "یادداشت پاسخ"
+        },
+        "kind": "textArea"
+      }
+    ]
+  }
+}

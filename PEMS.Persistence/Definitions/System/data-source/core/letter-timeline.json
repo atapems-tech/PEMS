@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-timeline",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "History",
+    "fa": "تاریخچه"
+  },
+  "description": {
+    "en": "History",
+    "fa": "تاریخچه"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Timeline",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

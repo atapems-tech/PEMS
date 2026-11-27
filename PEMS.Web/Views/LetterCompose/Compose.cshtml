@@ -93,7 +93,7 @@
                     if (isReferral) { <pems-link asp-action="Compose" asp-route-replyTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReply"]</pems-link> }
                     else if (input.LetterType == "Internal") { <pems-link asp-action="Compose" asp-route-referTo="@Model.ParentLetterId">@Localizer["Ct_SwitchToReferral"]</pems-link> }
                 }
-                <pems-link asp-controller="Letter" asp-action="Details" asp-route-id="@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</pems-link>
+                <pems-link href="/p/letter-details?id=@Model.ParentLetterId" target="_blank" rel="noopener">@Localizer["Lc_ViewOriginal"]</pems-link>
             </pems-flex>
         </pems-alert>
     }

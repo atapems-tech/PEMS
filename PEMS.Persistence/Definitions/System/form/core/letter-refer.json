@@ -1,0 +1,80 @@
+{
+  "kind": "form",
+  "key": "letter-refer",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Refer the letter",
+    "fa": "ارجاع نامه"
+  },
+  "description": {
+    "en": "Refer the letter",
+    "fa": "ارجاع نامه"
+  },
+  "payload": {
+    "id": "letter-refer",
+    "title": {
+      "en": "Refer the letter",
+      "fa": "ارجاع نامه"
+    },
+    "submitLabel": {
+      "en": "Refer the letter",
+      "fa": "ارجاع نامه"
+    },
+    "actionKey": "letter-refer",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "referredToEmployeeId",
+        "label": {
+          "en": "To (employee)",
+          "fa": "به (کارمند)"
+        },
+        "kind": "select",
+        "searchSource": "Employee"
+      },
+      {
+        "name": "referredToDepartmentId",
+        "label": {
+          "en": "Or to a department",
+          "fa": "یا به واحد"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-departments"
+      },
+      {
+        "name": "instructions",
+        "label": {
+          "en": "Instructions",
+          "fa": "دستورالعمل"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "dueDate",
+        "label": {
+          "en": "Due date",
+          "fa": "سررسید"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

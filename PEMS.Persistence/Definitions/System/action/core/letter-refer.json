@@ -29,6 +29,6 @@
       "en": "Letter referred.",
       "fa": "نامه ارجاع شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

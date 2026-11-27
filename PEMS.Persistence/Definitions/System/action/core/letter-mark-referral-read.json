@@ -26,6 +26,6 @@
       "en": "Done.",
       "fa": "انجام شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

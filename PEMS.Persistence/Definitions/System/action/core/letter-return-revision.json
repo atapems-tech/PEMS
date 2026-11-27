@@ -26,6 +26,6 @@
       "en": "Letter returned for revision.",
       "fa": "نامه برای اصلاح بازگردانده شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-recipients",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Recipients",
+    "fa": "گیرندگان"
+  },
+  "description": {
+    "en": "Recipients",
+    "fa": "گیرندگان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Recipients",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

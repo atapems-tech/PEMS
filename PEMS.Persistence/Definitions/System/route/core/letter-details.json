@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "letter-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Letter (old address)",
+    "fa": "نامه (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Letter",
+    "fa": "نامه"
+  },
+  "payload": {
+    "pattern": "Letter/Details/{id}",
+    "target": "/p/letter-details?id={id}",
+    "permanent": false
+  }
+}

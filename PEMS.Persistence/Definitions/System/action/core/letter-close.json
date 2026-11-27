@@ -18,13 +18,13 @@
       "model": "Letter",
       "action": "Close",
       "args": {
-        "letterId": "field:letterId"
+        "letterId": "field:id"
       }
     },
     "success": {
       "en": "Letter closed.",
       "fa": "نامه بسته شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={id}"
   }
 }

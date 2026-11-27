@@ -18,13 +18,13 @@
       "model": "Letter",
       "action": "Send",
       "args": {
-        "letterId": "field:letterId"
+        "letterId": "field:id"
       }
     },
     "success": {
       "en": "Letter sent.",
       "fa": "نامه ارسال شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={id}"
   }
 }

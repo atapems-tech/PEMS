@@ -97,77 +97,6 @@ public class LetterController : Controller
     private async Task<IActionResult?> DenyIfNoAccessAsync(int letterId)
         => await _letterService.CanViewAsync(letterId, await BuildViewerAsync()) ? null : Forbid();
 
-    public async Task<IActionResult> Details(int id, bool embed = false, string? historyRole = null, string? historyOrder = null)
-    {
-        ViewData["Title"] = "Letter Details";
-        ViewData["Section"] = "Correspondence Management";
-
-        var viewer = await BuildViewerAsync();
-        var access = await _letterService.GetDetailForViewerAsync(id, viewer);
-        if (access.Outcome == LetterAccessOutcome.Forbidden) return Forbid();
-        if (access.Outcome != LetterAccessOutcome.Ok) return NotFound();
-        var detail = access.Detail!;
-
-        // باز کردن مستقیم نامه (نه فقط از روی اعلان) هم اعلان‌های مرتبطِ همین کاربر را Read می‌کند
-        if (_currentUser.UserId.HasValue)
-            await _notifications.MarkRelatedReadAsync(_currentUser.UserId.Value, "Letter", id);
-
-        // تاریخچه‌ی گردش: ترتیب (قدیم→جدید / جدید→قدیم) و فیلتر نقش (همه/من/مدیر/زیردستان) بر پایه‌ی چارت سازمانی
-        var timeline = await _letterService.GetTimelineAsync(id, viewer);
-        var newestFirst = string.Equals(historyOrder, "desc", StringComparison.OrdinalIgnoreCase);
-        var role = LetterHistoryFilter.NormalizeRole(historyRole);
-        ViewBag.Timeline = _cartable != null && _currentUser.UserId.HasValue
-            ? await _cartable.FilterHistoryAsync(timeline, role, newestFirst, _currentUser.UserId.Value)
-            : (newestFirst ? timeline.OrderByDescending(e => e.EventDate).ToList() : timeline);
-        ViewBag.HistoryRole = role;
-        ViewBag.HistoryOrder = newestFirst ? "desc" : "asc";
-        ViewBag.Embed = embed;
-        // طبق بند ۱۹: ParentLetterId/Thread از قبل در سرویس وجود داشت اما هرگز از Details
-        // فراخوانی نمی‌شد - نمای مکالمه‌ای (Gmail-Inspired) دقیقاً به همین داده نیاز دارد
-        ViewBag.Thread = await _letterService.GetThreadAsync(id);
-        // گردش پیام‌ها با متن کامل (نامه‌ی اصلی، پاسخ‌ها و ارجاع‌ها)؛ فقط پیام‌هایی که این کاربر اجازه‌ی دیدنشان را دارد
-        ViewBag.Conversation = _cartable != null
-            ? await _cartable.GetConversationAsync(id, _currentUser.UserId, await CanViewConfidentialAsync())
-            : null;
-
-        // طبق بند ۷: فقط پرچم UI - محافظت واقعی در سرویس (CheckOriginalAuthorCanEdit) است، نه این‌جا
-        ViewBag.CanEditReturned = _currentUser.UserId.HasValue
-            && _currentUser.UserId.Value == detail.Letter.RegisteredById
-            && detail.Letter.Status == "ReturnedForRevision";
-
-        ViewBag.CanEditDraft = _currentUser.UserId.HasValue
-            && _currentUser.UserId.Value == detail.Letter.RegisteredById
-            && detail.Letter.Status == "Draft";
-
-        ViewBag.CanReview = await _permissionService.HasPermissionAsync(_currentUser.Roles, "Correspondence", "Approve");
-        // تاییدکننده‌ی مرحله‌ی جاریِ همین نامه (حتی بدون مجوز Approve ماژول) دکمه‌های تایید/برگشت/رد را می‌بیند
-        ViewBag.IsCurrentApprover = detail.Letter.Status == "PendingApproval" && detail.ApprovalSteps.OrderBy(s => s.StepOrder).FirstOrDefault(s => s.Status == "Pending")?.ApproverUserId == _currentUser.UserId;
-
-        // flags for the formal-workflow buttons (send / archive / reassign approver / history); services re-check every rule
-        var isAuthor = _currentUser.UserId.HasValue && _currentUser.UserId.Value == detail.Letter.RegisteredById;
-        var isAdmin = _currentUser.Roles.Contains("SystemAdmin");
-        ViewBag.IsAuthor = isAuthor;
-        ViewBag.IsAdmin = isAdmin;
-        ViewBag.CanArchive = isAuthor || isAdmin || (bool)ViewBag.CanReview;
-        ViewBag.CanAudit = isAuthor || isAdmin || (bool)ViewBag.CanReview;
-        if (isAdmin && _composeService != null && detail.ApprovalSteps.Any(x => x.Status == "Pending"))
-            ViewBag.ApproverOptions = await _composeService.GetApproverOptionsAsync();
-
-        // پاسخ‌خواهی: ثبت‌کننده یا کسی با اختیار Approve/SystemAdmin (سرویس دوباره بررسی می‌کند)
-        ViewBag.CanManageResponse = _currentUser.UserId.HasValue
-            && (_currentUser.UserId.Value == detail.Letter.RegisteredById
-                || _currentUser.Roles.Contains("SystemAdmin") || (bool)ViewBag.CanReview)
-            && !LetterResponseRules.FinishedStatuses.Contains(detail.Letter.Status);
-
-        // طبق بند ۲۶: صفحه‌ی جزئیات (عمدتاً فقط-خواندنی) نباید Dropdown های سنگین (همه‌ی
-        // Employee/Document/MR) را بارگذاری کند - فقط زمانی که کاربر واقعاً دیالوگ افزودن
-        // گیرنده/ارجاع/تگ را باز می‌کند، لازم است. این‌جا فقط موارد سبک (Department/Tag) از قبل
-        // آماده می‌مانند و Employee با یک Endpoint سبک جداگانه (به‌محض باز شدن دیالوگ) پر می‌شود.
-        await LoadLightDropdownsForDetailsAsync();
-
-        return View(detail);
-    }
-
     // پاسخ در همان فرم رسمی نوشتن نامه باز می‌شود (پیوست، تایید، محرمانگی، ذخیره‌ی خودکار)؛ دسترسی به نامه‌ی اصلی آنجا بررسی می‌شود
     [HttpGet]
     public IActionResult Reply(int id, int? templateId = null)
@@ -185,7 +114,7 @@ public class LetterController : Controller
         var id = await _letterService.ReplyAsync(parentLetterId, letterNumber, subject, body, receiver, _currentUser.UserId);
 
         TempData["Message"] = "Reply drafted";
-        return RedirectToAction(nameof(Details), new { id });
+        return Redirect($"/p/letter-details?id={id}");
     }
 
     [HttpGet]
@@ -297,7 +226,7 @@ public class LetterController : Controller
             relatedMRId, _currentUser.UserId, responseRequired, responseDueDate);
 
         TempData["Message"] = "Letter registered successfully";
-        return RedirectToAction(nameof(Details), new { id });
+        return Redirect($"/p/letter-details?id={id}");
     }
 
     // آپلود تصویر داخل متن (طبق بررسی نوار ابزار CKEditor که فرستادید - تنها شکاف واقعی)

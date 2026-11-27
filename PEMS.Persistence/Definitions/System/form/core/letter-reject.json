@@ -1,0 +1,60 @@
+{
+  "kind": "form",
+  "key": "letter-reject",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reject the letter",
+    "fa": "رد نامه"
+  },
+  "description": {
+    "en": "Reject the letter",
+    "fa": "رد نامه"
+  },
+  "payload": {
+    "id": "letter-reject",
+    "title": {
+      "en": "Reject the letter",
+      "fa": "رد نامه"
+    },
+    "submitLabel": {
+      "en": "Reject the letter",
+      "fa": "رد نامه"
+    },
+    "actionKey": "letter-reject",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reason",
+        "label": {
+          "en": "Reason (required)",
+          "fa": "دلیل (الزامی)"
+        },
+        "kind": "textArea",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

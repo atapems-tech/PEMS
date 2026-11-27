@@ -23,7 +23,6 @@ public class StatGridAndModalTextsTests
     }
 
     [Theory]
-    [InlineData("Views/Letter/Details.cshtml", ">Reject Letter<", ">Sign / Acknowledge<", "/> Sign / Acknowledge</a>")]
     public void TheReviewedTexts_AreNoLongerHardCoded(string view, params string[] literals)
     {
         var text = Read(["PEMS.Web", .. view.Split('/')]);

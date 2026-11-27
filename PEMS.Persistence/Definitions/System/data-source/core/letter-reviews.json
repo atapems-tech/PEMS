@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "letter-reviews",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reviews",
+    "fa": "بازبینی‌ها"
+  },
+  "description": {
+    "en": "Reviews",
+    "fa": "بازبینی‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "Reviews",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

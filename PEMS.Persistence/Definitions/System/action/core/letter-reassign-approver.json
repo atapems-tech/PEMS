@@ -27,6 +27,6 @@
       "en": "Approver reassigned.",
       "fa": "تأییدکننده تغییر کرد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

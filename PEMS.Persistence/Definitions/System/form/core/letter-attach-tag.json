@@ -1,0 +1,122 @@
+{
+  "kind": "form",
+  "key": "letter-attach-tag",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tag the letter",
+    "fa": "برچسب‌گذاری نامه"
+  },
+  "description": {
+    "en": "Tag the letter",
+    "fa": "برچسب‌گذاری نامه"
+  },
+  "payload": {
+    "id": "letter-attach-tag",
+    "title": {
+      "en": "Tag the letter",
+      "fa": "برچسب‌گذاری نامه"
+    },
+    "submitLabel": {
+      "en": "Tag the letter",
+      "fa": "برچسب‌گذاری نامه"
+    },
+    "actionKey": "letter-attach-tag",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "letterId",
+        "label": {
+          "en": "Letter",
+          "fa": "نامه"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "tagId",
+        "label": {
+          "en": "Existing tag",
+          "fa": "برچسب موجود"
+        },
+        "kind": "select",
+        "optionsFrom": "letter-tag-options"
+      },
+      {
+        "name": "newTagName",
+        "label": {
+          "en": "Or a new tag",
+          "fa": "یا برچسب جدید"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "newTagColor",
+        "label": {
+          "en": "New tag colour",
+          "fa": "رنگ برچسب جدید"
+        },
+        "kind": "select",
+        "default": "secondary",
+        "options": [
+          {
+            "value": "secondary",
+            "label": {
+              "en": "secondary",
+              "fa": "secondary"
+            }
+          },
+          {
+            "value": "primary",
+            "label": {
+              "en": "primary",
+              "fa": "primary"
+            }
+          },
+          {
+            "value": "success",
+            "label": {
+              "en": "success",
+              "fa": "success"
+            }
+          },
+          {
+            "value": "danger",
+            "label": {
+              "en": "danger",
+              "fa": "danger"
+            }
+          },
+          {
+            "value": "warning",
+            "label": {
+              "en": "warning",
+              "fa": "warning"
+            }
+          },
+          {
+            "value": "info",
+            "label": {
+              "en": "info",
+              "fa": "info"
+            }
+          },
+          {
+            "value": "dark",
+            "label": {
+              "en": "dark",
+              "fa": "dark"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

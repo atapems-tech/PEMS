@@ -28,6 +28,6 @@
       "en": "Letter revised and resubmitted for review.",
       "fa": "نامه اصلاح و دوباره برای بازبینی ارسال شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }

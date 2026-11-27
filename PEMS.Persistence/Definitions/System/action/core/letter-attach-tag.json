@@ -28,6 +28,6 @@
       "en": "Tag attached.",
       "fa": "برچسب افزوده شد."
     },
-    "redirect": "/Letter/Details/{letterId}"
+    "redirect": "/p/letter-details?id={letterId}"
   }
 }
