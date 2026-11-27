@@ -34,10 +34,8 @@ public class DocumentLinksTests
 
         var controller = new DocumentRegisterController(db);
 
-        var vdr = Assert.IsType<RedirectToActionResult>(await controller.Open(6));
-        Assert.Equal(("Details", "VDR", 6), (vdr.ActionName, vdr.ControllerName, (int)vdr.RouteValues!["id"]!));
-        var eng = Assert.IsType<RedirectToActionResult>(await controller.Open(1));
-        Assert.Equal("EngineeringDocuments", eng.ControllerName);
+        Assert.Equal("/VDR/Details/6", Assert.IsType<RedirectResult>(await controller.Open(6)).Url);
+        Assert.Equal("/EngineeringDocuments/Details/1", Assert.IsType<RedirectResult>(await controller.Open(1)).Url);
         Assert.IsType<NotFoundResult>(await controller.Open(999));
     }
 

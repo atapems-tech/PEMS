@@ -1,0 +1,19 @@
+{
+  "kind": "route",
+  "key": "vdr-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Vendor document (old address)",
+    "fa": "مدرک فروشنده (نشانی قدیمی)"
+  },
+  "description": {
+    "en": "Vendor document",
+    "fa": "مدرک فروشنده"
+  },
+  "payload": {
+    "pattern": "VDR/Details/{id}",
+    "target": "/p/vdr-details?id={id}",
+    "permanent": false
+  }
+}

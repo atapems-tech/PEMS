@@ -31,6 +31,6 @@
       "en": "Response recorded",
       "fa": "پاسخ ثبت شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

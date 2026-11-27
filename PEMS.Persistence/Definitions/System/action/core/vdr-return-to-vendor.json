@@ -31,6 +31,6 @@
       "en": "Returned to the vendor; the official letter was created.",
       "fa": "به وندور بازگشت داده شد و نامه‌ی رسمی ساخته شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

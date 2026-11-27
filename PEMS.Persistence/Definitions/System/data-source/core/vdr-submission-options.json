@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vdr-submission-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Submissions of the item",
+    "fa": "ارسال‌های مدرک"
+  },
+  "description": {
+    "en": "Submissions of the item",
+    "fa": "ارسال‌های مدرک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "VdrDetail",
+      "action": "SubmissionOptions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

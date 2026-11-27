@@ -62,7 +62,6 @@
     "PEMS.Web/Views/Shared/_SidebarMenu.cshtml",
     "PEMS.Web/Views/Shared/_ValidationScriptsPartial.cshtml",
     "PEMS.Web/Views/Team/OrganizationChart.cshtml",
-    "PEMS.Web/Views/VDR/Details.cshtml",
     "PEMS.Web/Views/_ViewImports.cshtml",
     "PEMS.Web/Views/_ViewStart.cshtml"
   ],
@@ -98,7 +97,6 @@
     "PEMS.Web.Controllers.TaskManagerController": 1,
     "PEMS.Web.Controllers.TeamController": 1,
     "PEMS.Web.Controllers.ThemeController": 1,
-    "PEMS.Web.Controllers.VDRController": 1,
     "PEMS.Web.Controllers.WebAuthnController": 3
   }
 }

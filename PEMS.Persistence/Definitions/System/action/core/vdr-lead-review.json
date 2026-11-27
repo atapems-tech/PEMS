@@ -32,6 +32,6 @@
       "en": "The final decision was recorded.",
       "fa": "تصمیم نهایی ثبت شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

@@ -1,0 +1,113 @@
+{
+  "kind": "form",
+  "key": "vdr-lead-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Record the final decision",
+    "fa": "ثبت تصمیم نهایی"
+  },
+  "description": {
+    "en": "Record the final decision",
+    "fa": "ثبت تصمیم نهایی"
+  },
+  "payload": {
+    "id": "vdr-lead-review",
+    "title": {
+      "en": "Record the final decision",
+      "fa": "ثبت تصمیم نهایی"
+    },
+    "submitLabel": {
+      "en": "Record the final decision",
+      "fa": "ثبت تصمیم نهایی"
+    },
+    "actionKey": "vdr-lead-review",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "reviewCategory",
+        "label": {
+          "en": "Review category",
+          "fa": "دسته بازبینی"
+        },
+        "kind": "select",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "options": [
+          {
+            "value": "AP",
+            "label": {
+              "en": "AP",
+              "fa": "AP"
+            }
+          },
+          {
+            "value": "NC",
+            "label": {
+              "en": "NC",
+              "fa": "NC"
+            }
+          },
+          {
+            "value": "AC",
+            "label": {
+              "en": "AC",
+              "fa": "AC"
+            }
+          },
+          {
+            "value": "CO",
+            "label": {
+              "en": "CO",
+              "fa": "CO"
+            }
+          },
+          {
+            "value": "RE",
+            "label": {
+              "en": "RE",
+              "fa": "RE"
+            }
+          }
+        ]
+      },
+      {
+        "name": "clientCommentSheetNo",
+        "label": {
+          "en": "Comment sheet no.",
+          "fa": "شماره برگه نظر"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "clientCommentDate",
+        "label": {
+          "en": "Comment date",
+          "fa": "تاریخ نظر"
+        },
+        "kind": "date"
+      }
+    ]
+  }
+}

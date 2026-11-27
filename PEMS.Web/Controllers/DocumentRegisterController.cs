@@ -15,6 +15,6 @@ public class DocumentRegisterController(PEMSDbContext context) : Controller
     public async Task<IActionResult> Open(int id)
     {
         var target = PEMS.Web.Helpers.DocumentLinks.Target(await context.Documents.AsNoTracking().FirstOrDefaultAsync(d => d.DocumentId == id));
-        return target is { } t ? RedirectToAction("Details", t.Controller, new { id = t.Id }) : NotFound();
+        return target is { } t ? Redirect($"/{t.Controller}/Details/{t.Id}") : NotFound();
     }
 }

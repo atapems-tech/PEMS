@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vdr-comments",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Comments",
+    "fa": "نظرات"
+  },
+  "description": {
+    "en": "Comments",
+    "fa": "نظرات"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "VdrDetail",
+      "action": "Comments",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

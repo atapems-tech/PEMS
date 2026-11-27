@@ -1,0 +1,96 @@
+{
+  "kind": "form",
+  "key": "vdr-update-details",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Edit the details",
+    "fa": "ویرایش جزئیات"
+  },
+  "description": {
+    "en": "Edit the details",
+    "fa": "ویرایش جزئیات"
+  },
+  "payload": {
+    "id": "vdr-update-details",
+    "title": {
+      "en": "Edit the details",
+      "fa": "ویرایش جزئیات"
+    },
+    "submitLabel": {
+      "en": "Edit the details",
+      "fa": "ویرایش جزئیات"
+    },
+    "actionKey": "vdr-update-details",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "documentDescription",
+        "label": {
+          "en": "Description",
+          "fa": "شرح"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "documentClass",
+        "label": {
+          "en": "Class",
+          "fa": "کلاس"
+        },
+        "kind": "number",
+        "min": 1
+      },
+      {
+        "name": "plannedFirstIssueDate",
+        "label": {
+          "en": "Planned first issue",
+          "fa": "اولین صدور برنامه‌ریزی‌شده"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "equipmentTag",
+        "label": {
+          "en": "Equipment tag",
+          "fa": "تگ تجهیز"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "disciplineCodeRaw",
+        "label": {
+          "en": "Discipline code",
+          "fa": "کد دیسیپلین"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "vendorFormatDocumentNumber",
+        "label": {
+          "en": "Vendor format document no.",
+          "fa": "شماره مدرک با قالب فروشنده"
+        },
+        "kind": "text",
+        "span": 2
+      }
+    ]
+  }
+}

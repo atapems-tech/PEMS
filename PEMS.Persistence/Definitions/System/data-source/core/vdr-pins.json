@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vdr-pins",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Pins of the viewer",
+    "fa": "پین‌های نمایشگر"
+  },
+  "description": {
+    "en": "Pins of the viewer",
+    "fa": "پین‌های نمایشگر"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "VdrDetail",
+      "action": "Pins",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

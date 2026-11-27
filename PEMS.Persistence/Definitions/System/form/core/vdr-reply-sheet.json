@@ -1,0 +1,76 @@
+{
+  "kind": "form",
+  "key": "vdr-reply-sheet",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Upload the reply sheet",
+    "fa": "بارگذاری برگه پاسخ"
+  },
+  "description": {
+    "en": "Upload the reply sheet",
+    "fa": "بارگذاری برگه پاسخ"
+  },
+  "payload": {
+    "id": "vdr-reply-sheet",
+    "title": {
+      "en": "Upload the reply sheet",
+      "fa": "بارگذاری برگه پاسخ"
+    },
+    "submitLabel": {
+      "en": "Upload the reply sheet",
+      "fa": "بارگذاری برگه پاسخ"
+    },
+    "actionKey": "vdr-reply-sheet",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "submissionId",
+        "label": {
+          "en": "Submission",
+          "fa": "ارسال"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "file",
+        "label": {
+          "en": "File",
+          "fa": "فایل"
+        },
+        "kind": "file",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

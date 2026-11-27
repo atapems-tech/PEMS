@@ -31,6 +31,6 @@
       "en": "Your review answer was recorded.",
       "fa": "پاسخ بازبینی شما ثبت شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

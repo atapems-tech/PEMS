@@ -1,0 +1,146 @@
+{
+  "kind": "form",
+  "key": "vdr-submit-review",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start the review",
+    "fa": "شروع بازبینی"
+  },
+  "description": {
+    "en": "Start the review",
+    "fa": "شروع بازبینی"
+  },
+  "payload": {
+    "id": "vdr-submit-review",
+    "title": {
+      "en": "Start the review",
+      "fa": "شروع بازبینی"
+    },
+    "submitLabel": {
+      "en": "Start the review",
+      "fa": "شروع بازبینی"
+    },
+    "actionKey": "vdr-submit-review",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "revisionNo",
+        "label": {
+          "en": "Revision (set by the system)",
+          "fa": "ویرایش (توسط سیستم)"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "vendorTransmittalNo",
+        "label": {
+          "en": "Vendor transmittal no.",
+          "fa": "شماره ترنسمیتال فروشنده"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "vendorActualIssuedDate",
+        "label": {
+          "en": "Vendor issued date",
+          "fa": "تاریخ صدور فروشنده"
+        },
+        "kind": "date"
+      },
+      {
+        "name": "purposeOfIssueCode",
+        "label": {
+          "en": "Purpose of issue",
+          "fa": "هدف صدور"
+        },
+        "kind": "select",
+        "options": [
+          {
+            "value": "IFA",
+            "label": {
+              "en": "IFA - Issued for Approval",
+              "fa": "IFA - صدور برای تأیید"
+            }
+          },
+          {
+            "value": "IFR",
+            "label": {
+              "en": "IFR - Issue for Review and Comments",
+              "fa": "IFR - صدور برای بازبینی و نظر"
+            }
+          },
+          {
+            "value": "IFI",
+            "label": {
+              "en": "IFI - Issue for Information",
+              "fa": "IFI - صدور برای اطلاع"
+            }
+          },
+          {
+            "value": "FI",
+            "label": {
+              "en": "FI - Final Issue (without comments)",
+              "fa": "FI - صدور نهایی (بدون نظر)"
+            }
+          },
+          {
+            "value": "AB",
+            "label": {
+              "en": "AB (legacy)",
+              "fa": "AB (قدیمی)"
+            }
+          },
+          {
+            "value": "AFD",
+            "label": {
+              "en": "AFD (legacy)",
+              "fa": "AFD (قدیمی)"
+            }
+          }
+        ]
+      },
+      {
+        "name": "disciplineIds",
+        "label": {
+          "en": "Review disciplines (optional)",
+          "fa": "دیسیپلین‌های بازبین (اختیاری)"
+        },
+        "kind": "multiSelect",
+        "optionsFrom": "vdr-disciplines",
+        "span": 2
+      }
+    ]
+  }
+}

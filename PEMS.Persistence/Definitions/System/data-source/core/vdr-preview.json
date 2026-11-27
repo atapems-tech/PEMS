@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "vdr-preview",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Viewer file",
+    "fa": "فایل نمایش"
+  },
+  "description": {
+    "en": "Viewer file",
+    "fa": "فایل نمایش"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "VdrDetail",
+      "action": "Preview",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

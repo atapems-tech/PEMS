@@ -32,6 +32,6 @@
       "en": "File uploaded.",
       "fa": "فایل بارگذاری شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}?tab=files"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }

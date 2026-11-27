@@ -1,0 +1,79 @@
+{
+  "kind": "form",
+  "key": "vdr-comment-reply",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Reply to the comment",
+    "fa": "پاسخ به نظر"
+  },
+  "description": {
+    "en": "Reply to the comment",
+    "fa": "پاسخ به نظر"
+  },
+  "payload": {
+    "id": "vdr-comment-reply",
+    "title": {
+      "en": "Reply to the comment",
+      "fa": "پاسخ به نظر"
+    },
+    "submitLabel": {
+      "en": "Reply to the comment",
+      "fa": "پاسخ به نظر"
+    },
+    "actionKey": "vdr-comment-reply",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "commentId",
+        "label": {
+          "en": "Comment",
+          "fa": "نظر"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "responseText",
+        "label": {
+          "en": "Vendor reply (optional if a file is attached)",
+          "fa": "پاسخ فروشنده (اختیاری اگر فایل پیوست شود)"
+        },
+        "kind": "textArea",
+        "span": 2
+      },
+      {
+        "name": "replyAttachment",
+        "label": {
+          "en": "Or attach the reply",
+          "fa": "یا پیوست پاسخ"
+        },
+        "kind": "file",
+        "span": 2
+      }
+    ]
+  }
+}

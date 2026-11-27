@@ -1,0 +1,61 @@
+{
+  "kind": "form",
+  "key": "vdr-return-to-vendor",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Return to the vendor",
+    "fa": "ارجاع به فروشنده"
+  },
+  "description": {
+    "en": "Return to the vendor",
+    "fa": "ارجاع به فروشنده"
+  },
+  "payload": {
+    "id": "vdr-return-to-vendor",
+    "title": {
+      "en": "Return to the vendor",
+      "fa": "ارجاع به فروشنده"
+    },
+    "submitLabel": {
+      "en": "Return to the vendor",
+      "fa": "ارجاع به فروشنده"
+    },
+    "actionKey": "vdr-return-to-vendor",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "vdrItemId",
+        "label": {
+          "en": "Item",
+          "fa": "مدرک"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "hidden": true
+      },
+      {
+        "name": "replySheetNo",
+        "label": {
+          "en": "Reply sheet no.",
+          "fa": "شماره برگه پاسخ"
+        },
+        "kind": "text"
+      },
+      {
+        "name": "clientTransmittalNo",
+        "label": {
+          "en": "Client transmittal no.",
+          "fa": "شماره ترنسمیتال کارفرما"
+        },
+        "kind": "text"
+      }
+    ]
+  }
+}

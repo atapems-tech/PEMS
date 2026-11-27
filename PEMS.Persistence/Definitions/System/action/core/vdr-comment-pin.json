@@ -1,0 +1,34 @@
+{
+  "kind": "action",
+  "key": "vdr-comment-pin",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Pin a comment on the page",
+    "fa": "پین نظر روی صفحه"
+  },
+  "description": {
+    "en": "Pin a comment on the page",
+    "fa": "پین نظر روی صفحه"
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "VdrDetail",
+      "action": "AddPin",
+      "args": {
+        "fileId": "field:fileId",
+        "page": "field:page",
+        "x": "field:x",
+        "y": "field:y",
+        "note": "field:note",
+        "userName": "context:userName"
+      }
+    },
+    "success": {
+      "en": "Comment added.",
+      "fa": "نظر افزوده شد."
+    }
+  }
+}

@@ -30,6 +30,6 @@
       "en": "Done.",
       "fa": "انجام شد."
     },
-    "redirect": "/VDR/Details/{vdrItemId}"
+    "redirect": "/p/vdr-details?id={vdrItemId}"
   }
 }
