@@ -21,8 +21,10 @@ public sealed record TeamResult(bool Success, string? Error);
 /// <summary>
 /// The Team pages as operations (SCRUM-682's neighbour, SCRUM-757): the team list, the team page (members, sub-teams, positions, assignment history) and the writes of the controller, over the same
 /// ITeamService and IOrganizationStructureService. The discipline scope is the old rule: SystemAdmin and EngineeringManager work across disciplines, everybody else only in the discipline of their own
-/// employee record (fail closed). The organization chart and its JSON stay in the controller.
+/// employee record (fail closed). The organization chart shell stays in the controller; its JSON reads are operations served at /x/team-* (SCRUM-831).
 /// </summary>
+public sealed record TeamMemberChoice(int EmployeeId, string Name, string Role);
+
 public interface ITeamOperations
 {
     [PEMS.Application.Common.PemsOperation("Team", "List", "Team.View")]
@@ -99,4 +101,15 @@ public interface ITeamOperations
 
     [PEMS.Application.Common.PemsOperation("Team", "MoveEmployee", "Team.Edit")]
     Task<TeamResult> MoveEmployeeAsync(List<string> userRoles, string userName, int fromPositionId, int toPositionId, string? notes = null);
+
+    /// <summary>The organization tree of the chart (served at /x/team-organization-tree), optionally of one discipline.</summary>
+    [PEMS.Application.Common.PemsOperation("Team", "OrganizationTree", "Team.View")]
+    Task<List<PEMS.Application.DTOs.OrganizationGroupNodeDto>> OrganizationTreeAsync(int? disciplineId = null);
+
+    [PEMS.Application.Common.PemsOperation("Team", "TeamNodeDetails", "Team.View")]
+    Task<PEMS.Application.DTOs.OrganizationTeamNodeDto?> TeamNodeDetailsAsync(int teamId);
+
+    /// <summary>The active members of a team with their role, for the work order forms (served at /x/team-members-of).</summary>
+    [PEMS.Application.Common.PemsOperation("Team", "MembersOf", "Team.View")]
+    Task<List<TeamMemberChoice>> MembersOfAsync(int teamId);
 }

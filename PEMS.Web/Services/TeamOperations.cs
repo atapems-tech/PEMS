@@ -241,4 +241,12 @@ public sealed class TeamOperations(PEMSDbContext context, ITeamService teams, IO
         }
         return await RunAsync(() => organization.MoveEmployeeAsync(fromPositionId, toPositionId, notes), "کارمند به سمت جدید منتقل شد.");
     }
+
+    public Task<List<PEMS.Application.DTOs.OrganizationGroupNodeDto>> OrganizationTreeAsync(int? disciplineId = null) => organization.GetOrganizationTreeAsync(disciplineId);
+
+    public Task<PEMS.Application.DTOs.OrganizationTeamNodeDto?> TeamNodeDetailsAsync(int teamId) => organization.GetTeamDetailsAsync(teamId);
+
+    public async Task<List<TeamMemberChoice>> MembersOfAsync(int teamId)
+        => await context.TeamMembers.AsNoTracking().Where(x => x.TeamId == teamId && x.IsActive)
+            .Select(x => new TeamMemberChoice(x.EmployeeId, x.Employee!.FirstName + " " + x.Employee.LastName, x.Role!.Name)).ToListAsync();
 }

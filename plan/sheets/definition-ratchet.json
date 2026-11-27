@@ -148,7 +148,7 @@
     "PEMS.Web.Controllers.TableExtractionController": 4,
     "PEMS.Web.Controllers.TaskController": 2,
     "PEMS.Web.Controllers.TaskManagerController": 8,
-    "PEMS.Web.Controllers.TeamController": 4,
+    "PEMS.Web.Controllers.TeamController": 1,
     "PEMS.Web.Controllers.ThemeController": 1,
     "PEMS.Web.Controllers.TransmittalController": 4,
     "PEMS.Web.Controllers.VDRController": 3,
