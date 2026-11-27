@@ -22,8 +22,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Areas.Warehouse.Controllers.PartCatalogueRequestController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
@@ -40,8 +40,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.ActionHostController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "the generic host of /a/{key}: code by decision"
     },
     {
       "kind": "controller",
@@ -100,8 +100,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.DocumentRegisterController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
@@ -148,8 +148,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.EquipmentImportController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
@@ -190,14 +190,14 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.HelpController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.HomeController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
@@ -214,14 +214,14 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.LetterComposeController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.LetterController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
@@ -274,8 +274,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.NotificationController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
@@ -340,20 +340,20 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.TaskController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "no screen action is left (an empty class kept while tests still build it; delete it in the audit)"
     },
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.TaskManagerController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.TeamController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "host",
+      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
     },
     {
       "kind": "controller",
@@ -394,8 +394,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.WorkOrderController",
-      "status": "pending",
-      "reason": "converted to definitions by the conversion batches (SCRUM-629 to SCRUM-765)"
+      "status": "converted",
+      "reason": "no screen action is left (an empty class kept while tests still build it; delete it in the audit)"
     },
     {
       "kind": "controller",
