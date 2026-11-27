@@ -52,37 +52,7 @@ public class HelpController : Controller
         return View(article);
     }
 
-    /// <summary>
-    /// طبق بخش ۵ سند (Context-Aware): نقطه‌ی JSON که پنل راهنمای زمینه‌ای روی خودِ صفحات با
-    /// آن محتوا می‌گیرد - سبک، فقط با درخواست بارگذاری می‌شود (طبق بخش ۱۸: Performance).
-    /// </summary>
-    [HttpGet]
-    public async Task<IActionResult> Context(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key)) return Json(new { found = false });
-
-        var article = await _helpService.GetArticleByContextAsync(key, CurrentLanguage);
-        if (article == null) return Json(new { found = false });
-
-        // طبق بخش ۱۰ سند: پنل زمینه‌ای عمداً فقط متن است (نه خودِ نمودار) - جای کافی برای
-        // نمودار در یک Offcanvas باریک نیست؛ فقط لینک به مقاله‌ی کامل (که نمودار را نشان
-        // می‌دهد) نمایش داده می‌شود، طبق بخش ۱۰ («Do not make every article visually
-        // overloaded»)
-        var hasVisual = (await _helpVisualService.GetVisualsForArticleAsync(article.HelpArticleId, CurrentLanguage)).Any();
-
-        return Json(new
-        {
-            found = true,
-            code = article.Code,
-            title = article.Title,
-            summary = article.Summary,
-            content = article.Content,
-            languageCode = article.LanguageCode,
-            relatedArticles = article.RelatedArticles.Select(r => new { r.Code, r.Title }),
-            articleUrl = Url.Action("Article", "Help", new { code = article.Code }),
-            hasVisual
-        });
-    }
+    // SCRUM-832: the contextual help read is /x/help-context (IHelpPagesOperations).
 
     /// <summary>
     /// طبق بخش ۱۱ سند: «Ask PEMS AI about this page» - پاسخ محدود به محتوای واقعیِ همان مقاله.
