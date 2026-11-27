@@ -69,7 +69,7 @@
               },
               {
                 "type": "link",
-                "href": "/MaintenanceCalendar",
+                "href": "/p/maintenance-calendar",
                 "text": {
                   "en": "Maintenance calendar",
                   "fa": "تقویم نگهداری"

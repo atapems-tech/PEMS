@@ -1,0 +1,37 @@
+{
+  "kind": "action",
+  "key": "work-order-move-day",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "The schedule was changed.",
+    "fa": "زمان‌بندی تغییر کرد."
+  },
+  "description": {
+    "en": "The schedule was changed.",
+    "fa": "زمان‌بندی تغییر کرد."
+  },
+  "payload": {
+    "kind": "handler",
+    "handler": "operation.invoke",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "MoveDay",
+      "args": {
+        "id": "field:id",
+        "date": "field:date"
+      },
+      "sectionGuard": {
+        "section": "Schedule",
+        "action": "Edit",
+        "workOrderId": "field:id",
+        "audit": "Date={date}"
+      }
+    },
+    "success": {
+      "en": "The schedule was changed.",
+      "fa": "زمان‌بندی تغییر کرد."
+    },
+    "redirect": "/p/maintenance-calendar"
+  }
+}

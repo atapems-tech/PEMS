@@ -1,0 +1,29 @@
+{
+  "kind": "data-source",
+  "key": "maintenance-calendar-unscheduled",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Unscheduled work",
+    "fa": "کارهای زمان‌بندی‌نشده"
+  },
+  "description": {
+    "en": "Unscheduled work",
+    "fa": "کارهای زمان‌بندی‌نشده"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "CalendarUnscheduled",
+      "args": {
+        "teamId": "param:teamId",
+        "employeeId": "param:employeeId",
+        "status": "param:status",
+        "workOrderType": "param:workOrderType",
+        "priority": "param:priority"
+      }
+    }
+  }
+}

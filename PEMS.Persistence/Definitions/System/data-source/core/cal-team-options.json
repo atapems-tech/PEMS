@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cal-team-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Teams",
+    "fa": "تیم‌ها"
+  },
+  "description": {
+    "en": "Teams",
+    "fa": "تیم‌ها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "CalendarTeamOptions"
+    }
+  }
+}

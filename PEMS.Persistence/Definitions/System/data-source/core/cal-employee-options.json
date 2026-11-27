@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "cal-employee-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Executors",
+    "fa": "مجریان"
+  },
+  "description": {
+    "en": "Executors",
+    "fa": "مجریان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderPage",
+      "action": "CalendarEmployeeOptions"
+    }
+  }
+}

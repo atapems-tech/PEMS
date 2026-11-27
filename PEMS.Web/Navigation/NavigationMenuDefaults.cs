@@ -139,7 +139,7 @@ public static class NavigationMenuDefaults
         new("cmms.strategy", "cmms.sub.planning", L, 10, "Maintenance Strategy", "bi-diagram-2", "CmmsItem:MaintenanceStrategy", ExternalPath: "/p/strategy-list", ExtraActiveControllers: "MaintenanceStrategy"),
         new("cmms.plan", "cmms.sub.planning", L, 20, "Maintenance Plan", "bi-calendar-check", "CmmsItem:MaintenancePlan", ExternalPath: "/p/maintenance-plans", ExtraActiveControllers: "MaintenancePlan"),   // SCRUM-724: a definition page (/p/...)
         new("cmms.backlog", "cmms.sub.planning", L, 30, "Maintenance Backlog", "bi-hourglass-split", "CmmsItem:CmmsOperations", ExternalPath: "/p/maintenance-backlog"),   // SCRUM-673: a definition page (/p/...)
-        Link("cmms.calendar", "cmms.sub.planning", 40, "Maintenance Calendar", "bi-calendar3-week", "MaintenanceCalendar", rule: "CmmsItem:MaintenanceCalendar"),
+        new("cmms.calendar", "cmms.sub.planning", L, 40, "Maintenance Calendar", "bi-calendar3-week", "CmmsItem:MaintenanceCalendar", ExternalPath: "/p/maintenance-calendar", ExtraActiveControllers: "MaintenanceCalendar"),
         new("cmms.jobplan", "sec.cmms", L, 50, "Job Plans", "bi-list-check", "CmmsItem:JobPlan", ExternalPath: "/p/job-plans"),   // SCRUM-711: a definition page (/p/...)
         new("cmms.workrequest", "sec.cmms", L, 60, "Work Requests", "bi-clipboard-plus", "CmmsItem:WorkRequest", ExternalPath: "/p/work-requests", ExtraActiveControllers: "WorkRequest"),   // SCRUM-765: a definition page (/p/...)
         new("cmms.workorder", "sec.cmms", L, 70, "Work Order", "bi-clipboard-check", "CmmsItem:WorkOrder", ExternalPath: "/p/work-orders", ExtraActiveControllers: "WorkOrder", BadgeKey: NavigationBadges.WorkOrdersOpen),
