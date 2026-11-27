@@ -85,46 +85,6 @@ public sealed class ErrorMapperTests
         Assert.DoesNotContain("disk", problem.Title + problem.Detail);
     }
 
-    private static HomeController HomeWith(Exception? failure)
-    {
-        var home = (HomeController)RuntimeHelpers.GetUninitializedObject(typeof(HomeController));
-        var http = new DefaultHttpContext { TraceIdentifier = "req-5" };
-        if (failure is not null) http.Features.Set<IExceptionHandlerFeature>(new ExceptionHandlerFeature { Error = failure, Path = "/x" });
-        home.ControllerContext = new ControllerContext { HttpContext = http };
-        return home;
-    }
-
-    [Theory]
-    [InlineData(typeof(ConflictException), 409)]
-    [InlineData(typeof(NotFoundException), 404)]
-    [InlineData(typeof(UnavailableException), 503)]
-    [InlineData(typeof(InvalidOperationException), 500)]
-    public void The_error_page_shows_the_mapped_status_and_the_trace_id_but_never_the_exception_message(Type failure, int status)
-    {
-        Exception ex = failure == typeof(ConflictException) ? new ConflictException("unique", "SECRET detail")
-            : failure == typeof(NotFoundException) ? new NotFoundException("SECRET detail")
-            : failure == typeof(UnavailableException) ? new UnavailableException("db", "SECRET detail")
-            : new InvalidOperationException("SECRET detail");
-        var home = HomeWith(ex);
-
-        var view = Assert.IsType<ViewResult>(home.Error());
-
-        Assert.Equal("StatusPage", view.ViewName);
-        var model = Assert.IsType<StatusPageViewModel>(view.Model);
-        Assert.Equal(status, model.Code);
-        Assert.Equal(status, home.Response.StatusCode);
-        Assert.Equal("req-5", model.RequestId);
-        Assert.DoesNotContain("SECRET", System.Text.Json.JsonSerializer.Serialize(model));
-    }
-
-    [Fact]
-    public void Without_an_exception_the_error_page_is_a_generic_500()
-    {
-        var home = HomeWith(null);
-        var view = Assert.IsType<ViewResult>(home.Error());
-        Assert.Equal(500, Assert.IsType<StatusPageViewModel>(view.Model).Code);
-    }
-
     [Theory]
     [InlineData("SharedResource.resx")]
     [InlineData("SharedResource.fa.resx")]

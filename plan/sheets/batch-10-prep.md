@@ -69,3 +69,5 @@ Screen code to convert: 132 actions and 72 views in 31 areas. Generic hosts and 
 - SCRUM-840: letter compose form, history page, compliance CSV, two-button forms (see audit-known-gaps.md).
 
 - SCRUM-841: file-host redirects (notification open, document open, task space) - see audit-known-gaps.md.
+
+- SCRUM-841: public pages (status page), status-panel and notification-list components - see audit-known-gaps.md (browser checks listed there).

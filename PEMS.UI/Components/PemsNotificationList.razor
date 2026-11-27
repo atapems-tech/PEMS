@@ -1,0 +1,19 @@
+@namespace PEMS.UI.Components
+@attribute [PEMS.UI.Rendering.PemsComponent("notification-list", Category = "content", Icon = "bi-bell")]
+@inject IPemsLocale Locale
+@* SCRUM-841: the list of the bell dropdown. pems-notification-list.js fills the items; the buttons with data-notif-action are served by notifications-hub.js. *@
+@{ var t = Options.Texts; }
+<div @attributes="Options.Attributes" class="@Join("pems-notification-list", Options.PageClass)" data-pems-notification-list="" data-source="@Options.Source"
+     data-no-new="@Locale.Text(t.NoNew)" data-dismiss="@Locale.Text(t.Dismiss)" data-error="@Locale.Text(t.Error)">
+    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+        <strong class="small">@Locale.Text(t.Title)</strong>
+        <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" data-notif-action="markAll">@Locale.Text(t.MarkAll)</button>
+    </div>
+    <div data-notification-items role="list"><span class="dropdown-item small text-muted">@Locale.Text(t.Loading)</span></div>
+    <div class="text-center border-top py-2"><a href="@Options.ViewAllUrl" class="small text-decoration-none">@Locale.Text(t.ViewAll)</a></div>
+</div>
+@code {
+    [Parameter, EditorRequired] public NotificationListOptions Options { get; set; } = default!;
+
+    private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
+}

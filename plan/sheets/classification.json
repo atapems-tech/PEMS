@@ -196,8 +196,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.HomeController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "only the entry redirect to /p/home is left; the status and error pages are the public page status-page with the status-panel component (SCRUM-841)"
     },
     {
       "kind": "controller",
@@ -274,8 +274,8 @@
     {
       "kind": "controller",
       "type": "PEMS.Web.Controllers.NotificationController",
-      "status": "host",
-      "reason": "code by proposed decision (SCRUM-837, SCRUM-833): shell fragment, script application, redirect or file answer that no generic component carries yet; the owner confirms or asks for a component"
+      "status": "converted",
+      "reason": "the type was deleted: the dropdown is the notification-list component over /x/notification-dropdown, open is /x/notification-open (SCRUM-841)"
     },
     {
       "kind": "controller",

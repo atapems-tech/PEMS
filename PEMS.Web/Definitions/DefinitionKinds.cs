@@ -103,7 +103,7 @@ public sealed class FormDefinitionKind(OperationReader? reader = null) : IDefini
 /// </summary>
 public sealed class PageDefinitionKind : IDefinitionKind
 {
-    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "layout", "regions", "route", "permission", "template", "args" };
+    private static readonly HashSet<string> Allowed = new(StringComparer.Ordinal) { "layout", "regions", "route", "permission", "template", "args", "public" };
     /// <summary>The variables an expression of a page can read: the signed-in user, the request (culture, route values), the hydrated values of the page and the current item.</summary>
     internal static readonly string[] PageExpressionRoots = ["user", "request", "values", "item", "params"];
 
@@ -129,6 +129,7 @@ public sealed class PageDefinitionKind : IDefinitionKind
             errors.Add(new("/layout", "required", "Def_Err_Required", "A page needs a layout key."));
         if (root["route"] is { } route && !(route is JsonValue rv && rv.GetValueKind() == JsonValueKind.String)) errors.Add(new("/route", "wrong-type", "Def_Err_Type", "The route must be text."));
         if (root["permission"] is { } perm && !(perm is JsonValue pv && pv.GetValueKind() == JsonValueKind.String)) errors.Add(new("/permission", "wrong-type", "Def_Err_Type", "The permission must be text."));
+        if (root["public"] is { } pub && pub.GetValueKind() is not (JsonValueKind.True or JsonValueKind.False)) errors.Add(new("/public", "wrong-type", "Def_Err_Type", "public is true or false: a public page opens without signing in (the status page)."));
 
         // SCRUM-589: a page may be a template (a component definition that supplies the regions) with its arguments; its own regions are added after the template's
         var template = root["template"] is JsonValue tv && tv.GetValueKind() == JsonValueKind.String ? (string?)tv : null;

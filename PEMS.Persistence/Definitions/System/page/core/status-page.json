@@ -1,0 +1,131 @@
+{
+  "kind": "page",
+  "key": "status-page",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Status",
+    "fa": "وضعیت"
+  },
+  "description": {
+    "en": "The friendly page of a 4xx or 5xx answer (public: it opens without signing in)",
+    "fa": "صفحه‌ی دوستانه‌ی پاسخ‌های 4xx و 5xx (عمومی: بدون ورود باز می‌شود)"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "status-page",
+    "public": true,
+    "regions": {
+      "content": [
+        {
+          "id": "status",
+          "component": "status-panel",
+          "options": {
+            "variants": [
+              {
+                "codes": [
+                  404
+                ],
+                "icon": "bi-compass",
+                "title": {
+                  "en": "Page not found",
+                  "fa": "صفحه پیدا نشد"
+                },
+                "text": {
+                  "en": "The page you asked for does not exist or has been moved.",
+                  "fa": "صفحه‌ی درخواستی وجود ندارد یا جابه‌جا شده است."
+                }
+              },
+              {
+                "codes": [
+                  401,
+                  403
+                ],
+                "icon": "bi-shield-lock",
+                "title": {
+                  "en": "Access denied",
+                  "fa": "دسترسی مجاز نیست"
+                },
+                "text": {
+                  "en": "You do not have permission to open this page. Ask an administrator if you need access.",
+                  "fa": "اجازه‌ی باز کردن این صفحه را ندارید. در صورت نیاز به دسترسی، با مدیر سیستم تماس بگیرید."
+                }
+              },
+              {
+                "codes": [
+                  409
+                ],
+                "icon": "bi-arrow-repeat",
+                "title": {
+                  "en": "The record was changed",
+                  "fa": "رکورد تغییر کرده است"
+                },
+                "text": {
+                  "en": "Someone else changed this record or the data conflicts with what is stored. Reload the page and try again.",
+                  "fa": "شخص دیگری این رکورد را تغییر داده یا داده‌ها با اطلاعات ذخیره‌شده تعارض دارند. صفحه را دوباره باز کنید و تلاش کنید."
+                }
+              },
+              {
+                "codes": [
+                  429
+                ],
+                "icon": "bi-hourglass-split",
+                "title": {
+                  "en": "Too many requests",
+                  "fa": "درخواست‌های زیاد"
+                },
+                "text": {
+                  "en": "Too many requests in a short time. Wait a moment and try again.",
+                  "fa": "در مدت کوتاه درخواست‌های زیادی ارسال شد. کمی صبر کنید و دوباره تلاش کنید."
+                }
+              },
+              {
+                "codes": [
+                  503
+                ],
+                "icon": "bi-cloud-slash",
+                "title": {
+                  "en": "Temporarily unavailable",
+                  "fa": "موقتاً در دسترس نیست"
+                },
+                "text": {
+                  "en": "The service is busy or not reachable right now. Try again in a moment; if it keeps happening, report the request ID below.",
+                  "fa": "سرویس در حال حاضر شلوغ است یا در دسترس نیست. کمی بعد دوباره تلاش کنید؛ اگر تکرار شد، شناسه‌ی درخواست زیر را گزارش دهید."
+                }
+              }
+            ],
+            "fallback": {
+              "codes": [],
+              "icon": "bi-exclamation-triangle",
+              "title": {
+                "en": "Something went wrong",
+                "fa": "مشکلی پیش آمد"
+              },
+              "text": {
+                "en": "The request could not be completed. Please try again; if it keeps happening, report the request ID below.",
+                "fa": "درخواست انجام نشد. دوباره تلاش کنید؛ اگر تکرار شد، شناسه‌ی درخواست زیر را گزارش دهید."
+              }
+            },
+            "homeUrl": "/",
+            "backLabel": {
+              "en": "Go back",
+              "fa": "بازگشت"
+            },
+            "homeLabel": {
+              "en": "Go to the home page",
+              "fa": "رفتن به صفحه‌ی اصلی"
+            },
+            "codeLabel": {
+              "en": "Error code",
+              "fa": "کد خطا"
+            },
+            "requestIdLabel": {
+              "en": "Request ID",
+              "fa": "شناسه‌ی درخواست"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

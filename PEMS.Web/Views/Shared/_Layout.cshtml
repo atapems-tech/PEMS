@@ -162,7 +162,8 @@
                     <pems-badge tone="danger" css="rounded-pill position-absolute top-0 start-100 translate-middle @(unreadCount > 0 ? "" : "d-none")" id="notifBadge">@(unreadCount > 0 ? unreadCount.ToString() : "")</pems-badge>
                 </pems-link>
                 <pems-dropdown-menu class="pems-notif-menu" as="div" end="true" css="p-0" id="notifDropdownBody">
-                    <span class="dropdown-item small text-muted">@Localizer["Loading"]</span>
+                    <div id="notifAf" class="d-none">@Html.AntiForgeryToken()</div>
+                    <pems-notification-list />
                 </pems-dropdown-menu>
             </div>
 
@@ -267,6 +268,7 @@
     <script src="~/_content/PEMS.UI/pems-chat.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-org-chart-logic.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-org-chart.js" asp-append-version="true"></script>
+    <script src="~/_content/PEMS.UI/pems-notification-list.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-mask.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-matrix.js" asp-append-version="true"></script>
     <script src="~/_content/PEMS.UI/pems-form-depends.js" asp-append-version="true"></script>

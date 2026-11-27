@@ -185,28 +185,6 @@ public class NotificationLifecycleTests
         Assert.Equal("/Letter/Details/9", await svc.OpenAsync(1, id)); // اعلان خوانده‌شده هم ناوبری می‌کند
     }
 
-    private static NotificationController NewController(NotificationService svc, int? userId)
-    {
-        var c = new NotificationController(svc, new FakeCurrentUserService { UserId = userId })
-        {
-            ControllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() }
-        };
-        c.Url = new LocalOnlyUrlHelper(c.ControllerContext);
-        return c;
-    }
-
-    private sealed class LocalOnlyUrlHelper : IUrlHelper
-    {
-        public LocalOnlyUrlHelper(ActionContext ctx) { ActionContext = ctx; }
-        public ActionContext ActionContext { get; }
-        public string? Action(UrlActionContext a) => "/";
-        public string? RouteUrl(UrlRouteContext r) => "/";
-        public string? Content(string? contentPath) => contentPath;
-        public string? Link(string? routeName, object? values) => "/";
-        public bool IsLocalUrl(string? url) =>
-            !string.IsNullOrEmpty(url) && url[0] == '/' && (url.Length == 1 || (url[1] != '/' && url[1] != '\\'));
-    }
-
     [Fact]
     public async Task Controller_Open_FollowsLinkAndMarksRead()
     {
