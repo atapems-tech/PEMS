@@ -1,0 +1,316 @@
+{
+  "kind": "page",
+  "key": "task-backlog",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Backlog",
+    "fa": "بک‌لاگ"
+  },
+  "description": {
+    "en": "Backlog",
+    "fa": "بک‌لاگ"
+  },
+  "payload": {
+    "layout": "detail-page",
+    "route": "task-backlog",
+    "permission": "Task.View",
+    "regions": {
+      "content": [
+        {
+          "id": "head",
+          "component": "record-view",
+          "options": {
+            "id": "task-backlog-head",
+            "fields": [
+              {
+                "key": "name",
+                "label": {
+                  "en": "Space",
+                  "fa": "فضا"
+                }
+              },
+              {
+                "key": "key",
+                "label": {
+                  "en": "Key",
+                  "fa": "کلید"
+                }
+              },
+              {
+                "key": "role",
+                "label": {
+                  "en": "Role",
+                  "fa": "نقش"
+                }
+              },
+              {
+                "key": "description",
+                "label": {
+                  "en": "Description",
+                  "fa": "توضیحات"
+                },
+                "wide": true
+              },
+              {
+                "key": "hint",
+                "label": {
+                  "en": "Hint",
+                  "fa": "راهنما"
+                },
+                "wide": true
+              }
+            ]
+          },
+          "bindings": {
+            "record": {
+              "source": "/d/task-backlog-head",
+              "idField": "key",
+              "id": "{{params.key}}"
+            }
+          }
+        },
+        {
+          "id": "tools",
+          "component": "data-grid",
+          "options": {
+            "id": "task-backlog-tools",
+            "url": "/d/task-backlog-head?f.key={{params.key|url}}",
+            "idField": "key",
+            "pageSize": 1,
+            "height": 90,
+            "columns": [
+              {
+                "key": "name",
+                "width": 240,
+                "sortable": false,
+                "filterable": false
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 760,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "board",
+                    "url": "/p/task-board?key={raw.key}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "filter",
+                    "url": "/TaskManager/AllWork?WorkSpaceId={raw.id}&StatusCategory=NotDone",
+                    "method": "get"
+                  },
+                  {
+                    "key": "create",
+                    "url": "/f/tm-create-item?workSpaceId={raw.id}",
+                    "method": "get",
+                    "showWhen": "row.canCreate == true"
+                  },
+                  {
+                    "key": "new-sprint",
+                    "url": "/f/tm-create-sprint?workSpaceId={raw.id}&key={raw.key}",
+                    "method": "get",
+                    "showWhen": "row.canManageSprints == true"
+                  },
+                  {
+                    "key": "spaces",
+                    "url": "/p/task-manager",
+                    "method": "get"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "sprints",
+          "component": "def:related-table",
+          "options": {
+            "id": "task-backlog-sprints",
+            "url": "/d/task-backlog-sprints?f.key={{params.key|url}}",
+            "idField": "id",
+            "columns": [
+              {
+                "key": "name",
+                "width": 200
+              },
+              {
+                "key": "state",
+                "width": 110
+              },
+              {
+                "key": "period",
+                "width": 200
+              },
+              {
+                "key": "counts",
+                "width": 220
+              },
+              {
+                "key": "goal",
+                "width": 300
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "start",
+                    "url": "/f/tm-start-sprint?sprintId={id}&key={{params.key}}",
+                    "method": "get",
+                    "showWhen": "row.canStart == true"
+                  },
+                  {
+                    "key": "complete",
+                    "url": "/f/tm-complete-sprint?sprintId={id}&key={{params.key}}",
+                    "method": "get",
+                    "showWhen": "row.canComplete == true"
+                  },
+                  {
+                    "key": "edit",
+                    "url": "/f/tm-update-sprint?sprintId={id}&key={{params.key}}&name={raw.name}&goal={raw.goal}",
+                    "method": "get",
+                    "showWhen": "row.canManage == true"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "items",
+          "component": "data-grid",
+          "options": {
+            "id": "task-backlog-items",
+            "url": "/d/task-backlog-items?f.key={{params.key|url}}",
+            "idField": "id",
+            "viewsKey": "task-backlog-items",
+            "selectable": true,
+            "columns": [
+              {
+                "key": "key",
+                "width": 110
+              },
+              {
+                "key": "title",
+                "width": 320
+              },
+              {
+                "key": "type",
+                "width": 110
+              },
+              {
+                "key": "status",
+                "width": 120
+              },
+              {
+                "key": "priority",
+                "width": 100
+              },
+              {
+                "key": "assignee",
+                "width": 160
+              },
+              {
+                "key": "dueDate",
+                "width": 110,
+                "type": "date"
+              },
+              {
+                "key": "overdue",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "points",
+                "width": 80,
+                "type": "number"
+              },
+              {
+                "key": "sprint",
+                "width": 160
+              },
+              {
+                "key": "archived",
+                "width": 90,
+                "type": "bool"
+              },
+              {
+                "key": "_actions",
+                "type": "actions",
+                "width": 360,
+                "sortable": false,
+                "filterable": false,
+                "actions": [
+                  {
+                    "key": "open",
+                    "url": "/Task/Details/{id}",
+                    "method": "get"
+                  },
+                  {
+                    "key": "up",
+                    "url": "/a/tm-rank-up",
+                    "method": "post",
+                    "showWhen": "row.canRank == true"
+                  },
+                  {
+                    "key": "down",
+                    "url": "/a/tm-rank-down",
+                    "method": "post",
+                    "showWhen": "row.canRank == true"
+                  },
+                  {
+                    "key": "sprint",
+                    "url": "/f/tm-set-sprint?id={id}&key={{params.key}}",
+                    "method": "get",
+                    "showWhen": "row.canRank == true"
+                  }
+                ]
+              }
+            ],
+            "bulkActions": [
+              {
+                "key": "status",
+                "label": {
+                  "en": "Change status",
+                  "fa": "تغییر وضعیت"
+                },
+                "formUrl": "/f/tm-bulk-status?key={{params.key|url}}"
+              },
+              {
+                "key": "assign",
+                "label": {
+                  "en": "Assign",
+                  "fa": "تخصیص"
+                },
+                "formUrl": "/f/tm-bulk-assign?key={{params.key|url}}"
+              },
+              {
+                "key": "sprint",
+                "label": {
+                  "en": "Move to sprint",
+                  "fa": "انتقال به اسپرینت"
+                },
+                "formUrl": "/f/tm-bulk-sprint?key={{params.key|url}}"
+              },
+              {
+                "key": "archive",
+                "label": {
+                  "en": "Archive",
+                  "fa": "بایگانی"
+                },
+                "formUrl": "/f/tm-bulk-archive?key={{params.key|url}}"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

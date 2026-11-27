@@ -58,24 +58,10 @@ public class TaskManagerController : Controller
 
     // SCRUM-831: the start page (the spaces of the user) is the definition /p/task-manager over ITaskManagerPagesOperations.
 
+    // SCRUM-831: the board and the backlog of a space are the definition pages /p/task-board and /p/task-backlog (the old address keeps working).
     [HttpGet]
-    public async Task<IActionResult> Space(string key, string view = "backlog")
-    {
-        if (!await Can("View")) return Forbid();
-        var actor = await ActorAsync();
-        view = view == "board" ? "board" : "backlog";
-        ViewBag.ViewMode = view;
-
-        if (view == "board") return Redirect("/p/task-board?key=" + Uri.EscapeDataString(key));   // SCRUM-831: the board is the definition page /p/task-board
-
-        var backlog = await _tasks.GetBacklogAsync(key, actor);
-        if (backlog == null) return NotFound();
-        ViewData["Title"] = backlog.View.Space.Name;
-        ViewData["Section"] = "Task Manager";
-        ViewBag.Assignees = await _tasks.GetEligibleAssigneesAsync(backlog.View.Space.Id, actor);
-        ViewBag.SpaceView = backlog.View;
-        return View("Backlog", backlog);
-    }
+    public IActionResult Space(string key, string view = "backlog")
+        => Redirect((view == "board" ? "/p/task-board?key=" : "/p/task-backlog?key=") + Uri.EscapeDataString(key ?? ""));
 
     /// <summary>همه‌ی کارهای قابل‌دید کاربر با فیلتر بسته (همچنین «کارهای من» با assignee=me).</summary>
     [HttpGet]

@@ -1,0 +1,72 @@
+{
+  "kind": "form",
+  "key": "tm-bulk-assign",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Assign the selected tasks",
+    "fa": "تخصیص وظایف انتخاب‌شده"
+  },
+  "description": {
+    "en": "Assign the selected tasks",
+    "fa": "تخصیص وظایف انتخاب‌شده"
+  },
+  "payload": {
+    "id": "tm-bulk-assign",
+    "title": {
+      "en": "Assign the selected tasks",
+      "fa": "تخصیص وظایف انتخاب‌شده"
+    },
+    "submitLabel": {
+      "en": "Assign the selected tasks",
+      "fa": "تخصیص وظایف انتخاب‌شده"
+    },
+    "actionKey": "tm-bulk-assign",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "ids",
+        "label": {
+          "en": "Task ids (comma separated)",
+          "fa": "شناسه وظایف (جدا شده با ویرگول)"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        },
+        "span": 2
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Space key",
+          "fa": "کلید فضا"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "value",
+        "label": {
+          "en": "Assignee",
+          "fa": "مسئول"
+        },
+        "kind": "select",
+        "optionsFrom": "tm-assignee-key-options",
+        "optionsArgs": {
+          "key": "key"
+        }
+      }
+    ]
+  }
+}

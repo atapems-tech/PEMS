@@ -1,0 +1,59 @@
+{
+  "kind": "form",
+  "key": "tm-start-sprint",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Start the sprint",
+    "fa": "شروع اسپرینت"
+  },
+  "description": {
+    "en": "Start the sprint",
+    "fa": "شروع اسپرینت"
+  },
+  "payload": {
+    "id": "tm-start-sprint",
+    "title": {
+      "en": "Start the sprint",
+      "fa": "شروع اسپرینت"
+    },
+    "submitLabel": {
+      "en": "Start the sprint",
+      "fa": "شروع اسپرینت"
+    },
+    "actionKey": "tm-start-sprint",
+    "columns": 2,
+    "fields": [
+      {
+        "name": "sprintId",
+        "label": {
+          "en": "Sprint id",
+          "fa": "شناسه اسپرینت"
+        },
+        "kind": "number",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      },
+      {
+        "name": "key",
+        "label": {
+          "en": "Space key",
+          "fa": "کلید فضا"
+        },
+        "kind": "text",
+        "required": true,
+        "messages": {
+          "required": {
+            "en": "This field is required.",
+            "fa": "این فیلد الزامی است."
+          }
+        }
+      }
+    ]
+  }
+}

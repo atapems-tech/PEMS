@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "task-backlog-head",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Backlog of a space",
+    "fa": "بک‌لاگ فضا"
+  },
+  "description": {
+    "en": "Backlog of a space",
+    "fa": "بک‌لاگ فضا"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "TaskManagerPage",
+      "action": "BacklogHead",
+      "args": {
+        "key": "param:key"
+      }
+    }
+  }
+}
