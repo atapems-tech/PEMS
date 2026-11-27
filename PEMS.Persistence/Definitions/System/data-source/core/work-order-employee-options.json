@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-employee-options",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Employees for the work order",
+    "fa": "کارمندان"
+  },
+  "description": {
+    "en": "Employees for the work order",
+    "fa": "کارمندان"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "EmployeeOptions",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

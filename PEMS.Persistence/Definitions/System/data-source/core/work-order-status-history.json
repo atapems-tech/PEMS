@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-status-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order status history",
+    "fa": "تاریخچه‌ی وضعیت دستورکار"
+  },
+  "description": {
+    "en": "Work order status history",
+    "fa": "تاریخچه‌ی وضعیت دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "StatusHistory",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

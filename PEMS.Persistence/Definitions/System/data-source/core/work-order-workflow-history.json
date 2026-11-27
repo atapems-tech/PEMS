@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-workflow-history",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order workflow history",
+    "fa": "تاریخچه‌ی گردش‌کار دستورکار"
+  },
+  "description": {
+    "en": "Work order workflow history",
+    "fa": "تاریخچه‌ی گردش‌کار دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "WorkflowHistory",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

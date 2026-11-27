@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-skills",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order required skills",
+    "fa": "مهارت‌های موردنیاز دستورکار"
+  },
+  "description": {
+    "en": "Work order required skills",
+    "fa": "مهارت‌های موردنیاز دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "Skills",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}

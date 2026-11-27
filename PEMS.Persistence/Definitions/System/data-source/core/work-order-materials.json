@@ -1,0 +1,25 @@
+{
+  "kind": "data-source",
+  "key": "work-order-materials",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Work order required materials",
+    "fa": "مواد موردنیاز دستورکار"
+  },
+  "description": {
+    "en": "Work order required materials",
+    "fa": "مواد موردنیاز دستورکار"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "WorkOrderDetail",
+      "action": "Materials",
+      "args": {
+        "id": "param:id"
+      }
+    }
+  }
+}
