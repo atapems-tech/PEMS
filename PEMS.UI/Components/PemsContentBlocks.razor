@@ -1,6 +1,7 @@
 @namespace PEMS.UI.Components
 @attribute [PEMS.UI.Rendering.PemsComponent("content-blocks", Category = "content", Icon = "bi-card-text")]
 @inject IPemsLocale Locale
+@inject IServiceProvider Services
 @* SCRUM-666..757: static text pages as a definition. Each block is escaped text (heading, text, alert, list, code, link, divider); no markup comes from a definition. Link targets are paths of this site only. *@
 @if (Options.Blocks.Count == 0)
 {
@@ -9,8 +10,9 @@
 else
 {
     <div class="@Join("pems-content-blocks", Options.Css, Options.PageClass)" id="@Options.Id" @attributes="Options.Attributes">
-        @foreach (var block in Options.Blocks)
+        @for (var bi = 0; bi < Options.Blocks.Count; bi++)
         {
+            var block = Options.Blocks[bi];
             @switch (block.Type)
             {
                 case "heading":
@@ -41,6 +43,20 @@ else
                     break;
                 case "code":
                     <pre class="@Join("pems-content-blocks__code", "mb-3", block.Css)"><code>@Locale.Text(block.Text)</code></pre>
+                    break;
+                case "link" when IsTabRun(bi):
+                    @if (IsRunStart(bi))
+                    {
+                        <nav class="nav nav-tabs mb-3 pems-content-blocks__tabs" aria-label="@Locale.Text(Options.Blocks[bi].Text)">
+                            @foreach (var tab in RunFrom(bi))
+                            {
+                                var tabHref = SafeHref(tab.Href);
+                                if (tabHref is null) continue;
+                                var active = string.Equals(tabHref.Split('?')[0].TrimEnd('/'), CurrentPath, StringComparison.OrdinalIgnoreCase);
+                                <a class="@Join("nav-link", active ? "active" : null, tab.Css)" href="@tabHref" aria-current="@(active ? "page" : null)">@Locale.Text(tab.Text)</a>
+                            }
+                        </nav>
+                    }
                     break;
                 case "link":
                     @if (SafeHref(block.Href) is { } href)
@@ -86,6 +102,14 @@ else
 }
 @code {
     [Parameter, EditorRequired] public ContentBlocksOptions Options { get; set; } = default!;
+
+    private string CurrentPath => ((Services.GetService(typeof(Microsoft.AspNetCore.Http.IHttpContextAccessor)) as Microsoft.AspNetCore.Http.IHttpContextAccessor)?.HttpContext?.Request.Path.Value ?? "").TrimEnd('/');
+
+    /// <summary>Two or more link blocks in a row are one navigation: drawn as tabs, the one that is this page marked (the old module sub-navigation).</summary>
+    private bool IsLink(int i) => i >= 0 && i < Options.Blocks.Count && Options.Blocks[i].Type == "link";
+    private bool IsTabRun(int i) => IsLink(i) && (IsLink(i - 1) || IsLink(i + 1));
+    private bool IsRunStart(int i) => IsTabRun(i) && !IsLink(i - 1);
+    private IEnumerable<ContentBlock> RunFrom(int i) { for (var j = i; IsLink(j); j++) yield return Options.Blocks[j]; }
 
     private static string Join(params string?[] parts) => string.Join(" ", parts.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => p!.Trim()));
 

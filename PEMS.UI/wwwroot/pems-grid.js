@@ -203,6 +203,8 @@
                     row.appendChild(box);
                 }
                 vc.forEach(function (c) { row.appendChild(cellFor(c, item)); });
+                var target = rowTarget(item);
+                if (target) { row.classList.add('is-clickable'); row.addEventListener('click', (function (u) { return function (e) { if (e.target.closest('a, button, input, select, label')) return; window.location.href = u; }; })(target)); }
                 rowsBox.appendChild(row);
             }
             var shown = failed ? T.error : total === null ? T.loading : total === 0 ? T.empty : fmt(T.rows, total);
@@ -226,19 +228,35 @@
             if (a.confirm && window.PemsDialog && typeof window.PemsDialog.confirm === 'function') window.PemsDialog.confirm(a.confirm).then(function (ok) { if (ok) go(); });
             else go();
         }
+        function actionUrl(a, item) {
+            var id = String(item[cfg.idField]);
+            return a.url.split('{id}').join(encodeURIComponent(id)).replace(/\{raw\.([A-Za-z_][A-Za-z0-9_]*)\}/g, function (m, p, at) {
+                var v = item[p];
+                // {raw.field} as the whole address: only a path of this site the row carries; inside the address (a query value) any plain value of the row, encoded (a bool, a number or a text; empty when the row has none)
+                if (at === 0) return typeof v === 'string' && v.charAt(0) === '/' && v.charAt(1) !== '/' ? v : '';
+                return v === null || v === undefined || typeof v === 'object' ? '' : encodeURIComponent(String(v));
+            });
+        }
+        // the icon of an action: its own icon, else the one of its key (the words every list uses); no icon: the text button
+        var KEY_ICONS = { edit: 'bi-pencil', view: 'bi-eye', details: 'bi-eye', open: 'bi-box-arrow-up-right', show: 'bi-eye', delete: 'bi-trash', remove: 'bi-trash', download: 'bi-download', preview: 'bi-eye', history: 'bi-clock-history', pdf: 'bi-file-earmark-pdf', approve: 'bi-check-lg', reject: 'bi-x-lg', activate: 'bi-toggle-on', deactivate: 'bi-toggle-off', toggle: 'bi-toggle-on', archive: 'bi-archive', reply: 'bi-reply', send: 'bi-send', refer: 'bi-share', comment: 'bi-chat', add: 'bi-plus-lg', create: 'bi-plus-lg', assign: 'bi-person-plus', print: 'bi-printer', upload: 'bi-upload', link: 'bi-link-45deg', copy: 'bi-files' };
+        function iconOf(a) { return a.icon || KEY_ICONS[a.key] || null; }
+        // a row opens its details like the old lists: the view/details/open action of the row (a link), when the grid has one
+        var ROW_KEYS = ['view', 'details', 'open', 'show'];
+        function rowTarget(item) {
+            if (!item) return null;
+            var found = null;
+            cfg.columns.forEach(function (c) { (c.actions || []).forEach(function (a) { if (!found && a.method !== 'post' && ROW_KEYS.indexOf(a.key) >= 0 && holds(a.showWhen, item)) found = a; }); });
+            return found ? actionUrl(found, item) : null;
+        }
         function actionsCell(c, item) {
             var cell = tpl('dg-cell-actions'), box = slot(cell, 'actions');
             if (item) (c.actions || []).forEach(function (a) {
                 if (!holds(a.showWhen, item)) return;
-                var id = String(item[cfg.idField]), url = a.url.split('{id}').join(encodeURIComponent(id)).replace(/\{raw\.([A-Za-z_][A-Za-z0-9_]*)\}/g, function (m, p, at) {
-                    var v = item[p];
-                    // {raw.field} as the whole address: only a path of this site the row carries; inside the address (a query value) any plain value of the row, encoded (a bool, a number or a text; empty when the row has none)
-                    if (at === 0) return typeof v === 'string' && v.charAt(0) === '/' && v.charAt(1) !== '/' ? v : '';
-                    return v === null || v === undefined || typeof v === 'object' ? '' : encodeURIComponent(String(v));
-                });
+                var id = String(item[cfg.idField]), url = actionUrl(a, item);
                 var post = a.method === 'post', el = tpl(post ? 'dg-row-button' : 'dg-row-link'), node = slot(el, post ? 'button' : 'link');
-                node.textContent = a.label;
-                node.classList.add('btn-outline-' + (a.tone || 'secondary'));
+                var ic = iconOf(a);
+                if (ic) { var i = document.createElement('i'); i.className = 'bi ' + ic; i.setAttribute('aria-hidden', 'true'); node.appendChild(i); node.setAttribute('title', a.label); node.setAttribute('aria-label', a.label); node.classList.add('pems-grid__icon-btn', 'text-' + (a.tone && a.tone !== 'secondary' ? a.tone : 'body-secondary')); }
+                else { node.textContent = a.label; node.classList.add('btn-outline-' + (a.tone || 'secondary')); }
                 if (post) node.addEventListener('click', function () { runRowAction(a, url, id); }); else node.setAttribute('href', url);
                 box.appendChild(el);
             });

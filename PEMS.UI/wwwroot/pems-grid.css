@@ -53,4 +53,7 @@
 .pems-grid__scroller.is-compact .pems-grid__cell { padding-block: 0; font-size: .875rem; }
 
 /* SCRUM-437: the actions column of a row. */
-.pems-grid__actions { display: inline-flex; gap: .25rem; }
+.pems-grid__actions { display: inline-flex; gap: .125rem; }
+.pems-grid__icon-btn { border: 0; background: transparent; padding: .125rem .375rem; line-height: 1; }
+.pems-grid__icon-btn:hover { background: var(--pems-hover, rgba(127, 127, 127, .15)); }
+.pems-grid__row.is-clickable { cursor: pointer; }
