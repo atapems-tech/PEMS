@@ -317,51 +317,99 @@
             "columns": [
               {
                 "key": "tag",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
               },
               {
                 "key": "description",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                }
               },
               {
                 "key": "signal",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Signal",
+                  "fa": "سیگنال"
+                }
               },
               {
                 "key": "junctionBoxTerminal",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Junction Box Terminal",
+                  "fa": "ترمینال جانکشن باکس"
+                }
               },
               {
                 "key": "cable",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Cable",
+                  "fa": "کابل"
+                }
               },
               {
                 "key": "marshalling",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Marshalling",
+                  "fa": "مارشالینگ"
+                }
               },
               {
                 "key": "ioCard",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Io Card",
+                  "fa": "کارت I/O"
+                }
               },
               {
                 "key": "loop",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Loop",
+                  "fa": "لوپ"
+                }
               },
               {
                 "key": "system",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "System",
+                  "fa": "سیستم"
+                }
               },
               {
                 "key": "spare",
-                "width": 80
+                "width": 80,
+                "header": {
+                  "en": "Spare",
+                  "fa": "قطعه‌ی یدکی"
+                }
               },
               {
                 "key": "remarks",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Remarks",
+                  "fa": "ملاحظات"
+                }
               },
               {
                 "key": "rawExtra",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Raw Extra",
+                  "fa": "داده‌ی خام اضافی"
+                }
               }
             ]
           }

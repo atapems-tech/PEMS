@@ -456,7 +456,11 @@
               },
               {
                 "key": "read",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Read",
+                  "fa": "خوانده‌شده"
+                }
               }
             ]
           }
@@ -488,16 +492,28 @@
             "columns": [
               {
                 "key": "to",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                }
               },
               {
                 "key": "instructions",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Instructions",
+                  "fa": "دستورالعمل"
+                }
               },
               {
                 "key": "due",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                }
               },
               {
                 "key": "status",
@@ -509,16 +525,28 @@
               },
               {
                 "key": "referredBy",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Referred By",
+                  "fa": "ارجاع‌دهنده"
+                }
               },
               {
                 "key": "referred",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Referred",
+                  "fa": "ارجاع‌شده"
+                }
               },
               {
                 "key": "responseNote",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Response Note",
+                  "fa": "یادداشت پاسخ"
+                }
               },
               {
                 "key": "overdue",
@@ -540,7 +568,11 @@
                     "key": "complete",
                     "url": "/f/letter-complete-referral?letterId={{params.id}}&referralId={id}",
                     "method": "get",
-                    "showWhen": "row.canComplete == true"
+                    "showWhen": "row.canComplete == true",
+                    "label": {
+                      "en": "Complete",
+                      "fa": "تکمیل"
+                    }
                   }
                 ],
                 "header": {
@@ -594,7 +626,11 @@
                   {
                     "key": "download",
                     "url": "/Files/Download/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Download",
+                      "fa": "دانلود"
+                    }
                   }
                 ],
                 "header": {
@@ -633,11 +669,19 @@
               {
                 "key": "order",
                 "width": 70,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Order",
+                  "fa": "ترتیب"
+                }
               },
               {
                 "key": "approver",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Approver",
+                  "fa": "تأییدکننده"
+                }
               },
               {
                 "key": "status",
@@ -650,16 +694,28 @@
               {
                 "key": "decided",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Decided",
+                  "fa": "تصمیم‌گیری"
+                }
               },
               {
                 "key": "comment",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               },
               {
                 "key": "current",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Current",
+                  "fa": "جاری"
+                }
               },
               {
                 "key": "_actions",
@@ -672,7 +728,11 @@
                     "key": "reassign",
                     "url": "/f/letter-reassign-approver?letterId={{params.id}}&stepOrder={id}",
                     "method": "get",
-                    "showWhen": "row.canReassign == true"
+                    "showWhen": "row.canReassign == true",
+                    "label": {
+                      "en": "Reassign",
+                      "fa": "تخصیص مجدد"
+                    }
                   }
                 ],
                 "header": {
@@ -710,20 +770,36 @@
             "columns": [
               {
                 "key": "reviewer",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Reviewer",
+                  "fa": "بازبین"
+                }
               },
               {
                 "key": "decision",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                }
               },
               {
                 "key": "comment",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               },
               {
                 "key": "created",
                 "width": 130,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                }
               }
             ]
           }
@@ -772,7 +848,11 @@
                     "key": "remove",
                     "url": "/f/letter-detach-tag?letterId={{params.id}}&tagId={id}",
                     "method": "get",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -811,7 +891,11 @@
               {
                 "key": "when",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                }
               },
               {
                 "key": "type",
@@ -823,11 +907,19 @@
               },
               {
                 "key": "description",
-                "width": 380
+                "width": 380,
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                }
               },
               {
                 "key": "by",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                }
               }
             ]
           }

@@ -61,22 +61,38 @@
               },
               {
                 "key": "department",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Department",
+                  "fa": "واحد"
+                }
               },
               {
                 "key": "members",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                }
               },
               {
                 "key": "openItems",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open Items",
+                  "fa": "اقلام باز"
+                }
               },
               {
                 "key": "active",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                }
               },
               {
                 "key": "_actions",

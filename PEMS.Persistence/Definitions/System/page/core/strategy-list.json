@@ -61,27 +61,51 @@
             "columns": [
               {
                 "key": "equipmentClass",
-                "width": 170
+                "width": 170,
+                "header": {
+                  "en": "Equipment Class",
+                  "fa": "کلاس تجهیز"
+                }
               },
               {
                 "key": "equipmentTag",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Equipment Tag",
+                  "fa": "تگ تجهیز"
+                }
               },
               {
                 "key": "strategyType",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Strategy Type",
+                  "fa": "نوع استراتژی"
+                }
               },
               {
                 "key": "failureMode",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Failure Mode",
+                  "fa": "حالت خرابی"
+                }
               },
               {
                 "key": "consequence",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Consequence",
+                  "fa": "پیامد"
+                }
               },
               {
                 "key": "frequency",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Frequency",
+                  "fa": "تناوب"
+                }
               },
               {
                 "key": "status",
@@ -94,21 +118,37 @@
               {
                 "key": "version",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                }
               },
               {
                 "key": "assignedTags",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Assigned Tags",
+                  "fa": "تگ‌های تخصیص‌یافته"
+                }
               },
               {
                 "key": "reviewOverdue",
                 "width": 110,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Review Overdue",
+                  "fa": "بازبینی عقب‌افتاده"
+                }
               },
               {
                 "key": "justification",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Justification",
+                  "fa": "توجیه"
+                }
               },
               {
                 "key": "_actions",

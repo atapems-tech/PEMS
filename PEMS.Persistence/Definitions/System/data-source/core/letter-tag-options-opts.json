@@ -1,0 +1,24 @@
+{
+  "kind": "data-source",
+  "key": "letter-tag-options-opts",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Tags",
+    "fa": "برچسب‌ها"
+  },
+  "description": {
+    "en": "Tags",
+    "fa": "برچسب‌ها"
+  },
+  "payload": {
+    "kind": "provider",
+    "provider": "operation-options",
+    "parameters": {
+      "model": "LetterDetail",
+      "action": "TagOptions",
+      "value": "value",
+      "label": "label"
+    }
+  }
+}

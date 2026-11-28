@@ -28,11 +28,19 @@
               {
                 "key": "subject",
                 "width": 360,
-                "href": "/Letter/Details/{id}"
+                "href": "/Letter/Details/{id}",
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                }
               },
               {
                 "key": "number",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "type",
@@ -44,7 +52,11 @@
               },
               {
                 "key": "senderReceiver",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Sender Receiver",
+                  "fa": "فرستنده / گیرنده"
+                }
               },
               {
                 "key": "status",
@@ -65,7 +77,11 @@
               {
                 "key": "date",
                 "width": 100,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                }
               },
               {
                 "key": "_actions",

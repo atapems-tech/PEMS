@@ -20,8 +20,8 @@
       },
       "title": {
         "type": "text",
-        "required": true,
-        "description": "The heading above the table"
+        "required": false,
+        "description": "The heading above the table (without it no heading is written)"
       },
       "url": {
         "type": "string",
@@ -62,7 +62,8 @@
               "text": "${title}"
             }
           ]
-        }
+        },
+        "if": "${title}"
       },
       {
         "id": "grid",

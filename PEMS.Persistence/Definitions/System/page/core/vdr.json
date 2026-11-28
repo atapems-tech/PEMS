@@ -233,7 +233,11 @@
               },
               {
                 "key": "description",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                }
               },
               {
                 "key": "type",
@@ -278,7 +282,11 @@
               },
               {
                 "key": "latestCategory",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Latest Category",
+                  "fa": "آخرین دسته"
+                }
               },
               {
                 "key": "status",

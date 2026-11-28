@@ -74,14 +74,22 @@ public sealed class OperationReader(IServiceScopeFactory scopes, OperationCatalo
             values.Add(EntityJson.Convert(p.ParameterType, text) is var c && c is EntityJson.NotConvertible ? throw new InvalidOperationException($"'{p.Name}' is not valid.") : c);
         }
         var service = scope.ServiceProvider.GetRequiredService(op.ServiceType);
-        var task = op.Method.Invoke(service, values.ToArray())!;
-        object? answer = task;
-        if (task is Task t)
+        try
         {
-            await t;
-            answer = t.GetType().IsGenericType ? t.GetType().GetProperty("Result")!.GetValue(t) : null;
+            var task = op.Method.Invoke(service, values.ToArray())!;
+            object? answer = task;
+            if (task is Task t)
+            {
+                await t;
+                answer = t.GetType().IsGenericType ? t.GetType().GetProperty("Result")!.GetValue(t) : null;
+            }
+            return new(true, false, answer);
         }
-        return new(true, false, answer);
+        catch (System.Reflection.TargetInvocationException ex) when (ex.InnerException is InvalidOperationException or UnauthorizedAccessException)
+        {
+            return new(false, false, null);   // SCRUM-836: a business refusal of a read (for example a user without an employee record) is a refusal, as the old controller redirected with a message, not a crash
+        }
+        catch (Exception ex) when (ex is InvalidOperationException or UnauthorizedAccessException) { return new(false, false, null); }
     }
 
     /// <summary>The rows of the answer: one dictionary per item (properties by name, first letter lower-case); a text list becomes rows with a "value" column. Null when the user may not run the operation.</summary>

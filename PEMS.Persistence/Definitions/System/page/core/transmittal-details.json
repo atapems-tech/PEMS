@@ -284,7 +284,11 @@
               },
               {
                 "key": "organization",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Organization",
+                  "fa": "سازمان"
+                }
               },
               {
                 "key": "responseRequired",
@@ -296,7 +300,11 @@
               },
               {
                 "key": "acknowledgement",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Acknowledgement",
+                  "fa": "تأیید دریافت"
+                }
               },
               {
                 "key": "_actions",
@@ -309,7 +317,11 @@
                     "key": "acknowledge",
                     "url": "/f/transmittal-acknowledge?id={{params.id}}&recipientId={id}",
                     "method": "get",
-                    "showWhen": "row.canAcknowledge == true"
+                    "showWhen": "row.canAcknowledge == true",
+                    "label": {
+                      "en": "Acknowledge",
+                      "fa": "تأیید دریافت"
+                    }
                   }
                 ],
                 "header": {
@@ -347,7 +359,11 @@
             "columns": [
               {
                 "key": "documentNo",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -375,7 +391,11 @@
               },
               {
                 "key": "remarks",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Remarks",
+                  "fa": "ملاحظات"
+                }
               }
             ]
           }

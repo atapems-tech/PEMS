@@ -312,7 +312,11 @@
               },
               {
                 "key": "position",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Position",
+                  "fa": "سمت"
+                }
               },
               {
                 "key": "received",

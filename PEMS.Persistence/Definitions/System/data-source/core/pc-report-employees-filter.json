@@ -1,0 +1,26 @@
+{
+  "kind": "data-source",
+  "key": "pc-report-employees-filter",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "description": {
+    "en": "People",
+    "fa": "افراد"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "PartCatalogueReport",
+      "action": "Employees",
+      "args": {
+        "userRoles": "context:roles",
+        "userName": "context:userName"
+      }
+    }
+  }
+}

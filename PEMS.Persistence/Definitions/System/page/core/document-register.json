@@ -152,7 +152,11 @@
               {
                 "key": "documentNo",
                 "width": 160,
-                "href": "/p/eng-doc-details?id={id}"
+                "href": "/p/eng-doc-details?id={id}",
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -164,7 +168,11 @@
               },
               {
                 "key": "documentType",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Document Type",
+                  "fa": "نوع مدرک"
+                }
               },
               {
                 "key": "area",
@@ -226,12 +234,20 @@
               {
                 "key": "delayDays",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Delay Days",
+                  "fa": "روز تأخیر"
+                }
               },
               {
                 "key": "created",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                }
               },
               {
                 "key": "_actions",

@@ -91,7 +91,11 @@
               },
               {
                 "key": "po",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Po",
+                  "fa": "سفارش خرید"
+                }
               },
               {
                 "key": "project",
@@ -104,17 +108,29 @@
               {
                 "key": "plannedIssue",
                 "width": 140,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Planned Issue",
+                  "fa": "صدور برنامه‌ریزی‌شده"
+                }
               },
               {
                 "key": "indexDue",
                 "width": 150,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Index Due",
+                  "fa": "سررسید اندیس"
+                }
               },
               {
                 "key": "indexOverdue",
                 "width": 110,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Index Overdue",
+                  "fa": "اندیس عقب‌افتاده"
+                }
               },
               {
                 "key": "status",
@@ -126,11 +142,19 @@
               },
               {
                 "key": "hardCopy",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Hard Copy",
+                  "fa": "نسخه‌ی کاغذی"
+                }
               },
               {
                 "key": "softCopy",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Soft Copy",
+                  "fa": "نسخه‌ی نرم"
+                }
               },
               {
                 "key": "_actions",

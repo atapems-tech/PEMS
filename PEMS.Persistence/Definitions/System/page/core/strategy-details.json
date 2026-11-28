@@ -328,7 +328,11 @@
               {
                 "key": "version",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                }
               },
               {
                 "key": "status",
@@ -341,7 +345,11 @@
               {
                 "key": "approvedAt",
                 "width": 140,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Approved At",
+                  "fa": "زمان تأیید"
+                }
               },
               {
                 "key": "_actions",
@@ -379,15 +387,27 @@
             "columns": [
               {
                 "key": "tag",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
               },
               {
                 "key": "equipmentName",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Equipment Name",
+                  "fa": "نام تجهیز"
+                }
               },
               {
                 "key": "equipmentClass",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Equipment Class",
+                  "fa": "کلاس تجهیز"
+                }
               },
               {
                 "key": "status",
@@ -399,21 +419,37 @@
               },
               {
                 "key": "override",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Override",
+                  "fa": "استثنا"
+                }
               },
               {
                 "key": "overrideJustification",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Override Justification",
+                  "fa": "توجیه استثنا"
+                }
               },
               {
                 "key": "planCount",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Plan Count",
+                  "fa": "تعداد برنامه"
+                }
               },
               {
                 "key": "assignedDate",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Assigned Date",
+                  "fa": "تاریخ تخصیص"
+                }
               },
               {
                 "key": "_actions",
@@ -435,27 +471,43 @@
                     "key": "request-override",
                     "url": "/f/strategy-override-request?assignmentId={id}&strategyId={{params.id}}",
                     "method": "get",
-                    "showWhen": "row.canRequestOverride == true"
+                    "showWhen": "row.canRequestOverride == true",
+                    "label": {
+                      "en": "Request override",
+                      "fa": "درخواست استثنا"
+                    }
                   },
                   {
                     "key": "approve-override",
                     "url": "/f/strategy-override-approve?assignmentId={id}&strategyId={{params.id}}",
                     "method": "get",
-                    "showWhen": "row.canDecideOverride == true"
+                    "showWhen": "row.canDecideOverride == true",
+                    "label": {
+                      "en": "Approve override",
+                      "fa": "تأیید استثنا"
+                    }
                   },
                   {
                     "key": "reject-override",
                     "url": "/f/strategy-override-reject?assignmentId={id}&strategyId={{params.id}}",
                     "method": "get",
                     "showWhen": "row.canDecideOverride == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Reject override",
+                      "fa": "رد استثنا"
+                    }
                   },
                   {
                     "key": "unassign",
                     "url": "/f/strategy-unassign?assignmentId={id}&strategyId={{params.id}}",
                     "method": "get",
                     "showWhen": "row.canUnassign == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Unassign",
+                      "fa": "لغو تخصیص"
+                    }
                   }
                 ],
                 "header": {
@@ -476,11 +528,19 @@
             "columns": [
               {
                 "key": "planNumber",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Plan Number",
+                  "fa": "شماره برنامه"
+                }
               },
               {
                 "key": "tag",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
               },
               {
                 "key": "title",
@@ -492,12 +552,20 @@
               },
               {
                 "key": "version",
-                "width": 80
+                "width": 80,
+                "header": {
+                  "en": "Version",
+                  "fa": "نسخه"
+                }
               },
               {
                 "key": "outOfSync",
                 "width": 110,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Out Of Sync",
+                  "fa": "ناهمگام"
+                }
               }
             ]
           }
@@ -513,31 +581,59 @@
               {
                 "key": "when",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                }
               },
               {
                 "key": "who",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Who",
+                  "fa": "چه کسی"
+                }
               },
               {
                 "key": "action",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                }
               },
               {
                 "key": "fromStatus",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "From Status",
+                  "fa": "از وضعیت"
+                }
               },
               {
                 "key": "toStatus",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "To Status",
+                  "fa": "به وضعیت"
+                }
               },
               {
                 "key": "summary",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Summary",
+                  "fa": "خلاصه"
+                }
               },
               {
                 "key": "comment",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               }
             ]
           }

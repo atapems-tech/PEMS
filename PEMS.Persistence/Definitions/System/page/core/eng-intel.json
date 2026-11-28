@@ -101,7 +101,11 @@
               {
                 "key": "count",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
               }
             ]
           }
@@ -150,7 +154,11 @@
             "columns": [
               {
                 "key": "documentNo",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -171,7 +179,11 @@
               {
                 "key": "pendingClassifications",
                 "width": 170,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Pending Classifications",
+                  "fa": "طبقه‌بندی‌های در انتظار"
+                }
               },
               {
                 "key": "pendingTags",

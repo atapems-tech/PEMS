@@ -213,7 +213,11 @@
               {
                 "key": "documentNo",
                 "width": 170,
-                "href": "/p/eng-doc-details?id={id}"
+                "href": "/p/eng-doc-details?id={id}",
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -283,12 +287,20 @@
               {
                 "key": "delayDays",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Delay Days",
+                  "fa": "روز تأخیر"
+                }
               },
               {
                 "key": "created",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                }
               },
               {
                 "key": "_actions",
@@ -319,7 +331,11 @@
                     "key": "delete",
                     "url": "/f/eng-doc-delete?id={id}",
                     "method": "get",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Delete",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {

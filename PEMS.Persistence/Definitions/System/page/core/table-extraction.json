@@ -52,16 +52,28 @@
               },
               {
                 "key": "extension",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Extension",
+                  "fa": "پسوند"
+                }
               },
               {
                 "key": "uploaded",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "Uploaded",
+                  "fa": "بارگذاری‌شده"
+                }
               },
               {
                 "key": "aiStatus",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Ai Status",
+                  "fa": "وضعیت هوش مصنوعی"
+                }
               },
               {
                 "key": "_actions",
@@ -73,13 +85,21 @@
                   {
                     "key": "with-ai",
                     "url": "/p/table-extraction-result?attachmentId={id}&mode=ai",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "With ai",
+                      "fa": "با هوش مصنوعی"
+                    }
                   },
                   {
                     "key": "no-ai",
                     "url": "/p/table-extraction-result?attachmentId={id}&mode=nai",
                     "method": "get",
-                    "showWhen": "row.canNoAi == true"
+                    "showWhen": "row.canNoAi == true",
+                    "label": {
+                      "en": "No ai",
+                      "fa": "بدون هوش مصنوعی"
+                    }
                   }
                 ],
                 "header": {

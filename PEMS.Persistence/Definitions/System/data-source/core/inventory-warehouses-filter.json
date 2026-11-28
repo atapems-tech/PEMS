@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "inventory-warehouses-filter",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Warehouses",
+    "fa": "انبارها"
+  },
+  "description": {
+    "en": "Warehouses",
+    "fa": "انبارها"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "Inventory",
+      "action": "Warehouses"
+    }
+  }
+}
