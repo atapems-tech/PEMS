@@ -212,6 +212,8 @@ Two process rules came with them: (a) **every Bug and every issue gets its plan 
 
 ## 4. Finishing the issue - two levels of "done"
 
+**Guideline changes go to `main` at once (owner decision 2026-11-28).** A change to the guidelines (`docs/guidelines/`, `AGENTS.md`, the role skills in `.claude/skills/`) is never held back for the task it came from: put it in its **own small pull request** (only those files, plus plan rows if any), open it, and **merge it immediately** (squash, no waiting for review or for the other work), then continue. Other agents read `main`; a rule that sits in an open branch does not exist for them. When the owner gives a new working rule in chat, write it in the right chapter in the same turn, merge it, and say the chapter and section in the reply. After the merge nothing else is needed in the task, except that a rule that changes how issues are written or checked is also applied to the open issues it touches (their descriptions get the new line).
+
 | Level | Jira status | Meaning | Who/when |
 |---|---|---|---|
 | **Conditional done** | **In Review** | Work is complete and verified by the author: every *Done when* item met, **the PR is merged into `main`**, and the build and tests have run green **or** the comment says exactly why they could not run (see "Tests and review are one step" below). Waiting for the QA check in the UI ([chapter 07](07-qa-check-in-the-ui.md)). | The agent or developer moves it **right after the merge** and sets the label `qa-pending` |
