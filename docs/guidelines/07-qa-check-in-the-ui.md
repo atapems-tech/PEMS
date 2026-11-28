@@ -140,6 +140,19 @@ The check is a read-through **in the UI that shows the result**: the rendered Ma
 Checklist lines: each *Done when* item found; links and tables render; no secret value, internal address or personal data; the text agrees with the guideline and the plan row;
 numbers and names are consistent between documents. Record it in the same template.
 
+## 6a. Screen check beside the reference (conversion audits; owner decision 2026-11-28)
+
+When screens are converted (controllers and views become definitions and engines), every converted screen is checked **beside the old one**, not only against its own tests: the file check and unit tests cannot see a table that is not drawn, a filter that shows ids, or a button that became a plain link (batch 10 of 2026-11 found all three after 600 green tests).
+
+1. **Reference.** Keep a build of the last commit before the conversion (a worktree, for example `wt-old`) or use staging or demo as it was before the batch. It runs on its own database and port; the new application runs on a separate fresh database. Never touch `PEMSDB`.
+2. **Smoke first.** Open every page, form and action of the new application once and read the host log: each `Page definition X: Instance Y: ...` warning is a defect (the host hides a part that does not validate). The definition file check does not look inside component definitions; `ShippedPageExpansionTests` does, and a new class of hidden defect gets a test of that kind.
+3. **Side by side, by priority.** Work screen by screen in the owner's priority order: open the same screen in both applications, same user and language, compare structure (parts, filters, toolbar and buttons, tabs, columns, row actions), text and behaviour. Data-filled screens need a seeded database; an empty one proves only the structure.
+4. **Snapshots are kept.** Save a reference snapshot and a new snapshot (before the fix and after it) in `docs/audit-snapshots/<issue>/` (`<screen>-old.jpg`, `<screen>-new-before.jpg`, `<screen>-new-after.jpg`), and name the files in the Jira comment of the Bug. Snapshots hold no real data and no credentials.
+5. **One Bug per class of defect, in Jira.** Type Bug, parent SCRUM-7, active sprint, plan row at creation, title `[#N] ...`; the description gives the behaviour, the root cause in the engine or component, and the QA lines not yet run. Many screens with the same cause are one Bug.
+6. **Fix in the engine or the component, never in the screen.** If a definition needs a special case, the engine lacks a feature: add the feature (an option, a component, a binding) and keep the definition plain. A fix that exists only for one screen is rejected in review.
+7. **Close the loop.** After the merge, comment on the Bug with the PR link and the old, before and after snapshots, then move it to In Review (guideline 00, section 5 rules for In Review); then go to the next screen. Differences that are not fixed in the same PR go to `plan/sheets/audit-known-gaps.md` and become their own issue.
+8. **Practical traps.** Stop the running audit applications before building (a locked DLL gives a silent failed build and a stale test run); check the build exit code; definitions are shipped to the database by content hash, so restart the application after a definition change; keep local test credentials out of messages and files.
+
 ## 7. Keep the record
 
 The "QA checklist" and the QA result comments stay on the Jira issue **after Done** (and after the issue is closed): they are organisational knowledge for the next release, the next tester and audits.

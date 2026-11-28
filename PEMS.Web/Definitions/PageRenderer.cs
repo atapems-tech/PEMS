@@ -318,7 +318,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
             var field = (string?)binding["field"];
             var source = (string?)binding["source"];
             var valueField = (string?)binding["valueField"];
-            var labelField = (string?)binding["labelField"] ?? valueField;
+            var labelField = (string?)binding["labelField"];   // without one the label is the "label" of a row that has it (the rows of an options operation), else the value
             var key = source is not null && System.Text.RegularExpressions.Regex.Match(source, "^/d/([a-z0-9][a-z0-9._-]*)$") is { Success: true } m ? m.Groups[1].Value : null;
             if (key is null || field is null || valueField is null) { problems.Add($"Instance \"{id}\": a filter choice binding needs a /d/ source, a field and a valueField."); return false; }
             var result = await data.QueryAsync(key, [new("page", "1"), new("pageSize", "200")], request.Culture, request.Roles, request.UserName, appKey, ct);
@@ -328,7 +328,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
             {
                 if (JsonSerializer.SerializeToNode(item) is not JsonObject row) continue;
                 string Text(string name) => row[name] is JsonValue v ? (v.GetValueKind() == JsonValueKind.String ? (string?)v : v.ToJsonString().Trim('"')) ?? "" : "";
-                var label = Text(labelField!);
+                var label = Text(labelField ?? (row.ContainsKey("label") ? "label" : valueField));
                 choices.Add(new JsonObject { ["value"] = Text(valueField), ["label"] = new JsonObject { ["en"] = label, ["fa"] = label } });
             }
             if (fields.OfType<JsonObject>().FirstOrDefault(f => (string?)f["name"] == field) is { } target) target["options"] = choices;
