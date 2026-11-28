@@ -530,11 +530,19 @@
               {
                 "key": "subject",
                 "width": 360,
-                "href": "/Letter/Details/{id}"
+                "href": "/Letter/Details/{id}",
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                }
               },
               {
                 "key": "number",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "type",
@@ -546,7 +554,11 @@
               },
               {
                 "key": "senderReceiver",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Sender Receiver",
+                  "fa": "فرستنده / گیرنده"
+                }
               },
               {
                 "key": "status",
@@ -585,17 +597,29 @@
               {
                 "key": "responseDue",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Response Due",
+                  "fa": "مهلت پاسخ"
+                }
               },
               {
                 "key": "responseOverdue",
                 "width": 100,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Response Overdue",
+                  "fa": "پاسخ عقب‌افتاده"
+                }
               },
               {
                 "key": "date",
                 "width": 100,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                }
               },
               {
                 "key": "discipline",
@@ -608,12 +632,20 @@
               {
                 "key": "attachments",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Attachments",
+                  "fa": "پیوست‌ها"
+                }
               },
               {
                 "key": "lastActivity",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Last Activity",
+                  "fa": "آخرین فعالیت"
+                }
               },
               {
                 "key": "_actions",
@@ -634,7 +666,11 @@
                   {
                     "key": "star",
                     "url": "/a/letter-toggle-star",
-                    "method": "post"
+                    "method": "post",
+                    "label": {
+                      "en": "Star",
+                      "fa": "ستاره"
+                    }
                   }
                 ],
                 "header": {

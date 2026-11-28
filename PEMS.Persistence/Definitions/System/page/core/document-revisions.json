@@ -39,7 +39,7 @@
             "filterOptions": [
               {
                 "field": "documentId",
-                "source": "/d/document-revisions-documents",
+                "source": "/d/document-revisions-documents-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

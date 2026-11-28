@@ -189,7 +189,11 @@
               {
                 "key": "count",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
               }
             ]
           }
@@ -230,7 +234,11 @@
               {
                 "key": "count",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
               }
             ]
           }
@@ -271,7 +279,11 @@
               {
                 "key": "count",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Count",
+                  "fa": "تعداد"
+                }
               }
             ]
           }
@@ -304,25 +316,45 @@
               {
                 "key": "number",
                 "width": 140,
-                "href": "/Letter/Details/{id}"
+                "href": "/Letter/Details/{id}",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "subject",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                }
               },
               {
                 "key": "reason",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                }
               },
               {
                 "key": "due",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                }
               },
               {
                 "key": "daysOverdue",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Days Overdue",
+                  "fa": "روز عقب‌افتادگی"
+                }
               }
             ]
           }

@@ -105,22 +105,38 @@
             "columns": [
               {
                 "key": "userName",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "User Name",
+                  "fa": "نام کاربر"
+                }
               },
               {
                 "key": "firstViewed",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "First Viewed",
+                  "fa": "اولین مشاهده"
+                }
               },
               {
                 "key": "lastViewed",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "Last Viewed",
+                  "fa": "آخرین مشاهده"
+                }
               },
               {
                 "key": "viewCount",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "View Count",
+                  "fa": "تعداد مشاهده"
+                }
               }
             ]
           }
@@ -153,24 +169,44 @@
               {
                 "key": "versionNo",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Version No",
+                  "fa": "شماره‌ی نسخه"
+                }
               },
               {
                 "key": "reason",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                }
               },
               {
                 "key": "savedBy",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Saved By",
+                  "fa": "ذخیره‌کننده"
+                }
               },
               {
                 "key": "saved",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "Saved",
+                  "fa": "ذخیره‌شده"
+                }
               },
               {
                 "key": "subject",
-                "width": 360
+                "width": 360,
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                }
               }
             ]
           }
@@ -203,23 +239,43 @@
               {
                 "key": "when",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                }
               },
               {
                 "key": "actor",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Actor",
+                  "fa": "عامل"
+                }
               },
               {
                 "key": "category",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                }
               },
               {
                 "key": "event",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Event",
+                  "fa": "رویداد"
+                }
               },
               {
                 "key": "detail",
-                "width": 360
+                "width": 360,
+                "header": {
+                  "en": "Detail",
+                  "fa": "جزئیات"
+                }
               }
             ]
           }

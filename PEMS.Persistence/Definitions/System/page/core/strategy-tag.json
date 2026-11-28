@@ -104,21 +104,37 @@
               {
                 "key": "maintenanceStrategyId",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Maintenance Strategy Id",
+                  "fa": "شناسه‌ی استراتژی نگهداری"
+                }
               },
               {
                 "key": "strategyVersion",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Strategy Version",
+                  "fa": "نسخه‌ی استراتژی"
+                }
               },
               {
                 "key": "overrideStatus",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Override Status",
+                  "fa": "وضعیت استثنا"
+                }
               },
               {
                 "key": "planCount",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Plan Count",
+                  "fa": "تعداد برنامه"
+                }
               },
               {
                 "key": "_actions",
@@ -155,7 +171,11 @@
             "columns": [
               {
                 "key": "planNumber",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Plan Number",
+                  "fa": "شماره برنامه"
+                }
               },
               {
                 "key": "title",
@@ -168,12 +188,20 @@
               {
                 "key": "strategyVersion",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Strategy Version",
+                  "fa": "نسخه‌ی استراتژی"
+                }
               },
               {
                 "key": "nextDueDate",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Next Due Date",
+                  "fa": "سررسید بعدی"
+                }
               }
             ]
           }

@@ -171,19 +171,35 @@
               },
               {
                 "key": "state",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "State",
+                  "fa": "حالت"
+                }
               },
               {
                 "key": "period",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Period",
+                  "fa": "دوره"
+                }
               },
               {
                 "key": "counts",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Counts",
+                  "fa": "تعداد‌ها"
+                }
               },
               {
                 "key": "goal",
-                "width": 300
+                "width": 300,
+                "header": {
+                  "en": "Goal",
+                  "fa": "هدف"
+                }
               },
               {
                 "key": "_actions",
@@ -206,7 +222,11 @@
                     "key": "complete",
                     "url": "/f/tm-complete-sprint?sprintId={id}&key={{params.key}}",
                     "method": "get",
-                    "showWhen": "row.canComplete == true"
+                    "showWhen": "row.canComplete == true",
+                    "label": {
+                      "en": "Complete",
+                      "fa": "تکمیل"
+                    }
                   },
                   {
                     "key": "edit",

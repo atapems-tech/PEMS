@@ -163,13 +163,13 @@
             "filterOptions": [
               {
                 "field": "sectionId",
-                "source": "/d/pc-report-sections",
+                "source": "/d/pc-report-sections-filter",
                 "valueField": "value",
                 "labelField": "label"
               },
               {
                 "field": "employeeId",
-                "source": "/d/pc-report-employees",
+                "source": "/d/pc-report-employees-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

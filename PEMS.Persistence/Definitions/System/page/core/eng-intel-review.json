@@ -132,7 +132,11 @@
               {
                 "key": "current",
                 "width": 100,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Current",
+                  "fa": "جاری"
+                }
               },
               {
                 "key": "_actions",
@@ -145,7 +149,11 @@
                     "key": "set",
                     "url": "/f/eng-intel-advance-stage?documentId={{params.id}}&newStage={id}",
                     "method": "get",
-                    "showWhen": "row.current == false"
+                    "showWhen": "row.current == false",
+                    "label": {
+                      "en": "Set",
+                      "fa": "تنظیم"
+                    }
                   }
                 ],
                 "header": {
@@ -183,7 +191,11 @@
             "columns": [
               {
                 "key": "confidence",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                }
               },
               {
                 "key": "status",
@@ -211,7 +223,11 @@
               },
               {
                 "key": "mr",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Mr",
+                  "fa": "MR"
+                }
               },
               {
                 "key": "revision",
@@ -223,7 +239,11 @@
               },
               {
                 "key": "purpose",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Purpose",
+                  "fa": "هدف"
+                }
               },
               {
                 "key": "type",
@@ -297,11 +317,19 @@
             "columns": [
               {
                 "key": "tag",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
               },
               {
                 "key": "source",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Source",
+                  "fa": "منبع"
+                }
               },
               {
                 "key": "status",
@@ -313,7 +341,11 @@
               },
               {
                 "key": "confidence",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Confidence",
+                  "fa": "اطمینان"
+                }
               },
               {
                 "key": "_actions",
@@ -379,16 +411,28 @@
             "columns": [
               {
                 "key": "comment",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               },
               {
                 "key": "raisedBy",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Raised By",
+                  "fa": "مطرح‌کننده"
+                }
               },
               {
                 "key": "raised",
                 "width": 140,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Raised",
+                  "fa": "مطرح‌شده"
+                }
               },
               {
                 "key": "status",
@@ -400,7 +444,11 @@
               },
               {
                 "key": "response",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Response",
+                  "fa": "پاسخ"
+                }
               },
               {
                 "key": "_actions",
@@ -422,7 +470,11 @@
                     "key": "respond",
                     "url": "/f/eng-intel-comment-response?documentId={{params.id}}&commentId={id}",
                     "method": "get",
-                    "showWhen": "row.canRespond == true"
+                    "showWhen": "row.canRespond == true",
+                    "label": {
+                      "en": "Respond",
+                      "fa": "پاسخ"
+                    }
                   }
                 ],
                 "header": {

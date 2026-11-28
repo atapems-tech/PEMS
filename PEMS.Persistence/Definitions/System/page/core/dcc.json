@@ -100,7 +100,11 @@
               {
                 "key": "documentNo",
                 "width": 160,
-                "href": "/p/eng-doc-details?id={id}"
+                "href": "/p/eng-doc-details?id={id}",
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -113,7 +117,11 @@
               {
                 "key": "modified",
                 "width": 130,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Modified",
+                  "fa": "ویرایش‌شده"
+                }
               }
             ]
           }
@@ -146,20 +154,36 @@
               {
                 "key": "number",
                 "width": 160,
-                "href": "/Letter/Details/{id}"
+                "href": "/Letter/Details/{id}",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "sender",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Sender",
+                  "fa": "فرستنده"
+                }
               },
               {
                 "key": "subject",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                }
               },
               {
                 "key": "date",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                }
               }
             ]
           }
@@ -192,24 +216,44 @@
               {
                 "key": "number",
                 "width": 160,
-                "href": "/Letter/Details/{id}"
+                "href": "/Letter/Details/{id}",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "sender",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Sender",
+                  "fa": "فرستنده"
+                }
               },
               {
                 "key": "subject",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                }
               },
               {
                 "key": "date",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                }
               },
               {
                 "key": "link",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Link",
+                  "fa": "پیوند"
+                }
               }
             ]
           }

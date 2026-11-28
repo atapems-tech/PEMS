@@ -1,0 +1,22 @@
+{
+  "kind": "data-source",
+  "key": "document-revisions-documents-filter",
+  "appKey": "core",
+  "version": 1,
+  "title": {
+    "en": "Documents",
+    "fa": "مدارک"
+  },
+  "description": {
+    "en": "Documents",
+    "fa": "مدارک"
+  },
+  "payload": {
+    "kind": "grid",
+    "provider": "operation",
+    "parameters": {
+      "model": "DocumentRevisionPage",
+      "action": "DocumentChoices"
+    }
+  }
+}

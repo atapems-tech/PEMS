@@ -186,12 +186,20 @@
               },
               {
                 "key": "role",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                }
               },
               {
                 "key": "active",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                }
               },
               {
                 "key": "_actions",
@@ -203,7 +211,11 @@
                   {
                     "key": "change",
                     "url": "/f/tm-set-member?workSpaceId={{params.id}}&memberId={id}&role={raw.roleCode}&isActive={raw.active}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Change",
+                      "fa": "تغییر"
+                    }
                   }
                 ],
                 "header": {
@@ -249,17 +261,29 @@
               },
               {
                 "key": "icon",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Icon",
+                  "fa": "نماد"
+                }
               },
               {
                 "key": "subtask",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Subtask",
+                  "fa": "زیروظیفه"
+                }
               },
               {
                 "key": "active",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                }
               },
               {
                 "key": "_actions",
@@ -271,7 +295,11 @@
                   {
                     "key": "toggle",
                     "url": "/f/tm-set-type-active?workSpaceId={{params.id}}&typeId={id}&isActive={raw.nextActive}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Toggle",
+                      "fa": "تغییر وضعیت"
+                    }
                   }
                 ],
                 "header": {
@@ -317,21 +345,37 @@
               },
               {
                 "key": "nameFa",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Name Persian",
+                  "fa": "نام فارسی"
+                }
               },
               {
                 "key": "category",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                }
               },
               {
                 "key": "sortOrder",
                 "width": 90,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Sort Order",
+                  "fa": "ترتیب نمایش"
+                }
               },
               {
                 "key": "active",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Active",
+                  "fa": "فعال"
+                }
               },
               {
                 "key": "_actions",

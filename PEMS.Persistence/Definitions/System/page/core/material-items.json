@@ -84,7 +84,7 @@
             "filterOptions": [
               {
                 "field": "categoryId",
-                "source": "/d/material-item-categories",
+                "source": "/d/material-item-categories-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

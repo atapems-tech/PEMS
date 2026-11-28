@@ -117,7 +117,7 @@
             "filterOptions": [
               {
                 "field": "warehouseId",
-                "source": "/d/inventory-warehouses",
+                "source": "/d/inventory-warehouses-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

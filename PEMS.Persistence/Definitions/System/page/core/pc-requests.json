@@ -167,7 +167,7 @@
             "filterOptions": [
               {
                 "field": "sectionId",
-                "source": "/d/pc-request-sections",
+                "source": "/d/pc-request-sections-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

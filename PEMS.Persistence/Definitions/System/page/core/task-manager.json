@@ -130,21 +130,37 @@
               },
               {
                 "key": "ownerDepartment",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Owner Department",
+                  "fa": "واحد مالک"
+                }
               },
               {
                 "key": "role",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                }
               },
               {
                 "key": "openItems",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Open Items",
+                  "fa": "اقلام باز"
+                }
               },
               {
                 "key": "members",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                }
               },
               {
                 "key": "_actions",

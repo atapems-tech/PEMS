@@ -488,15 +488,27 @@
               },
               {
                 "key": "otherKey",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Other Key",
+                  "fa": "کلید دیگر"
+                }
               },
               {
                 "key": "otherTitle",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Other Title",
+                  "fa": "عنوان دیگر"
+                }
               },
               {
                 "key": "otherStatus",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Other Status",
+                  "fa": "وضعیت دیگر"
+                }
               },
               {
                 "key": "_actions",
@@ -520,7 +532,11 @@
                     "url": "/f/tm-remove-link?id={{params.id}}&linkId={id}",
                     "method": "get",
                     "showWhen": "row.canRemove == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -558,16 +574,28 @@
             "columns": [
               {
                 "key": "author",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Author",
+                  "fa": "نویسنده"
+                }
               },
               {
                 "key": "created",
                 "width": 150,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                }
               },
               {
                 "key": "body",
-                "width": 480
+                "width": 480,
+                "header": {
+                  "en": "Body",
+                  "fa": "متن"
+                }
               },
               {
                 "key": "_actions",
@@ -581,7 +609,11 @@
                     "url": "/f/tm-delete-comment?id={{params.id}}&commentId={id}",
                     "method": "get",
                     "showWhen": "row.canDelete == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Delete",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -620,19 +652,35 @@
               {
                 "key": "when",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                }
               },
               {
                 "key": "who",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Who",
+                  "fa": "چه کسی"
+                }
               },
               {
                 "key": "action",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                }
               },
               {
                 "key": "changes",
-                "width": 480
+                "width": 480,
+                "header": {
+                  "en": "Changes",
+                  "fa": "تغییرات"
+                }
               }
             ]
           }

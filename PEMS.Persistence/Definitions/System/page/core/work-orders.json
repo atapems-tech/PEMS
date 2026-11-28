@@ -113,7 +113,11 @@
               },
               {
                 "key": "equipmentTag",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Equipment Tag",
+                  "fa": "تگ تجهیز"
+                }
               },
               {
                 "key": "workOrderType",
@@ -141,11 +145,19 @@
               },
               {
                 "key": "employee",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Employee",
+                  "fa": "کارمند"
+                }
               },
               {
                 "key": "assignedTo",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Assigned To",
+                  "fa": "تخصیص‌یافته به"
+                }
               },
               {
                 "key": "status",
@@ -158,7 +170,11 @@
               {
                 "key": "createdDate",
                 "width": 140,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Created Date",
+                  "fa": "تاریخ ایجاد"
+                }
               },
               {
                 "key": "_actions",

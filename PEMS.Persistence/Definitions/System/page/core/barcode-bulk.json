@@ -58,13 +58,13 @@
             "filterOptions": [
               {
                 "field": "disciplineId",
-                "source": "/d/barcode-disciplines",
+                "source": "/d/barcode-disciplines-filter",
                 "valueField": "value",
                 "labelField": "label"
               },
               {
                 "field": "equipmentType",
-                "source": "/d/barcode-equipment-types",
+                "source": "/d/barcode-equipment-types-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

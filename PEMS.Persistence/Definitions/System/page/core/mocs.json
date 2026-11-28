@@ -131,7 +131,7 @@
             "filterOptions": [
               {
                 "field": "projectId",
-                "source": "/d/moc-projects",
+                "source": "/d/moc-projects-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

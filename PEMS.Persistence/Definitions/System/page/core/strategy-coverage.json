@@ -119,22 +119,38 @@
               {
                 "key": "totalEquipment",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Total Equipment",
+                  "fa": "کل تجهیزات"
+                }
               },
               {
                 "key": "withApprovedStrategy",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "With Approved Strategy",
+                  "fa": "با استراتژی تأییدشده"
+                }
               },
               {
                 "key": "withoutStrategy",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Without Strategy",
+                  "fa": "بدون استراتژی"
+                }
               },
               {
                 "key": "coveragePercent",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Coverage Percent",
+                  "fa": "درصد پوشش"
+                }
               }
             ]
           }
@@ -158,22 +174,38 @@
               {
                 "key": "totalEquipment",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Total Equipment",
+                  "fa": "کل تجهیزات"
+                }
               },
               {
                 "key": "withApprovedStrategy",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "With Approved Strategy",
+                  "fa": "با استراتژی تأییدشده"
+                }
               },
               {
                 "key": "withoutStrategy",
                 "width": 130,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Without Strategy",
+                  "fa": "بدون استراتژی"
+                }
               },
               {
                 "key": "coveragePercent",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Coverage Percent",
+                  "fa": "درصد پوشش"
+                }
               }
             ]
           }
@@ -188,7 +220,11 @@
             "columns": [
               {
                 "key": "tag",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
               },
               {
                 "key": "name",
@@ -200,7 +236,11 @@
               },
               {
                 "key": "equipmentClassName",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Equipment Class Name",
+                  "fa": "نام کلاس تجهیز"
+                }
               },
               {
                 "key": "area",
@@ -212,11 +252,19 @@
               },
               {
                 "key": "unit",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Unit",
+                  "fa": "واحد"
+                }
               },
               {
                 "key": "criticalityClass",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Criticality Class",
+                  "fa": "طبقه‌ی بحرانی بودن"
+                }
               },
               {
                 "key": "_actions",

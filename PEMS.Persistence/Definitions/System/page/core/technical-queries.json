@@ -110,7 +110,7 @@
             "filterOptions": [
               {
                 "field": "projectId",
-                "source": "/d/tq-projects",
+                "source": "/d/tq-projects-filter",
                 "valueField": "value",
                 "labelField": "label"
               }

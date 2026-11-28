@@ -69,12 +69,20 @@
               },
               {
                 "key": "assignedTo",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Assigned To",
+                  "fa": "تخصیص‌یافته به"
+                }
               },
               {
                 "key": "due",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Due",
+                  "fa": "سررسید"
+                }
               },
               {
                 "key": "priority",
@@ -103,11 +111,19 @@
               },
               {
                 "key": "related",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Related",
+                  "fa": "مرتبط"
+                }
               },
               {
                 "key": "completionNote",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Completion Note",
+                  "fa": "یادداشت تکمیل"
+                }
               },
               {
                 "key": "_actions",
@@ -129,7 +145,11 @@
                     "key": "move",
                     "url": "/f/task-update-status?taskItemId={id}",
                     "method": "get",
-                    "showWhen": "row.canMove == true"
+                    "showWhen": "row.canMove == true",
+                    "label": {
+                      "en": "Move",
+                      "fa": "انتقال"
+                    }
                   }
                 ],
                 "header": {

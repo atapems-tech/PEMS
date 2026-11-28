@@ -133,23 +133,43 @@
             "columns": [
               {
                 "key": "tag",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
               },
               {
                 "key": "description",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                }
               },
               {
                 "key": "junctionBox",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Junction Box",
+                  "fa": "جانکشن باکس"
+                }
               },
               {
                 "key": "cableNo",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Cable No",
+                  "fa": "شماره کابل"
+                }
               },
               {
                 "key": "dcsTag",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Dcs Tag",
+                  "fa": "تگ DCS"
+                }
               },
               {
                 "key": "status",
@@ -169,7 +189,11 @@
               },
               {
                 "key": "instrument",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Instrument",
+                  "fa": "ابزار دقیق"
+                }
               },
               {
                 "key": "_actions",
@@ -182,7 +206,11 @@
                     "key": "confirm",
                     "url": "/f/table-extraction-confirm-row?rowId={id}&equipmentId={raw.equipmentId}&batchId={{params.batchId}}",
                     "method": "get",
-                    "showWhen": "row.canConfirm == true"
+                    "showWhen": "row.canConfirm == true",
+                    "label": {
+                      "en": "Confirm",
+                      "fa": "تأیید"
+                    }
                   },
                   {
                     "key": "reject",

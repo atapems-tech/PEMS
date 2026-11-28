@@ -502,7 +502,11 @@
             "columns": [
               {
                 "key": "fileName",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "File Name",
+                  "fa": "نام فایل"
+                }
               },
               {
                 "key": "revision",
@@ -514,28 +518,52 @@
               },
               {
                 "key": "role",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "Role",
+                  "fa": "نقش"
+                }
               },
               {
                 "key": "official",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Official",
+                  "fa": "رسمی"
+                }
               },
               {
                 "key": "size",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "Size",
+                  "fa": "اندازه"
+                }
               },
               {
                 "key": "aiStatus",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Ai Status",
+                  "fa": "وضعیت هوش مصنوعی"
+                }
               },
               {
                 "key": "uploaded",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Uploaded",
+                  "fa": "بارگذاری‌شده"
+                }
               },
               {
                 "key": "verified",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Verified",
+                  "fa": "تأییدشده"
+                }
               },
               {
                 "key": "_actions",
@@ -547,30 +575,50 @@
                   {
                     "key": "download",
                     "url": "/Files/Download/{id}",
-                    "method": "get"
+                    "method": "get",
+                    "label": {
+                      "en": "Download",
+                      "fa": "دانلود"
+                    }
                   },
                   {
                     "key": "ai-data",
                     "url": "/p/ai-extraction-review?id={id}",
                     "method": "get",
-                    "showWhen": "row.aiDone == true"
+                    "showWhen": "row.aiDone == true",
+                    "label": {
+                      "en": "Ai data",
+                      "fa": "داده‌ی هوش مصنوعی"
+                    }
                   },
                   {
                     "key": "intelligence",
                     "url": "/p/eng-intel-review?id={{params.id}}",
                     "method": "get",
-                    "showWhen": "row.aiDone == true"
+                    "showWhen": "row.aiDone == true",
+                    "label": {
+                      "en": "Intelligence",
+                      "fa": "هوشمندی"
+                    }
                   },
                   {
                     "key": "reanalyze",
                     "url": "/a/ocr-retry",
-                    "method": "post"
+                    "method": "post",
+                    "label": {
+                      "en": "Reanalyze",
+                      "fa": "تحلیل مجدد"
+                    }
                   },
                   {
                     "key": "delete",
                     "url": "/f/eng-doc-delete-attachment?attachmentId={id}&documentId={{params.id}}",
                     "method": "get",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Delete",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -624,16 +672,28 @@
               },
               {
                 "key": "comment",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               },
               {
                 "key": "respondedBy",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Responded By",
+                  "fa": "پاسخ‌دهنده"
+                }
               },
               {
                 "key": "responded",
                 "width": 140,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Responded",
+                  "fa": "پاسخ‌داده‌شده"
+                }
               }
             ]
           }
@@ -681,50 +741,94 @@
               },
               {
                 "key": "reason",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                }
               },
               {
                 "key": "createdBy",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Created By",
+                  "fa": "ایجادکننده"
+                }
               },
               {
                 "key": "reviewer",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Reviewer",
+                  "fa": "بازبین"
+                }
               },
               {
                 "key": "approvedBy",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Approved By",
+                  "fa": "تأییدکننده"
+                }
               },
               {
                 "key": "created",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Created",
+                  "fa": "ایجاد"
+                }
               },
               {
                 "key": "issued",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Issued",
+                  "fa": "صادرشده"
+                }
               },
               {
                 "key": "effective",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Effective",
+                  "fa": "مؤثر از"
+                }
               },
               {
                 "key": "supersedes",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Supersedes",
+                  "fa": "جایگزین"
+                }
               },
               {
                 "key": "change",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Change",
+                  "fa": "تغییر"
+                }
               },
               {
                 "key": "vendorComment",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Vendor Comment",
+                  "fa": "نظر فروشنده"
+                }
               },
               {
                 "key": "clientReview",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Client Review",
+                  "fa": "بازبینی کارفرما"
+                }
               }
             ]
           }
@@ -757,31 +861,59 @@
               {
                 "key": "when",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                }
               },
               {
                 "key": "action",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                }
               },
               {
                 "key": "from",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                }
               },
               {
                 "key": "to",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                }
               },
               {
                 "key": "decision",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                }
               },
               {
                 "key": "by",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                }
               },
               {
                 "key": "comment",
-                "width": 300
+                "width": 300,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               }
             ]
           }
@@ -813,16 +945,28 @@
             "columns": [
               {
                 "key": "reason",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                }
               },
               {
                 "key": "held",
                 "width": 130,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "Held",
+                  "fa": "نگه‌داشته"
+                }
               },
               {
                 "key": "by",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                }
               },
               {
                 "key": "discipline",
@@ -835,15 +979,27 @@
               {
                 "key": "released",
                 "width": 130,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "Released",
+                  "fa": "آزادشده"
+                }
               },
               {
                 "key": "releasedBy",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Released By",
+                  "fa": "آزادکننده"
+                }
               },
               {
                 "key": "releaseReason",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Release Reason",
+                  "fa": "دلیل آزادسازی"
+                }
               }
             ]
           }
@@ -876,7 +1032,11 @@
               {
                 "key": "no",
                 "width": 150,
-                "href": "/Transmittal/Details/{id}"
+                "href": "/Transmittal/Details/{id}",
+                "header": {
+                  "en": "No",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "status",
@@ -889,7 +1049,11 @@
               {
                 "key": "date",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                }
               },
               {
                 "key": "sent",
@@ -902,7 +1066,11 @@
               },
               {
                 "key": "purpose",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Purpose",
+                  "fa": "هدف"
+                }
               },
               {
                 "key": "revision",
@@ -950,16 +1118,28 @@
               },
               {
                 "key": "number",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "subject",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Subject",
+                  "fa": "موضوع"
+                }
               },
               {
                 "key": "date",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Date",
+                  "fa": "تاریخ"
+                }
               },
               {
                 "key": "status",
@@ -1051,36 +1231,68 @@
             "columns": [
               {
                 "key": "no",
-                "width": 90
+                "width": 90,
+                "header": {
+                  "en": "No",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "category",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Category",
+                  "fa": "دسته"
+                }
               },
               {
                 "key": "severity",
-                "width": 100
+                "width": 100,
+                "header": {
+                  "en": "Severity",
+                  "fa": "شدت"
+                }
               },
               {
                 "key": "location",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Location",
+                  "fa": "مکان"
+                }
               },
               {
                 "key": "comment",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               },
               {
                 "key": "requiredAction",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Required Action",
+                  "fa": "اقدام لازم"
+                }
               },
               {
                 "key": "raisedBy",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Raised By",
+                  "fa": "مطرح‌کننده"
+                }
               },
               {
                 "key": "raised",
                 "width": 110,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Raised",
+                  "fa": "مطرح‌شده"
+                }
               },
               {
                 "key": "status",
@@ -1093,11 +1305,19 @@
               {
                 "key": "marksRevision",
                 "width": 120,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Marks Revision",
+                  "fa": "علامت ویرایش"
+                }
               },
               {
                 "key": "response",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Response",
+                  "fa": "پاسخ"
+                }
               },
               {
                 "key": "_actions",
@@ -1129,13 +1349,21 @@
                     "key": "attachment",
                     "url": "{raw.attachmentUrl}",
                     "method": "get",
-                    "showWhen": "row.attachmentUrl != null"
+                    "showWhen": "row.attachmentUrl != null",
+                    "label": {
+                      "en": "Attachment",
+                      "fa": "پیوست"
+                    }
                   },
                   {
                     "key": "reply-attachment",
                     "url": "{raw.replyAttachmentUrl}",
                     "method": "get",
-                    "showWhen": "row.replyAttachmentUrl != null"
+                    "showWhen": "row.replyAttachmentUrl != null",
+                    "label": {
+                      "en": "Reply attachment",
+                      "fa": "پیوست پاسخ"
+                    }
                   }
                 ],
                 "header": {

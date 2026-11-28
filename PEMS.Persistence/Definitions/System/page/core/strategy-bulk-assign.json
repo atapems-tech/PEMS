@@ -174,7 +174,11 @@
             "columns": [
               {
                 "key": "tag",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Tag",
+                  "fa": "تگ"
+                }
               },
               {
                 "key": "name",
@@ -186,20 +190,36 @@
               },
               {
                 "key": "class",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Class",
+                  "fa": "کلاس"
+                }
               },
               {
                 "key": "criticality",
-                "width": 110
+                "width": 110,
+                "header": {
+                  "en": "Criticality",
+                  "fa": "بحرانی بودن"
+                }
               },
               {
                 "key": "conflict",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "Conflict",
+                  "fa": "تداخل"
+                }
               },
               {
                 "key": "willReceive",
                 "width": 110,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Will Receive",
+                  "fa": "دریافت خواهد کرد"
+                }
               }
             ],
             "bulkActions": [

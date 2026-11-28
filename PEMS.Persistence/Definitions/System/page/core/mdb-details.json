@@ -228,7 +228,11 @@
             "columns": [
               {
                 "key": "documentNo",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -241,15 +245,27 @@
               {
                 "key": "dvdVolume",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Dvd Volume",
+                  "fa": "حجم DVD"
+                }
               },
               {
                 "key": "notApplicable",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Not Applicable",
+                  "fa": "نامرتبط"
+                }
               },
               {
                 "key": "notes",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت‌ها"
+                }
               },
               {
                 "key": "_actions",
@@ -262,7 +278,11 @@
                     "key": "remove",
                     "url": "/a/mdb-remove-document",
                     "method": "post",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -317,7 +337,11 @@
             "columns": [
               {
                 "key": "documentNo",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -330,15 +354,27 @@
               {
                 "key": "dvdVolume",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Dvd Volume",
+                  "fa": "حجم DVD"
+                }
               },
               {
                 "key": "notApplicable",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Not Applicable",
+                  "fa": "نامرتبط"
+                }
               },
               {
                 "key": "notes",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت‌ها"
+                }
               },
               {
                 "key": "_actions",
@@ -351,7 +387,11 @@
                     "key": "remove",
                     "url": "/a/mdb-remove-document",
                     "method": "post",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -406,7 +446,11 @@
             "columns": [
               {
                 "key": "documentNo",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "Document No",
+                  "fa": "شماره مدرک"
+                }
               },
               {
                 "key": "title",
@@ -419,15 +463,27 @@
               {
                 "key": "dvdVolume",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Dvd Volume",
+                  "fa": "حجم DVD"
+                }
               },
               {
                 "key": "notApplicable",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Not Applicable",
+                  "fa": "نامرتبط"
+                }
               },
               {
                 "key": "notes",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت‌ها"
+                }
               },
               {
                 "key": "_actions",
@@ -440,7 +496,11 @@
                     "key": "remove",
                     "url": "/a/mdb-remove-document",
                     "method": "post",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {

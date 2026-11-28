@@ -365,7 +365,7 @@ public sealed class PageRenderer(IPemsComponentRenderer renderer, ComponentManif
         if (row is null) return null;
         var values = new JsonObject();
         foreach (var (name, node) in row)
-            values[name] = node is null ? null : node is JsonValue jv && jv.GetValueKind() == JsonValueKind.String ? (string?)jv : node.ToJsonString().Trim('"');
+            values[name] = node is null ? "" : node is JsonValue jv && jv.GetValueKind() == JsonValueKind.String ? (string?)jv : node.ToJsonString().Trim('"');
         return values;
     }
 

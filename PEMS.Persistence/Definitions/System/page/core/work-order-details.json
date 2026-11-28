@@ -440,20 +440,36 @@
             "columns": [
               {
                 "key": "label",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Label",
+                  "fa": "برچسب"
+                }
               },
               {
                 "key": "toStage",
-                "width": 200
+                "width": 200,
+                "header": {
+                  "en": "To Stage",
+                  "fa": "به مرحله"
+                }
               },
               {
                 "key": "allowed",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Allowed",
+                  "fa": "مجاز"
+                }
               },
               {
                 "key": "deniedReason",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Denied Reason",
+                  "fa": "دلیل رد"
+                }
               },
               {
                 "key": "_actions",
@@ -466,7 +482,11 @@
                     "key": "run",
                     "url": "/f/{raw.formKey}?id={{params.id}}&actionType={id}",
                     "method": "get",
-                    "showWhen": "row.allowed == true"
+                    "showWhen": "row.allowed == true",
+                    "label": {
+                      "en": "Run",
+                      "fa": "اجرا"
+                    }
                   }
                 ],
                 "header": {
@@ -505,27 +525,51 @@
               {
                 "key": "when",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                }
               },
               {
                 "key": "action",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Action",
+                  "fa": "اقدام"
+                }
               },
               {
                 "key": "from",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "From",
+                  "fa": "از"
+                }
               },
               {
                 "key": "to",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "To",
+                  "fa": "به"
+                }
               },
               {
                 "key": "by",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                }
               },
               {
                 "key": "comment",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Comment",
+                  "fa": "نظر"
+                }
               }
             ]
           }
@@ -558,23 +602,43 @@
               {
                 "key": "when",
                 "width": 160,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "When",
+                  "fa": "زمان"
+                }
               },
               {
                 "key": "fromStatus",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "From Status",
+                  "fa": "از وضعیت"
+                }
               },
               {
                 "key": "toStatus",
-                "width": 130
+                "width": 130,
+                "header": {
+                  "en": "To Status",
+                  "fa": "به وضعیت"
+                }
               },
               {
                 "key": "reason",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Reason",
+                  "fa": "دلیل"
+                }
               },
               {
                 "key": "by",
-                "width": 160
+                "width": 160,
+                "header": {
+                  "en": "By",
+                  "fa": "توسط"
+                }
               }
             ]
           }
@@ -631,7 +695,11 @@
                     "key": "respond",
                     "url": "/f/work-order-respond-discipline-review?workOrderId={{params.id}}",
                     "method": "get",
-                    "showWhen": "row.canRespond == true"
+                    "showWhen": "row.canRespond == true",
+                    "label": {
+                      "en": "Respond",
+                      "fa": "پاسخ"
+                    }
                   }
                 ],
                 "header": {
@@ -661,28 +729,52 @@
               {
                 "key": "cycle",
                 "width": 80,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Cycle",
+                  "fa": "چرخه"
+                }
               },
               {
                 "key": "decision",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Decision",
+                  "fa": "تصمیم"
+                }
               },
               {
                 "key": "findings",
-                "width": 320
+                "width": 320,
+                "header": {
+                  "en": "Findings",
+                  "fa": "یافته‌ها"
+                }
               },
               {
                 "key": "failureMode",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Failure Mode",
+                  "fa": "حالت خرابی"
+                }
               },
               {
                 "key": "failureCause",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Failure Cause",
+                  "fa": "علت خرابی"
+                }
               },
               {
                 "key": "respondedDate",
                 "width": 150,
-                "type": "datetime"
+                "type": "datetime",
+                "header": {
+                  "en": "Responded Date",
+                  "fa": "تاریخ پاسخ"
+                }
               }
             ]
           }
@@ -715,11 +807,19 @@
               {
                 "key": "workDate",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Work Date",
+                  "fa": "تاریخ کار"
+                }
               },
               {
                 "key": "employee",
-                "width": 180
+                "width": 180,
+                "header": {
+                  "en": "Employee",
+                  "fa": "کارمند"
+                }
               },
               {
                 "key": "team",
@@ -732,21 +832,37 @@
               {
                 "key": "regularHours",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Regular Hours",
+                  "fa": "ساعت عادی"
+                }
               },
               {
                 "key": "overtimeHours",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Overtime Hours",
+                  "fa": "اضافه‌کار (ساعت)"
+                }
               },
               {
                 "key": "cost",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Cost",
+                  "fa": "هزینه"
+                }
               },
               {
                 "key": "notes",
-                "width": 240
+                "width": 240,
+                "header": {
+                  "en": "Notes",
+                  "fa": "یادداشت‌ها"
+                }
               }
             ]
           }
@@ -778,32 +894,56 @@
             "columns": [
               {
                 "key": "material",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                }
               },
               {
                 "key": "quantity",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Quantity",
+                  "fa": "مقدار"
+                }
               },
               {
                 "key": "unitCost",
                 "width": 100,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Unit Cost",
+                  "fa": "هزینه‌ی واحد"
+                }
               },
               {
                 "key": "totalCost",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Total Cost",
+                  "fa": "هزینه‌ی کل"
+                }
               },
               {
                 "key": "returnedQuantity",
                 "width": 120,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Returned Quantity",
+                  "fa": "مقدار برگشتی"
+                }
               },
               {
                 "key": "usageDate",
                 "width": 120,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Usage Date",
+                  "fa": "تاریخ مصرف"
+                }
               },
               {
                 "key": "_actions",
@@ -859,7 +999,11 @@
               {
                 "key": "number",
                 "width": 70,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Number",
+                  "fa": "شماره"
+                }
               },
               {
                 "key": "title",
@@ -871,21 +1015,37 @@
               },
               {
                 "key": "description",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Description",
+                  "fa": "شرح"
+                }
               },
               {
                 "key": "done",
                 "width": 90,
-                "type": "bool"
+                "type": "bool",
+                "header": {
+                  "en": "Done",
+                  "fa": "انجام‌شده"
+                }
               },
               {
                 "key": "completedBy",
-                "width": 150
+                "width": 150,
+                "header": {
+                  "en": "Completed By",
+                  "fa": "تکمیل‌کننده"
+                }
               },
               {
                 "key": "completedDate",
                 "width": 140,
-                "type": "date"
+                "type": "date",
+                "header": {
+                  "en": "Completed Date",
+                  "fa": "تاریخ تکمیل"
+                }
               },
               {
                 "key": "_actions",
@@ -898,7 +1058,11 @@
                     "key": "complete",
                     "url": "/f/work-order-complete-task?workOrderId={{params.id}}&workOrderTaskId={id}",
                     "method": "get",
-                    "showWhen": "row.canComplete == true"
+                    "showWhen": "row.canComplete == true",
+                    "label": {
+                      "en": "Complete",
+                      "fa": "تکمیل"
+                    }
                   },
                   {
                     "key": "reopen",
@@ -946,16 +1110,28 @@
             "columns": [
               {
                 "key": "skill",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "Skill",
+                  "fa": "مهارت"
+                }
               },
               {
                 "key": "minimumLevel",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Minimum Level",
+                  "fa": "حداقل سطح"
+                }
               },
               {
                 "key": "plannedHours",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Planned Hours",
+                  "fa": "ساعت برنامه‌ریزی‌شده"
+                }
               },
               {
                 "key": "_actions",
@@ -969,7 +1145,11 @@
                     "url": "/f/work-order-remove-required-skill?workOrderId={{params.id}}&requiredSkillId={id}",
                     "method": "get",
                     "showWhen": "row.canRemove == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -1007,24 +1187,44 @@
             "columns": [
               {
                 "key": "material",
-                "width": 280
+                "width": 280,
+                "header": {
+                  "en": "Material",
+                  "fa": "ماده"
+                }
               },
               {
                 "key": "requiredQuantity",
                 "width": 110,
-                "type": "number"
+                "type": "number",
+                "header": {
+                  "en": "Required Quantity",
+                  "fa": "مقدار لازم"
+                }
               },
               {
                 "key": "supplyCode",
-                "width": 140
+                "width": 140,
+                "header": {
+                  "en": "Supply Code",
+                  "fa": "کد تأمین"
+                }
               },
               {
                 "key": "sourced",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Sourced",
+                  "fa": "تأمین‌شده"
+                }
               },
               {
                 "key": "requisitions",
-                "width": 260
+                "width": 260,
+                "header": {
+                  "en": "Requisitions",
+                  "fa": "درخواست‌ها"
+                }
               },
               {
                 "key": "_actions",
@@ -1037,14 +1237,22 @@
                     "key": "supply-code",
                     "url": "/f/work-order-set-supply-code?workOrderId={{params.id}}&workOrderMaterialId={id}",
                     "method": "get",
-                    "showWhen": "row.canSetSupply == true"
+                    "showWhen": "row.canSetSupply == true",
+                    "label": {
+                      "en": "Supply code",
+                      "fa": "کد تأمین"
+                    }
                   },
                   {
                     "key": "remove",
                     "url": "/f/work-order-remove-required-material?workOrderId={{params.id}}&workOrderMaterialId={id}",
                     "method": "get",
                     "showWhen": "row.canRemove == true",
-                    "tone": "danger"
+                    "tone": "danger",
+                    "label": {
+                      "en": "Remove",
+                      "fa": "حذف"
+                    }
                   }
                 ],
                 "header": {
@@ -1082,7 +1290,11 @@
             "columns": [
               {
                 "key": "state",
-                "width": 220
+                "width": 220,
+                "header": {
+                  "en": "State",
+                  "fa": "حالت"
+                }
               },
               {
                 "key": "_actions",
@@ -1095,7 +1307,11 @@
                     "key": "request",
                     "url": "/f/work-order-request-materials?workOrderId={{params.id}}",
                     "method": "get",
-                    "showWhen": "row.canRequest == true"
+                    "showWhen": "row.canRequest == true",
+                    "label": {
+                      "en": "Request",
+                      "fa": "درخواست"
+                    }
                   },
                   {
                     "key": "open",
@@ -1143,7 +1359,11 @@
             "columns": [
               {
                 "key": "code",
-                "width": 120
+                "width": 120,
+                "header": {
+                  "en": "Code",
+                  "fa": "کد"
+                }
               },
               {
                 "key": "name",
@@ -1155,7 +1375,11 @@
               },
               {
                 "key": "members",
-                "width": 400
+                "width": 400,
+                "header": {
+                  "en": "Members",
+                  "fa": "اعضا"
+                }
               }
             ]
           }
