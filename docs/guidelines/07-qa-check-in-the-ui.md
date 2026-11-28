@@ -142,6 +142,8 @@ numbers and names are consistent between documents. Record it in the same templa
 
 ## 6a. Screen check beside the reference (conversion audits; owner decision 2026-11-28)
 
+**Exception, not the rule:** review and test tasks are not created in Jira (section 1c: checklists hold tests, gaps are issues). The six major screen-test Tasks SCRUM-845 to 850 exist only because the owner allowed it once, for this audit (2026-11-28), unassigned. Do not create further review tasks without the owner saying so; defects found are always Bugs.
+
 When screens are converted (controllers and views become definitions and engines), every converted screen is checked **beside the old one**, not only against its own tests: the file check and unit tests cannot see a table that is not drawn, a filter that shows ids, or a button that became a plain link (batch 10 of 2026-11 found all three after 600 green tests).
 
 1. **Reference.** The reference is staging, or `main` as it was before the whole series of conversion batches started (for the 2026-11 definition-only series: `1cb3670a`, PR 328, the commit before PR 329 began the conversions; if the owner wants batch 1 inside the reference, the commit before batch 1), never the state before only the batch under review: a defect introduced by an earlier batch must show up too. Keep it as a build in a worktree (for example `wt-old`) or use staging as it was. It runs on its own database and port; the new application runs on a separate fresh database. Never touch `PEMSDB`.
