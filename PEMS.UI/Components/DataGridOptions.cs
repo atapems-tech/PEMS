@@ -38,6 +38,8 @@ public sealed record GridRowAction
     public string Tone { get; init; } = "secondary";
     /// <summary>An expression over <c>row</c> (the row as the grid has it): the action is shown only while it holds. The server decides again when the action runs.</summary>
     public string? ShowWhen { get; init; }
+    /// <summary>A Bootstrap icon class (<c>bi-pencil</c>): the action is drawn as a compact icon button with the label as its tooltip. Empty: the icon of the action key (edit, view, delete, ...), or the text.</summary>
+    public string? Icon { get; init; }
 }
 
 public sealed record GridBulkAction

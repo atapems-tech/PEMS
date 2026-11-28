@@ -127,6 +127,12 @@
                       "string",
                       "null"
                     ]
+                  },
+                  "icon": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
                   }
                 },
                 "required": [

@@ -244,3 +244,8 @@ Nothing of the slices below was built or tested (owner rule: no build until told
 
 - Letters and engineering documents: the navigation (`content-blocks` `link`) renders as plain underlined links; the old pages had tabs and toolbar buttons with icons. Not fixed here: needs a link-style option in the content-blocks component. Snapshots `letters-old.jpg` vs `letters-new-before.jpg`, `eng-docs-old.jpg` vs `eng-docs-new-after.jpg` in `docs/audit-snapshots/836/`.
 - Both audit databases are empty: only the structure was compared; filled lists, row actions and role views are not compared.
+
+## SCRUM-844 function and layout of converted lists
+
+- Not browser-checked with data: row click opens the details, icon row actions and their tooltips (the audit databases are empty); only the tab navigation was seen (`eng-docs-new-after-tabs.jpg`).
+- Not compared yet: the old `pems-list-page` look (one icon toolbar, filters in a dropdown, KPI chips hidden until asked), column widths and order, empty/loading states, RTL.
