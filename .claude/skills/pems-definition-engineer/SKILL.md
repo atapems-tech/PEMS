@@ -17,3 +17,5 @@ Files: `PEMS.Persistence/Definitions/System/{action,form,page,data-source,layout
 **Procedure for a controller issue**: inventory its actions (`plan/sheets/definition-inventory.md`); if it uses `PEMSDbContext` inline, extract a service first (Model + Action, keep every message and rule); write the definitions; point the view forms at `/a/<key>`; delete the controller action, view and inline script; test through the real handler; add the feed; list browser QA lines. Never add a handler per entity: if the generic one cannot express it, the issue is an engine issue (guideline 04 section 7), not a special case.
 
 UI uses `pems-*` components only (guideline 02); text is `TranslatableText` fa and en.
+
+- **Fixes and changes (owner 2026-11-28):** only in an engine, a component or an input of these; name the layer of the cause in the Bug, fix it once for every screen, regression test at that level ([chapter 0 section 3a point 2a](../../../docs/guidelines/00-task-lifecycle.md), [chapter 4 section 7](../../../docs/guidelines/04-platform-direction.md)).
