@@ -3,6 +3,14 @@
 All notable changes to PEMS. No system version is defined yet (plan row F_CI), so entries are grouped by date
 and theme and were reconstructed from the git history (initial import 2026-09-05). Newest first.
 
+## 2026-11-28 - SCRUM-851: Jira Step 0 and issue-type work-block rules
+
+### Changed
+
+- Every SCRUM work item description must begin with `Step 0: read AGENTS.md and docs/guidelines/README.md first.`
+- Task/Story work audits all open issues, includes related open Bugs and finishes them first; a Bug-led block audits only related open Bugs and never pulls in Tasks/Stories. In Review, Done and Cancelled count as closed, while On Hold is conditionally closed.
+- Jira work comments and commit co-author trailers identify the acting agent while retaining the real user attribution.
+
 
 
 
