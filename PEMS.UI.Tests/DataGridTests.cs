@@ -100,6 +100,7 @@ public sealed class DataGridTests
         var column = ((JsonArray)en["columns"]!).Last()!;
         Assert.Equal("actions", (string?)column["type"]);
         Assert.Equal(("Edit", "get", "/f/x-edit/{id}"), (((string?)column["actions"]![0]!["label"])!, ((string?)column["actions"]![0]!["method"])!, ((string?)column["actions"]![0]!["url"])!));
+        Assert.Null((string?)column["actions"]![0]!["icon"]);
         Assert.Equal(("post", "danger", "row.system == false", "Delete?"), (((string?)column["actions"]![1]!["method"])!, ((string?)column["actions"]![1]!["tone"])!, ((string?)column["actions"]![1]!["showWhen"])!, ((string?)column["actions"]![1]!["confirm"])!));
         Assert.Equal("ویرایش", (string?)((JsonArray)Config(RenderIn(withActions, "fa"))["columns"]!).Last()!["actions"]![0]!["label"]);
         var js = Read("PEMS.UI", "wwwroot", "pems-grid.js");
@@ -112,13 +113,33 @@ public sealed class DataGridTests
         => UiTestRenderer.Instance.RenderAsync("data-grid", new Dictionary<string, object?> { ["Options"] = options }, new System.Globalization.CultureInfo(culture)).GetAwaiter().GetResult();
 
     [Fact]
+    public void Link_columns_and_explicit_action_icons_reach_the_client_configuration()
+    {
+        var options = Sample() with
+        {
+            Columns =
+            [
+                new GridColumn
+                {
+                    Key = "documentNo", Header = PEMS.UI.Abstractions.TranslatableText.Of(("en", "Document no")), Href = "/p/eng-doc-details?id={id}",
+                    Actions = [new GridRowAction { Key = "view", Label = PEMS.UI.Abstractions.TranslatableText.Of(("en", "View")), Url = "/p/eng-doc-details?id={id}", Icon = "bi-eye" }]
+                }
+            ]
+        };
+
+        var column = (JsonObject)Config(Render(options))["columns"]![0]!;
+        Assert.Equal("/p/eng-doc-details?id={id}", (string?)column["href"]);
+        Assert.Equal("bi-eye", (string?)column["actions"]![0]!["icon"]);
+    }
+
+    [Fact]
     public void The_script_builds_markup_only_from_registered_templates_and_the_sheet_uses_logical_properties()
     {
         var js = Read("PEMS.UI", "wwwroot", "pems-grid.js");
         Assert.DoesNotContain("createElement", js);
         Assert.DoesNotContain("innerHTML", js);
         Assert.DoesNotMatch("https?://", js);
-        foreach (var name in new[] { "dg-root", "dg-hcell", "dg-fcell", "dg-row", "dg-cell", "dg-check", "dg-menu-item", "dg-view-item", "dg-bulk-action", "dg-cell-actions", "dg-row-link", "dg-row-button" })
+        foreach (var name in new[] { "dg-root", "dg-hcell", "dg-fcell", "dg-row", "dg-cell", "dg-check", "dg-menu-item", "dg-view-item", "dg-bulk-action", "dg-cell-actions", "dg-row-link", "dg-row-button", "dg-row-icon", "dg-row-more" })
         {
             Assert.Contains("'" + name + "'", js);
             Assert.Contains($"data-pems-template=\"{name}\"", Read("PEMS.UI", "Components", "PemsScriptTemplates.razor"));

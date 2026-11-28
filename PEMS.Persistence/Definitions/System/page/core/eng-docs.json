@@ -24,6 +24,14 @@
             "blocks": [
               {
                 "type": "link",
+                "href": "/p/eng-docs",
+                "text": {
+                  "en": "Documents",
+                  "fa": "اسناد"
+                }
+              },
+              {
+                "type": "link",
                 "href": "/p/document-register",
                 "text": {
                   "en": "Document register",
@@ -180,23 +188,6 @@
           }
         },
         {
-          "id": "exports",
-          "component": "content-blocks",
-          "options": {
-            "id": "exports",
-            "blocks": [
-              {
-                "type": "link",
-                "href": "/x/eng-docs-export?search={{params.search|url}}&projectId={{params.projectId|url}}&disciplineId={{params.disciplineId|url}}&status={{params.status|url}}&area={{params.area|url}}&minRevisionCount={{params.minRevisionCount|url}}",
-                "text": {
-                  "en": "Export to Excel",
-                  "fa": "خروجی Excel"
-                }
-              }
-            ]
-          }
-        },
-        {
           "id": "list",
           "component": "def:entity-list",
           "options": {
@@ -204,6 +195,11 @@
             "url": "/d/eng-docs-list?f.search={{params.search|url}}&f.projectId={{params.projectId|url}}&f.disciplineId={{params.disciplineId|url}}&f.status={{params.status|url}}&f.area={{params.area|url}}&f.minRevisionCount={{params.minRevisionCount|url}}",
             "idField": "id",
             "viewsKey": "eng-docs",
+            "exportUrl": "/x/eng-docs-export?search={{params.search|url}}&projectId={{params.projectId|url}}&disciplineId={{params.disciplineId|url}}&status={{params.status|url}}&area={{params.area|url}}&minRevisionCount={{params.minRevisionCount|url}}",
+            "density": "compact",
+            "pageSize": 50,
+            "rowHeight": 44,
+            "height": 560,
             "newUrl": "/f/eng-doc-create",
             "newLabel": {
               "en": "New document",
@@ -270,6 +266,7 @@
               {
                 "key": "status",
                 "width": 160,
+                "type": "badge",
                 "header": {
                   "en": "Status",
                   "fa": "وضعیت"
@@ -319,12 +316,12 @@
                     }
                   },
                   {
-                    "key": "open",
+                    "key": "view",
                     "url": "/p/eng-doc-details?id={id}",
                     "method": "get",
                     "label": {
-                      "en": "Open",
-                      "fa": "باز کردن"
+                      "en": "View",
+                      "fa": "مشاهده"
                     }
                   },
                   {

@@ -409,6 +409,20 @@
               }
             ]
           },
+          "more": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
           "viewScopeMe": {
             "oneOf": [
               {
