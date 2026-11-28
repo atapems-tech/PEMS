@@ -74,6 +74,8 @@ public sealed record GridTexts
     public required TranslatableText ClearSelection { get; init; }
     public required TranslatableText Filter { get; init; }
     public required TranslatableText Delete { get; init; }
+    /// <summary>The label of the row action menu; optional so existing definition texts remain valid.</summary>
+    public TranslatableText More { get; init; } = TranslatableText.Of(("en", "More actions"), ("fa", "عملیات بیشتر"));
 
     /// <summary>The scope choice "only me" of a saved view (SCRUM-793); optional, a page that writes no texts block or an older one keeps this default.</summary>
     public TranslatableText ViewScopeMe { get; init; } = TranslatableText.Of(("en", "Only me"), ("fa", "فقط من"));

@@ -74,6 +74,7 @@
         // ---- the column template and the pinned offsets
         function layoutColumns() {
             var vc = visibleCols(), parts = [], offsets = {}, startOffset = 0, endOffset = 0, i;
+            root.style.setProperty('--grid-row-height', rowHeight() + 'px');
             if (cfg.selectable) { parts.push('44px'); startOffset = 44; }
             vc.forEach(function (c) { parts.push(c.width + 'px'); });
             vc.forEach(function (c) { if (c.pinned === 'start') { offsets[c.key] = startOffset; startOffset += c.width; } });
@@ -250,16 +251,26 @@
         }
         function actionsCell(c, item) {
             var cell = tpl('dg-cell-actions'), box = slot(cell, 'actions');
-            if (item) (c.actions || []).forEach(function (a) {
+            function appendAction(a, container) {
                 if (!holds(a.showWhen, item)) return;
                 var id = String(item[cfg.idField]), url = actionUrl(a, item);
                 var post = a.method === 'post', el = tpl(post ? 'dg-row-button' : 'dg-row-link'), node = slot(el, post ? 'button' : 'link');
                 var ic = iconOf(a);
-                if (ic) { var i = document.createElement('i'); i.className = 'bi ' + ic; i.setAttribute('aria-hidden', 'true'); node.appendChild(i); node.setAttribute('title', a.label); node.setAttribute('aria-label', a.label); node.classList.add('pems-grid__icon-btn', 'text-' + (a.tone && a.tone !== 'secondary' ? a.tone : 'body-secondary')); }
+                if (ic) { node.appendChild(tpl('dg-row-icon', { icon: { attrs: { class: 'bi ' + ic, 'aria-hidden': 'true' } } })); node.setAttribute('title', a.label); node.setAttribute('aria-label', a.label); node.classList.add('pems-grid__icon-btn', 'text-' + (a.tone && a.tone !== 'secondary' ? a.tone : 'body-secondary')); }
                 else { node.textContent = a.label; node.classList.add('btn-outline-' + (a.tone || 'secondary')); }
                 if (post) node.addEventListener('click', function () { runRowAction(a, url, id); }); else node.setAttribute('href', url);
-                box.appendChild(el);
-            });
+                container.appendChild(el);
+            }
+            if (item) {
+                var actions = (c.actions || []).filter(function (a) { return holds(a.showWhen, item); });
+                actions.slice(0, 2).forEach(function (a) { appendAction(a, box); });
+                if (actions.length > 2) {
+                    var more = tpl('dg-row-more', { toggle: { attrs: { title: T.more, 'aria-label': T.more } } });
+                    var menu = slot(more, 'menu');
+                    actions.slice(2).forEach(function (a) { appendAction(a, menu); });
+                    box.appendChild(more);
+                }
+            }
             cell.classList.add('is-align-start');
             pinCell(cell, c);
             return cell;

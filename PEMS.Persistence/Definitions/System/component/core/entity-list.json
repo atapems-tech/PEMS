@@ -139,6 +139,11 @@
         "type": "number",
         "description": "Rows per request (server paging); the grid shows only the rows in view"
       },
+      "rowHeight": {
+        "type": "number",
+        "default": 36,
+        "description": "Fixed row height in pixels; keeps virtual scrolling aligned with the rendered rows"
+      },
       "height": {
         "type": "number",
         "description": "Height of the scroll area in pixels"
@@ -182,6 +187,7 @@
             "exportUrl": "${exportUrl}",
             "density": "${density}",
             "pageSize": "${pageSize}",
+            "rowHeight": "${rowHeight}",
             "height": "${height}",
             "bulkActions": "${bulkActions}"
           }
