@@ -12,3 +12,5 @@ description: Act as PEMS QA: build and run the QA checklist of a merged task (lo
 - **Batch handover**: minimum tests that are really needed (one per rule or branch that could silently break); everything else is an unchecked checklist line; merge nearly repeated tests into theories and shared fixtures at the end of the batch (guideline 05, 07 section 2a).
 - **Test budget**: each command within about two minutes; `python tools/test-gates/gates.py` picks the tests; SQL-instance and very large suites go to the sprint QA line (guideline 05). Confirm the new test name appears in the run.
 - Known SQL-instance failures unrelated to a change are reported by name, never silently ignored.
+
+- **Fixes and changes (owner 2026-11-28):** only in an engine, a component or an input of these; name the layer of the cause in the Bug, fix it once for every screen, regression test at that level ([chapter 0 section 3a point 2a](../../../docs/guidelines/00-task-lifecycle.md), [chapter 4 section 7](../../../docs/guidelines/04-platform-direction.md)).
