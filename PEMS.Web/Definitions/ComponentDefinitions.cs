@@ -263,7 +263,16 @@ public static class ComponentTemplate
     public static JsonArray ExpandInstances(JsonObject definition, JsonObject? args, string idPrefix)
     {
         var values = Bind(definition, args);
-        var list = (JsonArray?)Substitute(definition["instances"] ?? new JsonArray(), values) ?? [];
+        JsonArray list;
+        if (definition["instances"] is null && definition["regions"] is JsonObject)
+        {
+            // SCRUM-836: a component definition written with regions (entity-list, entity-details: a toolbar and a content) used as an inline component writes its regions one after the other, the toolbar first
+            var regions = (JsonObject?)Substitute(definition["regions"], values) ?? new JsonObject();
+            list = [];
+            foreach (var name in regions.Select(r => r.Key).OrderBy(n => n == "toolbar" ? 0 : 1))
+                foreach (var node in (regions[name] as JsonArray) ?? []) if (node is not null) list.Add(node.DeepClone());
+        }
+        else list = (JsonArray?)Substitute(definition["instances"] ?? new JsonArray(), values) ?? [];
         foreach (var inst in list.OfType<JsonObject>()) inst["id"] = idPrefix + "." + (string?)inst["id"];
         return list;
     }
